@@ -25,6 +25,6 @@ namespace TowerBuilder.Stores
 
     public struct RoomState
     {
-        IDictionary<string, RoomKey> roomKeyMap;
+        public Dictionary<string, RoomKey> roomKeyMap;
     }
 }

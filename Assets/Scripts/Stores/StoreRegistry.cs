@@ -3,8 +3,13 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.Stores
 {
-    public static class StoreRegistry
+    public class StoreRegistry
     {
-        static RoomStore roomStore = new RoomStore();
+        public RoomStore roomStore = new RoomStore();
+    }
+
+    public static class Registry
+    {
+        public static StoreRegistry storeRegistry = new StoreRegistry();
     }
 }

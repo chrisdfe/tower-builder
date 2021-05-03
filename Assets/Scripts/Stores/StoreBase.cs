@@ -5,6 +5,6 @@ namespace TowerBuilder.Stores
 {
     public class StoreBase<StateType>
     {
-        StateType state;
+        public StateType state;
     };
 }

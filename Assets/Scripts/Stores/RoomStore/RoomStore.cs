@@ -3,5 +3,11 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.Stores
 {
-    public class RoomStore : StoreBase<RoomState> { }
+    public class RoomStore : StoreBase<RoomState>
+    {
+        public RoomStore()
+        {
+            state.roomKeyMap = new Dictionary<string, RoomKey>();
+        }
+    }
 }
