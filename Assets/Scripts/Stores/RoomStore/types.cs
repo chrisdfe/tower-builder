@@ -3,14 +3,7 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.Stores
 {
-    public enum RoomType
-    {
-        CommonArea,
-        Residence,
-        Workplace,
-        Transportation,
-        Park,
-    }
+    public class RoomKeyMap : Dictionary<string, RoomKey> { };
 
     public enum RoomKey
     {
@@ -23,8 +16,26 @@ namespace TowerBuilder.Stores
         SmallPark,
     }
 
+    public enum RoomType
+    {
+        CommonArea,
+        Residence,
+        Workplace,
+        Transportation,
+        Park,
+    }
+
+    public struct RoomDetails
+    {
+        public string title;
+        public int price;
+        public RoomType[] types;
+    }
+
+    public class RoomDetailsMap : Dictionary<RoomKey, RoomDetails> { }
+
     public struct RoomState
     {
-        public Dictionary<string, RoomKey> roomKeyMap;
+        public RoomKeyMap roomKeyMap;
     }
 }

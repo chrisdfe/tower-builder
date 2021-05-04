@@ -7,7 +7,7 @@ namespace TowerBuilder.Stores
     {
         public RoomStore()
         {
-            state.roomKeyMap = new Dictionary<string, RoomKey>();
+            state.roomKeyMap = new RoomKeyMap();
         }
     }
 }
