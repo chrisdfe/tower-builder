@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-using TowerBuilder.Domains;
-using TowerBuilder.Domains.Notifications;
-using TowerBuilder.Domains.Wallet;
+using TowerBuilder.Stores;
+using TowerBuilder.Stores.Notifications;
+using TowerBuilder.Stores.Wallet;
 
 public class WalletPanelManager : MonoBehaviour
 {
@@ -21,7 +21,7 @@ public class WalletPanelManager : MonoBehaviour
     void Awake()
     {
         WalletStore = Registry.storeRegistry.walletStore;
-        WalletEvents.onWalletStateUpdated += OnWalletStateUpdated;
+        WalletStore.Events.onWalletStateUpdated += OnWalletStateUpdated;
 
         add1000Button = transform.Find("Add1000Button").GetComponent<Button>();
         subtract1000Button = transform.Find("Subtract1000Button").GetComponent<Button>();
@@ -35,34 +35,34 @@ public class WalletPanelManager : MonoBehaviour
 
     void Subtract1000FromBalance()
     {
-        WalletMutations.subtractBalance(Registry.storeRegistry, 1000);
+        WalletStore.Mutations.subtractBalance(1000);
     }
 
     void Add1000ToBalance()
     {
-        WalletMutations.addBalance(Registry.storeRegistry, 1000);
+        WalletStore.Mutations.addBalance(1000);
     }
 
-    void OnWalletStateUpdated(WalletStateEventPayload payload)
+    void OnWalletStateUpdated(WalletStore.StateEventPayload payload)
     {
         UpdateBalanceText();
 
-        int balanceChange = WalletStateChangeSelectors.getBalanceChange(payload);
+        int balanceChange = WalletStore.StateChangeSelectors.getBalanceChange(payload);
 
         if (balanceChange > 0)
         {
-            NotificationsMutations.createNotification(Registry.storeRegistry, "balance increased");
+            NotificationsStore.Mutations.createNotification(Registry.storeRegistry, "balance increased");
         }
         else if (balanceChange < 0)
         {
-            NotificationsMutations.createNotification(Registry.storeRegistry, "balance decreased");
+            NotificationsStore.Mutations.createNotification(Registry.storeRegistry, "balance decreased");
         }
 
     }
 
     void UpdateBalanceText()
     {
-        int balance = WalletSelectors.getBalance(Registry.storeRegistry);
+        int balance = WalletStore.Selectors.getBalance(Registry.storeRegistry);
         balanceText.text = balance.ToString();
     }
 }

@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-using TowerBuilder.Domains;
-using TowerBuilder.Domains.Notifications;
+using TowerBuilder.Stores;
+using TowerBuilder.Stores.Notifications;
 
 public class NotificationsPanelManager : MonoBehaviour
 {
@@ -19,7 +19,7 @@ public class NotificationsPanelManager : MonoBehaviour
     void Awake()
     {
         notificationsStore = Registry.storeRegistry.notificationsStore;
-        NotificationsEvents.onNotificationsStateUpdated += OnNotificationsStateUpdated;
+        NotificationsStore.Events.onNotificationsStateUpdated += OnNotificationsStateUpdated;
 
         button = transform.Find("Button").GetComponent<Button>();
         text = transform.Find("NotificationsText").GetComponent<Text>();
@@ -30,14 +30,14 @@ public class NotificationsPanelManager : MonoBehaviour
 
     void OnClick()
     {
-        List<string> notifications = NotificationsSelectors.getNotificationsList(Registry.storeRegistry);
+        List<string> notifications = NotificationsStore.Selectors.getNotificationsList(Registry.storeRegistry);
 
-        NotificationsMutations.createNotification(Registry.storeRegistry, "new message " + (notifications.Count + 1));
+        NotificationsStore.Mutations.createNotification(Registry.storeRegistry, "new message " + (notifications.Count + 1));
     }
 
-    void OnNotificationsStateUpdated(NotificationsStateEventPayload payload)
+    void OnNotificationsStateUpdated(NotificationsStore.NotificationsStateEventPayload payload)
     {
-        List<string> notifications = NotificationsSelectors.getNotificationsList(Registry.storeRegistry);
+        List<string> notifications = NotificationsStore.Selectors.getNotificationsList(Registry.storeRegistry);
         notifications.Reverse();
         string newText = String.Join("\n", notifications.ToArray());
         text.text = newText;
