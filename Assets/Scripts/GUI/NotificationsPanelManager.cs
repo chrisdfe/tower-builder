@@ -14,7 +14,6 @@ public class NotificationsPanelManager : MonoBehaviour
     Button button;
     Text text;
 
-
     NotificationsStore notificationsStore;
 
     void Awake()
@@ -33,14 +32,7 @@ public class NotificationsPanelManager : MonoBehaviour
     {
         List<string> notifications = NotificationsSelectors.getNotificationsList(Registry.storeRegistry);
 
-        NotificationsMutations.createNotification(Registry.storeRegistry, new NotificationInput()
-        {
-            message = "new message " + (notifications.Count + 1)
-        });
-    }
-
-    void UpdateNotificationsText()
-    {
+        NotificationsMutations.createNotification(Registry.storeRegistry, "new message " + (notifications.Count + 1));
     }
 
     void OnNotificationsStateUpdated(NotificationsStateEventPayload payload)

@@ -21,5 +21,15 @@ namespace TowerBuilder.Domains.Notifications
                 });
             }
         }
+
+        public static void createNotification(StoreRegistry storeRegistry, string message)
+        {
+            NotificationInput notificationInput = new NotificationInput()
+            {
+                message = message
+            };
+
+            createNotification(storeRegistry, notificationInput);
+        }
     }
 }
