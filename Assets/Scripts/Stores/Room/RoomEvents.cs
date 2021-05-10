@@ -2,7 +2,7 @@ namespace TowerBuilder.Stores.Rooms
 {
     public partial class RoomStore
     {
-        public static class RoomEvents
+        public static class Events
         {
             public struct RoomEventPayload
             {

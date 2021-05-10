@@ -4,7 +4,7 @@ namespace TowerBuilder.Stores.Notifications
 {
     public partial class NotificationsStore
     {
-        public static class NotificationsConstants
+        public static class Constants
         {
 
         }
