@@ -124,7 +124,6 @@ namespace TowerBuilder.UI
         private void UpdateSpeedText()
         {
             TimeSpeed currentSpeed = Registry.storeRegistry.timeStore.state.speed;
-            Debug.Log(currentSpeed);
             speedText.text = $"Speed: {currentSpeed}";
         }
 

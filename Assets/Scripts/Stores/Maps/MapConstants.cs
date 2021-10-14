@@ -17,25 +17,26 @@ namespace TowerBuilder.Stores.Map
 
             public static RoomShapeMap ROOM_SHAPE_MAP = new RoomShapeMap()
             {
-                // [RoomKey.EmptyFloor]: createRectangularRoomShape(1, 1),
-                // [RoomKey.Lobby]: createRectangularRoomShape(1, 1),
-                // [RoomKey.Office]: createRectangularRoomShape(2, 1),
-                // [RoomKey.Condo]: createRectangularRoomShape(3, 1),
-                // [RoomKey.Elevator]: createRectangularRoomShape(1, 1),
-                // [RoomKey.Stairwell]: createRectangularRoomShape(2, 1),
-                // [RoomKey.SmallPark]: createRectangularRoomShape(1, 1),
+                [RoomKey.EmptyFloor] = MapStore.Helpers.createRectangularRoomShape(1, 1),
+                [RoomKey.Lobby] = MapStore.Helpers.createRectangularRoomShape(1, 1),
+                [RoomKey.Office] = MapStore.Helpers.createRectangularRoomShape(2, 1),
+                [RoomKey.Condo] = MapStore.Helpers.createRectangularRoomShape(3, 1),
+                [RoomKey.Elevator] = MapStore.Helpers.createRectangularRoomShape(1, 1),
+                [RoomKey.Stairwell] = MapStore.Helpers.createRectangularRoomShape(2, 1),
+                [RoomKey.SmallPark] = MapStore.Helpers.createRectangularRoomShape(1, 1),
             };
 
             // Rooms that form groups when placed next to each other.
             public static RoomKey[] GROUPABLE_ROOM_KEYS = new RoomKey[] {
-          RoomKey.Lobby,
-          RoomKey.Elevator,
-          RoomKey.Stairwell
-        };
+              RoomKey.Lobby,
+              RoomKey.Elevator,
+              RoomKey.Stairwell
+            };
+
 
             public static RoomKey[] RESIDENTIAL_ROOM_KEYS = new RoomKey[] {
-          RoomKey.Condo
-        };
+              RoomKey.Condo
+            };
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TowerBuilder.Stores.Map
 {
@@ -86,7 +86,7 @@ namespace TowerBuilder.Stores.Map
                 return (lowestY, highestY);
             }
 
-            public static List<MapCoordinates> createRectangularRoomShape(
+            public static RoomShape createRectangularRoomShape(
               int width,
               int height
             )
@@ -101,7 +101,7 @@ namespace TowerBuilder.Stores.Map
                     }
                 }
 
-                return result;
+                return result as RoomShape;
             }
 
             public static List<MapCoordinates> createRectangularRoomShape(
