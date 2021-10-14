@@ -1,13 +1,11 @@
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-
-using UnityEngine;
-using UnityEngine.UI;
-
+using System.Linq;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Time;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace TowerBuilder.UI
 {
@@ -17,6 +15,7 @@ namespace TowerBuilder.UI
         Button subtract1HourButton;
         Text hoursMinutesText;
         Text weeksSeasonsText;
+        Text speedText;
 
         // TODO - this doesn't belong here but it is fine for now
         private IEnumerator timeCoroutine;
@@ -35,12 +34,38 @@ namespace TowerBuilder.UI
             weeksSeasonsText = transform.Find("WeeksSeasonsText").GetComponent<Text>();
             UpdateWeeksSeasonsText();
 
+            speedText = transform.Find("SpeedText").GetComponent<Text>();
+            UpdateSpeedText();
+
             TimeStore.Events.onTimeStateUpdated += OnTimeStateUpdated;
 
             StartTick();
         }
 
-        void Add1Hour()
+        void Update()
+        {
+            if (Input.GetKeyDown("`"))
+            {
+                UpdateSpeed(TimeSpeed.Pause);
+            }
+
+            if (Input.GetKeyDown("1"))
+            {
+                UpdateSpeed(TimeSpeed.Normal);
+            }
+
+            if (Input.GetKeyDown("2"))
+            {
+                UpdateSpeed(TimeSpeed.Fast);
+            }
+
+            if (Input.GetKeyDown("3"))
+            {
+                UpdateSpeed(TimeSpeed.Fastest);
+            }
+        }
+
+        private void Add1Hour()
         {
             TimeStore.Mutations.AddTime(new TimeInput()
             {
@@ -49,7 +74,7 @@ namespace TowerBuilder.UI
             ResetTick();
         }
 
-        void Subtract1Hour()
+        private void Subtract1Hour()
         {
             TimeStore.Mutations.SubtractTime(new TimeInput()
             {
@@ -58,13 +83,13 @@ namespace TowerBuilder.UI
             ResetTick();
         }
 
-        void OnTimeStateUpdated(TimeStore.StateEventPayload payload)
+        private void OnTimeStateUpdated(TimeStore.StateEventPayload payload)
         {
             UpdateHoursMinutesText();
             UpdateWeeksSeasonsText();
         }
 
-        void UpdateHoursMinutesText()
+        private void UpdateHoursMinutesText()
         {
             TimeState state = Registry.storeRegistry.timeStore.state;
             int hour = state.time.hour;
@@ -85,7 +110,7 @@ namespace TowerBuilder.UI
             hoursMinutesText.text = hourAsString + ":" + minuteAsString;
         }
 
-        void UpdateWeeksSeasonsText()
+        private void UpdateWeeksSeasonsText()
         {
             TimeState state = Registry.storeRegistry.timeStore.state;
             int day = state.time.day;
@@ -96,27 +121,34 @@ namespace TowerBuilder.UI
             weeksSeasonsText.text = $"Day: {day}, Week: {week}, Season: {season}, Year: {year}";
         }
 
+        private void UpdateSpeedText()
+        {
+            TimeSpeed currentSpeed = Registry.storeRegistry.timeStore.state.speed;
+            Debug.Log(currentSpeed);
+            speedText.text = $"Speed: {currentSpeed}";
+        }
+
         // TODO - this doesn't belong here but it is fine for now
-        void ResetTick()
+        private void ResetTick()
         {
             StopTick();
             StartTick();
         }
 
         // TODO - this doesn't belong here but it is fine for now
-        void StartTick()
+        private void StartTick()
         {
             timeCoroutine = StartTimeCoroutine();
             StartCoroutine(timeCoroutine);
         }
 
-        void StopTick()
+        private void StopTick()
         {
             StopCoroutine(timeCoroutine);
         }
 
         // TODO - this doesn't belong here but it is fine for now
-        void OnTick()
+        private void OnTick()
         {
             TimeStore.Mutations.Tick();
         }
@@ -126,8 +158,25 @@ namespace TowerBuilder.UI
         {
             while (true)
             {
-                yield return new WaitForSeconds(TimeStore.Constants.TICK_INTERVAL);
+                float interval = TimeStore.Selectors.GetCurrentTickInterval(Registry.storeRegistry.timeStore.state);
+                yield return new WaitForSeconds(interval);
                 OnTick();
+            }
+        }
+
+        // TODO - this doesn't belong here but it is fine for now
+        private void UpdateSpeed(TimeSpeed timeSpeed)
+        {
+            TimeStore.Mutations.UpdateSpeed(timeSpeed);
+            UpdateSpeedText();
+
+            if (timeSpeed == TimeSpeed.Pause)
+            {
+                StopTick();
+            }
+            else
+            {
+                ResetTick();
             }
         }
     }

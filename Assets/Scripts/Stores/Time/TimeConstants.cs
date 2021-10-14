@@ -9,8 +9,17 @@ namespace TowerBuilder.Stores.Time
         public static class Constants
         {
             public const int MINUTES_ELAPSED_PER_TICK = 15;
-            // 2 seconds
-            public const int TICK_INTERVAL = 2;
+
+            // 1 second
+            public const int TICK_INTERVAL = 1;
+
+            // tick intervals in seconds
+            public static Dictionary<TimeSpeed, float> TIME_SPEED_TICK_INTERVALS = new Dictionary<TimeSpeed, float>()
+            {
+                [TimeSpeed.Normal] = 1.0f,
+                [TimeSpeed.Fast] = 0.7f,
+                [TimeSpeed.Fastest] = 0.1f,
+            };
 
             public const int MINUTES_PER_HOUR = 60;
 

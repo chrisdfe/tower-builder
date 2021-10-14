@@ -29,6 +29,14 @@ namespace TowerBuilder.Stores.Time
         public int year;
     }
 
+    public enum TimeSpeed
+    {
+        Pause = 0,
+        Normal = 1,
+        Fast = 2,
+        Fastest = 3
+    }
+
     public enum DayPeriod
     {
         Dawn,
@@ -58,5 +66,6 @@ namespace TowerBuilder.Stores.Time
         public bool isActive;
         public int tick;
         public Time time;
+        public TimeSpeed speed;
     }
 }

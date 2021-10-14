@@ -1,7 +1,7 @@
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TowerBuilder.Stores.Time
 {
@@ -9,6 +9,12 @@ namespace TowerBuilder.Stores.Time
     {
         public static class Selectors
         {
+            public static float GetCurrentTickInterval(TimeState timeState)
+            {
+                TimeSpeed currentSpeed = timeState.speed;
+                float interval = TimeStore.Constants.TICK_INTERVAL * TimeStore.Constants.TIME_SPEED_TICK_INTERVALS[currentSpeed];
+                return interval;
+            }
 
         }
     }

@@ -21,6 +21,7 @@ namespace TowerBuilder.Stores.Time
                 season = 0,
                 year = 0,
             };
+            state.speed = TimeSpeed.Normal;
         }
     }
 }

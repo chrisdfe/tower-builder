@@ -31,7 +31,7 @@ namespace TowerBuilder.UI
             {
                 worldPosition = ray.GetPoint(distance);
             }
-            Debug.Log("worldPosition: " + worldPosition.y + ", " + worldPosition.x);
+            // Debug.Log("worldPosition: " + worldPosition.y + ", " + worldPosition.x);
         }
     }
 }

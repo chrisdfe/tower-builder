@@ -57,6 +57,27 @@ namespace TowerBuilder.Stores.Time
                     minute = TimeStore.Constants.MINUTES_ELAPSED_PER_TICK
                 });
             }
+
+            public static void UpdateSpeed(TimeSpeed newTimeSpeed)
+            {
+                TimeStore timeStore = Registry.storeRegistry.timeStore;
+                TimeState previousState = timeStore.state;
+
+                Registry.storeRegistry.timeStore.state.speed = newTimeSpeed;
+
+                TimeState state = timeStore.state;
+
+                if (TimeStore.Events.onTimeStateUpdated != null)
+                {
+                    TimeStore.StateEventPayload payload = new TimeStore.StateEventPayload()
+                    {
+                        state = state,
+                        previousState = previousState,
+                    };
+
+                    TimeStore.Events.onTimeStateUpdated(payload);
+                }
+            }
         }
     }
 }
