@@ -13,19 +13,6 @@ namespace TowerBuilder.UI
             return (int)rounded;
         }
 
-        // public static CellCoordinates WorldPositionToCellCoordinates(Vector3 point)
-        // {
-        //     int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
-        //     float TILE_SIZE = Stores.Map.MapStore.Constants.TILE_SIZE;
-
-        //     return new Vector3(
-        //         RoundToNearestTile(point.x),
-        //         // (currentFocusFloor * TILE_SIZE) + (TILE_SIZE / 2),
-        //         RoundToNearestTile(point.y),
-        //         RoundToNearestTile(point.z)
-        //     );
-        // }
-
         public static Vector3 CellCoordinatesToPosition(CellCoordinates cellCoordinates)
         {
 

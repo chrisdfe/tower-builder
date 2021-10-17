@@ -11,12 +11,15 @@ namespace TowerBuilder.UI
     {
         public static float CURSOR_SIZE = 0.8f;
 
-        bool isVisible = true;
-        bool isEnabled = true;
+        public bool isVisible { get; private set; } = true;
+        public bool isEnabled { get; private set; } = true;
+
+        Material material;
 
         void Awake()
         {
             transform.localScale = new Vector3(CURSOR_SIZE, CURSOR_SIZE, CURSOR_SIZE);
+            material = GetComponent<Renderer>().material;
         }
 
         void Update() { }
@@ -35,26 +38,28 @@ namespace TowerBuilder.UI
 
         public void Hide()
         {
+            Debug.Log("hiding mapCursor");
             isVisible = false;
-            Disable();
-            // TODO - set material
+            material.color = new Color(material.color.r, material.color.g, material.color.b, 0);
         }
 
         public void Show()
         {
+            Debug.Log("showing mapCursor");
             isVisible = true;
-            Enable();
-            // TODO - set material
+            material.color = new Color(material.color.r, material.color.g, material.color.b, 1);
         }
 
         public void Disable()
         {
             isEnabled = false;
+            Hide();
         }
 
         public void Enable()
         {
             isEnabled = true;
+            Show();
         }
     }
 }

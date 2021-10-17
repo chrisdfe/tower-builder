@@ -12,36 +12,100 @@ namespace TowerBuilder.UI
 {
     public class MapManager : MonoBehaviour
     {
-        Transform floorPlane;
-        Collider floorPlaneCollider;
-        Transform buildingWrapper;
+        public Transform buildingWrapper;
 
-        GameObject placeholderTileCube;
+        // public GameObject floorPlanePrefab;
+        public FloorPlane floorPlane;
+        public Collider floorPlaneCollider;
 
-        MapCursor mapCursor;
         GameObject mapCursorPrefab;
+        public MapCursor mapCursor;
 
         Vector2 currentHoveredTile;
+        ToolStateHandlersBase currentToolStateHandler;
+
+        public Dictionary<ToolState, ToolStateHandlersBase> toolStateHandlerMap;
+
+        // Distance from the edge of the screen where the mapCursor will get disabled
+        // TODO - this should perhaps be percentages instead
+        public static Vector2 MAP_CURSOR_CLICK_BUFFER = new Vector2(150, 150);
 
         void Awake()
         {
-            floorPlane = transform.Find("FloorPlane");
+            floorPlane = transform.Find("FloorPlane").GetComponent<FloorPlane>();
             floorPlaneCollider = floorPlane.GetComponent<Collider>();
 
             mapCursorPrefab = Resources.Load<GameObject>("Prefabs/MapUI/MapCursor");
             mapCursor = Instantiate<GameObject>(mapCursorPrefab).GetComponent<MapCursor>();
             mapCursor.transform.SetParent(transform);
             mapCursor.transform.position = Vector3.zero;
-
-            placeholderTileCube = Resources.Load<GameObject>("Prefabs/Map/PlaceholderTileCube");
+            mapCursor.Disable();
 
             buildingWrapper = transform.Find("BuildingWrapper");
 
-            MapUIStore.StateChangeSelectors.onCurrentFocusFloorUpdated += OnCurrentFocusFloorUpdated;
+            toolStateHandlerMap = new Dictionary<ToolState, ToolStateHandlersBase>()
+            {
+                [ToolState.None] = new NoneToolStateHandlers(this),
+                [ToolState.Build] = new BuildToolStateHandlers(this),
+                [ToolState.Inspect] = new InspectToolStateHandlers(this),
+                [ToolState.Destroy] = new DestroyToolStateHandlers(this),
+            };
+
+            SetCurrentToolStateHandlers();
+            // Perform initialization of whatever tool state is the default
+            currentToolStateHandler.OnTransitionTo(Registry.storeRegistry.mapUIStore.state.toolState);
+
+            MapUIStore.StateChangeSelectors.onToolStateUpdated += OnToolStateUpdated;
         }
 
         void Update()
         {
+            // TODO - handle transitions between "is in dead zone" and "is not in dead zone"
+            if (!MouseCursorIsInDeadZone())
+            {
+                UpdateMapCursor();
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    currentToolStateHandler.OnMouseDown();
+                }
+
+                if (Input.GetMouseButtonUp(0))
+                {
+                    currentToolStateHandler.OnMouseUp();
+                }
+            }
+
+            // TODO - move somewhere more specific to floor stuff?
+            if (Input.GetKeyDown("]"))
+            {
+                FocusFloorUp();
+            }
+
+            if (Input.GetKeyDown("["))
+            {
+                FocusFloorDown();
+            }
+        }
+
+        bool MouseCursorIsInDeadZone()
+        {
+            return (
+                Input.mousePosition.x < MAP_CURSOR_CLICK_BUFFER.x ||
+                Input.mousePosition.x > (Screen.width - MAP_CURSOR_CLICK_BUFFER.x) ||
+
+                Input.mousePosition.y < MAP_CURSOR_CLICK_BUFFER.y ||
+                Input.mousePosition.y > (Screen.height - MAP_CURSOR_CLICK_BUFFER.y)
+            );
+        }
+
+        void UpdateMapCursor()
+        {
+            if (!mapCursor.isEnabled)
+            {
+                return;
+            }
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
@@ -54,96 +118,41 @@ namespace TowerBuilder.UI
                     floor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor
                 });
             }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                OnMouseDown();
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-                OnMouseUp();
-            }
-
-            if (Input.GetKeyDown("]"))
-            {
-                FocusFloorUp();
-            }
-
-            if (Input.GetKeyDown("["))
-            {
-                FocusFloorDown();
-            }
         }
-
-        void OnMouseDown() { }
-
-        void OnMouseUp()
-        {
-            CreatePlaceholderTileOnCurrentFloor();
-        }
-
-        void CreatePlaceholderTile(CellCoordinates cellCoordinates)
-        {
-            GameObject placeholder = Instantiate(placeholderTileCube);
-            int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
-            float TILE_SIZE = Stores.Map.MapStore.Constants.TILE_SIZE;
-
-            placeholder.transform.position = new Vector3(
-                mapCursor.transform.localPosition.x,
-                (currentFocusFloor * TILE_SIZE) + (TILE_SIZE / 2),
-                mapCursor.transform.localPosition.z
-            );
-            placeholder.transform.SetParent(buildingWrapper);
-
-            PlaceholderTileCube placeholderCube = placeholder.GetComponent<PlaceholderTileCube>();
-        }
-
-        void CreatePlaceholderTileOnCurrentFloor()
-        {
-            Transform cursor = mapCursor.transform;
-            int tileX = MapCellHelpers.RoundToNearestTile(cursor.position.x);
-            int tileZ = MapCellHelpers.RoundToNearestTile(cursor.position.z);
-            int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
-
-            CreatePlaceholderTile(new CellCoordinates()
-            {
-                x = tileX,
-                z = tileZ,
-                floor = currentFocusFloor
-            });
-        }
-
 
         void FocusFloorUp()
         {
             int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
-            SetFocusFloor(currentFocusFloor + 1);
+            // TODO - cap at highest floor
+            int newFocusFloor = currentFocusFloor + 1;
+            Stores.MapUI.MapUIStore.Mutations.SetCurrentFocusFloor(newFocusFloor);
         }
 
         void FocusFloorDown()
         {
             int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
-            SetFocusFloor(currentFocusFloor - 1);
+            // TODO - cap at lowest floor
+            int newFocusFloor = currentFocusFloor - 1;
+            Stores.MapUI.MapUIStore.Mutations.SetCurrentFocusFloor(newFocusFloor);
         }
 
-        void SetFocusFloor(int floor)
+        void OnToolStateUpdated(MapUIStore.StateEventPayload payload)
         {
-            Stores.MapUI.MapUIStore.Mutations.SetCurrentFocusFloor(floor);
-        }
+            ToolState previousToolState = payload.previousState.toolState;
+            ToolState nextToolState = payload.state.toolState;
 
-        void OnCurrentFocusFloorUpdated(MapUIStore.StateEventPayload payload)
-        {
-            int currentFocusFloor = payload.state.currentFocusFloor;
-            float TILE_SIZE = Stores.Map.MapStore.Constants.TILE_SIZE;
-
-            floorPlane.position = new Vector3(
-                floorPlane.position.x,
-                (currentFocusFloor * TILE_SIZE) + 0.01f,
-                floorPlane.position.z
-            );
+            currentToolStateHandler.OnTransitionFrom(nextToolState);
+            SetCurrentToolStateHandlers();
+            currentToolStateHandler.OnTransitionTo(previousToolState);
         }
 
         void OnRoomAdded(MapUIStore.StateEventPayload payload) { }
+
+        void SetCurrentToolStateHandlers()
+        {
+            ToolState currentToolState = Registry.storeRegistry.mapUIStore.state.toolState;
+            Debug.Log(currentToolState);
+            currentToolStateHandler = toolStateHandlerMap[currentToolState];
+        }
     }
 }
