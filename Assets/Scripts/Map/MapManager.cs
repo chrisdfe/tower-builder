@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,29 +12,32 @@ namespace TowerBuilder.UI
 {
     public class MapManager : MonoBehaviour
     {
-        public static float TILE_SIZE = 1f;
-
-        MapTileManager mapTileManager;
-
         Transform floorPlane;
         Collider floorPlaneCollider;
-        Transform cubeCursor;
+        Transform buildingWrapper;
+
+        GameObject placeholderTileCube;
+
+        MapCursor mapCursor;
+        GameObject mapCursorPrefab;
 
         Vector2 currentHoveredTile;
-        int currentFocusFloor = 0;
 
         void Awake()
         {
-            // mapTileManager = transform.Find("MapTileManager").GetComponent<MapTileManager>();
             floorPlane = transform.Find("FloorPlane");
             floorPlaneCollider = floorPlane.GetComponent<Collider>();
-            cubeCursor = transform.Find("CubeCursor");
-            cubeCursor.localScale = new Vector3(TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        }
 
-        void Start()
-        {
-            // mapTileManager.InstantiateMapTiles();
+            mapCursorPrefab = Resources.Load<GameObject>("Prefabs/MapUI/MapCursor");
+            mapCursor = Instantiate<GameObject>(mapCursorPrefab).GetComponent<MapCursor>();
+            mapCursor.transform.SetParent(transform);
+            mapCursor.transform.position = Vector3.zero;
+
+            placeholderTileCube = Resources.Load<GameObject>("Prefabs/Map/PlaceholderTileCube");
+
+            buildingWrapper = transform.Find("BuildingWrapper");
+
+            MapUIStore.StateChangeSelectors.onCurrentFocusFloorUpdated += OnCurrentFocusFloorUpdated;
         }
 
         void Update()
@@ -43,28 +47,24 @@ namespace TowerBuilder.UI
             RaycastHit hit;
             if (floorPlaneCollider.Raycast(ray, out hit, 100))
             {
-                cubeCursor.localPosition = SnapToTileGrid(hit.point);
-                currentHoveredTile = new Vector2(
-                    cubeCursor.localPosition.x / TILE_SIZE,
-                    cubeCursor.localPosition.z / TILE_SIZE
-                );
+                mapCursor.SetCurrentTile(new CellCoordinates()
+                {
+                    x = MapCellHelpers.RoundToNearestTile(hit.point.x),
+                    z = MapCellHelpers.RoundToNearestTile(hit.point.z),
+                    floor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor
+                });
             }
 
             if (Input.GetMouseButtonDown(0))
             {
+                OnMouseDown();
             }
 
             if (Input.GetMouseButtonUp(0))
             {
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.position = new Vector3(
-                    cubeCursor.localPosition.x,
-                    (currentFocusFloor * TILE_SIZE) + (TILE_SIZE / 2),
-                    cubeCursor.localPosition.z
-                );
+                OnMouseUp();
             }
 
-            // move floor up
             if (Input.GetKeyDown("]"))
             {
                 FocusFloorUp();
@@ -76,35 +76,66 @@ namespace TowerBuilder.UI
             }
         }
 
-        // TODO -this definitely doesn't belong here
-        float RoundToNearestTile(float number)
+        void OnMouseDown() { }
+
+        void OnMouseUp()
         {
-            return (float)Math.Round(number / TILE_SIZE) * TILE_SIZE;
+            CreatePlaceholderTileOnCurrentFloor();
         }
 
-        Vector3 SnapToTileGrid(Vector3 point)
+        void CreatePlaceholderTile(CellCoordinates cellCoordinates)
         {
-            return new Vector3(
-                RoundToNearestTile(point.x),
+            GameObject placeholder = Instantiate(placeholderTileCube);
+            int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
+            float TILE_SIZE = Stores.Map.MapStore.Constants.TILE_SIZE;
+
+            placeholder.transform.position = new Vector3(
+                mapCursor.transform.localPosition.x,
                 (currentFocusFloor * TILE_SIZE) + (TILE_SIZE / 2),
-                RoundToNearestTile(point.z)
+                mapCursor.transform.localPosition.z
             );
+            placeholder.transform.SetParent(buildingWrapper);
+
+            PlaceholderTileCube placeholderCube = placeholder.GetComponent<PlaceholderTileCube>();
         }
+
+        void CreatePlaceholderTileOnCurrentFloor()
+        {
+            Transform cursor = mapCursor.transform;
+            int tileX = MapCellHelpers.RoundToNearestTile(cursor.position.x);
+            int tileZ = MapCellHelpers.RoundToNearestTile(cursor.position.z);
+            int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
+
+            CreatePlaceholderTile(new CellCoordinates()
+            {
+                x = tileX,
+                z = tileZ,
+                floor = currentFocusFloor
+            });
+        }
+
 
         void FocusFloorUp()
         {
+            int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
             SetFocusFloor(currentFocusFloor + 1);
         }
 
         void FocusFloorDown()
         {
+            int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
             SetFocusFloor(currentFocusFloor - 1);
         }
 
         void SetFocusFloor(int floor)
         {
-            currentFocusFloor = floor;
-            Debug.Log($"current floor: {floor}");
+            Stores.MapUI.MapUIStore.Mutations.SetCurrentFocusFloor(floor);
+        }
+
+        void OnCurrentFocusFloorUpdated(MapUIStore.StateEventPayload payload)
+        {
+            int currentFocusFloor = payload.state.currentFocusFloor;
+            float TILE_SIZE = Stores.Map.MapStore.Constants.TILE_SIZE;
 
             floorPlane.position = new Vector3(
                 floorPlane.position.x,
@@ -112,5 +143,7 @@ namespace TowerBuilder.UI
                 floorPlane.position.z
             );
         }
+
+        void OnRoomAdded(MapUIStore.StateEventPayload payload) { }
     }
 }

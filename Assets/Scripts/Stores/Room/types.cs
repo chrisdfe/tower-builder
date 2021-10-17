@@ -7,6 +7,7 @@ namespace TowerBuilder.Stores.Rooms
 
     public enum RoomKey
     {
+        None,
         EmptyFloor,
         Lobby,
         Office,
@@ -18,6 +19,7 @@ namespace TowerBuilder.Stores.Rooms
 
     public enum RoomType
     {
+        None,
         CommonArea,
         Residence,
         Workplace,

@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.MapUI;
 using TowerBuilder.Stores.Notifications;
+using TowerBuilder.Stores.Rooms;
 using TowerBuilder.Stores.Time;
 using TowerBuilder.Stores.Wallet;
-using TowerBuilder.Stores.Rooms;
-using TowerBuilder.Stores.Map;
 
 namespace TowerBuilder.Stores
 {
@@ -16,6 +16,7 @@ namespace TowerBuilder.Stores
         public WalletStore walletStore = new WalletStore();
         public RoomStore roomStore = new RoomStore();
         public MapStore mapStore = new MapStore();
+        public MapUIStore mapUIStore = new MapUIStore();
     }
 
     public static class Registry
