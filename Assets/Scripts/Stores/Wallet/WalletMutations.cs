@@ -8,7 +8,7 @@ namespace TowerBuilder.Stores.Wallet
         {
             public static void updateBalance(int balance)
             {
-                WalletStore walletStore = Registry.storeRegistry.walletStore;
+                WalletStore walletStore = Registry.Stores.walletStore;
                 WalletState previousState = walletStore.state;
                 walletStore.state.balance = balance;
                 WalletState state = walletStore.state;
@@ -25,7 +25,7 @@ namespace TowerBuilder.Stores.Wallet
 
             public static void addBalance(int amount)
             {
-                WalletStore walletStore = Registry.storeRegistry.walletStore;
+                WalletStore walletStore = Registry.Stores.walletStore;
                 WalletState state = walletStore.state;
                 int newBalance = WalletStore.Helpers.addBalance(walletStore.state.balance, amount);
                 updateBalance(newBalance);
@@ -41,7 +41,7 @@ namespace TowerBuilder.Stores.Wallet
 
             public static void subtractBalance(int amount)
             {
-                WalletStore walletStore = Registry.storeRegistry.walletStore;
+                WalletStore walletStore = Registry.Stores.walletStore;
                 WalletState state = walletStore.state;
                 int newBalance = WalletStore.Helpers.subtractBalance(walletStore.state.balance, amount);
                 updateBalance(newBalance);

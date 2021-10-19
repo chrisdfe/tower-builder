@@ -58,7 +58,7 @@ namespace TowerBuilder.UI
 
             SetCurrentToolStateHandlers();
             // Perform initialization of whatever tool state is the default
-            currentToolStateHandler.OnTransitionTo(Registry.storeRegistry.mapUIStore.state.toolState);
+            currentToolStateHandler.OnTransitionTo(Registry.Stores.mapUIStore.state.toolState);
 
             MapUIStore.Events.onToolStateUpdated += OnToolStateUpdated;
             MapUIStore.Events.onCurrentSelectedTileUpdated += OnCurrentSelectedTileUpdated;
@@ -124,10 +124,10 @@ namespace TowerBuilder.UI
                 {
                     x = MapCellHelpers.RoundToNearestTile(hit.point.x),
                     z = MapCellHelpers.RoundToNearestTile(hit.point.z),
-                    floor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor
+                    floor = Registry.Stores.mapUIStore.state.currentFocusFloor
                 };
 
-                CellCoordinates currentSelectedTile = Registry.storeRegistry.mapUIStore.state.currentSelectedTile;
+                CellCoordinates currentSelectedTile = Registry.Stores.mapUIStore.state.currentSelectedTile;
 
                 if (!currentSelectedTile.Matches(hoveredCell))
                 {
@@ -138,7 +138,7 @@ namespace TowerBuilder.UI
 
         void FocusFloorUp()
         {
-            int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
+            int currentFocusFloor = Registry.Stores.mapUIStore.state.currentFocusFloor;
             // TODO - cap at highest floor
             int newFocusFloor = currentFocusFloor + 1;
             Stores.MapUI.MapUIStore.Mutations.SetCurrentFocusFloor(newFocusFloor);
@@ -146,7 +146,7 @@ namespace TowerBuilder.UI
 
         void FocusFloorDown()
         {
-            int currentFocusFloor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor;
+            int currentFocusFloor = Registry.Stores.mapUIStore.state.currentFocusFloor;
             // TODO - cap at lowest floor
             int newFocusFloor = currentFocusFloor - 1;
             Stores.MapUI.MapUIStore.Mutations.SetCurrentFocusFloor(newFocusFloor);
@@ -186,7 +186,7 @@ namespace TowerBuilder.UI
 
         void SetCurrentToolStateHandlers()
         {
-            ToolState currentToolState = Registry.storeRegistry.mapUIStore.state.toolState;
+            ToolState currentToolState = Registry.Stores.mapUIStore.state.toolState;
             Debug.Log(currentToolState);
             currentToolStateHandler = toolStateHandlerMap[currentToolState];
         }

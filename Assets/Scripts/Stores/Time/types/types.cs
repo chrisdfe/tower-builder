@@ -13,22 +13,6 @@ namespace TowerBuilder.Stores.Time
         public int? year;
     }
 
-    public struct Time
-    {
-        // 0-59
-        public int minute;
-        // 0-23
-        public int hour;
-        // day of week
-        public int day;
-        // week of season
-        public int week;
-        // season of year
-        public int season;
-        // 1 +
-        public int year;
-    }
-
     public enum TimeSpeed
     {
         Pause = 0,
@@ -65,7 +49,7 @@ namespace TowerBuilder.Stores.Time
     {
         public bool isActive;
         public int tick;
-        public Time time;
+        public TimeValue currentTime;
         public TimeSpeed speed;
     }
 }

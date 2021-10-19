@@ -26,7 +26,7 @@ namespace TowerBuilder.UI
             transform.localPosition = new Vector3(
                 MapCellHelpers.RoundToNearestTile(cellCoordinates.x),
                 (
-                    MapCellHelpers.RoundToNearestTile(Registry.storeRegistry.mapUIStore.state.currentFocusFloor) +
+                    MapCellHelpers.RoundToNearestTile(Registry.Stores.mapUIStore.state.currentFocusFloor) +
                     (MapStore.Constants.TILE_SIZE / 2)
                 ),
                 MapCellHelpers.RoundToNearestTile(cellCoordinates.z)
@@ -37,6 +37,7 @@ namespace TowerBuilder.UI
         {
             isVisible = false;
             // material.color = new Color(material.color.r, material.color.g, material.color.b, 0);
+            DestroyCursorCells();
         }
 
         public void Show()
@@ -74,18 +75,10 @@ namespace TowerBuilder.UI
 
         void ResetCursorCells()
         {
-            if (mapCursorCells.Count > 0)
-            {
-                foreach (MapCursorCell mapCursorCell in mapCursorCells)
-                {
-                    Destroy(mapCursorCell.gameObject);
-                }
-            }
+            DestroyCursorCells();
 
-            mapCursorCells = new List<MapCursorCell>();
-
-            RoomKey currentRoomKey = Registry.storeRegistry.mapUIStore.state.selectedRoomKey;
-            MapRoomRotation rotation = Registry.storeRegistry.mapUIStore.state.currentBlueprintRotation;
+            RoomKey currentRoomKey = Registry.Stores.mapUIStore.state.selectedRoomKey;
+            MapRoomRotation rotation = Registry.Stores.mapUIStore.state.currentBlueprintRotation;
 
             blueprint = new MapRoomBlueprint()
             {
@@ -107,25 +100,21 @@ namespace TowerBuilder.UI
             }
         }
 
+        void DestroyCursorCells()
+        {
+            if (mapCursorCells.Count > 0)
+            {
+                foreach (MapCursorCell mapCursorCell in mapCursorCells)
+                {
+                    Destroy(mapCursorCell.gameObject);
+                }
+            }
+
+            mapCursorCells = new List<MapCursorCell>();
+        }
+
         void OnBlueprintRotationUpdated(MapRoomRotation rotation, MapRoomRotation previousRotation)
         {
-            // switch (rotation)
-            // {
-            //     case MapRoomRotation.Right:
-            //         transform.localRotation = Quaternion.identity;
-            //         break;
-            //     case MapRoomRotation.Down:
-            //         transform.localRotation = Quaternion.Euler(90, 0, 0);
-            //         break;
-            //     case MapRoomRotation.Left:
-            //         transform.localRotation = Quaternion.Euler(180, 0, 0);
-            //         break;
-            //     case MapRoomRotation.Up:
-            //         transform.localRotation = Quaternion.Euler(-90, 0, 0);
-            //         break;
-            //     default:
-            //         break;
-            // }
             ResetCursorCells();
         }
 

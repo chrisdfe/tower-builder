@@ -9,7 +9,7 @@ namespace TowerBuilder.Stores.Rooms
             public static string addRoomKeyToMap(RoomKey roomKey)
             {
                 string roomId = Guid.NewGuid().ToString();
-                Registry.storeRegistry.roomStore.state.roomKeyMap.Add(roomId, roomKey);
+                Registry.Stores.roomStore.state.roomKeyMap.Add(roomId, roomKey);
                 return roomId;
             }
 

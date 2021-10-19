@@ -10,7 +10,7 @@ namespace TowerBuilder.Stores.Map
             // TODO - maybe all mutations should be like this instead
             public static void AddRoom(MapRoom newRoom)
             {
-                Registry.storeRegistry.mapStore.state.mapRooms.Add(newRoom);
+                Registry.Stores.mapStore.state.mapRooms.Add(newRoom);
                 MapStore.Events.onMapRoomAdded(newRoom);
             }
 

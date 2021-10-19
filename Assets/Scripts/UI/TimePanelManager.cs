@@ -18,7 +18,7 @@ namespace TowerBuilder.UI
         Text speedText;
 
         // TODO - this doesn't belong here but it is fine for now
-        private IEnumerator timeCoroutine;
+        IEnumerator timeCoroutine;
 
         void Awake()
         {
@@ -37,7 +37,7 @@ namespace TowerBuilder.UI
             speedText = transform.Find("SpeedText").GetComponent<Text>();
             UpdateSpeedText();
 
-            TimeStore.Events.onTimeStateUpdated += OnTimeStateUpdated;
+            Registry.Stores.Time.onTimeUpdated += OnTimeStateUpdated;
 
             StartTick();
         }
@@ -65,33 +65,33 @@ namespace TowerBuilder.UI
             }
         }
 
-        private void Add1Hour()
+        void Add1Hour()
         {
-            TimeStore.Mutations.AddTime(new TimeInput()
+            Registry.Stores.Time.AddTime(new TimeInput()
             {
                 hour = 1
             });
             ResetTick();
         }
 
-        private void Subtract1Hour()
+        void Subtract1Hour()
         {
-            TimeStore.Mutations.SubtractTime(new TimeInput()
+            Registry.Stores.Time.SubtractTime(new TimeInput()
             {
                 hour = 1
             });
             ResetTick();
         }
 
-        private void OnTimeStateUpdated(TimeStore.StateEventPayload payload)
+        void OnTimeStateUpdated(TimeValue time)
         {
             UpdateHoursMinutesText();
             UpdateWeeksSeasonsText();
         }
 
-        private void UpdateHoursMinutesText()
+        void UpdateHoursMinutesText()
         {
-            TimeState state = Registry.storeRegistry.timeStore.state;
+            Stores.Time.State state = Registry.Stores.Time;
             int hour = state.time.hour;
             int minute = state.time.minute;
 
@@ -110,9 +110,9 @@ namespace TowerBuilder.UI
             hoursMinutesText.text = hourAsString + ":" + minuteAsString;
         }
 
-        private void UpdateWeeksSeasonsText()
+        void UpdateWeeksSeasonsText()
         {
-            TimeState state = Registry.storeRegistry.timeStore.state;
+            Stores.Time.State state = Registry.Stores.Time;
             int day = state.time.day;
             int week = state.time.week;
             int season = state.time.season;
@@ -121,35 +121,35 @@ namespace TowerBuilder.UI
             weeksSeasonsText.text = $"Day: {day}, Week: {week}, Season: {season}, Year: {year}";
         }
 
-        private void UpdateSpeedText()
+        void UpdateSpeedText()
         {
-            TimeSpeed currentSpeed = Registry.storeRegistry.timeStore.state.speed;
+            TimeSpeed currentSpeed = Registry.Stores.Time.speed;
             speedText.text = $"Speed: {currentSpeed}";
         }
 
         // TODO - this doesn't belong here but it is fine for now
-        private void ResetTick()
+        void ResetTick()
         {
             StopTick();
             StartTick();
         }
 
         // TODO - this doesn't belong here but it is fine for now
-        private void StartTick()
+        void StartTick()
         {
             timeCoroutine = StartTimeCoroutine();
             StartCoroutine(timeCoroutine);
         }
 
-        private void StopTick()
+        void StopTick()
         {
             StopCoroutine(timeCoroutine);
         }
 
         // TODO - this doesn't belong here but it is fine for now
-        private void OnTick()
+        void OnTick()
         {
-            TimeStore.Mutations.Tick();
+            Registry.Stores.Time.Tick();
         }
 
         // TODO - this doesn't belong here but it is fine for now
@@ -157,16 +157,16 @@ namespace TowerBuilder.UI
         {
             while (true)
             {
-                float interval = TimeStore.Selectors.GetCurrentTickInterval(Registry.storeRegistry.timeStore.state);
+                float interval = Stores.Time.Selectors.GetCurrentTickInterval(Registry.Stores.Time);
                 yield return new WaitForSeconds(interval);
                 OnTick();
             }
         }
 
         // TODO - this doesn't belong here but it is fine for now
-        private void UpdateSpeed(TimeSpeed timeSpeed)
+        void UpdateSpeed(TimeSpeed timeSpeed)
         {
-            TimeStore.Mutations.UpdateSpeed(timeSpeed);
+            Registry.Stores.Time.UpdateSpeed(timeSpeed);
             UpdateSpeedText();
 
             if (timeSpeed == TimeSpeed.Pause)

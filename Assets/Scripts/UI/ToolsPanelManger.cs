@@ -31,7 +31,7 @@ namespace TowerBuilder.UI
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(1) && Registry.storeRegistry.mapUIStore.state.toolState != ToolState.None)
+            if (Input.GetMouseButtonDown(1) && Registry.Stores.mapUIStore.state.toolState != ToolState.None)
             {
                 TowerBuilder.Stores.MapUI.MapUIStore.Mutations.SetToolState(ToolState.None);
             }
@@ -59,10 +59,10 @@ namespace TowerBuilder.UI
 
         void UpdateDescriptionText()
         {
-            ToolState toolState = Registry.storeRegistry.mapUIStore.state.toolState;
+            ToolState toolState = Registry.Stores.mapUIStore.state.toolState;
             if (toolState == ToolState.Build)
             {
-                RoomKey selectedRoomKey = Registry.storeRegistry.mapUIStore.state.selectedRoomKey;
+                RoomKey selectedRoomKey = Registry.Stores.mapUIStore.state.selectedRoomKey;
                 descriptionText.text = $"{toolState} - {selectedRoomKey}";
             }
             else

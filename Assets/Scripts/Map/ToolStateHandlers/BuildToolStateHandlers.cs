@@ -22,14 +22,14 @@ namespace TowerBuilder.UI
             if (Input.GetKeyDown("."))
             {
                 // TODO - make this a mutation
-                MapRoomRotation rotation = Registry.storeRegistry.mapUIStore.state.currentBlueprintRotation;
+                MapRoomRotation rotation = Registry.Stores.mapUIStore.state.currentBlueprintRotation;
                 MapRoomRotation nextRotation = MapRoomRotationHelpers.GetRightMapRoomRotation(rotation);
                 MapUIStore.Mutations.SetCurrentBlueprintRotation(nextRotation);
             }
 
             if (Input.GetKeyDown(","))
             {
-                MapRoomRotation rotation = Registry.storeRegistry.mapUIStore.state.currentBlueprintRotation;
+                MapRoomRotation rotation = Registry.Stores.mapUIStore.state.currentBlueprintRotation;
                 MapRoomRotation nextRotation = MapRoomRotationHelpers.GetLeftMapRoomRotation(rotation);
                 MapUIStore.Mutations.SetCurrentBlueprintRotation(nextRotation);
             }
@@ -47,9 +47,9 @@ namespace TowerBuilder.UI
 
         public override void OnMouseUp()
         {
-            CellCoordinates mapRoomCoordinates = Registry.storeRegistry.mapUIStore.state.currentSelectedTile;
-            RoomKey mapRoomKey = Registry.storeRegistry.mapUIStore.state.selectedRoomKey;
-            MapRoomRotation currentRotation = Registry.storeRegistry.mapUIStore.state.currentBlueprintRotation;
+            CellCoordinates mapRoomCoordinates = Registry.Stores.mapUIStore.state.currentSelectedTile;
+            RoomKey mapRoomKey = Registry.Stores.mapUIStore.state.selectedRoomKey;
+            MapRoomRotation currentRotation = Registry.Stores.mapUIStore.state.currentBlueprintRotation;
 
             // TODO - this should already exist at this point
 

@@ -1,14 +1,12 @@
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-
-using UnityEngine;
-using UnityEngine.UI;
-
+using System.Linq;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Notifications;
 using TowerBuilder.Stores.Wallet;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace TowerBuilder.UI
 {
@@ -22,7 +20,7 @@ namespace TowerBuilder.UI
 
         void Awake()
         {
-            WalletStore = Registry.storeRegistry.walletStore;
+            WalletStore = Registry.Stores.walletStore;
             WalletStore.Events.onWalletStateUpdated += OnWalletStateUpdated;
 
             add1000Button = transform.Find("Add1000Button").GetComponent<Button>();
@@ -53,18 +51,18 @@ namespace TowerBuilder.UI
 
             if (balanceChange > 0)
             {
-                NotificationsStore.Mutations.createNotification(Registry.storeRegistry, "balance increased");
+                Registry.Stores.Notifications.createNotification("balance increased");
             }
             else if (balanceChange < 0)
             {
-                NotificationsStore.Mutations.createNotification(Registry.storeRegistry, "balance decreased");
+                Registry.Stores.Notifications.createNotification("balance decreased");
             }
 
         }
 
         void UpdateBalanceText()
         {
-            int balance = WalletStore.Selectors.getBalance(Registry.storeRegistry);
+            int balance = WalletStore.Selectors.getBalance(Registry.Stores);
             balanceText.text = balance.ToString();
         }
     }
