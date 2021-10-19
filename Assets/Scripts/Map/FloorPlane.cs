@@ -11,10 +11,10 @@ namespace TowerBuilder.UI
     {
         void Awake()
         {
-            MapUIStore.StateChangeSelectors.onCurrentFocusFloorUpdated += OnCurrentFocusFloorUpdated;
+            MapUIStore.Events.onCurrentFocusFloorUpdated += OnCurrentFocusFloorUpdated;
         }
 
-        void OnCurrentFocusFloorUpdated(MapUIStore.StateEventPayload payload)
+        void OnCurrentFocusFloorUpdated(MapUIStore.Events.StateEventPayload payload)
         {
             int currentFocusFloor = payload.state.currentFocusFloor;
             float TILE_SIZE = Stores.Map.MapStore.Constants.TILE_SIZE;

@@ -9,7 +9,6 @@ namespace TowerBuilder.Stores.MapUI
     {
         public static class Selectors
         {
-
         }
     }
 }

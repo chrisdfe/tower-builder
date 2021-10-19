@@ -25,8 +25,8 @@ namespace TowerBuilder.UI
             ToggleRoomBlueprintButtonsPanel(false);
             UpdateDescriptionText();
 
-            MapUIStore.StateChangeSelectors.onToolStateUpdated += OnToolStateUpdated;
-            MapUIStore.StateChangeSelectors.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            MapUIStore.Events.onToolStateUpdated += OnToolStateUpdated;
+            MapUIStore.Events.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void Update()
@@ -37,7 +37,7 @@ namespace TowerBuilder.UI
             }
         }
 
-        void OnToolStateUpdated(MapUIStore.StateEventPayload payload)
+        void OnToolStateUpdated(MapUIStore.Events.StateEventPayload payload)
         {
             UpdateDescriptionText();
 
@@ -51,7 +51,7 @@ namespace TowerBuilder.UI
             }
         }
 
-        void OnSelectedRoomKeyUpdated(MapUIStore.StateEventPayload payload)
+        void OnSelectedRoomKeyUpdated(MapUIStore.Events.StateEventPayload payload)
         {
             UpdateDescriptionText();
 
@@ -73,8 +73,6 @@ namespace TowerBuilder.UI
 
         void ToggleRoomBlueprintButtonsPanel(bool show)
         {
-            Debug.Log("toggling blueprint panel");
-            Debug.Log(show);
             roomBlueprintButtonsManager.gameObject.SetActive(show);
         }
     }

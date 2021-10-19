@@ -1,4 +1,5 @@
 using System;
+using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Rooms;
 using UnityEngine;
 
@@ -10,42 +11,65 @@ namespace TowerBuilder.Stores.MapUI
         {
             public static void SetToolState(ToolState newToolState)
             {
-                MapUIStore gameUIStore = Registry.storeRegistry.mapUIStore;
-                MapUIState previousState = gameUIStore.state;
-                gameUIStore.state.toolState = newToolState;
+                MapUIStore mapUIStore = Registry.storeRegistry.mapUIStore;
+                MapUIState previousState = mapUIStore.state;
 
-                MapUIState state = gameUIStore.state;
+                mapUIStore.state.toolState = newToolState;
+
+                MapUIState state = mapUIStore.state;
 
                 FireUpdateEvent(previousState, state);
             }
 
             public static void SetSelectedRoomKey(RoomKey selectedRoomKey)
             {
-                MapUIStore gameUIStore = Registry.storeRegistry.mapUIStore;
-                MapUIState previousState = gameUIStore.state;
-                gameUIStore.state.selectedRoomKey = selectedRoomKey;
+                MapUIStore mapUIStore = Registry.storeRegistry.mapUIStore;
+                MapUIState previousState = mapUIStore.state;
 
-                MapUIState state = gameUIStore.state;
+                mapUIStore.state.selectedRoomKey = selectedRoomKey;
+
+                MapUIState state = mapUIStore.state;
                 FireUpdateEvent(previousState, state);
             }
 
             public static void SetCurrentFocusFloor(int focusFloor)
             {
-                MapUIStore gameUIStore = Registry.storeRegistry.mapUIStore;
-                MapUIState previousState = gameUIStore.state;
+                MapUIStore mapUIStore = Registry.storeRegistry.mapUIStore;
+                MapUIState previousState = mapUIStore.state;
 
-                gameUIStore.state.currentFocusFloor = focusFloor;
+                mapUIStore.state.currentFocusFloor = focusFloor;
 
-                MapUIState state = gameUIStore.state;
+                MapUIState state = mapUIStore.state;
                 FireUpdateEvent(previousState, state);
+            }
+
+            public static void SetCurrentSelectedCell(CellCoordinates selectedCell)
+            {
+                MapUIStore mapUIStore = Registry.storeRegistry.mapUIStore;
+                MapUIState previousState = mapUIStore.state;
+
+                mapUIStore.state.currentSelectedTile = selectedCell;
+
+                MapUIState state = mapUIStore.state;
+                FireUpdateEvent(previousState, state);
+            }
+
+            public static void SetCurrentBlueprintRotation(MapRoomRotation rotation)
+            {
+                MapRoomRotation previousRotation = Registry.storeRegistry.mapUIStore.state.currentBlueprintRotation;
+                Registry.storeRegistry.mapUIStore.state.currentBlueprintRotation = rotation;
+
+                if (MapUIStore.Events.onBlueprintRotationUpdated != null)
+                {
+                    MapUIStore.Events.onBlueprintRotationUpdated(rotation, previousRotation);
+                }
             }
 
             public static void FireUpdateEvent(MapUIState previousState, MapUIState state)
             {
-
                 if (MapUIStore.Events.onMapUIStateUpdated != null)
                 {
-                    MapUIStore.Events.onMapUIStateUpdated(new MapUIStore.StateEventPayload()
+                    MapUIStore.Events.onMapUIStateUpdated(new MapUIStore.Events.StateEventPayload()
                     {
                         previousState = previousState,
                         state = state

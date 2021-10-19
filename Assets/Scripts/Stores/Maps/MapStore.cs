@@ -9,10 +9,7 @@ namespace TowerBuilder.Stores.Map
     {
         public MapStore()
         {
-            state.roomCellsMap = new RoomCellsMap();
-            state.roomGroupMap = new RoomGroupMap();
-
-            // TODO - listen to room events here
+            state.mapRooms = new List<MapRoom>();
         }
     }
 }

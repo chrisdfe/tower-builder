@@ -15,8 +15,8 @@ namespace TowerBuilder.UI
 
         public static Vector3 CellCoordinatesToPosition(CellCoordinates cellCoordinates)
         {
-
             float TILE_SIZE = Stores.Map.MapStore.Constants.TILE_SIZE;
+
             return new Vector3(
                 cellCoordinates.x * TILE_SIZE,
                 cellCoordinates.floor * TILE_SIZE,

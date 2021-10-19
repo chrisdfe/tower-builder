@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using TowerBuilder;
 using TowerBuilder.Stores;
+using TowerBuilder.Stores.Map;
 
 namespace TowerBuilder.Stores.MapUI
 {
@@ -13,6 +14,9 @@ namespace TowerBuilder.Stores.MapUI
             state.toolState = ToolState.None;
             state.selectedRoomKey = Rooms.RoomKey.None;
             state.currentFocusFloor = 0;
+            state.currentBlueprint = null;
+            state.currentBlueprintRotation = MapRoomRotation.Right;
+            state.currentSelectedTile = CellCoordinates.zero;
         }
     }
 }

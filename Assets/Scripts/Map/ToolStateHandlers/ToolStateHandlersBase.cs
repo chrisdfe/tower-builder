@@ -14,6 +14,8 @@ namespace TowerBuilder.UI
             mapManager = parentMapManager;
         }
 
+        public virtual void Update() { }
+
         public virtual void OnTransitionFrom(ToolState nextToolState) { }
 
         public virtual void OnTransitionTo(ToolState previousToolState) { }

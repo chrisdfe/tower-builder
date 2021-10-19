@@ -12,67 +12,6 @@ namespace TowerBuilder.Stores.Map
     {
         public static partial class Helpers
         {
-            // TODO - rewrite for 3D
-            // public static int getLowestY(List<MapCoordinates> roomShape)
-            // {
-            //     int lowestY = int.MaxValue;
-
-            //     foreach (MapCoordinates coordinates in roomShape)
-            //     {
-            //         if (coordinates.y < lowestY)
-            //         {
-            //             lowestY = coordinates.y;
-            //         }
-            //     }
-
-            //     return lowestY;
-            // }
-
-            // public static int getHighestY(List<MapCoordinates> roomShape)
-            // {
-            //     int highestY = int.MinValue;
-
-            //     foreach (MapCoordinates coordinates in roomShape)
-            //     {
-            //         if (coordinates.y > highestY)
-            //         {
-            //             highestY = coordinates.y;
-            //         }
-            //     }
-
-            //     return highestY;
-            // }
-
-            // public static int getLowestX(List<MapCoordinates> roomShape)
-            // {
-            //     int lowestX = int.MaxValue;
-
-            //     foreach (MapCoordinates coordinates in roomShape)
-            //     {
-            //         if (coordinates.x < lowestX)
-            //         {
-            //             lowestX = coordinates.x;
-            //         }
-            //     }
-
-            //     return lowestX;
-            // }
-
-            // public static int getHighestX(List<MapCoordinates> roomShape)
-            // {
-            //     int highestX = int.MinValue;
-
-            //     foreach (MapCoordinates coordinates in roomShape)
-            //     {
-            //         if (coordinates.x > highestX)
-            //         {
-            //             highestX = coordinates.x;
-            //         }
-            //     }
-
-            //     return highestX;
-            // }
-
             // public static (int lowestX, int highestX) getLowestAndHighestX(List<MapCoordinates> roomShape)
             // {
             //     int lowestX = getLowestX(roomShape);
@@ -104,6 +43,26 @@ namespace TowerBuilder.Stores.Map
 
             //     return result as RoomShape;
             // }
+
+            public static List<CellCoordinates> create2DRectangularRoomBlueprint(int xSize, int zSize)
+            {
+                List<CellCoordinates> result = new List<CellCoordinates>();
+
+                for (int x = 0; x < xSize; x++)
+                {
+                    for (int z = 0; z < zSize; z++)
+                    {
+                        result.Add(new CellCoordinates()
+                        {
+                            x = x,
+                            z = z,
+                            floor = 0
+                        });
+                    }
+                }
+
+                return result;
+            }
 
             // public static List<MapCoordinates> createRectangularRoomShape(
             //   MapCoordinates startCoordinates,

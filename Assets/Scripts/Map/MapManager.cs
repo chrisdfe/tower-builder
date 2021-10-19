@@ -21,6 +21,8 @@ namespace TowerBuilder.UI
         GameObject mapCursorPrefab;
         public MapCursor mapCursor;
 
+        GameObject placeholderTileCubePrefab;
+
         Vector2 currentHoveredTile;
         ToolStateHandlersBase currentToolStateHandler;
 
@@ -28,6 +30,7 @@ namespace TowerBuilder.UI
 
         // Distance from the edge of the screen where the mapCursor will get disabled
         // TODO - this should perhaps be percentages instead
+        // TODO - move to MapUIConstants
         public static Vector2 MAP_CURSOR_CLICK_BUFFER = new Vector2(150, 150);
 
         void Awake()
@@ -40,6 +43,8 @@ namespace TowerBuilder.UI
             mapCursor.transform.SetParent(transform);
             mapCursor.transform.position = Vector3.zero;
             mapCursor.Disable();
+
+            placeholderTileCubePrefab = Resources.Load<GameObject>("Prefabs/Map/PlaceholderTileCube");
 
             buildingWrapper = transform.Find("BuildingWrapper");
 
@@ -55,7 +60,9 @@ namespace TowerBuilder.UI
             // Perform initialization of whatever tool state is the default
             currentToolStateHandler.OnTransitionTo(Registry.storeRegistry.mapUIStore.state.toolState);
 
-            MapUIStore.StateChangeSelectors.onToolStateUpdated += OnToolStateUpdated;
+            MapUIStore.Events.onToolStateUpdated += OnToolStateUpdated;
+            MapUIStore.Events.onCurrentSelectedTileUpdated += OnCurrentSelectedTileUpdated;
+            MapStore.Events.onMapRoomAdded += OnMapRoomAdded;
         }
 
         void Update()
@@ -86,6 +93,8 @@ namespace TowerBuilder.UI
             {
                 FocusFloorDown();
             }
+
+            currentToolStateHandler.Update();
         }
 
         bool MouseCursorIsInDeadZone()
@@ -111,12 +120,19 @@ namespace TowerBuilder.UI
             RaycastHit hit;
             if (floorPlaneCollider.Raycast(ray, out hit, 100))
             {
-                mapCursor.SetCurrentTile(new CellCoordinates()
+                CellCoordinates hoveredCell = new CellCoordinates()
                 {
                     x = MapCellHelpers.RoundToNearestTile(hit.point.x),
                     z = MapCellHelpers.RoundToNearestTile(hit.point.z),
                     floor = Registry.storeRegistry.mapUIStore.state.currentFocusFloor
-                });
+                };
+
+                CellCoordinates currentSelectedTile = Registry.storeRegistry.mapUIStore.state.currentSelectedTile;
+
+                if (!currentSelectedTile.Matches(hoveredCell))
+                {
+                    MapUIStore.Mutations.SetCurrentSelectedCell(hoveredCell);
+                }
             }
         }
 
@@ -136,7 +152,7 @@ namespace TowerBuilder.UI
             Stores.MapUI.MapUIStore.Mutations.SetCurrentFocusFloor(newFocusFloor);
         }
 
-        void OnToolStateUpdated(MapUIStore.StateEventPayload payload)
+        void OnToolStateUpdated(MapUIStore.Events.StateEventPayload payload)
         {
             ToolState previousToolState = payload.previousState.toolState;
             ToolState nextToolState = payload.state.toolState;
@@ -146,7 +162,27 @@ namespace TowerBuilder.UI
             currentToolStateHandler.OnTransitionTo(previousToolState);
         }
 
-        void OnRoomAdded(MapUIStore.StateEventPayload payload) { }
+        void OnCurrentSelectedTileUpdated(MapUIStore.Events.StateEventPayload payload)
+        {
+            CellCoordinates currentSelectedTile = payload.state.currentSelectedTile;
+            mapCursor.SetCurrentTile(currentSelectedTile);
+        }
+
+        void OnMapRoomAdded(MapRoom newMapRoom)
+        {
+            Debug.Log("OnMapRoomsAdded");
+            float TILE_SIZE = MapStore.Constants.TILE_SIZE;
+
+            foreach (CellCoordinates roomCell in newMapRoom.roomCells.cells)
+            {
+                GameObject placeholderTile = Instantiate<GameObject>(placeholderTileCubePrefab);
+                placeholderTile.transform.position = new Vector3(
+                    roomCell.x * TILE_SIZE,
+                    roomCell.floor * TILE_SIZE + (TILE_SIZE / 2),
+                    roomCell.z * TILE_SIZE
+                );
+            }
+        }
 
         void SetCurrentToolStateHandlers()
         {
