@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.Stores;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,7 +33,7 @@ namespace TowerBuilder.UI
 
         void OnToolButtonClick(ToolState toolState)
         {
-            MapUIStore.Mutations.SetToolState(toolState);
+            Registry.Stores.MapUI.SetToolState(toolState);
         }
     }
 }

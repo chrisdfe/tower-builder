@@ -18,7 +18,7 @@ namespace TowerBuilder.UI
         GameObject mapCursorCellPrefab;
 
         // TODO - this should ultimately live somewhere higher up.
-        MapRoomBlueprint blueprint;
+        RoomBlueprint blueprint;
         List<MapCursorCell> mapCursorCells;
 
         public void SetCurrentTile(CellCoordinates cellCoordinates)
@@ -26,8 +26,8 @@ namespace TowerBuilder.UI
             transform.localPosition = new Vector3(
                 MapCellHelpers.RoundToNearestTile(cellCoordinates.x),
                 (
-                    MapCellHelpers.RoundToNearestTile(Registry.Stores.mapUIStore.state.currentFocusFloor) +
-                    (MapStore.Constants.TILE_SIZE / 2)
+                    MapCellHelpers.RoundToNearestTile(Registry.Stores.MapUI.currentFocusFloor) +
+                    (Stores.Map.Constants.TILE_SIZE / 2)
                 ),
                 MapCellHelpers.RoundToNearestTile(cellCoordinates.z)
             );
@@ -61,7 +61,7 @@ namespace TowerBuilder.UI
 
         void Awake()
         {
-            float TILE_SIZE = MapStore.Constants.TILE_SIZE;
+            float TILE_SIZE = Stores.Map.Constants.TILE_SIZE;
             transform.localScale = new Vector3(TILE_SIZE, TILE_SIZE, TILE_SIZE);
             // material = GetComponent<Renderer>().material;
             mapCursorCellPrefab = Resources.Load<GameObject>("Prefabs/MapUI/MapCursorCell");
@@ -69,18 +69,18 @@ namespace TowerBuilder.UI
             mapCursorCells = new List<MapCursorCell>();
             // ResetCursorCells();
 
-            MapUIStore.Events.onBlueprintRotationUpdated += OnBlueprintRotationUpdated;
-            MapUIStore.Events.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            Registry.Stores.MapUI.onBlueprintRotationUpdated += OnBlueprintRotationUpdated;
+            Registry.Stores.MapUI.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void ResetCursorCells()
         {
             DestroyCursorCells();
 
-            RoomKey currentRoomKey = Registry.Stores.mapUIStore.state.selectedRoomKey;
-            MapRoomRotation rotation = Registry.Stores.mapUIStore.state.currentBlueprintRotation;
+            RoomKey currentRoomKey = Registry.Stores.MapUI.selectedRoomKey;
+            MapRoomRotation rotation = Registry.Stores.MapUI.currentBlueprintRotation;
 
-            blueprint = new MapRoomBlueprint()
+            blueprint = new RoomBlueprint()
             {
                 roomKey = currentRoomKey,
                 rotation = rotation
@@ -113,12 +113,12 @@ namespace TowerBuilder.UI
             mapCursorCells = new List<MapCursorCell>();
         }
 
-        void OnBlueprintRotationUpdated(MapRoomRotation rotation, MapRoomRotation previousRotation)
+        void OnBlueprintRotationUpdated(MapRoomRotation rotation)
         {
             ResetCursorCells();
         }
 
-        void OnSelectedRoomKeyUpdated(MapUIStore.Events.StateEventPayload payload)
+        void OnSelectedRoomKeyUpdated(RoomKey selectedRoomKey)
         {
             ResetCursorCells();
         }

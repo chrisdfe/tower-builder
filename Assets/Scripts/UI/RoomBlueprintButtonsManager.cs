@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder;
+using TowerBuilder.Stores;
 using TowerBuilder.Stores.MapUI;
 using TowerBuilder.Stores.Rooms;
 using UnityEngine;
@@ -27,23 +29,17 @@ namespace TowerBuilder.UI
 
         void OnNoneButtonClick()
         {
-            SetSelectedRoomType(RoomKey.None);
+            Registry.Stores.MapUI.SetSelectedRoomKey(RoomKey.None);
         }
 
         void OnLobbyButtonClick()
         {
-
-            SetSelectedRoomType(RoomKey.Lobby);
+            Registry.Stores.MapUI.SetSelectedRoomKey(RoomKey.Lobby);
         }
 
         void OnOfficeButtonClick()
         {
-            SetSelectedRoomType(RoomKey.Office);
-        }
-
-        void SetSelectedRoomType(RoomKey roomKey)
-        {
-            MapUIStore.Mutations.SetSelectedRoomKey(roomKey);
+            Registry.Stores.MapUI.SetSelectedRoomKey(RoomKey.Office);
         }
     }
 }

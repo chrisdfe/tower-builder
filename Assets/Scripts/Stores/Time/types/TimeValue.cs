@@ -34,5 +34,42 @@ namespace TowerBuilder.Stores.Time
                 };
             }
         }
+
+        public static TimeValue FromTimeInput(TimeInput timeInput)
+        {
+            TimeValue time = TimeValue.zero;
+
+            if (timeInput.minute != null)
+            {
+                time.minute = (int)timeInput.minute;
+            }
+
+            if (timeInput.hour != null)
+            {
+                time.hour = (int)timeInput.hour;
+            }
+
+            if (timeInput.day != null)
+            {
+                time.day = (int)timeInput.day;
+            }
+
+            if (timeInput.week != null)
+            {
+                time.week = (int)timeInput.week;
+            }
+
+            if (timeInput.season != null)
+            {
+                time.season = (int)timeInput.season;
+            }
+
+            if (timeInput.year != null)
+            {
+                time.year = (int)timeInput.year;
+            }
+
+            return time;
+        }
     }
 }

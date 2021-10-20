@@ -44,12 +44,4 @@ namespace TowerBuilder.Stores.Time
         Autumn,
         Winter,
     }
-
-    public struct TimeState
-    {
-        public bool isActive;
-        public int tick;
-        public TimeValue currentTime;
-        public TimeSpeed speed;
-    }
 }

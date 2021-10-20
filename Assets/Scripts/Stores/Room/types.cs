@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.Stores.Rooms
 {
-    public class RoomKeyMap : Dictionary<string, RoomKey> { };
-
     public enum RoomKey
     {
         None,
@@ -32,12 +30,5 @@ namespace TowerBuilder.Stores.Rooms
         public string title;
         public int price;
         public RoomType[] types;
-    }
-
-    public class RoomDetailsMap : Dictionary<RoomKey, RoomDetails> { }
-
-    public struct RoomState
-    {
-        public RoomKeyMap roomKeyMap;
     }
 }

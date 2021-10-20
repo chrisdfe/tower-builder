@@ -11,13 +11,12 @@ namespace TowerBuilder.UI
     {
         void Awake()
         {
-            MapUIStore.Events.onCurrentFocusFloorUpdated += OnCurrentFocusFloorUpdated;
+            Registry.Stores.MapUI.onCurrentFocusFloorUpdated += OnCurrentFocusFloorUpdated;
         }
 
-        void OnCurrentFocusFloorUpdated(MapUIStore.Events.StateEventPayload payload)
+        void OnCurrentFocusFloorUpdated(int currentFocusFloor)
         {
-            int currentFocusFloor = payload.state.currentFocusFloor;
-            float TILE_SIZE = Stores.Map.MapStore.Constants.TILE_SIZE;
+            float TILE_SIZE = Stores.Map.Constants.TILE_SIZE;
 
             transform.position = new Vector3(
                 transform.position.x,

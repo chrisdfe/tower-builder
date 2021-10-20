@@ -14,7 +14,6 @@ namespace TowerBuilder.UI
     {
         public Transform buildingWrapper;
 
-        // public GameObject floorPlanePrefab;
         public FloorPlane floorPlane;
         public Collider floorPlaneCollider;
 
@@ -30,7 +29,7 @@ namespace TowerBuilder.UI
 
         // Distance from the edge of the screen where the mapCursor will get disabled
         // TODO - this should perhaps be percentages instead
-        // TODO - move to MapUIConstants
+        // TODO - move to MapUI.Constants
         public static Vector2 MAP_CURSOR_CLICK_BUFFER = new Vector2(150, 150);
 
         void Awake()
@@ -57,12 +56,14 @@ namespace TowerBuilder.UI
             };
 
             SetCurrentToolStateHandlers();
-            // Perform initialization of whatever tool state is the default
-            currentToolStateHandler.OnTransitionTo(Registry.Stores.mapUIStore.state.toolState);
 
-            MapUIStore.Events.onToolStateUpdated += OnToolStateUpdated;
-            MapUIStore.Events.onCurrentSelectedTileUpdated += OnCurrentSelectedTileUpdated;
-            MapStore.Events.onMapRoomAdded += OnMapRoomAdded;
+            // Perform initialization of whatever tool state is the default
+            currentToolStateHandler.OnTransitionTo(Registry.Stores.MapUI.toolState);
+
+            Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
+            Registry.Stores.MapUI.onCurrentSelectedTileUpdated += OnCurrentSelectedTileUpdated;
+
+            Registry.Stores.Map.onRoomAdded += OnRoomAdded;
         }
 
         void Update()
@@ -124,54 +125,51 @@ namespace TowerBuilder.UI
                 {
                     x = MapCellHelpers.RoundToNearestTile(hit.point.x),
                     z = MapCellHelpers.RoundToNearestTile(hit.point.z),
-                    floor = Registry.Stores.mapUIStore.state.currentFocusFloor
+                    floor = Registry.Stores.MapUI.currentFocusFloor
                 };
 
-                CellCoordinates currentSelectedTile = Registry.Stores.mapUIStore.state.currentSelectedTile;
+                CellCoordinates currentSelectedTile = Registry.Stores.MapUI.currentSelectedTile;
 
                 if (!currentSelectedTile.Matches(hoveredCell))
                 {
-                    MapUIStore.Mutations.SetCurrentSelectedCell(hoveredCell);
+                    Registry.Stores.MapUI.SetCurrentSelectedCell(hoveredCell);
                 }
             }
         }
 
+        // TODO - put this in MapUI state
         void FocusFloorUp()
         {
-            int currentFocusFloor = Registry.Stores.mapUIStore.state.currentFocusFloor;
+            int currentFocusFloor = Registry.Stores.MapUI.currentFocusFloor;
             // TODO - cap at highest floor
             int newFocusFloor = currentFocusFloor + 1;
-            Stores.MapUI.MapUIStore.Mutations.SetCurrentFocusFloor(newFocusFloor);
+            Registry.Stores.MapUI.SetCurrentFocusFloor(newFocusFloor);
         }
 
+        // TODO - put this in MapUI state
         void FocusFloorDown()
         {
-            int currentFocusFloor = Registry.Stores.mapUIStore.state.currentFocusFloor;
+            int currentFocusFloor = Registry.Stores.MapUI.currentFocusFloor;
             // TODO - cap at lowest floor
             int newFocusFloor = currentFocusFloor - 1;
-            Stores.MapUI.MapUIStore.Mutations.SetCurrentFocusFloor(newFocusFloor);
+            Registry.Stores.MapUI.SetCurrentFocusFloor(newFocusFloor);
         }
 
-        void OnToolStateUpdated(MapUIStore.Events.StateEventPayload payload)
+        void OnToolStateUpdated(ToolState nextToolState, ToolState previousToolState)
         {
-            ToolState previousToolState = payload.previousState.toolState;
-            ToolState nextToolState = payload.state.toolState;
-
             currentToolStateHandler.OnTransitionFrom(nextToolState);
             SetCurrentToolStateHandlers();
             currentToolStateHandler.OnTransitionTo(previousToolState);
         }
 
-        void OnCurrentSelectedTileUpdated(MapUIStore.Events.StateEventPayload payload)
+        void OnCurrentSelectedTileUpdated(CellCoordinates currentSelectedTile)
         {
-            CellCoordinates currentSelectedTile = payload.state.currentSelectedTile;
             mapCursor.SetCurrentTile(currentSelectedTile);
         }
 
-        void OnMapRoomAdded(MapRoom newMapRoom)
+        void OnRoomAdded(MapRoom newMapRoom)
         {
-            Debug.Log("OnMapRoomsAdded");
-            float TILE_SIZE = MapStore.Constants.TILE_SIZE;
+            float TILE_SIZE = Stores.Map.Constants.TILE_SIZE;
 
             foreach (CellCoordinates roomCell in newMapRoom.roomCells.cells)
             {
@@ -186,8 +184,7 @@ namespace TowerBuilder.UI
 
         void SetCurrentToolStateHandlers()
         {
-            ToolState currentToolState = Registry.Stores.mapUIStore.state.toolState;
-            Debug.Log(currentToolState);
+            ToolState currentToolState = Registry.Stores.MapUI.toolState;
             currentToolStateHandler = toolStateHandlerMap[currentToolState];
         }
     }

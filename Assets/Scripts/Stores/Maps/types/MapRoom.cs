@@ -12,7 +12,7 @@ namespace TowerBuilder.Stores.Map
         public RoomKey roomKey { get; private set; }
         public RoomCells roomCells { get; private set; }
 
-        public MapRoom(MapRoomBlueprint blueprint)
+        public MapRoom(RoomBlueprint blueprint)
         {
             GenerateId();
             roomKey = blueprint.roomKey;
@@ -24,7 +24,7 @@ namespace TowerBuilder.Stores.Map
             id = Guid.NewGuid().ToString();
         }
 
-        void CreateRoomCellsFromBlueprint(MapRoomBlueprint blueprint)
+        void CreateRoomCellsFromBlueprint(RoomBlueprint blueprint)
         {
             roomCells = blueprint.GetPositionedRoomCells();
         }

@@ -4,44 +4,6 @@ namespace TowerBuilder.Stores.Time
 {
     public static class Helpers
     {
-
-        public static TimeValue GetFullTimeFromTimeInput(TimeInput timeInput)
-        {
-            TimeValue time = TimeValue.zero;
-
-            if (timeInput.minute != null)
-            {
-                time.minute = (int)timeInput.minute;
-            }
-
-            if (timeInput.hour != null)
-            {
-                time.hour = (int)timeInput.hour;
-            }
-
-            if (timeInput.day != null)
-            {
-                time.day = (int)timeInput.day;
-            }
-
-            if (timeInput.week != null)
-            {
-                time.week = (int)timeInput.week;
-            }
-
-            if (timeInput.season != null)
-            {
-                time.season = (int)timeInput.season;
-            }
-
-            if (timeInput.year != null)
-            {
-                time.year = (int)timeInput.year;
-            }
-
-            return time;
-        }
-
         public static int TimeToMinutes(TimeValue time)
         {
             int minutes = time.minute;
@@ -96,7 +58,7 @@ namespace TowerBuilder.Stores.Time
         public static TimeValue AddTime(TimeValue time, TimeInput timeInput)
         {
             int timeAsMinutes = TimeToMinutes(time);
-            int timeInputAsMinutes = TimeToMinutes(GetFullTimeFromTimeInput(timeInput));
+            int timeInputAsMinutes = TimeToMinutes(TimeValue.FromTimeInput(timeInput));
 
             int newMinutes = timeAsMinutes + timeInputAsMinutes;
             TimeValue newTime = MinutesToTime(newMinutes);
@@ -107,14 +69,14 @@ namespace TowerBuilder.Stores.Time
         public static TimeValue SubtractTime(TimeValue time, TimeInput timeInput)
         {
             int timeAsMinutes = TimeToMinutes(time);
-            int timeInputAsMinutes = TimeToMinutes(GetFullTimeFromTimeInput(timeInput));
+            int timeInputAsMinutes = TimeToMinutes(TimeValue.FromTimeInput(timeInput));
 
             int newMinutes = timeAsMinutes - timeInputAsMinutes;
             TimeValue newTime = MinutesToTime(newMinutes);
             return newTime;
         }
 
-        public static DayPeriod getDayPeriod(TimeValue time)
+        public static DayPeriod GetDayPeriod(TimeValue time)
         {
             int hour = time.hour;
 

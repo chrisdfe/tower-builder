@@ -25,33 +25,33 @@ namespace TowerBuilder.UI
             ToggleRoomBlueprintButtonsPanel(false);
             UpdateDescriptionText();
 
-            MapUIStore.Events.onToolStateUpdated += OnToolStateUpdated;
-            MapUIStore.Events.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
+            Registry.Stores.MapUI.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(1) && Registry.Stores.mapUIStore.state.toolState != ToolState.None)
+            if (Input.GetMouseButtonDown(1) && Registry.Stores.MapUI.toolState != ToolState.None)
             {
-                TowerBuilder.Stores.MapUI.MapUIStore.Mutations.SetToolState(ToolState.None);
+                Registry.Stores.MapUI.SetToolState(ToolState.None);
             }
         }
 
-        void OnToolStateUpdated(MapUIStore.Events.StateEventPayload payload)
+        void OnToolStateUpdated(ToolState toolState, ToolState previousToolState)
         {
             UpdateDescriptionText();
 
-            if (payload.state.toolState == ToolState.Build)
+            if (toolState == ToolState.Build)
             {
                 ToggleRoomBlueprintButtonsPanel(true);
             }
-            else if (payload.previousState.toolState == ToolState.Build)
+            else if (previousToolState == ToolState.Build)
             {
                 ToggleRoomBlueprintButtonsPanel(false);
             }
         }
 
-        void OnSelectedRoomKeyUpdated(MapUIStore.Events.StateEventPayload payload)
+        void OnSelectedRoomKeyUpdated(RoomKey selectedRoomKey)
         {
             UpdateDescriptionText();
 
@@ -59,10 +59,10 @@ namespace TowerBuilder.UI
 
         void UpdateDescriptionText()
         {
-            ToolState toolState = Registry.Stores.mapUIStore.state.toolState;
+            ToolState toolState = Registry.Stores.MapUI.toolState;
             if (toolState == ToolState.Build)
             {
-                RoomKey selectedRoomKey = Registry.Stores.mapUIStore.state.selectedRoomKey;
+                RoomKey selectedRoomKey = Registry.Stores.MapUI.selectedRoomKey;
                 descriptionText.text = $"{toolState} - {selectedRoomKey}";
             }
             else

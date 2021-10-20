@@ -16,12 +16,9 @@ namespace TowerBuilder.UI
         Button subtract1000Button;
         Text balanceText;
 
-        WalletStore WalletStore;
-
         void Awake()
         {
-            WalletStore = Registry.Stores.walletStore;
-            WalletStore.Events.onWalletStateUpdated += OnWalletStateUpdated;
+            Registry.Stores.Wallet.onBalanceUpdated += OnBalanceUpdated;
 
             add1000Button = transform.Find("Add1000Button").GetComponent<Button>();
             subtract1000Button = transform.Find("Subtract1000Button").GetComponent<Button>();
@@ -35,34 +32,22 @@ namespace TowerBuilder.UI
 
         void Subtract1000FromBalance()
         {
-            WalletStore.Mutations.subtractBalance(1000);
+            Registry.Stores.Wallet.SubtractBalance(1000);
         }
 
         void Add1000ToBalance()
         {
-            WalletStore.Mutations.addBalance(1000);
+            Registry.Stores.Wallet.AddBalance(1000);
         }
 
-        void OnWalletStateUpdated(WalletStore.StateEventPayload payload)
+        void OnBalanceUpdated(int amount)
         {
             UpdateBalanceText();
-
-            int balanceChange = WalletStore.StateChangeSelectors.getBalanceChange(payload);
-
-            if (balanceChange > 0)
-            {
-                Registry.Stores.Notifications.createNotification("balance increased");
-            }
-            else if (balanceChange < 0)
-            {
-                Registry.Stores.Notifications.createNotification("balance decreased");
-            }
-
         }
 
         void UpdateBalanceText()
         {
-            int balance = WalletStore.Selectors.getBalance(Registry.Stores);
+            int balance = Registry.Stores.Wallet.balance;
             balanceText.text = balance.ToString();
         }
     }
