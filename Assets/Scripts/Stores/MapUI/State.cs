@@ -72,6 +72,16 @@ namespace TowerBuilder.Stores.MapUI
             }
         }
 
+        public void FocusFloorUp()
+        {
+            SetCurrentFocusFloor(currentFocusFloor + 1);
+        }
+
+        public void FocusFloorDown()
+        {
+            SetCurrentFocusFloor(currentFocusFloor - 1);
+        }
+
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedTile)
         {
             this.currentSelectedTile = currentSelectedTile;

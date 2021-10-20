@@ -8,9 +8,9 @@ namespace TowerBuilder.Stores.Map
 {
     public class CellCoordinates
     {
-        public int x;
-        public int z;
-        public int floor;
+        public int x = 0;
+        public int z = 0;
+        public int floor = 0;
 
         public CellCoordinates() { }
 

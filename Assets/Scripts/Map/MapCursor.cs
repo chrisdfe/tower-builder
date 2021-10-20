@@ -13,8 +13,6 @@ namespace TowerBuilder.UI
         public bool isVisible { get; private set; } = true;
         public bool isEnabled { get; private set; } = true;
 
-        // Material material;
-
         GameObject mapCursorCellPrefab;
 
         // TODO - this should ultimately live somewhere higher up.

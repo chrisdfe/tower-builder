@@ -16,17 +16,12 @@ namespace TowerBuilder.Stores.Map
         {
             GenerateId();
             roomKey = blueprint.roomKey;
-            CreateRoomCellsFromBlueprint(blueprint);
+            roomCells = blueprint.GetPositionedRoomCells();
         }
 
         void GenerateId()
         {
             id = Guid.NewGuid().ToString();
-        }
-
-        void CreateRoomCellsFromBlueprint(RoomBlueprint blueprint)
-        {
-            roomCells = blueprint.GetPositionedRoomCells();
         }
     }
 }

@@ -62,8 +62,6 @@ namespace TowerBuilder.UI
 
             Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
             Registry.Stores.MapUI.onCurrentSelectedTileUpdated += OnCurrentSelectedTileUpdated;
-
-            Registry.Stores.Map.onRoomAdded += OnRoomAdded;
         }
 
         void Update()
@@ -84,15 +82,14 @@ namespace TowerBuilder.UI
                 }
             }
 
-            // TODO - move somewhere more specific to floor stuff?
             if (Input.GetKeyDown("]"))
             {
-                FocusFloorUp();
+                Registry.Stores.MapUI.FocusFloorUp();
             }
 
             if (Input.GetKeyDown("["))
             {
-                FocusFloorDown();
+                Registry.Stores.MapUI.FocusFloorDown();
             }
 
             currentToolStateHandler.Update();
@@ -137,24 +134,6 @@ namespace TowerBuilder.UI
             }
         }
 
-        // TODO - put this in MapUI state
-        void FocusFloorUp()
-        {
-            int currentFocusFloor = Registry.Stores.MapUI.currentFocusFloor;
-            // TODO - cap at highest floor
-            int newFocusFloor = currentFocusFloor + 1;
-            Registry.Stores.MapUI.SetCurrentFocusFloor(newFocusFloor);
-        }
-
-        // TODO - put this in MapUI state
-        void FocusFloorDown()
-        {
-            int currentFocusFloor = Registry.Stores.MapUI.currentFocusFloor;
-            // TODO - cap at lowest floor
-            int newFocusFloor = currentFocusFloor - 1;
-            Registry.Stores.MapUI.SetCurrentFocusFloor(newFocusFloor);
-        }
-
         void OnToolStateUpdated(ToolState nextToolState, ToolState previousToolState)
         {
             currentToolStateHandler.OnTransitionFrom(nextToolState);
@@ -165,21 +144,6 @@ namespace TowerBuilder.UI
         void OnCurrentSelectedTileUpdated(CellCoordinates currentSelectedTile)
         {
             mapCursor.SetCurrentTile(currentSelectedTile);
-        }
-
-        void OnRoomAdded(MapRoom newMapRoom)
-        {
-            float TILE_SIZE = Stores.Map.Constants.TILE_SIZE;
-
-            foreach (CellCoordinates roomCell in newMapRoom.roomCells.cells)
-            {
-                GameObject placeholderTile = Instantiate<GameObject>(placeholderTileCubePrefab);
-                placeholderTile.transform.position = new Vector3(
-                    roomCell.x * TILE_SIZE,
-                    roomCell.floor * TILE_SIZE + (TILE_SIZE / 2),
-                    roomCell.z * TILE_SIZE
-                );
-            }
         }
 
         void SetCurrentToolStateHandlers()

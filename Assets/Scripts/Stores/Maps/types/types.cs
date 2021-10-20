@@ -21,11 +21,6 @@ namespace TowerBuilder.Stores.Map
         Up,
         Left
     }
-
-    public struct MapState
-    {
-        public List<MapRoom> mapRooms;
-    };
 }
 
 
