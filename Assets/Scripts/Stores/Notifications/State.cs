@@ -10,6 +10,11 @@ namespace TowerBuilder.Stores.Notifications
         public delegate void OnNotificationAdded(Notification newNotification);
         public OnNotificationAdded onNotificationAdded;
 
+        public State()
+        {
+            notifications = new List<Notification>();
+        }
+
         public void createNotification(string message)
         {
             Notification newNotification = new Notification(message);

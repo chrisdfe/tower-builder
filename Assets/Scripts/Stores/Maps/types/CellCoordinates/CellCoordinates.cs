@@ -9,28 +9,28 @@ namespace TowerBuilder.Stores.Map
     public class CellCoordinates
     {
         public int x = 0;
-        public int z = 0;
+        // public int z = 0;
         public int floor = 0;
 
         public CellCoordinates() { }
 
-        public CellCoordinates(int x, int z, int floor)
+        public CellCoordinates(int x, int floor)
         {
             this.x = x;
-            this.z = z;
+            // this.z = z;
             this.floor = floor;
         }
 
         public override string ToString()
         {
-            return $"({x}, {z}), floor {floor}";
+            return $"column {x}, floor {floor}";
         }
 
         public static bool Matches(CellCoordinates a, CellCoordinates b)
         {
             return (
                 a.x == b.x &&
-                a.z == b.z &&
+                // a.z == b.z &&
                 a.floor == b.floor
             );
         }
@@ -44,7 +44,7 @@ namespace TowerBuilder.Stores.Map
         {
             get
             {
-                return new CellCoordinates(0, 0, 0);
+                return new CellCoordinates(0, 0);
             }
         }
     }

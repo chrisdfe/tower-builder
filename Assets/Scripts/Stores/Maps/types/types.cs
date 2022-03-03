@@ -13,14 +13,6 @@ namespace TowerBuilder.Stores.Map
         // e.g Lobbies, hallways
         Flexible
     }
-
-    public enum MapRoomRotation
-    {
-        Down,
-        Right,
-        Up,
-        Left
-    }
 }
 
 

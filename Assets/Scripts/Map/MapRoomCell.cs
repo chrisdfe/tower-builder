@@ -42,8 +42,9 @@ public class MapRoomCell : MonoBehaviour
         // 
         transform.position = new Vector3(
             cellCoordinates.x * TILE_SIZE,
-            cellCoordinates.floor * TILE_SIZE + (TILE_SIZE / 2),
-            cellCoordinates.z * TILE_SIZE
+            cellCoordinates.floor * -(TILE_SIZE + (TILE_SIZE / 2)),
+            // cellCoordinates.z * TILE_SIZE
+            TILE_SIZE
         );
 
         // Set color

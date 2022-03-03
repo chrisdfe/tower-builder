@@ -44,19 +44,19 @@ namespace TowerBuilder.Stores.Map
             //     return result as RoomShape;
             // }
 
-            public static List<CellCoordinates> create2DRectangularRoomBlueprint(int xSize, int zSize)
+            public static List<CellCoordinates> create2DRectangularRoomBlueprint(int xSize, int floors)
             {
                 List<CellCoordinates> result = new List<CellCoordinates>();
 
                 for (int x = 0; x < xSize; x++)
                 {
-                    for (int z = 0; z < zSize; z++)
+                    for (int floor = 0; floor < floors; floor++)
                     {
                         result.Add(new CellCoordinates()
                         {
                             x = x,
-                            z = z,
-                            floor = 0
+                            // z = z,
+                            floor = floor
                         });
                     }
                 }

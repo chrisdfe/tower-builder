@@ -18,7 +18,7 @@ namespace TowerBuilder.Stores.Map
             {
                 return (
                     coordinatesA.x == coordinatesB.x &&
-                    coordinatesA.z == coordinatesB.z &&
+                    // coordinatesA.z == coordinatesB.z &&
                     coordinatesA.floor == coordinatesB.floor
                 );
             }

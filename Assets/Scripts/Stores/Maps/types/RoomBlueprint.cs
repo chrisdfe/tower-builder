@@ -10,11 +10,11 @@ namespace TowerBuilder.Stores.Map
     {
         public RoomKey roomKey;
         public CellCoordinates coordinates;
-        public MapRoomRotation rotation;
 
         public RoomCells GetRoomShape()
         {
             RoomCells roomCells;
+
             // TODO - not this
             if (roomKey == RoomKey.Condo)
             {
@@ -32,16 +32,10 @@ namespace TowerBuilder.Stores.Map
             return roomCells;
         }
 
-        public RoomCells GetRotatedRoomCells()
-        {
-            RoomCells roomCells = GetRoomShape();
-            return RoomCells.Rotate(roomCells, rotation);
-        }
-
         public RoomCells GetPositionedRoomCells()
         {
-            RoomCells rotatedRoomCells = GetRotatedRoomCells();
-            return RoomCells.PositionAtCoordinates(rotatedRoomCells, coordinates);
+            RoomCells roomShape = GetRoomShape();
+            return RoomCells.PositionAtCoordinates(roomShape, coordinates);
         }
     }
 }

@@ -82,15 +82,15 @@ namespace TowerBuilder.UI
                 }
             }
 
-            if (Input.GetKeyDown("]"))
-            {
-                Registry.Stores.MapUI.FocusFloorUp();
-            }
+            // if (Input.GetKeyDown("]"))
+            // {
+            //     Registry.Stores.MapUI.FocusFloorUp();
+            // }
 
-            if (Input.GetKeyDown("["))
-            {
-                Registry.Stores.MapUI.FocusFloorDown();
-            }
+            // if (Input.GetKeyDown("["))
+            // {
+            //     Registry.Stores.MapUI.FocusFloorDown();
+            // }
 
             currentToolStateHandler.Update();
         }
@@ -118,14 +118,19 @@ namespace TowerBuilder.UI
             RaycastHit hit;
             if (floorPlaneCollider.Raycast(ray, out hit, 100))
             {
+                // Debug.Log(hit.point);
                 CellCoordinates hoveredCell = new CellCoordinates()
                 {
                     x = MapCellHelpers.RoundToNearestTile(hit.point.x),
-                    z = MapCellHelpers.RoundToNearestTile(hit.point.z),
-                    floor = Registry.Stores.MapUI.currentFocusFloor
+                    floor = MapCellHelpers.RoundToNearestTile(hit.point.y),
+                    // floor = Registry.Stores.MapUI.currentFocusFloor
                 };
 
+                // Debug.Log(hoveredCell);
+
                 CellCoordinates currentSelectedTile = Registry.Stores.MapUI.currentSelectedTile;
+                // Debug.Log(currentSelectedTile);
+                // Debug.Log("---");
 
                 if (!currentSelectedTile.Matches(hoveredCell))
                 {

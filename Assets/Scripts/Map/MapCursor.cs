@@ -23,12 +23,14 @@ namespace TowerBuilder.UI
         {
             transform.localPosition = new Vector3(
                 MapCellHelpers.RoundToNearestTile(cellCoordinates.x),
-                (
-                    MapCellHelpers.RoundToNearestTile(Registry.Stores.MapUI.currentFocusFloor) +
-                    (Stores.Map.Constants.TILE_SIZE / 2)
-                ),
-                MapCellHelpers.RoundToNearestTile(cellCoordinates.z)
+                MapCellHelpers.RoundToNearestTile(cellCoordinates.floor),
+                -(Stores.Map.Constants.TILE_SIZE)
             );
+            Debug.Log(transform.localPosition);
+            // (
+            //     MapCellHelpers.RoundToNearestTile(Registry.Stores.MapUI.currentFocusFloor) +
+            //     (Stores.Map.Constants.TILE_SIZE / 2)
+            // ),
         }
 
         public void Hide()
@@ -61,14 +63,18 @@ namespace TowerBuilder.UI
         {
             float TILE_SIZE = Stores.Map.Constants.TILE_SIZE;
             transform.localScale = new Vector3(TILE_SIZE, TILE_SIZE, TILE_SIZE);
-            // material = GetComponent<Renderer>().material;
+
             mapCursorCellPrefab = Resources.Load<GameObject>("Prefabs/MapUI/MapCursorCell");
 
-            mapCursorCells = new List<MapCursorCell>();
             // ResetCursorCells();
+            mapCursorCells = new List<MapCursorCell>();
 
-            Registry.Stores.MapUI.onBlueprintRotationUpdated += OnBlueprintRotationUpdated;
             Registry.Stores.MapUI.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+        }
+
+        // Default to a single cursor cell
+        void ResetMapCursorCells()
+        {
         }
 
         void ResetCursorCells()
@@ -76,15 +82,14 @@ namespace TowerBuilder.UI
             DestroyCursorCells();
 
             RoomKey currentRoomKey = Registry.Stores.MapUI.selectedRoomKey;
-            MapRoomRotation rotation = Registry.Stores.MapUI.currentBlueprintRotation;
 
             blueprint = new RoomBlueprint()
             {
                 roomKey = currentRoomKey,
-                rotation = rotation
+                coordinates = CellCoordinates.zero
             };
 
-            RoomCells blueprintCells = blueprint.GetRotatedRoomCells();
+            RoomCells blueprintCells = blueprint.GetPositionedRoomCells();
 
             foreach (CellCoordinates cellCoordinates in blueprintCells.cells)
             {
@@ -109,11 +114,6 @@ namespace TowerBuilder.UI
             }
 
             mapCursorCells = new List<MapCursorCell>();
-        }
-
-        void OnBlueprintRotationUpdated(MapRoomRotation rotation)
-        {
-            ResetCursorCells();
         }
 
         void OnSelectedRoomKeyUpdated(RoomKey selectedRoomKey)

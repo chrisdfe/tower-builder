@@ -14,8 +14,7 @@ namespace TowerBuilder.Stores.MapUI
         public RoomKey selectedRoomKey { get; private set; }
         public CellCoordinates currentSelectedTile { get; private set; }
         public RoomBlueprint currentBlueprint { get; private set; }
-        public MapRoomRotation currentBlueprintRotation { get; private set; }
-        public int currentFocusFloor;
+        // public int currentFocusFloor;
 
         public delegate void ToolStateEvent(ToolState toolState, ToolState previousToolState);
         public ToolStateEvent onToolStateUpdated;
@@ -29,15 +28,11 @@ namespace TowerBuilder.Stores.MapUI
         public delegate void CurrentSelectedTileEvent(CellCoordinates currentSelectedTile);
         public CurrentSelectedTileEvent onCurrentSelectedTileUpdated;
 
-        public delegate void BlueprintRotationEvent(MapRoomRotation rotation);
-        public BlueprintRotationEvent onBlueprintRotationUpdated;
 
         public State()
         {
             toolState = ToolState.None;
             selectedRoomKey = Rooms.RoomKey.None;
-            currentFocusFloor = 0;
-            currentBlueprintRotation = MapRoomRotation.Right;
             currentSelectedTile = CellCoordinates.zero;
         }
 
@@ -62,25 +57,25 @@ namespace TowerBuilder.Stores.MapUI
             }
         }
 
-        public void SetCurrentFocusFloor(int currentFocusFloor)
-        {
-            this.currentFocusFloor = currentFocusFloor;
+        // public void SetCurrentFocusFloor(int currentFocusFloor)
+        // {
+        //     this.currentFocusFloor = currentFocusFloor;
 
-            if (onCurrentFocusFloorUpdated != null)
-            {
-                onCurrentFocusFloorUpdated(currentFocusFloor);
-            }
-        }
+        //     if (onCurrentFocusFloorUpdated != null)
+        //     {
+        //         onCurrentFocusFloorUpdated(currentFocusFloor);
+        //     }
+        // }
 
-        public void FocusFloorUp()
-        {
-            SetCurrentFocusFloor(currentFocusFloor + 1);
-        }
+        // public void FocusFloorUp()
+        // {
+        //     SetCurrentFocusFloor(currentFocusFloor + 1);
+        // }
 
-        public void FocusFloorDown()
-        {
-            SetCurrentFocusFloor(currentFocusFloor - 1);
-        }
+        // public void FocusFloorDown()
+        // {
+        //     SetCurrentFocusFloor(currentFocusFloor - 1);
+        // }
 
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedTile)
         {
@@ -89,16 +84,6 @@ namespace TowerBuilder.Stores.MapUI
             if (onCurrentSelectedTileUpdated != null)
             {
                 onCurrentSelectedTileUpdated(currentSelectedTile);
-            }
-        }
-
-        public void SetCurrentBlueprintRotation(MapRoomRotation rotation)
-        {
-            currentBlueprintRotation = rotation;
-
-            if (onBlueprintRotationUpdated != null)
-            {
-                onBlueprintRotationUpdated(rotation);
             }
         }
     }

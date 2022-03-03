@@ -31,16 +31,26 @@ namespace TowerBuilder.UI
 
         void OnClick()
         {
-            List<Notification> notifications = Registry.Stores.Notifications.notifications;
+            int notificationsLength = Registry.Stores.Notifications.notifications.Count;
+            Notification[] notifications = new Notification[notificationsLength];
+            Registry.Stores.Notifications.notifications.CopyTo(notifications);
+            Debug.Log(notifications);
 
-            Registry.Stores.Notifications.createNotification("new message " + (notifications.Count + 1));
+            Registry.Stores.Notifications.createNotification("new message " + (notificationsLength + 1));
         }
 
         void OnNotificationAdded(Notification newNotification)
         {
-            List<string> notifications = (List<string>)Registry.Stores.Notifications.notifications.Select(notification => notification.message);
+
+            int notificationsLength = Registry.Stores.Notifications.notifications.Count;
+            Notification[] notifications = new Notification[notificationsLength];
+            Registry.Stores.Notifications.notifications.CopyTo(notifications);
             notifications.Reverse();
-            string newText = String.Join("\n", notifications.ToArray());
+            string newText = "";
+            foreach (Notification notification in notifications)
+            {
+                newText += notification.message + "\n";
+            }
             text.text = newText;
         }
     }

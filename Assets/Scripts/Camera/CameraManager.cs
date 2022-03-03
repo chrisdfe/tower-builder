@@ -52,12 +52,22 @@ public class CameraManager : MonoBehaviour
 
         if (Input.GetKeyDown("w"))
         {
-            OnMoveForwardPressed();
+            // OnMoveForwardPressed();
+        }
+
+        if (Input.GetKeyDown("a"))
+        {
+            // OnMoveForwardPressed();
         }
 
         if (Input.GetKeyDown("s"))
         {
-            OnMoveBackwardPressed();
+            // OnMoveBackwardPressed();
+        }
+
+        if (Input.GetKeyDown("d"))
+        {
+            // OnMoveForwardPressed();
         }
     }
 

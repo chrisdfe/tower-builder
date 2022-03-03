@@ -20,7 +20,8 @@ namespace TowerBuilder.UI
             return new Vector3(
                 cellCoordinates.x * TILE_SIZE,
                 cellCoordinates.floor * TILE_SIZE,
-                cellCoordinates.z * TILE_SIZE
+                // cellCoordinates.z * TILE_SIZE
+                TILE_SIZE
             );
         }
     }

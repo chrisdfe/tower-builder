@@ -50,20 +50,5 @@ namespace TowerBuilder.Stores.Map
                 color = Color.green
             }
         };
-
-        public static Dictionary<MapRoomRotation, CellCoordinates2D> MAP_ROOM_ROTATION_VALUES = new Dictionary<MapRoomRotation, CellCoordinates2D>()
-        {
-            [MapRoomRotation.Right] = new CellCoordinates2D(1, 1),
-            [MapRoomRotation.Down] = new CellCoordinates2D(1, -1),
-            [MapRoomRotation.Left] = new CellCoordinates2D(-1, -1),
-            [MapRoomRotation.Up] = new CellCoordinates2D(-1, 1),
-        };
-
-        public static List<MapRoomRotation> ROOM_ROTATION_ORDER = new List<MapRoomRotation>() {
-                MapRoomRotation.Right,
-                MapRoomRotation.Down,
-                MapRoomRotation.Left,
-                MapRoomRotation.Up
-            };
     }
 }

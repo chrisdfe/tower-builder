@@ -14,21 +14,21 @@ namespace TowerBuilder.UI
 
         public override void Update()
         {
-            if (Input.GetKeyDown("."))
-            {
-                // TODO - make this a mutation
-                MapRoomRotation rotation = Registry.Stores.MapUI.currentBlueprintRotation;
-                MapRoomRotation nextRotation = RoomRotationHelpers.GetRightMapRoomRotation(rotation);
-                Registry.Stores.MapUI.SetCurrentBlueprintRotation(nextRotation);
-            }
+            // if (Input.GetKeyDown("."))
+            // {
+            //     // TODO - make this a mutation
+            //     MapRoomRotation rotation = Registry.Stores.MapUI.currentBlueprintRotation;
+            //     MapRoomRotation nextRotation = RoomRotationHelpers.GetRightMapRoomRotation(rotation);
+            //     Registry.Stores.MapUI.SetCurrentBlueprintRotation(nextRotation);
+            // }
 
-            if (Input.GetKeyDown(","))
-            {
-                // TODO - make this a mutation
-                MapRoomRotation rotation = Registry.Stores.MapUI.currentBlueprintRotation;
-                MapRoomRotation nextRotation = RoomRotationHelpers.GetLeftMapRoomRotation(rotation);
-                Registry.Stores.MapUI.SetCurrentBlueprintRotation(nextRotation);
-            }
+            // if (Input.GetKeyDown(","))
+            // {
+            //     // TODO - make this a mutation
+            //     MapRoomRotation rotation = Registry.Stores.MapUI.currentBlueprintRotation;
+            //     MapRoomRotation nextRotation = RoomRotationHelpers.GetLeftMapRoomRotation(rotation);
+            //     Registry.Stores.MapUI.SetCurrentBlueprintRotation(nextRotation);
+            // }
         }
 
         public override void OnTransitionTo(ToolState previousToolState)
@@ -46,7 +46,7 @@ namespace TowerBuilder.UI
             // TODO - move this to CreateRoomAtCurrentSelectedTile
             CellCoordinates mapRoomCoordinates = Registry.Stores.MapUI.currentSelectedTile;
             RoomKey mapRoomKey = Registry.Stores.MapUI.selectedRoomKey;
-            MapRoomRotation currentRotation = Registry.Stores.MapUI.currentBlueprintRotation;
+            // MapRoomRotation currentRotation = Registry.Stores.MapUI.currentBlueprintRotation;
 
             // TODO - this should already exist at this point
 
@@ -54,7 +54,7 @@ namespace TowerBuilder.UI
             {
                 roomKey = mapRoomKey,
                 coordinates = mapRoomCoordinates,
-                rotation = currentRotation
+                // rotation = currentRotation
             };
 
             MapRoom newRoom = new MapRoom(blueprint);
