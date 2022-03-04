@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.MapUI;
 using TowerBuilder.Stores.Rooms;
@@ -63,7 +64,16 @@ namespace TowerBuilder.UI
             if (toolState == ToolState.Build)
             {
                 RoomKey selectedRoomKey = Registry.Stores.MapUI.selectedRoomKey;
-                descriptionText.text = $"{toolState} - {selectedRoomKey}";
+                if (selectedRoomKey == RoomKey.None)
+                {
+                    descriptionText.text = $"{toolState} - {selectedRoomKey}";
+                }
+                else
+                {
+                    RoomDetails roomDetails = Stores.Rooms.Constants.ROOM_DETAILS_MAP[selectedRoomKey];
+                    int price = roomDetails.price;
+                    descriptionText.text = $"{toolState} - {selectedRoomKey}: ${price}";
+                }
             }
             else
             {

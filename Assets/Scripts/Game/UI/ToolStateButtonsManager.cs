@@ -11,6 +11,7 @@ namespace TowerBuilder.UI
     {
         Button NoneButton;
         Button BuildButton;
+        Button CondoButton;
 
         void Awake()
         {
@@ -35,5 +36,6 @@ namespace TowerBuilder.UI
         {
             Registry.Stores.MapUI.SetToolState(toolState);
         }
+
     }
 }

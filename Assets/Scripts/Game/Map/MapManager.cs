@@ -5,6 +5,7 @@ using System.Linq;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.MapUI;
+using TowerBuilder.Stores.Rooms;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,8 +22,6 @@ namespace TowerBuilder.UI
         public MapCursor mapCursor;
 
         GameObject placeholderTileCubePrefab;
-
-        Vector2 currentHoveredTile;
         ToolStateHandlersBase currentToolStateHandler;
 
         public Dictionary<ToolState, ToolStateHandlersBase> toolStateHandlerMap;
@@ -62,6 +61,7 @@ namespace TowerBuilder.UI
 
             Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
             Registry.Stores.MapUI.onCurrentSelectedTileUpdated += OnCurrentSelectedTileUpdated;
+            Registry.Stores.MapUI.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void Update()
@@ -81,16 +81,6 @@ namespace TowerBuilder.UI
                     currentToolStateHandler.OnMouseUp();
                 }
             }
-
-            // if (Input.GetKeyDown("]"))
-            // {
-            //     Registry.Stores.MapUI.FocusFloorUp();
-            // }
-
-            // if (Input.GetKeyDown("["))
-            // {
-            //     Registry.Stores.MapUI.FocusFloorDown();
-            // }
 
             currentToolStateHandler.Update();
         }
@@ -118,21 +108,13 @@ namespace TowerBuilder.UI
             RaycastHit hit;
             if (floorPlaneCollider.Raycast(ray, out hit, 100))
             {
-                // Debug.Log(hit.point);
                 CellCoordinates hoveredCell = new CellCoordinates()
                 {
                     x = MapCellHelpers.RoundToNearestTile(hit.point.x),
                     floor = MapCellHelpers.RoundToNearestTile(hit.point.y),
-                    // floor = Registry.Stores.MapUI.currentFocusFloor
                 };
 
-                // Debug.Log(hoveredCell);
-
-                CellCoordinates currentSelectedTile = Registry.Stores.MapUI.currentSelectedTile;
-                // Debug.Log(currentSelectedTile);
-                // Debug.Log("---");
-
-                if (!currentSelectedTile.Matches(hoveredCell))
+                if (!hoveredCell.Matches(Registry.Stores.MapUI.currentSelectedTile))
                 {
                     Registry.Stores.MapUI.SetCurrentSelectedCell(hoveredCell);
                 }
@@ -148,7 +130,13 @@ namespace TowerBuilder.UI
 
         void OnCurrentSelectedTileUpdated(CellCoordinates currentSelectedTile)
         {
-            mapCursor.SetCurrentTile(currentSelectedTile);
+            mapCursor.SetCurrentCell(currentSelectedTile);
+            mapCursor.ResetCursorCells();
+        }
+
+        void OnSelectedRoomKeyUpdated(RoomKey selectedRoomKey)
+        {
+            mapCursor.ResetCursorCells();
         }
 
         void SetCurrentToolStateHandlers()

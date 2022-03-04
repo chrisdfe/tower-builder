@@ -18,32 +18,38 @@ namespace TowerBuilder.Stores.Map
                 roomCells = RoomCells.CreateRectangularRoom(1, 1),
                 color = Color.gray
             },
+
             [RoomKey.Lobby] = new MapRoomDetails()
             {
                 roomCells = RoomCells.CreateRectangularRoom(1, 1),
                 roomBuildType = MapRoomBuildType.Flexible,
                 color = Color.red,
             },
+
             [RoomKey.Office] = new MapRoomDetails()
             {
                 roomCells = RoomCells.CreateRectangularRoom(3, 2),
                 color = Color.green,
             },
+
             [RoomKey.Condo] = new MapRoomDetails()
             {
                 roomCells = RoomCells.CreateRectangularRoom(5, 2),
                 color = Color.yellow,
             },
+
             [RoomKey.Elevator] = new MapRoomDetails()
             {
                 roomCells = RoomCells.CreateRectangularRoom(1, 1),
                 color = Color.magenta,
             },
+
             [RoomKey.Stairwell] = new MapRoomDetails()
             {
                 roomCells = RoomCells.CreateRectangularRoom(1, 1),
                 color = Color.white
             },
+
             [RoomKey.SmallPark] = new MapRoomDetails()
             {
                 roomCells = RoomCells.CreateRectangularRoom(2, 2),

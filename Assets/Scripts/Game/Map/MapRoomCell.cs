@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.UI;
 using UnityEngine;
 
 public class MapRoomCell : MonoBehaviour
@@ -17,7 +19,6 @@ public class MapRoomCell : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("hello i am here");
         mapRoomCellPrefab = Resources.Load<GameObject>("Prefabs/Map/MapRoomCell");
 
         cellCube = transform.Find("CellCube");
@@ -40,12 +41,7 @@ public class MapRoomCell : MonoBehaviour
         float TILE_SIZE = TowerBuilder.Stores.Map.Constants.TILE_SIZE;
 
         // 
-        transform.position = new Vector3(
-            cellCoordinates.x * TILE_SIZE,
-            cellCoordinates.floor * -(TILE_SIZE + (TILE_SIZE / 2)),
-            // cellCoordinates.z * TILE_SIZE
-            TILE_SIZE
-        );
+        transform.position = MapCellHelpers.CellCoordinatesToPosition(cellCoordinates);
 
         // Set color
         MapRoomDetails mapRoomDetails = TowerBuilder.Stores.Map.Constants.MAP_ROOM_DETAILS[mapRoom.roomKey];

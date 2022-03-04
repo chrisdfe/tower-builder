@@ -7,9 +7,6 @@ namespace TowerBuilder.UI
     {
         public NoneToolStateHandlers(MapManager parentMapManager) : base(parentMapManager) { }
 
-        public override void OnMouseDown()
-        {
-            Debug.Log("ToolState.None mouseDown");
-        }
+        public override void OnMouseDown() { }
     }
 }

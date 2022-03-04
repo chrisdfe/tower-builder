@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Stores.Map
 {
-    public partial class RoomCells
+    public class RoomCells
     {
         public List<CellCoordinates> cells { get; private set; }
 
@@ -26,8 +26,7 @@ namespace TowerBuilder.Stores.Map
                     roomCells.Add(new CellCoordinates()
                     {
                         x = x,
-                        // z = z,
-                        floor = 0
+                        floor = floor
                     });
                 }
             }
@@ -35,12 +34,8 @@ namespace TowerBuilder.Stores.Map
             return new RoomCells(roomCells);
         }
 
-        // public static RoomCells createRectangularRoom(int xWidth, int zWidth, int floors) { }
-
         public static RoomCells PositionAtCoordinates(RoomCells roomCells, CellCoordinates targetCellCoordinates)
         {
-            Debug.Log(roomCells);
-            Debug.Log(targetCellCoordinates);
             List<CellCoordinates> newCells = new List<CellCoordinates>();
 
             foreach (CellCoordinates coordinates in roomCells.cells)
@@ -48,7 +43,6 @@ namespace TowerBuilder.Stores.Map
                 newCells.Add(new CellCoordinates()
                 {
                     x = coordinates.x + targetCellCoordinates.x,
-                    // z = coordinates.z + targetCellCoordinates.z,
                     floor = coordinates.floor + targetCellCoordinates.floor
                 });
             }
@@ -57,6 +51,39 @@ namespace TowerBuilder.Stores.Map
             roomCells.cells = newCells;
             return roomCells;
         }
+
+        public static int GetLowestX(List<CellCoordinates> roomCells)
+        {
+            int lowestX = int.MaxValue;
+
+            foreach (CellCoordinates cellCoordinates in roomCells)
+            {
+                if (cellCoordinates.x < lowestX)
+                {
+                    lowestX = cellCoordinates.x;
+                }
+            }
+
+            return lowestX;
+        }
+
+
+        public static int GetHighestX(List<CellCoordinates> roomCells)
+        {
+            int highestX = int.MinValue;
+
+            foreach (CellCoordinates cellCoordinates in roomCells)
+            {
+                if (cellCoordinates.x > highestX)
+                {
+                    highestX = cellCoordinates.x;
+                }
+            }
+
+            return highestX;
+        }
+
+        // TODO - same for floor
     }
 }
 

@@ -3,7 +3,7 @@ namespace TowerBuilder
 
     public static class KeyBindings
     {
-        public static string FLOOR_UP = "]";
-        public static string FLOOR_DOWN = "[";
+        // public static string FLOOR_UP = "]";
+        // public static string FLOOR_DOWN = "[";
     }
 }
