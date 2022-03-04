@@ -11,6 +11,13 @@ public class CameraManager : MonoBehaviour
     public static float MOVEMENT_TIME = 0.5f;
 
     public delegate void CameraKeyHandler();
+    Vector3 targetPosition = Vector3.zero;
+    Vector2 movementVelocity = Vector2.zero;
+    Vector2 movementSign = Vector2.zero;
+
+    public const float MOVEMENT_ACCELERATION = 0.025f;
+    public const float MAX_VELOCITY = 0.25f;
+    public const float DRAG = 0.025f;
 
     // TODO - put this somewhere more generic
     // public struct KeyBinding
@@ -25,6 +32,7 @@ public class CameraManager : MonoBehaviour
     {
         cameraTransform = transform.Find("Main Camera");
 
+        targetPosition = transform.position;
         // cameraKeyBindings = new KeyBinding[]
         // {
         //     new KeyBinding() {
@@ -40,105 +48,177 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown("e"))
-        {
-            OnRotateRightPressed();
-        }
+        HandleInput();
+    }
 
-        if (Input.GetKeyDown("q"))
-        {
-            OnRotateLeftPressed();
-        }
+    void FixedUpdate()
+    {
+        MoveCamera();
+    }
 
+    void HandleInput()
+    {
         if (Input.GetKeyDown("w"))
         {
-            // OnMoveForwardPressed();
+            OnMoveUpPressed();
         }
 
-        if (Input.GetKeyDown("a"))
+        if (Input.GetKeyUp("w"))
         {
-            // OnMoveForwardPressed();
+            OnMoveUpReleased();
         }
 
         if (Input.GetKeyDown("s"))
         {
-            // OnMoveBackwardPressed();
+            OnMoveDownPressed();
         }
+
+        if (Input.GetKeyUp("s"))
+        {
+            OnMoveDownReleased();
+        }
+
+        if (Input.GetKeyDown("a"))
+        {
+            OnMoveLeftPressed();
+        }
+
+        if (Input.GetKeyUp("a"))
+        {
+            OnMoveLeftReleased();
+        }
+
 
         if (Input.GetKeyDown("d"))
         {
-            // OnMoveForwardPressed();
+            OnMoveRightPressed();
         }
-    }
 
-
-    void OnRotateLeftPressed()
-    {
-        Quaternion targetRotation = transform.rotation * Quaternion.Euler(
-            transform.rotation.x,
-            transform.rotation.y - 90,
-            transform.rotation.z
-        );
-        StartCoroutine(RotateCameraTo(targetRotation));
-    }
-
-    void OnRotateRightPressed()
-    {
-        Quaternion targetRotation = transform.rotation * Quaternion.Euler(
-            transform.rotation.x,
-            transform.rotation.y + 90,
-            transform.rotation.z
-        );
-        StartCoroutine(RotateCameraTo(targetRotation));
-    }
-
-    void OnMoveForwardPressed()
-    {
-        Vector3 targetPosition = transform.position + new Vector3(-1, 0, 1);
-        StartCoroutine(MoveCameraTo(targetPosition));
-    }
-
-    void OnMoveBackwardPressed()
-    {
-        Vector3 targetPosition = transform.position + new Vector3(1, 0, -1);
-        StartCoroutine(MoveCameraTo(targetPosition));
-    }
-
-    void OnMoveLeftPressed() { }
-
-    void OnMoveRightPressed() { }
-
-    private IEnumerator RotateCameraTo(Quaternion targetRotation)
-    {
-        float elapsed = 0;
-
-        Quaternion startingRotation = transform.rotation;
-
-        while (elapsed < ROTATION_TIME)
+        if (Input.GetKeyUp("d"))
         {
-            transform.rotation = Quaternion.Lerp(startingRotation, targetRotation, (elapsed / ROTATION_TIME));
-            elapsed += Time.deltaTime;
-            yield return null;
+            OnMoveRightReleased();
         }
 
-        transform.rotation = targetRotation;
+        if (Input.GetMouseButtonDown(2))
+        {
+            Debug.Log("Pressed middle click.");
+        }
+
+        if (Input.GetMouseButtonUp(2))
+        {
+            Debug.Log("Released middle click");
+        }
     }
 
-    private IEnumerator MoveCameraTo(Vector3 targetPosition)
+    void OnMoveUpPressed()
     {
-        float elapsed = 0;
-        Debug.Log("moving to:");
-        Debug.Log(targetPosition);
+        movementSign.y = 1f;
+    }
 
-        Vector3 startingPosition = transform.position;
+    void OnMoveUpReleased()
+    {
+        movementSign.y = 0f;
+    }
 
-        while (elapsed < MOVEMENT_TIME)
+    void OnMoveDownPressed()
+    {
+        movementSign.y = -1f;
+    }
+
+    void OnMoveDownReleased()
+    {
+        movementSign.y = 0f;
+    }
+
+    void OnMoveLeftPressed()
+    {
+        movementSign.x = -1f;
+    }
+
+    void OnMoveLeftReleased()
+    {
+        movementSign.x = 0;
+    }
+
+    void OnMoveRightPressed()
+    {
+        movementSign.x = 1f;
+    }
+
+    void OnMoveRightReleased()
+    {
+        movementSign.x = 0f;
+    }
+
+    void MoveCamera()
+    {
+        // x movement
+        if (movementSign.x == 0)
         {
-            transform.position = Vector3.Lerp(startingPosition, targetPosition, (elapsed / ROTATION_TIME));
-            elapsed += Time.deltaTime;
-            yield return null;
+            if (movementVelocity.x > 0)
+            {
+                movementVelocity.x -= DRAG;
+            }
+            else if (movementVelocity.x < 0)
+            {
+                movementVelocity.x += DRAG;
+            }
+
+            if (Mathf.Abs(movementVelocity.x) < DRAG)
+            {
+                movementVelocity.x = 0;
+            }
         }
-        Debug.Log("done");
-        transform.position = targetPosition;
+        else
+        {
+            movementVelocity.x += (MOVEMENT_ACCELERATION * movementSign.x);
+
+            if (movementVelocity.x > 0)
+            {
+                movementVelocity.x = Mathf.Min(movementVelocity.x, MAX_VELOCITY);
+            }
+            else if (movementVelocity.x < 0)
+            {
+                movementVelocity.x = Mathf.Max(movementVelocity.x, -MAX_VELOCITY);
+            }
+        }
+
+        // y movement
+        if (movementSign.y == 0)
+        {
+            if (movementVelocity.y > 0)
+            {
+                movementVelocity.y -= DRAG;
+            }
+            else if (movementVelocity.y < 0)
+            {
+                movementVelocity.y += DRAG;
+            }
+
+            if (Mathf.Abs(movementVelocity.y) < DRAG)
+            {
+                movementVelocity.y = 0;
+            }
+        }
+        else
+        {
+            movementVelocity.y += (MOVEMENT_ACCELERATION * movementSign.y);
+
+            if (movementVelocity.y > 0)
+            {
+                movementVelocity.y = Mathf.Min(movementVelocity.y, MAX_VELOCITY);
+            }
+            else if (movementVelocity.y < 0)
+            {
+                movementVelocity.y = Mathf.Max(movementVelocity.y, -MAX_VELOCITY);
+            }
+        }
+
+        transform.position = new Vector3(
+            transform.position.x + movementVelocity.x,
+            transform.position.y + movementVelocity.y,
+            transform.position.z
+        );
+
     }
 }
