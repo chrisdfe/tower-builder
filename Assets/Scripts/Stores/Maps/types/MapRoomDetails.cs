@@ -9,9 +9,9 @@ namespace TowerBuilder.Stores.Map
 {
     public class MapRoomDetails
     {
-        public RoomCells roomCells;
-        public MapRoomBuildType roomBuildType = MapRoomBuildType.Fixed;
-        public Color color;
+        public List<CellCoordinates> roomCells = RoomCells.CreateRectangularRoom(0, 0);
+        public RoomResizability roomResizability = RoomResizability.Inflexible();
+        public Color color = Color.white;
     }
 }
 

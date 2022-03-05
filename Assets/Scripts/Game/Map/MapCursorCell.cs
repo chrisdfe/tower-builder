@@ -21,7 +21,7 @@ public class MapCursorCell : MonoBehaviour
     public void SetRoomBlueprintCell(RoomBlueprintCell roomBlueprintCell)
     {
         this.roomBlueprintCell = roomBlueprintCell;
-        transform.localPosition = MapCellHelpers.CellCoordinatesToPosition(roomBlueprintCell.cellCoordinates);
+        transform.localPosition = MapCellHelpers.CellCoordinatesToPosition(roomBlueprintCell.absoluteCellCoordinates);
         UpdateMaterialColor();
     }
 

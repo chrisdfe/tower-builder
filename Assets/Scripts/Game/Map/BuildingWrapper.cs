@@ -26,11 +26,9 @@ public class BuildingWrapper : MonoBehaviour
 
     void CreateRoom(MapRoom mapRoom)
     {
-        float TILE_SIZE = TowerBuilder.Stores.Map.Constants.TILE_SIZE;
-
         List<MapRoomCell> mapRoomCells = new List<MapRoomCell>();
 
-        foreach (CellCoordinates cellCoordinates in mapRoom.roomCells.cells)
+        foreach (CellCoordinates cellCoordinates in mapRoom.roomCells)
         {
             GameObject mapRoomCellGameObject = Instantiate<GameObject>(mapCubeCellPrefab);
             MapRoomCell mapRoomCell = mapRoomCellGameObject.GetComponent<MapRoomCell>();

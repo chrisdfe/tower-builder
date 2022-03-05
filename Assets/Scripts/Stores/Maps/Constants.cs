@@ -13,16 +13,18 @@ namespace TowerBuilder.Stores.Map
 
         public static Dictionary<RoomKey, MapRoomDetails> MAP_ROOM_DETAILS = new Dictionary<RoomKey, MapRoomDetails>()
         {
+            [RoomKey.None] = new MapRoomDetails(),
             [RoomKey.EmptyFloor] = new MapRoomDetails()
             {
                 roomCells = RoomCells.CreateRectangularRoom(1, 1),
+                roomResizability = RoomResizability.Flexible(),
                 color = Color.gray
             },
 
             [RoomKey.Lobby] = new MapRoomDetails()
             {
                 roomCells = RoomCells.CreateRectangularRoom(1, 1),
-                roomBuildType = MapRoomBuildType.Flexible,
+                roomResizability = RoomResizability.Horizontal(),
                 color = Color.red,
             },
 
@@ -34,19 +36,21 @@ namespace TowerBuilder.Stores.Map
 
             [RoomKey.Condo] = new MapRoomDetails()
             {
-                roomCells = RoomCells.CreateRectangularRoom(5, 2),
+                roomCells = RoomCells.CreateRectangularRoom(5, 1),
                 color = Color.yellow,
             },
 
             [RoomKey.Elevator] = new MapRoomDetails()
             {
                 roomCells = RoomCells.CreateRectangularRoom(1, 1),
+                roomResizability = RoomResizability.Vertical(),
                 color = Color.magenta,
             },
 
             [RoomKey.Stairwell] = new MapRoomDetails()
             {
                 roomCells = RoomCells.CreateRectangularRoom(1, 1),
+                roomResizability = RoomResizability.Vertical(),
                 color = Color.white
             },
 

@@ -12,7 +12,7 @@ public class DebugPanelManager : MonoBehaviour
 
     void Awake()
     {
-        Registry.Stores.MapUI.onCurrentSelectedTileUpdated += OnCurrentSelectedCellUpdated;
+        Registry.Stores.MapUI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
 
         currentSelectedCellText = transform.Find("CurrentSelectedCellText").GetComponent<Text>();
         currentSelectedCellText.text = "";
@@ -25,7 +25,7 @@ public class DebugPanelManager : MonoBehaviour
 
     void SetCurrentSelectedCellText()
     {
-        CellCoordinates currentSelectedCell = Registry.Stores.MapUI.currentSelectedTile;
+        CellCoordinates currentSelectedCell = Registry.Stores.MapUI.currentSelectedCell;
         currentSelectedCellText.text = $"x: {currentSelectedCell.x}, floor: {currentSelectedCell.floor}";
     }
 }

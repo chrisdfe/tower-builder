@@ -1,5 +1,11 @@
 # TODO
+- Add flexble-sized rooms
+- Add click-and-drag room building
 - Remove 'RoomStore' - having just MapStore should be fine
-- "__StateChangeHelpers" e.g "MapStateChangeHelpers" - helpers/selectors to be used inside of state change handlers. The arguments would be (MapState mapState, MapState previousMapState); e.g "public static bool heightOfTowerHasChanged(MapState mapState, MapState previousMapState)"
+- Add residents
+- Moving camera around with middle mouse button
+- Move Rooms dictionary in Rooms state somewhere else & make it more extensible
+- Generate rooms buttons in RoomBlueprintButtonsManager dynamically
+- Mesh for rooms with left, middle, right etc. segment tiles
 
 # Done

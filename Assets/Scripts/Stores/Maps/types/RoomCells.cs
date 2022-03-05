@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.Stores.Rooms;
 using UnityEngine;
 
@@ -8,14 +9,7 @@ namespace TowerBuilder.Stores.Map
 {
     public class RoomCells
     {
-        public List<CellCoordinates> cells { get; private set; }
-
-        public RoomCells(List<CellCoordinates> roomCells)
-        {
-            cells = roomCells;
-        }
-
-        public static RoomCells CreateRectangularRoom(int xWidth, int floors)
+        public static List<CellCoordinates> CreateRectangularRoom(int xWidth, int floors)
         {
             List<CellCoordinates> roomCells = new List<CellCoordinates>();
 
@@ -31,25 +25,43 @@ namespace TowerBuilder.Stores.Map
                 }
             }
 
-            return new RoomCells(roomCells);
+            return roomCells;
         }
 
-        public static RoomCells PositionAtCoordinates(RoomCells roomCells, CellCoordinates targetCellCoordinates)
+        public static List<CellCoordinates> CreateRectangularRoom(CellCoordinates a, CellCoordinates b)
         {
-            List<CellCoordinates> newCells = new List<CellCoordinates>();
+            List<CellCoordinates> result = new List<CellCoordinates>();
 
-            foreach (CellCoordinates coordinates in roomCells.cells)
+            CellCoordinates startCoordinates = new CellCoordinates(Mathf.Min(a.x, b.x), Mathf.Min(a.floor, b.floor));
+            CellCoordinates endCoordinates = new CellCoordinates(Mathf.Max(a.x, b.x), Mathf.Max(a.floor, b.floor));
+
+            Debug.Log("startCoordinates: " + startCoordinates);
+            Debug.Log("endCoordinates: " + endCoordinates);
+
+            for (int x = startCoordinates.x; x <= endCoordinates.x; x++)
             {
-                newCells.Add(new CellCoordinates()
+                for (int floor = startCoordinates.floor; floor <= endCoordinates.floor; floor++)
                 {
-                    x = coordinates.x + targetCellCoordinates.x,
-                    floor = coordinates.floor + targetCellCoordinates.floor
-                });
+                    result.Add(new CellCoordinates(x, floor));
+                }
             }
 
-            // TODO - does this mutate roomCells outside of the scope of this method?
-            roomCells.cells = newCells;
-            return roomCells;
+            Debug.Log("result: " + result.Count);
+
+            return result;
+        }
+
+
+        public static List<CellCoordinates> PositionAtCoordinates(List<CellCoordinates> originalCellCoordinates, CellCoordinates targetCellCoordinates)
+        {
+            List<CellCoordinates> result = new List<CellCoordinates>();
+
+            foreach (CellCoordinates coordinates in originalCellCoordinates)
+            {
+                result.Add(coordinates.Add(targetCellCoordinates));
+            }
+
+            return result;
         }
 
         public static int GetLowestX(List<CellCoordinates> roomCells)
@@ -84,6 +96,23 @@ namespace TowerBuilder.Stores.Map
         }
 
         // TODO - same for floor
+
+        public static bool CellIsOccupied(CellCoordinates cellCoordinates, List<MapRoom> mapRooms)
+        {
+            // List<MapRoom> mapRooms = Registry.Stores.Map.mapRooms;
+
+            foreach (MapRoom mapRoom in mapRooms)
+            {
+                foreach (CellCoordinates roomCellCoordiantes in mapRoom.roomCells)
+                {
+                    if (cellCoordinates.Matches(roomCellCoordiantes))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
 

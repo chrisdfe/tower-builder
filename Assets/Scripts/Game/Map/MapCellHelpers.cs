@@ -18,30 +18,11 @@ namespace TowerBuilder.UI
 
         public static Vector3 CellCoordinatesToPosition(CellCoordinates cellCoordinates)
         {
-            float TILE_SIZE = Stores.Map.Constants.TILE_SIZE;
-
             return new Vector3(
                 RoundToNearestTile(cellCoordinates.x),
-                RoundToNearestTile(cellCoordinates.floor * TILE_SIZE),
+                RoundToNearestTile(cellCoordinates.floor),
                 0
             );
-        }
-
-        public static bool CellIsOccupied(CellCoordinates cellCoordinates)
-        {
-            List<MapRoom> mapRooms = Registry.Stores.Map.mapRooms;
-
-            foreach (MapRoom mapRoom in mapRooms)
-            {
-                foreach (CellCoordinates roomCellCoordiantes in mapRoom.roomCells.cells)
-                {
-                    if (cellCoordinates.Matches(roomCellCoordiantes))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
     }
 }

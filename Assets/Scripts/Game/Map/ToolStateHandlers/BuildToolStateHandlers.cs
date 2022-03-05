@@ -24,9 +24,14 @@ namespace TowerBuilder.UI
             mapManager.mapCursor.Disable();
         }
 
+        public override void OnMouseDown()
+        {
+            Registry.Stores.MapUI.StartBuild();
+        }
+
         public override void OnMouseUp()
         {
-            Registry.Stores.MapUI.AttemptToCreateRoomAtCurrentSelectedCell();
+            Registry.Stores.MapUI.EndBuild();
         }
     }
 }

@@ -10,13 +10,13 @@ namespace TowerBuilder.Stores.Map
     {
         public string id { get; private set; }
         public RoomKey roomKey { get; private set; }
-        public RoomCells roomCells { get; private set; }
+        public List<CellCoordinates> roomCells { get; private set; }
 
         public MapRoom(RoomKey roomKey, RoomBlueprint blueprint)
         {
             id = GenerateId();
             this.roomKey = roomKey;
-            roomCells = blueprint.GetPositionedRoomCells();
+            roomCells = blueprint.GetRoomCells();
         }
 
         string GenerateId()

@@ -11,28 +11,38 @@ namespace TowerBuilder.Stores.MapUI
     public class State
     {
         public ToolState toolState { get; private set; }
-        public RoomKey selectedRoomKey { get; private set; }
-        public CellCoordinates currentSelectedTile { get; private set; }
-        public RoomBlueprint currentBlueprint { get; private set; }
-        // public int currentFocusFloor;
 
         public delegate void ToolStateEvent(ToolState toolState, ToolState previousToolState);
         public ToolStateEvent onToolStateUpdated;
 
+        public RoomKey selectedRoomKey { get; private set; }
+
         public delegate void SelectedRoomKeyEvent(RoomKey selectedRoomKey);
         public SelectedRoomKeyEvent onSelectedRoomKeyUpdated;
 
-        public delegate void CurrentSelectedTileEvent(CellCoordinates currentSelectedTile);
-        public CurrentSelectedTileEvent onCurrentSelectedTileUpdated;
+        public CellCoordinates buildStartCell { get; private set; } = null;
+        public CellCoordinates currentSelectedCell { get; private set; } = null;
+
+        public delegate void cellCoordinatesEvent(CellCoordinates currentSelectedCell);
+        public cellCoordinatesEvent onCurrentSelectedCellUpdated;
+        public cellCoordinatesEvent onBuildStartCellUpdated;
+
+        public bool buildIsActive { get; private set; } = false;
+        public delegate void buildIsActiveEvent(bool buildIsActive);
+        public buildIsActiveEvent onBuildStart;
+        public buildIsActiveEvent onBuildEnd;
+
+        // this roomBlueprint is essentially just derived data, so no events needed
+        public RoomBlueprint currentBlueprint { get; private set; }
 
 
         public State()
         {
             toolState = ToolState.None;
             selectedRoomKey = Rooms.RoomKey.None;
-            currentSelectedTile = CellCoordinates.zero;
+            currentSelectedCell = CellCoordinates.zero;
 
-            currentBlueprint = new RoomBlueprint(currentSelectedTile, selectedRoomKey);
+            currentBlueprint = new RoomBlueprint(currentSelectedCell, selectedRoomKey);
         }
 
         public void SetToolState(ToolState toolState)
@@ -61,14 +71,66 @@ namespace TowerBuilder.Stores.MapUI
 
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedCell)
         {
-            this.currentSelectedTile = currentSelectedCell;
+            this.currentSelectedCell = currentSelectedCell;
 
-            currentBlueprint.SetCellCoordinates(currentSelectedCell);
+            if (buildIsActive)
+            {
+                currentBlueprint.SetBuildEndCell(currentSelectedCell);
+            }
+            else
+            {
+                currentBlueprint.SetBuildStartCell(currentSelectedCell);
+            }
+
             currentBlueprint.Validate(Registry.Stores.Map.mapRooms, Registry.Stores.Wallet.balance);
 
-            if (onCurrentSelectedTileUpdated != null)
+            if (onCurrentSelectedCellUpdated != null)
             {
-                onCurrentSelectedTileUpdated(currentSelectedCell);
+                onCurrentSelectedCellUpdated(currentSelectedCell);
+            }
+        }
+
+        public void StartBuild()
+        {
+            buildIsActive = true;
+
+            SetBuildStartCell();
+
+            if (onBuildStart != null)
+            {
+                onBuildStart(buildIsActive);
+            }
+        }
+
+        public void EndBuild()
+        {
+            buildIsActive = false;
+
+            AttemptToCreateRoomAtCurrentSelectedCell();
+
+            if (onBuildEnd != null)
+            {
+                onBuildEnd(buildIsActive);
+            }
+        }
+
+        public void SetBuildStartCell()
+        {
+            if (selectedRoomKey == RoomKey.None)
+            {
+                return;
+            }
+
+            if (currentSelectedCell == null)
+            {
+                return;
+            }
+
+            currentBlueprint.SetBuildStartCell(currentSelectedCell.Clone());
+
+            if (onBuildStartCellUpdated != null)
+            {
+                onBuildStartCellUpdated(buildStartCell);
             }
         }
 
@@ -81,6 +143,7 @@ namespace TowerBuilder.Stores.MapUI
             }
 
             currentBlueprint.Validate(Registry.Stores.Map.mapRooms, Registry.Stores.Wallet.balance);
+
             List<RoomBlueprintValidationError> validationErrors = currentBlueprint.GetAllValidationErrors();
 
             if (validationErrors.Count > 0)

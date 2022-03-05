@@ -60,8 +60,7 @@ namespace TowerBuilder.UI
             currentToolStateHandler.OnTransitionTo(Registry.Stores.MapUI.toolState);
 
             Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
-            Registry.Stores.MapUI.onCurrentSelectedTileUpdated += OnCurrentSelectedTileUpdated;
-            Registry.Stores.MapUI.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+
         }
 
         void Update()
@@ -114,7 +113,7 @@ namespace TowerBuilder.UI
                     floor = MapCellHelpers.RoundToNearestTile(hit.point.y),
                 };
 
-                if (!hoveredCell.Matches(Registry.Stores.MapUI.currentSelectedTile))
+                if (!hoveredCell.Matches(Registry.Stores.MapUI.currentSelectedCell))
                 {
                     Registry.Stores.MapUI.SetCurrentSelectedCell(hoveredCell);
                 }
@@ -126,17 +125,6 @@ namespace TowerBuilder.UI
             currentToolStateHandler.OnTransitionFrom(nextToolState);
             SetCurrentToolStateHandlers();
             currentToolStateHandler.OnTransitionTo(previousToolState);
-        }
-
-        void OnCurrentSelectedTileUpdated(CellCoordinates currentSelectedTile)
-        {
-            mapCursor.SetCurrentCell(currentSelectedTile);
-            mapCursor.ResetCursorCells();
-        }
-
-        void OnSelectedRoomKeyUpdated(RoomKey selectedRoomKey)
-        {
-            mapCursor.ResetCursorCells();
         }
 
         void SetCurrentToolStateHandlers()

@@ -29,6 +29,11 @@ namespace TowerBuilder.Stores.Map
             return CellCoordinates.Add(this, b);
         }
 
+        public CellCoordinates Subtract(CellCoordinates b)
+        {
+            return CellCoordinates.Subtract(this, b);
+        }
+
         public bool Matches(CellCoordinates b)
         {
             return CellCoordinates.Matches(this, b);
@@ -43,12 +48,27 @@ namespace TowerBuilder.Stores.Map
             };
         }
 
+        public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b)
+        {
+            return new CellCoordinates(a.x - b.x, a.floor - b.floor);
+        }
+
         public static bool Matches(CellCoordinates a, CellCoordinates b)
         {
             return (
                 a.x == b.x &&
                 a.floor == b.floor
             );
+        }
+
+        public CellCoordinates Clone()
+        {
+            return CellCoordinates.Clone(this);
+        }
+
+        public static CellCoordinates Clone(CellCoordinates original)
+        {
+            return new CellCoordinates(original.x, original.floor);
         }
 
 

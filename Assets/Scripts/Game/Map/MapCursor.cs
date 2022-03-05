@@ -10,7 +10,6 @@ namespace TowerBuilder.UI
 {
     public class MapCursor : MonoBehaviour
     {
-        public bool isVisible { get; private set; } = true;
         public bool isEnabled { get; private set; } = true;
 
         public RoomBlueprint roomBlueprint { get; private set; }
@@ -20,43 +19,22 @@ namespace TowerBuilder.UI
 
         List<MapCursorCell> mapCursorCells;
 
-        public void SetCurrentCell(CellCoordinates cellCoordinates)
+        public void Enable()
         {
-            this.cellCoordinates = cellCoordinates;
-            transform.localPosition = MapCellHelpers.CellCoordinatesToPosition(cellCoordinates) + new Vector3(0, 0, -0.5f);
-
-            ResetCursorCells();
-        }
-
-        public void Hide()
-        {
-            isVisible = false;
-            DestroyCursorCells();
-        }
-
-        public void Show()
-        {
-            isVisible = true;
+            isEnabled = true;
             ResetCursorCells();
         }
 
         public void Disable()
         {
             isEnabled = false;
-            Hide();
-        }
-
-        public void Enable()
-        {
-            isEnabled = true;
-            Show();
+            DestroyCursorCells();
         }
 
         public void ResetCursorCells()
         {
             DestroyCursorCells();
 
-            RoomKey currentRoomKey = Registry.Stores.MapUI.selectedRoomKey;
             RoomBlueprint blueprint = Registry.Stores.MapUI.currentBlueprint;
 
             foreach (RoomBlueprintCell roomBlueprintCell in blueprint.roomBlueprintCells)
@@ -75,16 +53,24 @@ namespace TowerBuilder.UI
 
         void Awake()
         {
-            float TILE_SIZE = Stores.Map.Constants.TILE_SIZE;
-            transform.localScale = new Vector3(TILE_SIZE, TILE_SIZE, TILE_SIZE);
-
             mapCursorCellPrefab = Resources.Load<GameObject>("Prefabs/MapUI/MapCursorCell");
 
             cellCoordinates = CellCoordinates.zero;
 
             mapCursorCells = new List<MapCursorCell>();
+
+            Registry.Stores.MapUI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            Registry.Stores.MapUI.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            // Registry.Stores.MapUI.onBuildStartCellUpdated += OnBuildStartCellUpdated;
         }
 
+        void SetCurrentCell(CellCoordinates cellCoordinates)
+        {
+            this.cellCoordinates = cellCoordinates;
+            // transform.localPosition = MapCellHelpers.CellCoordinatesToPosition(cellCoordinates) + new Vector3(0, 0, -0.5f);
+
+            ResetCursorCells();
+        }
 
         void DestroyCursorCells()
         {
@@ -97,6 +83,23 @@ namespace TowerBuilder.UI
             }
 
             mapCursorCells = new List<MapCursorCell>();
+        }
+
+
+        void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell)
+        {
+            SetCurrentCell(currentSelectedCell);
+            ResetCursorCells();
+        }
+
+        // void OnBuildStartCellUpdated(CellCoordinates buildStartCell)
+        // {
+        //     ResetCursorCells();
+        // }
+
+        void OnSelectedRoomKeyUpdated(RoomKey selectedRoomKey)
+        {
+            ResetCursorCells();
         }
     }
 }

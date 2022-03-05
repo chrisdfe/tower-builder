@@ -12,7 +12,24 @@ namespace TowerBuilder.Stores.Map
 
         public string id { get; private set; }
         public CellCoordinates cellCoordinates { get; private set; } = CellCoordinates.zero;
-        public CellCoordinates absoluteCellCoordinates { get; private set; } = CellCoordinates.zero;
+
+        public CellCoordinates absoluteCellCoordinates
+        {
+            get
+            {
+                // return parentBlueprint.buildStartCoordinates)
+                return cellCoordinates;
+            }
+        }
+
+        // relative to parentBlueprint
+        public CellCoordinates relativeCellCoordiantes
+        {
+            get
+            {
+                return cellCoordinates.Subtract(parentBlueprint.buildStartCoordinates);
+            }
+        }
 
         public List<RoomBlueprintValidationError> validationErrors;
 
@@ -28,12 +45,6 @@ namespace TowerBuilder.Stores.Map
         public void UpdateAndValidateCellCoordinates(CellCoordinates cellCoordinates)
         {
             this.cellCoordinates = cellCoordinates;
-            UpdateAbsoluteCellCoordinates();
-        }
-
-        public void UpdateAbsoluteCellCoordinates()
-        {
-            absoluteCellCoordinates = parentBlueprint.cellCoordinates.Add(cellCoordinates);
         }
 
         public void Validate(List<MapRoom> mapRooms)
@@ -43,7 +54,7 @@ namespace TowerBuilder.Stores.Map
             // Check for overlapping cells
             foreach (MapRoom mapRoom in mapRooms)
             {
-                foreach (CellCoordinates otherRoomCellCoordinates in mapRoom.roomCells.cells)
+                foreach (CellCoordinates otherRoomCellCoordinates in mapRoom.roomCells)
                 {
                     if (otherRoomCellCoordinates.Matches(absoluteCellCoordinates))
                     {

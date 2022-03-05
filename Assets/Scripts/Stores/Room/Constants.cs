@@ -7,6 +7,7 @@ namespace TowerBuilder.Stores.Rooms
     {
         public static Dictionary<RoomKey, RoomDetails> ROOM_DETAILS_MAP = new Dictionary<RoomKey, RoomDetails>()
         {
+            [RoomKey.None] = new RoomDetails(),
             [RoomKey.EmptyFloor] = new RoomDetails()
             {
                 title = "Lobby",

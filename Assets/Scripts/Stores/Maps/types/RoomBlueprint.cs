@@ -10,37 +10,57 @@ namespace TowerBuilder.Stores.Map
 {
     public class RoomBlueprint
     {
-        public CellCoordinates cellCoordinates;
-        public RoomKey roomKey;
-
-        public RoomCells roomCells { get; private set; }
         public List<RoomBlueprintCell> roomBlueprintCells;
         public List<RoomBlueprintValidationError> validationErrors { get; private set; }
 
-        public RoomBlueprint(CellCoordinates cellCoordinates, RoomKey roomKey)
+        public RoomKey roomKey { get; private set; }
+
+        public CellCoordinates buildStartCoordinates { get; private set; }
+        public CellCoordinates buildEndCoordinates { get; private set; }
+        // public bool buildIsActive { get; private set; } = false;
+
+        public RoomBlueprint(CellCoordinates buildStartCoordinates, RoomKey roomKey)
         {
-            this.cellCoordinates = cellCoordinates;
+            this.buildStartCoordinates = buildStartCoordinates.Clone();
+            this.buildEndCoordinates = buildStartCoordinates.Clone();
             this.roomKey = roomKey;
+
             validationErrors = new List<RoomBlueprintValidationError>();
 
-            UpdateRoomCells();
+            UpdateRoomBlueprintCells();
         }
 
         public void SetRoomKey(RoomKey roomKey)
         {
             this.roomKey = roomKey;
-            UpdateRoomCells();
+            UpdateRoomBlueprintCells();
         }
 
-        public void SetCellCoordinates(CellCoordinates cellCoordinates)
+        public void SetBuildEndCell(CellCoordinates buildEndCoordinates)
         {
-            this.cellCoordinates = cellCoordinates;
-            UpdateRoomCells();
+            this.buildEndCoordinates = buildEndCoordinates;
+            UpdateRoomBlueprintCells();
         }
 
-        public RoomCells GetPositionedRoomCells()
+        public void SetBuildStartCell(CellCoordinates buildStartCoordinates)
         {
-            return RoomCells.PositionAtCoordinates(roomCells, cellCoordinates);
+            this.buildStartCoordinates = buildStartCoordinates.Clone();
+            this.buildEndCoordinates = buildStartCoordinates.Clone();
+            // this.buildIsActive = true;
+            UpdateRoomBlueprintCells();
+        }
+
+        public List<CellCoordinates> GetRoomCells()
+        {
+            List<CellCoordinates> roomCells = new List<CellCoordinates>();
+
+            foreach (RoomBlueprintCell roomBlueprintCell in roomBlueprintCells)
+            {
+                roomCells.Add(roomBlueprintCell.cellCoordinates);
+            }
+
+            // return RoomCells.PositionAtCoordinates(roomCells, buildEndCoordinates);
+            return roomCells;
         }
 
         public void Validate(List<MapRoom> mapRooms, int walletBalance)
@@ -76,6 +96,7 @@ namespace TowerBuilder.Stores.Map
 
         // Per-cell level validations
         // like overlapping tiles
+        // TODO - room-specific validations
         void ValidateRoomCells(List<MapRoom> mapRooms)
         {
             foreach (RoomBlueprintCell roomBlueprintCell in roomBlueprintCells)
@@ -99,30 +120,37 @@ namespace TowerBuilder.Stores.Map
             return result;
         }
 
-        void UpdateRoomCells()
+        void UpdateRoomBlueprintCells()
         {
-            // TODO - clean up existing roomBlueprintCells?
+            // TODO - clean up existing roomBlueprintCells first?
+            List<CellCoordinates> roomCells = RoomCells.CreateRectangularRoom(0, 0);
 
-            // TODO - not this
-            if (roomKey == RoomKey.None)
+            MapRoomDetails mapRoomDetails = Stores.Map.Constants.MAP_ROOM_DETAILS[roomKey];
+
+            if (mapRoomDetails.roomResizability.Matches(RoomResizability.Inflexible()))
             {
-                roomCells = RoomCells.CreateRectangularRoom(0, 0);
-            }
-            else if (roomKey == RoomKey.Condo)
-            {
-                roomCells = RoomCells.CreateRectangularRoom(4, 1);
-            }
-            else if (roomKey == RoomKey.Office)
-            {
-                roomCells = RoomCells.CreateRectangularRoom(3, 2);
+                roomCells = RoomCells.PositionAtCoordinates(mapRoomDetails.roomCells, buildStartCoordinates);
             }
             else
             {
-                roomCells = RoomCells.CreateRectangularRoom(1, 1);
+                CellCoordinates flexibleBuildEndCoordinates = buildStartCoordinates.Clone();
+
+                if (mapRoomDetails.roomResizability.x && buildEndCoordinates.x != buildStartCoordinates.x)
+                {
+                    flexibleBuildEndCoordinates.x = buildEndCoordinates.x;
+                }
+
+                if (mapRoomDetails.roomResizability.floor && buildEndCoordinates.floor != buildStartCoordinates.floor)
+                {
+                    flexibleBuildEndCoordinates.floor = buildEndCoordinates.floor;
+                }
+
+                // Draw a rectangle between the build start coordinates and build end coordinates
+                roomCells = RoomCells.CreateRectangularRoom(buildStartCoordinates, flexibleBuildEndCoordinates);
             }
 
             roomBlueprintCells = new List<RoomBlueprintCell>();
-            foreach (CellCoordinates roomCellCoordinates in roomCells.cells)
+            foreach (CellCoordinates roomCellCoordinates in roomCells)
             {
                 RoomBlueprintCell newRoomBlueprintCell = new RoomBlueprintCell(this, roomCellCoordinates);
                 roomBlueprintCells.Add(newRoomBlueprintCell);
