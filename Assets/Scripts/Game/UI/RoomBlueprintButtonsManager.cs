@@ -14,6 +14,7 @@ namespace TowerBuilder.UI
     {
         Button NoneButton;
         Button LobbyButton;
+        Button ElevatorButton;
         Button OfficeButton;
         Button CondoButton;
 
@@ -21,11 +22,13 @@ namespace TowerBuilder.UI
         {
             NoneButton = transform.Find("NoneButton").GetComponent<Button>();
             LobbyButton = transform.Find("LobbyButton").GetComponent<Button>();
+            ElevatorButton = transform.Find("ElevatorButton").GetComponent<Button>();
             OfficeButton = transform.Find("OfficeButton").GetComponent<Button>();
             CondoButton = transform.Find("CondoButton").GetComponent<Button>();
 
             NoneButton.onClick.AddListener(OnNoneButtonClick);
             LobbyButton.onClick.AddListener(OnLobbyButtonClick);
+            ElevatorButton.onClick.AddListener(OnElevatorButtonClick);
             OfficeButton.onClick.AddListener(OnOfficeButtonClick);
             CondoButton.onClick.AddListener(OnCondoButtonClick);
         }
@@ -38,6 +41,11 @@ namespace TowerBuilder.UI
         void OnLobbyButtonClick()
         {
             Registry.Stores.MapUI.SetSelectedRoomKey(RoomKey.Lobby);
+        }
+
+        void OnElevatorButtonClick()
+        {
+            Registry.Stores.MapUI.SetSelectedRoomKey(RoomKey.Elevator);
         }
 
         void OnOfficeButtonClick()
