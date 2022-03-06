@@ -101,12 +101,10 @@ public class CameraManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(2))
         {
-            Debug.Log("Pressed middle click.");
         }
 
         if (Input.GetMouseButtonUp(2))
         {
-            Debug.Log("Released middle click");
         }
     }
 

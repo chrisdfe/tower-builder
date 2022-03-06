@@ -1,4 +1,4 @@
-using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.Map;
 
 namespace TowerBuilder.Stores.Map
 {

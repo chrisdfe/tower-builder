@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
-using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.Map;
 
 namespace TowerBuilder.Stores.Map
 {

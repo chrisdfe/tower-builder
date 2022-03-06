@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Rooms;
 using TowerBuilder.UI;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ public class MapCursorCell : MonoBehaviour
 
     RoomBlueprintCell roomBlueprintCell;
 
-    Renderer renderer;
+    Renderer _renderer;
 
     public void SetRoomBlueprintCell(RoomBlueprintCell roomBlueprintCell)
     {
@@ -29,17 +28,17 @@ public class MapCursorCell : MonoBehaviour
     {
         if (roomBlueprintCell.parentBlueprint.IsValid() && roomBlueprintCell.IsValid())
         {
-            renderer.material.color = VALID_COLOR;
+            _renderer.material.color = VALID_COLOR;
         }
         else
         {
-            renderer.material.color = INVALID_COLOR;
+            _renderer.material.color = INVALID_COLOR;
         }
     }
 
     void Awake()
     {
-        renderer = GetComponent<Renderer>();
+        _renderer = GetComponent<Renderer>();
     }
 
     bool IsValid()

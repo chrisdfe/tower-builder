@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.MapUI;
-using TowerBuilder.Stores.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.UI

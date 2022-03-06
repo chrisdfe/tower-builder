@@ -44,7 +44,7 @@ public class MapRoomCell : MonoBehaviour
         transform.position = MapCellHelpers.CellCoordinatesToPosition(cellCoordinates);
 
         // Set color
-        MapRoomDetails mapRoomDetails = TowerBuilder.Stores.Map.Constants.MAP_ROOM_DETAILS[mapRoom.roomKey];
+        MapRoomDetails mapRoomDetails = TowerBuilder.Stores.Map.Constants.ROOM_DETAILS_MAP[mapRoom.roomKey];
         Color color = mapRoomDetails.color;
         cellCubeMaterial.color = mapRoomDetails.color;
     }

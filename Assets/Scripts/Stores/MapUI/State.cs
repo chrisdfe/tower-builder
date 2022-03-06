@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.MapUI
@@ -39,7 +38,7 @@ namespace TowerBuilder.Stores.MapUI
         public State()
         {
             toolState = ToolState.None;
-            selectedRoomKey = Rooms.RoomKey.None;
+            selectedRoomKey = RoomKey.None;
             currentSelectedCell = CellCoordinates.zero;
 
             currentBlueprint = new RoomBlueprint(currentSelectedCell, selectedRoomKey);
@@ -159,7 +158,7 @@ namespace TowerBuilder.Stores.MapUI
             MapRoom newRoom = new MapRoom(selectedRoomKey, currentBlueprint);
             Registry.Stores.Map.AddRoom(newRoom);
 
-            RoomDetails roomDetails = Rooms.Constants.ROOM_DETAILS_MAP[selectedRoomKey];
+            MapRoomDetails roomDetails = Map.Constants.ROOM_DETAILS_MAP[selectedRoomKey];
             Registry.Stores.Wallet.SubtractBalance(roomDetails.price);
         }
     }

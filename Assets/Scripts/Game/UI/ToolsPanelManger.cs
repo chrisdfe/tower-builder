@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.Stores;
+using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.MapUI;
-using TowerBuilder.Stores.Rooms;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -70,7 +70,7 @@ namespace TowerBuilder.UI
                 }
                 else
                 {
-                    RoomDetails roomDetails = Stores.Rooms.Constants.ROOM_DETAILS_MAP[selectedRoomKey];
+                    MapRoomDetails roomDetails = Stores.Map.Constants.ROOM_DETAILS_MAP[selectedRoomKey];
                     int price = roomDetails.price;
                     descriptionText.text = $"{toolState} - {selectedRoomKey}: ${price}";
                 }

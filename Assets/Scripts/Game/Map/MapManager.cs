@@ -5,7 +5,6 @@ using System.Linq;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.MapUI;
-using TowerBuilder.Stores.Rooms;
 using UnityEngine;
 using UnityEngine.UI;
 

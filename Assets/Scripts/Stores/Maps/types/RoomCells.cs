@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.Map;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Map
@@ -35,9 +35,6 @@ namespace TowerBuilder.Stores.Map
             CellCoordinates startCoordinates = new CellCoordinates(Mathf.Min(a.x, b.x), Mathf.Min(a.floor, b.floor));
             CellCoordinates endCoordinates = new CellCoordinates(Mathf.Max(a.x, b.x), Mathf.Max(a.floor, b.floor));
 
-            Debug.Log("startCoordinates: " + startCoordinates);
-            Debug.Log("endCoordinates: " + endCoordinates);
-
             for (int x = startCoordinates.x; x <= endCoordinates.x; x++)
             {
                 for (int floor = startCoordinates.floor; floor <= endCoordinates.floor; floor++)
@@ -45,8 +42,6 @@ namespace TowerBuilder.Stores.Map
                     result.Add(new CellCoordinates(x, floor));
                 }
             }
-
-            Debug.Log("result: " + result.Count);
 
             return result;
         }

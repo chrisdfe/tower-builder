@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.MapUI;
 using TowerBuilder.Stores.Notifications;
-using TowerBuilder.Stores.Rooms;
 using TowerBuilder.Stores.Time;
 using TowerBuilder.Stores.Wallet;
 
@@ -14,7 +13,6 @@ namespace TowerBuilder.Stores
         public Notifications.State Notifications = new Notifications.State();
         public Time.State Time = new Time.State();
         public Wallet.State Wallet = new Wallet.State();
-        public Rooms.State Rooms = new Rooms.State();
         public Map.State Map = new Map.State();
         public MapUI.State MapUI = new MapUI.State();
     }

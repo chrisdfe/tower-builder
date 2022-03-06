@@ -34,7 +34,6 @@ namespace TowerBuilder.UI
             int notificationsLength = Registry.Stores.Notifications.notifications.Count;
             Notification[] notifications = new Notification[notificationsLength];
             Registry.Stores.Notifications.notifications.CopyTo(notifications);
-            Debug.Log(notifications);
 
             Registry.Stores.Notifications.createNotification("new message " + (notificationsLength + 1));
         }

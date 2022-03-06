@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
-using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.Map;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Map
@@ -86,7 +86,7 @@ namespace TowerBuilder.Stores.Map
         {
             validationErrors = new List<RoomBlueprintValidationError>();
 
-            RoomDetails roomDetails = TowerBuilder.Stores.Rooms.Constants.ROOM_DETAILS_MAP[roomKey];
+            MapRoomDetails roomDetails = TowerBuilder.Stores.Map.Constants.ROOM_DETAILS_MAP[roomKey];
 
             if (walletBalance < roomDetails.price)
             {
@@ -125,7 +125,7 @@ namespace TowerBuilder.Stores.Map
             // TODO - clean up existing roomBlueprintCells first?
             List<CellCoordinates> roomCells = RoomCells.CreateRectangularRoom(0, 0);
 
-            MapRoomDetails mapRoomDetails = Stores.Map.Constants.MAP_ROOM_DETAILS[roomKey];
+            MapRoomDetails mapRoomDetails = Stores.Map.Constants.ROOM_DETAILS_MAP[roomKey];
 
             if (mapRoomDetails.roomResizability.Matches(RoomResizability.Inflexible()))
             {
