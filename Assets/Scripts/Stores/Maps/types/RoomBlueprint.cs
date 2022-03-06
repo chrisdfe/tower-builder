@@ -17,7 +17,6 @@ namespace TowerBuilder.Stores.Map
 
         public CellCoordinates buildStartCoordinates { get; private set; }
         public CellCoordinates buildEndCoordinates { get; private set; }
-        // public bool buildIsActive { get; private set; } = false;
 
         public RoomBlueprint(CellCoordinates buildStartCoordinates, RoomKey roomKey)
         {
@@ -27,27 +26,27 @@ namespace TowerBuilder.Stores.Map
 
             validationErrors = new List<RoomBlueprintValidationError>();
 
-            UpdateRoomBlueprintCells();
+            ResetRoomBlueprintCells();
         }
 
         public void SetRoomKey(RoomKey roomKey)
         {
             this.roomKey = roomKey;
-            UpdateRoomBlueprintCells();
+            ResetRoomBlueprintCells();
         }
 
         public void SetBuildEndCell(CellCoordinates buildEndCoordinates)
         {
             this.buildEndCoordinates = buildEndCoordinates;
-            UpdateRoomBlueprintCells();
+            ResetRoomBlueprintCells();
         }
 
         public void SetBuildStartCell(CellCoordinates buildStartCoordinates)
         {
             this.buildStartCoordinates = buildStartCoordinates.Clone();
             this.buildEndCoordinates = buildStartCoordinates.Clone();
-            // this.buildIsActive = true;
-            UpdateRoomBlueprintCells();
+
+            ResetRoomBlueprintCells();
         }
 
         public List<CellCoordinates> GetRoomCells()
@@ -59,7 +58,6 @@ namespace TowerBuilder.Stores.Map
                 roomCells.Add(roomBlueprintCell.cellCoordinates);
             }
 
-            // return RoomCells.PositionAtCoordinates(roomCells, buildEndCoordinates);
             return roomCells;
         }
 
@@ -120,10 +118,10 @@ namespace TowerBuilder.Stores.Map
             return result;
         }
 
-        void UpdateRoomBlueprintCells()
+        void ResetRoomBlueprintCells()
         {
             // TODO - clean up existing roomBlueprintCells first?
-            List<CellCoordinates> roomCells = RoomCells.CreateRectangularRoom(0, 0);
+            List<CellCoordinates> roomCells = new List<CellCoordinates>();
 
             MapRoomDetails mapRoomDetails = Stores.Map.Constants.ROOM_DETAILS_MAP[roomKey];
 

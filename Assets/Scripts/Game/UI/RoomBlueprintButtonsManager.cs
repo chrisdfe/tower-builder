@@ -35,27 +35,27 @@ namespace TowerBuilder.UI
 
         void OnNoneButtonClick()
         {
-            Registry.Stores.MapUI.SetSelectedRoomKey(RoomKey.None);
+            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.None);
         }
 
         void OnLobbyButtonClick()
         {
-            Registry.Stores.MapUI.SetSelectedRoomKey(RoomKey.Lobby);
+            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Lobby);
         }
 
         void OnElevatorButtonClick()
         {
-            Registry.Stores.MapUI.SetSelectedRoomKey(RoomKey.Elevator);
+            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Elevator);
         }
 
         void OnOfficeButtonClick()
         {
-            Registry.Stores.MapUI.SetSelectedRoomKey(RoomKey.Office);
+            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Office);
         }
 
         void OnCondoButtonClick()
         {
-            Registry.Stores.MapUI.SetSelectedRoomKey(RoomKey.Condo);
+            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Condo);
         }
     }
 }

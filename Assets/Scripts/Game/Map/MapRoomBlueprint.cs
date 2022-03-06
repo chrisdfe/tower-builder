@@ -21,7 +21,7 @@ namespace TowerBuilder.UI
         {
             DestroyBlueprintCells();
 
-            RoomBlueprint blueprint = Registry.Stores.MapUI.currentBlueprint;
+            RoomBlueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
 
             foreach (RoomBlueprintCell roomBlueprintCell in blueprint.roomBlueprintCells)
             {
@@ -44,7 +44,7 @@ namespace TowerBuilder.UI
             mapRoomBlueprintCells = new List<MapRoomBlueprintCell>();
 
             Registry.Stores.MapUI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-            Registry.Stores.MapUI.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void OnDestroy()
@@ -52,7 +52,7 @@ namespace TowerBuilder.UI
             DestroyBlueprintCells();
 
             Registry.Stores.MapUI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
-            Registry.Stores.MapUI.onSelectedRoomKeyUpdated -= OnSelectedRoomKeyUpdated;
+            Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated -= OnSelectedRoomKeyUpdated;
         }
 
         void DestroyBlueprintCells()

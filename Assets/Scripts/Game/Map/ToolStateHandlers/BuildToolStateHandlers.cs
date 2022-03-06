@@ -31,16 +31,17 @@ namespace TowerBuilder.UI
         public override void OnTransitionFrom(ToolState nextToolState)
         {
             DestroyBlueprint();
+            Registry.Stores.MapUI.buildToolSubState.Reset();
         }
 
         public override void OnMouseDown()
         {
-            Registry.Stores.MapUI.StartBuild();
+            Registry.Stores.MapUI.buildToolSubState.StartBuild();
         }
 
         public override void OnMouseUp()
         {
-            Registry.Stores.MapUI.EndBuild();
+            Registry.Stores.MapUI.buildToolSubState.EndBuild();
         }
 
         void CreateBlueprint()
@@ -57,14 +58,5 @@ namespace TowerBuilder.UI
             GameObject.Destroy(mapRoomBlueprint.gameObject);
             mapRoomBlueprint = null;
         }
-        // void UpdateMapRoomBlueprint()
-        // {
-        //     if (!mapRoomBlueprint.isEnabled)
-        //     {
-        //         return;
-        //     }
-
-
-        // }
     }
 }

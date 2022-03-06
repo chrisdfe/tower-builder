@@ -2,6 +2,7 @@
 - Flexible-sized rooms should cost more per tile - right now they're still a flat cost liek Inflexible rooms
 - Inspect ToolState mode
 - Destroy ToolState mode
+- Awkward naming conflict between ToolState + tool sub states
 - Buttons that show active state
 - Rename MapCursor/MapCursorCells to RoomBlueprintCursor/RoomBlueprintCursorCells
 - Moving camera around with middle mouse button

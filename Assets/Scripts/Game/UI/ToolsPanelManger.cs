@@ -27,7 +27,7 @@ namespace TowerBuilder.UI
             UpdateDescriptionText();
 
             Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
-            Registry.Stores.MapUI.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void Update()
@@ -55,7 +55,6 @@ namespace TowerBuilder.UI
         void OnSelectedRoomKeyUpdated(RoomKey selectedRoomKey)
         {
             UpdateDescriptionText();
-
         }
 
         void UpdateDescriptionText()
@@ -63,7 +62,7 @@ namespace TowerBuilder.UI
             ToolState toolState = Registry.Stores.MapUI.toolState;
             if (toolState == ToolState.Build)
             {
-                RoomKey selectedRoomKey = Registry.Stores.MapUI.selectedRoomKey;
+                RoomKey selectedRoomKey = Registry.Stores.MapUI.buildToolSubState.selectedRoomKey;
                 if (selectedRoomKey == RoomKey.None)
                 {
                     descriptionText.text = $"{toolState} - {selectedRoomKey}";
