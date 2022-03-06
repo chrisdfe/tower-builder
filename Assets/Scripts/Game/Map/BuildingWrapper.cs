@@ -16,31 +16,33 @@ public class BuildingWrapper : MonoBehaviour
     {
         mapCubeCellPrefab = Resources.Load<GameObject>("Prefabs/Map/MapRoomCell");
 
+        // TODO - populate rooms based on initial state of map
+
         Registry.Stores.Map.onRoomAdded += OnRoomAdded;
     }
 
-    void OnRoomAdded(MapRoom newMapRoom)
+    void OnRoomAdded(Room newMapRoom)
     {
         CreateRoom(newMapRoom);
     }
 
-    void CreateRoom(MapRoom mapRoom)
+    void CreateRoom(Room room)
     {
         List<MapRoomCell> mapRoomCells = new List<MapRoomCell>();
 
-        foreach (CellCoordinates cellCoordinates in mapRoom.roomCells)
+        foreach (CellCoordinates cellCoordinates in room.roomCells)
         {
             GameObject mapRoomCellGameObject = Instantiate<GameObject>(mapCubeCellPrefab);
             MapRoomCell mapRoomCell = mapRoomCellGameObject.GetComponent<MapRoomCell>();
 
             mapRoomCell.transform.SetParent(transform);
-            mapRoomCell.SetMapRoom(mapRoom);
+            mapRoomCell.SetMapRoom(room);
             mapRoomCell.SetRoomCell(cellCoordinates);
             mapRoomCell.Setup();
 
             mapRoomCells.Add(mapRoomCell);
         }
 
-        mapRoomCellMap.Add(mapRoom.id, mapRoomCells);
+        mapRoomCellMap.Add(room.id, mapRoomCells);
     }
 }

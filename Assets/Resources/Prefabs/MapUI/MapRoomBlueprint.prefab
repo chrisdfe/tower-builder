@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1608067033181158790}
   - component: {fileID: 8333934201834990330}
   m_Layer: 0
-  m_Name: MapCursor
+  m_Name: MapRoomBlueprint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

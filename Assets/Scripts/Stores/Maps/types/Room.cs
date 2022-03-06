@@ -6,13 +6,13 @@ using TowerBuilder.Stores.Map;
 
 namespace TowerBuilder.Stores.Map
 {
-    public class MapRoom
+    public class Room
     {
         public string id { get; private set; }
         public RoomKey roomKey { get; private set; }
         public List<CellCoordinates> roomCells { get; private set; }
 
-        public MapRoom(RoomKey roomKey, RoomBlueprint blueprint)
+        public Room(RoomKey roomKey, RoomBlueprint blueprint)
         {
             id = GenerateId();
             this.roomKey = roomKey;

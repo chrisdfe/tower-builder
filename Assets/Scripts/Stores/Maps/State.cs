@@ -7,24 +7,24 @@ namespace TowerBuilder.Stores.Map
 {
     public class State
     {
-        public List<MapRoom> mapRooms { get; private set; }
+        public List<Room> mapRooms { get; private set; }
 
-        public delegate void RoomAddedEvent(MapRoom mapRoom);
+        public delegate void RoomAddedEvent(Room mapRoom);
         public RoomAddedEvent onRoomAdded;
 
         public State()
         {
-            mapRooms = new List<MapRoom>();
+            mapRooms = new List<Room>();
         }
 
 
-        public void AddRoom(MapRoom newRoom)
+        public void AddRoom(Room room)
         {
-            mapRooms.Add(newRoom);
+            mapRooms.Add(room);
 
             if (onRoomAdded != null)
             {
-                onRoomAdded(newRoom);
+                onRoomAdded(room);
             }
         }
     }

@@ -92,13 +92,13 @@ namespace TowerBuilder.Stores.Map
 
         // TODO - same for floor
 
-        public static bool CellIsOccupied(CellCoordinates cellCoordinates, List<MapRoom> mapRooms)
+        public static bool CellIsOccupied(CellCoordinates cellCoordinates, List<Room> rooms)
         {
             // List<MapRoom> mapRooms = Registry.Stores.Map.mapRooms;
 
-            foreach (MapRoom mapRoom in mapRooms)
+            foreach (Room room in rooms)
             {
-                foreach (CellCoordinates roomCellCoordiantes in mapRoom.roomCells)
+                foreach (CellCoordinates roomCellCoordiantes in room.roomCells)
                 {
                     if (cellCoordinates.Matches(roomCellCoordiantes))
                     {

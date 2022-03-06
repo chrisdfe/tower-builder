@@ -47,12 +47,12 @@ namespace TowerBuilder.Stores.Map
             this.cellCoordinates = cellCoordinates;
         }
 
-        public void Validate(List<MapRoom> mapRooms)
+        public void Validate(List<Room> rooms)
         {
             validationErrors = new List<RoomBlueprintValidationError>();
 
             // Check for overlapping cells
-            foreach (MapRoom mapRoom in mapRooms)
+            foreach (Room mapRoom in rooms)
             {
                 foreach (CellCoordinates otherRoomCellCoordinates in mapRoom.roomCells)
                 {

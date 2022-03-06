@@ -17,10 +17,6 @@ namespace TowerBuilder.UI
         public FloorPlane floorPlane;
         public Collider floorPlaneCollider;
 
-        GameObject mapCursorPrefab;
-        public MapCursor mapCursor;
-
-        GameObject placeholderTileCubePrefab;
         ToolStateHandlersBase currentToolStateHandler;
 
         public Dictionary<ToolState, ToolStateHandlersBase> toolStateHandlerMap;
@@ -35,14 +31,6 @@ namespace TowerBuilder.UI
             floorPlane = transform.Find("FloorPlane").GetComponent<FloorPlane>();
             floorPlaneCollider = floorPlane.GetComponent<Collider>();
 
-            mapCursorPrefab = Resources.Load<GameObject>("Prefabs/MapUI/MapCursor");
-            mapCursor = Instantiate<GameObject>(mapCursorPrefab).GetComponent<MapCursor>();
-            mapCursor.transform.SetParent(transform);
-            mapCursor.transform.position = Vector3.zero;
-            mapCursor.Disable();
-
-            placeholderTileCubePrefab = Resources.Load<GameObject>("Prefabs/Map/PlaceholderTileCube");
-
             buildingWrapper = transform.Find("BuildingWrapper");
 
             toolStateHandlerMap = new Dictionary<ToolState, ToolStateHandlersBase>()
@@ -54,7 +42,6 @@ namespace TowerBuilder.UI
             };
 
             SetCurrentToolStateHandlers();
-
             // Perform initialization of whatever tool state is the default
             currentToolStateHandler.OnTransitionTo(Registry.Stores.MapUI.toolState);
 
@@ -64,11 +51,11 @@ namespace TowerBuilder.UI
 
         void Update()
         {
+            UpdateCurrentSelectedCell();
+
             // TODO - handle transitions between "is in dead zone" and "is not in dead zone"
             if (!MouseCursorIsInDeadZone())
             {
-                UpdateMapCursor();
-
                 if (Input.GetMouseButtonDown(0))
                 {
                     currentToolStateHandler.OnMouseDown();
@@ -83,24 +70,8 @@ namespace TowerBuilder.UI
             currentToolStateHandler.Update();
         }
 
-        bool MouseCursorIsInDeadZone()
+        void UpdateCurrentSelectedCell()
         {
-            return (
-                Input.mousePosition.x < MAP_CURSOR_CLICK_BUFFER.x ||
-                Input.mousePosition.x > (Screen.width - MAP_CURSOR_CLICK_BUFFER.x) ||
-
-                Input.mousePosition.y < MAP_CURSOR_CLICK_BUFFER.y ||
-                Input.mousePosition.y > (Screen.height - MAP_CURSOR_CLICK_BUFFER.y)
-            );
-        }
-
-        void UpdateMapCursor()
-        {
-            if (!mapCursor.isEnabled)
-            {
-                return;
-            }
-
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
@@ -117,6 +88,17 @@ namespace TowerBuilder.UI
                     Registry.Stores.MapUI.SetCurrentSelectedCell(hoveredCell);
                 }
             }
+        }
+
+        bool MouseCursorIsInDeadZone()
+        {
+            return (
+                Input.mousePosition.x < MAP_CURSOR_CLICK_BUFFER.x ||
+                Input.mousePosition.x > (Screen.width - MAP_CURSOR_CLICK_BUFFER.x) ||
+
+                Input.mousePosition.y < MAP_CURSOR_CLICK_BUFFER.y ||
+                Input.mousePosition.y > (Screen.height - MAP_CURSOR_CLICK_BUFFER.y)
+            );
         }
 
         void OnToolStateUpdated(ToolState nextToolState, ToolState previousToolState)

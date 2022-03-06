@@ -155,7 +155,7 @@ namespace TowerBuilder.Stores.MapUI
                 return;
             }
 
-            MapRoom newRoom = new MapRoom(selectedRoomKey, currentBlueprint);
+            Room newRoom = new Room(selectedRoomKey, currentBlueprint);
             Registry.Stores.Map.AddRoom(newRoom);
 
             MapRoomDetails roomDetails = Map.Constants.ROOM_DETAILS_MAP[selectedRoomKey];

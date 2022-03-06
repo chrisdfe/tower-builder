@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class MapRoomCell : MonoBehaviour
 {
-    public MapRoom mapRoom { get; private set; }
+    public Room room { get; private set; }
 
     public CellCoordinates cellCoordinates { get; private set; }
 
@@ -25,9 +25,9 @@ public class MapRoomCell : MonoBehaviour
         cellCubeMaterial = cellCube.GetComponent<Renderer>().material;
     }
 
-    public void SetMapRoom(MapRoom mapRoom)
+    public void SetMapRoom(Room room)
     {
-        this.mapRoom = mapRoom;
+        this.room = room;
     }
 
     public void SetRoomCell(CellCoordinates cellCoordinates)
@@ -37,14 +37,10 @@ public class MapRoomCell : MonoBehaviour
 
     public void Setup()
     {
-        // set position
-        float TILE_SIZE = TowerBuilder.Stores.Map.Constants.TILE_SIZE;
-
-        // 
         transform.position = MapCellHelpers.CellCoordinatesToPosition(cellCoordinates);
 
         // Set color
-        MapRoomDetails mapRoomDetails = TowerBuilder.Stores.Map.Constants.ROOM_DETAILS_MAP[mapRoom.roomKey];
+        MapRoomDetails mapRoomDetails = TowerBuilder.Stores.Map.Constants.ROOM_DETAILS_MAP[room.roomKey];
         Color color = mapRoomDetails.color;
         cellCubeMaterial.color = mapRoomDetails.color;
     }

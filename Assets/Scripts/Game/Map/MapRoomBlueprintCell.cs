@@ -6,12 +6,12 @@ using TowerBuilder.Stores.Map;
 using TowerBuilder.UI;
 using UnityEngine;
 
-public class MapCursorCell : MonoBehaviour
+public class MapRoomBlueprintCell : MonoBehaviour
 {
     static Color VALID_COLOR = new Color(0, 0, 255, 0.5f);
     static Color INVALID_COLOR = new Color(255, 0, 0, 0.5f);
 
-    public MapCursor parentMapCursor;
+    // public MapRoomBlueprint parentMapRoomBlueprint;
 
     RoomBlueprintCell roomBlueprintCell;
 
@@ -26,7 +26,7 @@ public class MapCursorCell : MonoBehaviour
 
     public void UpdateMaterialColor()
     {
-        if (roomBlueprintCell.parentBlueprint.IsValid() && roomBlueprintCell.IsValid())
+        if (IsValid())
         {
             _renderer.material.color = VALID_COLOR;
         }
@@ -43,6 +43,11 @@ public class MapCursorCell : MonoBehaviour
 
     bool IsValid()
     {
+        if (!roomBlueprintCell.parentBlueprint.IsValid())
+        {
+            return false;
+        }
+
         if (!roomBlueprintCell.IsValid())
         {
             return false;

@@ -9,18 +9,28 @@ namespace TowerBuilder.UI
 {
     public class BuildToolStateHandlers : ToolStateHandlersBase
     {
-        public BuildToolStateHandlers(MapManager parentMapManager) : base(parentMapManager) { }
+        MapManager parentMapManager;
+
+        GameObject mapRoomBlueprintPrefab;
+        public MapRoomBlueprint mapRoomBlueprint;
+
+        public BuildToolStateHandlers(MapManager parentMapManager) : base(parentMapManager)
+        {
+            this.parentMapManager = parentMapManager;
+
+            mapRoomBlueprintPrefab = Resources.Load<GameObject>("Prefabs/MapUI/MapRoomBlueprint");
+        }
 
         public override void Update() { }
 
         public override void OnTransitionTo(ToolState previousToolState)
         {
-            mapManager.mapCursor.Enable();
+            CreateBlueprint();
         }
 
         public override void OnTransitionFrom(ToolState nextToolState)
         {
-            mapManager.mapCursor.Disable();
+            DestroyBlueprint();
         }
 
         public override void OnMouseDown()
@@ -32,5 +42,29 @@ namespace TowerBuilder.UI
         {
             Registry.Stores.MapUI.EndBuild();
         }
+
+        void CreateBlueprint()
+        {
+            mapRoomBlueprint = GameObject.Instantiate<GameObject>(mapRoomBlueprintPrefab).GetComponent<MapRoomBlueprint>();
+            mapRoomBlueprint.transform.SetParent(parentMapManager.transform);
+
+            // TODO - set this to current selected cell
+            mapRoomBlueprint.transform.position = Vector3.zero;
+        }
+
+        void DestroyBlueprint()
+        {
+            GameObject.Destroy(mapRoomBlueprint.gameObject);
+            mapRoomBlueprint = null;
+        }
+        // void UpdateMapRoomBlueprint()
+        // {
+        //     if (!mapRoomBlueprint.isEnabled)
+        //     {
+        //         return;
+        //     }
+
+
+        // }
     }
 }

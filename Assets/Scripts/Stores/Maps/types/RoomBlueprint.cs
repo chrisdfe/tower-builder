@@ -63,10 +63,10 @@ namespace TowerBuilder.Stores.Map
             return roomCells;
         }
 
-        public void Validate(List<MapRoom> mapRooms, int walletBalance)
+        public void Validate(List<Room> rooms, int walletBalance)
         {
             ValidateTopLevel(walletBalance);
-            ValidateRoomCells(mapRooms);
+            ValidateRoomCells(rooms);
         }
 
         public List<RoomBlueprintValidationError> GetAllValidationErrors()
@@ -97,11 +97,11 @@ namespace TowerBuilder.Stores.Map
         // Per-cell level validations
         // like overlapping tiles
         // TODO - room-specific validations
-        void ValidateRoomCells(List<MapRoom> mapRooms)
+        void ValidateRoomCells(List<Room> rooms)
         {
             foreach (RoomBlueprintCell roomBlueprintCell in roomBlueprintCells)
             {
-                roomBlueprintCell.Validate(mapRooms);
+                roomBlueprintCell.Validate(rooms);
             }
         }
 
