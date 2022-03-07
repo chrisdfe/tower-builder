@@ -7,10 +7,5 @@ using UnityEngine;
 
 namespace TowerBuilder.UI
 {
-    public class FloorPlane : MonoBehaviour
-    {
-        void Awake()
-        {
-        }
-    }
+    public class FloorPlane : MonoBehaviour { }
 }

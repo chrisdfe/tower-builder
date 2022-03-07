@@ -10,15 +10,19 @@ public class BuildingWrapper : MonoBehaviour
     GameObject mapCubeCellPrefab;
 
     // id: list of cells that belong to the room
-    Dictionary<string, List<MapRoomCell>> mapRoomCellMap = new Dictionary<string, List<MapRoomCell>>();
+    List<MapRoomCell> mapRoomCells = new List<MapRoomCell>();
 
     void Awake()
     {
         mapCubeCellPrefab = Resources.Load<GameObject>("Prefabs/Map/MapRoomCell");
 
+
         // TODO - populate rooms based on initial state of map
+        //        instead of just an empty list
+        mapRoomCells = new List<MapRoomCell>();
 
         Registry.Stores.Map.onRoomAdded += OnRoomAdded;
+        Registry.Stores.Map.onRoomDestroyed += OnRoomDestroyed;
     }
 
     void OnRoomAdded(Room newMapRoom)
@@ -28,8 +32,6 @@ public class BuildingWrapper : MonoBehaviour
 
     void CreateRoom(Room room)
     {
-        List<MapRoomCell> mapRoomCells = new List<MapRoomCell>();
-
         foreach (CellCoordinates cellCoordinates in room.roomCells)
         {
             GameObject mapRoomCellGameObject = Instantiate<GameObject>(mapCubeCellPrefab);
@@ -38,11 +40,33 @@ public class BuildingWrapper : MonoBehaviour
             mapRoomCell.transform.SetParent(transform);
             mapRoomCell.SetMapRoom(room);
             mapRoomCell.SetRoomCell(cellCoordinates);
-            mapRoomCell.Setup();
+            mapRoomCell.Initialize();
 
             mapRoomCells.Add(mapRoomCell);
         }
+    }
 
-        mapRoomCellMap.Add(room.id, mapRoomCells);
+    void OnRoomDestroyed(Room room)
+    {
+        if (room == null)
+        {
+            return;
+        }
+
+        List<MapRoomCell> newMapRoomCells = new List<MapRoomCell>();
+
+        foreach (MapRoomCell mapRoomCell in mapRoomCells)
+        {
+            if (mapRoomCell.room.id == room.id)
+            {
+                Destroy(mapRoomCell.gameObject);
+            }
+            else
+            {
+                newMapRoomCells.Add(mapRoomCell);
+            }
+        }
+
+        mapRoomCells = newMapRoomCells;
     }
 }

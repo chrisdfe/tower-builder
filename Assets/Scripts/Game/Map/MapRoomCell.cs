@@ -23,6 +23,8 @@ public class MapRoomCell : MonoBehaviour
 
         cellCube = transform.Find("CellCube");
         cellCubeMaterial = cellCube.GetComponent<Renderer>().material;
+
+        Registry.Stores.MapUI.destroyToolSubState.onCurrentSelectedRoomUpdated += OnDestroyRoomUpdated;
     }
 
     public void SetMapRoom(Room room)
@@ -35,7 +37,7 @@ public class MapRoomCell : MonoBehaviour
         this.cellCoordinates = cellCoordinates;
     }
 
-    public void Setup()
+    public void Initialize()
     {
         transform.position = MapCellHelpers.CellCoordinatesToPosition(cellCoordinates);
 
@@ -43,5 +45,24 @@ public class MapRoomCell : MonoBehaviour
         MapRoomDetails mapRoomDetails = TowerBuilder.Stores.Map.Constants.ROOM_DETAILS_MAP[room.roomKey];
         Color color = mapRoomDetails.color;
         cellCubeMaterial.color = mapRoomDetails.color;
+    }
+
+
+    void OnDestroyRoomUpdated(Room currentDestroyRoom)
+    {
+        if (currentDestroyRoom != null && currentDestroyRoom.id == room.id)
+        {
+            // highlight
+            setColorAlpha(0.5f);
+        }
+        else
+        {
+            setColorAlpha(1f);
+        }
+    }
+
+    void setColorAlpha(float alpha)
+    {
+        cellCubeMaterial.color = new Color(cellCubeMaterial.color.r, cellCubeMaterial.color.g, cellCubeMaterial.color.b, alpha);
     }
 }

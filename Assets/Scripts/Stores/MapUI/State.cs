@@ -21,6 +21,7 @@ namespace TowerBuilder.Stores.MapUI
 
         public NoneToolState noneToolSubState;
         public BuildToolState buildToolSubState;
+        public DestroyToolState destroyToolSubState;
 
         public ToolStateBase currentActiveToolSubState
         {
@@ -29,6 +30,11 @@ namespace TowerBuilder.Stores.MapUI
                 if (toolState == ToolState.Build)
                 {
                     return buildToolSubState;
+                }
+
+                if (toolState == ToolState.Destroy)
+                {
+                    return destroyToolSubState;
                 }
 
                 return noneToolSubState;
@@ -42,11 +48,12 @@ namespace TowerBuilder.Stores.MapUI
 
             noneToolSubState = new NoneToolState(this);
             buildToolSubState = new BuildToolState(this);
+            destroyToolSubState = new DestroyToolState(this);
         }
 
         public void SetToolState(ToolState toolState)
         {
-            ToolState previousToolState = toolState;
+            ToolState previousToolState = this.toolState;
             this.toolState = toolState;
 
             if (onToolStateUpdated != null)

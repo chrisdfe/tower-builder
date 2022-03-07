@@ -11,15 +11,17 @@ namespace TowerBuilder.UI
     {
         Button NoneButton;
         Button BuildButton;
-        Button CondoButton;
+        Button DestroyButton;
 
         void Awake()
         {
             NoneButton = transform.Find("NoneButton").GetComponent<Button>();
             BuildButton = transform.Find("BuildButton").GetComponent<Button>();
+            DestroyButton = transform.Find("DestroyButton").GetComponent<Button>();
 
             NoneButton.onClick.AddListener(OnNoneButtonClick);
             BuildButton.onClick.AddListener(OnBuildButtonClick);
+            DestroyButton.onClick.AddListener(OnDestroyButtonClick);
         }
 
         void OnNoneButtonClick()
@@ -32,10 +34,14 @@ namespace TowerBuilder.UI
             OnToolButtonClick(ToolState.Build);
         }
 
+        void OnDestroyButtonClick()
+        {
+            OnToolButtonClick(ToolState.Destroy);
+        }
+
         void OnToolButtonClick(ToolState toolState)
         {
             Registry.Stores.MapUI.SetToolState(toolState);
         }
-
     }
 }

@@ -32,6 +32,7 @@ namespace TowerBuilder.UI
 
         void Update()
         {
+            // Right click to exit out of current state?
             if (Input.GetMouseButtonDown(1) && Registry.Stores.MapUI.toolState != ToolState.None)
             {
                 Registry.Stores.MapUI.SetToolState(ToolState.None);

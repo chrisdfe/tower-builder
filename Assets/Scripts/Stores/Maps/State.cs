@@ -12,6 +12,9 @@ namespace TowerBuilder.Stores.Map
         public delegate void RoomAddedEvent(Room mapRoom);
         public RoomAddedEvent onRoomAdded;
 
+        public delegate void RoomDestroyedEvent(Room mapRoom);
+        public RoomAddedEvent onRoomDestroyed;
+
         public State()
         {
             mapRooms = new List<Room>();
@@ -25,6 +28,16 @@ namespace TowerBuilder.Stores.Map
             if (onRoomAdded != null)
             {
                 onRoomAdded(room);
+            }
+        }
+
+        public void DestroyRoom(Room room)
+        {
+            mapRooms.Remove(room);
+
+            if (onRoomDestroyed != null)
+            {
+                onRoomDestroyed(room);
             }
         }
     }

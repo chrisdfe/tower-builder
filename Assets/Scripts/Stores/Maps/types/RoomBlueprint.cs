@@ -58,19 +58,16 @@ namespace TowerBuilder.Stores.Map
                 roomCells.Add(roomBlueprintCell.cellCoordinates);
             }
 
+            // return RoomCells.PositionAtCoordinates(roomCells, buildEndCoordinates);
             return roomCells;
         }
 
-        public void Validate(List<Room> rooms, int walletBalance)
+        public List<RoomBlueprintValidationError> Validate(List<Room> rooms, int walletBalance)
         {
-            ValidateTopLevel(walletBalance);
-            ValidateRoomCells(rooms);
-        }
-
-        public List<RoomBlueprintValidationError> GetAllValidationErrors()
-        {
-            List<RoomBlueprintValidationError> cellValidationErrors = GetCellValidationErrors();
-            return validationErrors.Concat(cellValidationErrors).ToList();
+            List<RoomBlueprintValidationError> topLevelValidationErrors = GetTopLevelValidationErrors(walletBalance);
+            List<RoomBlueprintValidationError> cellValidationErrors = GetCellValidationErrors(rooms);
+            validationErrors = topLevelValidationErrors.Concat(cellValidationErrors).ToList();
+            return validationErrors;
         }
 
         public bool IsValid()
@@ -80,9 +77,9 @@ namespace TowerBuilder.Stores.Map
 
         // Top-level validations, like whether the player has enough money
         // These apply to all cells in this blueprint (they will all be red)
-        void ValidateTopLevel(int walletBalance)
+        List<RoomBlueprintValidationError> GetTopLevelValidationErrors(int walletBalance)
         {
-            validationErrors = new List<RoomBlueprintValidationError>();
+            List<RoomBlueprintValidationError> result = new List<RoomBlueprintValidationError>();
 
             MapRoomDetails roomDetails = TowerBuilder.Stores.Map.Constants.ROOM_DETAILS_MAP[roomKey];
 
@@ -90,25 +87,21 @@ namespace TowerBuilder.Stores.Map
             {
                 validationErrors.Add(new RoomBlueprintValidationError("Insufficient Funds."));
             }
+
+            return result;
         }
 
         // Per-cell level validations
         // like overlapping tiles
         // TODO - room-specific validations
-        void ValidateRoomCells(List<Room> rooms)
-        {
-            foreach (RoomBlueprintCell roomBlueprintCell in roomBlueprintCells)
-            {
-                roomBlueprintCell.Validate(rooms);
-            }
-        }
-
-        List<RoomBlueprintValidationError> GetCellValidationErrors()
+        List<RoomBlueprintValidationError> GetCellValidationErrors(List<Room> rooms)
         {
             List<RoomBlueprintValidationError> result = new List<RoomBlueprintValidationError>();
 
             foreach (RoomBlueprintCell roomBlueprintCell in roomBlueprintCells)
             {
+                roomBlueprintCell.Validate(rooms);
+
                 foreach (RoomBlueprintValidationError validationError in roomBlueprintCell.validationErrors)
                 {
                     result.Add(validationError);

@@ -41,6 +41,7 @@ public class MapRoomBlueprintCell : MonoBehaviour
         _renderer = GetComponent<Renderer>();
     }
 
+
     bool IsValid()
     {
         if (!roomBlueprintCell.parentBlueprint.IsValid())
@@ -55,4 +56,5 @@ public class MapRoomBlueprintCell : MonoBehaviour
 
         return true;
     }
+
 }

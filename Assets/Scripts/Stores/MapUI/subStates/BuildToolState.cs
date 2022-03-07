@@ -112,9 +112,7 @@ namespace TowerBuilder.Stores.MapUI
                 return;
             }
 
-            currentBlueprint.Validate(Registry.Stores.Map.mapRooms, Registry.Stores.Wallet.balance);
-
-            List<RoomBlueprintValidationError> validationErrors = currentBlueprint.GetAllValidationErrors();
+            List<RoomBlueprintValidationError> validationErrors = currentBlueprint.Validate(Registry.Stores.Map.mapRooms, Registry.Stores.Wallet.balance);
 
             if (validationErrors.Count > 0)
             {

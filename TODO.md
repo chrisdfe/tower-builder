@@ -1,7 +1,6 @@
 # TODO
 - Flexible-sized rooms should cost more per tile - right now they're still a flat cost liek Inflexible rooms
 - Inspect ToolState mode
-- Destroy ToolState mode
 - Awkward naming conflict between ToolState + tool sub states
 - Buttons that show active state
 - Rename MapCursor/MapCursorCells to RoomBlueprintCursor/RoomBlueprintCursorCells
@@ -14,6 +13,7 @@
   if they're all in one place
 
 # Done
+- Destroy ToolState mode
 - Add click-and-drag room building
 - Add flexble-sized rooms
 - Remove 'RoomStore' - having just MapStore should be fine
