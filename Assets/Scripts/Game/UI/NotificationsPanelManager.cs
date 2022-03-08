@@ -9,8 +9,11 @@ using UnityEngine.UI;
 
 namespace TowerBuilder.UI
 {
+
     public class NotificationsPanelManager : MonoBehaviour
     {
+        static int NOTIFICATIONS_LIMIT = 3;
+
         Button button;
         Text text;
 
@@ -40,13 +43,13 @@ namespace TowerBuilder.UI
 
         void OnNotificationAdded(Notification newNotification)
         {
-
             int notificationsLength = Registry.Stores.Notifications.notifications.Count;
-            Notification[] notifications = new Notification[notificationsLength];
-            Registry.Stores.Notifications.notifications.CopyTo(notifications);
-            notifications.Reverse();
+            List<Notification> notifications = Registry.Stores.Notifications.notifications;
+            // Get the n most recent notifications
+            List<Notification> displayNotifications = Enumerable.Reverse(notifications).Take(NOTIFICATIONS_LIMIT).ToList();
+
             string newText = "";
-            foreach (Notification notification in notifications)
+            foreach (Notification notification in displayNotifications)
             {
                 newText += notification.message + "\n";
             }

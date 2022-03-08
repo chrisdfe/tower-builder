@@ -13,24 +13,6 @@ namespace TowerBuilder.Stores.Map
         public string id { get; private set; }
         public CellCoordinates cellCoordinates { get; private set; } = CellCoordinates.zero;
 
-        public CellCoordinates absoluteCellCoordinates
-        {
-            get
-            {
-                // return parentBlueprint.buildStartCoordinates)
-                return cellCoordinates;
-            }
-        }
-
-        // relative to parentBlueprint
-        public CellCoordinates relativeCellCoordiantes
-        {
-            get
-            {
-                return cellCoordinates.Subtract(parentBlueprint.buildStartCoordinates);
-            }
-        }
-
         public List<RoomBlueprintValidationError> validationErrors;
 
         public RoomBlueprintCell(RoomBlueprint parentBlueprint, CellCoordinates cellCoordinates)
@@ -47,21 +29,10 @@ namespace TowerBuilder.Stores.Map
             this.cellCoordinates = cellCoordinates;
         }
 
-        public void Validate(List<Room> rooms)
+        // rooms is a list of all of the rooms on the map currently
+        public void Validate(List<Room> allRooms)
         {
-            validationErrors = new List<RoomBlueprintValidationError>();
-
-            // Check for overlapping cells
-            foreach (Room mapRoom in rooms)
-            {
-                foreach (CellCoordinates otherRoomCellCoordinates in mapRoom.roomCells)
-                {
-                    if (otherRoomCellCoordinates.Matches(absoluteCellCoordinates))
-                    {
-                        validationErrors.Add(new RoomBlueprintValidationError("You cannot build rooms on top of each other."));
-                    }
-                }
-            }
+            validationErrors = Validators.ValidateBlueprintCell(this, allRooms);
         }
 
         public bool IsValid()

@@ -1,6 +1,9 @@
 # TODO
+- CellCoordinates validation stuff should go somewhere other than inside of RoomBlueprintCell
 - Build routes from 0,0 to each room
 - Flexible-sized rooms should be resizable once placed
+- Flexible-sized rooms currently only work in increments of 1x1: make them work in increments of any rectangular room shape.
+  - e.g I want to make a wide elevator that takes up 2 horizontal cells
 - AND/OR placing a tile next to another flexible room should add onto it instead of creating a new room. i.e for elevators/lobbies
   - perhaps not for XY flexible rooms, like parks?
 - Room-specific validations

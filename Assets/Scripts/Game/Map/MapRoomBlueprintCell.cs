@@ -20,7 +20,7 @@ public class MapRoomBlueprintCell : MonoBehaviour
     public void SetRoomBlueprintCell(RoomBlueprintCell roomBlueprintCell)
     {
         this.roomBlueprintCell = roomBlueprintCell;
-        transform.localPosition = MapCellHelpers.CellCoordinatesToPosition(roomBlueprintCell.absoluteCellCoordinates);
+        transform.localPosition = MapCellHelpers.CellCoordinatesToPosition(roomBlueprintCell.cellCoordinates);
         UpdateMaterialColor();
     }
 

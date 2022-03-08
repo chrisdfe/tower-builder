@@ -19,9 +19,20 @@ namespace TowerBuilder.Stores.Map
             roomCells = blueprint.GetRoomCells();
         }
 
+        public MapRoomDetails GetDetails()
+        {
+            return Room.GetDetails(roomKey);
+        }
+
+
         string GenerateId()
         {
             return Guid.NewGuid().ToString();
+        }
+
+        public static MapRoomDetails GetDetails(RoomKey roomKey)
+        {
+            return Stores.Map.Constants.ROOM_DETAILS_MAP[roomKey];
         }
     }
 }
