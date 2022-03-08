@@ -14,6 +14,7 @@ namespace TowerBuilder.UI
         Button NoneButton;
         Button BuildButton;
         Button DestroyButton;
+        Button InspectButton;
 
         Button currentButton;
         Color originalColor;
@@ -23,10 +24,12 @@ namespace TowerBuilder.UI
             NoneButton = transform.Find("NoneButton").GetComponent<Button>();
             BuildButton = transform.Find("BuildButton").GetComponent<Button>();
             DestroyButton = transform.Find("DestroyButton").GetComponent<Button>();
+            InspectButton = transform.Find("InspectButton").GetComponent<Button>();
 
             NoneButton.onClick.AddListener(OnNoneButtonClick);
             BuildButton.onClick.AddListener(OnBuildButtonClick);
             DestroyButton.onClick.AddListener(OnDestroyButtonClick);
+            InspectButton.onClick.AddListener(OnInspectButtonClick);
 
             originalColor = NoneButton.colors.normalColor;
 
@@ -46,6 +49,11 @@ namespace TowerBuilder.UI
         void OnDestroyButtonClick()
         {
             OnToolButtonClick(ToolState.Destroy);
+        }
+
+        void OnInspectButtonClick()
+        {
+            OnToolButtonClick(ToolState.Inspect);
         }
 
         void OnToolButtonClick(ToolState toolState)
@@ -76,6 +84,11 @@ namespace TowerBuilder.UI
             if (toolState == ToolState.Destroy)
             {
                 return DestroyButton;
+            }
+
+            if (toolState == ToolState.Inspect)
+            {
+                return InspectButton;
             }
 
             return NoneButton;

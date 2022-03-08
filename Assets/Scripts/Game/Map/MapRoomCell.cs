@@ -25,6 +25,8 @@ public class MapRoomCell : MonoBehaviour
         cellCubeMaterial = cellCube.GetComponent<Renderer>().material;
 
         Registry.Stores.MapUI.destroyToolSubState.onCurrentSelectedRoomUpdated += OnDestroyRoomUpdated;
+        Registry.Stores.MapUI.inspectToolSubState.onCurrentSelectedRoomUpdated += OnInspectHoverRoomUpdated;
+        Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
     }
 
     public void SetMapRoom(Room room)
@@ -42,9 +44,7 @@ public class MapRoomCell : MonoBehaviour
         transform.position = MapCellHelpers.CellCoordinatesToPosition(cellCoordinates);
 
         // Set color
-        MapRoomDetails mapRoomDetails = TowerBuilder.Stores.Map.Constants.ROOM_DETAILS_MAP[room.roomKey];
-        Color color = mapRoomDetails.color;
-        cellCubeMaterial.color = mapRoomDetails.color;
+        ResetColor();
     }
 
 
@@ -53,16 +53,57 @@ public class MapRoomCell : MonoBehaviour
         if (currentDestroyRoom != null && currentDestroyRoom.id == room.id)
         {
             // highlight
-            setColorAlpha(0.5f);
+            SetColorAlpha(0.5f);
         }
         else
         {
-            setColorAlpha(1f);
+            SetColorAlpha(1f);
         }
     }
 
-    void setColorAlpha(float alpha)
+    void OnInspectHoverRoomUpdated(Room currentInspectHoverRoom)
+    {
+        if (
+            Registry.Stores.MapUI.inspectToolSubState.currentInspectedRoom != null &&
+            room.id == Registry.Stores.MapUI.inspectToolSubState.currentInspectedRoom.id
+        )
+        {
+            return;
+        }
+
+        if (currentInspectHoverRoom != null && currentInspectHoverRoom.id == room.id)
+        {
+            // highlight
+            SetColorAlpha(0.5f);
+        }
+        else
+        {
+            ResetColor();
+        }
+    }
+
+    void OnInspectRoomUpdated(Room currentInspectRoom)
+    {
+        if (currentInspectRoom != null && currentInspectRoom.id == room.id)
+        {
+            cellCubeMaterial.color = Color.white;
+        }
+        else
+        {
+            ResetColor();
+        }
+    }
+
+    void SetColorAlpha(float alpha)
     {
         cellCubeMaterial.color = new Color(cellCubeMaterial.color.r, cellCubeMaterial.color.g, cellCubeMaterial.color.b, alpha);
     }
+
+    void ResetColor()
+    {
+        MapRoomDetails mapRoomDetails = TowerBuilder.Stores.Map.Constants.ROOM_DETAILS_MAP[room.roomKey];
+        Color color = mapRoomDetails.color;
+        cellCubeMaterial.color = mapRoomDetails.color;
+    }
 }
+

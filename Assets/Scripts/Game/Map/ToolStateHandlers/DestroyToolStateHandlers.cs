@@ -22,10 +22,6 @@ namespace TowerBuilder.UI
         public override void OnMouseUp()
         {
             Room currentSelectedRoom = Registry.Stores.MapUI.destroyToolSubState.currentSelectedRoom;
-
-            Debug.Log("Time to delete room: ");
-            Debug.Log(currentSelectedRoom);
-
             Registry.Stores.MapUI.destroyToolSubState.AttemptToDestroyRoom(currentSelectedRoom);
         }
     }
