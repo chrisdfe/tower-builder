@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Blueprints;
 using TowerBuilder.UI;
 using UnityEngine;
 
@@ -13,11 +14,11 @@ public class MapRoomBlueprintCell : MonoBehaviour
 
     // public MapRoomBlueprint parentMapRoomBlueprint;
 
-    RoomBlueprintCell roomBlueprintCell;
+    BlueprintCell roomBlueprintCell;
 
     Renderer _renderer;
 
-    public void SetRoomBlueprintCell(RoomBlueprintCell roomBlueprintCell)
+    public void SetRoomBlueprintCell(BlueprintCell roomBlueprintCell)
     {
         this.roomBlueprintCell = roomBlueprintCell;
         transform.localPosition = MapCellHelpers.CellCoordinatesToPosition(roomBlueprintCell.cellCoordinates);

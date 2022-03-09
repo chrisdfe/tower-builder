@@ -1,0 +1,187 @@
+using System.Collections;
+using System.Collections.Generic;
+
+using TowerBuilder.Stores.Map;
+
+using UnityEngine;
+
+namespace TowerBuilder.Stores.Map.Rooms
+{
+    public static class Constants
+    {
+        public static float TILE_SIZE = 1f;
+
+        public static Dictionary<RoomKey, RoomDetails> ROOM_DETAILS_MAP = new Dictionary<RoomKey, RoomDetails>()
+        {
+            [RoomKey.None] = new RoomDetails(),
+
+            [RoomKey.EmptyFloor] = new RoomDetails()
+            {
+                title = "Hallway",
+                price = 500,
+                uses = new RoomUse[] {
+                    RoomUse.CommonArea,
+                    RoomUse.Transportation,
+                },
+                width = 1,
+                height = 1,
+                roomResizability = RoomResizability.Flexible(),
+                privacy = RoomPrivacy.Public,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                },
+                color = Color.gray
+            },
+
+            [RoomKey.Lobby] = new RoomDetails()
+            {
+                title = "Lobby",
+                price = 5000,
+                uses = new RoomUse[] {
+                    RoomUse.CommonArea,
+                    RoomUse.Transportation
+                },
+                width = 1,
+                height = 1,
+                roomResizability = RoomResizability.Horizontal(),
+                privacy = RoomPrivacy.Public,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                },
+                color = Color.red,
+            },
+
+            [RoomKey.Office] = new RoomDetails()
+            {
+                title = "Office",
+                price = 20000,
+                uses = new RoomUse[] {
+                    RoomUse.Workplace
+                },
+                width = 3,
+                height = 1,
+                privacy = RoomPrivacy.Private,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(2, 0)
+                    },
+                },
+                color = Color.green,
+            },
+
+            [RoomKey.Condo] = new RoomDetails()
+            {
+                title = "Condo",
+                price = 50000,
+                uses = new RoomUse[] {
+                    RoomUse.Residence
+                },
+                width = 5,
+                height = 1,
+                privacy = RoomPrivacy.Private,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(4, 0)
+                    },
+                },
+                color = Color.yellow,
+            },
+
+            [RoomKey.Elevator] = new RoomDetails()
+            {
+                title = "Elevator",
+                price = 2000,
+                uses = new RoomUse[] {
+                    RoomUse.Transportation
+                },
+                width = 1,
+                height = 1,
+                roomResizability = RoomResizability.Vertical(),
+                privacy = RoomPrivacy.Public,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                },
+                color = Color.magenta,
+            },
+
+            [RoomKey.Stairwell] = new RoomDetails()
+            {
+                title = "Stairwell",
+                price = 5000,
+                uses = new RoomUse[] {
+                    RoomUse.Transportation
+                },
+                width = 1,
+                height = 1,
+                roomResizability = RoomResizability.Vertical(),
+                color = Color.white,
+                privacy = RoomPrivacy.Public,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                },
+            },
+
+            [RoomKey.SmallPark] = new RoomDetails()
+            {
+                title = "Small Park",
+                price = 10000,
+                uses = new RoomUse[] {
+                    RoomUse.CommonArea,
+                    RoomUse.Park
+                },
+                width = 1,
+                height = 1,
+                color = Color.green,
+                privacy = RoomPrivacy.Public,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                },
+            }
+        };
+    }
+}

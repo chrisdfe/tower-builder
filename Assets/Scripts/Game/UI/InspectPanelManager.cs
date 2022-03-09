@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Rooms;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,7 +33,7 @@ public class InspectPanelManager : MonoBehaviour
             return;
         }
 
-        MapRoomDetails roomDetails = TowerBuilder.Stores.Map.Constants.ROOM_DETAILS_MAP[room.roomKey];
+        RoomDetails roomDetails = Room.GetDetails(room.roomKey);
 
         string text = roomDetails.title + "\n";
         text += roomDetails.price + "\n";

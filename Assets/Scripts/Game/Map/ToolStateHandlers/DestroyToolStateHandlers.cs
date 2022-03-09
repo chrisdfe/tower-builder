@@ -1,6 +1,7 @@
 using System;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Rooms;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 

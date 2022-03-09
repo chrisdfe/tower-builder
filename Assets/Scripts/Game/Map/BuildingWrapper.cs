@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Rooms;
 using UnityEngine;
 
 public class BuildingWrapper : MonoBehaviour
@@ -32,7 +33,7 @@ public class BuildingWrapper : MonoBehaviour
 
     void CreateRoom(Room room)
     {
-        foreach (CellCoordinates cellCoordinates in room.roomCells)
+        foreach (CellCoordinates cellCoordinates in room.roomCells.cells)
         {
             GameObject mapRoomCellGameObject = Instantiate<GameObject>(mapCubeCellPrefab);
             MapRoomCell mapRoomCell = mapRoomCellGameObject.GetComponent<MapRoomCell>();

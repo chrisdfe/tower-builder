@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Rooms;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
@@ -40,7 +41,7 @@ namespace TowerBuilder.Stores.MapUI
                 return;
             }
 
-            Room currentRoom = MapStore.Helpers.FindRoomAtCell(currentSelectedCell, Registry.Stores.Map.mapRooms);
+            Room currentRoom = Registry.Stores.Map.rooms.FindRoomAtCell(currentSelectedCell);
             SelectRoom(currentRoom);
         }
 

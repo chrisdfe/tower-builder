@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Blueprints;
+using TowerBuilder.Stores.Map.Rooms;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
@@ -11,7 +13,7 @@ namespace TowerBuilder.UI
     {
         public bool isEnabled { get; private set; } = true;
 
-        public RoomBlueprint roomBlueprint { get; private set; }
+        public Blueprint blueprint { get; private set; }
 
         GameObject mapRoomBlueprintCellPrefab;
 
@@ -21,9 +23,9 @@ namespace TowerBuilder.UI
         {
             DestroyBlueprintCells();
 
-            RoomBlueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
+            Blueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
 
-            foreach (RoomBlueprintCell roomBlueprintCell in blueprint.roomBlueprintCells)
+            foreach (BlueprintCell roomBlueprintCell in blueprint.roomBlueprintCells)
             {
                 GameObject newMapRoomBlueprintCellGameObject = Instantiate<GameObject>(mapRoomBlueprintCellPrefab);
 

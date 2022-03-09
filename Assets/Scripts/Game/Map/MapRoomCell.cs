@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Rooms;
 using TowerBuilder.UI;
 using UnityEngine;
 
@@ -101,9 +102,9 @@ public class MapRoomCell : MonoBehaviour
 
     void ResetColor()
     {
-        MapRoomDetails mapRoomDetails = TowerBuilder.Stores.Map.Constants.ROOM_DETAILS_MAP[room.roomKey];
-        Color color = mapRoomDetails.color;
-        cellCubeMaterial.color = mapRoomDetails.color;
+        RoomDetails RoomDetails = Room.GetDetails(room.roomKey);
+        Color color = RoomDetails.color;
+        cellCubeMaterial.color = RoomDetails.color;
     }
 }
 

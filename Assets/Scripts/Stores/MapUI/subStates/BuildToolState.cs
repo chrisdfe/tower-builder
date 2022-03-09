@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Blueprints;
+using TowerBuilder.Stores.Map.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.MapUI
@@ -20,7 +22,7 @@ namespace TowerBuilder.Stores.MapUI
         public buildIsActiveEvent onBuildEnd;
 
         // this roomBlueprint is essentially just derived data, so no events needed
-        public RoomBlueprint currentBlueprint { get; private set; }
+        public Blueprint currentBlueprint { get; private set; }
 
         public BuildToolState(MapUI.State state) : base(state)
         {
@@ -38,13 +40,13 @@ namespace TowerBuilder.Stores.MapUI
                 currentBlueprint.SetBuildStartCell(parentState.currentSelectedCell);
             }
 
-            currentBlueprint.Validate(Registry.Stores.Map.mapRooms, Registry.Stores.Wallet.balance);
+            currentBlueprint.Validate(Registry.Stores.Map.rooms, Registry.Stores.Wallet.balance);
         }
 
         public override void Reset()
         {
             this.selectedRoomKey = RoomKey.None;
-            currentBlueprint = new RoomBlueprint(parentState.currentSelectedCell, selectedRoomKey);
+            currentBlueprint = new Blueprint(parentState.currentSelectedCell, selectedRoomKey);
         }
 
         public void SetSelectedRoomKey(RoomKey roomKey)
@@ -52,7 +54,7 @@ namespace TowerBuilder.Stores.MapUI
             this.selectedRoomKey = roomKey;
 
             currentBlueprint.SetRoomKey(this.selectedRoomKey);
-            currentBlueprint.Validate(Registry.Stores.Map.mapRooms, Registry.Stores.Wallet.balance);
+            currentBlueprint.Validate(Registry.Stores.Map.rooms, Registry.Stores.Wallet.balance);
 
             if (onSelectedRoomKeyUpdated != null)
             {
@@ -112,12 +114,12 @@ namespace TowerBuilder.Stores.MapUI
                 return;
             }
 
-            List<RoomBlueprintValidationError> validationErrors = currentBlueprint.Validate(Registry.Stores.Map.mapRooms, Registry.Stores.Wallet.balance);
+            List<BlueprintValidationError> validationErrors = currentBlueprint.Validate(Registry.Stores.Map.rooms, Registry.Stores.Wallet.balance);
 
             if (validationErrors.Count > 0)
             {
                 // TODO - these should be unique messages - right now they 
-                foreach (RoomBlueprintValidationError validationError in validationErrors)
+                foreach (BlueprintValidationError validationError in validationErrors)
                 {
                     Registry.Stores.Notifications.createNotification(validationError.message);
                 }
@@ -127,7 +129,7 @@ namespace TowerBuilder.Stores.MapUI
             Room newRoom = new Room(selectedRoomKey, currentBlueprint);
             Registry.Stores.Map.AddRoom(newRoom);
 
-            MapRoomDetails roomDetails = Map.Constants.ROOM_DETAILS_MAP[selectedRoomKey];
+            RoomDetails roomDetails = Room.GetDetails(selectedRoomKey);
             Registry.Stores.Wallet.SubtractBalance(roomDetails.price);
         }
     }

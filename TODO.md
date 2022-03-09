@@ -35,4 +35,4 @@
 - Add click-and-drag room building
 - Add flexble-sized rooms
 - Remove 'RoomStore' - having just MapStore should be fine
-    - Combine RoomDetails and MapRoomDetails
+    - Combine RoomDetails and RoomDetails

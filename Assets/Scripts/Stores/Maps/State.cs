@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 using TowerBuilder.Stores;
+using TowerBuilder.Stores.Map.Rooms;
 
 namespace TowerBuilder.Stores.Map
 {
     public class State
     {
-        public List<Room> mapRooms { get; private set; }
+        public RoomList rooms { get; private set; }
 
         public delegate void RoomAddedEvent(Room mapRoom);
         public RoomAddedEvent onRoomAdded;
@@ -17,13 +18,13 @@ namespace TowerBuilder.Stores.Map
 
         public State()
         {
-            mapRooms = new List<Room>();
+            rooms = new RoomList();
         }
 
 
         public void AddRoom(Room room)
         {
-            mapRooms.Add(room);
+            rooms.Add(room);
 
             if (onRoomAdded != null)
             {
@@ -33,7 +34,7 @@ namespace TowerBuilder.Stores.Map
 
         public void DestroyRoom(Room room)
         {
-            mapRooms.Remove(room);
+            rooms.Remove(room);
 
             if (onRoomDestroyed != null)
             {
