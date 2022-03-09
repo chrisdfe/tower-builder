@@ -8,7 +8,7 @@ using TowerBuilder.Stores.Wallet;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TowerBuilder.UI
+namespace TowerBuilder.Game.UI
 {
     public class WalletPanelManager : MonoBehaviour
     {

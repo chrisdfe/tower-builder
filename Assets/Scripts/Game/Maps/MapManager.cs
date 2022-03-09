@@ -8,7 +8,7 @@ using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TowerBuilder.UI
+namespace TowerBuilder.Game.Maps
 {
     public class MapManager : MonoBehaviour
     {
@@ -72,7 +72,7 @@ namespace TowerBuilder.UI
 
         void UpdateCurrentSelectedCell()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
             if (floorPlaneCollider.Raycast(ray, out hit, 100))

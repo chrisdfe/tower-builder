@@ -24,29 +24,6 @@ namespace TowerBuilder.Stores.MapUI
         public DestroyToolState destroyToolSubState;
         public InspectToolState inspectToolSubState;
 
-        public ToolStateBase currentActiveToolSubState
-        {
-            get
-            {
-                if (toolState == ToolState.Build)
-                {
-                    return buildToolSubState;
-                }
-
-                if (toolState == ToolState.Destroy)
-                {
-                    return destroyToolSubState;
-                }
-
-                if (toolState == ToolState.Inspect)
-                {
-                    return inspectToolSubState;
-                }
-
-                return noneToolSubState;
-            }
-        }
-
         public State()
         {
             toolState = ToolState.None;
@@ -73,12 +50,33 @@ namespace TowerBuilder.Stores.MapUI
         {
             this.currentSelectedCell = currentSelectedCell;
 
-            this.currentActiveToolSubState.OnCurrentSelectedCellSet();
+            GetCurrentActiveToolSubState().OnCurrentSelectedCellSet();
 
             if (onCurrentSelectedCellUpdated != null)
             {
                 onCurrentSelectedCellUpdated(currentSelectedCell);
             }
+        }
+
+        ToolStateBase GetCurrentActiveToolSubState()
+        {
+
+            if (toolState == ToolState.Build)
+            {
+                return buildToolSubState;
+            }
+
+            if (toolState == ToolState.Destroy)
+            {
+                return destroyToolSubState;
+            }
+
+            if (toolState == ToolState.Inspect)
+            {
+                return inspectToolSubState;
+            }
+
+            return noneToolSubState;
         }
     }
 }

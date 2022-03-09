@@ -7,38 +7,41 @@ using TowerBuilder.Stores.Map.Rooms;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InspectPanelManager : MonoBehaviour
+namespace TowerBuilder.Game.UI
 {
-    Text inspectText;
-
-    void Awake()
+    public class InspectPanelManager : MonoBehaviour
     {
-        Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnCurrentInspectedRoomUpdated;
+        Text inspectText;
 
-        inspectText = transform.Find("InspectText").GetComponent<Text>();
-        SetInspectText(Registry.Stores.MapUI.inspectToolSubState.currentInspectedRoom);
-    }
-
-
-    void OnCurrentInspectedRoomUpdated(Room room)
-    {
-        SetInspectText(room);
-    }
-
-    void SetInspectText(Room room)
-    {
-        if (room == null)
+        void Awake()
         {
-            inspectText.text = "no room selected.";
-            return;
+            Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnCurrentInspectedRoomUpdated;
+
+            inspectText = transform.Find("InspectText").GetComponent<Text>();
+            SetInspectText(Registry.Stores.MapUI.inspectToolSubState.currentInspectedRoom);
         }
 
-        RoomDetails roomDetails = Room.GetDetails(room.roomKey);
 
-        string text = roomDetails.title + "\n";
-        text += roomDetails.price + "\n";
-        text += string.Join(", ", roomDetails.uses) + "\n";
+        void OnCurrentInspectedRoomUpdated(Room room)
+        {
+            SetInspectText(room);
+        }
 
-        inspectText.text = text;
+        void SetInspectText(Room room)
+        {
+            if (room == null)
+            {
+                inspectText.text = "no room selected.";
+                return;
+            }
+
+            RoomDetails roomDetails = Room.GetDetails(room.roomKey);
+
+            string text = roomDetails.title + "\n";
+            text += roomDetails.price + "\n";
+            text += string.Join(", ", roomDetails.uses) + "\n";
+
+            inspectText.text = text;
+        }
     }
 }

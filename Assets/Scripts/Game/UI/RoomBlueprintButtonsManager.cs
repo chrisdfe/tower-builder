@@ -8,9 +8,8 @@ using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TowerBuilder.UI
+namespace TowerBuilder.Game.UI
 {
-
     public class RoomBlueprintButtonsManager : MonoBehaviour
     {
         static Color PRESSED_COLOR = Color.red;

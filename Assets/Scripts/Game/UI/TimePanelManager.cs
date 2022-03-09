@@ -7,7 +7,7 @@ using TowerBuilder.Stores.Time;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TowerBuilder.UI
+namespace TowerBuilder.Game.UI
 {
     public class TimePanelManager : MonoBehaviour
     {

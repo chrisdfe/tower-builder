@@ -6,7 +6,7 @@ using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.UI
+namespace TowerBuilder.Game.Maps
 {
     public static class MapCellHelpers
     {

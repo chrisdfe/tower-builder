@@ -6,26 +6,29 @@ using TowerBuilder.Stores.Map;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DebugPanelManager : MonoBehaviour
+namespace TowerBuilder.Game.UI
 {
-    Text currentSelectedCellText;
-
-    void Awake()
+    public class DebugPanelManager : MonoBehaviour
     {
-        Registry.Stores.MapUI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+        Text currentSelectedCellText;
 
-        currentSelectedCellText = transform.Find("CurrentSelectedCellText").GetComponent<Text>();
-        currentSelectedCellText.text = "";
-    }
+        void Awake()
+        {
+            Registry.Stores.MapUI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
 
-    void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)
-    {
-        SetCurrentSelectedCellText();
-    }
+            currentSelectedCellText = transform.Find("CurrentSelectedCellText").GetComponent<Text>();
+            currentSelectedCellText.text = "";
+        }
 
-    void SetCurrentSelectedCellText()
-    {
-        CellCoordinates currentSelectedCell = Registry.Stores.MapUI.currentSelectedCell;
-        currentSelectedCellText.text = $"x: {currentSelectedCell.x}, floor: {currentSelectedCell.floor}";
+        void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)
+        {
+            SetCurrentSelectedCellText();
+        }
+
+        void SetCurrentSelectedCellText()
+        {
+            CellCoordinates currentSelectedCell = Registry.Stores.MapUI.currentSelectedCell;
+            currentSelectedCellText.text = $"x: {currentSelectedCell.x}, floor: {currentSelectedCell.floor}";
+        }
     }
 }

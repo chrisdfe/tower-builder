@@ -7,9 +7,8 @@ using TowerBuilder.Stores.Notifications;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TowerBuilder.UI
+namespace TowerBuilder.Game.UI
 {
-
     public class NotificationsPanelManager : MonoBehaviour
     {
         static int NOTIFICATIONS_LIMIT = 3;

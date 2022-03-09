@@ -3,7 +3,7 @@ using TowerBuilder;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
-namespace TowerBuilder.UI
+namespace TowerBuilder.Game.Maps
 {
     public class ToolStateHandlersBase
     {
