@@ -15,13 +15,14 @@ namespace TowerBuilder.Game.Maps
 
         public CellCoordinates cellCoordinates { get; private set; }
 
-        GameObject mapRoomCellPrefab;
+        GameObject mapRoomEntrancePrefab;
+
         Transform cellCube;
         Material cellCubeMaterial;
 
         void Awake()
         {
-            mapRoomCellPrefab = Resources.Load<GameObject>("Prefabs/Map/MapRoomCell");
+            mapRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/MapRoomEntrance");
 
             cellCube = transform.Find("CellCube");
             cellCubeMaterial = cellCube.GetComponent<Renderer>().material;
@@ -44,6 +45,8 @@ namespace TowerBuilder.Game.Maps
         public void Initialize()
         {
             transform.position = MapCellHelpers.CellCoordinatesToPosition(cellCoordinates);
+
+            // List<RoomEntrance> roomEntrances =
 
             // Set color
             ResetColor();
@@ -105,6 +108,8 @@ namespace TowerBuilder.Game.Maps
         {
             RoomDetails RoomDetails = Room.GetDetails(room.roomKey);
             Color color = RoomDetails.color;
+            // TODO - remove (debug)
+            SetColorAlpha(0.7f);
             cellCubeMaterial.color = RoomDetails.color;
         }
     }

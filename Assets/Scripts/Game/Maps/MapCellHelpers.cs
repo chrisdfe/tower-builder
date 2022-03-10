@@ -13,7 +13,7 @@ namespace TowerBuilder.Game.Maps
         public static int RoundToNearestTile(float number)
         {
             float TILE_SIZE = Stores.Map.Rooms.Constants.TILE_SIZE;
-            float rounded = (float)Math.Round(number / TILE_SIZE) * TILE_SIZE;
+            float rounded = (float)Math.Floor(number / TILE_SIZE) * TILE_SIZE;
             return (int)rounded;
         }
 

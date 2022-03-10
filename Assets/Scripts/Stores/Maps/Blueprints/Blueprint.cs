@@ -118,7 +118,7 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
             RoomDetails roomDetails = Room.GetDetails(roomKey);
 
-            if (roomDetails.roomResizability.Matches(RoomResizability.Inflexible()))
+            if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
             {
                 // TODO - use instance method instead
                 roomCells = RoomCells.PositionAtCoordinates(
@@ -130,12 +130,12 @@ namespace TowerBuilder.Stores.Map.Blueprints
             {
                 CellCoordinates flexibleBuildEndCoordinates = buildStartCoordinates.Clone();
 
-                if (roomDetails.roomResizability.x && buildEndCoordinates.x != buildStartCoordinates.x)
+                if (roomDetails.resizability.x && buildEndCoordinates.x != buildStartCoordinates.x)
                 {
                     flexibleBuildEndCoordinates.x = buildEndCoordinates.x;
                 }
 
-                if (roomDetails.roomResizability.floor && buildEndCoordinates.floor != buildStartCoordinates.floor)
+                if (roomDetails.resizability.floor && buildEndCoordinates.floor != buildStartCoordinates.floor)
                 {
                     flexibleBuildEndCoordinates.floor = buildEndCoordinates.floor;
                 }

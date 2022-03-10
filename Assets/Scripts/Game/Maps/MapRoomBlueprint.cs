@@ -30,10 +30,12 @@ namespace TowerBuilder.Game.Maps
                 GameObject newMapRoomBlueprintCellGameObject = Instantiate<GameObject>(mapRoomBlueprintCellPrefab);
 
                 MapRoomBlueprintCell newMapRoomBlueprintCell = newMapRoomBlueprintCellGameObject.GetComponent<MapRoomBlueprintCell>();
-                // newMapRoomBlueprintCell.parentRoomBlueprint = this;
+
                 newMapRoomBlueprintCell.transform.SetParent(transform);
+                newMapRoomBlueprintCell.SetParentBlueprint(this);
                 newMapRoomBlueprintCell.SetRoomBlueprintCell(roomBlueprintCell);
                 newMapRoomBlueprintCell.UpdateMaterialColor();
+                newMapRoomBlueprintCell.Initialize();
 
                 mapRoomBlueprintCells.Add(newMapRoomBlueprintCell);
             }

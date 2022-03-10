@@ -1,4 +1,5 @@
 # TODO
+- RoomCell class (wrapps cellCoordinates)
 - CellCoordinates validation stuff should go somewhere other than inside of RoomBlueprintCell
 - Build routes from 0,0 to each room
 - Flexible-sized rooms should be resizable once placed

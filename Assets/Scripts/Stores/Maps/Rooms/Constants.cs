@@ -25,7 +25,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 },
                 width = 1,
                 height = 1,
-                roomResizability = RoomResizability.Flexible(),
+                resizability = RoomResizability.Flexible(),
                 privacy = RoomPrivacy.Public,
                 entrances = new List<RoomEntrance>() {
                     new RoomEntrance() {
@@ -50,7 +50,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 },
                 width = 1,
                 height = 1,
-                roomResizability = RoomResizability.Horizontal(),
+                resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
                 entrances = new List<RoomEntrance>() {
                     new RoomEntrance() {
@@ -120,7 +120,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 },
                 width = 1,
                 height = 1,
-                roomResizability = RoomResizability.Vertical(),
+                resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
                 entrances = new List<RoomEntrance>() {
                     new RoomEntrance() {
@@ -144,7 +144,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 },
                 width = 1,
                 height = 1,
-                roomResizability = RoomResizability.Vertical(),
+                resizability = RoomResizability.Vertical(),
                 color = Color.white,
                 privacy = RoomPrivacy.Public,
                 entrances = new List<RoomEntrance>() {

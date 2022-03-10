@@ -22,12 +22,44 @@ namespace TowerBuilder.Stores.Map.Blueprints
             validationErrors = new List<BlueprintValidationError>();
             this.parentBlueprint = parentBlueprint;
             this.cellCoordinates = cellCoordinates;
-            UpdateAndValidateCellCoordinates(cellCoordinates);
         }
 
-        public void UpdateAndValidateCellCoordinates(CellCoordinates cellCoordinates)
+        // The room entrances
+        public List<RoomEntrance> GetRoomEntrances()
         {
-            this.cellCoordinates = cellCoordinates;
+            List<RoomEntrance> result = new List<RoomEntrance>();
+
+
+            RoomDetails roomDetails = Room.GetDetails(parentBlueprint.roomKey);
+
+            if (roomDetails.entrances.Count == 0)
+            {
+                return result;
+            }
+
+            if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
+            {
+                CellCoordinates relativeCellCoordinates = GetRelativeCellCoordinates();
+
+                foreach (RoomEntrance entrance in roomDetails.entrances)
+                {
+                    if (entrance.cellCoordinates.Matches(relativeCellCoordinates))
+                    {
+                        result.Add(entrance);
+                    }
+                }
+            }
+            else
+            {
+
+            }
+
+            return result;
+        }
+
+        public CellCoordinates GetRelativeCellCoordinates()
+        {
+            return cellCoordinates.Subtract(parentBlueprint.buildStartCoordinates);
         }
 
         // rooms is a list of all of the rooms on the map currently
