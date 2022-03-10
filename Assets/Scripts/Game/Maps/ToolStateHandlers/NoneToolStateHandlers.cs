@@ -6,6 +6,6 @@ namespace TowerBuilder.Game.Maps
 {
     public class NoneToolStateHandlers : ToolStateHandlersBase
     {
-        public NoneToolStateHandlers(MapManager parentMapManager) : base(parentMapManager) { }
+        public NoneToolStateHandlers(GameMapManager parentMapManager) : base(parentMapManager) { }
     }
 }

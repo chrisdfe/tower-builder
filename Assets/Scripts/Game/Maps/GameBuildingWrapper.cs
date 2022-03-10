@@ -8,21 +8,21 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class BuildingWrapper : MonoBehaviour
+    public class GameBuildingWrapper : MonoBehaviour
     {
         GameObject mapCubeCellPrefab;
 
         // id: list of cells that belong to the room
-        List<MapRoomCell> mapRoomCells = new List<MapRoomCell>();
+        List<GameRoomCell> mapRoomCells = new List<GameRoomCell>();
 
         void Awake()
         {
-            mapCubeCellPrefab = Resources.Load<GameObject>("Prefabs/Map/MapRoomCell");
+            mapCubeCellPrefab = Resources.Load<GameObject>("Prefabs/Map/GameRoomCell");
 
 
             // TODO - populate rooms based on initial state of map
             //        instead of just an empty list
-            mapRoomCells = new List<MapRoomCell>();
+            mapRoomCells = new List<GameRoomCell>();
 
             Registry.Stores.Map.onRoomAdded += OnRoomAdded;
             Registry.Stores.Map.onRoomDestroyed += OnRoomDestroyed;
@@ -38,7 +38,7 @@ namespace TowerBuilder.Game.Maps
             foreach (CellCoordinates cellCoordinates in room.roomCells.cells)
             {
                 GameObject mapRoomCellGameObject = Instantiate<GameObject>(mapCubeCellPrefab);
-                MapRoomCell mapRoomCell = mapRoomCellGameObject.GetComponent<MapRoomCell>();
+                GameRoomCell mapRoomCell = mapRoomCellGameObject.GetComponent<GameRoomCell>();
 
                 mapRoomCell.transform.SetParent(transform);
                 mapRoomCell.SetMapRoom(room);
@@ -56,9 +56,9 @@ namespace TowerBuilder.Game.Maps
                 return;
             }
 
-            List<MapRoomCell> newMapRoomCells = new List<MapRoomCell>();
+            List<GameRoomCell> newGameRoomCells = new List<GameRoomCell>();
 
-            foreach (MapRoomCell mapRoomCell in mapRoomCells)
+            foreach (GameRoomCell mapRoomCell in mapRoomCells)
             {
                 if (mapRoomCell.room.id == room.id)
                 {
@@ -66,11 +66,11 @@ namespace TowerBuilder.Game.Maps
                 }
                 else
                 {
-                    newMapRoomCells.Add(mapRoomCell);
+                    newGameRoomCells.Add(mapRoomCell);
                 }
             }
 
-            mapRoomCells = newMapRoomCells;
+            mapRoomCells = newGameRoomCells;
         }
     }
 }

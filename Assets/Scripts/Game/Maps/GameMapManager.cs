@@ -10,11 +10,11 @@ using UnityEngine.UI;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class MapManager : MonoBehaviour
+    public class GameMapManager : MonoBehaviour
     {
         public Transform buildingWrapper;
 
-        public FloorPlane floorPlane;
+        public GameFloorPlane floorPlane;
         public Collider floorPlaneCollider;
 
         ToolStateHandlersBase currentToolStateHandler;
@@ -28,7 +28,7 @@ namespace TowerBuilder.Game.Maps
 
         void Awake()
         {
-            floorPlane = transform.Find("FloorPlane").GetComponent<FloorPlane>();
+            floorPlane = transform.Find("FloorPlane").GetComponent<GameFloorPlane>();
             floorPlaneCollider = floorPlane.GetComponent<Collider>();
 
             buildingWrapper = transform.Find("BuildingWrapper");
@@ -79,8 +79,8 @@ namespace TowerBuilder.Game.Maps
             {
                 CellCoordinates hoveredCell = new CellCoordinates()
                 {
-                    x = MapCellHelpers.RoundToNearestTile(hit.point.x),
-                    floor = MapCellHelpers.RoundToNearestTile(hit.point.y),
+                    x = GameMapCellHelpers.RoundToNearestTile(hit.point.x),
+                    floor = GameMapCellHelpers.RoundToNearestTile(hit.point.y),
                 };
 
                 if (!hoveredCell.Matches(Registry.Stores.MapUI.currentSelectedCell))

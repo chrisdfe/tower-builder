@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class MapRoomEntrance : MonoBehaviour
+    public class GameRoomEntrance : MonoBehaviour
     {
     }
 }

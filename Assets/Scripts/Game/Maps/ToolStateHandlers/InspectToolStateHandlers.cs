@@ -12,7 +12,7 @@ namespace TowerBuilder.Game.Maps
         Room currentSelectedRoom;
         Room currentInspectedRoom;
 
-        public InspectToolStateHandlers(MapManager parentMapManager) : base(parentMapManager)
+        public InspectToolStateHandlers(GameMapManager parentMapManager) : base(parentMapManager)
         {
         }
 

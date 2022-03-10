@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class MapRoomBlueprintCell : MonoBehaviour
+    public class GameRoomBlueprintCell : MonoBehaviour
     {
         static Color VALID_COLOR = new Color(0, 0, 255, 0.5f);
         static Color INVALID_COLOR = new Color(255, 0, 0, 0.5f);
@@ -24,9 +24,9 @@ namespace TowerBuilder.Game.Maps
 
         List<GameObject> roomEntranceGameObjects = new List<GameObject>();
 
-        MapRoomBlueprint parentBlueprint;
+        GameRoomBlueprint parentBlueprint;
 
-        public void SetParentBlueprint(MapRoomBlueprint parentBlueprint)
+        public void SetParentBlueprint(GameRoomBlueprint parentBlueprint)
         {
             this.parentBlueprint = parentBlueprint;
         }
@@ -34,7 +34,7 @@ namespace TowerBuilder.Game.Maps
         public void SetRoomBlueprintCell(BlueprintCell roomBlueprintCell)
         {
             this.roomBlueprintCell = roomBlueprintCell;
-            transform.localPosition = MapCellHelpers.CellCoordinatesToPosition(roomBlueprintCell.cellCoordinates);
+            transform.localPosition = GameMapCellHelpers.CellCoordinatesToPosition(roomBlueprintCell.cellCoordinates);
             UpdateMaterialColor();
 
 

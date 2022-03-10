@@ -7,5 +7,5 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class FloorPlane : MonoBehaviour { }
+    public class GameFloorPlane : MonoBehaviour { }
 }

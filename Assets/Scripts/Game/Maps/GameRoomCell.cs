@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class MapRoomCell : MonoBehaviour
+    public class GameRoomCell : MonoBehaviour
     {
         public Room room { get; private set; }
 
@@ -44,7 +44,7 @@ namespace TowerBuilder.Game.Maps
 
         public void Initialize()
         {
-            transform.position = MapCellHelpers.CellCoordinatesToPosition(cellCoordinates);
+            transform.position = GameMapCellHelpers.CellCoordinatesToPosition(cellCoordinates);
 
             // List<RoomEntrance> roomEntrances =
 

@@ -9,7 +9,7 @@ namespace TowerBuilder.Game.Maps
 {
     public class DestroyToolStateHandlers : ToolStateHandlersBase
     {
-        public DestroyToolStateHandlers(MapManager parentMapManager) : base(parentMapManager) { }
+        public DestroyToolStateHandlers(GameMapManager parentMapManager) : base(parentMapManager) { }
 
         public override void OnTransitionTo(ToolState previousToolState)
         {

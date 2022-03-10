@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class MapRoomBlueprint : MonoBehaviour
+    public class GameRoomBlueprint : MonoBehaviour
     {
         public bool isEnabled { get; private set; } = true;
 
@@ -17,7 +17,7 @@ namespace TowerBuilder.Game.Maps
 
         GameObject mapRoomBlueprintCellPrefab;
 
-        List<MapRoomBlueprintCell> mapRoomBlueprintCells;
+        List<GameRoomBlueprintCell> mapRoomBlueprintCells;
 
         public void ResetCursorCells()
         {
@@ -29,7 +29,7 @@ namespace TowerBuilder.Game.Maps
             {
                 GameObject newMapRoomBlueprintCellGameObject = Instantiate<GameObject>(mapRoomBlueprintCellPrefab);
 
-                MapRoomBlueprintCell newMapRoomBlueprintCell = newMapRoomBlueprintCellGameObject.GetComponent<MapRoomBlueprintCell>();
+                GameRoomBlueprintCell newMapRoomBlueprintCell = newMapRoomBlueprintCellGameObject.GetComponent<GameRoomBlueprintCell>();
 
                 newMapRoomBlueprintCell.transform.SetParent(transform);
                 newMapRoomBlueprintCell.SetParentBlueprint(this);
@@ -45,7 +45,7 @@ namespace TowerBuilder.Game.Maps
         {
             mapRoomBlueprintCellPrefab = Resources.Load<GameObject>("Prefabs/MapUI/MapRoomBlueprintCell");
 
-            mapRoomBlueprintCells = new List<MapRoomBlueprintCell>();
+            mapRoomBlueprintCells = new List<GameRoomBlueprintCell>();
 
             Registry.Stores.MapUI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
             Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
@@ -63,13 +63,13 @@ namespace TowerBuilder.Game.Maps
         {
             if (mapRoomBlueprintCells.Count > 0)
             {
-                foreach (MapRoomBlueprintCell mapRoomBlueprintCell in mapRoomBlueprintCells)
+                foreach (GameRoomBlueprintCell mapRoomBlueprintCell in mapRoomBlueprintCells)
                 {
                     Destroy(mapRoomBlueprintCell.gameObject);
                 }
             }
 
-            mapRoomBlueprintCells = new List<MapRoomBlueprintCell>();
+            mapRoomBlueprintCells = new List<GameRoomBlueprintCell>();
         }
 
 

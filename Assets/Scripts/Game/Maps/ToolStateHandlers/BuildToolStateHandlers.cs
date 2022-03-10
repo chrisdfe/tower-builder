@@ -9,12 +9,12 @@ namespace TowerBuilder.Game.Maps
 {
     public class BuildToolStateHandlers : ToolStateHandlersBase
     {
-        MapManager parentMapManager;
+        GameMapManager parentMapManager;
 
         GameObject mapRoomBlueprintPrefab;
-        public MapRoomBlueprint mapRoomBlueprint;
+        public GameRoomBlueprint mapRoomBlueprint;
 
-        public BuildToolStateHandlers(MapManager parentMapManager) : base(parentMapManager)
+        public BuildToolStateHandlers(GameMapManager parentMapManager) : base(parentMapManager)
         {
             this.parentMapManager = parentMapManager;
 
@@ -46,7 +46,7 @@ namespace TowerBuilder.Game.Maps
 
         void CreateBlueprint()
         {
-            mapRoomBlueprint = GameObject.Instantiate<GameObject>(mapRoomBlueprintPrefab).GetComponent<MapRoomBlueprint>();
+            mapRoomBlueprint = GameObject.Instantiate<GameObject>(mapRoomBlueprintPrefab).GetComponent<GameRoomBlueprint>();
             mapRoomBlueprint.transform.SetParent(parentMapManager.transform);
 
             // TODO - set this to current selected cell

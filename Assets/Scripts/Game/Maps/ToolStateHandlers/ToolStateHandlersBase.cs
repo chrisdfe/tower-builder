@@ -7,9 +7,9 @@ namespace TowerBuilder.Game.Maps
 {
     public class ToolStateHandlersBase
     {
-        protected MapManager mapManager;
+        protected GameMapManager mapManager;
 
-        public ToolStateHandlersBase(MapManager parentMapManager)
+        public ToolStateHandlersBase(GameMapManager parentMapManager)
         {
             mapManager = parentMapManager;
         }

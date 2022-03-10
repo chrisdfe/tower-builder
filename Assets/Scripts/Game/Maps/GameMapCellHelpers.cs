@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public static class MapCellHelpers
+    public static class GameMapCellHelpers
     {
         public static int RoundToNearestTile(float number)
         {
