@@ -90,7 +90,7 @@ namespace TowerBuilder.Game.Maps
 
         void Awake()
         {
-            mapRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/MapRoomEntrance");
+            mapRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/GameRoomEntrance");
             _renderer = GetComponent<Renderer>();
         }
 

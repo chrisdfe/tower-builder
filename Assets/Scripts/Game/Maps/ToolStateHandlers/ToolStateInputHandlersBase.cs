@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class ToolStateHandlersBase
+    public class ToolStateInputHandlersBase
     {
-        protected GameMapManager mapManager;
+        protected GameMapManager parentMapManager;
 
-        public ToolStateHandlersBase(GameMapManager parentMapManager)
+        public ToolStateInputHandlersBase(GameMapManager parentMapManager)
         {
-            mapManager = parentMapManager;
+            this.parentMapManager = parentMapManager;
         }
 
         public virtual void Update() { }

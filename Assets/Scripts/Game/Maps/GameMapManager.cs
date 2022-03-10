@@ -17,9 +17,9 @@ namespace TowerBuilder.Game.Maps
         public GameFloorPlane floorPlane;
         public Collider floorPlaneCollider;
 
-        ToolStateHandlersBase currentToolStateHandler;
+        ToolStateInputHandlersBase currentToolStateHandler;
 
-        public Dictionary<ToolState, ToolStateHandlersBase> toolStateHandlerMap;
+        public Dictionary<ToolState, ToolStateInputHandlersBase> toolStateHandlerMap;
 
         // Distance from the edge of the screen where the mapCursor will get disabled
         // TODO - this should perhaps be percentages instead
@@ -33,12 +33,12 @@ namespace TowerBuilder.Game.Maps
 
             buildingWrapper = transform.Find("BuildingWrapper");
 
-            toolStateHandlerMap = new Dictionary<ToolState, ToolStateHandlersBase>()
+            toolStateHandlerMap = new Dictionary<ToolState, ToolStateInputHandlersBase>()
             {
-                [ToolState.None] = new NoneToolStateHandlers(this),
-                [ToolState.Build] = new BuildToolStateHandlers(this),
-                [ToolState.Inspect] = new InspectToolStateHandlers(this),
-                [ToolState.Destroy] = new DestroyToolStateHandlers(this),
+                [ToolState.None] = new NoneToolStateInputHandlers(this),
+                [ToolState.Build] = new BuildToolStateInputHandlers(this),
+                [ToolState.Inspect] = new InspectToolStateInputHandlers(this),
+                [ToolState.Destroy] = new DestroyToolStateInputHandlers(this),
             };
 
             SetCurrentToolStateHandlers();

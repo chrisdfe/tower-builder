@@ -114,15 +114,14 @@ namespace TowerBuilder.Stores.Map.Blueprints
         void ResetBlueprintCells()
         {
             // TODO - clean up existing roomBlueprintCells first?
-            List<CellCoordinates> roomCells = new List<CellCoordinates>();
+            RoomCells roomCells = new RoomCells();
 
             RoomDetails roomDetails = Room.GetDetails(roomKey);
 
             if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
             {
                 // TODO - use instance method instead
-                roomCells = RoomCells.PositionAtCoordinates(
-                    new RoomCells(roomDetails.width, roomDetails.height).cells,
+                roomCells = new RoomCells(roomDetails.width, roomDetails.height).PositionAtCoordinates(
                     buildStartCoordinates
                 );
             }
@@ -145,9 +144,9 @@ namespace TowerBuilder.Stores.Map.Blueprints
             }
 
             roomBlueprintCells = new List<BlueprintCell>();
-            foreach (CellCoordinates roomCellCoordinates in roomCells)
+            foreach (RoomCell roomCell in roomCells.cells)
             {
-                BlueprintCell newBlueprintCell = new BlueprintCell(this, roomCellCoordinates);
+                BlueprintCell newBlueprintCell = new BlueprintCell(this, roomCell.coordinates);
                 roomBlueprintCells.Add(newBlueprintCell);
             }
         }

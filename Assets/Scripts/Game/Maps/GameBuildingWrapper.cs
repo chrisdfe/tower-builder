@@ -35,14 +35,14 @@ namespace TowerBuilder.Game.Maps
 
         void CreateRoom(Room room)
         {
-            foreach (CellCoordinates cellCoordinates in room.roomCells.cells)
+            foreach (RoomCell roomCell in room.roomCells.cells)
             {
                 GameObject mapRoomCellGameObject = Instantiate<GameObject>(mapCubeCellPrefab);
                 GameRoomCell mapRoomCell = mapRoomCellGameObject.GetComponent<GameRoomCell>();
 
                 mapRoomCell.transform.SetParent(transform);
                 mapRoomCell.SetMapRoom(room);
-                mapRoomCell.SetRoomCell(cellCoordinates);
+                mapRoomCell.SetRoomCell(roomCell.coordinates);
                 mapRoomCell.Initialize();
 
                 mapRoomCells.Add(mapRoomCell);

@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class DestroyToolStateHandlers : ToolStateHandlersBase
+    public class DestroyToolStateInputHandlers : ToolStateInputHandlersBase
     {
-        public DestroyToolStateHandlers(GameMapManager parentMapManager) : base(parentMapManager) { }
+        public DestroyToolStateInputHandlers(GameMapManager parentMapManager) : base(parentMapManager) { }
 
         public override void OnTransitionTo(ToolState previousToolState)
         {

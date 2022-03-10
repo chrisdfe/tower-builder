@@ -36,9 +36,9 @@ namespace TowerBuilder.Stores.Map.Rooms
         {
             foreach (Room room in rooms)
             {
-                foreach (CellCoordinates cellCoordinates in room.roomCells.cells)
+                foreach (RoomCell roomCell in room.roomCells.cells)
                 {
-                    if (cellCoordinates.Matches(targetCellCoordinates))
+                    if (roomCell.coordinates.Matches(targetCellCoordinates))
                     {
                         return room;
                     }
@@ -85,9 +85,9 @@ namespace TowerBuilder.Stores.Map.Rooms
 
             foreach (Room room in rooms)
             {
-                foreach (CellCoordinates roomCellCoordiantes in room.roomCells.cells)
+                foreach (RoomCell roomCell in room.roomCells.cells)
                 {
-                    if (cellCoordinates.Matches(roomCellCoordiantes))
+                    if (cellCoordinates.Matches(roomCell.coordinates))
                     {
                         return true;
                     }

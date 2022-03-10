@@ -7,23 +7,17 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class InspectToolStateHandlers : ToolStateHandlersBase
+    public class InspectToolStateInputHandlers : ToolStateInputHandlersBase
     {
         Room currentSelectedRoom;
         Room currentInspectedRoom;
 
-        public InspectToolStateHandlers(GameMapManager parentMapManager) : base(parentMapManager)
-        {
-        }
+        public InspectToolStateInputHandlers(GameMapManager parentMapManager) : base(parentMapManager) { }
 
-        public override void OnTransitionTo(ToolState previousState)
-        {
-            Debug.Log("Inspect mode start");
-        }
+        public override void OnTransitionTo(ToolState previousState) { }
 
         public override void OnTransitionFrom(ToolState previousState)
         {
-            Debug.Log("Inspect mode end");
             Registry.Stores.MapUI.inspectToolSubState.Reset();
 
         }

@@ -43,7 +43,7 @@ namespace TowerBuilder.Game.Maps
 
         void Awake()
         {
-            mapRoomBlueprintCellPrefab = Resources.Load<GameObject>("Prefabs/MapUI/MapRoomBlueprintCell");
+            mapRoomBlueprintCellPrefab = Resources.Load<GameObject>("Prefabs/MapUI/GameRoomBlueprintCell");
 
             mapRoomBlueprintCells = new List<GameRoomBlueprintCell>();
 

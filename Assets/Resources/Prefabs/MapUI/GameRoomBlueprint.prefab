@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1608067033181158790}
-  - component: {fileID: 8333934201834990330}
+  - component: {fileID: 8441874400589467663}
   m_Layer: 0
-  m_Name: MapRoomBlueprint
+  m_Name: GameRoomBlueprint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8333934201834990330
+--- !u!114 &8441874400589467663
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,6 +40,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7413630953921697660}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2453e4fc2ac5bb542b21d70610fae91f, type: 3}
+  m_Script: {fileID: 11500000, guid: 22b77b98d205ed24794849711b2a7109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

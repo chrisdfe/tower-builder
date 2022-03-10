@@ -9,7 +9,7 @@ namespace TowerBuilder.Stores.Map.Rooms
 {
     public class RoomCell
     {
-
+        public CellCoordinates coordinates;
     }
 }
 

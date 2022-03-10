@@ -18,9 +18,9 @@ namespace TowerBuilder.Stores.Map.Blueprints
             // Check for overlapping cells
             foreach (Room room in allRooms.rooms)
             {
-                foreach (CellCoordinates otherRoomCellCoordinates in room.roomCells.cells)
+                foreach (RoomCell otherRoomCell in room.roomCells.cells)
                 {
-                    if (otherRoomCellCoordinates.Matches(roomBlueprintCell.cellCoordinates))
+                    if (otherRoomCell.coordinates.Matches(roomBlueprintCell.cellCoordinates))
                     {
                         validationErrors.Add(new BlueprintValidationError("You cannot build rooms on top of each other."));
                     }

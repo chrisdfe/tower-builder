@@ -7,18 +7,14 @@ using UnityEngine;
 
 namespace TowerBuilder.Game.Maps
 {
-    public class BuildToolStateHandlers : ToolStateHandlersBase
+    public class BuildToolStateInputHandlers : ToolStateInputHandlersBase
     {
-        GameMapManager parentMapManager;
-
         GameObject mapRoomBlueprintPrefab;
         public GameRoomBlueprint mapRoomBlueprint;
 
-        public BuildToolStateHandlers(GameMapManager parentMapManager) : base(parentMapManager)
+        public BuildToolStateInputHandlers(GameMapManager parentMapManager) : base(parentMapManager)
         {
-            this.parentMapManager = parentMapManager;
-
-            mapRoomBlueprintPrefab = Resources.Load<GameObject>("Prefabs/MapUI/MapRoomBlueprint");
+            mapRoomBlueprintPrefab = Resources.Load<GameObject>("Prefabs/MapUI/GameRoomBlueprint");
         }
 
         public override void Update() { }

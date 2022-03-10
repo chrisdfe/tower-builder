@@ -1,6 +1,4 @@
 # TODO
-- RoomCell class (wrapps cellCoordinates)
-- CellCoordinates validation stuff should go somewhere other than inside of RoomBlueprintCell
 - Build routes from 0,0 to each room
 - Flexible-sized rooms should be resizable once placed
 - Flexible-sized rooms currently only work in increments of 1x1: make them work in increments of any rectangular room shape.
@@ -25,11 +23,14 @@
 - resident pathfinding
 - "Path" constants for paths used in Resource.Load - refactoring/moving things around would be easier
   if they're all in one place
+- Z-index constants
 
 # maybe TODO
 - should the destroy tool replace the room with an empty floor, at least on floors 0 and above? otherwise, certain rooms would be undestroyable?
 
 # Done
+- CellCoordinates validation stuff should go somewhere other than inside of RoomBlueprintCell
+- RoomCell class (wrapps cellCoordinates)
 - Inspect ToolState mode
 - Buttons that show active state
 - Destroy ToolState mode
