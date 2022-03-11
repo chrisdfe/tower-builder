@@ -37,9 +37,20 @@ namespace TowerBuilder.Stores.Map.Rooms
             return Room.GetDetails(roomKey);
         }
 
+        public bool HasUse(RoomUse roomUse)
+        {
+            return Room.HasUse(roomKey, roomUse);
+        }
+
         public static RoomDetails GetDetails(RoomKey roomKey)
         {
             return Rooms.Constants.ROOM_DETAILS_MAP[roomKey];
+        }
+
+        public static bool HasUse(RoomKey roomKey, RoomUse roomUse)
+        {
+            RoomDetails roomDetails = GetDetails(roomKey);
+            return Array.Exists<RoomUse>(roomDetails.uses, otherRoomUse => otherRoomUse == roomUse);
         }
 
         string GenerateId()

@@ -86,7 +86,6 @@ namespace TowerBuilder.Stores.Map.Blueprints
                 (flexibleBuildEndCoordinates.x - flexibleBuildStartCoordinates.x) + 1,
                 (flexibleBuildEndCoordinates.floor - flexibleBuildStartCoordinates.floor) + 1
             );
-            Debug.Log(blueprintDimensions);
             CellCoordinates roundUpAmounts = new CellCoordinates(
                 (int)(Mathf.Floor(blueprintDimensions.x % roomDetails.width)),
                 (int)(Mathf.Floor(blueprintDimensions.floor % roomDetails.height))

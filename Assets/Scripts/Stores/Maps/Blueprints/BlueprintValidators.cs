@@ -43,25 +43,33 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
             RoomKey roomKey = roomBlueprintCell.parentBlueprint.roomKey;
             RoomDetails roomDetails = Room.GetDetails(roomKey);
+            RoomCategory roomCategory = roomDetails.category;
             CellCoordinates cellCoordinates = roomBlueprintCell.cellCoordinates;
 
-            if (roomKey == RoomKey.Lobby)
+            if (roomCategory == RoomCategory.Lobby)
             {
+                Debug.Log("absolute");
+                Debug.Log(cellCoordinates);
+                Debug.Log("relative");
+                Debug.Log(roomBlueprintCell.relativeCellCoordinates);
+                Debug.Log("---");
                 // Lobbies must be on floor 0
-                if (cellCoordinates.floor != 0)
+                // Since lobbies can be 1-2 tiles high, make sure the cell we're validating here is the bottom-most cell
+                bool isOnBottom = roomBlueprintCell.relativeCellCoordinates.floor == 0;
+                if (isOnBottom && cellCoordinates.floor != 0)
                 {
                     result.Add(new BlueprintValidationError("Lobbies must be placed on first floor"));
                 }
             }
-            else if (roomKey == RoomKey.Elevator)
+            else if (roomCategory == RoomCategory.Elevator)
             {
                 // elevators can't be too close together
                 Room leftRoom = allRooms.FindRoomAtCell(new CellCoordinates(cellCoordinates.x - 1, cellCoordinates.floor));
                 Room rightRoom = allRooms.FindRoomAtCell(new CellCoordinates(cellCoordinates.x + 1, cellCoordinates.floor));
 
                 if (
-                    (leftRoom != null && leftRoom.roomKey == RoomKey.Elevator) ||
-                    (rightRoom != null && rightRoom.roomKey == RoomKey.Elevator)
+                    (leftRoom != null && leftRoom.GetDetails().category == RoomCategory.Elevator) ||
+                    (rightRoom != null && rightRoom.GetDetails().category == RoomCategory.Elevator)
                 )
                 {
                     result.Add(

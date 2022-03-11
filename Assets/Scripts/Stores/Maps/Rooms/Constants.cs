@@ -19,6 +19,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Hallway",
                 price = 500,
+                category = RoomCategory.Hallway,
                 uses = new RoomUse[] {
                     RoomUse.CommonArea,
                     RoomUse.Transportation,
@@ -44,6 +45,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Lobby",
                 price = 5000,
+                category = RoomCategory.Lobby,
                 uses = new RoomUse[] {
                     RoomUse.CommonArea,
                     RoomUse.Transportation
@@ -69,6 +71,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Large Lobby",
                 price = 12000,
+                category = RoomCategory.Lobby,
                 uses = new RoomUse[] {
                     RoomUse.CommonArea,
                     RoomUse.Transportation
@@ -94,6 +97,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Office",
                 price = 20000,
+                category = RoomCategory.Office,
                 uses = new RoomUse[] {
                     RoomUse.Workplace
                 },
@@ -117,6 +121,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Condo",
                 price = 50000,
+                category = RoomCategory.Residence,
                 uses = new RoomUse[] {
                     RoomUse.Residence
                 },
@@ -140,6 +145,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Elevator",
                 price = 2000,
+                category = RoomCategory.Elevator,
                 uses = new RoomUse[] {
                     RoomUse.Transportation
                 },
@@ -164,6 +170,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Service Elevator",
                 price = 1500,
+                category = RoomCategory.Elevator,
                 uses = new RoomUse[] {
                     RoomUse.Transportation
                 },
@@ -188,6 +195,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Large Elevator",
                 price = 5000,
+                category = RoomCategory.Elevator,
                 uses = new RoomUse[] {
                     RoomUse.Transportation
                 },
@@ -212,6 +220,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Stairwell",
                 price = 5000,
+                category = RoomCategory.Stairs,
                 uses = new RoomUse[] {
                     RoomUse.Transportation
                 },
@@ -236,6 +245,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Large Stairwell",
                 price = 8000,
+                category = RoomCategory.Stairs,
                 uses = new RoomUse[] {
                     RoomUse.Transportation
                 },
@@ -260,6 +270,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Small Park",
                 price = 10000,
+                category = RoomCategory.Park,
                 uses = new RoomUse[] {
                     RoomUse.CommonArea,
                     RoomUse.Park

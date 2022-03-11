@@ -16,6 +16,15 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
         public List<BlueprintValidationError> validationErrors;
 
+
+        public CellCoordinates relativeCellCoordinates
+        {
+            get
+            {
+                return cellCoordinates.Subtract(parentBlueprint.buildStartCoordinates);
+            }
+        }
+
         public BlueprintCell(Blueprint parentBlueprint, CellCoordinates cellCoordinates)
         {
             id = Guid.NewGuid().ToString();
@@ -39,11 +48,9 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
             if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
             {
-                CellCoordinates relativeCellCoordinates = GetRelativeCellCoordinates();
-
                 foreach (RoomEntrance entrance in roomDetails.entrances)
                 {
-                    if (entrance.cellCoordinates.Matches(relativeCellCoordinates))
+                    if (entrance.cellCoordinates.Matches(this.relativeCellCoordinates))
                     {
                         result.Add(entrance);
                     }
@@ -55,11 +62,6 @@ namespace TowerBuilder.Stores.Map.Blueprints
             }
 
             return result;
-        }
-
-        public CellCoordinates GetRelativeCellCoordinates()
-        {
-            return cellCoordinates.Subtract(parentBlueprint.buildStartCoordinates);
         }
 
         // rooms is a list of all of the rooms on the map currently

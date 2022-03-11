@@ -11,6 +11,7 @@ namespace TowerBuilder.Stores.Map.Rooms
     {
         public string title;
         public int price;
+        public RoomCategory category = RoomCategory.None;
         public RoomUse[] uses = new RoomUse[0];
 
         public int width = 1;
