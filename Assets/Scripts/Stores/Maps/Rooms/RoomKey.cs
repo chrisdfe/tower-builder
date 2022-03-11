@@ -6,10 +6,13 @@ namespace TowerBuilder.Stores.Map.Rooms
         None,
         EmptyFloor,
         Lobby,
+        LargeLobby,
         Office,
         Condo,
         Elevator,
+        LargeElevator,
         Stairwell,
+        LargeStairwell,
         SmallPark,
     }
 }

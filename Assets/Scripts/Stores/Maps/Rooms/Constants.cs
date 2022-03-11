@@ -65,6 +65,31 @@ namespace TowerBuilder.Stores.Map.Rooms
                 color = Color.red,
             },
 
+            [RoomKey.LargeLobby] = new RoomDetails()
+            {
+                title = "Large Lobby",
+                price = 12000,
+                uses = new RoomUse[] {
+                    RoomUse.CommonArea,
+                    RoomUse.Transportation
+                },
+                width = 1,
+                height = 2,
+                resizability = RoomResizability.Horizontal(),
+                privacy = RoomPrivacy.Public,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 1)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(0, 1)
+                    },
+                },
+                color = Color.red,
+            },
+
             [RoomKey.Office] = new RoomDetails()
             {
                 title = "Office",
@@ -135,6 +160,54 @@ namespace TowerBuilder.Stores.Map.Rooms
                 color = Color.magenta,
             },
 
+            [RoomKey.Elevator] = new RoomDetails()
+            {
+                title = "Service Elevator",
+                price = 1500,
+                uses = new RoomUse[] {
+                    RoomUse.Transportation
+                },
+                width = 1,
+                height = 1,
+                resizability = RoomResizability.Vertical(),
+                privacy = RoomPrivacy.Private,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                },
+                color = Color.yellow,
+            },
+
+            [RoomKey.LargeElevator] = new RoomDetails()
+            {
+                title = "Large Elevator",
+                price = 5000,
+                uses = new RoomUse[] {
+                    RoomUse.Transportation
+                },
+                width = 2,
+                height = 1,
+                resizability = RoomResizability.Vertical(),
+                privacy = RoomPrivacy.Public,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                },
+                color = Color.magenta,
+            },
+
             [RoomKey.Stairwell] = new RoomDetails()
             {
                 title = "Stairwell",
@@ -143,6 +216,30 @@ namespace TowerBuilder.Stores.Map.Rooms
                     RoomUse.Transportation
                 },
                 width = 1,
+                height = 1,
+                resizability = RoomResizability.Vertical(),
+                color = Color.white,
+                privacy = RoomPrivacy.Public,
+                entrances = new List<RoomEntrance>() {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                },
+            },
+
+            [RoomKey.LargeStairwell] = new RoomDetails()
+            {
+                title = "Large Stairwell",
+                price = 8000,
+                uses = new RoomUse[] {
+                    RoomUse.Transportation
+                },
+                width = 2,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 color = Color.white,

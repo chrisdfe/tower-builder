@@ -1,8 +1,10 @@
 # TODO
-- Build routes from 0,0 to each room
-- Flexible-sized rooms should be resizable once placed
 - Flexible-sized rooms currently only work in increments of 1x1: make them work in increments of any rectangular room shape.
   - e.g I want to make a wide elevator that takes up 2 horizontal cells
+- RoomEntrances should live on RoomCell, assigned by Room during initialization based on roomdetails
+  - This should help with
+- Flexible-sized rooms should be resizable once placed
+- Build routes from 0,0 to each room
 - AND/OR placing a tile next to another flexible room should add onto it instead of creating a new room. i.e for elevators/lobbies
   - perhaps not for XY flexible rooms, like parks?
 - Room-specific validations
