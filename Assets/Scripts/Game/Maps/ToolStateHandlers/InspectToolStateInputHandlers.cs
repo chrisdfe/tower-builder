@@ -18,6 +18,7 @@ namespace TowerBuilder.Game.Maps
 
         public override void OnTransitionFrom(ToolState previousState)
         {
+            // TODO - do this in the store instead
             Registry.Stores.MapUI.inspectToolSubState.Reset();
 
         }

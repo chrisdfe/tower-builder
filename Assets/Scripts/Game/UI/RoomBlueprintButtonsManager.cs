@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using TowerBuilder;
 using TowerBuilder.Stores;
-using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms;
-using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +9,7 @@ namespace TowerBuilder.Game.UI
     {
         static Color PRESSED_COLOR = Color.red;
 
-        Button NoneButton;
+        Button HallwayButton;
         Button LobbyButton;
         Button ElevatorButton;
         Button OfficeButton;
@@ -25,13 +20,13 @@ namespace TowerBuilder.Game.UI
 
         void Awake()
         {
-            NoneButton = transform.Find("NoneButton").GetComponent<Button>();
+            HallwayButton = transform.Find("HallwayButton").GetComponent<Button>();
             LobbyButton = transform.Find("LobbyButton").GetComponent<Button>();
             ElevatorButton = transform.Find("ElevatorButton").GetComponent<Button>();
             OfficeButton = transform.Find("OfficeButton").GetComponent<Button>();
             CondoButton = transform.Find("CondoButton").GetComponent<Button>();
 
-            NoneButton.onClick.AddListener(OnNoneButtonClick);
+            HallwayButton.onClick.AddListener(OnHallwayButtonClick);
             LobbyButton.onClick.AddListener(OnLobbyButtonClick);
             ElevatorButton.onClick.AddListener(OnElevatorButtonClick);
             OfficeButton.onClick.AddListener(OnOfficeButtonClick);
@@ -43,19 +38,19 @@ namespace TowerBuilder.Game.UI
             Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
-        void OnNoneButtonClick()
+        void OnHallwayButtonClick()
         {
-            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.None);
+            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Hallway);
         }
 
         void OnLobbyButtonClick()
         {
-            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Lobby);
+            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.LargeLobby);
         }
 
         void OnElevatorButtonClick()
         {
-            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Elevator);
+            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.LargeElevator);
         }
 
         void OnOfficeButtonClick()
@@ -106,7 +101,7 @@ namespace TowerBuilder.Game.UI
                 return CondoButton;
             }
 
-            return NoneButton;
+            return HallwayButton;
         }
     }
 }

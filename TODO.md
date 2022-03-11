@@ -27,6 +27,7 @@
 - "Path" constants for paths used in Resource.Load - refactoring/moving things around would be easier
   if they're all in one place
 - Z-index constants
+- Convert TILE_SIZE to a Vector2
 
 # Bugs
 

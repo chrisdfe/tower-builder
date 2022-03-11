@@ -5,6 +5,7 @@ namespace TowerBuilder.Stores.Map.Rooms
     {
         None,
         EmptyFloor,
+        Hallway,
         Lobby,
         LargeLobby,
         Office,

@@ -15,7 +15,7 @@ namespace TowerBuilder.Stores.Map.Rooms
         {
             [RoomKey.None] = new RoomDetails(),
 
-            [RoomKey.EmptyFloor] = new RoomDetails()
+            [RoomKey.Hallway] = new RoomDetails()
             {
                 title = "Hallway",
                 price = 500,
@@ -191,7 +191,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 uses = new RoomUse[] {
                     RoomUse.Transportation
                 },
-                width = 2,
+                width = 3,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,

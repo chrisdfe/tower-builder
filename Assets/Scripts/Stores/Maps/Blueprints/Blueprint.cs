@@ -56,16 +56,19 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
             if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
             {
-                return new RoomCells(roomDetails.width, roomDetails.height).PositionAtCoordinates(
-                    buildStartCoordinates
-                );
+                return new RoomCells(roomDetails.width, roomDetails.height)
+                    .PositionAtCoordinates(buildStartCoordinates);
             }
 
             // Flexible room sizes need to know how many of the room blueprint can fit within
             // the start+end coordinates
+            CellCoordinates flexibleBuildStartCoordinates = buildStartCoordinates.Clone();
             CellCoordinates flexibleBuildEndCoordinates = buildStartCoordinates.Clone();
 
-            if (roomDetails.resizability.x && buildEndCoordinates.x != buildStartCoordinates.x)
+            if (
+                roomDetails.resizability.x &&
+                buildEndCoordinates.x != buildStartCoordinates.x
+            )
             {
                 flexibleBuildEndCoordinates.x = buildEndCoordinates.x;
             }
@@ -79,9 +82,18 @@ namespace TowerBuilder.Stores.Map.Blueprints
             }
 
             // Round up to fit base blueprint size
+            CellCoordinates blueprintDimensions = new CellCoordinates(
+                (flexibleBuildEndCoordinates.x - flexibleBuildStartCoordinates.x) + 1,
+                (flexibleBuildEndCoordinates.floor - flexibleBuildStartCoordinates.floor) + 1
+            );
+            Debug.Log(blueprintDimensions);
+            CellCoordinates roundUpAmounts = new CellCoordinates(
+                (int)(Mathf.Floor(blueprintDimensions.x % roomDetails.width)),
+                (int)(Mathf.Floor(blueprintDimensions.floor % roomDetails.height))
+            );
             flexibleBuildEndCoordinates = new CellCoordinates(
-                (int)(Mathf.Ceil(flexibleBuildEndCoordinates.x / roomDetails.width) * roomDetails.width),
-                (int)(Mathf.Ceil(flexibleBuildEndCoordinates.floor / roomDetails.height) * roomDetails.height)
+                flexibleBuildEndCoordinates.x + roundUpAmounts.x,
+                flexibleBuildEndCoordinates.floor + roundUpAmounts.floor
             );
 
             // Draw a rectangle between the build start coordinates and build end coordinates

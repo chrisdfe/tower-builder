@@ -19,7 +19,6 @@ namespace TowerBuilder.Game.Maps
         {
             mapCubeCellPrefab = Resources.Load<GameObject>("Prefabs/Map/GameRoomCell");
 
-
             // TODO - populate rooms based on initial state of map
             //        instead of just an empty list
             mapRoomCells = new List<GameRoomCell>();
