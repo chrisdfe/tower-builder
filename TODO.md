@@ -1,4 +1,5 @@
 # TODO
+
 - Flexible-sized rooms currently only work in increments of 1x1: make them work in increments of any rectangular room shape.
   - e.g I want to make a wide elevator that takes up 2 horizontal cells
 - RoomEntrances should live on RoomCell, assigned by Room during initialization based on roomdetails
@@ -27,10 +28,17 @@
   if they're all in one place
 - Z-index constants
 
+# Bugs
+
+- Input.GetMouseButtonDown(0) does not work consistently on macos
+- UI is way too big on my laptop
+
 # maybe TODO
+
 - should the destroy tool replace the room with an empty floor, at least on floors 0 and above? otherwise, certain rooms would be undestroyable?
 
 # Done
+
 - CellCoordinates validation stuff should go somewhere other than inside of RoomBlueprintCell
 - RoomCell class (wrapps cellCoordinates)
 - Inspect ToolState mode
@@ -39,4 +47,4 @@
 - Add click-and-drag room building
 - Add flexble-sized rooms
 - Remove 'RoomStore' - having just MapStore should be fine
-    - Combine RoomDetails and RoomDetails
+  - Combine RoomDetails and RoomDetails

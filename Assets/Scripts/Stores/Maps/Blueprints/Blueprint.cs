@@ -52,13 +52,43 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
         public RoomCells GetRoomCells()
         {
-            RoomCells roomCells = new RoomCells();
+            RoomDetails roomDetails = Room.GetDetails(roomKey);
 
-            foreach (BlueprintCell roomBlueprintCell in roomBlueprintCells)
+            if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
             {
-                roomCells.Add(roomBlueprintCell.cellCoordinates);
+                return new RoomCells(roomDetails.width, roomDetails.height).PositionAtCoordinates(
+                    buildStartCoordinates
+                );
             }
 
+            // Flexible room sizes need to know how many of the room blueprint can fit within
+            // the start+end coordinates
+            CellCoordinates flexibleBuildEndCoordinates = buildStartCoordinates.Clone();
+
+            if (roomDetails.resizability.x && buildEndCoordinates.x != buildStartCoordinates.x)
+            {
+                flexibleBuildEndCoordinates.x = buildEndCoordinates.x;
+            }
+
+            if (
+                roomDetails.resizability.floor &&
+                buildEndCoordinates.floor != buildStartCoordinates.floor
+            )
+            {
+                flexibleBuildEndCoordinates.floor = buildEndCoordinates.floor;
+            }
+
+            // Round up to fit base blueprint size
+            flexibleBuildEndCoordinates = new CellCoordinates(
+                (int)(Mathf.Ceil(flexibleBuildEndCoordinates.x / roomDetails.width) * roomDetails.width),
+                (int)(Mathf.Ceil(flexibleBuildEndCoordinates.floor / roomDetails.height) * roomDetails.height)
+            );
+
+            // Draw a rectangle between the build start coordinates and build end coordinates
+            RoomCells roomCells = RoomCells.CreateRectangularRoom(
+                buildStartCoordinates,
+                flexibleBuildEndCoordinates
+            );
             return roomCells;
         }
 
@@ -116,32 +146,7 @@ namespace TowerBuilder.Stores.Map.Blueprints
             // TODO - clean up existing roomBlueprintCells first?
             RoomCells roomCells = new RoomCells();
 
-            RoomDetails roomDetails = Room.GetDetails(roomKey);
-
-            if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
-            {
-                // TODO - use instance method instead
-                roomCells = new RoomCells(roomDetails.width, roomDetails.height).PositionAtCoordinates(
-                    buildStartCoordinates
-                );
-            }
-            else
-            {
-                CellCoordinates flexibleBuildEndCoordinates = buildStartCoordinates.Clone();
-
-                if (roomDetails.resizability.x && buildEndCoordinates.x != buildStartCoordinates.x)
-                {
-                    flexibleBuildEndCoordinates.x = buildEndCoordinates.x;
-                }
-
-                if (roomDetails.resizability.floor && buildEndCoordinates.floor != buildStartCoordinates.floor)
-                {
-                    flexibleBuildEndCoordinates.floor = buildEndCoordinates.floor;
-                }
-
-                // Draw a rectangle between the build start coordinates and build end coordinates
-                roomCells = RoomCells.CreateRectangularRoom(buildStartCoordinates, flexibleBuildEndCoordinates);
-            }
+            roomCells = GetRoomCells();
 
             roomBlueprintCells = new List<BlueprintCell>();
             foreach (RoomCell roomCell in roomCells.cells)

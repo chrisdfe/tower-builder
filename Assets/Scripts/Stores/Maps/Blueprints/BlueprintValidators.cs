@@ -22,7 +22,9 @@ namespace TowerBuilder.Stores.Map.Blueprints
                 {
                     if (otherRoomCell.coordinates.Matches(roomBlueprintCell.cellCoordinates))
                     {
-                        validationErrors.Add(new BlueprintValidationError("You cannot build rooms on top of each other."));
+                        validationErrors.Add(
+                            new BlueprintValidationError("You cannot build rooms on top of each other.")
+                        );
                     }
                 }
             }
@@ -34,8 +36,7 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
         // Room-specific cell validations
         // TODO - this should ultimately live with the rest of Room stuff when I rewrite Rooms in a more
-        //        object-oriented way
-        //        for now all room-specific validations will just go here I guess
+        //        object-oriented way but for now all room-specific validations will just go here I guess
         public static List<BlueprintValidationError> ValidateForRoomType(BlueprintCell roomBlueprintCell, RoomList allRooms)
         {
             List<BlueprintValidationError> result = new List<BlueprintValidationError>();
@@ -63,7 +64,9 @@ namespace TowerBuilder.Stores.Map.Blueprints
                     (rightRoom != null && rightRoom.roomKey == RoomKey.Elevator)
                 )
                 {
-                    result.Add(new BlueprintValidationError("Elevators cannot be placed direclty next to each other."));
+                    result.Add(
+                        new BlueprintValidationError("Elevators cannot be placed direclty next to each other.")
+                    );
                 }
             }
 
