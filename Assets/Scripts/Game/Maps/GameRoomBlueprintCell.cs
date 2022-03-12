@@ -45,7 +45,6 @@ namespace TowerBuilder.Game.Maps
             List<RoomEntrance> roomEntrances = roomBlueprintCell.GetRoomEntrances();
             float TILE_SIZE = TowerBuilder.Stores.Map.Rooms.Constants.TILE_SIZE;
 
-            // Debug.Log(roomBlueprintCell.GetRelativeCellCoordinates());
             if (roomEntrances.Count > 0)
             {
                 foreach (RoomEntrance roomEntrance in roomEntrances)

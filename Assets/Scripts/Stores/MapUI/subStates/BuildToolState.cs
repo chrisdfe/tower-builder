@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Blueprints;
@@ -45,7 +47,6 @@ namespace TowerBuilder.Stores.MapUI
 
         public override void Reset()
         {
-            this.selectedRoomKey = RoomKey.None;
             currentBlueprint = new Blueprint(parentState.currentSelectedCell, selectedRoomKey);
         }
 
@@ -79,7 +80,7 @@ namespace TowerBuilder.Stores.MapUI
         {
             buildIsActive = false;
 
-            AttemptToCreateRoomAtCurrentSelectedCell();
+            AttemptToCreateRoomFromCurrentBlueprint();
 
             if (onBuildEnd != null)
             {
@@ -107,18 +108,19 @@ namespace TowerBuilder.Stores.MapUI
             }
         }
 
-        void AttemptToCreateRoomAtCurrentSelectedCell()
+        void AttemptToCreateRoomFromCurrentBlueprint()
         {
             if (selectedRoomKey == RoomKey.None)
             {
                 return;
             }
 
+            // TODO - should everything here on down go in MapState?
             List<BlueprintValidationError> validationErrors = currentBlueprint.Validate(Registry.Stores.Map.rooms, Registry.Stores.Wallet.balance);
 
             if (validationErrors.Count > 0)
             {
-                // TODO - these should be unique messages - right now they 
+                // TODO - these should be unique messages - right now they are wnot
                 foreach (BlueprintValidationError validationError in validationErrors)
                 {
                     Registry.Stores.Notifications.createNotification(validationError.message);
@@ -126,11 +128,98 @@ namespace TowerBuilder.Stores.MapUI
                 return;
             }
 
-            Room newRoom = new Room(selectedRoomKey, currentBlueprint);
-            Registry.Stores.Map.AddRoom(newRoom);
-
             RoomDetails roomDetails = Room.GetDetails(selectedRoomKey);
-            Registry.Stores.Wallet.SubtractBalance(roomDetails.price);
+            List<Room> roomsToCombineWith = new List<Room>();
+            RoomCells roomCells = currentBlueprint.GetRoomCells();
+
+            // 
+            Registry.Stores.Wallet.SubtractBalance(currentBlueprint.GetPrice());
+
+            // Decide whether to create a new room or to add to an existing one
+            if (!roomDetails.resizability.Matches(RoomResizability.Inflexible()))
+            {
+                if (roomDetails.resizability.x)
+                {
+                    //  Check on either side
+                    foreach (int floor in roomCells.getFloorRange())
+                    {
+                        Room leftRoom = Registry.Stores.Map.rooms.FindRoomAtCell(new CellCoordinates(
+                            roomCells.GetLowestX() - 1,
+                            floor
+                        ));
+
+                        Room rightRoom = Registry.Stores.Map.rooms.FindRoomAtCell(new CellCoordinates(
+                            roomCells.GetHighestX() + 1,
+                            floor
+                        ));
+
+                        foreach (Room otherRoom in new Room[] { leftRoom, rightRoom })
+                        {
+                            if (
+                                otherRoom != null &&
+                                otherRoom.roomKey == selectedRoomKey &&
+                                !roomsToCombineWith.Contains(otherRoom)
+                            )
+                            {
+                                roomsToCombineWith.Add(otherRoom);
+                            }
+                        }
+                    }
+                }
+
+                if (roomDetails.resizability.floor)
+                {
+                    //  Check on floors above and below
+                    // TODO - do this for each floor from GetXRange
+                    foreach (int x in roomCells.getXRange())
+                    {
+                        Room aboveRoom = Registry.Stores.Map.rooms.FindRoomAtCell(new CellCoordinates(
+                            x,
+                            roomCells.GetHighestFloor() + 1
+                        ));
+
+                        Room belowRoom = Registry.Stores.Map.rooms.FindRoomAtCell(new CellCoordinates(
+                            x,
+                            roomCells.GetLowestFloor() - 1
+                        ));
+
+                        foreach (Room otherRoom in new Room[] { aboveRoom, belowRoom })
+                        {
+                            if (
+                                otherRoom != null &&
+                                otherRoom.roomKey == selectedRoomKey &&
+                                !roomsToCombineWith.Contains(otherRoom)
+                            )
+                            {
+                                roomsToCombineWith.Add(otherRoom);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (roomsToCombineWith.Count == 0)
+            {
+                Room newRoom = new Room(selectedRoomKey, currentBlueprint);
+                Registry.Stores.Map.AddRoom(newRoom);
+            }
+            else
+            {
+                RoomCells newRoomCells = currentBlueprint.GetRoomCells();
+                foreach (Room otherRoom in roomsToCombineWith)
+                {
+                    // Group all of those roomcells into a single list
+                    newRoomCells.Add(otherRoom.roomCells);
+
+                    // Delete room
+                    Registry.Stores.Map.DestroyRoom(otherRoom);
+                }
+
+
+                // Create new room with all of those room cells from previous rooms
+                Room newRoom = new Room(selectedRoomKey, newRoomCells);
+                Registry.Stores.Map.AddRoom(newRoom);
+            }
         }
     }
 }

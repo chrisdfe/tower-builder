@@ -48,11 +48,6 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
             if (roomCategory == RoomCategory.Lobby)
             {
-                Debug.Log("absolute");
-                Debug.Log(cellCoordinates);
-                Debug.Log("relative");
-                Debug.Log(roomBlueprintCell.relativeCellCoordinates);
-                Debug.Log("---");
                 // Lobbies must be on floor 0
                 // Since lobbies can be 1-2 tiles high, make sure the cell we're validating here is the bottom-most cell
                 bool isOnBottom = roomBlueprintCell.relativeCellCoordinates.floor == 0;
@@ -63,7 +58,8 @@ namespace TowerBuilder.Stores.Map.Blueprints
             }
             else if (roomCategory == RoomCategory.Elevator)
             {
-                // elevators can't be too close together
+                // Elevators can't be too close together
+                // TODO - check above + to the left + right and below + to the left and right (not directly above or below, that's ok)
                 Room leftRoom = allRooms.FindRoomAtCell(new CellCoordinates(cellCoordinates.x - 1, cellCoordinates.floor));
                 Room rightRoom = allRooms.FindRoomAtCell(new CellCoordinates(cellCoordinates.x + 1, cellCoordinates.floor));
 

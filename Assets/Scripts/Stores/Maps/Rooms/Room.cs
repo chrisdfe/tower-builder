@@ -21,15 +21,18 @@ namespace TowerBuilder.Stores.Map.Rooms
             this.roomKey = roomKey;
 
             roomCells = blueprint.GetRoomCells();
-            RoomDetails roomDetails = GetDetails();
 
-            // RoomEntrances need a Room instance attached to them to work properly
-            roomEntrances = new List<RoomEntrance>(roomDetails.entrances);
+            InitializeRoomEntrances();
+        }
 
-            foreach (RoomEntrance roomEntrance in roomEntrances)
-            {
-                roomEntrance.room = this;
-            }
+        public Room(RoomKey roomKey, RoomCells roomCells)
+        {
+            id = GenerateId();
+            this.roomKey = roomKey;
+
+            this.roomCells = roomCells;
+
+            InitializeRoomEntrances();
         }
 
         public RoomDetails GetDetails()
@@ -56,6 +59,18 @@ namespace TowerBuilder.Stores.Map.Rooms
         string GenerateId()
         {
             return Guid.NewGuid().ToString();
+        }
+
+        void InitializeRoomEntrances()
+        {
+            RoomDetails roomDetails = GetDetails();
+            // RoomEntrances need a Room instance attached to them to work properly
+            roomEntrances = new List<RoomEntrance>(roomDetails.entrances);
+
+            foreach (RoomEntrance roomEntrance in roomEntrances)
+            {
+                roomEntrance.room = this;
+            }
         }
     }
 }

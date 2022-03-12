@@ -21,7 +21,7 @@ namespace TowerBuilder.Stores.Map
 
         public override string ToString()
         {
-            return $"column {x}, floor {floor}";
+            return $"x: {x}, floor: {floor}";
         }
 
         public CellCoordinates Add(CellCoordinates b)

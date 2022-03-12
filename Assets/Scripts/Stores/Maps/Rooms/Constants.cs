@@ -77,7 +77,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                     RoomUse.Transportation
                 },
                 width = 1,
-                height = 2,
+                height = 3,
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
                 entrances = new List<RoomEntrance>() {
@@ -199,7 +199,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 uses = new RoomUse[] {
                     RoomUse.Transportation
                 },
-                width = 3,
+                width = 4,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,

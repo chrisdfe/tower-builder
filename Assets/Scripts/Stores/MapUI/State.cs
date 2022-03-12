@@ -37,6 +37,7 @@ namespace TowerBuilder.Stores.MapUI
 
         public void SetToolState(ToolState toolState)
         {
+            GetCurrentActiveToolSubState().Reset();
             ToolState previousToolState = this.toolState;
             this.toolState = toolState;
 

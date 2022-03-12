@@ -34,6 +34,11 @@ namespace TowerBuilder.Stores.Map.Rooms
             cells.Add(roomCell);
         }
 
+        public void Add(RoomCells roomCells)
+        {
+            cells = cells.Concat(roomCells.cells).ToList();
+        }
+
         public static List<RoomCell> CreateRectangularRoom(int xWidth, int floors)
         {
             List<RoomCell> roomCells = new List<RoomCell>();
@@ -98,6 +103,111 @@ namespace TowerBuilder.Stores.Map.Rooms
 
             cells = result;
             return this;
+        }
+
+        public int GetLowestX()
+        {
+            int lowestX = int.MaxValue;
+
+            foreach (RoomCell roomCell in cells)
+            {
+                if (roomCell.coordinates.x < lowestX)
+                {
+                    lowestX = roomCell.coordinates.x;
+                }
+            }
+
+            return lowestX;
+        }
+
+        public int GetHighestX()
+        {
+            int highestX = int.MinValue;
+
+            foreach (RoomCell roomCell in cells)
+            {
+                if (roomCell.coordinates.x > highestX)
+                {
+                    highestX = roomCell.coordinates.x;
+                }
+            }
+
+            return highestX;
+        }
+
+
+        public int GetLowestFloor()
+        {
+            int lowestFloor = int.MaxValue;
+
+            foreach (RoomCell roomCell in cells)
+            {
+                if (roomCell.coordinates.floor < lowestFloor)
+                {
+                    lowestFloor = roomCell.coordinates.floor;
+                }
+            }
+
+            return lowestFloor;
+        }
+
+        public int GetHighestFloor()
+        {
+            int highestFloor = int.MinValue;
+
+            foreach (RoomCell roomCell in cells)
+            {
+                if (roomCell.coordinates.floor > highestFloor)
+                {
+                    highestFloor = roomCell.coordinates.floor;
+                }
+            }
+
+            return highestFloor;
+        }
+
+        public List<int> getXRange()
+        {
+            List<int> result = new List<int>();
+
+            foreach (RoomCell roomCell in cells)
+            {
+                if (!result.Contains(roomCell.coordinates.x))
+                {
+                    result.Add(roomCell.coordinates.x);
+                }
+            }
+
+            return result;
+        }
+
+        public List<int> getFloorRange()
+        {
+            List<int> result = new List<int>();
+
+            foreach (RoomCell roomCell in cells)
+            {
+                if (!result.Contains(roomCell.coordinates.floor))
+                {
+                    result.Add(roomCell.coordinates.floor);
+                }
+            }
+
+            return result;
+        }
+
+        public int GetWidth()
+        {
+            int highestX = GetHighestX();
+            int lowestX = GetLowestX();
+            return (highestX - lowestX) + 1;
+        }
+
+        public int GetFloorSpan()
+        {
+            int highestFloor = GetHighestFloor();
+            int lowestFloor = GetLowestFloor();
+            return (highestFloor - lowestFloor) + 1;
         }
     }
 }
