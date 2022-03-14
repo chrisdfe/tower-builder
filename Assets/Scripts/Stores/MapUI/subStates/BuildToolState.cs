@@ -128,14 +128,15 @@ namespace TowerBuilder.Stores.MapUI
                 return;
             }
 
-            RoomDetails roomDetails = Room.GetDetails(selectedRoomKey);
-            List<Room> roomsToCombineWith = new List<Room>();
+            RoomDetails roomDetails = currentBlueprint.room.roomDetails;
             RoomCells roomCells = currentBlueprint.GetRoomCells();
 
             // 
             Registry.Stores.Wallet.SubtractBalance(currentBlueprint.GetPrice());
 
             // Decide whether to create a new room or to add to an existing one
+            List<Room> roomsToCombineWith = new List<Room>();
+
             if (!roomDetails.resizability.Matches(RoomResizability.Inflexible()))
             {
                 if (roomDetails.resizability.x)
@@ -200,7 +201,8 @@ namespace TowerBuilder.Stores.MapUI
 
             if (roomsToCombineWith.Count == 0)
             {
-                Room newRoom = new Room(selectedRoomKey, currentBlueprint);
+                Room newRoom = new Room(selectedRoomKey);
+                newRoom.SetRoomCells(currentBlueprint.GetRoomCells());
                 Registry.Stores.Map.AddRoom(newRoom);
             }
             else
@@ -214,7 +216,6 @@ namespace TowerBuilder.Stores.MapUI
                     // Delete room
                     Registry.Stores.Map.DestroyRoom(otherRoom);
                 }
-
 
                 // Create new room with all of those room cells from previous rooms
                 Room newRoom = new Room(selectedRoomKey, newRoomCells);
