@@ -15,6 +15,21 @@ namespace TowerBuilder.Stores.Map.Rooms
 
         public RoomCell(Room room)
         {
+            SetRoom(room);
+        }
+
+        public RoomCell(Room room, int x, int floor) : this(room)
+        {
+            this.coordinates = new CellCoordinates(x, floor);
+        }
+
+        public RoomCell(Room room, CellCoordinates cellCoordinates) : this(room)
+        {
+            this.coordinates = cellCoordinates.Clone();
+        }
+
+        public void SetRoom(Room room)
+        {
             this.room = room;
         }
 

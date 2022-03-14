@@ -17,25 +17,55 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         GameObject roomCellPrefab;
 
-        void Awake()
-        {
-            roomCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomCell");
-        }
-
         public void SetRoom(Room room)
         {
             this.room = room;
+            gameObject.name = $"Room {room.id}";
         }
 
-        void ResetCells()
+        public void Initialize()
+        {
+            ResetCells();
+        }
+
+        void Awake()
+        {
+            transform.localPosition = Vector3.zero;
+            roomCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomCell");
+        }
+
+        void OnDestroy()
+        {
+            DestroyCells();
+        }
+
+        void CreateCells()
         {
             foreach (RoomCell roomCell in room.roomCells.cells)
             {
                 GameObject roomCellGameObject = Instantiate<GameObject>(roomCellPrefab);
                 GameWorldRoomCell gameWorldRoomCell = roomCellGameObject.GetComponent<GameWorldRoomCell>();
+                gameWorldRoomCell.transform.parent = transform;
                 gameWorldRoomCell.SetRoomCell(roomCell);
+                gameWorldRoomCell.Initialize();
                 gameWorldRoomCells.Add(gameWorldRoomCell);
             }
+        }
+
+        void DestroyCells()
+        {
+            foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
+            {
+                Destroy(gameWorldRoomCell);
+            }
+
+            gameWorldRoomCells = new List<GameWorldRoomCell>();
+        }
+
+        void ResetCells()
+        {
+            DestroyCells();
+            CreateCells();
         }
     }
 }

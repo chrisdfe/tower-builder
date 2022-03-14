@@ -7,6 +7,7 @@ using TowerBuilder.GameWorld.Map;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.Rooms
@@ -20,20 +21,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         Transform cellCube;
         Material cellCubeMaterial;
 
-        void Awake()
-        {
-            mapRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
-
-            cellCube = transform.Find("CellCube");
-            cellCubeMaterial = cellCube.GetComponent<Renderer>().material;
-
-            // TODO - initialize entrances
-
-            Registry.Stores.MapUI.destroyToolSubState.onCurrentSelectedRoomUpdated += OnDestroyRoomUpdated;
-            Registry.Stores.MapUI.inspectToolSubState.onCurrentSelectedRoomUpdated += OnInspectHoverRoomUpdated;
-            Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
-        }
-
         public void SetRoomCell(RoomCell roomCell)
         {
             this.roomCell = roomCell;
@@ -41,58 +28,96 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         public void Initialize()
         {
-            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
-
-            // Set color
+            UpdatePosition();
             ResetColor();
+
+            // TODO - initialize entrances
         }
 
-
-        void OnDestroyRoomUpdated(Room currentDestroyRoom)
+        void Awake()
         {
-            if (currentDestroyRoom != null && currentDestroyRoom.id == roomCell.room.id)
-            {
-                // highlight
-                SetColorAlpha(0.5f);
-            }
-            else
-            {
-                SetColorAlpha(1f);
-            }
+            transform.localPosition = Vector3.zero;
+
+            mapRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
+
+            cellCube = transform.Find("CellCube");
+            cellCubeMaterial = cellCube.GetComponent<Renderer>().material;
+
+            Registry.Stores.MapUI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
+            Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
         }
 
-        void OnInspectHoverRoomUpdated(Room currentInspectHoverRoom)
+        void OnDestroy()
         {
-            // If this room is already being inspected then don't do anything
-            if (
-                Registry.Stores.MapUI.inspectToolSubState.currentInspectedRoom != null &&
-                roomCell.room.id == Registry.Stores.MapUI.inspectToolSubState.currentInspectedRoom.id
-            )
+            Registry.Stores.MapUI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
+            Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
+        }
+
+        void OnCurrentSelectedRoomUpdated(Room room)
+        {
+            if (room == null)
             {
+                ResetColor();
                 return;
             }
 
-            if (currentInspectHoverRoom != null && currentInspectHoverRoom.id == roomCell.room.id)
+            if (room.id == roomCell.room.id)
             {
-                // highlight
-                SetColorAlpha(0.5f);
+                switch (Registry.Stores.MapUI.toolState)
+                {
+                    case ToolState.Destroy:
+                        SetDestroyHoverColor();
+                        break;
+                    default:
+                        if (!IsInCurrentInspectedRoom())
+                        {
+                            SetHoverColor();
+                        }
+                        break;
+                }
             }
             else
             {
                 ResetColor();
             }
+        }
+
+        bool IsInCurrentInspectedRoom()
+        {
+            Room currentInspectedRoom = Registry.Stores.MapUI.inspectToolSubState.currentInspectedRoom;
+            return currentInspectedRoom != null && currentInspectedRoom.id == roomCell.room.id;
         }
 
         void OnInspectRoomUpdated(Room currentInspectRoom)
         {
             if (currentInspectRoom != null && currentInspectRoom.id == roomCell.room.id)
             {
-                cellCubeMaterial.color = Color.white;
+                SetInspectColor();
             }
             else
             {
                 ResetColor();
             }
+        }
+
+        void SetHoverColor()
+        {
+            SetColor(roomCell.room.roomDetails.color, 0.4f);
+        }
+
+        void SetDestroyHoverColor()
+        {
+            SetColor(Color.red, 0.7f);
+        }
+
+        void SetInspectColor()
+        {
+            SetColor(Color.white, 0.7f);
+        }
+
+        void UpdatePosition()
+        {
+            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
         }
 
         void SetColorAlpha(float alpha)
@@ -100,13 +125,15 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             cellCubeMaterial.color = new Color(cellCubeMaterial.color.r, cellCubeMaterial.color.g, cellCubeMaterial.color.b, alpha);
         }
 
+        void SetColor(Color color, float alpha)
+        {
+            cellCubeMaterial.color = color;
+            SetColorAlpha(alpha);
+        }
+
         void ResetColor()
         {
-            RoomDetails RoomDetails = roomCell.room.roomDetails;
-            Color color = RoomDetails.color;
-            // TODO - remove (debug)
-            SetColorAlpha(0.7f);
-            cellCubeMaterial.color = RoomDetails.color;
+            SetColor(roomCell.room.roomDetails.color, 1f);
         }
     }
 }

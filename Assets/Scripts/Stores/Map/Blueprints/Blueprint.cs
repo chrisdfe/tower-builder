@@ -28,14 +28,16 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
             validationErrors = new List<BlueprintValidationError>();
 
-            this.room.SetRoomCells(GetRoomCells());
             ResetBlueprintCells();
         }
 
+        public void OnDestroy() { }
+
+
         public void SetRoomKey(RoomKey roomKey)
         {
-            this.room = new Room(roomKey);
-            this.room.SetRoomCells(GetRoomCells());
+            room.SetRoomKey(roomKey);
+            SetRoomCells();
             ResetBlueprintCells();
         }
 
@@ -53,68 +55,78 @@ namespace TowerBuilder.Stores.Map.Blueprints
             ResetBlueprintCells();
         }
 
-        public RoomCells GetRoomCells()
+        public void SetRoomCells()
         {
             RoomDetails roomDetails = room.roomDetails;
+            RoomCells roomCells;
 
             if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
             {
-                return new RoomCells(room, roomDetails.width, roomDetails.height)
-                        .PositionAtCoordinates(buildStartCoordinates);
+                roomCells = new RoomCells(room, roomDetails.width, roomDetails.height);
+                roomCells.PositionAtCoordinates(buildStartCoordinates);
+                Debug.Log("SettingRoomCells for inflexible room");
+                foreach (RoomCell cell in roomCells.cells)
+                {
+                    Debug.Log(cell.coordinates);
+                }
             }
-
-            CellCoordinates flexibleBuildStartCoordinates = buildStartCoordinates.Clone();
-            CellCoordinates flexibleBuildEndCoordinates = buildStartCoordinates.Clone();
-
-            // Restrict resizability to X/Y depending on RoomFlexibility
-            // TODO - it's not super obvious what this is doing
-            if (
-                roomDetails.resizability.x &&
-                buildEndCoordinates.x != buildStartCoordinates.x
-            )
+            else
             {
-                flexibleBuildEndCoordinates.x = buildEndCoordinates.x;
+                CellCoordinates flexibleBuildStartCoordinates = buildStartCoordinates.Clone();
+                CellCoordinates flexibleBuildEndCoordinates = buildStartCoordinates.Clone();
+
+                // Restrict resizability to X/Y depending on RoomFlexibility
+                // TODO - it's not super obvious what is going on here
+                if (
+                    roomDetails.resizability.x &&
+                    buildEndCoordinates.x != buildStartCoordinates.x
+                )
+                {
+                    flexibleBuildEndCoordinates.x = buildEndCoordinates.x;
+                }
+
+                if (
+                    roomDetails.resizability.floor &&
+                    buildEndCoordinates.floor != buildStartCoordinates.floor
+                )
+                {
+                    flexibleBuildEndCoordinates.floor = buildEndCoordinates.floor;
+                }
+
+                // Round up to fit base blueprint size
+                CellCoordinates selectionAreaDimensions = new CellCoordinates(
+                    (flexibleBuildEndCoordinates.x - flexibleBuildStartCoordinates.x) + 1,
+                    (flexibleBuildEndCoordinates.floor - flexibleBuildStartCoordinates.floor) + 1
+                );
+
+                // Dimensions rounded up to the nearest width or height
+                CellCoordinates roundedUpDimensions = new CellCoordinates(
+                    (int)(Mathf.Ceil(((float)selectionAreaDimensions.x / (float)roomDetails.width)) * (float)roomDetails.width),
+                    (int)(Mathf.Ceil(((float)selectionAreaDimensions.floor / (float)roomDetails.height)) * (float)roomDetails.height)
+                );
+
+                // Determine how many copies (number of the base room blueprint size) there are in each direction
+                // TODO - it feels like this "get copies"  code could be abstracted out into a new method
+                // Flexible room sizes need to know how many of the room blueprint can fit within
+                // the start+end coordinates
+                CellCoordinates copies = new CellCoordinates(
+                    (int)((float)roundedUpDimensions.x / (float)roomDetails.width),
+                    (int)((float)roundedUpDimensions.floor / (float)roomDetails.height)
+                );
+
+                flexibleBuildEndCoordinates = new CellCoordinates(
+                    flexibleBuildStartCoordinates.x + (copies.x * roomDetails.width) - 1,
+                    flexibleBuildStartCoordinates.floor + (copies.floor * roomDetails.height) - 1
+                );
+
+                roomCells = new RoomCells(room);
+                roomCells.CreateRectangularRoom(
+                    flexibleBuildStartCoordinates,
+                    flexibleBuildEndCoordinates
+                );
             }
 
-            if (
-                roomDetails.resizability.floor &&
-                buildEndCoordinates.floor != buildStartCoordinates.floor
-            )
-            {
-                flexibleBuildEndCoordinates.floor = buildEndCoordinates.floor;
-            }
-
-            // Round up to fit base blueprint size
-            CellCoordinates selectionAreaDimensions = new CellCoordinates(
-                (flexibleBuildEndCoordinates.x - flexibleBuildStartCoordinates.x) + 1,
-                (flexibleBuildEndCoordinates.floor - flexibleBuildStartCoordinates.floor) + 1
-            );
-
-            // Dimensions rounded up to the nearest width or height
-            CellCoordinates roundedUpDimensions = new CellCoordinates(
-                (int)(Mathf.Ceil(((float)selectionAreaDimensions.x / (float)roomDetails.width)) * (float)roomDetails.width),
-                (int)(Mathf.Ceil(((float)selectionAreaDimensions.floor / (float)roomDetails.height)) * (float)roomDetails.height)
-            );
-
-            // Determine how many copies (number of the base room blueprint size) there are in each direction
-            // TODO - it feels like this "get copies"  code could be abstracted out into a new method
-            // Flexible room sizes need to know how many of the room blueprint can fit within
-            // the start+end coordinates
-            CellCoordinates copies = new CellCoordinates(
-                (int)((float)roundedUpDimensions.x / (float)roomDetails.width),
-                (int)((float)roundedUpDimensions.floor / (float)roomDetails.height)
-            );
-
-            flexibleBuildEndCoordinates = new CellCoordinates(
-                flexibleBuildStartCoordinates.x + (copies.x * roomDetails.width) - 1,
-                flexibleBuildStartCoordinates.floor + (copies.floor * roomDetails.height) - 1
-            );
-
-            RoomCells roomCells = new RoomCells(room).CreateRectangularRoom(
-                flexibleBuildStartCoordinates,
-                flexibleBuildEndCoordinates
-            );
-            return roomCells;
+            this.room.SetRoomCells(roomCells);
         }
 
         public int GetPrice()
@@ -140,11 +152,9 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
         public CellCoordinates GetCopies()
         {
-            RoomCells roomCells = GetRoomCells();
-
             return new CellCoordinates(
-                roomCells.GetWidth() / room.roomDetails.width,
-                roomCells.GetFloorSpan() / room.roomDetails.height
+                room.roomCells.GetWidth() / room.roomDetails.width,
+                room.roomCells.GetFloorSpan() / room.roomDetails.height
             );
         }
 
@@ -197,11 +207,12 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
         void ResetBlueprintCells()
         {
-            // TODO - clean up existing roomBlueprintCells first?
-            RoomCells roomCells = GetRoomCells();
+            SetRoomCells();
 
+            // TODO - clean up existing roomBlueprintCells first?
             roomBlueprintCells = new List<BlueprintCell>();
-            foreach (RoomCell roomCell in roomCells.cells)
+
+            foreach (RoomCell roomCell in room.roomCells.cells)
             {
                 BlueprintCell newBlueprintCell = new BlueprintCell(this, roomCell);
                 roomBlueprintCells.Add(newBlueprintCell);

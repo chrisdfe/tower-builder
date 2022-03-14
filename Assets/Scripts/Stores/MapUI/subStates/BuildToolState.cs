@@ -28,27 +28,37 @@ namespace TowerBuilder.Stores.MapUI
 
         public BuildToolState(MapUI.State state) : base(state)
         {
-            Reset();
+            CreateBlueprint();
         }
 
-        public override void OnCurrentSelectedCellSet()
+        public override void Setup()
+        {
+            CreateBlueprint();
+
+            parentState.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+        }
+
+        public override void Teardown()
+        {
+            DeleteBlueprint();
+
+            parentState.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
+        }
+
+        public void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell)
         {
             if (buildIsActive)
             {
-                currentBlueprint.SetBuildEndCell(parentState.currentSelectedCell);
+                currentBlueprint.SetBuildEndCell(currentSelectedCell);
             }
             else
             {
-                currentBlueprint.SetBuildStartCell(parentState.currentSelectedCell);
+                currentBlueprint.SetBuildStartCell(currentSelectedCell);
             }
 
             currentBlueprint.Validate(Registry.Stores.Map.rooms, Registry.Stores.Wallet.balance);
         }
 
-        public override void Reset()
-        {
-            currentBlueprint = new Blueprint(parentState.currentSelectedCell, selectedRoomKey);
-        }
 
         public void SetSelectedRoomKey(RoomKey roomKey)
         {
@@ -62,7 +72,6 @@ namespace TowerBuilder.Stores.MapUI
                 onSelectedRoomKeyUpdated(selectedRoomKey);
             }
         }
-
 
         public void StartBuild()
         {
@@ -108,6 +117,17 @@ namespace TowerBuilder.Stores.MapUI
             }
         }
 
+        void CreateBlueprint()
+        {
+            currentBlueprint = new Blueprint(parentState.currentSelectedCell, selectedRoomKey);
+        }
+
+        void DeleteBlueprint()
+        {
+            currentBlueprint.OnDestroy();
+            currentBlueprint = null;
+        }
+
         void AttemptToCreateRoomFromCurrentBlueprint()
         {
             if (selectedRoomKey == RoomKey.None)
@@ -129,7 +149,7 @@ namespace TowerBuilder.Stores.MapUI
             }
 
             RoomDetails roomDetails = currentBlueprint.room.roomDetails;
-            RoomCells roomCells = currentBlueprint.GetRoomCells();
+            RoomCells roomCells = currentBlueprint.room.roomCells;
 
             // 
             Registry.Stores.Wallet.SubtractBalance(currentBlueprint.GetPrice());
@@ -201,13 +221,12 @@ namespace TowerBuilder.Stores.MapUI
 
             if (roomsToCombineWith.Count == 0)
             {
-                Room newRoom = new Room(selectedRoomKey);
-                newRoom.SetRoomCells(currentBlueprint.GetRoomCells());
+                Room newRoom = currentBlueprint.room;
                 Registry.Stores.Map.AddRoom(newRoom);
             }
             else
             {
-                RoomCells newRoomCells = currentBlueprint.GetRoomCells();
+                RoomCells newRoomCells = currentBlueprint.room.roomCells;
                 foreach (Room otherRoom in roomsToCombineWith)
                 {
                     // Group all of those roomcells into a single list

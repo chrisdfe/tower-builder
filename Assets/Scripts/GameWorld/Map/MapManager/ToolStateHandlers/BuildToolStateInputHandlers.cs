@@ -6,12 +6,12 @@ using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Map
+namespace TowerBuilder.GameWorld.Map.MapManager
 {
     public class BuildToolStateInputHandlers : ToolStateInputHandlersBase
     {
         GameObject blueprintPrefab;
-        public GameWorldBlueprint mapRoomBlueprint;
+        public GameWorldBlueprint gameWorldBlueprint;
 
         public BuildToolStateInputHandlers(GameWorldMapManager parentMapManager) : base(parentMapManager)
         {
@@ -28,7 +28,6 @@ namespace TowerBuilder.GameWorld.Map
         public override void OnTransitionFrom(ToolState nextToolState)
         {
             DestroyBlueprint();
-            Registry.Stores.MapUI.buildToolSubState.Reset();
         }
 
         public override void OnMouseDown()
@@ -44,17 +43,17 @@ namespace TowerBuilder.GameWorld.Map
         void CreateBlueprint()
         {
             GameObject blueprintGameObject = GameObject.Instantiate<GameObject>(blueprintPrefab);
-            mapRoomBlueprint = blueprintGameObject.GetComponent<GameWorldBlueprint>();
-            mapRoomBlueprint.transform.SetParent(parentMapManager.transform);
+            gameWorldBlueprint = blueprintGameObject.GetComponent<GameWorldBlueprint>();
+            gameWorldBlueprint.transform.SetParent(parentMapManager.transform);
 
             // TODO - set this to current selected cell
-            mapRoomBlueprint.transform.position = Vector3.zero;
+            gameWorldBlueprint.transform.position = Vector3.zero;
         }
 
         void DestroyBlueprint()
         {
-            GameObject.Destroy(mapRoomBlueprint.gameObject);
-            mapRoomBlueprint = null;
+            GameObject.Destroy(gameWorldBlueprint.gameObject);
+            gameWorldBlueprint = null;
         }
     }
 }

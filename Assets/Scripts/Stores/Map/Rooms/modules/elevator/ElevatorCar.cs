@@ -18,6 +18,9 @@ namespace TowerBuilder.Stores.Map.Rooms.Modules
             this.elevator = elevator;
         }
 
+        public void Initialize() { }
+        public void OnDestroy() { }
+
         public CellCoordinates GetCarFloor()
         {
             int x = elevator.room.roomCells.GetLowestX();

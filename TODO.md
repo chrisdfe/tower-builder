@@ -24,6 +24,8 @@
 - Flexible-sized rooms should be resizable once placed
 
 # Cleanup
+- Blueprint validators should probably take in the entire Store object
+- FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor
 - RoomCells could implememnt IEnumerable
 - Having RoomUse, RoomCategory AND RoomModules seems like too much?
 - A "UI settings" object I can tweak a bunch of stuff in the unity editor with, instead of public serializable fields on each script?

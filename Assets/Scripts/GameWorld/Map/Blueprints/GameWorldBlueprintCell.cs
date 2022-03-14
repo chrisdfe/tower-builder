@@ -32,11 +32,47 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
         public void SetRoomBlueprintCell(BlueprintCell blueprintCell)
         {
             this.blueprintCell = blueprintCell;
-            cellCube.transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(blueprintCell.roomCell.coordinates);
+            UpdatePosition();
             UpdateMaterialColor();
         }
 
+        public void UpdatePosition()
+        {
+            transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(blueprintCell.roomCell.coordinates);
+        }
+
         public void Initialize()
+        {
+            InitializeRoomEntrances();
+        }
+
+        public void UpdateMaterialColor()
+        {
+            if (IsValid())
+            {
+                cellCube.GetComponent<Renderer>().material.color = VALID_COLOR;
+            }
+            else
+            {
+                cellCube.GetComponent<Renderer>().material.color = INVALID_COLOR;
+            }
+        }
+
+        void Awake()
+        {
+            roomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
+            cellCube = transform.Find("CellCube");
+        }
+
+        void OnDestroy()
+        {
+            foreach (GameObject roomEntranceGameObject in roomEntranceGameObjects)
+            {
+                Destroy(roomEntranceGameObject);
+            }
+        }
+
+        void InitializeRoomEntrances()
         {
             List<RoomEntrance> roomEntrances = blueprintCell.roomCell.entrances;
             float TILE_SIZE = TowerBuilder.Stores.Map.Rooms.Constants.TILE_SIZE;
@@ -68,33 +104,6 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
                 roomEntranceGameObjects.Add(entranceGameObject);
             }
         }
-
-        public void UpdateMaterialColor()
-        {
-            if (IsValid())
-            {
-                cellCube.GetComponent<Renderer>().material.color = VALID_COLOR;
-            }
-            else
-            {
-                cellCube.GetComponent<Renderer>().material.color = INVALID_COLOR;
-            }
-        }
-
-        void Awake()
-        {
-            roomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
-            cellCube = transform.Find("CellCube");
-        }
-
-        void OnDestroy()
-        {
-            foreach (GameObject roomEntranceGameObject in roomEntranceGameObjects)
-            {
-                Destroy(roomEntranceGameObject);
-            }
-        }
-
 
         bool IsValid()
         {

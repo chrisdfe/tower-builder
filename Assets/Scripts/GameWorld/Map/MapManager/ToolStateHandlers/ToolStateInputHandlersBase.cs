@@ -3,9 +3,9 @@ using TowerBuilder;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Map
+namespace TowerBuilder.GameWorld.Map.MapManager
 {
-    public class ToolStateInputHandlersBase
+    public abstract class ToolStateInputHandlersBase
     {
         protected GameWorldMapManager parentMapManager;
 

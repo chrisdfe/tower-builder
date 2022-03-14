@@ -8,50 +8,29 @@ namespace TowerBuilder.Stores.MapUI
 {
     public class InspectToolState : ToolStateBase
     {
-        public Room currentSelectedRoom;
         public Room currentInspectedRoom;
         public delegate void RoomEvent(Room room);
-        public RoomEvent onCurrentSelectedRoomUpdated;
         public RoomEvent onCurrentInspectedRoomUpdated;
 
         public InspectToolState(MapUI.State state) : base(state) { }
 
-        public override void Reset()
+        public override void Teardown()
         {
-            AttemptToInspectRoom(null);
-            SelectRoom(null);
+            InspectRoom(null);
         }
 
-        public void AttemptToInspectRoom(Room roomToInspect)
+        public void InspectCurrentSelectedRoom()
         {
-            currentInspectedRoom = roomToInspect;
+            InspectRoom(parentState.currentSelectedRoom);
+        }
+
+        public void InspectRoom(Room room)
+        {
+            this.currentInspectedRoom = room;
 
             if (onCurrentInspectedRoomUpdated != null)
             {
-                onCurrentInspectedRoomUpdated(currentInspectedRoom);
-            }
-        }
-
-        public override void OnCurrentSelectedCellSet()
-        {
-            CellCoordinates currentSelectedCell = parentState.currentSelectedCell;
-
-            if (currentSelectedCell == null)
-            {
-                return;
-            }
-
-            Room currentRoom = Registry.Stores.Map.rooms.FindRoomAtCell(currentSelectedCell);
-            SelectRoom(currentRoom);
-        }
-
-        void SelectRoom(Room room)
-        {
-            this.currentSelectedRoom = room;
-
-            if (onCurrentSelectedRoomUpdated != null)
-            {
-                onCurrentSelectedRoomUpdated(this.currentSelectedRoom);
+                onCurrentInspectedRoomUpdated(room);
             }
         }
     }

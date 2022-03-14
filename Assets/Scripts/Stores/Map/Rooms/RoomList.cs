@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.Stores.Map;
+using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms
 {
@@ -27,12 +28,6 @@ namespace TowerBuilder.Stores.Map.Rooms
         }
 
         public Room FindRoomAtCell(CellCoordinates targetCellCoordinates)
-        {
-            return RoomList.FindRoomAtCell(targetCellCoordinates, rooms);
-        }
-
-        // TODO - remove this method
-        public static Room FindRoomAtCell(CellCoordinates targetCellCoordinates, List<Room> rooms)
         {
             foreach (Room room in rooms)
             {

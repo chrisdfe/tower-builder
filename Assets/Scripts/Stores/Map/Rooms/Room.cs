@@ -38,19 +38,27 @@ namespace TowerBuilder.Stores.Map.Rooms
         {
             id = GenerateId();
             this.roomKey = roomKey;
-            this.roomCells = roomCells;
+            SetRoomCells(roomCells);
         }
 
-        public Room Initialize()
+        public void OnBuild()
         {
-            InitializeRoomEntrances();
-            InitializeModules();
-            return this;
+            Debug.Log("room onbuild");
+            Debug.Log(id);
+            Debug.Log(roomCells.cells.Count);
+            // InitializeRoomEntrances();
+            // InitializeModules();
+        }
+
+        public void SetRoomKey(RoomKey roomKey)
+        {
+            this.roomKey = roomKey;
         }
 
         public void SetRoomCells(RoomCells roomCells)
         {
             this.roomCells = roomCells;
+            roomCells.SetRoom(this);
         }
 
         public void SetEntrances(List<RoomEntrance> roomEntrances)

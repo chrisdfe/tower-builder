@@ -17,5 +17,6 @@ namespace TowerBuilder.Stores.Map.Rooms.Modules
         }
 
         public abstract void Initialize();
+        public abstract void OnDestroy();
     }
 }

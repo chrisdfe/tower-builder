@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Rooms;
 
 namespace TowerBuilder.Stores.MapUI
 {
@@ -12,8 +13,8 @@ namespace TowerBuilder.Stores.MapUI
             parentState = state;
         }
 
-        public virtual void Reset() { }
+        public virtual void Setup() { }
 
-        public virtual void OnCurrentSelectedCellSet() { }
+        public virtual void Teardown() { }
     }
 }

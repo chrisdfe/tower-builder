@@ -5,7 +5,7 @@ using TowerBuilder.Stores.Map.Rooms;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Map
+namespace TowerBuilder.GameWorld.Map.MapManager
 {
     public class InspectToolStateInputHandlers : ToolStateInputHandlersBase
     {
@@ -16,17 +16,11 @@ namespace TowerBuilder.GameWorld.Map
 
         public override void OnTransitionTo(ToolState previousState) { }
 
-        public override void OnTransitionFrom(ToolState previousState)
-        {
-            // TODO - do this in the store instead
-            Registry.Stores.MapUI.inspectToolSubState.Reset();
-
-        }
+        public override void OnTransitionFrom(ToolState previousState) { }
 
         public override void OnMouseUp()
         {
-            Room currentSelectedRoom = Registry.Stores.MapUI.inspectToolSubState.currentSelectedRoom;
-            Registry.Stores.MapUI.inspectToolSubState.AttemptToInspectRoom(currentSelectedRoom);
+            Registry.Stores.MapUI.inspectToolSubState.InspectCurrentSelectedRoom();
         }
     }
 }

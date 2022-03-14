@@ -39,6 +39,11 @@ namespace TowerBuilder.GameWorld.UI
             text += room.roomDetails.price + "\n";
             // text += string.Join(", ", room.roomDetails.uses) + "\n";
 
+            foreach (RoomCell roomCell in room.roomCells.cells)
+            {
+                text += roomCell.coordinates + "\n";
+            }
+
             inspectText.text = text;
         }
     }

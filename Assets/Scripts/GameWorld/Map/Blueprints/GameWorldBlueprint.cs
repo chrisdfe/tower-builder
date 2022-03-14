@@ -11,41 +11,25 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
 {
     public class GameWorldBlueprint : MonoBehaviour
     {
-        public bool isEnabled { get; private set; } = true;
-
         public Blueprint blueprint { get; private set; }
 
-        GameObject mapRoomBlueprintCellPrefab;
+        GameObject gameWorldBlueprintCellPrefab;
 
-        List<GameWorldBlueprintCell> mapRoomBlueprintCells;
+        List<GameWorldBlueprintCell> gameWorldBlueprintCells;
 
-        public void ResetCursorCells()
+        public void ResetBlueprintCells()
         {
             DestroyBlueprintCells();
-
-            Blueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
-
-            foreach (BlueprintCell roomBlueprintCell in blueprint.roomBlueprintCells)
-            {
-                GameObject newMapRoomBlueprintCellGameObject = Instantiate<GameObject>(mapRoomBlueprintCellPrefab);
-
-                GameWorldBlueprintCell newMapRoomBlueprintCell = newMapRoomBlueprintCellGameObject.GetComponent<GameWorldBlueprintCell>();
-
-                newMapRoomBlueprintCell.transform.SetParent(transform);
-                newMapRoomBlueprintCell.SetParentBlueprint(this);
-                newMapRoomBlueprintCell.SetRoomBlueprintCell(roomBlueprintCell);
-                newMapRoomBlueprintCell.UpdateMaterialColor();
-                newMapRoomBlueprintCell.Initialize();
-
-                mapRoomBlueprintCells.Add(newMapRoomBlueprintCell);
-            }
+            CreateBlueprintCells();
         }
 
         void Awake()
         {
-            mapRoomBlueprintCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Blueprints/BlueprintCell");
+            gameWorldBlueprintCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Blueprints/BlueprintCell");
 
-            mapRoomBlueprintCells = new List<GameWorldBlueprintCell>();
+            gameWorldBlueprintCells = new List<GameWorldBlueprintCell>();
+
+            CreateBlueprintCells();
 
             Registry.Stores.MapUI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
             Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
@@ -59,28 +43,45 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
             Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated -= OnSelectedRoomKeyUpdated;
         }
 
+        void CreateBlueprintCells()
+        {
+            Blueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
+
+            foreach (BlueprintCell roomBlueprintCell in blueprint.roomBlueprintCells)
+            {
+                GameObject newMapRoomBlueprintCellGameObject = Instantiate<GameObject>(gameWorldBlueprintCellPrefab);
+
+                GameWorldBlueprintCell newMapRoomBlueprintCell = newMapRoomBlueprintCellGameObject.GetComponent<GameWorldBlueprintCell>();
+
+                newMapRoomBlueprintCell.transform.SetParent(transform);
+                newMapRoomBlueprintCell.SetParentBlueprint(this);
+                newMapRoomBlueprintCell.SetRoomBlueprintCell(roomBlueprintCell);
+                newMapRoomBlueprintCell.UpdateMaterialColor();
+                newMapRoomBlueprintCell.Initialize();
+
+                gameWorldBlueprintCells.Add(newMapRoomBlueprintCell);
+            }
+        }
+
         void DestroyBlueprintCells()
         {
-            if (mapRoomBlueprintCells.Count > 0)
+            foreach (GameWorldBlueprintCell mapRoomBlueprintCell in gameWorldBlueprintCells)
             {
-                foreach (GameWorldBlueprintCell mapRoomBlueprintCell in mapRoomBlueprintCells)
-                {
-                    Destroy(mapRoomBlueprintCell.gameObject);
-                }
+                Destroy(mapRoomBlueprintCell.gameObject);
             }
 
-            mapRoomBlueprintCells = new List<GameWorldBlueprintCell>();
+            gameWorldBlueprintCells = new List<GameWorldBlueprintCell>();
         }
 
 
         void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell)
         {
-            ResetCursorCells();
+            ResetBlueprintCells();
         }
 
         void OnSelectedRoomKeyUpdated(RoomKey selectedRoomKey)
         {
-            ResetCursorCells();
+            ResetBlueprintCells();
         }
     }
 }

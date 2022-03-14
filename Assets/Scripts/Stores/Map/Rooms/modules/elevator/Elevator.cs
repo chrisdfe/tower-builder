@@ -9,7 +9,7 @@ namespace TowerBuilder.Stores.Map.Rooms.Modules
 {
     public class Elevator : RoomModuleBase
     {
-        public List<ElevatorCar> cars;
+        public List<ElevatorCar> cars = new List<ElevatorCar>();
 
         public Elevator(Room room) : base(room) { }
 
@@ -19,14 +19,31 @@ namespace TowerBuilder.Stores.Map.Rooms.Modules
             AddCar();
         }
 
-        public void AddCar()
+        public override void OnDestroy()
         {
-            cars.Add(new ElevatorCar(this));
+
         }
 
-        public void RemoveCar(ElevatorCar carToDelete)
+        void AddCar()
+        {
+            ElevatorCar newElevatorCar = new ElevatorCar(this);
+            newElevatorCar.Initialize();
+            cars.Add(newElevatorCar);
+        }
+
+        void RemoveCar(ElevatorCar carToDelete)
         {
             cars.Remove(carToDelete);
+        }
+
+        void RemoveAllCars()
+        {
+            foreach (ElevatorCar car in cars)
+            {
+                car.OnDestroy();
+            }
+
+            cars = new List<ElevatorCar>();
         }
     }
 }

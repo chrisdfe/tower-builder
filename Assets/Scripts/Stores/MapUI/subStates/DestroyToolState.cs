@@ -9,39 +9,16 @@ namespace TowerBuilder.Stores.MapUI
 {
     public class DestroyToolState : ToolStateBase
     {
-        public Room currentSelectedRoom;
-        public delegate void CurrentSelectedRoomEvent(Room currentSelectedRoom);
-        public CurrentSelectedRoomEvent onCurrentSelectedRoomUpdated;
-
         public DestroyToolState(MapUI.State state) : base(state) { }
 
-        public void AttemptToDestroyRoom(Room roomToDestroy)
+        public void DestroyCurrentSelectedRoom()
         {
-            if (roomToDestroy == null)
-            {
-                return;
-            }
-
-            Registry.Stores.Map.DestroyRoom(roomToDestroy);
+            DestroyRoom(parentState.currentSelectedRoom);
         }
 
-        public override void OnCurrentSelectedCellSet()
+        public void DestroyRoom(Room room)
         {
-            CellCoordinates currentSelectedCell = parentState.currentSelectedCell;
-
-            if (currentSelectedCell == null)
-            {
-                return;
-            }
-
-            Room currentRoom = Registry.Stores.Map.rooms.FindRoomAtCell(currentSelectedCell);
-
-            this.currentSelectedRoom = currentRoom;
-
-            if (onCurrentSelectedRoomUpdated != null)
-            {
-                onCurrentSelectedRoomUpdated(this.currentSelectedRoom);
-            }
+            Registry.Stores.Map.DestroyRoom(room);
         }
     }
 }

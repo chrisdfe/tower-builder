@@ -24,10 +24,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
             Registry.Stores.Map.onRoomAdded += OnRoomAdded;
             Registry.Stores.Map.onRoomDestroyed += OnRoomDestroyed;
-
-            // Registry.Stores.MapUI.destroyToolSubState.onCurrentSelectedRoomUpdated += OnDestroyRoomUpdated;
-            // Registry.Stores.MapUI.inspectToolSubState.onCurrentSelectedRoomUpdated += OnInspectHoverRoomUpdated;
-            // Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
         }
 
         void OnRoomAdded(Room room)
@@ -51,6 +47,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             roomGameObject.transform.parent = transform;
             GameWorldRoom gameWorldRoom = roomGameObject.GetComponent<GameWorldRoom>();
             gameWorldRoom.SetRoom(room);
+            gameWorldRoom.Initialize();
             gameWorldRooms.Add(gameWorldRoom);
         }
 
@@ -58,7 +55,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         {
             GameWorldRoom gameWorldRoom = gameWorldRooms.Find(otherRoom => otherRoom.room == room);
             gameWorldRooms.Remove(gameWorldRoom);
-            Destroy(gameWorldRoom);
+            Destroy(gameWorldRoom.gameObject);
         }
     }
 }

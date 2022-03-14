@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.MapUI
@@ -15,9 +16,12 @@ namespace TowerBuilder.Stores.MapUI
         public ToolStateEvent onToolStateUpdated;
 
         public CellCoordinates currentSelectedCell { get; private set; } = null;
-
         public delegate void cellCoordinatesEvent(CellCoordinates currentSelectedCell);
         public cellCoordinatesEvent onCurrentSelectedCellUpdated;
+
+        public Room currentSelectedRoom { get; private set; } = null;
+        public delegate void selectedRoomEvent(Room room);
+        public selectedRoomEvent onCurrentSelectedRoomUpdated;
 
         public NoneToolState noneToolSubState;
         public BuildToolState buildToolSubState;
@@ -37,9 +41,12 @@ namespace TowerBuilder.Stores.MapUI
 
         public void SetToolState(ToolState toolState)
         {
-            GetCurrentActiveToolSubState().Reset();
+            GetCurrentActiveToolSubState().Teardown();
+
             ToolState previousToolState = this.toolState;
             this.toolState = toolState;
+
+            GetCurrentActiveToolSubState().Setup();
 
             if (onToolStateUpdated != null)
             {
@@ -51,11 +58,17 @@ namespace TowerBuilder.Stores.MapUI
         {
             this.currentSelectedCell = currentSelectedCell;
 
-            GetCurrentActiveToolSubState().OnCurrentSelectedCellSet();
+            Room currentRoom = Registry.Stores.Map.rooms.FindRoomAtCell(currentSelectedCell);
+            this.currentSelectedRoom = currentRoom;
 
             if (onCurrentSelectedCellUpdated != null)
             {
                 onCurrentSelectedCellUpdated(currentSelectedCell);
+            }
+
+            if (onCurrentSelectedRoomUpdated != null)
+            {
+                onCurrentSelectedRoomUpdated(this.currentSelectedRoom);
             }
         }
 

@@ -8,7 +8,7 @@ using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TowerBuilder.GameWorld.Map
+namespace TowerBuilder.GameWorld.Map.MapManager
 {
     public class GameWorldMapManager : MonoBehaviour
     {
@@ -57,6 +57,7 @@ namespace TowerBuilder.GameWorld.Map
             currentToolStateHandler.Update();
         }
 
+        // TODO - this should go in GameWorldFloorPlane
         void UpdateCurrentSelectedCell()
         {
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
