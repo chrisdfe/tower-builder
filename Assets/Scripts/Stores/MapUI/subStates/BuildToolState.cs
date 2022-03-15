@@ -223,6 +223,7 @@ namespace TowerBuilder.Stores.MapUI
             {
                 Room newRoom = currentBlueprint.room;
                 Registry.Stores.Map.AddRoom(newRoom);
+                currentBlueprint.Reset();
             }
             else
             {

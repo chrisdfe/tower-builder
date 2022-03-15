@@ -19,8 +19,11 @@ namespace TowerBuilder.Stores.Map.Blueprints
         public CellCoordinates buildStartCoordinates { get; private set; }
         public CellCoordinates buildEndCoordinates { get; private set; }
 
+        RoomKey roomKey;
+
         public Blueprint(CellCoordinates buildStartCoordinates, RoomKey roomKey)
         {
+            this.roomKey = roomKey;
             this.room = new Room(roomKey);
 
             this.buildStartCoordinates = buildStartCoordinates.Clone();
@@ -33,9 +36,15 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
         public void OnDestroy() { }
 
+        public void Reset()
+        {
+            this.room = new Room(roomKey);
+        }
+
 
         public void SetRoomKey(RoomKey roomKey)
         {
+            this.roomKey = roomKey;
             room.SetRoomKey(roomKey);
             SetRoomCells();
             ResetBlueprintCells();
