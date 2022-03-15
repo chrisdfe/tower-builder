@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
+using TowerBuilder.GameWorld.Map.Rooms.Modules;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Modules;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.Rooms
@@ -14,6 +16,8 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         public Room room { get; private set; }
 
         public List<GameWorldRoomCell> gameWorldRoomCells = new List<GameWorldRoomCell>();
+
+        public List<GameWorldRoomModuleBase> modules = new List<GameWorldRoomModuleBase>();
 
         GameObject roomCellPrefab;
 
@@ -25,7 +29,8 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         public void Initialize()
         {
-            ResetCells();
+            CreateCells();
+            InitializeModules();
         }
 
         void Awake()
@@ -66,6 +71,25 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         {
             DestroyCells();
             CreateCells();
+        }
+
+        void InitializeModules()
+        {
+            foreach (RoomModuleBase module in room.modules)
+            {
+                switch (module)
+                {
+                    case ElevatorModule elevatorModule:
+                        GameWorldElevatorModule gameWorldElevatorModule = new GameWorldElevatorModule(this, elevatorModule);
+                        modules.Add(gameWorldElevatorModule);
+                        break;
+                }
+            }
+
+            foreach (GameWorldRoomModuleBase module in modules)
+            {
+                module.Initialize();
+            }
         }
     }
 }

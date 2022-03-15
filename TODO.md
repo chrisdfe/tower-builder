@@ -1,6 +1,6 @@
 # TODO
 
-- Room "Modules", to attach to rooms and give them behaviors. Like unity components
+- Elevator entrances should only be at the top and bottom - maybe get ElevatorModule to do this?
 - Generate rooms buttons in RoomBlueprintButtonsManager dynamically
 - Room types in BuildToolPanel should be grouped by RoomCategory
 - for when I implement elevators: Elevator cars can go only from the top to the bottom - no stopping at inbetween places.
@@ -32,7 +32,7 @@
 - Awkward naming conflict between ToolState + tool sub states
 
 # Bugs
-
+- Rooms should stay white until they're not being inspected anymore - right now they return to default color on mouse out
 - Input.GetMouseButtonDown(0) does not work consistently on macos
 - UI is way too big on my laptop
 
@@ -42,6 +42,7 @@
 
 # Done
 
+- Room "Modules", to attach to rooms and give them behaviors. Like unity components
 - Rename MapCursor/MapCursorCells to RoomBlueprintCursor/RoomBlueprintCursorCells
 - Flexible-sized rooms should cost more per tile - right now they're still a flat cost liek Inflexible rooms
 - Map/toolStateHandlers + MapUI/subState/ keeps confusing me

@@ -9,6 +9,7 @@ namespace TowerBuilder.Stores.Map.Rooms.Modules
 {
     public abstract class RoomModuleBase
     {
+        public abstract RoomModuleKey key { get; }
         public Room room { get; private set; }
 
         public RoomModuleBase(Room room)

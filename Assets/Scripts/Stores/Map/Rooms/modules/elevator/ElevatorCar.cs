@@ -9,11 +9,11 @@ namespace TowerBuilder.Stores.Map.Rooms.Modules
 {
     public class ElevatorCar
     {
-        Modules.Elevator elevator;
+        public ElevatorCarPosition currentPosition = ElevatorCarPosition.Top;
 
-        ElevatorCarPosition currentPosition = ElevatorCarPosition.Top;
+        ElevatorModule elevator;
 
-        public ElevatorCar(Modules.Elevator elevator)
+        public ElevatorCar(ElevatorModule elevator)
         {
             this.elevator = elevator;
         }

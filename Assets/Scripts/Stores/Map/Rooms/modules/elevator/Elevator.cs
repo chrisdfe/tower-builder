@@ -7,11 +7,13 @@ using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms.Modules
 {
-    public class Elevator : RoomModuleBase
+    public class ElevatorModule : RoomModuleBase
     {
+        public override RoomModuleKey key { get { return RoomModuleKey.Elevator; } }
+
         public List<ElevatorCar> cars = new List<ElevatorCar>();
 
-        public Elevator(Room room) : base(room) { }
+        public ElevatorModule(Room room) : base(room) { }
 
         public override void Initialize()
         {

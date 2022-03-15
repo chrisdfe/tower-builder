@@ -73,11 +73,6 @@ namespace TowerBuilder.Stores.Map.Blueprints
             {
                 roomCells = new RoomCells(room, roomDetails.width, roomDetails.height);
                 roomCells.PositionAtCoordinates(buildStartCoordinates);
-                Debug.Log("SettingRoomCells for inflexible room");
-                foreach (RoomCell cell in roomCells.cells)
-                {
-                    Debug.Log(cell.coordinates);
-                }
             }
             else
             {

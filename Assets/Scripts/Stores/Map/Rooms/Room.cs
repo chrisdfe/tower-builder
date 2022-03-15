@@ -43,11 +43,8 @@ namespace TowerBuilder.Stores.Map.Rooms
 
         public void OnBuild()
         {
-            Debug.Log("room onbuild");
-            Debug.Log(id);
-            Debug.Log(roomCells.cells.Count);
-            // InitializeRoomEntrances();
-            // InitializeModules();
+            InitializeRoomEntrances();
+            InitializeModules();
         }
 
         public void SetRoomKey(RoomKey roomKey)
@@ -101,8 +98,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 switch (roomUseDetails.roomUseKey)
                 {
                     case RoomUseKey.Elevator:
-                        Modules.Elevator elevatorModule = new Modules.Elevator(this);
-                        elevatorModule.Initialize();
+                        ElevatorModule elevatorModule = new ElevatorModule(this);
                         modules.Add(elevatorModule);
                         break;
                 }
