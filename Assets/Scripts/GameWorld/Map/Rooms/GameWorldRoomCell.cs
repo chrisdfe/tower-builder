@@ -14,8 +14,10 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 {
     public class GameWorldRoomCell : MonoBehaviour
     {
-        public bool isInBlueprintMode;
+        static Color HOVER_COLOR = new Color(1, 0, 0, 0.4f);
         public RoomCell roomCell;
+
+        public Color baseColor;
 
         GameObject gameWorldRoomEntrancePrefab;
         List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
@@ -50,15 +52,44 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             }
         }
 
+
+        public void ResetColor()
+        {
+            SetColor(baseColor, 1f);
+        }
+
+        public void SetHoverColor()
+        {
+            SetColor(baseColor, 0.4f);
+        }
+
+        public void SetDestroyHoverColor()
+        {
+            SetColor(Color.red, 0.7f);
+        }
+
+        public void SetInspectColor()
+        {
+            SetColor(Color.white, 0.7f);
+        }
+
+        public void SetColorAlpha(float alpha)
+        {
+            foreach (Transform segment in segments)
+            {
+                Material material = segment.GetComponent<MeshRenderer>().material;
+                Color currentColor = material.color;
+                material.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
+            }
+        }
+
         void Awake()
         {
-            isInBlueprintMode = false;
             transform.localPosition = Vector3.zero;
 
             gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
 
             roomCellMesh = transform.Find("RoomCellMesh");
-            // roomCellMeshMaterial = roomCellMesh.GetComponent<Renderer>().material;
 
             wrapperSegment = roomCellMesh.Find("Wrapper");
 
@@ -82,102 +113,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                 ceilingSegment,
                 floorSegment
             };
-
-            Registry.Stores.MapUI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
-            Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
-        }
-
-        void OnDestroy()
-        {
-            Registry.Stores.MapUI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
-            Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
-        }
-
-        void OnCurrentSelectedRoomUpdated(Room room)
-        {
-            if (isInBlueprintMode)
-            {
-                return;
-            }
-
-            if (room == null)
-            {
-                ResetColor();
-                return;
-            }
-
-            if (room.id == roomCell.roomCells.room.id)
-            {
-                switch (Registry.Stores.MapUI.toolState)
-                {
-                    case ToolState.Destroy:
-                        SetDestroyHoverColor();
-                        break;
-                    default:
-                        if (!IsInCurrentInspectedRoom())
-                        {
-                            SetHoverColor();
-                        }
-                        break;
-                }
-            }
-            else
-            {
-                ResetColor();
-            }
-        }
-
-        bool IsInCurrentInspectedRoom()
-        {
-            Room currentInspectedRoom = Registry.Stores.MapUI.inspectToolSubState.currentInspectedRoom;
-            return currentInspectedRoom != null && currentInspectedRoom.id == roomCell.roomCells.room.id;
-        }
-
-        void OnInspectRoomUpdated(Room currentInspectRoom)
-        {
-            if (currentInspectRoom != null && currentInspectRoom.id == roomCell.roomCells.room.id)
-            {
-                SetInspectColor();
-            }
-            else
-            {
-                ResetColor();
-            }
-        }
-
-        void SetHoverColor()
-        {
-            SetColor(roomCell.roomCells.room.roomDetails.color, 0.4f);
-        }
-
-        void SetDestroyHoverColor()
-        {
-            SetColor(Color.red, 0.7f);
-        }
-
-        void SetInspectColor()
-        {
-            SetColor(Color.white, 0.7f);
-        }
-
-        void UpdatePosition()
-        {
-            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
-        }
-
-        void SetColorAlpha(float alpha)
-        {
-            foreach (Transform segment in segments)
-            {
-                Material material = segment.GetComponent<MeshRenderer>().material;
-                Color currentColor = material.color;
-                material.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
-            }
-        }
-
-        void ResetColor()
-        {
-            SetColor(roomCell.roomCells.room.roomDetails.color, 1f);
         }
 
         void InitializeRoomCellMeshSegments()
@@ -187,6 +122,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                 SetEnabled(segment, false);
             }
 
+            Debug.Log("roomCell.position: " + roomCell.position.Count);
             foreach (RoomCellPosition cellPosition in roomCell.position)
             {
                 switch (cellPosition)
@@ -225,6 +161,11 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                 gameWorldRoomEntrance.Initialize();
                 gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
             }
+        }
+
+        void UpdatePosition()
+        {
+            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
         }
     }
 }

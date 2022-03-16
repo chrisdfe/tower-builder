@@ -9,42 +9,54 @@ namespace TowerBuilder.Stores.Map.Rooms
 {
     public class RoomCells
     {
-        public Room room { get; private set; }
+        // public Room room { get; private set; }
         public List<RoomCell> cells { get; private set; }
 
-        public RoomCells(Room room)
+        public delegate void RoomCellsEvent(RoomCells roomCells);
+        public RoomCellsEvent onResize;
+
+        public RoomCells()
         {
-            this.room = room;
+            // this.room = room;
             this.cells = new List<RoomCell>();
         }
 
-        public RoomCells(Room room, int width, int height) : this(room)
+        public RoomCells(int width, int height)
         {
             CreateRectangularRoom(width, height);
         }
 
-        public RoomCells(Room room, CellCoordinates startCellCoordinates, CellCoordinates endCellCoordinates) : this(room)
+        public RoomCells(CellCoordinates startCellCoordinates, CellCoordinates endCellCoordinates)
         {
             CreateRectangularRoom(startCellCoordinates, endCellCoordinates);
         }
 
         public void Add(CellCoordinates cellCoordinates)
         {
-            cells.Add(new RoomCell(this, cellCoordinates));
-            OnResize();
+            cells.Add(new RoomCell(cellCoordinates));
+            if (onResize != null)
+            {
+                onResize(this);
+            }
         }
 
         public void Add(RoomCell roomCell)
         {
-            cells.Add(new RoomCell(this, roomCell.coordinates));
-            OnResize();
+            cells.Add(new RoomCell(roomCell.coordinates));
+            if (onResize != null)
+            {
+                onResize(this);
+            }
         }
 
         public void Add(List<RoomCell> roomCellsList)
         {
-            List<RoomCell> mappedRoomCells = roomCellsList.Select(roomCell => new RoomCell(this, roomCell.coordinates)).ToList();
+            List<RoomCell> mappedRoomCells = roomCellsList.Select(roomCell => new RoomCell(roomCell.coordinates)).ToList();
             cells = cells.Concat(mappedRoomCells).ToList();
-            OnResize();
+            if (onResize != null)
+            {
+                onResize(this);
+            }
         }
 
         public void Add(RoomCells otherRoomCells)
@@ -52,17 +64,9 @@ namespace TowerBuilder.Stores.Map.Rooms
             Add(otherRoomCells.cells);
         }
 
-        public void SetRoom(Room room)
+        public void Set(RoomCells otherRoomCells)
         {
-            this.room = room;
-        }
-
-        public void OnResize()
-        {
-            foreach (RoomCell roomCell in cells)
-            {
-                roomCell.Reset();
-            }
+            this.cells = otherRoomCells.cells;
         }
 
         public void CreateRectangularRoom(int xWidth, int floors)
@@ -73,12 +77,16 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 for (int floor = 0; floor < floors; floor++)
                 {
-                    result.Add(new RoomCell(this, x, floor));
+                    result.Add(new RoomCell(x, floor));
                 }
             }
 
             this.cells = result;
-            OnResize();
+
+            if (onResize != null)
+            {
+                onResize(this);
+            }
         }
 
         public void CreateRectangularRoom(CellCoordinates a, CellCoordinates b)
@@ -94,12 +102,16 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 for (int x = startCoordinates.x; x <= endCoordinates.x; x++)
                 {
-                    result.Add(new RoomCell(this, x, floor));
+                    result.Add(new RoomCell(x, floor));
                 }
             }
 
             this.cells = result;
-            OnResize();
+
+            if (onResize != null)
+            {
+                onResize(this);
+            }
         }
 
         public void PositionAtCoordinates(CellCoordinates newBaseCoordinates)
@@ -108,16 +120,11 @@ namespace TowerBuilder.Stores.Map.Rooms
 
             foreach (RoomCell roomCell in cells)
             {
-                result.Add(
-                    new RoomCell(this)
-                    {
-                        coordinates = newBaseCoordinates.Add(roomCell.coordinates)
-                    }
-                );
+                RoomCell newRoomCell = new RoomCell(newBaseCoordinates.Add(roomCell.coordinates));
+                result.Add(newRoomCell);
             }
 
             cells = result;
-            OnResize();
         }
 
         public RoomCell FindCellByCoordinates(CellCoordinates cellCoordinates)

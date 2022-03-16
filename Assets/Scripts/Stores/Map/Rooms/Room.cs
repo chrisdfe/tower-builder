@@ -16,6 +16,8 @@ namespace TowerBuilder.Stores.Map.Rooms
         public string id { get; private set; }
         public RoomKey roomKey { get; private set; }
 
+        public bool isInBlueprintMode = false;
+
         public RoomCells roomCells;
         public List<RoomModuleBase> modules { get; private set; } = new List<RoomModuleBase>();
         public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
@@ -32,28 +34,25 @@ namespace TowerBuilder.Stores.Map.Rooms
         {
             id = GenerateId();
             this.roomKey = roomKey;
-            roomCells = new RoomCells(this);
+            roomCells = new RoomCells();
+            roomCells.onResize += OnRoomCellsResize;
         }
 
         public Room(RoomKey roomKey, List<RoomCell> roomCellList) : this(roomKey)
         {
             roomCells.Add(roomCellList);
-            ResetRoomEntrances();
+            ResetRoomCells();
         }
 
         public Room(RoomKey roomKey, RoomCells roomCells) : this(roomKey)
         {
             roomCells.Add(roomCells);
-            ResetRoomEntrances();
+            ResetRoomCells();
         }
 
         public void OnBuild()
         {
-            Debug.Log("OnBuild");
-            foreach (RoomCell roomCell in roomCells.cells)
-            {
-                Debug.Log(roomCell.relativeCellCoordinates);
-            }
+            isInBlueprintMode = false;
             InitializeModules();
         }
 
@@ -64,14 +63,24 @@ namespace TowerBuilder.Stores.Map.Rooms
 
         public void SetRoomCells(RoomCells roomCells)
         {
-            this.roomCells = roomCells;
-            roomCells.SetRoom(this);
-            ResetRoomEntrances();
+            this.roomCells.Set(roomCells);
+            ResetRoomCells();
+        }
+
+        void OnRoomCellsResize(RoomCells roomCells)
+        {
+            ResetRoomCells();
         }
 
         string GenerateId()
         {
             return Guid.NewGuid().ToString();
+        }
+
+        void ResetRoomCells()
+        {
+            ResetRoomCellPositions();
+            ResetRoomEntrances();
         }
 
         void ResetRoomEntrances()
@@ -91,6 +100,54 @@ namespace TowerBuilder.Stores.Map.Rooms
             }
 
             entrances = result;
+
+            foreach (RoomCell roomCell in roomCells.cells)
+            {
+                foreach (RoomEntrance roomEntrance in entrances)
+                {
+                    if (GetRelativeCoordinates(roomCell).Matches(roomEntrance.cellCoordinates))
+                    {
+                        roomCell.entrances.Add(roomEntrance);
+                    }
+                }
+            }
+        }
+
+        void ResetRoomCellPositions()
+        {
+            foreach (RoomCell roomCell in roomCells.cells)
+            {
+                SetRoomCellPosition(roomCell);
+            }
+        }
+
+        void SetRoomCellPosition(RoomCell roomCell)
+        {
+            CellCoordinates coordinates = roomCell.coordinates;
+
+            List<RoomCellPosition> result = new List<RoomCellPosition>();
+
+            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
+            {
+                result.Add(RoomCellPosition.Top);
+            }
+
+            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
+            {
+                result.Add(RoomCellPosition.Right);
+            }
+
+            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
+            {
+                result.Add(RoomCellPosition.Bottom);
+            }
+
+            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
+            {
+                result.Add(RoomCellPosition.Left);
+            }
+
+            roomCell.position = result;
         }
 
         void InitializeModules()
@@ -115,6 +172,14 @@ namespace TowerBuilder.Stores.Map.Rooms
             }
 
             modules = result;
+        }
+
+        CellCoordinates GetRelativeCoordinates(RoomCell roomCell)
+        {
+            return roomCell.coordinates.Subtract(new CellCoordinates(
+                roomCells.GetLowestX(),
+                roomCells.GetLowestFloor()
+            ));
         }
     }
 }

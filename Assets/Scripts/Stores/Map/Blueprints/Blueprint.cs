@@ -25,6 +25,7 @@ namespace TowerBuilder.Stores.Map.Blueprints
         {
             this.roomKey = roomKey;
             this.room = new Room(roomKey);
+            this.room.isInBlueprintMode = true;
 
             this.buildStartCoordinates = buildStartCoordinates.Clone();
             this.buildEndCoordinates = buildStartCoordinates.Clone();
@@ -71,7 +72,7 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
             if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
             {
-                roomCells = new RoomCells(room, roomDetails.width, roomDetails.height);
+                roomCells = new RoomCells(roomDetails.width, roomDetails.height);
                 roomCells.PositionAtCoordinates(buildStartCoordinates);
             }
             else
@@ -123,7 +124,7 @@ namespace TowerBuilder.Stores.Map.Blueprints
                     flexibleBuildStartCoordinates.floor + (copies.floor * roomDetails.height) - 1
                 );
 
-                roomCells = new RoomCells(room, flexibleBuildStartCoordinates, flexibleBuildEndCoordinates);
+                roomCells = new RoomCells(flexibleBuildStartCoordinates, flexibleBuildEndCoordinates);
             }
 
             this.room.SetRoomCells(roomCells);

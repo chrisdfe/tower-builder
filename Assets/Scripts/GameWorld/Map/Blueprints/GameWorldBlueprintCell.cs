@@ -24,7 +24,6 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
             // UpdatePosition();
 
             gameWorldRoomCell.roomCell = blueprintCell.roomCell;
-            gameWorldRoomCell.isInBlueprintMode = true;
             gameWorldRoomCell.Initialize();
 
             SetColor();
