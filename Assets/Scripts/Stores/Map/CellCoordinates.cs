@@ -1,17 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using TowerBuilder.Stores.Map;
+using UnityEngine;
 
 namespace TowerBuilder.Stores.Map
 {
     public class CellCoordinates
     {
-        public int x = 0;
-        public int floor = 0;
-
-        public CellCoordinates() { }
+        public int x;
+        public int floor;
 
         public CellCoordinates(int x, int floor)
         {
@@ -41,11 +39,7 @@ namespace TowerBuilder.Stores.Map
 
         public static CellCoordinates Add(CellCoordinates a, CellCoordinates b)
         {
-            return new CellCoordinates()
-            {
-                x = a.x + b.x,
-                floor = a.floor + b.floor
-            };
+            return new CellCoordinates(a.x + b.x, a.floor + b.floor);
         }
 
         public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b)

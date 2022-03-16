@@ -229,6 +229,14 @@ namespace TowerBuilder.Stores.Map.Rooms
             return result;
         }
 
+        public CellCoordinates GetTopLeftCoordinates()
+        {
+            return new CellCoordinates(
+                GetLowestX(),
+                GetHighestFloor()
+            );
+        }
+
         public int GetWidth()
         {
             int highestX = GetHighestX();

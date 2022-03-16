@@ -65,11 +65,10 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             RaycastHit hit;
             if (floorPlaneCollider.Raycast(ray, out hit, 100))
             {
-                CellCoordinates hoveredCell = new CellCoordinates()
-                {
-                    x = GameWorldMapCellHelpers.RoundToNearestTile(hit.point.x),
-                    floor = GameWorldMapCellHelpers.RoundToNearestTile(hit.point.y),
-                };
+                CellCoordinates hoveredCell = new CellCoordinates(
+                    GameWorldMapCellHelpers.RoundToNearestTile(hit.point.x),
+                    GameWorldMapCellHelpers.RoundToNearestTile(hit.point.y)
+                );
 
                 if (!hoveredCell.Matches(Registry.Stores.MapUI.currentSelectedCell))
                 {

@@ -1,5 +1,6 @@
 # TODO
 
+- GameWorldBlueprintCell should wrap GameWorldRoomCell just like blueprintCell -> roomCell does
 - Stop destroying/recreating roomCells whenever the cursor changes position - only when it needs resizing
 - Add GameWorldRoomList 
 - Elevator entrances should only be at the top and bottom - maybe get ElevatorModule to do this?
@@ -30,6 +31,8 @@
 
 # Cleanup
 
+- things are feeling kind of messy because roomCells are having to know way too much about their room - I should make things more unidirectional
+- RoomCells -> RoomCellList OR RoomList -> Rooms
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - Blueprint validators should probably take in the entire Store object
 - FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor

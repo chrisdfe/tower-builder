@@ -55,7 +55,12 @@ namespace TowerBuilder.Stores.Map.Rooms.Modules
         {
             if (room == this.room)
             {
-                Debug.Log("do debug elevator stuff");
+                ElevatorCar targetCar = cars[0];
+                ElevatorCarPosition targetPosition =
+                    (targetCar.currentPosition == ElevatorCarPosition.Top)
+                        ? ElevatorCarPosition.Bottom
+                        : ElevatorCarPosition.Top;
+                Registry.Stores.Map.SetElevatorCarDestination(targetCar, targetPosition);
             }
         }
     }

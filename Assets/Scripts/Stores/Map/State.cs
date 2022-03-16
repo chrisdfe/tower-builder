@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Modules;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Map
@@ -15,6 +16,9 @@ namespace TowerBuilder.Stores.Map
 
         public delegate void RoomDestroyedEvent(Room mapRoom);
         public RoomAddedEvent onRoomDestroyed;
+
+        public delegate void ElevatorCarPositionEvent(ElevatorCar elevatorCar, ElevatorCarPosition destinationPosition);
+        public ElevatorCarPositionEvent onElevatorCarPositionChanged;
 
         public void AddRoom(Room room)
         {
@@ -44,6 +48,16 @@ namespace TowerBuilder.Stores.Map
             if (onRoomDestroyed != null)
             {
                 onRoomDestroyed(room);
+            }
+        }
+
+        public void SetElevatorCarDestination(ElevatorCar elevatorCar, ElevatorCarPosition destinationPosition)
+        {
+            elevatorCar.currentPosition = destinationPosition;
+
+            if (onElevatorCarPositionChanged != null)
+            {
+                onElevatorCarPositionChanged(elevatorCar, destinationPosition);
             }
         }
     }

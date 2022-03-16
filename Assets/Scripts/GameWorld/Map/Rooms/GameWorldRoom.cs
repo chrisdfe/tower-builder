@@ -37,11 +37,36 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         {
             transform.localPosition = Vector3.zero;
             roomCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomCell");
+
+            Registry.Stores.Map.onRoomAdded += OnRoomAdded;
         }
 
         void OnDestroy()
         {
             DestroyCells();
+            Registry.Stores.Map.onRoomAdded -= OnRoomAdded;
+        }
+
+        // TODO - this is how to determine when this room goes from blueprint mode to getting added to the map
+        void OnRoomAdded(Room room)
+        {
+            if (room.id == this.room.id)
+            {
+                OnBuild();
+            }
+        }
+
+        // When this has been converted from a blueprint room to a actual room
+        void OnBuild()
+        {
+            Debug.Log("I have been built");
+
+            foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
+            {
+                gameWorldRoomCell.isInBlueprintMode = false;
+            }
+
+            Registry.Stores.Map.onRoomAdded -= OnRoomAdded;
         }
 
         void CreateCells()
@@ -51,7 +76,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                 GameObject roomCellGameObject = Instantiate<GameObject>(roomCellPrefab);
                 GameWorldRoomCell gameWorldRoomCell = roomCellGameObject.GetComponent<GameWorldRoomCell>();
                 gameWorldRoomCell.transform.parent = transform;
-                gameWorldRoomCell.SetRoomCell(roomCell);
+                gameWorldRoomCell.roomCell = roomCell;
                 gameWorldRoomCell.Initialize();
                 gameWorldRoomCells.Add(gameWorldRoomCell);
             }

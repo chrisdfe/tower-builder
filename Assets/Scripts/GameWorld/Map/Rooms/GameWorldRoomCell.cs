@@ -14,12 +14,13 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 {
     public class GameWorldRoomCell : MonoBehaviour
     {
-        public RoomCell roomCell { get; private set; }
+        public bool isInBlueprintMode;
+        public RoomCell roomCell;
 
-        GameObject mapRoomEntrancePrefab;
+        GameObject gameWorldRoomEntrancePrefab;
+        List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
 
         Transform roomCellMesh;
-        // Material roomCellMeshMaterial;
 
         Transform wrapperSegment;
         Transform leftWallSegment;
@@ -31,25 +32,30 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         Transform[] segments;
         Transform[] wallSegments;
 
-        public void SetRoomCell(RoomCell roomCell)
-        {
-            this.roomCell = roomCell;
-        }
-
         public void Initialize()
         {
             UpdatePosition();
-            SetupRoomCellMeshSegments();
+            InitializeRoomCellMeshSegments();
+            InitializeRoomEntrances();
             ResetColor();
+        }
 
-            // TODO - initialize entrances
+        public void SetColor(Color color, float alpha = 1f)
+        {
+            foreach (Transform segment in wallSegments)
+            {
+                Material material = segment.GetComponent<MeshRenderer>().material;
+                Color currentColor = material.color;
+                material.color = new Color(color.r, color.g, color.b, alpha);
+            }
         }
 
         void Awake()
         {
+            isInBlueprintMode = false;
             transform.localPosition = Vector3.zero;
 
-            mapRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
+            gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
 
             roomCellMesh = transform.Find("RoomCellMesh");
             // roomCellMeshMaterial = roomCellMesh.GetComponent<Renderer>().material;
@@ -89,6 +95,11 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         void OnCurrentSelectedRoomUpdated(Room room)
         {
+            if (isInBlueprintMode)
+            {
+                return;
+            }
+
             if (room == null)
             {
                 ResetColor();
@@ -164,22 +175,12 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             }
         }
 
-        void SetColor(Color color, float alpha)
-        {
-            foreach (Transform segment in wallSegments)
-            {
-                Material material = segment.GetComponent<MeshRenderer>().material;
-                Color currentColor = material.color;
-                material.color = new Color(color.r, color.g, color.b, alpha);
-            }
-        }
-
         void ResetColor()
         {
             SetColor(roomCell.roomCells.room.roomDetails.color, 1f);
         }
 
-        void SetupRoomCellMeshSegments()
+        void InitializeRoomCellMeshSegments()
         {
             foreach (Transform segment in wallSegments)
             {
@@ -204,11 +205,26 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                         break;
                 }
             }
+
+            void SetEnabled(Transform segment, bool enabled)
+            {
+                segment.GetComponent<MeshRenderer>().enabled = enabled;
+            }
         }
 
-        void SetEnabled(Transform segment, bool enabled)
+        void InitializeRoomEntrances()
         {
-            segment.GetComponent<MeshRenderer>().enabled = enabled;
+            foreach (RoomEntrance roomEntrance in roomCell.entrances)
+            {
+                GameObject roomEntranceGameObject = Instantiate<GameObject>(gameWorldRoomEntrancePrefab);
+                roomEntranceGameObject.transform.parent = transform;
+
+                GameWorldRoomEntrance gameWorldRoomEntrance = roomEntranceGameObject.GetComponent<GameWorldRoomEntrance>();
+                gameWorldRoomEntrance.roomEntrance = roomEntrance;
+                gameWorldRoomEntrance.parentGameWorldRoomCell = this;
+                gameWorldRoomEntrance.Initialize();
+                gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
+            }
         }
     }
 }

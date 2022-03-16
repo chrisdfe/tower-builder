@@ -52,9 +52,8 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
                 GameWorldBlueprintCell newMapRoomBlueprintCell = newMapRoomBlueprintCellGameObject.GetComponent<GameWorldBlueprintCell>();
 
                 newMapRoomBlueprintCell.transform.SetParent(transform);
-                newMapRoomBlueprintCell.SetParentBlueprint(this);
-                newMapRoomBlueprintCell.SetRoomBlueprintCell(roomBlueprintCell);
-                newMapRoomBlueprintCell.UpdateMaterialColor();
+                newMapRoomBlueprintCell.parentBlueprint = this;
+                newMapRoomBlueprintCell.blueprintCell = roomBlueprintCell;
                 newMapRoomBlueprintCell.Initialize();
 
                 gameWorldBlueprintCells.Add(newMapRoomBlueprintCell);

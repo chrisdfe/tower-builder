@@ -15,10 +15,19 @@ namespace TowerBuilder.Stores.Map.Rooms
         public List<RoomEntrance> entrances = new List<RoomEntrance>();
         public List<RoomCellPosition> position = new List<RoomCellPosition>();
 
+        public CellCoordinates relativeCellCoordinates
+        {
+            get
+            {
+                return coordinates.Subtract(roomCells.GetTopLeftCoordinates());
+            }
+        }
+
         public RoomCell(RoomCells roomCells)
         {
             this.roomCells = roomCells;
         }
+
 
         public RoomCell(RoomCells roomCells, int x, int floor) : this(roomCells)
         {
@@ -40,14 +49,14 @@ namespace TowerBuilder.Stores.Map.Rooms
         {
             List<RoomEntrance> result = new List<RoomEntrance>();
 
-            foreach (RoomEntrance roomEntrance in roomCells.room.roomDetails.entrances)
+            foreach (RoomEntrance roomEntrance in roomCells.room.entrances)
             {
                 // RoomEntrances need a Room instance attached
                 roomEntrance.room = roomCells.room;
 
-                if (coordinates.Matches(roomEntrance.cellCoordinates))
+                if (relativeCellCoordinates.Matches(roomEntrance.cellCoordinates))
                 {
-                    entrances.Add(roomEntrance);
+                    result.Add(roomEntrance);
                     roomEntrance.roomCell = this;
                 }
             }

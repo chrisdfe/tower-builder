@@ -28,7 +28,6 @@ namespace TowerBuilder.Stores.MapUI
 
         public BuildToolState(MapUI.State state) : base(state)
         {
-            CreateBlueprint();
         }
 
         public override void Setup()
@@ -41,6 +40,8 @@ namespace TowerBuilder.Stores.MapUI
         public override void Teardown()
         {
             DeleteBlueprint();
+            buildStartCell = null;
+            buildIsActive = false;
 
             parentState.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
         }

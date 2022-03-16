@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
+using TowerBuilder.GameWorld.Map.Rooms;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Blueprints;
@@ -14,94 +15,41 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
         static Color VALID_COLOR = new Color(0, 0, 255, 0.5f);
         static Color INVALID_COLOR = new Color(255, 0, 0, 0.5f);
 
-        BlueprintCell blueprintCell;
+        public GameWorldBlueprint parentBlueprint;
+        public BlueprintCell blueprintCell;
+        GameWorldRoomCell gameWorldRoomCell;
 
-        Transform cellCube;
-
-        GameObject roomEntrancePrefab;
-
-        List<GameObject> roomEntranceGameObjects = new List<GameObject>();
-
-        GameWorldBlueprint parentBlueprint;
-
-        public void SetParentBlueprint(GameWorldBlueprint parentBlueprint)
+        public void Initialize()
         {
-            this.parentBlueprint = parentBlueprint;
-        }
+            // UpdatePosition();
 
-        public void SetRoomBlueprintCell(BlueprintCell blueprintCell)
-        {
-            this.blueprintCell = blueprintCell;
-            UpdatePosition();
-            UpdateMaterialColor();
+            gameWorldRoomCell.roomCell = blueprintCell.roomCell;
+            gameWorldRoomCell.isInBlueprintMode = true;
+            gameWorldRoomCell.Initialize();
+
+            SetColor();
         }
 
         public void UpdatePosition()
         {
-            transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(blueprintCell.roomCell.coordinates);
+            // transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(blueprintCell.roomCell.coordinates);
         }
 
-        public void Initialize()
-        {
-            InitializeRoomEntrances();
-        }
-
-        public void UpdateMaterialColor()
-        {
-            if (IsValid())
-            {
-                cellCube.GetComponent<Renderer>().material.color = VALID_COLOR;
-            }
-            else
-            {
-                cellCube.GetComponent<Renderer>().material.color = INVALID_COLOR;
-            }
-        }
 
         void Awake()
         {
-            roomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
-            cellCube = transform.Find("CellCube");
+            gameWorldRoomCell = transform.Find("RoomCell").GetComponent<GameWorldRoomCell>();
         }
 
-        void OnDestroy()
+        void SetColor()
         {
-            foreach (GameObject roomEntranceGameObject in roomEntranceGameObjects)
+            if (IsValid())
             {
-                Destroy(roomEntranceGameObject);
+                gameWorldRoomCell.SetColor(VALID_COLOR);
             }
-        }
-
-        void InitializeRoomEntrances()
-        {
-            List<RoomEntrance> roomEntrances = blueprintCell.roomCell.entrances;
-            float TILE_SIZE = TowerBuilder.Stores.Map.Rooms.Constants.TILE_SIZE;
-
-            foreach (RoomEntrance roomEntrance in roomEntrances)
+            else
             {
-                // TODO - all of this stuff should probably go in GameRoomEntrance
-                GameObject entranceGameObject = Instantiate(roomEntrancePrefab);
-                entranceGameObject.transform.parent = transform;
-                if (roomEntrance.position == RoomEntrancePosition.Left)
-                {
-                    // RoomEntrancePosition.Right
-                    entranceGameObject.transform.localPosition = new Vector3(
-                        -(TILE_SIZE / 2) + (entranceGameObject.transform.localScale.x / 2),
-                        -(TILE_SIZE / 2) + (entranceGameObject.transform.localScale.y / 2),
-                        0
-                    );
-                }
-                else
-                {
-                    // RoomEntrancePosition.Right
-                    entranceGameObject.transform.localPosition = new Vector3(
-                        (TILE_SIZE / 2) - (entranceGameObject.transform.localScale.x / 2),
-                        -(TILE_SIZE / 2) + (entranceGameObject.transform.localScale.y / 2),
-                        0
-                    );
-                }
-
-                roomEntranceGameObjects.Add(entranceGameObject);
+                gameWorldRoomCell.SetColor(INVALID_COLOR);
             }
         }
 

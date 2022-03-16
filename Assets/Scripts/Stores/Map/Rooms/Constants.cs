@@ -30,16 +30,16 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 1,
                 resizability = RoomResizability.Flexible(),
                 privacy = RoomPrivacy.Public,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                },
+                // entrances = new List<RoomEntrance>() {
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Left,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Right,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                // },
                 color = Color.gray
             },
 
@@ -55,16 +55,16 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 1,
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                },
+                // entrances = new List<RoomEntrance>() {
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Left,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Right,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                // },
                 color = Color.red,
             },
 
@@ -80,16 +80,16 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 2,
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 1)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(0, 1)
-                    },
-                },
+                // entrances = new List<RoomEntrance>() {
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Left,
+                //         cellCoordinates = new CellCoordinates(0, 1)
+                //     },
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Right,
+                //         cellCoordinates = new CellCoordinates(0, 1)
+                //     },
+                // },
                 color = Color.red,
             },
 
@@ -198,16 +198,16 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                },
+                // entrances = new List<RoomEntrance>() {
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Left,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Right,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                // },
                 color = Color.magenta,
             },
 
@@ -227,16 +227,16 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Private,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                },
+                // entrances = new List<RoomEntrance>() {
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Left,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Right,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                // },
                 color = Color.yellow,
             },
 
@@ -256,16 +256,16 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                },
+                // entrances = new List<RoomEntrance>() {
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Left,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Right,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                // },
                 color = Color.magenta,
             },
 
@@ -282,16 +282,16 @@ namespace TowerBuilder.Stores.Map.Rooms
                 resizability = RoomResizability.Vertical(),
                 color = Color.white,
                 privacy = RoomPrivacy.Public,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                },
+                // entrances = new List<RoomEntrance>() {
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Left,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Right,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                // },
             },
 
             [RoomKey.LargeStairwell] = new RoomDetails()
@@ -307,16 +307,16 @@ namespace TowerBuilder.Stores.Map.Rooms
                 resizability = RoomResizability.Vertical(),
                 color = Color.white,
                 privacy = RoomPrivacy.Public,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                },
+                // entrances = new List<RoomEntrance>() {
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Left,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Right,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                // },
             },
 
             [RoomKey.SmallPark] = new RoomDetails()
@@ -331,16 +331,16 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 1,
                 color = Color.green,
                 privacy = RoomPrivacy.Public,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                },
+                // entrances = new List<RoomEntrance>() {
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Left,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                //     new RoomEntrance() {
+                //         position = RoomEntrancePosition.Right,
+                //         cellCoordinates = new CellCoordinates(0, 0)
+                //     },
+                // },
             }
         };
 
