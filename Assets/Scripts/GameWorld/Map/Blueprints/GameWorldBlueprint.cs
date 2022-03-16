@@ -15,7 +15,7 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
 
         GameObject gameWorldBlueprintCellPrefab;
 
-        List<GameWorldBlueprintCell> gameWorldBlueprintCells;
+        List<GameWorldBlueprintCell> gameWorldBlueprintCells = new List<GameWorldBlueprintCell>();
 
         public void ResetBlueprintCells()
         {
@@ -26,8 +26,6 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
         void Awake()
         {
             gameWorldBlueprintCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Blueprints/BlueprintCell");
-
-            gameWorldBlueprintCells = new List<GameWorldBlueprintCell>();
 
             CreateBlueprintCells();
 

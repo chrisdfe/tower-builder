@@ -77,7 +77,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 //     RoomUseKey.Hallway,
                 // },
                 width = 1,
-                height = 3,
+                height = 2,
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
                 entrances = new List<RoomEntrance>() {
@@ -252,7 +252,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                         capacity = 20
                     }
                 },
-                width = 4,
+                width = 2,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,

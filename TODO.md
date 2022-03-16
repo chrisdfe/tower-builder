@@ -1,6 +1,11 @@
 # TODO
 
+- Stop destroying/recreating roomCells whenever the cursor changes position - only when it needs resizing
+- Add GameWorldRoomList 
 - Elevator entrances should only be at the top and bottom - maybe get ElevatorModule to do this?
+- Similar thing with hallways and lobbies
+- You should be able to delete a single tile of a flexible-sized room
+  - 
 - Generate rooms buttons in RoomBlueprintButtonsManager dynamically
 - Room types in BuildToolPanel should be grouped by RoomCategory
 - for when I implement elevators: Elevator cars can go only from the top to the bottom - no stopping at inbetween places.
@@ -24,6 +29,8 @@
 - Flexible-sized rooms should be resizable once placed
 
 # Cleanup
+
+- Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - Blueprint validators should probably take in the entire Store object
 - FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor
 - RoomCells could implememnt IEnumerable
@@ -32,6 +39,7 @@
 - Awkward naming conflict between ToolState + tool sub states
 
 # Bugs
+
 - Rooms should stay white until they're not being inspected anymore - right now they return to default color on mouse out
 - Input.GetMouseButtonDown(0) does not work consistently on macos
 - UI is way too big on my laptop

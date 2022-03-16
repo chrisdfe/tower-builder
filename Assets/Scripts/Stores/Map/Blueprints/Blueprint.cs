@@ -123,11 +123,7 @@ namespace TowerBuilder.Stores.Map.Blueprints
                     flexibleBuildStartCoordinates.floor + (copies.floor * roomDetails.height) - 1
                 );
 
-                roomCells = new RoomCells(room);
-                roomCells.CreateRectangularRoom(
-                    flexibleBuildStartCoordinates,
-                    flexibleBuildEndCoordinates
-                );
+                roomCells = new RoomCells(room, flexibleBuildStartCoordinates, flexibleBuildEndCoordinates);
             }
 
             this.room.SetRoomCells(roomCells);

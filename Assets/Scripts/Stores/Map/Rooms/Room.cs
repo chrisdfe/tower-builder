@@ -16,8 +16,7 @@ namespace TowerBuilder.Stores.Map.Rooms
         public RoomKey roomKey { get; private set; }
 
         public RoomCells roomCells;
-        public List<RoomEntrance> roomEntrances { get; private set; }
-        public List<RoomModuleBase> modules { get; private set; }
+        public List<RoomModuleBase> modules { get; private set; } = new List<RoomModuleBase>();
 
         public RoomDetails roomDetails
         {
@@ -34,16 +33,18 @@ namespace TowerBuilder.Stores.Map.Rooms
             roomCells = new RoomCells(this);
         }
 
-        public Room(RoomKey roomKey, RoomCells roomCells)
+        public Room(RoomKey roomKey, List<RoomCell> roomCellList) : this(roomKey)
         {
-            id = GenerateId();
-            this.roomKey = roomKey;
-            SetRoomCells(roomCells);
+            roomCells.Add(roomCellList);
+        }
+
+        public Room(RoomKey roomKey, RoomCells roomCells) : this(roomKey)
+        {
+            roomCells.Add(roomCells);
         }
 
         public void OnBuild()
         {
-            InitializeRoomEntrances();
             InitializeModules();
         }
 
@@ -58,39 +59,14 @@ namespace TowerBuilder.Stores.Map.Rooms
             roomCells.SetRoom(this);
         }
 
-        public void SetEntrances(List<RoomEntrance> roomEntrances)
-        {
-            this.roomEntrances = roomEntrances;
-            InitializeRoomEntrances();
-        }
-
         string GenerateId()
         {
             return Guid.NewGuid().ToString();
         }
 
-        void InitializeRoomEntrances()
-        {
-            roomEntrances = new List<RoomEntrance>(roomDetails.entrances);
-
-            foreach (RoomEntrance roomEntrance in roomEntrances)
-            {
-                // RoomEntrances need a Room instance attached
-                roomEntrance.room = this;
-
-                foreach (RoomCell roomCell in roomCells.cells)
-                {
-                    if (roomCell.coordinates.Matches(roomEntrance.cellCoordinates))
-                    {
-                        roomCell.AddEntrance(roomEntrance);
-                    }
-                }
-            }
-        }
-
         void InitializeModules()
         {
-            modules = new List<RoomModuleBase>();
+            List<RoomModuleBase> result = new List<RoomModuleBase>();
 
             // TODO - there's probably a more elegant way of doing this that I will figure out later
             foreach (RoomUseDetailsBase roomUseDetails in roomDetails.useDetails)
@@ -108,6 +84,8 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 roomModule.Initialize();
             }
+
+            modules = result;
         }
     }
 }

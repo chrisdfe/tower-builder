@@ -23,33 +23,101 @@ namespace TowerBuilder.Stores.Map.Rooms
             CreateRectangularRoom(width, height);
         }
 
-        public void SetRoom(Room room)
+        public RoomCells(Room room, CellCoordinates startCellCoordinates, CellCoordinates endCellCoordinates) : this(room)
         {
-            this.room = room;
-
-            foreach (RoomCell cell in cells)
-            {
-                cell.SetRoom(room);
-            }
+            CreateRectangularRoom(startCellCoordinates, endCellCoordinates);
         }
 
         public void Add(CellCoordinates cellCoordinates)
         {
-            cells.Add(new RoomCell(this.room)
-            {
-                coordinates = cellCoordinates
-            });
+            cells.Add(new RoomCell(this, cellCoordinates));
+            OnResize();
         }
 
         public void Add(RoomCell roomCell)
         {
-            roomCell.SetRoom(room);
-            cells.Add(roomCell);
+            cells.Add(new RoomCell(this, roomCell.coordinates));
+            OnResize();
         }
 
-        public void Add(RoomCells roomCells)
+        public void Add(List<RoomCell> roomCellsList)
         {
-            cells = cells.Concat(roomCells.cells).ToList();
+            List<RoomCell> mappedRoomCells = roomCellsList.Select(roomCell => new RoomCell(this, roomCell.coordinates)).ToList();
+            cells = cells.Concat(mappedRoomCells).ToList();
+            OnResize();
+        }
+
+        public void Add(RoomCells otherRoomCells)
+        {
+            Add(otherRoomCells.cells);
+        }
+
+        public void SetRoom(Room room)
+        {
+            this.room = room;
+        }
+
+        public void OnResize()
+        {
+            foreach (RoomCell roomCell in cells)
+            {
+                roomCell.Reset();
+            }
+        }
+
+        public void CreateRectangularRoom(int xWidth, int floors)
+        {
+            List<RoomCell> result = new List<RoomCell>();
+
+            for (int x = 0; x < xWidth; x++)
+            {
+                for (int floor = 0; floor < floors; floor++)
+                {
+                    result.Add(new RoomCell(this, x, floor));
+                }
+            }
+
+            this.cells = result;
+            OnResize();
+        }
+
+        public void CreateRectangularRoom(CellCoordinates a, CellCoordinates b)
+        {
+            List<RoomCell> result = new List<RoomCell>();
+
+            // startCoordinates = top left room
+            // endCoordinates = bottom right room
+            CellCoordinates startCoordinates = new CellCoordinates(Mathf.Min(a.x, b.x), Mathf.Min(a.floor, b.floor));
+            CellCoordinates endCoordinates = new CellCoordinates(Mathf.Max(a.x, b.x), Mathf.Max(a.floor, b.floor));
+
+            for (int floor = startCoordinates.floor; floor <= endCoordinates.floor; floor++)
+            {
+                for (int x = startCoordinates.x; x <= endCoordinates.x; x++)
+                {
+                    result.Add(new RoomCell(this, x, floor));
+                }
+            }
+
+            this.cells = result;
+            OnResize();
+        }
+
+        public void PositionAtCoordinates(CellCoordinates newBaseCoordinates)
+        {
+            List<RoomCell> result = new List<RoomCell>();
+
+            foreach (RoomCell roomCell in cells)
+            {
+                result.Add(
+                    new RoomCell(this)
+                    {
+                        coordinates = newBaseCoordinates.Add(roomCell.coordinates)
+                    }
+                );
+            }
+
+            cells = result;
+            OnResize();
         }
 
         public RoomCell FindCellByCoordinates(CellCoordinates cellCoordinates)
@@ -65,56 +133,9 @@ namespace TowerBuilder.Stores.Map.Rooms
             return null;
         }
 
-        public void CreateRectangularRoom(int xWidth, int floors)
+        public bool HasCellAtCoordinates(CellCoordinates cellCoordinates)
         {
-            List<RoomCell> roomCells = new List<RoomCell>();
-
-            for (int x = 0; x < xWidth; x++)
-            {
-                for (int floor = 0; floor < floors; floor++)
-                {
-                    roomCells.Add(new RoomCell(room, x, floor));
-                }
-            }
-
-            this.cells = roomCells;
-        }
-
-        public void CreateRectangularRoom(CellCoordinates a, CellCoordinates b)
-        {
-            List<RoomCell> roomCells = new List<RoomCell>();
-
-            // startCoordinates = top left room
-            // endCoordinates = bottom right room
-            CellCoordinates startCoordinates = new CellCoordinates(Mathf.Min(a.x, b.x), Mathf.Min(a.floor, b.floor));
-            CellCoordinates endCoordinates = new CellCoordinates(Mathf.Max(a.x, b.x), Mathf.Max(a.floor, b.floor));
-
-            for (int floor = startCoordinates.floor; floor <= endCoordinates.floor; floor++)
-            {
-                for (int x = startCoordinates.x; x <= endCoordinates.x; x++)
-                {
-                    roomCells.Add(new RoomCell(room, x, floor));
-                }
-            }
-
-            this.cells = roomCells;
-        }
-
-        public void PositionAtCoordinates(CellCoordinates newBaseCoordinates)
-        {
-            List<RoomCell> result = new List<RoomCell>();
-
-            foreach (RoomCell roomCell in cells)
-            {
-                result.Add(
-                    new RoomCell(room)
-                    {
-                        coordinates = newBaseCoordinates.Add(roomCell.coordinates)
-                    }
-                );
-            }
-
-            cells = result;
+            return FindCellByCoordinates(cellCoordinates) != null;
         }
 
         public int GetLowestX()
@@ -178,7 +199,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             return highestFloor;
         }
 
-        public List<int> getXRange()
+        public List<int> GetXRange()
         {
             List<int> result = new List<int>();
 
@@ -193,7 +214,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             return result;
         }
 
-        public List<int> getFloorRange()
+        public List<int> GetFloorRange()
         {
             List<int> result = new List<int>();
 

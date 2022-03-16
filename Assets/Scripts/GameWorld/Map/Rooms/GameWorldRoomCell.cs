@@ -18,8 +18,18 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         GameObject mapRoomEntrancePrefab;
 
-        Transform cellCube;
-        Material cellCubeMaterial;
+        Transform roomCellMesh;
+        // Material roomCellMeshMaterial;
+
+        Transform wrapperSegment;
+        Transform leftWallSegment;
+        Transform rightWallSegment;
+        Transform ceilingSegment;
+        Transform floorSegment;
+        Transform backWallSegment;
+
+        Transform[] segments;
+        Transform[] wallSegments;
 
         public void SetRoomCell(RoomCell roomCell)
         {
@@ -29,6 +39,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         public void Initialize()
         {
             UpdatePosition();
+            SetupRoomCellMeshSegments();
             ResetColor();
 
             // TODO - initialize entrances
@@ -40,8 +51,31 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
             mapRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
 
-            cellCube = transform.Find("CellCube");
-            cellCubeMaterial = cellCube.GetComponent<Renderer>().material;
+            roomCellMesh = transform.Find("RoomCellMesh");
+            // roomCellMeshMaterial = roomCellMesh.GetComponent<Renderer>().material;
+
+            wrapperSegment = roomCellMesh.Find("Wrapper");
+
+            leftWallSegment = wrapperSegment.Find("LeftWall").Find("LeftWallFull");
+            rightWallSegment = wrapperSegment.Find("RightWall").Find("RightWallFull");
+            backWallSegment = wrapperSegment.Find("BackWall").Find("BackWallFull");
+            ceilingSegment = wrapperSegment.Find("Ceiling").Find("CeilingFull");
+            floorSegment = wrapperSegment.Find("Floor").Find("FloorFull");
+
+            wallSegments = new Transform[] {
+                leftWallSegment,
+                rightWallSegment,
+                ceilingSegment,
+                floorSegment
+            };
+
+            segments = new Transform[] {
+                leftWallSegment,
+                rightWallSegment,
+                backWallSegment,
+                ceilingSegment,
+                floorSegment
+            };
 
             Registry.Stores.MapUI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
             Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
@@ -61,7 +95,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                 return;
             }
 
-            if (room.id == roomCell.room.id)
+            if (room.id == roomCell.roomCells.room.id)
             {
                 switch (Registry.Stores.MapUI.toolState)
                 {
@@ -85,12 +119,12 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         bool IsInCurrentInspectedRoom()
         {
             Room currentInspectedRoom = Registry.Stores.MapUI.inspectToolSubState.currentInspectedRoom;
-            return currentInspectedRoom != null && currentInspectedRoom.id == roomCell.room.id;
+            return currentInspectedRoom != null && currentInspectedRoom.id == roomCell.roomCells.room.id;
         }
 
         void OnInspectRoomUpdated(Room currentInspectRoom)
         {
-            if (currentInspectRoom != null && currentInspectRoom.id == roomCell.room.id)
+            if (currentInspectRoom != null && currentInspectRoom.id == roomCell.roomCells.room.id)
             {
                 SetInspectColor();
             }
@@ -102,7 +136,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         void SetHoverColor()
         {
-            SetColor(roomCell.room.roomDetails.color, 0.4f);
+            SetColor(roomCell.roomCells.room.roomDetails.color, 0.4f);
         }
 
         void SetDestroyHoverColor()
@@ -122,18 +156,59 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         void SetColorAlpha(float alpha)
         {
-            cellCubeMaterial.color = new Color(cellCubeMaterial.color.r, cellCubeMaterial.color.g, cellCubeMaterial.color.b, alpha);
+            foreach (Transform segment in segments)
+            {
+                Material material = segment.GetComponent<MeshRenderer>().material;
+                Color currentColor = material.color;
+                material.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
+            }
         }
 
         void SetColor(Color color, float alpha)
         {
-            cellCubeMaterial.color = color;
-            SetColorAlpha(alpha);
+            foreach (Transform segment in wallSegments)
+            {
+                Material material = segment.GetComponent<MeshRenderer>().material;
+                Color currentColor = material.color;
+                material.color = new Color(color.r, color.g, color.b, alpha);
+            }
         }
 
         void ResetColor()
         {
-            SetColor(roomCell.room.roomDetails.color, 1f);
+            SetColor(roomCell.roomCells.room.roomDetails.color, 1f);
+        }
+
+        void SetupRoomCellMeshSegments()
+        {
+            foreach (Transform segment in wallSegments)
+            {
+                SetEnabled(segment, false);
+            }
+
+            foreach (RoomCellPosition cellPosition in roomCell.position)
+            {
+                switch (cellPosition)
+                {
+                    case RoomCellPosition.Top:
+                        SetEnabled(ceilingSegment, true);
+                        break;
+                    case RoomCellPosition.Right:
+                        SetEnabled(rightWallSegment, true);
+                        break;
+                    case RoomCellPosition.Bottom:
+                        SetEnabled(floorSegment, true);
+                        break;
+                    case RoomCellPosition.Left:
+                        SetEnabled(leftWallSegment, true);
+                        break;
+                }
+            }
+        }
+
+        void SetEnabled(Transform segment, bool enabled)
+        {
+            segment.GetComponent<MeshRenderer>().enabled = enabled;
         }
     }
 }

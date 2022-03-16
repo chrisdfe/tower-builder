@@ -162,7 +162,7 @@ namespace TowerBuilder.Stores.MapUI
                 if (roomDetails.resizability.x)
                 {
                     //  Check on either side
-                    foreach (int floor in roomCells.getFloorRange())
+                    foreach (int floor in roomCells.GetFloorRange())
                     {
                         Room leftRoom = Registry.Stores.Map.rooms.FindRoomAtCell(new CellCoordinates(
                             roomCells.GetLowestX() - 1,
@@ -191,8 +191,7 @@ namespace TowerBuilder.Stores.MapUI
                 if (roomDetails.resizability.floor)
                 {
                     //  Check on floors above and below
-                    // TODO - do this for each floor from GetXRange
-                    foreach (int x in roomCells.getXRange())
+                    foreach (int x in roomCells.GetXRange())
                     {
                         Room aboveRoom = Registry.Stores.Map.rooms.FindRoomAtCell(new CellCoordinates(
                             x,

@@ -4,39 +4,82 @@ using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Blueprints;
+using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms
 {
     public class RoomCell
     {
-        public Room room { get; private set; }
-        public CellCoordinates coordinates;
+        public RoomCells roomCells { get; private set; }
+        public CellCoordinates coordinates = CellCoordinates.zero;
         public List<RoomEntrance> entrances = new List<RoomEntrance>();
+        public List<RoomCellPosition> position = new List<RoomCellPosition>();
 
-        public RoomCell(Room room)
+        public RoomCell(RoomCells roomCells)
         {
-            SetRoom(room);
+            this.roomCells = roomCells;
         }
 
-        public RoomCell(Room room, int x, int floor) : this(room)
+        public RoomCell(RoomCells roomCells, int x, int floor) : this(roomCells)
         {
             this.coordinates = new CellCoordinates(x, floor);
         }
 
-        public RoomCell(Room room, CellCoordinates cellCoordinates) : this(room)
+        public RoomCell(RoomCells roomCells, CellCoordinates cellCoordinates) : this(roomCells)
         {
             this.coordinates = cellCoordinates.Clone();
         }
 
-        public void SetRoom(Room room)
+        public void Reset()
         {
-            this.room = room;
+            SetEntrances();
+            SetPosition();
         }
 
-        public void AddEntrance(RoomEntrance roomEntrance)
+        void SetEntrances()
         {
-            entrances.Add(roomEntrance);
-            roomEntrance.roomCell = this;
+            List<RoomEntrance> result = new List<RoomEntrance>();
+
+            foreach (RoomEntrance roomEntrance in roomCells.room.roomDetails.entrances)
+            {
+                // RoomEntrances need a Room instance attached
+                roomEntrance.room = roomCells.room;
+
+                if (coordinates.Matches(roomEntrance.cellCoordinates))
+                {
+                    entrances.Add(roomEntrance);
+                    roomEntrance.roomCell = this;
+                }
+            }
+
+            entrances = result;
+        }
+
+        void SetPosition()
+        {
+            List<RoomCellPosition> result = new List<RoomCellPosition>();
+
+            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
+            {
+                result.Add(RoomCellPosition.Top);
+            }
+
+            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
+            {
+                result.Add(RoomCellPosition.Right);
+            }
+
+            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
+            {
+                result.Add(RoomCellPosition.Bottom);
+            }
+
+            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
+            {
+                result.Add(RoomCellPosition.Left);
+            }
+
+            position = result;
         }
     }
 }

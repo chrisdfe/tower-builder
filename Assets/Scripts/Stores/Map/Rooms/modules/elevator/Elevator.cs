@@ -19,6 +19,9 @@ namespace TowerBuilder.Stores.Map.Rooms.Modules
         {
             // Elevators start off with 1 car
             AddCar();
+
+            // DEBUG - remove plz
+            Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += DebugOnCurrentInspectedRoomUpdated;
         }
 
         public override void OnDestroy()
@@ -46,6 +49,14 @@ namespace TowerBuilder.Stores.Map.Rooms.Modules
             }
 
             cars = new List<ElevatorCar>();
+        }
+
+        void DebugOnCurrentInspectedRoomUpdated(Room room)
+        {
+            if (room == this.room)
+            {
+                Debug.Log("do debug elevator stuff");
+            }
         }
     }
 }
