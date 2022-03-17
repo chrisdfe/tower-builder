@@ -11,12 +11,31 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 {
     public class GameWorldRoomEntrance : MonoBehaviour
     {
+        static Color CONNECTED_COLOR = Color.green;
+
         public RoomEntrance roomEntrance;
-        public GameWorldRoomCell parentGameWorldRoomCell;
+        // public GameWorldRoomCell parentGameWorldRoomCell;
+
+        Transform cube;
+        Material cubeMaterial;
+        Color baseColor;
 
         public void Initialize()
         {
             SetPosition();
+        }
+
+        public void UpdateColor()
+        {
+            // TODO - if room is connected to another entrance GREEN
+            cubeMaterial.color = baseColor;
+        }
+
+        void Awake()
+        {
+            cube = transform.Find("RoomEntranceCube");
+            cubeMaterial = cube.GetComponent<Renderer>().material;
+            baseColor = cubeMaterial.color;
         }
 
         void SetPosition()
@@ -27,9 +46,8 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             {
                 // RoomEntrancePosition.Right
                 transform.localPosition = new Vector3(
-                    // tODO - use parentGameWorldRoomCell instead of transform.parent.transform
-                    -(TILE_SIZE / 2) + (transform.parent.transform.localScale.x / 2),
-                    -(TILE_SIZE / 2) + (transform.parent.transform.localScale.y / 2),
+                    -(TILE_SIZE / 2) + (cube.transform.localScale.x / 2),
+                    -(TILE_SIZE / 2) + (cube.transform.localScale.y / 2),
                     0
                 );
             }
@@ -37,8 +55,8 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             {
                 // RoomEntrancePosition.Right
                 transform.localPosition = new Vector3(
-                    (TILE_SIZE / 2) - (transform.parent.transform.localScale.x / 2),
-                    -(TILE_SIZE / 2) + (transform.parent.transform.localScale.y / 2),
+                    (TILE_SIZE / 2) - (cube.transform.localScale.x / 2),
+                    -(TILE_SIZE / 2) + (cube.transform.localScale.y / 2),
                     0
                 );
             }

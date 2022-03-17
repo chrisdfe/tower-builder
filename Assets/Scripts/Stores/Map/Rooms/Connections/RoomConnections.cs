@@ -1,11 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime;
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Map.Blueprints;
-using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms.Connections
 {
@@ -33,9 +27,19 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
             ).ToList();
         }
 
-        public List<RoomConnection> SearchForNewConnectionsToRoom(RoomList roomList, Room room)
+        public List<RoomConnection> SearchForNewConnectionsToRoom(RoomList roomList, Room targetRoom)
         {
             List<RoomConnection> result = new List<RoomConnection>();
+
+            // TODO
+            foreach (Room room in roomList.rooms)
+            {
+                foreach (RoomCell roomCell in room.roomCells.cells)
+                {
+
+                }
+            }
+
             return result;
         }
     }

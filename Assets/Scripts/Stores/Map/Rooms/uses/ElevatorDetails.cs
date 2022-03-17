@@ -8,6 +8,7 @@ namespace TowerBuilder.Stores.Map.Rooms.Uses
         public int capacity;
 
         // how fast elevator cars move between each floor
+        // in ticks/floor (speed = # of ticks it takes to move 1 floor)
         public int speed;
     }
 }

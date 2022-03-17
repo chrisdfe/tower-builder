@@ -93,9 +93,14 @@ namespace TowerBuilder.Stores.Map.Rooms
             }
             else
             {
-                if (roomDetails.category == RoomCategory.Elevator)
+                switch (roomDetails.category)
                 {
-                    result = ElevatorEntranceBuilder.BuildRoomEntrances(roomCells);
+                    case RoomCategory.Elevator:
+                        result = ElevatorEntranceBuilder.BuildRoomEntrances(roomCells);
+                        break;
+                    case RoomCategory.Lobby:
+                        result = LobbyEntranceBuilder.BuildRoomEntrances(roomCells);
+                        break;
                 }
             }
 

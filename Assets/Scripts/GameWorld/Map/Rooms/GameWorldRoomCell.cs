@@ -122,7 +122,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                 SetEnabled(segment, false);
             }
 
-            Debug.Log("roomCell.position: " + roomCell.position.Count);
             foreach (RoomCellPosition cellPosition in roomCell.position)
             {
                 switch (cellPosition)
@@ -157,10 +156,19 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
                 GameWorldRoomEntrance gameWorldRoomEntrance = roomEntranceGameObject.GetComponent<GameWorldRoomEntrance>();
                 gameWorldRoomEntrance.roomEntrance = roomEntrance;
-                gameWorldRoomEntrance.parentGameWorldRoomCell = this;
+                // gameWorldRoomEntrance.parentGameWorldRoomCell = this;
                 gameWorldRoomEntrance.Initialize();
                 gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
             }
+        }
+
+        void UpdateRoomEntrances()
+        {
+            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
+            {
+                gameWorldRoomEntrance.UpdateColor();
+            }
+
         }
 
         void UpdatePosition()
