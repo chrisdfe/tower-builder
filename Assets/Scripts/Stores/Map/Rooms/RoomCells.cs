@@ -31,6 +31,11 @@ namespace TowerBuilder.Stores.Map.Rooms
             CreateRectangularRoom(startCellCoordinates, endCellCoordinates);
         }
 
+        public RoomCells(List<RoomCell> roomCells)
+        {
+            this.cells = roomCells;
+        }
+
         public void Add(CellCoordinates cellCoordinates)
         {
             cells.Add(new RoomCell(cellCoordinates));
@@ -51,8 +56,8 @@ namespace TowerBuilder.Stores.Map.Rooms
 
         public void Add(List<RoomCell> roomCellsList)
         {
-            List<RoomCell> mappedRoomCells = roomCellsList.Select(roomCell => new RoomCell(roomCell.coordinates)).ToList();
-            cells = cells.Concat(mappedRoomCells).ToList();
+            cells = cells.Concat(roomCellsList).ToList();
+
             if (onResize != null)
             {
                 onResize(this);
@@ -236,7 +241,20 @@ namespace TowerBuilder.Stores.Map.Rooms
             return result;
         }
 
-        public CellCoordinates GetTopLeftCoordinates()
+        public RoomCells ToRelativeCoordinates()
+        {
+            List<RoomCell> result = new List<RoomCell>();
+            CellCoordinates bottomLeftCoordinates = GetBottomLeftCoordinates();
+
+            foreach (RoomCell roomCell in cells)
+            {
+                result.Add(new RoomCell(roomCell.coordinates.Subtract(bottomLeftCoordinates)));
+            }
+
+            return new RoomCells(result);
+        }
+
+        public CellCoordinates GetBottomLeftCoordinates()
         {
             return new CellCoordinates(
                 GetLowestX(),

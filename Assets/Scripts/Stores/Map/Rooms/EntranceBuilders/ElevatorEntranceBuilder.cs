@@ -33,12 +33,12 @@ namespace TowerBuilder.Stores.Map.Rooms.EntranceBuilders
             {
                 result.Add(new RoomEntrance()
                 {
-                    cellCoordinates = new CellCoordinates(0, -floorSpan),
+                    cellCoordinates = new CellCoordinates(0, floorSpan - 1),
                     position = RoomEntrancePosition.Left
                 });
                 result.Add(new RoomEntrance()
                 {
-                    cellCoordinates = new CellCoordinates(width, -floorSpan),
+                    cellCoordinates = new CellCoordinates(width, floorSpan - 1),
                     position = RoomEntrancePosition.Right
                 });
             }
@@ -49,7 +49,6 @@ namespace TowerBuilder.Stores.Map.Rooms.EntranceBuilders
             //     Debug.Log(entrance.cellCoordinates);
             // }
 
-            Debug.Log(roomCells.GetTopLeftCoordinates());
 
             return result;
         }

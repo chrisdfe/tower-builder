@@ -120,7 +120,7 @@ namespace TowerBuilder.Stores.MapUI
 
         void CreateBlueprint()
         {
-            currentBlueprint = new Blueprint(parentState.currentSelectedCell, selectedRoomKey);
+            currentBlueprint = new Blueprint(selectedRoomKey, parentState.currentSelectedCell);
         }
 
         void DeleteBlueprint()
@@ -223,7 +223,6 @@ namespace TowerBuilder.Stores.MapUI
             {
                 Room newRoom = currentBlueprint.room;
                 Registry.Stores.Map.AddRoom(newRoom);
-                currentBlueprint.Reset();
             }
             else
             {
@@ -238,9 +237,12 @@ namespace TowerBuilder.Stores.MapUI
                 }
 
                 // Create new room with all of those room cells from previous rooms
+                // TODO - add to the 1st item in roomsToCombineWith instead of replacing both with a new room?
                 Room newRoom = new Room(selectedRoomKey, newRoomCells);
                 Registry.Stores.Map.AddRoom(newRoom);
             }
+
+            currentBlueprint.Reset();
         }
     }
 }

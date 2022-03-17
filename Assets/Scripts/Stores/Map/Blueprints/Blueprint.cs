@@ -19,11 +19,8 @@ namespace TowerBuilder.Stores.Map.Blueprints
         public CellCoordinates buildStartCoordinates { get; private set; }
         public CellCoordinates buildEndCoordinates { get; private set; }
 
-        RoomKey roomKey;
-
-        public Blueprint(CellCoordinates buildStartCoordinates, RoomKey roomKey)
+        public Blueprint(RoomKey roomKey, CellCoordinates buildStartCoordinates)
         {
-            this.roomKey = roomKey;
             this.room = new Room(roomKey);
             this.room.isInBlueprintMode = true;
 
@@ -39,13 +36,12 @@ namespace TowerBuilder.Stores.Map.Blueprints
 
         public void Reset()
         {
+            RoomKey roomKey = this.room.roomKey;
             this.room = new Room(roomKey);
         }
 
-
         public void SetRoomKey(RoomKey roomKey)
         {
-            this.roomKey = roomKey;
             room.SetRoomKey(roomKey);
             SetRoomCells();
             ResetBlueprintCells();
@@ -96,6 +92,14 @@ namespace TowerBuilder.Stores.Map.Blueprints
                 )
                 {
                     flexibleBuildEndCoordinates.floor = buildEndCoordinates.floor;
+                }
+
+                // Make sure that the start coordinates are in the top left
+                if (flexibleBuildStartCoordinates.x > flexibleBuildEndCoordinates.x)
+                {
+                    CellCoordinates temp = flexibleBuildEndCoordinates.Clone();
+                    flexibleBuildEndCoordinates = flexibleBuildStartCoordinates.Clone();
+                    flexibleBuildStartCoordinates = temp.Clone();
                 }
 
                 // Round up to fit base blueprint size

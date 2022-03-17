@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Connections;
 using TowerBuilder.Stores.Map.Rooms.Modules;
 using UnityEngine;
 
@@ -19,6 +20,12 @@ namespace TowerBuilder.Stores.Map
 
         public delegate void ElevatorCarPositionEvent(ElevatorCar elevatorCar, ElevatorCarPosition destinationPosition);
         public ElevatorCarPositionEvent onElevatorCarPositionChanged;
+
+        public RoomConnections roomConnections { get; private set; } = new RoomConnections();
+
+        public delegate void RoomConnectionEvent(RoomConnection roomConnection);
+        public RoomConnectionEvent onRoomConnectionAdded;
+        public RoomConnectionEvent onRoomConnectionRemoved;
 
         public void AddRoom(Room room)
         {
