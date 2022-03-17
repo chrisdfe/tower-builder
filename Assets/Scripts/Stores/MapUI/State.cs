@@ -4,6 +4,7 @@ using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Connections;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.MapUI
@@ -18,6 +19,8 @@ namespace TowerBuilder.Stores.MapUI
         public CellCoordinates currentSelectedCell { get; private set; } = null;
         public delegate void cellCoordinatesEvent(CellCoordinates currentSelectedCell);
         public cellCoordinatesEvent onCurrentSelectedCellUpdated;
+
+        public RoomConnections blueprintRoomConnections = new RoomConnections();
 
         public Room currentSelectedRoom { get; private set; } = null;
         public delegate void selectedRoomEvent(Room room);

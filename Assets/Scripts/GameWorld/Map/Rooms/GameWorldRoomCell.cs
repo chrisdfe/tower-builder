@@ -6,7 +6,9 @@ using TowerBuilder.GameWorld;
 using TowerBuilder.GameWorld.Map;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Blueprints;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Connections;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
@@ -52,7 +54,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             }
         }
 
-
         public void ResetColor()
         {
             SetColor(baseColor, 1f);
@@ -85,6 +86,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         void Awake()
         {
+            Debug.Log("gameowlrd room cell: AWAKE");
             transform.localPosition = Vector3.zero;
 
             gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
@@ -113,6 +115,13 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                 ceilingSegment,
                 floorSegment
             };
+
+            Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated += OnBlueprintRoomConnectionsUpdated;
+        }
+
+        void OnDestroy()
+        {
+            Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
 
         void InitializeRoomCellMeshSegments()
@@ -166,7 +175,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         {
             foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
             {
-                gameWorldRoomEntrance.UpdateColor();
+                gameWorldRoomEntrance.ResetColor();
             }
 
         }
@@ -174,6 +183,27 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         void UpdatePosition()
         {
             transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
+        }
+
+        // TODO - this doesn't belong herer
+        void OnBlueprintRoomConnectionsUpdated(RoomConnections roomConnections)
+        {
+            Blueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
+            // List<RoomConnection> blueprintRoomConnections = roomConnections.FindConnectionsForRoom(blueprint.room);
+
+            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
+            {
+                RoomConnection connection = roomConnections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
+
+                if (connection == null)
+                {
+                    gameWorldRoomEntrance.ResetColor();
+                }
+                else
+                {
+                    gameWorldRoomEntrance.SetConnectedColor();
+                }
+            }
         }
     }
 }

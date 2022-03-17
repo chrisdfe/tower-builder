@@ -6,6 +6,7 @@ using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Blueprints;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Connections;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.Blueprints
@@ -33,7 +34,6 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
         {
             // transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(blueprintCell.roomCell.coordinates);
         }
-
 
         void Awake()
         {

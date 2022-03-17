@@ -25,7 +25,12 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             SetPosition();
         }
 
-        public void UpdateColor()
+        public void SetConnectedColor()
+        {
+            cubeMaterial.color = CONNECTED_COLOR;
+        }
+
+        public void ResetColor()
         {
             // TODO - if room is connected to another entrance GREEN
             cubeMaterial.color = baseColor;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Blueprints;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Connections;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.MapUI
@@ -25,6 +26,10 @@ namespace TowerBuilder.Stores.MapUI
 
         // this roomBlueprint is essentially just derived data, so no events needed
         public Blueprint currentBlueprint { get; private set; }
+
+        public RoomConnections blueprintRoomConnections = new RoomConnections();
+        public delegate void BlueprintRoomConnectionEvent(RoomConnections roomConnections);
+        public BlueprintRoomConnectionEvent onBlueprintRoomConnectionsUpdated;
 
         public BuildToolState(MapUI.State state) : base(state)
         {
@@ -57,7 +62,9 @@ namespace TowerBuilder.Stores.MapUI
                 currentBlueprint.SetBuildStartCell(currentSelectedCell);
             }
 
+
             currentBlueprint.Validate(Registry.Stores.Map.rooms, Registry.Stores.Wallet.balance);
+            SearchForBlueprintRoomConnections();
         }
 
 
@@ -117,6 +124,24 @@ namespace TowerBuilder.Stores.MapUI
                 onBuildStartCellUpdated(buildStartCell);
             }
         }
+
+
+        public void SearchForBlueprintRoomConnections()
+        {
+            // if (currentBlueprint.IsValid())
+            // {
+            List<RoomConnection> blueprintConnections =
+                blueprintRoomConnections.SearchForNewConnectionsToRoom(Registry.Stores.Map.rooms, currentBlueprint.room);
+
+            blueprintRoomConnections.connections = blueprintConnections;
+
+            if (onBlueprintRoomConnectionsUpdated != null)
+            {
+                onBlueprintRoomConnectionsUpdated(blueprintRoomConnections);
+            }
+            // }
+        }
+
 
         void CreateBlueprint()
         {

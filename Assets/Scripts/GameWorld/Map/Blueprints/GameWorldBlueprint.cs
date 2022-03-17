@@ -4,6 +4,7 @@ using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Blueprints;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Connections;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
@@ -11,8 +12,6 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
 {
     public class GameWorldBlueprint : MonoBehaviour
     {
-        public Blueprint blueprint { get; private set; }
-
         GameObject gameWorldBlueprintCellPrefab;
 
         List<GameWorldBlueprintCell> gameWorldBlueprintCells = new List<GameWorldBlueprintCell>();
@@ -31,6 +30,7 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
 
             Registry.Stores.MapUI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
             Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            // Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated += OnBlueprintRoomConnectionsUpdated;
         }
 
         void OnDestroy()
@@ -39,6 +39,7 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
 
             Registry.Stores.MapUI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
             Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated -= OnSelectedRoomKeyUpdated;
+            // Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
 
         void CreateBlueprintCells()
@@ -80,5 +81,19 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
         {
             ResetBlueprintCells();
         }
+
+        /* 
+        void OnBlueprintRoomConnectionsUpdated(RoomConnections roomConnections)
+        {
+            Blueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
+            List<RoomConnection> blueprintRoomConnections = roomConnections.FindConnectionsForRoom(blueprint.room);
+            Debug.Log("here are my connections:");
+            Debug.Log(blueprintRoomConnections.Count);
+            foreach (GameWorldBlueprintCell cell in gameWorldBlueprintCells)
+            {
+                cell.OnBlueprintRoomConnectionsUpdated(blueprintRoomConnections);
+            }
+        }
+        */
     }
 }

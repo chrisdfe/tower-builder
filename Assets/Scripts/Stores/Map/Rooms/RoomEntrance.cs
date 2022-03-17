@@ -9,7 +9,6 @@ namespace TowerBuilder.Stores.Map.Rooms
 {
     public class RoomEntrance
     {
-        public Room room;
         public RoomCell roomCell;
         public RoomEntrancePosition position;
         public CellCoordinates cellCoordinates;

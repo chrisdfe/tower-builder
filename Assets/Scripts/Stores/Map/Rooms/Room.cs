@@ -85,26 +85,24 @@ namespace TowerBuilder.Stores.Map.Rooms
 
         void ResetRoomEntrances()
         {
-            List<RoomEntrance> result = new List<RoomEntrance>();
+            entrances = new List<RoomEntrance>();
 
             if (roomDetails.entrances.Count > 0)
             {
-                result = roomDetails.entrances;
+                entrances = roomDetails.entrances;
             }
             else
             {
                 switch (roomDetails.category)
                 {
                     case RoomCategory.Elevator:
-                        result = ElevatorEntranceBuilder.BuildRoomEntrances(roomCells);
+                        entrances = ElevatorEntranceBuilder.BuildRoomEntrances(roomCells);
                         break;
                     case RoomCategory.Lobby:
-                        result = LobbyEntranceBuilder.BuildRoomEntrances(roomCells);
+                        entrances = LobbyEntranceBuilder.BuildRoomEntrances(roomCells);
                         break;
                 }
             }
-
-            entrances = result;
 
             foreach (RoomCell roomCell in roomCells.cells)
             {
