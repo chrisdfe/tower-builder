@@ -31,9 +31,7 @@ namespace TowerBuilder.Stores.MapUI
         public delegate void BlueprintRoomConnectionEvent(RoomConnections roomConnections);
         public BlueprintRoomConnectionEvent onBlueprintRoomConnectionsUpdated;
 
-        public BuildToolState(MapUI.State state) : base(state)
-        {
-        }
+        public BuildToolState(MapUI.State state) : base(state) { }
 
         public override void Setup()
         {
@@ -45,6 +43,8 @@ namespace TowerBuilder.Stores.MapUI
         public override void Teardown()
         {
             DeleteBlueprint();
+            ResetBlueprintRoomConnections();
+
             buildStartCell = null;
             buildIsActive = false;
 
@@ -128,20 +128,32 @@ namespace TowerBuilder.Stores.MapUI
 
         public void SearchForBlueprintRoomConnections()
         {
-            // if (currentBlueprint.IsValid())
-            // {
-            List<RoomConnection> blueprintConnections =
+            if (!currentBlueprint.IsValid())
+            {
+                ResetBlueprintRoomConnections();
+                return;
+            }
+
+            RoomConnections newBlueprintConnections =
                 blueprintRoomConnections.SearchForNewConnectionsToRoom(Registry.Stores.Map.rooms, currentBlueprint.room);
 
-            blueprintRoomConnections.connections = blueprintConnections;
+            this.blueprintRoomConnections = newBlueprintConnections;
 
             if (onBlueprintRoomConnectionsUpdated != null)
             {
-                onBlueprintRoomConnectionsUpdated(blueprintRoomConnections);
+                onBlueprintRoomConnectionsUpdated(this.blueprintRoomConnections);
             }
-            // }
         }
 
+        public void ResetBlueprintRoomConnections()
+        {
+            this.blueprintRoomConnections = new RoomConnections();
+
+            if (onBlueprintRoomConnectionsUpdated != null)
+            {
+                onBlueprintRoomConnectionsUpdated(this.blueprintRoomConnections);
+            }
+        }
 
         void CreateBlueprint()
         {

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.GameWorld.Map.Rooms.Modules;
 using TowerBuilder.Stores;
+using TowerBuilder.Stores.Map.Blueprints;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Connections;
 using TowerBuilder.Stores.Map.Rooms.Modules;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
@@ -31,6 +33,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         {
             CreateCells();
             InitializeModules();
+            UpdateRoomEntrances();
         }
 
         void Awake()
@@ -41,7 +44,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             Registry.Stores.Map.onRoomAdded += OnRoomAdded;
             Registry.Stores.MapUI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
             Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
-
+            Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated += OnBlueprintRoomConnectionsUpdated;
         }
 
         void OnDestroy()
@@ -51,6 +54,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             Registry.Stores.Map.onRoomAdded -= OnRoomAdded;
             Registry.Stores.MapUI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
             Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
+            Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
 
         void OnCurrentSelectedRoomUpdated(Room room)
@@ -128,6 +132,41 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             if (this.room.id == room.id)
             {
                 OnBuild();
+            }
+        }
+
+        void OnBlueprintRoomConnectionsUpdated(RoomConnections blueprintRoomConnections)
+        {
+            UpdateRoomEntrances();
+        }
+
+        void UpdateRoomEntrances()
+        {
+            Blueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
+            RoomConnections blueprintRoomConnections = Registry.Stores.MapUI.buildToolSubState.blueprintRoomConnections;
+
+            RoomConnections connections = blueprintRoomConnections.FindConnectionsForRoom(room);
+
+            Debug.Log("I am in room " + room.id);
+            // find 
+            foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
+            {
+                foreach (GameWorldRoomEntrance gameWorldRoomEntrance in roomCell.gameWorldRoomEntrances)
+                {
+                    RoomConnection roomEntranceConnection =
+                        connections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
+
+                    if (roomEntranceConnection != null)
+                    {
+                        Debug.Log("I am connected from " + roomEntranceConnection.roomA.id);
+                        Debug.Log("I am connected to " + roomEntranceConnection.roomB.id);
+                        gameWorldRoomEntrance.SetConnectedColor();
+                    }
+                    else
+                    {
+                        gameWorldRoomEntrance.ResetColor();
+                    }
+                }
             }
         }
 

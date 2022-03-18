@@ -18,14 +18,12 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
 
         public GameWorldBlueprint parentBlueprint;
         public BlueprintCell blueprintCell;
-        GameWorldRoomCell gameWorldRoomCell;
+        public GameWorldRoomCell gameWorldRoomCell;
 
         public void Initialize()
         {
-            // UpdatePosition();
-
-            gameWorldRoomCell.roomCell = blueprintCell.roomCell;
-            gameWorldRoomCell.Initialize();
+            // gameWorldRoomCell.roomCell = blueprintCell.roomCell;
+            // gameWorldRoomCell.Initialize();
 
             SetColor();
         }
@@ -37,7 +35,7 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
 
         void Awake()
         {
-            gameWorldRoomCell = transform.Find("RoomCell").GetComponent<GameWorldRoomCell>();
+            // gameWorldRoomCell = transform.Find("RoomCell").GetComponent<GameWorldRoomCell>();
         }
 
         void SetColor()

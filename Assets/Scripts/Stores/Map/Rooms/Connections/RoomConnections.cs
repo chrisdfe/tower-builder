@@ -6,13 +6,24 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
 {
     public class RoomConnections
     {
-        public List<RoomConnection> connections = new List<RoomConnection>();
+        public List<RoomConnection> connections { get; private set; } = new List<RoomConnection>();
 
-        // public void AddConnection(Room roomA, Room roomB)
-        // {
-        //     RoomConnection newRoomConnection = new RoomConnection(roomA, roomB);
-        //     connections.Add(newRoomConnection);
-        // }
+        public RoomConnections() { }
+
+        public RoomConnections(List<RoomConnection> connections)
+        {
+            this.connections = connections;
+        }
+
+        public void Add(RoomConnections roomConnections)
+        {
+            this.connections = this.connections.Concat(roomConnections.connections).ToList();
+        }
+
+        public void Add(RoomConnection roomConnection)
+        {
+            this.connections.Add(roomConnection);
+        }
 
         public void RemoveConnectionsForRoom(Room room)
         {
@@ -28,9 +39,11 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
             ).ToList();
         }
 
-        public List<RoomConnection> FindConnectionsForRoom(Room room)
+        public RoomConnections FindConnectionsForRoom(Room room)
         {
-            return connections.FindAll(roomConnection => roomConnection.ContainsRoom(room));
+            return new RoomConnections(
+                connections.FindAll(roomConnection => roomConnection.ContainsRoom(room))
+            );
         }
 
         public RoomConnection FindConnectionForRoomEntrance(RoomEntrance roomEntrance)
@@ -38,7 +51,7 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
             return connections.Find(roomConnection => roomConnection.ContainsRoomEntrance(roomEntrance));
         }
 
-        public List<RoomConnection> SearchForNewConnectionsToRoom(RoomList roomList, Room targetRoom)
+        public RoomConnections SearchForNewConnectionsToRoom(RoomList roomList, Room targetRoom)
         {
             // Debug.Log("searching for connections to room " + targetRoom.id);
             List<RoomConnection> result = new List<RoomConnection>();
@@ -65,13 +78,11 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
                 }
 
                 Room roomAtCell = roomList.FindRoomAtCell(targetCell);
-                // Debug.Log(roomAtCell);
+
                 if (roomAtCell == null)
                 {
                     continue;
                 }
-
-                // Debug.Log("room is not null.");
 
                 foreach (RoomEntrance roomAtCellEntrance in roomAtCell.entrances)
                 {
@@ -90,7 +101,7 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
                 }
             }
 
-            return result;
+            return new RoomConnections(result);
         }
     }
 }

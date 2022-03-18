@@ -10,6 +10,9 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
 {
     public class RoomConnection
     {
+        public RoomConnectionNode nodeA;
+        public RoomConnectionNode nodeB;
+
         public Room roomA;
         public RoomEntrance roomAEntrance;
         public Room roomB;

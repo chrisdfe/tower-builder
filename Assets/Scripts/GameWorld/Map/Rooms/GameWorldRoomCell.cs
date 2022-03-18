@@ -21,8 +21,9 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         public Color baseColor;
 
+        public List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
+
         GameObject gameWorldRoomEntrancePrefab;
-        List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
 
         Transform roomCellMesh;
 
@@ -42,6 +43,29 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             InitializeRoomCellMeshSegments();
             InitializeRoomEntrances();
             ResetColor();
+        }
+
+        public void ResetEntrances()
+        {
+            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
+            {
+                gameWorldRoomEntrance.ResetColor();
+            }
+        }
+
+        public void HighlightEntrance(RoomEntrance roomEntrance)
+        {
+            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
+            {
+                if (gameWorldRoomEntrance.roomEntrance == roomEntrance)
+                {
+                    gameWorldRoomEntrance.SetConnectedColor();
+                }
+                else
+                {
+                    gameWorldRoomEntrance.ResetColor();
+                }
+            }
         }
 
         public void SetColor(Color color, float alpha = 1f)
@@ -86,7 +110,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         void Awake()
         {
-            Debug.Log("gameowlrd room cell: AWAKE");
             transform.localPosition = Vector3.zero;
 
             gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
@@ -115,13 +138,11 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                 ceilingSegment,
                 floorSegment
             };
-
-            Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated += OnBlueprintRoomConnectionsUpdated;
         }
 
         void OnDestroy()
         {
-            Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
+            // Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
 
         void InitializeRoomCellMeshSegments()
@@ -183,27 +204,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         void UpdatePosition()
         {
             transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
-        }
-
-        // TODO - this doesn't belong herer
-        void OnBlueprintRoomConnectionsUpdated(RoomConnections roomConnections)
-        {
-            Blueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
-            // List<RoomConnection> blueprintRoomConnections = roomConnections.FindConnectionsForRoom(blueprint.room);
-
-            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
-            {
-                RoomConnection connection = roomConnections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
-
-                if (connection == null)
-                {
-                    gameWorldRoomEntrance.ResetColor();
-                }
-                else
-                {
-                    gameWorldRoomEntrance.SetConnectedColor();
-                }
-            }
         }
     }
 }
