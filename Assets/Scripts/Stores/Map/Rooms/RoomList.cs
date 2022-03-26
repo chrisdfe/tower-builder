@@ -16,7 +16,6 @@ namespace TowerBuilder.Stores.Map.Rooms
             rooms = new List<Room>();
         }
 
-
         public void Add(Room room)
         {
             rooms.Add(room);

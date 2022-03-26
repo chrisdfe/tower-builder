@@ -19,11 +19,11 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         static Color HOVER_COLOR = new Color(1, 0, 0, 0.4f);
         public RoomCell roomCell;
 
+        public GameWorldRoom gameWorldRoom;
+
         public Color baseColor;
 
         public List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
-
-        GameObject gameWorldRoomEntrancePrefab;
 
         Transform roomCellMesh;
 
@@ -41,16 +41,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         {
             UpdatePosition();
             InitializeRoomCellMeshSegments();
-            InitializeRoomEntrances();
             ResetColor();
-        }
-
-        public void ResetEntrances()
-        {
-            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
-            {
-                gameWorldRoomEntrance.ResetColor();
-            }
         }
 
         public void HighlightEntrance(RoomEntrance roomEntrance)
@@ -111,8 +102,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         void Awake()
         {
             transform.localPosition = Vector3.zero;
-
-            gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
 
             roomCellMesh = transform.Find("RoomCellMesh");
 
@@ -175,30 +164,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             {
                 segment.GetComponent<MeshRenderer>().enabled = enabled;
             }
-        }
-
-        void InitializeRoomEntrances()
-        {
-            foreach (RoomEntrance roomEntrance in roomCell.entrances)
-            {
-                GameObject roomEntranceGameObject = Instantiate<GameObject>(gameWorldRoomEntrancePrefab);
-                roomEntranceGameObject.transform.parent = transform;
-
-                GameWorldRoomEntrance gameWorldRoomEntrance = roomEntranceGameObject.GetComponent<GameWorldRoomEntrance>();
-                gameWorldRoomEntrance.roomEntrance = roomEntrance;
-                // gameWorldRoomEntrance.parentGameWorldRoomCell = this;
-                gameWorldRoomEntrance.Initialize();
-                gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
-            }
-        }
-
-        void UpdateRoomEntrances()
-        {
-            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
-            {
-                gameWorldRoomEntrance.ResetColor();
-            }
-
         }
 
         void UpdatePosition()

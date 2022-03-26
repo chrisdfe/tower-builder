@@ -135,7 +135,7 @@ namespace TowerBuilder.Stores.MapUI
             }
 
             RoomConnections newBlueprintConnections =
-                blueprintRoomConnections.SearchForNewConnectionsToRoom(Registry.Stores.Map.rooms, currentBlueprint.room);
+                blueprintRoomConnections.SearchForConnectionsToRoom(Registry.Stores.Map.rooms, currentBlueprint.room);
 
             this.blueprintRoomConnections = newBlueprintConnections;
 

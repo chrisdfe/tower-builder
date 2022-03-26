@@ -47,24 +47,26 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         {
             float TILE_SIZE = TowerBuilder.Stores.Map.Rooms.Constants.TILE_SIZE;
 
-            if (roomEntrance.position == RoomEntrancePosition.Left)
-            {
-                // RoomEntrancePosition.Right
-                transform.localPosition = new Vector3(
-                    -(TILE_SIZE / 2) + (cube.transform.localScale.x / 2),
-                    -(TILE_SIZE / 2) + (cube.transform.localScale.y / 2),
-                    0
-                );
-            }
-            else
-            {
-                // RoomEntrancePosition.Right
-                transform.localPosition = new Vector3(
-                    (TILE_SIZE / 2) - (cube.transform.localScale.x / 2),
-                    -(TILE_SIZE / 2) + (cube.transform.localScale.y / 2),
-                    0
-                );
-            }
+            transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomEntrance.cellCoordinates);
+
+            // if (roomEntrance.position == RoomEntrancePosition.Left)
+            // {
+            //     // RoomEntrancePosition.Right
+            //     transform.localPosition += new Vector3(
+            //         -(TILE_SIZE / 2) + (cube.transform.localScale.x / 2),
+            //         -(TILE_SIZE / 2) + (cube.transform.localScale.y / 2),
+            //         0
+            //     );
+            // }
+            // else
+            // {
+            //     // RoomEntrancePosition.Right
+            //     transform.localPosition += new Vector3(
+            //         (TILE_SIZE / 2) - (cube.transform.localScale.x / 2),
+            //         -(TILE_SIZE / 2) + (cube.transform.localScale.y / 2),
+            //         0
+            //     );
+            // }
         }
     }
 }

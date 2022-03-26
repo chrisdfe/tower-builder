@@ -13,17 +13,10 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
         public RoomConnectionNode nodeA;
         public RoomConnectionNode nodeB;
 
-        public Room roomA;
-        public RoomEntrance roomAEntrance;
-        public Room roomB;
-        public RoomEntrance roomBEntrance;
-
         public RoomConnection(Room roomA, RoomEntrance roomAEntrance, Room roomB, RoomEntrance roomBEntrance)
         {
-            this.roomA = roomA;
-            this.roomB = roomB;
-            this.roomAEntrance = roomAEntrance;
-            this.roomBEntrance = roomBEntrance;
+            this.nodeA = new RoomConnectionNode(roomA, roomAEntrance);
+            this.nodeB = new RoomConnectionNode(roomB, roomBEntrance);
         }
 
         public bool ContainsRooms(Room roomA, Room roomB)
@@ -33,27 +26,27 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
 
         public bool ContainsRoom(Room room)
         {
-            return room == roomA || room == roomB;
+            return room == nodeA.room || room == nodeB.room;
         }
 
         public bool ContainsRoomEntrance(RoomEntrance roomEntrance)
         {
-            return roomEntrance == roomAEntrance || roomEntrance == roomBEntrance;
+            return roomEntrance == nodeA.roomEntrance || roomEntrance == nodeB.roomEntrance;
         }
 
-        public (Room room, RoomEntrance roomEntrance) GetConnectionFor(Room room)
+        public RoomConnectionNode GetConnectionFor(Room room)
         {
-            if (room == roomA)
+            if (nodeA.room == room)
             {
-                return (roomB, roomBEntrance);
+                return nodeA;
             }
 
-            if (room == roomB)
+            if (nodeB.room == room)
             {
-                return (roomA, roomAEntrance);
+                return nodeB;
             }
 
-            return (null, null);
+            return null;
         }
     }
 }

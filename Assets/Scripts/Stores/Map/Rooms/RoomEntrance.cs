@@ -12,7 +12,16 @@ namespace TowerBuilder.Stores.Map.Rooms
         public RoomCell roomCell;
         public RoomEntrancePosition position;
         public CellCoordinates cellCoordinates;
-        public RoomEntrance connection;
+
+        public RoomEntrance Clone()
+        {
+            return new RoomEntrance()
+            {
+                roomCell = this.roomCell,
+                position = this.position,
+                cellCoordinates = this.cellCoordinates
+            };
+        }
     }
 }
 

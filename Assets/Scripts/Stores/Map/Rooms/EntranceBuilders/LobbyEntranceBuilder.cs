@@ -15,19 +15,22 @@ namespace TowerBuilder.Stores.Map.Rooms.EntranceBuilders
         public static List<RoomEntrance> BuildRoomEntrances(RoomCells roomCells)
         {
             List<RoomEntrance> result = new List<RoomEntrance>();
-            int width = roomCells.GetWidth() - 1;
-            int floor = roomCells.GetLowestFloor();
+            int width = roomCells.GetWidth();
 
             result.Add(new RoomEntrance()
             {
-                cellCoordinates = new CellCoordinates(0, floor),
+                cellCoordinates = roomCells.GetBottomLeftCoordinates(),
                 position = RoomEntrancePosition.Left
             });
-            result.Add(new RoomEntrance()
+
+            if (width > 1)
             {
-                cellCoordinates = new CellCoordinates(width, floor),
-                position = RoomEntrancePosition.Right
-            });
+                result.Add(new RoomEntrance()
+                {
+                    cellCoordinates = roomCells.GetBottomRightCoordinates(),
+                    position = RoomEntrancePosition.Right
+                });
+            }
 
             return result;
         }

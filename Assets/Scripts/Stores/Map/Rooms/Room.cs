@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Blueprints;
@@ -34,6 +35,7 @@ namespace TowerBuilder.Stores.Map.Rooms
         {
             id = GenerateId();
             this.roomKey = roomKey;
+
             roomCells = new RoomCells();
             roomCells.onResize += OnRoomCellsResize;
         }
@@ -89,10 +91,17 @@ namespace TowerBuilder.Stores.Map.Rooms
 
             if (roomDetails.entrances.Count > 0)
             {
-                entrances = roomDetails.entrances;
+                entrances = roomDetails.entrances.Select(roomEntrance =>
+                {
+                    // Convert cellCoordinates from relative to absolute
+                    RoomEntrance clonedRoomEntrance = roomEntrance.Clone();
+                    clonedRoomEntrance.cellCoordinates = roomEntrance.cellCoordinates.Add(roomCells.GetBottomLeftCoordinates());
+                    return clonedRoomEntrance;
+                }).ToList();
             }
             else
             {
+                // Rooms with flexible sizes use EntranceBuilders 
                 switch (roomDetails.category)
                 {
                     case RoomCategory.Elevator:
@@ -101,17 +110,6 @@ namespace TowerBuilder.Stores.Map.Rooms
                     case RoomCategory.Lobby:
                         entrances = LobbyEntranceBuilder.BuildRoomEntrances(roomCells);
                         break;
-                }
-            }
-
-            foreach (RoomCell roomCell in roomCells.cells)
-            {
-                foreach (RoomEntrance roomEntrance in entrances)
-                {
-                    if (GetRelativeCoordinates(roomCell).Matches(roomEntrance.cellCoordinates))
-                    {
-                        roomCell.entrances.Add(roomEntrance);
-                    }
                 }
             }
         }

@@ -19,12 +19,12 @@ namespace TowerBuilder.Stores.Map.Rooms.EntranceBuilders
 
             result.Add(new RoomEntrance()
             {
-                cellCoordinates = new CellCoordinates(0, 0),
+                cellCoordinates = roomCells.GetBottomLeftCoordinates().Clone(),
                 position = RoomEntrancePosition.Left
             });
             result.Add(new RoomEntrance()
             {
-                cellCoordinates = new CellCoordinates(width, 0),
+                cellCoordinates = roomCells.GetBottomRightCoordinates().Clone(),
                 position = RoomEntrancePosition.Right
             });
 
@@ -33,22 +33,15 @@ namespace TowerBuilder.Stores.Map.Rooms.EntranceBuilders
             {
                 result.Add(new RoomEntrance()
                 {
-                    cellCoordinates = new CellCoordinates(0, floorSpan - 1),
+                    cellCoordinates = roomCells.GetTopLeftCoordinates(),
                     position = RoomEntrancePosition.Left
                 });
                 result.Add(new RoomEntrance()
                 {
-                    cellCoordinates = new CellCoordinates(width, floorSpan - 1),
+                    cellCoordinates = roomCells.GetTopRightCoordinates(),
                     position = RoomEntrancePosition.Right
                 });
             }
-
-            // Debug.Log("Here is the result:");
-            // foreach (RoomEntrance entrance in result)
-            // {
-            //     Debug.Log(entrance.cellCoordinates);
-            // }
-
 
             return result;
         }

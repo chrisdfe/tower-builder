@@ -258,6 +258,30 @@ namespace TowerBuilder.Stores.Map.Rooms
         {
             return new CellCoordinates(
                 GetLowestX(),
+                GetLowestFloor()
+            );
+        }
+
+        public CellCoordinates GetBottomRightCoordinates()
+        {
+            return new CellCoordinates(
+                GetHighestX(),
+                GetLowestFloor()
+            );
+        }
+
+        public CellCoordinates GetTopLeftCoordinates()
+        {
+            return new CellCoordinates(
+                GetLowestX(),
+                GetHighestFloor()
+            );
+        }
+
+        public CellCoordinates GetTopRightCoordinates()
+        {
+            return new CellCoordinates(
+                GetHighestX(),
                 GetHighestFloor()
             );
         }

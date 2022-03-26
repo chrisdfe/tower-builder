@@ -25,6 +25,11 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
             this.connections.Add(roomConnection);
         }
 
+        public void Add(Room roomA, RoomEntrance roomAEntrance, Room roomB, RoomEntrance roomBEntrance)
+        {
+            this.connections.Add(new RoomConnection(roomA, roomAEntrance, roomB, roomBEntrance));
+        }
+
         public void RemoveConnectionsForRoom(Room room)
         {
             connections = connections.Where(
@@ -32,7 +37,7 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
             ).ToList();
         }
 
-        public void RemoveConnectionBetween(Room roomA, Room roomB)
+        public void RemoveConnectionsBetween(Room roomA, Room roomB)
         {
             connections = connections.Where(
                 roomConnection => !roomConnection.ContainsRooms(roomA, roomB)
@@ -51,9 +56,8 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
             return connections.Find(roomConnection => roomConnection.ContainsRoomEntrance(roomEntrance));
         }
 
-        public RoomConnections SearchForNewConnectionsToRoom(RoomList roomList, Room targetRoom)
+        public RoomConnections SearchForConnectionsToRoom(RoomList roomList, Room targetRoom)
         {
-            // Debug.Log("searching for connections to room " + targetRoom.id);
             List<RoomConnection> result = new List<RoomConnection>();
 
             foreach (RoomEntrance targetRoomEntrance in targetRoom.entrances)
@@ -61,42 +65,25 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
                 CellCoordinates targetCell;
                 if (targetRoomEntrance.position == RoomEntrancePosition.Left)
                 {
-                    // Debug.Log("search to the cell to the left");
-                    CellCoordinates relativeCellToTheLeft = targetRoomEntrance.cellCoordinates.Add(new CellCoordinates(-1, 0));
-                    CellCoordinates cellToTheLeft =
-                        targetRoom.roomCells.GetBottomLeftCoordinates().Add(relativeCellToTheLeft);
-                    targetCell = cellToTheLeft;
+                    targetCell = targetRoomEntrance.cellCoordinates.Add(new CellCoordinates(-1, 0));
                 }
                 else
                 {
-                    // RoomEntrancePosition.right
-                    // Debug.Log("search to the cell to the right");
-                    CellCoordinates relativeCellToTheLeft = targetRoomEntrance.cellCoordinates.Add(new CellCoordinates(1, 0));
-                    CellCoordinates cellToTheRight =
-                        targetRoom.roomCells.GetBottomLeftCoordinates().Add(relativeCellToTheLeft);
-                    targetCell = cellToTheRight;
+                    // RoomEntrancePosition.Right
+                    targetCell = targetRoomEntrance.cellCoordinates.Add(new CellCoordinates(1, 0));
                 }
 
                 Room roomAtCell = roomList.FindRoomAtCell(targetCell);
 
-                if (roomAtCell == null)
+                if (roomAtCell != null)
                 {
-                    continue;
-                }
-
-                foreach (RoomEntrance roomAtCellEntrance in roomAtCell.entrances)
-                {
-                    CellCoordinates absoluteEntranceCoordinates =
-                        roomAtCell.roomCells
-                            .GetBottomLeftCoordinates()
-                            .Add(roomAtCellEntrance.cellCoordinates);
-
-                    if (absoluteEntranceCoordinates.Matches(targetCell))
+                    foreach (RoomEntrance roomAtCellEntrance in roomAtCell.entrances)
                     {
-                        // Debug.Log("it matches!");
-                        // Debug.Log(absoluteEntranceCoordinates);
-                        RoomConnection newRoomConnection = new RoomConnection(targetRoom, roomAtCellEntrance, roomAtCell, roomAtCellEntrance);
-                        result.Add(newRoomConnection);
+                        if (roomAtCellEntrance.cellCoordinates.Matches(targetCell))
+                        {
+                            RoomConnection newRoomConnection = new RoomConnection(targetRoom, targetRoomEntrance, roomAtCell, roomAtCellEntrance);
+                            result.Add(newRoomConnection);
+                        }
                     }
                 }
             }

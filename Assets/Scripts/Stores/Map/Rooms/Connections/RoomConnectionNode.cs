@@ -8,10 +8,26 @@ using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms.Connections
 {
-    public struct RoomConnectionNode
+    public class RoomConnectionNode
     {
         public Room room;
         public RoomEntrance roomEntrance;
+
+        public override string ToString()
+        {
+            return $"room: {room.id}, roomEntrance: ${roomEntrance.cellCoordinates}";
+        }
+
+        public RoomConnectionNode(Room room, RoomEntrance roomEntrance)
+        {
+            this.room = room;
+            this.roomEntrance = roomEntrance;
+        }
+
+        public bool Matches(RoomConnectionNode otherNode)
+        {
+            return room == otherNode.room && roomEntrance == otherNode.roomEntrance;
+        }
     }
 }
 

@@ -21,7 +21,10 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         public List<GameWorldRoomModuleBase> modules = new List<GameWorldRoomModuleBase>();
 
+        public List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
+
         GameObject roomCellPrefab;
+        GameObject gameWorldRoomEntrancePrefab;
 
         public void SetRoom(Room room)
         {
@@ -33,13 +36,14 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         {
             CreateCells();
             InitializeModules();
-            UpdateRoomEntrances();
+            InitializeRoomEntrances();
         }
 
         void Awake()
         {
             transform.localPosition = Vector3.zero;
             roomCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomCell");
+            gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
 
             Registry.Stores.Map.onRoomAdded += OnRoomAdded;
             Registry.Stores.MapUI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
@@ -142,32 +146,44 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         void UpdateRoomEntrances()
         {
+            // TODO - this shouldn't be doing blueprint stuff here, this should go in GameWorldBlueprint
             Blueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
             RoomConnections blueprintRoomConnections = Registry.Stores.MapUI.buildToolSubState.blueprintRoomConnections;
 
             RoomConnections connections = blueprintRoomConnections.FindConnectionsForRoom(room);
 
-            Debug.Log("I am in room " + room.id);
             // find 
-            foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
+            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
             {
-                foreach (GameWorldRoomEntrance gameWorldRoomEntrance in roomCell.gameWorldRoomEntrances)
-                {
-                    RoomConnection roomEntranceConnection =
-                        connections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
+                RoomConnection roomEntranceConnection =
+                    connections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
 
-                    if (roomEntranceConnection != null)
-                    {
-                        Debug.Log("I am connected from " + roomEntranceConnection.roomA.id);
-                        Debug.Log("I am connected to " + roomEntranceConnection.roomB.id);
-                        gameWorldRoomEntrance.SetConnectedColor();
-                    }
-                    else
-                    {
-                        gameWorldRoomEntrance.ResetColor();
-                    }
+
+                if (roomEntranceConnection != null)
+                {
+                    gameWorldRoomEntrance.SetConnectedColor();
+                }
+                else
+                {
+                    gameWorldRoomEntrance.ResetColor();
                 }
             }
+        }
+
+        void InitializeRoomEntrances()
+        {
+            foreach (RoomEntrance roomEntrance in room.entrances)
+            {
+                GameObject roomEntranceGameObject = Instantiate<GameObject>(gameWorldRoomEntrancePrefab);
+                roomEntranceGameObject.transform.parent = transform;
+
+                GameWorldRoomEntrance gameWorldRoomEntrance = roomEntranceGameObject.GetComponent<GameWorldRoomEntrance>();
+                gameWorldRoomEntrance.roomEntrance = roomEntrance;
+                gameWorldRoomEntrance.Initialize();
+                gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
+            }
+
+            UpdateRoomEntrances();
         }
 
         // When this has been converted from a blueprint room to a actual room
@@ -186,6 +202,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
                 gameWorldRoomCell.transform.parent = transform;
                 gameWorldRoomCell.roomCell = roomCell;
+                gameWorldRoomCell.gameWorldRoom = this;
                 gameWorldRoomCell.baseColor = room.roomDetails.color;
 
                 gameWorldRoomCell.Initialize();
