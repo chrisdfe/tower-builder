@@ -256,12 +256,8 @@ namespace TowerBuilder.Stores.MapUI
                 }
             }
 
-            if (roomsToCombineWith.Count == 0)
-            {
-                Room newRoom = currentBlueprint.room;
-                Registry.Stores.Map.AddRoom(newRoom);
-            }
-            else
+            Room newRoom = currentBlueprint.room;
+            if (roomsToCombineWith.Count > 0)
             {
                 RoomCells newRoomCells = currentBlueprint.room.roomCells;
                 foreach (Room otherRoom in roomsToCombineWith)
@@ -275,9 +271,10 @@ namespace TowerBuilder.Stores.MapUI
 
                 // Create new room with all of those room cells from previous rooms
                 // TODO - add to the 1st item in roomsToCombineWith instead of replacing both with a new room?
-                Room newRoom = new Room(selectedRoomKey, newRoomCells);
-                Registry.Stores.Map.AddRoom(newRoom);
+                newRoom.SetRoomCells(newRoomCells);
             }
+
+            Registry.Stores.Map.AddRoom(newRoom);
 
             currentBlueprint.Reset();
         }

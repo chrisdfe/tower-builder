@@ -37,6 +37,8 @@ namespace TowerBuilder.Stores.Map
             rooms.Add(room);
             room.OnBuild();
 
+            // TODO here - add connections
+
             if (onRoomAdded != null)
             {
                 onRoomAdded(room);

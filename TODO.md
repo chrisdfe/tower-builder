@@ -42,7 +42,6 @@
 
 # Bugs
 
-- Combining rooms seems to delete them right now
 - Rooms should stay white until they're not being inspected anymore - right now they return to default color on mouse out
 - Input.GetMouseButtonDown(0) does not work consistently on macos
 - UI is way too big on my laptop
@@ -53,6 +52,7 @@
 
 # Done
 
+- Combining rooms seems to delete them right now
 - GameWorldBlueprintCell should wrap GameWorldRoomCell just like blueprintCell -> roomCell does
 - Room "Modules", to attach to rooms and give them behaviors. Like unity components
 - Rename MapCursor/MapCursorCells to RoomBlueprintCursor/RoomBlueprintCursorCells
