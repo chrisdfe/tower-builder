@@ -4,6 +4,7 @@
 
 - Add residents
 - resident pathfinding
+- Keybindings for build, destroy, inspect, none
 - For debug purposes - draw line between cells, along route
 - Camera zoom in/out
 - Invalid connections, e.g between 2 private rooms (e.g condo)
@@ -30,6 +31,7 @@
 
 ## Projects
 
+- Top-level "KeyBindingsManager" that listens for user input + dispatches actions
 - UI overlays
 - Dynamic weather 
 

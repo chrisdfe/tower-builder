@@ -24,7 +24,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         // Distance from the edge of the screen where the mapCursor will get disabled
         // TODO - this should perhaps be percentages instead
         // TODO - move to MapUI.Constants
-        public static Vector2 MAP_CURSOR_CLICK_BUFFER = new Vector2(150, 150);
+        public static Vector2 MAP_CURSOR_CLICK_BUFFER = new Vector2(150, 250);
 
         void Awake()
         {
