@@ -1,5 +1,8 @@
 # TODO
 
+- Add residents
+- resident pathfinding
+- For debug purposes - draw line between cells, along route
 - Camera zoom in/out
 - Invalid connections, e.g between 2 private rooms (e.g condo)
     -this should prevent the room from being built
@@ -10,25 +13,19 @@
 - Add GameWorldRoomList 
 - You should be able to delete a single block of a flexible-sized room
 - Generate rooms buttons in RoomBlueprintButtonsManager dynamically
-- Room types in BuildToolPanel should be grouped by RoomCategory
-- for when I implement elevators: Elevator cars can go only from the top to the bottom - no stopping at inbetween places.
-  - This helps rationalize having to build all those hallways and stairs
-  - Perhaps "upgrades" that can make them stop at 1 other floor per upgrade?
+  - Room types in BuildToolPanel should be grouped by RoomCategory
 - blueprint price indicator for flexible rooms
-- RoomEntrances should live on RoomCell, assigned by Room during initialization based on roomdetails
-  - This should help with figuring out where these should live on flexible rooms?
-- Build routes from 0,0 to each room
 - destroy validation
 - Moving camera around with middle mouse button
 - Move Rooms dictionary in Rooms state somewhere else & make it more extensible
 - transport/rooms connected to transport system
-- Add residents
-- resident pathfinding
 - "Path" constants for paths used in Resource.Load - refactoring/moving things around would be easier
   if they're all in one place
 - Z-index constants
 - Convert TILE_SIZE to a Vector2
-- Flexible-sized rooms should be resizable once placed
+- Room furniture
+  - e.g condos have beds, offices have desks
+- UI overlays
 
 # Cleanup
 
@@ -55,6 +52,9 @@
 
 # Done
 
+- for when I implement elevators: Elevator cars can go only from the top to the bottom - no stopping at inbetween places.
+  - This helps rationalize having to build all those hallways and stairs
+  - Perhaps "upgrades" that can make them stop at 1 other floor per upgrade?
 - things are feeling kind of messy because roomCells are having to know way too much about their room - I should make things more unidirectional
 - Rooms should stay white until they're not being inspected anymore - right now they return to default color on mouse out
 - Removing rooms should also delete their room connections
