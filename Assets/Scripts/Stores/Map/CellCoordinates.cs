@@ -57,14 +57,8 @@ namespace TowerBuilder.Stores.Map
 
         public CellCoordinates Clone()
         {
-            return CellCoordinates.Clone(this);
+            return new CellCoordinates(x, floor);
         }
-
-        public static CellCoordinates Clone(CellCoordinates original)
-        {
-            return new CellCoordinates(original.x, original.floor);
-        }
-
 
         public static CellCoordinates zero
         {
