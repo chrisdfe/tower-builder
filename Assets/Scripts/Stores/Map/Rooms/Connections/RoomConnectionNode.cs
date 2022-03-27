@@ -15,7 +15,7 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
 
         public override string ToString()
         {
-            return $"room: {room.id}, roomEntrance: ${roomEntrance.cellCoordinates}";
+            return $"room: {room.id}, roomEntrance: {roomEntrance}, {roomEntrance.cellCoordinates}";
         }
 
         public RoomConnectionNode(Room room, RoomEntrance roomEntrance)

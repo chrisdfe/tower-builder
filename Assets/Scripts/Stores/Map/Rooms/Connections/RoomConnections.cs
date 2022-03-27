@@ -56,7 +56,7 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
             return connections.Find(roomConnection => roomConnection.ContainsRoomEntrance(roomEntrance));
         }
 
-        public RoomConnections SearchForConnectionsToRoom(RoomList roomList, Room targetRoom)
+        public RoomConnections SearchForNewConnectionsToRoom(RoomList roomList, Room targetRoom)
         {
             List<RoomConnection> result = new List<RoomConnection>();
 

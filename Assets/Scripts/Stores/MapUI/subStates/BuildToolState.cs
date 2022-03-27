@@ -135,7 +135,7 @@ namespace TowerBuilder.Stores.MapUI
             }
 
             RoomConnections newBlueprintConnections =
-                blueprintRoomConnections.SearchForConnectionsToRoom(Registry.Stores.Map.rooms, currentBlueprint.room);
+                blueprintRoomConnections.SearchForNewConnectionsToRoom(Registry.Stores.Map.rooms, currentBlueprint.room);
 
             this.blueprintRoomConnections = newBlueprintConnections;
 
@@ -193,10 +193,45 @@ namespace TowerBuilder.Stores.MapUI
             Registry.Stores.Wallet.SubtractBalance(currentBlueprint.GetPrice());
 
             // Decide whether to create a new room or to add to an existing one
-            List<Room> roomsToCombineWith = new List<Room>();
+            List<Room> roomsToCombineWith = FindRoomsToCombineWith();
 
-            if (!roomDetails.resizability.Matches(RoomResizability.Inflexible()))
+            Room newRoom = currentBlueprint.room;
+            if (roomsToCombineWith.Count > 0)
             {
+                RoomCells newRoomCells = currentBlueprint.room.roomCells;
+                foreach (Room otherRoom in roomsToCombineWith)
+                {
+                    // Group all of those roomcells into a single list
+                    newRoomCells.Add(otherRoom.roomCells);
+
+                    // Delete room
+                    Registry.Stores.Map.DestroyRoom(otherRoom);
+                }
+
+                // Create new room with all of those room cells from previous rooms
+                // TODO - add to the 1st item in roomsToCombineWith instead of replacing both with a new room?
+                newRoom.SetRoomCells(newRoomCells);
+            }
+
+            Registry.Stores.Map.AddRoom(newRoom);
+
+            SearchForBlueprintRoomConnections();
+
+            if (blueprintRoomConnections.connections.Count > 0)
+            {
+                Registry.Stores.Map.AddRoomConnections(blueprintRoomConnections);
+            }
+            currentBlueprint.Reset();
+
+            List<Room> FindRoomsToCombineWith()
+            {
+                List<Room> result = new List<Room>();
+
+                if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
+                {
+                    return result;
+                }
+
                 if (roomDetails.resizability.x)
                 {
                     //  Check on either side
@@ -217,10 +252,10 @@ namespace TowerBuilder.Stores.MapUI
                             if (
                                 otherRoom != null &&
                                 otherRoom.roomKey == selectedRoomKey &&
-                                !roomsToCombineWith.Contains(otherRoom)
+                                !result.Contains(otherRoom)
                             )
                             {
-                                roomsToCombineWith.Add(otherRoom);
+                                result.Add(otherRoom);
                             }
                         }
                     }
@@ -246,37 +281,17 @@ namespace TowerBuilder.Stores.MapUI
                             if (
                                 otherRoom != null &&
                                 otherRoom.roomKey == selectedRoomKey &&
-                                !roomsToCombineWith.Contains(otherRoom)
+                                !result.Contains(otherRoom)
                             )
                             {
-                                roomsToCombineWith.Add(otherRoom);
+                                result.Add(otherRoom);
                             }
                         }
                     }
                 }
+
+                return result;
             }
-
-            Room newRoom = currentBlueprint.room;
-            if (roomsToCombineWith.Count > 0)
-            {
-                RoomCells newRoomCells = currentBlueprint.room.roomCells;
-                foreach (Room otherRoom in roomsToCombineWith)
-                {
-                    // Group all of those roomcells into a single list
-                    newRoomCells.Add(otherRoom.roomCells);
-
-                    // Delete room
-                    Registry.Stores.Map.DestroyRoom(otherRoom);
-                }
-
-                // Create new room with all of those room cells from previous rooms
-                // TODO - add to the 1st item in roomsToCombineWith instead of replacing both with a new room?
-                newRoom.SetRoomCells(newRoomCells);
-            }
-
-            Registry.Stores.Map.AddRoom(newRoom);
-
-            currentBlueprint.Reset();
         }
     }
 }

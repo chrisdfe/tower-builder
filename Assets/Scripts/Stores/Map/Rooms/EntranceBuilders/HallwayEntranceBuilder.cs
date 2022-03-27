@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms.EntranceBuilders
 {
-    public static class LobbyEntranceBuilder
+    public static class HallwayEntranceBuilder
     {
         public static List<RoomEntrance> BuildRoomEntrances(RoomCells roomCells)
         {

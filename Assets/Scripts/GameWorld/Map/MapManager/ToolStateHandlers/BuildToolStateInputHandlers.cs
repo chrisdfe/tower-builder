@@ -3,6 +3,7 @@ using TowerBuilder;
 using TowerBuilder.GameWorld.Map.Blueprints;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Rooms;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
@@ -23,11 +24,15 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         public override void OnTransitionTo(ToolState previousToolState)
         {
             CreateBlueprint();
+
+            Registry.Stores.Map.onRoomAdded += OnRoomAdded;
         }
 
         public override void OnTransitionFrom(ToolState nextToolState)
         {
             DestroyBlueprint();
+
+            Registry.Stores.Map.onRoomAdded -= OnRoomAdded;
         }
 
         public override void OnMouseDown()
@@ -40,9 +45,19 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             Registry.Stores.MapUI.buildToolSubState.EndBuild();
         }
 
+        void OnRoomAdded(Room room)
+        {
+            if (room.id == Registry.Stores.MapUI.buildToolSubState.currentBlueprint.room.id)
+            {
+                ResetBlueprint();
+            }
+        }
+
         void CreateBlueprint()
         {
             GameObject blueprintGameObject = GameObject.Instantiate<GameObject>(blueprintPrefab);
+            blueprintGameObject.transform.parent = parentMapManager.transform;
+
             gameWorldBlueprint = blueprintGameObject.GetComponent<GameWorldBlueprint>();
             gameWorldBlueprint.transform.SetParent(parentMapManager.transform);
 
@@ -54,6 +69,12 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         {
             GameObject.Destroy(gameWorldBlueprint.gameObject);
             gameWorldBlueprint = null;
+        }
+
+        void ResetBlueprint()
+        {
+            DestroyBlueprint();
+            CreateBlueprint();
         }
     }
 }

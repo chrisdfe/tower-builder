@@ -46,6 +46,8 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
 
             Registry.Stores.Map.onRoomAdded += OnRoomAdded;
+            Registry.Stores.Map.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
+
             Registry.Stores.MapUI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
             Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
             Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated += OnBlueprintRoomConnectionsUpdated;
@@ -56,9 +58,16 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             DestroyCells();
 
             Registry.Stores.Map.onRoomAdded -= OnRoomAdded;
+            Registry.Stores.Map.onRoomConnectionsUpdated -= OnRoomConnectionsUpdated;
+
             Registry.Stores.MapUI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
             Registry.Stores.MapUI.inspectToolSubState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
             Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
+        }
+
+        void Update()
+        {
+            UpdateRoomEntrances();
         }
 
         void OnCurrentSelectedRoomUpdated(Room room)
@@ -128,6 +137,8 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                     roomCell.ResetColor();
                 }
             }
+
+            UpdateRoomEntrances();
         }
 
         // TODO - this is how to determine when this room goes from blueprint mode to getting added to the map
@@ -139,27 +150,43 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             }
         }
 
+        void OnRoomConnectionsUpdated(RoomConnections roomConnections)
+        {
+            UpdateRoomEntrances();
+        }
+
         void OnBlueprintRoomConnectionsUpdated(RoomConnections blueprintRoomConnections)
         {
             UpdateRoomEntrances();
         }
 
+        void UpdateRoomCells()
+        {
+
+        }
+
         void UpdateRoomEntrances()
         {
-            // TODO - this shouldn't be doing blueprint stuff here, this should go in GameWorldBlueprint
-            Blueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
-            RoomConnections blueprintRoomConnections = Registry.Stores.MapUI.buildToolSubState.blueprintRoomConnections;
-
-            RoomConnections connections = blueprintRoomConnections.FindConnectionsForRoom(room);
-
-            // find 
             foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
             {
                 RoomConnection roomEntranceConnection =
-                    connections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
+                   Registry.Stores.Map.roomConnections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
 
+                bool isConnected = roomEntranceConnection != null;
 
-                if (roomEntranceConnection != null)
+                if (!room.isInBlueprintMode)
+                {
+                    RoomConnection blueprintRoomEntranceConnection =
+                        Registry.Stores.MapUI.buildToolSubState.blueprintRoomConnections
+                            .FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
+
+                    if (blueprintRoomEntranceConnection != null)
+                    {
+                        isConnected = true;
+                    }
+                }
+
+                if (isConnected)
                 {
                     gameWorldRoomEntrance.SetConnectedColor();
                 }
@@ -183,13 +210,15 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                 gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
             }
 
-            UpdateRoomEntrances();
+            // UpdateRoomEntrances();
         }
 
         // When this has been converted from a blueprint room to a actual room
         void OnBuild()
         {
             ResetCellColors();
+            UpdateRoomEntrances();
+
             Registry.Stores.Map.onRoomAdded -= OnRoomAdded;
         }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
+using System.Threading;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Blueprints;
 using TowerBuilder.Stores.Map.Rooms.EntranceBuilders;
@@ -14,7 +15,8 @@ namespace TowerBuilder.Stores.Map.Rooms
 {
     public class Room
     {
-        public string id { get; private set; }
+        private static int autoincrementingId;
+        public int id { get; private set; }
         public RoomKey roomKey { get; private set; }
 
         public bool isInBlueprintMode = false;
@@ -33,7 +35,7 @@ namespace TowerBuilder.Stores.Map.Rooms
 
         public Room(RoomKey roomKey)
         {
-            id = GenerateId();
+            GenerateId();
             this.roomKey = roomKey;
 
             roomCells = new RoomCells();
@@ -50,6 +52,11 @@ namespace TowerBuilder.Stores.Map.Rooms
         {
             roomCells.Add(roomCells);
             ResetRoomCells();
+        }
+
+        public override string ToString()
+        {
+            return $"room {id}";
         }
 
         public void OnBuild()
@@ -74,9 +81,9 @@ namespace TowerBuilder.Stores.Map.Rooms
             ResetRoomCells();
         }
 
-        string GenerateId()
+        void GenerateId()
         {
-            return Guid.NewGuid().ToString();
+            id = Interlocked.Increment(ref autoincrementingId);
         }
 
         void ResetRoomCells()
@@ -109,6 +116,9 @@ namespace TowerBuilder.Stores.Map.Rooms
                         break;
                     case RoomCategory.Lobby:
                         entrances = LobbyEntranceBuilder.BuildRoomEntrances(roomCells);
+                        break;
+                    case RoomCategory.Hallway:
+                        entrances = HallwayEntranceBuilder.BuildRoomEntrances(roomCells);
                         break;
                 }
             }

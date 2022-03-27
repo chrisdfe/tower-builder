@@ -19,6 +19,11 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
             this.nodeB = new RoomConnectionNode(roomB, roomBEntrance);
         }
 
+        public override string ToString()
+        {
+            return $"RoomConnection between {nodeA.room} and {nodeB.room}";
+        }
+
         public bool ContainsRooms(Room roomA, Room roomB)
         {
             return ContainsRoom(roomA) && ContainsRoom(roomB);
@@ -47,6 +52,33 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
             }
 
             return null;
+        }
+
+        public RoomConnectionNode GetOtherConnectionNodeFor(Room room)
+        {
+            if (nodeA.room == room)
+            {
+                return nodeB;
+            }
+
+            if (nodeB.room == room)
+            {
+                return nodeA;
+            }
+
+            return null;
+        }
+
+        public Room GetConnectedRoom(Room room)
+        {
+            RoomConnectionNode node = GetOtherConnectionNodeFor(room);
+
+            if (node == null)
+            {
+                return null;
+            }
+
+            return node.room;
         }
     }
 }

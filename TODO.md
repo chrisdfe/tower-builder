@@ -1,11 +1,9 @@
 # TODO
 
+- Add blueprint room connections to main room connections list in MapStore when the room gets built 
 - Stop destroying/recreating roomCells whenever the cursor changes position - only when it needs resizing
 - Add GameWorldRoomList 
-- Elevator entrances should only be at the top and bottom - maybe get ElevatorModule to do this?
-- Similar thing with hallways and lobbies
-- You should be able to delete a single tile of a flexible-sized room
-  - 
+- You should be able to delete a single block of a flexible-sized room
 - Generate rooms buttons in RoomBlueprintButtonsManager dynamically
 - Room types in BuildToolPanel should be grouped by RoomCategory
 - for when I implement elevators: Elevator cars can go only from the top to the bottom - no stopping at inbetween places.
@@ -18,7 +16,6 @@
 - destroy validation
 - Moving camera around with middle mouse button
 - Move Rooms dictionary in Rooms state somewhere else & make it more extensible
-- Mesh for rooms with left, middle, right etc. segment tiles
 - transport/rooms connected to transport system
 - Add residents
 - resident pathfinding
@@ -30,6 +27,7 @@
 
 # Cleanup
 
+- "RoomCellPosition" is confusing
 - things are feeling kind of messy because roomCells are having to know way too much about their room - I should make things more unidirectional
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
@@ -52,6 +50,9 @@
 
 # Done
 
+- Elevator entrances should only be at the top and bottom - maybe get ElevatorModule to do this?
+  - Similar thing with hallways and lobbies
+- Mesh for rooms with left, middle, right etc. segment tiles
 - Combining rooms seems to delete them right now
 - GameWorldBlueprintCell should wrap GameWorldRoomCell just like blueprintCell -> roomCell does
 - Room "Modules", to attach to rooms and give them behaviors. Like unity components

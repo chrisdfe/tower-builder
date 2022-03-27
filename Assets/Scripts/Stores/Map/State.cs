@@ -23,6 +23,9 @@ namespace TowerBuilder.Stores.Map
 
         public RoomConnections roomConnections { get; private set; } = new RoomConnections();
 
+        public delegate void RoomConnectionsEvent(RoomConnections roomConnections);
+        public RoomConnectionsEvent onRoomConnectionsUpdated;
+
         public delegate void RoomConnectionEvent(RoomConnection roomConnection);
         public RoomConnectionEvent onRoomConnectionAdded;
         public RoomConnectionEvent onRoomConnectionRemoved;
@@ -35,9 +38,8 @@ namespace TowerBuilder.Stores.Map
             }
 
             rooms.Add(room);
-            room.OnBuild();
 
-            // TODO here - add connections
+            room.OnBuild();
 
             if (onRoomAdded != null)
             {
@@ -57,6 +59,16 @@ namespace TowerBuilder.Stores.Map
             if (onRoomDestroyed != null)
             {
                 onRoomDestroyed(room);
+            }
+        }
+
+        public void AddRoomConnections(RoomConnections roomConnections)
+        {
+            this.roomConnections.Add(roomConnections);
+
+            if (onRoomConnectionsUpdated != null)
+            {
+                onRoomConnectionsUpdated(this.roomConnections);
             }
         }
 

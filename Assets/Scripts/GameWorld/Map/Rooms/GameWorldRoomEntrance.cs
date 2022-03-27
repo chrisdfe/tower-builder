@@ -11,6 +11,7 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 {
     public class GameWorldRoomEntrance : MonoBehaviour
     {
+        static Color INSPECTED_COLOR = Color.white;
         static Color CONNECTED_COLOR = Color.green;
 
         public RoomEntrance roomEntrance;
@@ -22,7 +23,13 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
         public void Initialize()
         {
+            gameObject.name = roomEntrance.ToString();
             SetPosition();
+        }
+
+        public void SetInspectedColor()
+        {
+            cubeMaterial.color = INSPECTED_COLOR;
         }
 
         public void SetConnectedColor()
