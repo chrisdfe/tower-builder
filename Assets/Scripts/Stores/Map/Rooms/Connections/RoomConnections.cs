@@ -79,7 +79,18 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
                 {
                     foreach (RoomEntrance roomAtCellEntrance in roomAtCell.entrances)
                     {
-                        if (roomAtCellEntrance.cellCoordinates.Matches(targetCell))
+                        if (
+                            roomAtCellEntrance.cellCoordinates.Matches(targetCell) &&
+                            (
+                                (
+                                    targetRoomEntrance.position == RoomEntrancePosition.Left &&
+                                    roomAtCellEntrance.position == RoomEntrancePosition.Right
+                                ) || (
+                                    targetRoomEntrance.position == RoomEntrancePosition.Right &&
+                                    roomAtCellEntrance.position == RoomEntrancePosition.Left
+                                )
+                            )
+                        )
                         {
                             RoomConnection newRoomConnection = new RoomConnection(targetRoom, targetRoomEntrance, roomAtCell, roomAtCellEntrance);
                             result.Add(newRoomConnection);

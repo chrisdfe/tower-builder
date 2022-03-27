@@ -171,6 +171,7 @@ namespace TowerBuilder.Stores.MapUI
             if (selectedRoomKey == RoomKey.None)
             {
                 return;
+                return;
             }
 
             // TODO - should everything here on down go in MapState?

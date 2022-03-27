@@ -11,6 +11,7 @@ namespace TowerBuilder.GameWorld.UI
 
         Button HallwayButton;
         Button LobbyButton;
+        Button StairsButton;
         Button ElevatorButton;
         Button OfficeButton;
         Button CondoButton;
@@ -22,12 +23,14 @@ namespace TowerBuilder.GameWorld.UI
         {
             HallwayButton = transform.Find("HallwayButton").GetComponent<Button>();
             LobbyButton = transform.Find("LobbyButton").GetComponent<Button>();
+            StairsButton = transform.Find("StairsButton").GetComponent<Button>();
             ElevatorButton = transform.Find("ElevatorButton").GetComponent<Button>();
             OfficeButton = transform.Find("OfficeButton").GetComponent<Button>();
             CondoButton = transform.Find("CondoButton").GetComponent<Button>();
 
             HallwayButton.onClick.AddListener(OnHallwayButtonClick);
             LobbyButton.onClick.AddListener(OnLobbyButtonClick);
+            StairsButton.onClick.AddListener(OnStairsButtonClick);
             ElevatorButton.onClick.AddListener(OnElevatorButtonClick);
             OfficeButton.onClick.AddListener(OnOfficeButtonClick);
             CondoButton.onClick.AddListener(OnCondoButtonClick);
@@ -46,6 +49,11 @@ namespace TowerBuilder.GameWorld.UI
         void OnLobbyButtonClick()
         {
             Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.LargeLobby);
+        }
+
+        void OnStairsButtonClick()
+        {
+            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Stairwell);
         }
 
         void OnElevatorButtonClick()

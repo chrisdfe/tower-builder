@@ -23,23 +23,10 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Hallway",
                 price = 500,
                 category = RoomCategory.Hallway,
-                // uses = new RoomUseKey[] {
-                //     RoomUseKey.Hallway,
-                // },
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Flexible(),
                 privacy = RoomPrivacy.Public,
-                // entrances = new List<RoomEntrance>() {
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Left,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Right,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                // },
                 color = Color.gray
             },
 
@@ -48,23 +35,10 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Lobby",
                 price = 5000,
                 category = RoomCategory.Lobby,
-                // uses = new RoomUseKey[] {
-                //     RoomUseKey.Hallway,
-                // },
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
-                // entrances = new List<RoomEntrance>() {
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Left,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Right,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                // },
                 color = Color.red,
             },
 
@@ -73,23 +47,10 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Large Lobby",
                 price = 12000,
                 category = RoomCategory.Lobby,
-                // uses = new RoomUseKey[] {
-                //     RoomUseKey.Hallway,
-                // },
                 width = 1,
                 height = 2,
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
-                // entrances = new List<RoomEntrance>() {
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Left,
-                //         cellCoordinates = new CellCoordinates(0, 1)
-                //     },
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Right,
-                //         cellCoordinates = new CellCoordinates(0, 1)
-                //     },
-                // },
                 color = Color.red,
             },
 
@@ -98,9 +59,6 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Office",
                 price = 20000,
                 category = RoomCategory.Office,
-                // uses = new RoomUseKey[] {
-                //     RoomUseKey.Workplace
-                // },
                 width = 3,
                 height = 1,
                 privacy = RoomPrivacy.Private,
@@ -122,9 +80,6 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Bedroom",
                 price = 12000,
                 category = RoomCategory.Residence,
-                // uses = new RoomUseKey[] {
-                //     RoomUseKey.Residence
-                // },
                 useDetails = new List<RoomUseDetailsBase>()
                 {
                     new Uses.ResidenceDetails()
@@ -153,9 +108,6 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Condo",
                 price = 50000,
                 category = RoomCategory.Residence,
-                // uses = new RoomUseKey[] {
-                //     RoomUseKey.Residence
-                // },
                 useDetails = new List<RoomUseDetailsBase>()
                 {
                     new Uses.ResidenceDetails()
@@ -184,9 +136,6 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Elevator",
                 price = 2000,
                 category = RoomCategory.Elevator,
-                // uses = new RoomUseKey[] {
-                //     RoomUseKey.Elevator
-                // },
                 useDetails = new List<RoomUseDetailsBase>()
                 {
                     new Uses.ElevatorDetails()
@@ -198,16 +147,6 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
-                // entrances = new List<RoomEntrance>() {
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Left,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Right,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                // },
                 color = Color.magenta,
             },
 
@@ -227,16 +166,6 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Private,
-                // entrances = new List<RoomEntrance>() {
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Left,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Right,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                // },
                 color = Color.yellow,
             },
 
@@ -256,16 +185,6 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
-                // entrances = new List<RoomEntrance>() {
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Left,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Right,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                // },
                 color = Color.magenta,
             },
 
@@ -274,24 +193,11 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Stairwell",
                 price = 5000,
                 category = RoomCategory.Stairs,
-                // uses = new RoomUseKey[] {
-                //     RoomUseKey.Stairs
-                // },
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
-                color = Color.white,
+                color = Color.yellow,
                 privacy = RoomPrivacy.Public,
-                // entrances = new List<RoomEntrance>() {
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Left,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Right,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                // },
             },
 
             [RoomKey.LargeStairwell] = new RoomDetails()
@@ -299,24 +205,11 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Large Stairwell",
                 price = 8000,
                 category = RoomCategory.Stairs,
-                // uses = new RoomUseKey[] {
-                //     RoomUseKey.Stairs
-                // },
                 width = 2,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
-                color = Color.white,
+                color = Color.yellow,
                 privacy = RoomPrivacy.Public,
-                // entrances = new List<RoomEntrance>() {
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Left,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Right,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                // },
             },
 
             [RoomKey.SmallPark] = new RoomDetails()
@@ -324,29 +217,11 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Small Park",
                 price = 10000,
                 category = RoomCategory.Park,
-                // uses = new RoomUseKey[] {
-                //     RoomUseKey.Park
-                // },
                 width = 1,
                 height = 1,
                 color = Color.green,
                 privacy = RoomPrivacy.Public,
-                // entrances = new List<RoomEntrance>() {
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Left,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                //     new RoomEntrance() {
-                //         position = RoomEntrancePosition.Right,
-                //         cellCoordinates = new CellCoordinates(0, 0)
-                //     },
-                // },
             }
         };
-
-        // public static Dictionary<RoomModuleKey, RoomModuleBase> ROOM_MODULE_MAP = new Dictionary<RoomModuleKey, RoomModuleBase>()
-        // {
-        //     [RoomModuleKey.Elevator] = Modules.Elevator
-        // };
     }
 }

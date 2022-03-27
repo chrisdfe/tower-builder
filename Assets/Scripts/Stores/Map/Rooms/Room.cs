@@ -120,6 +120,9 @@ namespace TowerBuilder.Stores.Map.Rooms
                     case RoomCategory.Hallway:
                         entrances = HallwayEntranceBuilder.BuildRoomEntrances(roomCells);
                         break;
+                    case RoomCategory.Stairs:
+                        entrances = StairwellEntranceBuilder.BuildRoomEntrances(roomCells);
+                        break;
                 }
             }
         }

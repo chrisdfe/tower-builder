@@ -65,11 +65,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             Registry.Stores.MapUI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
 
-        void Update()
-        {
-            UpdateRoomEntrances();
-        }
-
         void OnCurrentSelectedRoomUpdated(Room room)
         {
             if (room.isInBlueprintMode)
@@ -174,17 +169,17 @@ namespace TowerBuilder.GameWorld.Map.Rooms
 
                 bool isConnected = roomEntranceConnection != null;
 
-                if (!room.isInBlueprintMode)
-                {
-                    RoomConnection blueprintRoomEntranceConnection =
-                        Registry.Stores.MapUI.buildToolSubState.blueprintRoomConnections
-                            .FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
+                // if (!room.isInBlueprintMode)
+                // {
+                RoomConnection blueprintRoomEntranceConnection =
+                    Registry.Stores.MapUI.buildToolSubState.blueprintRoomConnections
+                        .FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
 
-                    if (blueprintRoomEntranceConnection != null)
-                    {
-                        isConnected = true;
-                    }
+                if (blueprintRoomEntranceConnection != null)
+                {
+                    isConnected = true;
                 }
+                // }
 
                 if (isConnected)
                 {

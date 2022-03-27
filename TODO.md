@@ -1,6 +1,11 @@
 # TODO
 
-- Add blueprint room connections to main room connections list in MapStore when the room gets built 
+- Camera zoom in/out
+- Invalid connections, e.g between 2 private rooms (e.g condo)
+    -this should prevent the room from being built
+- Stairwells should not be able to be placed next to elevators or other stairwells
+  - Perhaps this should be part of "Transportation category validation"
+- Resizing rooms should also reset their entrances (e.g if an elevator had a connection but has been resized)
 - Stop destroying/recreating roomCells whenever the cursor changes position - only when it needs resizing
 - Add GameWorldRoomList 
 - You should be able to delete a single block of a flexible-sized room
@@ -27,8 +32,8 @@
 
 # Cleanup
 
-- "RoomCellPosition" is confusing
-- things are feeling kind of messy because roomCells are having to know way too much about their room - I should make things more unidirectional
+- Rename 'useDetails' to 'moduleDetails'
+- "RoomCellPosition" is confusing - change to "RoomCellOrientation"
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - Blueprint validators should probably take in the entire Store object
@@ -40,7 +45,7 @@
 
 # Bugs
 
-- Rooms should stay white until they're not being inspected anymore - right now they return to default color on mouse out
+- RoomEntrances in the blueprint room aren't getting highlighted
 - Input.GetMouseButtonDown(0) does not work consistently on macos
 - UI is way too big on my laptop
 
@@ -50,6 +55,10 @@
 
 # Done
 
+- things are feeling kind of messy because roomCells are having to know way too much about their room - I should make things more unidirectional
+- Rooms should stay white until they're not being inspected anymore - right now they return to default color on mouse out
+- Removing rooms should also delete their room connections
+- Add blueprint room connections to main room connections list in MapStore when the room gets built 
 - Elevator entrances should only be at the top and bottom - maybe get ElevatorModule to do this?
   - Similar thing with hallways and lobbies
 - Mesh for rooms with left, middle, right etc. segment tiles

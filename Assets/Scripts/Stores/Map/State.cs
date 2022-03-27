@@ -26,9 +26,9 @@ namespace TowerBuilder.Stores.Map
         public delegate void RoomConnectionsEvent(RoomConnections roomConnections);
         public RoomConnectionsEvent onRoomConnectionsUpdated;
 
-        public delegate void RoomConnectionEvent(RoomConnection roomConnection);
-        public RoomConnectionEvent onRoomConnectionAdded;
-        public RoomConnectionEvent onRoomConnectionRemoved;
+        public delegate void RoomConnectionEvent(RoomConnections roomConnections);
+        public RoomConnectionEvent onRoomConnectionsAdded;
+        public RoomConnectionEvent onRoomConnectionsRemoved;
 
         public void AddRoom(Room room)
         {
@@ -54,6 +54,8 @@ namespace TowerBuilder.Stores.Map
                 return;
             }
 
+            RemoveRoomConnectionsForRoom(room);
+
             rooms.Remove(room);
 
             if (onRoomDestroyed != null)
@@ -62,13 +64,35 @@ namespace TowerBuilder.Stores.Map
             }
         }
 
-        public void AddRoomConnections(RoomConnections roomConnections)
+        public void AddRoomConnections(RoomConnections newRoomConnections)
         {
-            this.roomConnections.Add(roomConnections);
+            roomConnections.Add(newRoomConnections);
+
+            // if (onRoomConnectionsAdded != null)
+            // {
+            //     onRoomConnectionsUpdated(newRoomConnections);
+            // }
 
             if (onRoomConnectionsUpdated != null)
             {
-                onRoomConnectionsUpdated(this.roomConnections);
+                onRoomConnectionsUpdated(roomConnections);
+            }
+        }
+
+        public void RemoveRoomConnectionsForRoom(Room roomBeingDestroyed)
+        {
+            Debug.Log("connections before: " + roomConnections.connections.Count);
+            roomConnections.RemoveConnectionsForRoom(roomBeingDestroyed);
+            Debug.Log("connections aftert: " + roomConnections.connections.Count);
+
+            // if (onRoomConnectionsRemoved != null)
+            // {
+            //     onRoomConnectionsRemoved(roomConnections);
+            // }
+
+            if (onRoomConnectionsUpdated != null)
+            {
+                onRoomConnectionsUpdated(roomConnections);
             }
         }
 
