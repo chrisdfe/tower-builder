@@ -1,8 +1,8 @@
-namespace TowerBuilder.Stores.Map.Rooms.Uses
+namespace TowerBuilder.Stores.Map.Rooms.Modules
 {
-    public class ElevatorDetails : RoomUseDetailsBase
+    public class ElevatorDetails : RoomModuleDetailsBase
     {
-        public override RoomUseKey roomUseKey { get { return RoomUseKey.Elevator; } }
+        public override RoomModuleKey roomModuleKey { get { return RoomModuleKey.Elevator; } }
 
         // # of residents that can fit in an elevator car
         public int capacity;

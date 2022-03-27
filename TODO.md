@@ -1,5 +1,7 @@
 # TODO
 
+## Current
+
 - Add residents
 - resident pathfinding
 - For debug purposes - draw line between cells, along route
@@ -25,12 +27,14 @@
 - Convert TILE_SIZE to a Vector2
 - Room furniture
   - e.g condos have beds, offices have desks
+
+## Projects
+
 - UI overlays
+- Dynamic weather 
 
-# Cleanup
+## Cleanup
 
-- Rename 'useDetails' to 'moduleDetails'
-- "RoomCellPosition" is confusing - change to "RoomCellOrientation"
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - Blueprint validators should probably take in the entire Store object
@@ -40,18 +44,20 @@
 - A "UI settings" object I can tweak a bunch of stuff in the unity editor with, instead of public serializable fields on each script?
 - Awkward naming conflict between ToolState + tool sub states
 
-# Bugs
+## Bugs
 
 - RoomEntrances in the blueprint room aren't getting highlighted
 - Input.GetMouseButtonDown(0) does not work consistently on macos
 - UI is way too big on my laptop
 
-# maybe TODO
+## maybe TODO
 
 - should the destroy tool replace the room with an empty floor, at least on floors 0 and above? otherwise, certain rooms would be undestroyable?
 
 # Done
 
+- "RoomCellPosition" is confusing - change to "RoomCellOrientation"
+- Rename 'useDetails' to 'moduleDetails'
 - for when I implement elevators: Elevator cars can go only from the top to the bottom - no stopping at inbetween places.
   - This helps rationalize having to build all those hallways and stairs
   - Perhaps "upgrades" that can make them stop at 1 other floor per upgrade?

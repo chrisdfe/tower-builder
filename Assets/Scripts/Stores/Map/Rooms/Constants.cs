@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms.Modules;
-using TowerBuilder.Stores.Map.Rooms.Uses;
 
 using UnityEngine;
 
@@ -80,9 +79,9 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Bedroom",
                 price = 12000,
                 category = RoomCategory.Residence,
-                useDetails = new List<RoomUseDetailsBase>()
+                moduleDetails = new List<RoomModuleDetailsBase>()
                 {
-                    new Uses.ResidenceDetails()
+                    new ResidenceDetails()
                     {
                         occupancy = 2
                     }
@@ -108,9 +107,9 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Condo",
                 price = 50000,
                 category = RoomCategory.Residence,
-                useDetails = new List<RoomUseDetailsBase>()
+                moduleDetails = new List<RoomModuleDetailsBase>()
                 {
-                    new Uses.ResidenceDetails()
+                    new ResidenceDetails()
                     {
                         occupancy = 5
                     }
@@ -136,9 +135,9 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Elevator",
                 price = 2000,
                 category = RoomCategory.Elevator,
-                useDetails = new List<RoomUseDetailsBase>()
+                moduleDetails = new List<RoomModuleDetailsBase>()
                 {
-                    new Uses.ElevatorDetails()
+                    new ElevatorDetails()
                     {
                         capacity = 5
                     }
@@ -155,9 +154,9 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Service Elevator",
                 price = 1500,
                 category = RoomCategory.Elevator,
-                useDetails = new List<RoomUseDetailsBase>()
+                moduleDetails = new List<RoomModuleDetailsBase>()
                 {
-                    new Uses.ElevatorDetails()
+                    new ElevatorDetails()
                     {
                         capacity = 10
                     }
@@ -174,9 +173,9 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Large Elevator",
                 price = 5000,
                 category = RoomCategory.Elevator,
-                useDetails = new List<RoomUseDetailsBase>()
+                moduleDetails = new List<RoomModuleDetailsBase>()
                 {
-                    new Uses.ElevatorDetails()
+                    new ElevatorDetails()
                     {
                         capacity = 20
                     }

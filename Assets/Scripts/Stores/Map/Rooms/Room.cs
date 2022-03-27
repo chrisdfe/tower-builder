@@ -2,14 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime;
 using System.Threading;
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Map.Blueprints;
 using TowerBuilder.Stores.Map.Rooms.EntranceBuilders;
 using TowerBuilder.Stores.Map.Rooms.Modules;
-using TowerBuilder.Stores.Map.Rooms.Uses;
-using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms
 {
@@ -139,29 +134,29 @@ namespace TowerBuilder.Stores.Map.Rooms
         {
             CellCoordinates coordinates = roomCell.coordinates;
 
-            List<RoomCellPosition> result = new List<RoomCellPosition>();
+            List<RoomCellOrientation> result = new List<RoomCellOrientation>();
 
             if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
             {
-                result.Add(RoomCellPosition.Top);
+                result.Add(RoomCellOrientation.Top);
             }
 
             if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
             {
-                result.Add(RoomCellPosition.Right);
+                result.Add(RoomCellOrientation.Right);
             }
 
             if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
             {
-                result.Add(RoomCellPosition.Bottom);
+                result.Add(RoomCellOrientation.Bottom);
             }
 
             if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
             {
-                result.Add(RoomCellPosition.Left);
+                result.Add(RoomCellOrientation.Left);
             }
 
-            roomCell.position = result;
+            roomCell.orientation = result;
         }
 
         void InitializeModules()
@@ -169,11 +164,11 @@ namespace TowerBuilder.Stores.Map.Rooms
             List<RoomModuleBase> result = new List<RoomModuleBase>();
 
             // TODO - there's probably a more elegant way of doing this that I will figure out later
-            foreach (RoomUseDetailsBase roomUseDetails in roomDetails.useDetails)
+            foreach (RoomModuleDetailsBase roomUseDetails in roomDetails.moduleDetails)
             {
-                switch (roomUseDetails.roomUseKey)
+                switch (roomUseDetails.roomModuleKey)
                 {
-                    case RoomUseKey.Elevator:
+                    case RoomModuleKey.Elevator:
                         ElevatorModule elevatorModule = new ElevatorModule(this);
                         result.Add(elevatorModule);
                         break;

@@ -141,20 +141,20 @@ namespace TowerBuilder.GameWorld.Map.Rooms
                 SetEnabled(segment, false);
             }
 
-            foreach (RoomCellPosition cellPosition in roomCell.position)
+            foreach (RoomCellOrientation cellPosition in roomCell.orientation)
             {
                 switch (cellPosition)
                 {
-                    case RoomCellPosition.Top:
+                    case RoomCellOrientation.Top:
                         SetEnabled(ceilingSegment, true);
                         break;
-                    case RoomCellPosition.Right:
+                    case RoomCellOrientation.Right:
                         SetEnabled(rightWallSegment, true);
                         break;
-                    case RoomCellPosition.Bottom:
+                    case RoomCellOrientation.Bottom:
                         SetEnabled(floorSegment, true);
                         break;
-                    case RoomCellPosition.Left:
+                    case RoomCellOrientation.Left:
                         SetEnabled(leftWallSegment, true);
                         break;
                 }

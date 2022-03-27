@@ -13,7 +13,7 @@ namespace TowerBuilder.Stores.Map.Rooms
         // public RoomCells roomCells { get; private set; }
         public CellCoordinates coordinates = CellCoordinates.zero;
         public List<RoomEntrance> entrances = new List<RoomEntrance>();
-        public List<RoomCellPosition> position = new List<RoomCellPosition>();
+        public List<RoomCellOrientation> orientation = new List<RoomCellOrientation>();
 
 
         public RoomCell(int x, int floor)

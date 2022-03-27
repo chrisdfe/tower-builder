@@ -7,7 +7,7 @@ namespace TowerBuilder.Stores.Map.Rooms
     // e.g {Top, Bottom} or {Left, Right}
     // or tunnel end points
     // e.g {Top, Left, Right}
-    public enum RoomCellPosition
+    public enum RoomCellOrientation
     {
         Top,
         Right,

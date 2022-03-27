@@ -2,12 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Map.Rooms.Modules;
-using TowerBuilder.Stores.Map.Rooms.Uses;
-
-using UnityEngine;
-
 namespace TowerBuilder.Stores.Map.Rooms.EntranceBuilders
 {
     public static class HallwayEntranceBuilder

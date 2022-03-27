@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime;
-using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms.Modules;
-using TowerBuilder.Stores.Map.Rooms.Uses;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms
@@ -15,7 +12,7 @@ namespace TowerBuilder.Stores.Map.Rooms
         public int price;
         public RoomCategory category = RoomCategory.None;
 
-        public List<RoomUseDetailsBase> useDetails = new List<RoomUseDetailsBase>();
+        public List<RoomModuleDetailsBase> moduleDetails = new List<RoomModuleDetailsBase>();
         public RoomPrivacy privacy = RoomPrivacy.Public;
 
         public int width = 1;
