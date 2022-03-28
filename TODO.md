@@ -28,6 +28,7 @@
 
 ## Projects
 
+- Make ground a cube, cut holes in it when you build a room
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 - Top-level "KeyBindingsManager" that listens for user input + dispatches actions
 - UI overlays
