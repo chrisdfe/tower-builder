@@ -5,7 +5,7 @@ using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using UnityEngine;
 
-namespace TowerBuilder.Stores.Map.Routes
+namespace TowerBuilder.Stores.Routes
 {
     public enum RouteStatus
     {

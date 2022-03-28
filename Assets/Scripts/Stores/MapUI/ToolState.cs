@@ -5,6 +5,7 @@ namespace TowerBuilder.Stores.MapUI
         None,
         Build,
         Inspect,
-        Destroy
+        Destroy,
+        Routes,
     }
 }

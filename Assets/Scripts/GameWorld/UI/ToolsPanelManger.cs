@@ -13,18 +13,21 @@ namespace TowerBuilder.GameWorld.UI
     public class ToolsPanelManger : MonoBehaviour
     {
         ToolStateButtonsManager toolStateButtonsManager;
-        RoomBlueprintButtonsManager roomBlueprintButtonsManager;
+        BuildStateButtonsManager buildStateButtonsManager;
+        RoutesStateButtonsManager routesStateButtonsManager;
 
         Text descriptionText;
 
         void Awake()
         {
             toolStateButtonsManager = transform.Find("ToolStateButtons").GetComponent<ToolStateButtonsManager>();
-            roomBlueprintButtonsManager = transform.Find("RoomBlueprintButtons").GetComponent<RoomBlueprintButtonsManager>();
+            buildStateButtonsManager = transform.Find("BuildStateButtons").GetComponent<BuildStateButtonsManager>();
+            routesStateButtonsManager = transform.Find("RoutesStateButtons").GetComponent<RoutesStateButtonsManager>();
 
             descriptionText = transform.Find("DescriptionText").GetComponent<Text>();
 
-            ToggleRoomBlueprintButtonsPanel(false);
+            ToggleBuildStateButtonsPanel(false);
+            ToggleRoutesStateButtonsPanel(false);
             UpdateDescriptionText();
 
             Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
@@ -44,13 +47,20 @@ namespace TowerBuilder.GameWorld.UI
         {
             UpdateDescriptionText();
 
-            if (toolState == ToolState.Build)
+            switch (toolState)
             {
-                ToggleRoomBlueprintButtonsPanel(true);
-            }
-            else if (previousToolState == ToolState.Build)
-            {
-                ToggleRoomBlueprintButtonsPanel(false);
+                case ToolState.Build:
+                    ToggleRoutesStateButtonsPanel(false);
+                    ToggleBuildStateButtonsPanel(true);
+                    break;
+                case ToolState.Routes:
+                    ToggleRoutesStateButtonsPanel(true);
+                    ToggleBuildStateButtonsPanel(false);
+                    break;
+                default:
+                    ToggleRoutesStateButtonsPanel(false);
+                    ToggleBuildStateButtonsPanel(false);
+                    break;
             }
         }
 
@@ -82,9 +92,14 @@ namespace TowerBuilder.GameWorld.UI
             }
         }
 
-        void ToggleRoomBlueprintButtonsPanel(bool show)
+        void ToggleBuildStateButtonsPanel(bool show)
         {
-            roomBlueprintButtonsManager.gameObject.SetActive(show);
+            buildStateButtonsManager.gameObject.SetActive(show);
+        }
+
+        void ToggleRoutesStateButtonsPanel(bool show)
+        {
+            routesStateButtonsManager.gameObject.SetActive(show);
         }
     }
 }

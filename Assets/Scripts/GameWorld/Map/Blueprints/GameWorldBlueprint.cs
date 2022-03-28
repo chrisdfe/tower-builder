@@ -123,19 +123,5 @@ namespace TowerBuilder.GameWorld.Map.Blueprints
             ResetBlueprintRoom();
             ResetBlueprintCells();
         }
-
-        /* 
-        void OnBlueprintRoomConnectionsUpdated(RoomConnections roomConnections)
-        {
-            Blueprint blueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
-            List<RoomConnection> blueprintRoomConnections = roomConnections.FindConnectionsForRoom(blueprint.room);
-            Debug.Log("here are my connections:");
-            Debug.Log(blueprintRoomConnections.Count);
-            foreach (GameWorldBlueprintCell cell in gameWorldBlueprintCells)
-            {
-                cell.OnBlueprintRoomConnectionsUpdated(blueprintRoomConnections);
-            }
-        }
-        */
     }
 }

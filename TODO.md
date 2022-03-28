@@ -31,9 +31,16 @@
 
 ## Projects
 
+- ability to start game with rooms/connections already
 - Top-level "KeyBindingsManager" that listens for user input + dispatches actions
 - UI overlays
 - Dynamic weather 
+- save/load
+- Room furniture
+  - beds
+  - desks
+  - stairs??
+  - elevator cars??? potentially furniture could replace "room modules"
 
 ## Cleanup
 
@@ -48,6 +55,7 @@
 
 ## Bugs
 
+- Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
 - RoomEntrances in the blueprint room aren't getting highlighted
 - Input.GetMouseButtonDown(0) does not work consistently on macos
 - UI is way too big on my laptop

@@ -1,11 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.MapUI;
-using TowerBuilder.Stores.Notifications;
-using TowerBuilder.Stores.Time;
-using TowerBuilder.Stores.Wallet;
-
 namespace TowerBuilder.Stores
 {
     public class StoreRegistry
@@ -15,6 +7,8 @@ namespace TowerBuilder.Stores
         public Wallet.State Wallet = new Wallet.State();
         public Map.State Map = new Map.State();
         public MapUI.State MapUI = new MapUI.State();
+        public Routes.State Routes = new Routes.State();
+        public Residents.State Residents = new Residents.State();
     }
 
     public static class Registry

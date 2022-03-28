@@ -80,6 +80,18 @@ namespace TowerBuilder.Stores.Map.Rooms.Connections
 
             return node.room;
         }
+
+        public RoomEntrance GetConnectedRoomEntrance(Room room)
+        {
+            RoomConnectionNode node = GetOtherConnectionNodeFor(room);
+
+            if (node == null)
+            {
+                return null;
+            }
+
+            return node.roomEntrance;
+        }
     }
 }
 

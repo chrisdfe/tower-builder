@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Map.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.Stores.Map.Routes
+namespace TowerBuilder.Stores.Routes
 {
     public class Route
     {
-        RouteNode start;
-        RouteNode destination;
+        RoomEntrance start;
+        RoomEntrance destination;
 
         public List<RouteSegment> segments { get; private set; }
 

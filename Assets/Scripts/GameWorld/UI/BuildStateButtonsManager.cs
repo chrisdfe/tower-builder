@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class RoomBlueprintButtonsManager : MonoBehaviour
+    public class BuildStateButtonsManager : MonoBehaviour
     {
         static Color PRESSED_COLOR = Color.red;
 
