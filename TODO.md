@@ -2,13 +2,12 @@
 
 ## Current
 
+- Route weighting mechanism to figure out which route is the best to take 
+  - probably as simple as fewer cells traveled > more cells traveled
 - Add residents
-- resident pathfinding
 - Keybindings for build, destroy, inspect, none
-- For debug purposes - draw line between cells, along route
 - Camera zoom in/out
-- Invalid connections, e.g between 2 private rooms (e.g condo)
-    -this should prevent the room from being built
+- 'closed' connections, e.g between 2 private rooms (e.g condo)
 - Stairwells should not be able to be placed next to elevators or other stairwells
   - Perhaps this should be part of "Transportation category validation"
 - Resizing rooms should also reset their entrances (e.g if an elevator had a connection but has been resized)
@@ -19,19 +18,17 @@
   - Room types in BuildToolPanel should be grouped by RoomCategory
 - blueprint price indicator for flexible rooms
 - destroy validation
+- rooms should not be able to be built in thin air above ground floor
 - Moving camera around with middle mouse button
 - Move Rooms dictionary in Rooms state somewhere else & make it more extensible
-- transport/rooms connected to transport system
 - "Path" constants for paths used in Resource.Load - refactoring/moving things around would be easier
   if they're all in one place
 - Z-index constants
 - Convert TILE_SIZE to a Vector2
-- Room furniture
-  - e.g condos have beds, offices have desks
 
 ## Projects
 
-- ability to start game with rooms/connections already
+- ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 - Top-level "KeyBindingsManager" that listens for user input + dispatches actions
 - UI overlays
 - Dynamic weather 
@@ -40,7 +37,9 @@
   - beds
   - desks
   - stairs??
-  - elevator cars??? potentially furniture could replace "room modules"
+  - elevator cars???
+    - potentially furniture could replace "room modules"
+      - rooms would just be generic rooms, and furniture would dictate the behavior/functionality
 
 ## Cleanup
 
@@ -49,7 +48,6 @@
 - Blueprint validators should probably take in the entire Store object
 - FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor
 - RoomCells could implememnt IEnumerable
-- Having RoomUse, RoomCategory AND RoomModules seems like too much?
 - A "UI settings" object I can tweak a bunch of stuff in the unity editor with, instead of public serializable fields on each script?
 - Awkward naming conflict between ToolState + tool sub states
 
@@ -66,7 +64,11 @@
 
 # Done
 
+- resident pathfinding
+- For debug purposes - draw line between cells, along route
+- transport/rooms connected to transport system
 - "RoomCellPosition" is confusing - change to "RoomCellOrientation"
+- Having RoomUse, RoomCategory AND RoomModules seems like too much?
 - Rename 'useDetails' to 'moduleDetails'
 - for when I implement elevators: Elevator cars can go only from the top to the bottom - no stopping at inbetween places.
   - This helps rationalize having to build all those hallways and stairs
