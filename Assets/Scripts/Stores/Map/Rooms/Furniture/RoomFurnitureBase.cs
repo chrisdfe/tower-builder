@@ -10,18 +10,14 @@ namespace TowerBuilder.Stores.Map.Rooms.Furniture
     public abstract class RoomFurnitureBase
     {
         Room room;
-        RoomFurnitureOwnability ownability;
-        float roomBeautyScore;
-        float price;
+        RoomFurnitureConfigBase config;
 
         public virtual RoomFurnitureCategory category { get { return RoomFurnitureCategory.None; } }
 
-        public RoomFurnitureBase(Room room, RoomConfigBase config)
+        public RoomFurnitureBase(Room room, RoomFurnitureConfigBase config)
         {
             this.room = room;
-
-            this.ownability = config.ownability;
-            this.roomBeautyScore = config.roomBeautyScore;
+            this.config = config;
         }
 
         public abstract void Initialize();

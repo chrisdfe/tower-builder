@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.Stores.Map.Rooms.EntranceBuilders
 {
-    public static class LobbyEntranceBuilder
+    public class LobbyEntranceBuilder : RoomEntranceBuilderBase
     {
-        public static List<RoomEntrance> BuildRoomEntrances(RoomCells roomCells)
+        public override List<RoomEntrance> BuildRoomEntrances(RoomCells roomCells)
         {
             List<RoomEntrance> result = new List<RoomEntrance>();
             int width = roomCells.GetWidth();

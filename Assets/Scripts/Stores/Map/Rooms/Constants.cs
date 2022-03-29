@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Map.Rooms.Modules;
+using TowerBuilder.Stores.Map.Rooms.EntranceBuilders;
 
 using UnityEngine;
 
@@ -11,6 +11,7 @@ namespace TowerBuilder.Stores.Map.Rooms
 {
     public static class Constants
     {
+        // TODO - this should go somewhere else
         public static float TILE_SIZE = 1f;
 
         public static Dictionary<RoomKey, RoomDetails> ROOM_DETAILS_MAP = new Dictionary<RoomKey, RoomDetails>()
@@ -21,11 +22,14 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Hallway",
                 price = 500,
-                // category = RoomCategory.Hallway,
+                category = RoomCategory.Hallway,
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Flexible(),
                 privacy = RoomPrivacy.Public,
+
+                entranceBuilder = new HallwayEntranceBuilder(),
+
                 color = Color.gray
             },
 
@@ -33,11 +37,14 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Lobby",
                 price = 5000,
-                // category = RoomCategory.Lobby,
+                category = RoomCategory.Lobby,
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
+
+                entranceBuilder = new LobbyEntranceBuilder(),
+
                 color = Color.red,
             },
 
@@ -45,11 +52,14 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Large Lobby",
                 price = 12000,
-                // category = RoomCategory.Lobby,
+                category = RoomCategory.Lobby,
                 width = 1,
                 height = 2,
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
+
+                entranceBuilder = new LobbyEntranceBuilder(),
+
                 color = Color.red,
             },
 
@@ -57,48 +67,86 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Office",
                 price = 20000,
-                // category = RoomCategory.Office,
+                category = RoomCategory.Office,
                 width = 3,
                 height = 1,
                 privacy = RoomPrivacy.Private,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(2, 0)
-                    },
-                },
+                entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
+                    {
+                        new RoomEntrance() {
+                            position = RoomEntrancePosition.Left,
+                            cellCoordinates = new CellCoordinates(0, 0)
+                        },
+                        new RoomEntrance() {
+                            position = RoomEntrancePosition.Right,
+                            cellCoordinates = new CellCoordinates(2, 0)
+                        },
+                    }
+                ),
                 color = Color.green,
+            },
+
+            [RoomKey.Barracks] = new RoomDetails()
+            {
+                title = "Barracks",
+                price = 30000,
+                category = RoomCategory.Residence,
+                // moduleDetails = new List<RoomModuleDetailsBase>()
+                // {
+                //     new ResidenceDetails()
+                //     {
+                //         occupancy = 2
+                //     }
+                // },
+                width = 2,
+                height = 1,
+                privacy = RoomPrivacy.Private,
+
+                entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
+                    {
+                        new RoomEntrance()
+                        {
+                            position = RoomEntrancePosition.Left,
+                            cellCoordinates = new CellCoordinates(0, 0)
+                        },
+                        new RoomEntrance()
+                        {
+                            position = RoomEntrancePosition.Right,
+                            cellCoordinates = new CellCoordinates(1, 0)
+                        },
+                    }
+                ),
+
+                color = Color.yellow,
             },
 
             [RoomKey.Bedroom] = new RoomDetails()
             {
                 title = "Bedroom",
                 price = 12000,
-                // category = RoomCategory.Residence,
-                moduleDetails = new List<RoomModuleDetailsBase>()
-                {
-                    new ResidenceDetails()
-                    {
-                        occupancy = 2
-                    }
-                },
+                category = RoomCategory.Residence,
+                // moduleDetails = new List<RoomModuleDetailsBase>()
+                // {
+                //     new ResidenceDetails()
+                //     {
+                //         occupancy = 2
+                //     }
+                // },
                 width = 2,
                 height = 1,
                 privacy = RoomPrivacy.Private,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(1, 0)
-                    },
-                },
+                entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
+                    {
+                        new RoomEntrance() {
+                            position = RoomEntrancePosition.Left,
+                            cellCoordinates = new CellCoordinates(0, 0)
+                        },
+                        new RoomEntrance() {
+                            position = RoomEntrancePosition.Right,
+                            cellCoordinates = new CellCoordinates(1, 0)
+                        },
+                    }
+                ),
                 color = Color.yellow,
             },
 
@@ -106,27 +154,29 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Condo",
                 price = 50000,
-                // category = RoomCategory.Residence,
-                moduleDetails = new List<RoomModuleDetailsBase>()
-                {
-                    new ResidenceDetails()
-                    {
-                        occupancy = 5
-                    }
-                },
+                category = RoomCategory.Residence,
+                // moduleDetails = new List<RoomModuleDetailsBase>()
+                // {
+                //     new ResidenceDetails()
+                //     {
+                //         occupancy = 5
+                //     }
+                // },
                 width = 5,
                 height = 1,
                 privacy = RoomPrivacy.Private,
-                entrances = new List<RoomEntrance>() {
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
-                        cellCoordinates = new CellCoordinates(4, 0)
-                    },
-                },
+                entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
+                    {
+                        new RoomEntrance() {
+                            position = RoomEntrancePosition.Left,
+                            cellCoordinates = new CellCoordinates(0, 0)
+                        },
+                        new RoomEntrance() {
+                            position = RoomEntrancePosition.Right,
+                            cellCoordinates = new CellCoordinates(4, 0)
+                        },
+                    }
+                ),
                 color = Color.yellow,
             },
 
@@ -134,18 +184,22 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Elevator",
                 price = 2000,
-                // category = RoomCategory.Elevator,
-                moduleDetails = new List<RoomModuleDetailsBase>()
-                {
-                    new ElevatorDetails()
-                    {
-                        capacity = 5
-                    }
-                },
+                category = RoomCategory.Elevator,
+                // moduleDetails = new List<RoomModuleDetailsBase>()
+                // {
+                //     new ElevatorDetails()
+                //     {
+                //         capacity = 5
+                //     }
+                // },
                 width = 1,
                 height = 1,
+
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
+
+                entranceBuilder = new ElevatorEntranceBuilder(),
+
                 color = Color.magenta,
             },
 
@@ -153,18 +207,21 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Service Elevator",
                 price = 1500,
-                // category = RoomCategory.Elevator,
-                moduleDetails = new List<RoomModuleDetailsBase>()
-                {
-                    new ElevatorDetails()
-                    {
-                        capacity = 10
-                    }
-                },
+                category = RoomCategory.Elevator,
+                // moduleDetails = new List<RoomModuleDetailsBase>()
+                // {
+                //     new ElevatorDetails()
+                //     {
+                //         capacity = 10
+                //     }
+                // },
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Private,
+
+                entranceBuilder = new ElevatorEntranceBuilder(),
+
                 color = Color.yellow,
             },
 
@@ -172,18 +229,21 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Large Elevator",
                 price = 5000,
-                // category = RoomCategory.Elevator,
-                moduleDetails = new List<RoomModuleDetailsBase>()
-                {
-                    new ElevatorDetails()
-                    {
-                        capacity = 20
-                    }
-                },
+                category = RoomCategory.Elevator,
+                // moduleDetails = new List<RoomModuleDetailsBase>()
+                // {
+                //     new ElevatorDetails()
+                //     {
+                //         capacity = 20
+                //     }
+                // },
                 width = 2,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
+
+                entranceBuilder = new ElevatorEntranceBuilder(),
+
                 color = Color.magenta,
             },
 
@@ -191,11 +251,14 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Stairwell",
                 price = 5000,
-                // category = RoomCategory.Stairs,
+                category = RoomCategory.Stairs,
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 color = Color.yellow,
+
+                entranceBuilder = new StairwellEntranceBuilder(),
+
                 privacy = RoomPrivacy.Public,
             },
 
@@ -203,11 +266,14 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Large Stairwell",
                 price = 8000,
-                // category = RoomCategory.Stairs,
+                category = RoomCategory.Stairs,
                 width = 2,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 color = Color.yellow,
+
+                entranceBuilder = new StairwellEntranceBuilder(),
+
                 privacy = RoomPrivacy.Public,
             },
 
@@ -215,11 +281,24 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Small Park",
                 price = 10000,
-                // category = RoomCategory.Park,
+                category = RoomCategory.Park,
                 width = 1,
                 height = 1,
                 color = Color.green,
+
                 privacy = RoomPrivacy.Public,
+
+                entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
+                {
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Left,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                    new RoomEntrance() {
+                        position = RoomEntrancePosition.Right,
+                        cellCoordinates = new CellCoordinates(0, 0)
+                    },
+                })
             }
         };
     }

@@ -9,8 +9,11 @@ namespace TowerBuilder.Stores.Map.Rooms
         Lobby,
         LargeLobby,
         Office,
+
+        Barracks,
         Bedroom,
         Condo,
+
         Elevator,
         LargeElevator,
         Stairwell,

@@ -22,33 +22,33 @@ namespace TowerBuilder.Stores.Map.Rooms
         public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
         public List<RoomFurnitureBase> furniture { get; private set; } = new List<RoomFurnitureBase>();
 
-        public RoomDetails roomDetails
-        {
-            get
-            {
-                return Rooms.Constants.ROOM_DETAILS_MAP[roomKey];
-            }
-        }
+        public RoomDetails roomDetails { get; private set; }
 
-        public Room(RoomKey roomKey)
+        public Room()
         {
             GenerateId();
-            this.roomKey = roomKey;
-
+            roomDetails = new RoomDetails();
             roomCells = new RoomCells();
             roomCells.onResize += OnRoomCellsResize;
+        }
+
+        public Room(RoomKey roomKey) : this()
+        {
+            SetRoomKey(roomKey);
         }
 
         public Room(RoomKey roomKey, List<RoomCell> roomCellList) : this(roomKey)
         {
             roomCells.Add(roomCellList);
-            ResetRoomCells();
+            ResetRoomCellOrientations();
+            ResetRoomEntrances();
         }
 
-        public Room(RoomKey roomKey, RoomCells roomCells) : this(roomKey)
+        public Room(RoomKey roomKey, RoomCells roomCells) : this(roomKey, roomCells.cells) { }
+
+        public Room(RoomDetails roomDetails) : this()
         {
-            roomCells.Add(roomCells);
-            ResetRoomCells();
+            this.roomDetails = roomDetails;
         }
 
         public override string ToString()
@@ -59,23 +59,21 @@ namespace TowerBuilder.Stores.Map.Rooms
         public void OnBuild()
         {
             isInBlueprintMode = false;
-            InitializeModules();
+            // InitializeModules();
+            InitializeFurniture();
         }
 
         public void SetRoomKey(RoomKey roomKey)
         {
             this.roomKey = roomKey;
+            this.roomDetails = Rooms.Constants.ROOM_DETAILS_MAP[roomKey];
         }
 
         public void SetRoomCells(RoomCells roomCells)
         {
             this.roomCells.Set(roomCells);
-            ResetRoomCells();
-        }
-
-        void OnRoomCellsResize(RoomCells roomCells)
-        {
-            ResetRoomCells();
+            ResetRoomCellOrientations();
+            ResetRoomEntrances();
         }
 
         void GenerateId()
@@ -83,56 +81,29 @@ namespace TowerBuilder.Stores.Map.Rooms
             id = Interlocked.Increment(ref autoincrementingId);
         }
 
-        void ResetRoomCells()
+        void OnRoomCellsResize(RoomCells roomCells)
         {
-            ResetRoomCellPositions();
+            ResetRoomCellOrientations();
             ResetRoomEntrances();
         }
 
         void ResetRoomEntrances()
         {
-            entrances = new List<RoomEntrance>();
-
-            if (roomDetails.entrances.Count > 0)
+            if (roomDetails.entranceBuilder != null)
             {
-                entrances = roomDetails.entrances.Select(roomEntrance =>
-                {
-                    // Convert cellCoordinates from relative to absolute
-                    RoomEntrance clonedRoomEntrance = roomEntrance.Clone();
-                    clonedRoomEntrance.cellCoordinates = roomEntrance.cellCoordinates.Add(roomCells.GetBottomLeftCoordinates());
-                    return clonedRoomEntrance;
-                }).ToList();
-            }
-            else
-            {
-                // Rooms with flexible sizes use EntranceBuilders 
-                switch (roomDetails.category)
-                {
-                    case RoomCategory.Elevator:
-                        entrances = ElevatorEntranceBuilder.BuildRoomEntrances(roomCells);
-                        break;
-                    case RoomCategory.Lobby:
-                        entrances = LobbyEntranceBuilder.BuildRoomEntrances(roomCells);
-                        break;
-                    case RoomCategory.Hallway:
-                        entrances = HallwayEntranceBuilder.BuildRoomEntrances(roomCells);
-                        break;
-                    case RoomCategory.Stairs:
-                        entrances = StairwellEntranceBuilder.BuildRoomEntrances(roomCells);
-                        break;
-                }
+                entrances = roomDetails.entranceBuilder.BuildRoomEntrances(roomCells);
             }
         }
 
-        void ResetRoomCellPositions()
+        void ResetRoomCellOrientations()
         {
             foreach (RoomCell roomCell in roomCells.cells)
             {
-                SetRoomCellPosition(roomCell);
+                SetRoomCellOrientation(roomCell);
             }
         }
 
-        void SetRoomCellPosition(RoomCell roomCell)
+        void SetRoomCellOrientation(RoomCell roomCell)
         {
             CellCoordinates coordinates = roomCell.coordinates;
 
@@ -161,6 +132,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             roomCell.orientation = result;
         }
 
+        /* 
         void InitializeModules()
         {
             List<RoomModuleBase> result = new List<RoomModuleBase>();
@@ -184,6 +156,9 @@ namespace TowerBuilder.Stores.Map.Rooms
 
             modules = result;
         }
+        */
+
+        void InitializeFurniture() { }
 
         CellCoordinates GetRelativeCoordinates(RoomCell roomCell)
         {

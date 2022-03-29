@@ -7,10 +7,11 @@ using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms.Furniture
 {
-    public class RoomConfigBase
+    public class RoomFurnitureConfigBase
     {
+        public virtual RoomFurnitureCategory category { get { return RoomFurnitureCategory.None; } }
+
         public RoomFurnitureOwnability ownability;
-        public RoomFurnitureCategory category;
         public float roomBeautyScore;
         public int price;
 

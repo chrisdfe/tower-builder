@@ -7,8 +7,10 @@ using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms.Furniture.Configs
 {
-    public class RecreationFurnitureConfig : RoomConfigBase
+    public class RecreationFurnitureConfig : RoomFurnitureConfigBase
     {
+        public override RoomFurnitureCategory category { get { return RoomFurnitureCategory.Recreation; } }
+
         public int occupancy;
         public float funPerTick;
     }

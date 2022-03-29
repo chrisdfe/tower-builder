@@ -1,7 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder.Stores.Map.Rooms.Modules;
+using TowerBuilder.Stores.Map.Rooms.EntranceBuilders;
+using TowerBuilder.Stores.Map.Rooms.Furniture;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms
@@ -10,16 +11,16 @@ namespace TowerBuilder.Stores.Map.Rooms
     {
         public string title;
         public int price;
-        // public RoomCategory category = RoomCategory.None;
+        public RoomCategory category = RoomCategory.None;
 
-        public List<RoomModuleDetailsBase> moduleDetails = new List<RoomModuleDetailsBase>();
+        public List<RoomFurnitureConfigBase> furnitureConfigs = new List<RoomFurnitureConfigBase>();
         public RoomPrivacy privacy = RoomPrivacy.Public;
 
         public int width = 1;
         public int height = 1;
         public RoomResizability resizability = RoomResizability.Inflexible();
 
-        public List<RoomEntrance> entrances = new List<RoomEntrance>();
+        public RoomEntranceBuilderBase entranceBuilder;
 
         public Color color = Color.white;
     }
