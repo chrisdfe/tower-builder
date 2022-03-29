@@ -1,7 +1,20 @@
 # TODO
 
+
 ## Current
 
+- Room furniture
+  - beds
+  - desks
+  - stairs??
+  - elevator cars???
+    - potentially furniture could replace "room modules"
+      - rooms would just be generic rooms, and furniture would dictate the behavior/functionality
+- Rename RoomDetails to RoomTemplate
+
+## Tasks
+
+- GetRoomPrice should live on Room, not Blueprint
 - Route weighting mechanism to figure out which route is the best to take 
   - probably as simple as fewer cells traveled > more cells traveled
 - Add residents
@@ -25,25 +38,21 @@
   if they're all in one place
 - Z-index constants
 - Convert TILE_SIZE to a Vector2
+- should the destroy tool replace the room with an empty floor, at least on floors 0 and above? otherwise, certain rooms would be undestroyable?
 
 ## Projects
 
-- Make ground a cube, cut holes in it when you build a room
+- Kitchen/restaurant room
+- Wallet transation history
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 - Top-level "KeyBindingsManager" that listens for user input + dispatches actions
 - UI overlays
 - Dynamic weather 
 - save/load
-- Room furniture
-  - beds
-  - desks
-  - stairs??
-  - elevator cars???
-    - potentially furniture could replace "room modules"
-      - rooms would just be generic rooms, and furniture would dictate the behavior/functionality
 
 ## Cleanup
 
+- RoomEntrances namespace?
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - Blueprint validators should probably take in the entire Store object
@@ -54,14 +63,16 @@
 
 ## Bugs
 
+- Make ground a cube, cut holes in it when you build a room
 - Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
 - RoomEntrances in the blueprint room aren't getting highlighted
 - Input.GetMouseButtonDown(0) does not work consistently on macos
 - UI is way too big on my laptop
 
-## maybe TODO
+## Ideas
 
-- should the destroy tool replace the room with an empty floor, at least on floors 0 and above? otherwise, certain rooms would be undestroyable?
+- Periodic supplies delivery? big old quarry trucks, helicopers, pack mule, etc
+
 
 # Done
 
