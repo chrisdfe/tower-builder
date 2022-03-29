@@ -37,7 +37,7 @@ namespace TowerBuilder.Stores.MapUI
         {
             CreateBlueprint();
 
-            parentState.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            // parentState.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
         }
 
         public override void Teardown()
@@ -48,10 +48,10 @@ namespace TowerBuilder.Stores.MapUI
             buildStartCell = null;
             buildIsActive = false;
 
-            parentState.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
+            // parentState.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
         }
 
-        public void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell)
+        public override void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell)
         {
             if (buildIsActive)
             {

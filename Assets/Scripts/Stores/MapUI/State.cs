@@ -66,6 +66,8 @@ namespace TowerBuilder.Stores.MapUI
             Room currentRoom = Registry.Stores.Map.rooms.FindRoomAtCell(currentSelectedCell);
             this.currentSelectedRoom = currentRoom;
 
+            GetCurrentActiveToolSubState().OnCurrentSelectedCellUpdated(currentSelectedCell);
+
             if (onCurrentSelectedCellUpdated != null)
             {
                 onCurrentSelectedCellUpdated(currentSelectedCell);

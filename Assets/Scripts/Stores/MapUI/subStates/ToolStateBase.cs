@@ -16,5 +16,7 @@ namespace TowerBuilder.Stores.MapUI
         public virtual void Setup() { }
 
         public virtual void Teardown() { }
+
+        public virtual void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell) { }
     }
 }
