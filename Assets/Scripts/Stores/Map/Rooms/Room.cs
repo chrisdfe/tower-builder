@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TowerBuilder.Stores.Map.Rooms.EntranceBuilders;
+using TowerBuilder.Stores.Map.Rooms.Furniture;
 using TowerBuilder.Stores.Map.Rooms.Modules;
 
 namespace TowerBuilder.Stores.Map.Rooms
@@ -19,6 +20,7 @@ namespace TowerBuilder.Stores.Map.Rooms
         public RoomCells roomCells;
         public List<RoomModuleBase> modules { get; private set; } = new List<RoomModuleBase>();
         public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
+        public List<RoomFurnitureBase> furniture { get; private set; } = new List<RoomFurnitureBase>();
 
         public RoomDetails roomDetails
         {

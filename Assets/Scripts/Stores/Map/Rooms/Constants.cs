@@ -21,7 +21,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Hallway",
                 price = 500,
-                category = RoomCategory.Hallway,
+                // category = RoomCategory.Hallway,
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Flexible(),
@@ -33,7 +33,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Lobby",
                 price = 5000,
-                category = RoomCategory.Lobby,
+                // category = RoomCategory.Lobby,
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Horizontal(),
@@ -45,7 +45,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Large Lobby",
                 price = 12000,
-                category = RoomCategory.Lobby,
+                // category = RoomCategory.Lobby,
                 width = 1,
                 height = 2,
                 resizability = RoomResizability.Horizontal(),
@@ -57,7 +57,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Office",
                 price = 20000,
-                category = RoomCategory.Office,
+                // category = RoomCategory.Office,
                 width = 3,
                 height = 1,
                 privacy = RoomPrivacy.Private,
@@ -78,7 +78,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Bedroom",
                 price = 12000,
-                category = RoomCategory.Residence,
+                // category = RoomCategory.Residence,
                 moduleDetails = new List<RoomModuleDetailsBase>()
                 {
                     new ResidenceDetails()
@@ -106,7 +106,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Condo",
                 price = 50000,
-                category = RoomCategory.Residence,
+                // category = RoomCategory.Residence,
                 moduleDetails = new List<RoomModuleDetailsBase>()
                 {
                     new ResidenceDetails()
@@ -134,7 +134,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Elevator",
                 price = 2000,
-                category = RoomCategory.Elevator,
+                // category = RoomCategory.Elevator,
                 moduleDetails = new List<RoomModuleDetailsBase>()
                 {
                     new ElevatorDetails()
@@ -153,7 +153,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Service Elevator",
                 price = 1500,
-                category = RoomCategory.Elevator,
+                // category = RoomCategory.Elevator,
                 moduleDetails = new List<RoomModuleDetailsBase>()
                 {
                     new ElevatorDetails()
@@ -172,7 +172,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Large Elevator",
                 price = 5000,
-                category = RoomCategory.Elevator,
+                // category = RoomCategory.Elevator,
                 moduleDetails = new List<RoomModuleDetailsBase>()
                 {
                     new ElevatorDetails()
@@ -191,7 +191,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Stairwell",
                 price = 5000,
-                category = RoomCategory.Stairs,
+                // category = RoomCategory.Stairs,
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
@@ -203,7 +203,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Large Stairwell",
                 price = 8000,
-                category = RoomCategory.Stairs,
+                // category = RoomCategory.Stairs,
                 width = 2,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
@@ -215,7 +215,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 title = "Small Park",
                 price = 10000,
-                category = RoomCategory.Park,
+                // category = RoomCategory.Park,
                 width = 1,
                 height = 1,
                 color = Color.green,

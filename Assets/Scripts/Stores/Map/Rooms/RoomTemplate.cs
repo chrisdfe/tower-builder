@@ -6,17 +6,14 @@ using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms
 {
-    public class RoomDetails
+    public class RoomTemplate
     {
         public string title;
-        public int price;
-        // public RoomCategory category = RoomCategory.None;
 
-        public List<RoomModuleDetailsBase> moduleDetails = new List<RoomModuleDetailsBase>();
         public RoomPrivacy privacy = RoomPrivacy.Public;
+        public List<RoomFurnitureConfigBase> furnitureConfigs = new List<RoomFurnitureConfigBase>();
 
-        public int width = 1;
-        public int height = 1;
+        public Dimensions blockDimensions;
         public RoomResizability resizability = RoomResizability.Inflexible();
 
         public List<RoomEntrance> entrances = new List<RoomEntrance>();

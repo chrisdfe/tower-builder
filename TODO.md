@@ -52,6 +52,7 @@
 
 ## Cleanup
 
+- Perhaps Stores.Map.Rooms should just be Stores.Rooms and delete Stores.Map
 - RoomEntrances namespace?
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
