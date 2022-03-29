@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Map.Rooms.EntranceBuilders;
+using TowerBuilder.Stores.Map.Rooms.Entrances;
 
 using UnityEngine;
 

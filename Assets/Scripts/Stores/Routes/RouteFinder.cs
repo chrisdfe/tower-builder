@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms;
 using TowerBuilder.Stores.Map.Rooms.Connections;
+using TowerBuilder.Stores.Map.Rooms.Entrances;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Routes

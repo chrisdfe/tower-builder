@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map.Rooms;
 using TowerBuilder.Stores.Map.Rooms.Connections;
-using TowerBuilder.Stores.Map.Rooms.Modules;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Map
@@ -18,8 +17,8 @@ namespace TowerBuilder.Stores.Map
         public delegate void RoomDestroyedEvent(Room mapRoom);
         public RoomAddedEvent onRoomDestroyed;
 
-        public delegate void ElevatorCarPositionEvent(ElevatorCar elevatorCar, ElevatorCarPosition destinationPosition);
-        public ElevatorCarPositionEvent onElevatorCarPositionChanged;
+        // public delegate void ElevatorCarPositionEvent(ElevatorCar elevatorCar, ElevatorCarPosition destinationPosition);
+        // public ElevatorCarPositionEvent onElevatorCarPositionChanged;
 
         public RoomConnections roomConnections { get; private set; } = new RoomConnections();
 
@@ -80,14 +79,14 @@ namespace TowerBuilder.Stores.Map
             }
         }
 
-        public void SetElevatorCarDestination(ElevatorCar elevatorCar, ElevatorCarPosition destinationPosition)
-        {
-            elevatorCar.currentPosition = destinationPosition;
+        // public void SetElevatorCarDestination(ElevatorCar elevatorCar, ElevatorCarPosition destinationPosition)
+        // {
+        //     elevatorCar.currentPosition = destinationPosition;
 
-            if (onElevatorCarPositionChanged != null)
-            {
-                onElevatorCarPositionChanged(elevatorCar, destinationPosition);
-            }
-        }
+        //     if (onElevatorCarPositionChanged != null)
+        //     {
+        //         onElevatorCarPositionChanged(elevatorCar, destinationPosition);
+        //     }
+        // }
     }
 }

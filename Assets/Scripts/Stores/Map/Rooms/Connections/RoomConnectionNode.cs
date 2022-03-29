@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Blueprints;
+using TowerBuilder.Stores.Map.Rooms.Entrances;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms.Connections

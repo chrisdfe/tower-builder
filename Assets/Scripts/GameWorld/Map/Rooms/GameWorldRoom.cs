@@ -2,12 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
-using TowerBuilder.GameWorld.Map.Rooms.Modules;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map.Blueprints;
 using TowerBuilder.Stores.Map.Rooms;
 using TowerBuilder.Stores.Map.Rooms.Connections;
-using TowerBuilder.Stores.Map.Rooms.Modules;
+using TowerBuilder.Stores.Map.Rooms.Entrances;
 using TowerBuilder.Stores.MapUI;
 using UnityEngine;
 
@@ -18,8 +17,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         public Room room { get; private set; }
 
         public List<GameWorldRoomCell> gameWorldRoomCells = new List<GameWorldRoomCell>();
-
-        public List<GameWorldRoomModuleBase> modules = new List<GameWorldRoomModuleBase>();
 
         public List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
 
@@ -35,7 +32,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
         public void Initialize()
         {
             CreateCells();
-            InitializeModules();
             InitializeRoomEntrances();
         }
 
@@ -255,25 +251,6 @@ namespace TowerBuilder.GameWorld.Map.Rooms
             foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
             {
                 gameWorldRoomCell.ResetColor();
-            }
-        }
-
-        void InitializeModules()
-        {
-            foreach (RoomModuleBase module in room.modules)
-            {
-                switch (module)
-                {
-                    case ElevatorModule elevatorModule:
-                        GameWorldElevatorModule gameWorldElevatorModule = new GameWorldElevatorModule(this, elevatorModule);
-                        modules.Add(gameWorldElevatorModule);
-                        break;
-                }
-            }
-
-            foreach (GameWorldRoomModuleBase module in modules)
-            {
-                module.Initialize();
             }
         }
     }

@@ -5,6 +5,7 @@ using TowerBuilder;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Entrances;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.Rooms
