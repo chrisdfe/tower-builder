@@ -1,7 +1,10 @@
 # TODO
 
-
 ## Current
+
+
+
+## Tasks
 
 - Room furniture
   - beds
@@ -11,9 +14,8 @@
     - potentially furniture could replace "room modules"
       - rooms would just be generic rooms, and furniture would dictate the behavior/functionality
 - Rename RoomDetails to RoomTemplate
-
-## Tasks
-
+- Flexible-sized rooms should remember the 'blocks' they are made up of, to avoid having to recalculate it when you destroy individual blocks.
+- "Schedules" store, possibly right below timestore? residents will have schedules, but potentially weather effects and other such things could use this schedule mechanic
 - GetRoomPrice should live on Room, not Blueprint
 - Route weighting mechanism to figure out which route is the best to take 
   - probably as simple as fewer cells traveled > more cells traveled

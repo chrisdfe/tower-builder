@@ -13,6 +13,7 @@ namespace TowerBuilder.Stores.Map.Rooms.Furniture
         Sleeping,
         Work,
         Food,
+        Recreation,
         Transportation
     }
 }
