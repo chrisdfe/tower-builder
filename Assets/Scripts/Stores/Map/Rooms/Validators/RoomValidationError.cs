@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TowerBuilder.Stores.Map.Blueprints
+namespace TowerBuilder.Stores.Map.Rooms.Validators
 {
-    public class BlueprintValidationError
+    public class RoomValidationError
     {
         public string message { get; private set; }
 
-        public BlueprintValidationError(string message)
+        public RoomValidationError(string message)
         {
             this.message = message;
         }

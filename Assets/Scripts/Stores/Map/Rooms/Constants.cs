@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms.Entrances;
+using TowerBuilder.Stores.Map.Rooms.Validators;
 
 using UnityEngine;
 
@@ -29,6 +30,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 privacy = RoomPrivacy.Public,
 
                 entranceBuilder = new HallwayEntranceBuilder(),
+                validator = new DefaultRoomValidator(),
 
                 color = Color.gray
             },
@@ -44,6 +46,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 privacy = RoomPrivacy.Public,
 
                 entranceBuilder = new LobbyEntranceBuilder(),
+                validator = new LobbyRoomValidator(),
 
                 color = Color.red,
             },
@@ -59,6 +62,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 privacy = RoomPrivacy.Public,
 
                 entranceBuilder = new LobbyEntranceBuilder(),
+                validator = new LobbyRoomValidator(),
 
                 color = Color.red,
             },
@@ -83,6 +87,9 @@ namespace TowerBuilder.Stores.Map.Rooms
                         },
                     }
                 ),
+
+                validator = new DefaultRoomValidator(),
+
                 color = Color.green,
             },
 
@@ -91,13 +98,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Barracks",
                 price = 30000,
                 category = RoomCategory.Residence,
-                // moduleDetails = new List<RoomModuleDetailsBase>()
-                // {
-                //     new ResidenceDetails()
-                //     {
-                //         occupancy = 2
-                //     }
-                // },
+
                 width = 2,
                 height = 1,
                 privacy = RoomPrivacy.Private,
@@ -116,6 +117,8 @@ namespace TowerBuilder.Stores.Map.Rooms
                         },
                     }
                 ),
+
+                validator = new DefaultRoomValidator(),
 
                 color = Color.yellow,
             },
@@ -125,16 +128,11 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Bedroom",
                 price = 12000,
                 category = RoomCategory.Residence,
-                // moduleDetails = new List<RoomModuleDetailsBase>()
-                // {
-                //     new ResidenceDetails()
-                //     {
-                //         occupancy = 2
-                //     }
-                // },
+
                 width = 2,
                 height = 1,
                 privacy = RoomPrivacy.Private,
+
                 entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
                         new RoomEntrance() {
@@ -147,6 +145,9 @@ namespace TowerBuilder.Stores.Map.Rooms
                         },
                     }
                 ),
+
+                validator = new DefaultRoomValidator(),
+
                 color = Color.yellow,
             },
 
@@ -155,16 +156,10 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Condo",
                 price = 50000,
                 category = RoomCategory.Residence,
-                // moduleDetails = new List<RoomModuleDetailsBase>()
-                // {
-                //     new ResidenceDetails()
-                //     {
-                //         occupancy = 5
-                //     }
-                // },
                 width = 5,
                 height = 1,
                 privacy = RoomPrivacy.Private,
+
                 entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
                         new RoomEntrance() {
@@ -177,6 +172,9 @@ namespace TowerBuilder.Stores.Map.Rooms
                         },
                     }
                 ),
+
+                validator = new DefaultRoomValidator(),
+
                 color = Color.yellow,
             },
 
@@ -185,13 +183,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Elevator",
                 price = 2000,
                 category = RoomCategory.Elevator,
-                // moduleDetails = new List<RoomModuleDetailsBase>()
-                // {
-                //     new ElevatorDetails()
-                //     {
-                //         capacity = 5
-                //     }
-                // },
+
                 width = 1,
                 height = 1,
 
@@ -200,27 +192,25 @@ namespace TowerBuilder.Stores.Map.Rooms
 
                 entranceBuilder = new ElevatorEntranceBuilder(),
 
+                validator = new ElevatorRoomValidator(),
+
                 color = Color.magenta,
             },
 
-            [RoomKey.Elevator] = new RoomDetails()
+            [RoomKey.ServiceElevator] = new RoomDetails()
             {
                 title = "Service Elevator",
                 price = 1500,
                 category = RoomCategory.Elevator,
-                // moduleDetails = new List<RoomModuleDetailsBase>()
-                // {
-                //     new ElevatorDetails()
-                //     {
-                //         capacity = 10
-                //     }
-                // },
+
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Private,
 
                 entranceBuilder = new ElevatorEntranceBuilder(),
+
+                validator = new ElevatorRoomValidator(),
 
                 color = Color.yellow,
             },
@@ -230,19 +220,14 @@ namespace TowerBuilder.Stores.Map.Rooms
                 title = "Large Elevator",
                 price = 5000,
                 category = RoomCategory.Elevator,
-                // moduleDetails = new List<RoomModuleDetailsBase>()
-                // {
-                //     new ElevatorDetails()
-                //     {
-                //         capacity = 20
-                //     }
-                // },
+
                 width = 2,
                 height = 1,
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
 
                 entranceBuilder = new ElevatorEntranceBuilder(),
+                validator = new ElevatorRoomValidator(),
 
                 color = Color.magenta,
             },
@@ -258,6 +243,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 color = Color.yellow,
 
                 entranceBuilder = new StairwellEntranceBuilder(),
+                validator = new DefaultRoomValidator(),
 
                 privacy = RoomPrivacy.Public,
             },
@@ -273,6 +259,7 @@ namespace TowerBuilder.Stores.Map.Rooms
                 color = Color.yellow,
 
                 entranceBuilder = new StairwellEntranceBuilder(),
+                validator = new DefaultRoomValidator(),
 
                 privacy = RoomPrivacy.Public,
             },
@@ -286,8 +273,6 @@ namespace TowerBuilder.Stores.Map.Rooms
                 height = 1,
                 color = Color.green,
 
-                privacy = RoomPrivacy.Public,
-
                 entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                 {
                     new RoomEntrance() {
@@ -298,7 +283,10 @@ namespace TowerBuilder.Stores.Map.Rooms
                         position = RoomEntrancePosition.Right,
                         cellCoordinates = new CellCoordinates(0, 0)
                     },
-                })
+                }),
+                validator = new DefaultRoomValidator(),
+
+                privacy = RoomPrivacy.Public,
             }
         };
     }

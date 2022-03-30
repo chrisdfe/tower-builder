@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.Stores.Map.Rooms.Entrances;
 using TowerBuilder.Stores.Map.Rooms.Furniture;
+using TowerBuilder.Stores.Map.Rooms.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Rooms
@@ -21,6 +22,8 @@ namespace TowerBuilder.Stores.Map.Rooms
 
         public RoomPrivacy privacy = RoomPrivacy.Public;
         public RoomEntranceBuilderBase entranceBuilder;
+
+        public RoomValidatorBase validator = new DefaultRoomValidator();
 
         public Color color = Color.white;
     }

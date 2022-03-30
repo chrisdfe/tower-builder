@@ -25,20 +25,28 @@ namespace TowerBuilder.Stores.Map.Rooms
 
     public class RoomCell
     {
-        // public RoomCells roomCells { get; private set; }
+        public RoomCells parent { get; private set; }
+
         public CellCoordinates coordinates = CellCoordinates.zero;
         public List<RoomEntrance> entrances = new List<RoomEntrance>();
         public List<RoomCellOrientation> orientation = new List<RoomCellOrientation>();
 
 
-        public RoomCell(int x, int floor)
+        public RoomCell(RoomCells parent, int x, int floor)
         {
+            this.parent = parent;
             this.coordinates = new CellCoordinates(x, floor);
         }
 
-        public RoomCell(CellCoordinates cellCoordinates)
+        public RoomCell(RoomCells parent, CellCoordinates cellCoordinates)
         {
+            this.parent = parent;
             this.coordinates = cellCoordinates.Clone();
+        }
+
+        public CellCoordinates GetRelativeCoordinates()
+        {
+            return this.coordinates.Subtract(this.parent.GetBottomLeftCoordinates());
         }
     }
 }

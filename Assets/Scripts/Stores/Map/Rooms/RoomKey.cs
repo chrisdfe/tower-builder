@@ -15,7 +15,9 @@ namespace TowerBuilder.Stores.Map.Rooms
         Condo,
 
         Elevator,
+        ServiceElevator,
         LargeElevator,
+
         Stairwell,
         LargeStairwell,
         SmallPark,

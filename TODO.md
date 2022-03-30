@@ -3,9 +3,16 @@
 ## Current
 
 
-
 ## Tasks
 
+- namespace reorganization
+  - Split "type definitions (Room, Route, Resident etc) into "Data" namespace
+  - Rename "Stores" to "GameState" or something
+- Wallet transation history
+  - Wallet "batch" transactions so the transactions don't get flooded with lots of tiny transactions (e.g. desk income)
+    - transactions will get added to queue, grouped by string id/message, then OnTick() they get applied
+- Resident furniture behaviors
+  - furniture "controls" resident while they're using it
 - Room furniture
   - beds
   - desks
@@ -45,7 +52,6 @@
 ## Projects
 
 - Kitchen/restaurant room
-- Wallet transation history
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 - Top-level "KeyBindingsManager" that listens for user input + dispatches actions
 - UI overlays
@@ -66,7 +72,7 @@
 
 ## Bugs
 
-- Make ground a cube, cut holes in it when you build a room
+- Individual roomCells should know if they are valid again (right now it's just the room)
 - Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
 - RoomEntrances in the blueprint room aren't getting highlighted
 - Input.GetMouseButtonDown(0) does not work consistently on macos
@@ -79,6 +85,8 @@
 
 # Done
 
+- Make ground a cube, cut holes in it when you build a room
+- RoomCellValidators that follow the same pattern as EntranceBuilders instead of what I have now
 - resident pathfinding
 - For debug purposes - draw line between cells, along route
 - transport/rooms connected to transport system

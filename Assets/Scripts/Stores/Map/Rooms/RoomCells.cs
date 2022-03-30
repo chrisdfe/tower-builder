@@ -38,7 +38,7 @@ namespace TowerBuilder.Stores.Map.Rooms
 
         public void Add(CellCoordinates cellCoordinates)
         {
-            cells.Add(new RoomCell(cellCoordinates));
+            cells.Add(new RoomCell(this, cellCoordinates));
             if (onResize != null)
             {
                 onResize(this);
@@ -47,7 +47,7 @@ namespace TowerBuilder.Stores.Map.Rooms
 
         public void Add(RoomCell roomCell)
         {
-            cells.Add(new RoomCell(roomCell.coordinates));
+            cells.Add(new RoomCell(this, roomCell.coordinates));
             if (onResize != null)
             {
                 onResize(this);
@@ -82,7 +82,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 for (int floor = 0; floor < floors; floor++)
                 {
-                    result.Add(new RoomCell(x, floor));
+                    result.Add(new RoomCell(this, x, floor));
                 }
             }
 
@@ -107,7 +107,7 @@ namespace TowerBuilder.Stores.Map.Rooms
             {
                 for (int x = startCoordinates.x; x <= endCoordinates.x; x++)
                 {
-                    result.Add(new RoomCell(x, floor));
+                    result.Add(new RoomCell(this, x, floor));
                 }
             }
 
@@ -125,7 +125,7 @@ namespace TowerBuilder.Stores.Map.Rooms
 
             foreach (RoomCell roomCell in cells)
             {
-                RoomCell newRoomCell = new RoomCell(newBaseCoordinates.Add(roomCell.coordinates));
+                RoomCell newRoomCell = new RoomCell(this, newBaseCoordinates.Add(roomCell.coordinates));
                 result.Add(newRoomCell);
             }
 
@@ -248,7 +248,7 @@ namespace TowerBuilder.Stores.Map.Rooms
 
             foreach (RoomCell roomCell in cells)
             {
-                result.Add(new RoomCell(roomCell.coordinates.Subtract(bottomLeftCoordinates)));
+                result.Add(new RoomCell(this, roomCell.coordinates.Subtract(bottomLeftCoordinates)));
             }
 
             return new RoomCells(result);

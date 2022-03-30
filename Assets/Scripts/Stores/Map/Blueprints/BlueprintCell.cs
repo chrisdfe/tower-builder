@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Blueprints
@@ -14,28 +15,14 @@ namespace TowerBuilder.Stores.Map.Blueprints
         public Blueprint parentBlueprint { get; private set; }
         public RoomCell roomCell { get; private set; }
 
-        public List<BlueprintValidationError> validationErrors;
-
-        public CellCoordinates relativeCellCoordinates
-        {
-            get
-            {
-                return roomCell.coordinates.Subtract(parentBlueprint.buildStartCoordinates);
-            }
-        }
+        public List<RoomValidationError> validationErrors;
 
         public BlueprintCell(Blueprint parentBlueprint, RoomCell roomCell)
         {
             id = Guid.NewGuid().ToString();
-            validationErrors = new List<BlueprintValidationError>();
+            validationErrors = new List<RoomValidationError>();
             this.parentBlueprint = parentBlueprint;
             this.roomCell = roomCell;
-        }
-
-        // rooms is a list of all of the rooms on the map currently
-        public void Validate(RoomList allRooms)
-        {
-            validationErrors = BlueprintValidators.ValidateBlueprintCell(this, allRooms);
         }
 
         public bool IsValid()

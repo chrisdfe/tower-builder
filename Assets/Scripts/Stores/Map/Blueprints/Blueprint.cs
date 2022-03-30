@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime;
 using TowerBuilder.Stores.Map;
 using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Map.Rooms.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Map.Blueprints
@@ -12,7 +13,7 @@ namespace TowerBuilder.Stores.Map.Blueprints
     public class Blueprint
     {
         public List<BlueprintCell> roomBlueprintCells;
-        public List<BlueprintValidationError> validationErrors { get; private set; }
+        public List<RoomValidationError> validationErrors { get; private set; }
 
         public Room room { get; private set; }
 
@@ -27,7 +28,7 @@ namespace TowerBuilder.Stores.Map.Blueprints
             this.buildStartCoordinates = buildStartCoordinates.Clone();
             this.buildEndCoordinates = buildStartCoordinates.Clone();
 
-            validationErrors = new List<BlueprintValidationError>();
+            validationErrors = new List<RoomValidationError>();
 
             ResetBlueprintCells();
         }
@@ -163,51 +164,15 @@ namespace TowerBuilder.Stores.Map.Blueprints
             );
         }
 
-        public List<BlueprintValidationError> Validate(RoomList rooms, int walletBalance)
+        public List<RoomValidationError> Validate(StoreRegistry stores)
         {
-            List<BlueprintValidationError> topLevelValidationErrors = GetTopLevelValidationErrors(walletBalance);
-            List<BlueprintValidationError> cellValidationErrors = GetCellValidationErrors(rooms);
-            validationErrors = topLevelValidationErrors.Concat(cellValidationErrors).ToList();
+            validationErrors = room.roomDetails.validator.Validate(room, stores);
             return validationErrors;
         }
 
         public bool IsValid()
         {
             return validationErrors.Count == 0;
-        }
-
-        // Top-level validations, like whether the player has enough money
-        // These apply to all cells in this blueprint (they will all be red)
-        List<BlueprintValidationError> GetTopLevelValidationErrors(int walletBalance)
-        {
-            List<BlueprintValidationError> result = new List<BlueprintValidationError>();
-
-            if (walletBalance < room.roomDetails.price)
-            {
-                validationErrors.Add(new BlueprintValidationError("Insufficient Funds."));
-            }
-
-            return result;
-        }
-
-        // Per-cell level validations
-        // like overlapping tiles
-        // TODO - room-specific validations
-        List<BlueprintValidationError> GetCellValidationErrors(RoomList roomList)
-        {
-            List<BlueprintValidationError> result = new List<BlueprintValidationError>();
-
-            foreach (BlueprintCell roomBlueprintCell in roomBlueprintCells)
-            {
-                roomBlueprintCell.Validate(roomList);
-
-                foreach (BlueprintValidationError validationError in roomBlueprintCell.validationErrors)
-                {
-                    result.Add(validationError);
-                }
-            }
-
-            return result;
         }
 
         void ResetBlueprintCells()
