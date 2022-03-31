@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.Stores;
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Map.Blueprints;
-using TowerBuilder.Stores.Map.Rooms;
-using TowerBuilder.Stores.MapUI;
+
+using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.Rooms.Blueprints;
+using TowerBuilder.Stores.UI;
 using UnityEngine;
 
 public class GroundManager : MonoBehaviour
@@ -30,11 +30,11 @@ public class GroundManager : MonoBehaviour
 
         groundPlaceholder.SetActive(false);
 
-        Registry.Stores.Map.onRoomAdded += OnRoomAdded;
-        Registry.Stores.Map.onRoomDestroyed += OnRoomDestroyed;
-        Registry.Stores.MapUI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-        Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
-        Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+        Registry.Stores.Rooms.onRoomAdded += OnRoomAdded;
+        Registry.Stores.Rooms.onRoomDestroyed += OnRoomDestroyed;
+        Registry.Stores.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+        Registry.Stores.UI.onToolStateUpdated += OnToolStateUpdated;
+        Registry.Stores.UI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
     }
 
     void Start()
@@ -60,7 +60,7 @@ public class GroundManager : MonoBehaviour
 
     void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)
     {
-        if (Registry.Stores.MapUI.toolState != ToolState.Build)
+        if (Registry.Stores.UI.toolState != ToolState.Build)
         {
             return;
         }
@@ -90,7 +90,7 @@ public class GroundManager : MonoBehaviour
 
     void SetCurrentBlueprintCells()
     {
-        Blueprint currentBlueprint = Registry.Stores.MapUI.buildToolSubState.currentBlueprint;
+        Blueprint currentBlueprint = Registry.Stores.UI.buildToolSubState.currentBlueprint;
         currentBlueprintCells = currentBlueprint.room.roomCells.cells.Select(roomCell => roomCell.coordinates).ToList();
     }
 
@@ -116,7 +116,7 @@ public class GroundManager : MonoBehaviour
     {
         foreach (CellCoordinates cellCoordinates in currentBlueprintCells)
         {
-            bool cellIsOccupied = Registry.Stores.Map.rooms.FindRoomAtCell(cellCoordinates) != null;
+            bool cellIsOccupied = Registry.Stores.Rooms.rooms.FindRoomAtCell(cellCoordinates) != null;
             if (
                 gameWorldGroundCells.ContainsKey((cellCoordinates.x, cellCoordinates.floor)) &&
                 !cellIsOccupied

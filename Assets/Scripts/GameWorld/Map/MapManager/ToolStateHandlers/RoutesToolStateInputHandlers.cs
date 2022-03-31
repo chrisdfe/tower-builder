@@ -1,10 +1,10 @@
 using System;
 using TowerBuilder;
-using TowerBuilder.GameWorld.Map.Blueprints;
+using TowerBuilder.GameWorld.Rooms.Blueprints;
 using TowerBuilder.Stores;
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Map.Rooms;
-using TowerBuilder.Stores.MapUI;
+
+using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.UI;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager
@@ -30,8 +30,8 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public override void OnMouseUp()
         {
-            CellCoordinates currentCell = Registry.Stores.MapUI.currentSelectedCell;
-            switch (Registry.Stores.MapUI.routesToolSubState.currentClickState)
+            CellCoordinates currentCell = Registry.Stores.UI.currentSelectedCell;
+            switch (Registry.Stores.UI.routesToolSubState.currentClickState)
             {
                 case RoutesToolState.ClickState.RouteStart:
                     Registry.Stores.Routes.SetDebugRouteStart(currentCell);

@@ -1,5 +1,6 @@
 using TowerBuilder.Stores;
-using TowerBuilder.Stores.Map.Rooms;
+using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,38 +38,38 @@ namespace TowerBuilder.GameWorld.UI
 
             originalColor = LobbyButton.colors.normalColor;
 
-            SelectButton(Registry.Stores.MapUI.buildToolSubState.selectedRoomKey);
-            Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            SelectButton(Registry.Stores.UI.buildToolSubState.selectedRoomKey);
+            Registry.Stores.UI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void OnHallwayButtonClick()
         {
-            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Hallway);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.Hallway);
         }
 
         void OnLobbyButtonClick()
         {
-            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.LargeLobby);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.LargeLobby);
         }
 
         void OnStairsButtonClick()
         {
-            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Stairwell);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.Stairwell);
         }
 
         void OnElevatorButtonClick()
         {
-            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.LargeElevator);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.LargeElevator);
         }
 
         void OnOfficeButtonClick()
         {
-            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Office);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.Office);
         }
 
         void OnCondoButtonClick()
         {
-            Registry.Stores.MapUI.buildToolSubState.SetSelectedRoomKey(RoomKey.Condo);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.Condo);
         }
 
         void OnSelectedRoomKeyUpdated(RoomKey roomKey)

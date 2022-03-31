@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.Stores;
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Map.Rooms;
-using TowerBuilder.Stores.MapUI;
+
+using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,16 +30,16 @@ namespace TowerBuilder.GameWorld.UI
             ToggleRoutesStateButtonsPanel(false);
             UpdateDescriptionText();
 
-            Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
-            Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            Registry.Stores.UI.onToolStateUpdated += OnToolStateUpdated;
+            Registry.Stores.UI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void Update()
         {
             // Right click to exit out of current state?
-            if (Input.GetMouseButtonDown(1) && Registry.Stores.MapUI.toolState != ToolState.None)
+            if (Input.GetMouseButtonDown(1) && Registry.Stores.UI.toolState != ToolState.None)
             {
-                Registry.Stores.MapUI.SetToolState(ToolState.None);
+                Registry.Stores.UI.SetToolState(ToolState.None);
             }
         }
 
@@ -71,17 +71,17 @@ namespace TowerBuilder.GameWorld.UI
 
         void UpdateDescriptionText()
         {
-            ToolState toolState = Registry.Stores.MapUI.toolState;
+            ToolState toolState = Registry.Stores.UI.toolState;
             if (toolState == ToolState.Build)
             {
-                RoomKey selectedRoomKey = Registry.Stores.MapUI.buildToolSubState.selectedRoomKey;
+                RoomKey selectedRoomKey = Registry.Stores.UI.buildToolSubState.selectedRoomKey;
                 if (selectedRoomKey == RoomKey.None)
                 {
                     descriptionText.text = $"{toolState} - {selectedRoomKey}";
                 }
                 else
                 {
-                    RoomDetails roomDetails = Registry.Stores.MapUI.buildToolSubState.currentBlueprint.room.roomDetails;
+                    RoomDetails roomDetails = Registry.Stores.UI.buildToolSubState.currentBlueprint.room.roomDetails;
                     int price = roomDetails.price;
                     descriptionText.text = $"{toolState} - {selectedRoomKey}: ${price}";
                 }

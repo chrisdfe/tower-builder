@@ -5,10 +5,10 @@ namespace TowerBuilder.Stores
         public Notifications.State Notifications = new Notifications.State();
         public Time.State Time = new Time.State();
         public Wallet.State Wallet = new Wallet.State();
-        public Map.State Map = new Map.State();
-        public MapUI.State MapUI = new MapUI.State();
+        public Rooms.State Rooms = new Rooms.State();
         public Routes.State Routes = new Routes.State();
         public Residents.State Residents = new Residents.State();
+        public UI.State UI = new UI.State();
     }
 
     public static class Registry

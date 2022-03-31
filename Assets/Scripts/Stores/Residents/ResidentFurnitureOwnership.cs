@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using TowerBuilder.Stores.Map.Rooms.Furniture;
+using TowerBuilder.Stores.Rooms.Furniture;
 
 namespace TowerBuilder.Stores.Residents
 {

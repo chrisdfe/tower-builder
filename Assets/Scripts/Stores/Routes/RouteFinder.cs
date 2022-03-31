@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Map.Rooms;
-using TowerBuilder.Stores.Map.Rooms.Connections;
-using TowerBuilder.Stores.Map.Rooms.Entrances;
+using TowerBuilder.Stores;
+using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.Rooms.Connections;
+using TowerBuilder.Stores.Rooms.Entrances;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Routes
@@ -150,7 +150,7 @@ namespace TowerBuilder.Stores.Routes
 
         void ValidateRouteMarker(CellCoordinates cellCoordinates)
         {
-            Room room = Registry.Stores.Map.rooms.FindRoomAtCell(cellCoordinates);
+            Room room = Registry.Stores.Rooms.rooms.FindRoomAtCell(cellCoordinates);
 
             // The 0th floor is a special case, since it connects to the outside world
             // if (room == null && cellCoordinates.floor != 0)
@@ -163,12 +163,12 @@ namespace TowerBuilder.Stores.Routes
 
         Room FindRoomAtCoordinates(CellCoordinates cellCoordinates)
         {
-            return Registry.Stores.Map.rooms.FindRoomAtCell(cellCoordinates);
+            return Registry.Stores.Rooms.rooms.FindRoomAtCell(cellCoordinates);
         }
 
         RoomConnections GetRoomConnections(Room room)
         {
-            return Registry.Stores.Map.roomConnections.FindConnectionsForRoom(room);
+            return Registry.Stores.Rooms.roomConnections.FindConnectionsForRoom(room);
         }
     }
 }

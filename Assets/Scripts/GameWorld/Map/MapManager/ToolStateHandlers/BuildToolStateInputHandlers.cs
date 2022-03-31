@@ -1,10 +1,10 @@
 using System;
 using TowerBuilder;
-using TowerBuilder.GameWorld.Map.Blueprints;
+using TowerBuilder.GameWorld.Rooms.Blueprints;
 using TowerBuilder.Stores;
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.Map.Rooms;
-using TowerBuilder.Stores.MapUI;
+
+using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.UI;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager
@@ -25,29 +25,29 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         {
             CreateBlueprint();
 
-            Registry.Stores.Map.onRoomAdded += OnRoomAdded;
+            Registry.Stores.Rooms.onRoomAdded += OnRoomAdded;
         }
 
         public override void OnTransitionFrom(ToolState nextToolState)
         {
             DestroyBlueprint();
 
-            Registry.Stores.Map.onRoomAdded -= OnRoomAdded;
+            Registry.Stores.Rooms.onRoomAdded -= OnRoomAdded;
         }
 
         public override void OnMouseDown()
         {
-            Registry.Stores.MapUI.buildToolSubState.StartBuild();
+            Registry.Stores.UI.buildToolSubState.StartBuild();
         }
 
         public override void OnMouseUp()
         {
-            Registry.Stores.MapUI.buildToolSubState.EndBuild();
+            Registry.Stores.UI.buildToolSubState.EndBuild();
         }
 
         void OnRoomAdded(Room room)
         {
-            if (room.id == Registry.Stores.MapUI.buildToolSubState.currentBlueprint.room.id)
+            if (room.id == Registry.Stores.UI.buildToolSubState.currentBlueprint.room.id)
             {
                 ResetBlueprint();
             }

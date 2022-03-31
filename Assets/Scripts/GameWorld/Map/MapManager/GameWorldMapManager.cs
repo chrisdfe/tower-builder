@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.GameWorld.Rooms;
 using TowerBuilder.Stores;
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.MapUI;
+using TowerBuilder.Stores.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +23,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         // Distance from the edge of the screen where the mapCursor will get disabled
         // TODO - this should perhaps be percentages instead
-        // TODO - move to MapUI.Constants
+        // TODO - move to UI.Constants
         public static Vector2 MAP_CURSOR_CLICK_BUFFER = new Vector2(150, 250);
 
         void Awake()
@@ -70,9 +70,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
                     GameWorldMapCellHelpers.RoundToNearestTile(hit.point.y)
                 );
 
-                if (!hoveredCell.Matches(Registry.Stores.MapUI.currentSelectedCell))
+                if (!hoveredCell.Matches(Registry.Stores.UI.currentSelectedCell))
                 {
-                    Registry.Stores.MapUI.SetCurrentSelectedCell(hoveredCell);
+                    Registry.Stores.UI.SetCurrentSelectedCell(hoveredCell);
                 }
             }
         }
@@ -101,9 +101,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             SetCurrentToolStateHandlers();
             // Perform initialization of whatever tool state is the default
-            currentToolStateHandler.OnTransitionTo(Registry.Stores.MapUI.toolState);
+            currentToolStateHandler.OnTransitionTo(Registry.Stores.UI.toolState);
 
-            Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
+            Registry.Stores.UI.onToolStateUpdated += OnToolStateUpdated;
         }
 
         void OnToolStateUpdated(ToolState nextToolState, ToolState previousToolState)
@@ -115,7 +115,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void SetCurrentToolStateHandlers()
         {
-            ToolState currentToolState = Registry.Stores.MapUI.toolState;
+            ToolState currentToolState = Registry.Stores.UI.toolState;
             currentToolStateHandler = toolStateHandlerMap[currentToolState];
         }
     }

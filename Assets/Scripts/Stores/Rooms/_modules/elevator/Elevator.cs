@@ -1,0 +1,67 @@
+// using System.Collections;
+// using System.Collections.Generic;
+
+// 
+
+// using UnityEngine;
+
+// namespace TowerBuilder.Stores.Rooms.Modules
+// {
+//     public class ElevatorModule : RoomModuleBase
+//     {
+//         public override RoomModuleKey key { get { return RoomModuleKey.Elevator; } }
+
+//         public List<ElevatorCar> cars = new List<ElevatorCar>();
+
+//         public ElevatorModule(Room room) : base(room) { }
+
+//         public override void Initialize()
+//         {
+//             // Elevators start off with 1 car
+//             AddCar();
+
+//             // DEBUG - remove plz
+//             Registry.Stores.UI.inspectToolSubState.onCurrentInspectedRoomUpdated += DebugOnCurrentInspectedRoomUpdated;
+//         }
+
+//         public override void OnDestroy()
+//         {
+
+//         }
+
+//         void AddCar()
+//         {
+//             ElevatorCar newElevatorCar = new ElevatorCar(this);
+//             newElevatorCar.Initialize();
+//             cars.Add(newElevatorCar);
+//         }
+
+//         void RemoveCar(ElevatorCar carToDelete)
+//         {
+//             cars.Remove(carToDelete);
+//         }
+
+//         void RemoveAllCars()
+//         {
+//             foreach (ElevatorCar car in cars)
+//             {
+//                 car.OnDestroy();
+//             }
+
+//             cars = new List<ElevatorCar>();
+//         }
+
+//         void DebugOnCurrentInspectedRoomUpdated(Room room)
+//         {
+//             if (room == this.room)
+//             {
+//                 ElevatorCar targetCar = cars[0];
+//                 ElevatorCarPosition targetPosition =
+//                     (targetCar.currentPosition == ElevatorCarPosition.Top)
+//                         ? ElevatorCarPosition.Bottom
+//                         : ElevatorCarPosition.Top;
+//                 Registry.Stores.Rooms.SetElevatorCarDestination(targetCar, targetPosition);
+//             }
+//         }
+//     }
+// }

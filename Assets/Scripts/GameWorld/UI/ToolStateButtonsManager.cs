@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.Stores;
-using TowerBuilder.Stores.MapUI;
+using TowerBuilder.Stores.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,7 +36,7 @@ namespace TowerBuilder.GameWorld.UI
 
             originalColor = NoneButton.colors.normalColor;
 
-            Registry.Stores.MapUI.onToolStateUpdated += OnToolStateUpdated;
+            Registry.Stores.UI.onToolStateUpdated += OnToolStateUpdated;
         }
 
         void OnNoneButtonClick()
@@ -66,9 +66,9 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnToolButtonClick(ToolState toolState)
         {
-            ToolState currentToolState = Registry.Stores.MapUI.toolState;
+            ToolState currentToolState = Registry.Stores.UI.toolState;
             ToolState newToolState = (currentToolState == toolState) ? ToolState.None : toolState;
-            Registry.Stores.MapUI.SetToolState(newToolState);
+            Registry.Stores.UI.SetToolState(newToolState);
         }
 
         void OnToolStateUpdated(ToolState toolState, ToolState previousToolState)

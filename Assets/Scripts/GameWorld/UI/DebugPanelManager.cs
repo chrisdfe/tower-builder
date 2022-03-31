@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.Stores;
-using TowerBuilder.Stores.Map;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +14,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            Registry.Stores.MapUI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            Registry.Stores.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
 
             currentSelectedCellText = transform.Find("CurrentSelectedCellText").GetComponent<Text>();
             currentSelectedCellText.text = "";
@@ -27,7 +27,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetCurrentSelectedCellText()
         {
-            CellCoordinates currentSelectedCell = Registry.Stores.MapUI.currentSelectedCell;
+            CellCoordinates currentSelectedCell = Registry.Stores.UI.currentSelectedCell;
             currentSelectedCellText.text = $"x: {currentSelectedCell.x}, floor: {currentSelectedCell.floor}";
         }
     }

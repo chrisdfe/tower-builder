@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using TowerBuilder.Stores.Map;
+using TowerBuilder.Stores.Rooms;
 
 using UnityEngine;
 

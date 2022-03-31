@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
-using TowerBuilder.GameWorld.Map;
-using TowerBuilder.Stores.Map;
+using TowerBuilder.GameWorld.Rooms;
+using TowerBuilder.Stores;
+
 using UnityEngine;
 
 public class GameWorldDebugRouteMarker : MonoBehaviour

@@ -1,6 +1,6 @@
 using TowerBuilder.Stores;
-using TowerBuilder.Stores.Map;
-using TowerBuilder.Stores.MapUI;
+
+using TowerBuilder.Stores.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,18 +33,18 @@ namespace TowerBuilder.GameWorld.UI
 
             originalColor = routeStartButton.colors.normalColor;
 
-            // SelectButton(Registry.Stores.MapUI.buildToolSubState.selectedRoomKey);
-            // Registry.Stores.MapUI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            // SelectButton(Registry.Stores.UI.buildToolSubState.selectedRoomKey);
+            // Registry.Stores.UI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void OnRouteStartButtonClick()
         {
-            Registry.Stores.MapUI.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteStart);
+            Registry.Stores.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteStart);
         }
 
         void OnRouteEndButtonClick()
         {
-            Registry.Stores.MapUI.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteEnd);
+            Registry.Stores.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteEnd);
         }
 
         void OnRouteCalculateButtonClick()
@@ -55,7 +55,7 @@ namespace TowerBuilder.GameWorld.UI
         void OnRouteClearButtonClick()
         {
             Registry.Stores.Routes.ClearDebugRoute();
-            Registry.Stores.MapUI.routesToolSubState.SetClickState(RoutesToolState.ClickState.None);
+            Registry.Stores.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.None);
         }
     }
 }

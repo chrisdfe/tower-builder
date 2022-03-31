@@ -9,7 +9,6 @@
 - namespace reorganization
   - Split "type definitions (Room, Route, Resident etc) into "Data" namespace
   - Rename "Stores" to "GameState" or something
-  - Rename "MapUI" to just "UI"
 - Wallet transation history
   - Wallet "batch" transactions so the transactions don't get flooded with lots of tiny transactions (e.g. desk income)
     - transactions will get added to queue, grouped by string id/message, then OnTick() they get applied
@@ -62,8 +61,6 @@
 
 ## Cleanup
 
-- Perhaps Stores.Map.Rooms should just be Stores.Rooms and delete Stores.Map
-- RoomEntrances namespace?
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - Blueprint validators should probably take in the entire Store object
@@ -87,6 +84,9 @@
 
 # Done
 
+- Perhaps Stores.Map.Rooms should just be Stores.Rooms and delete Stores.Map
+  - Also rename "MapUI" to just "UI"
+- RoomEntrances namespace?
 - Make ground a cube, cut holes in it when you build a room
 - RoomCellValidators that follow the same pattern as EntranceBuilders instead of what I have now
 - resident pathfinding
@@ -110,7 +110,7 @@
 - Room "Modules", to attach to rooms and give them behaviors. Like unity components
 - Rename MapCursor/MapCursorCells to RoomBlueprintCursor/RoomBlueprintCursorCells
 - Flexible-sized rooms should cost more per tile - right now they're still a flat cost liek Inflexible rooms
-- Map/toolStateHandlers + MapUI/subState/ keeps confusing me
+- Map/toolStateHandlers + UI/subState/ keeps confusing me
 - Placing a tile next to another flexible room should add onto it instead of creating a new room. i.e for elevators/lobbies
 - Flexible-sized rooms currently only work in increments of 1x1: make them work in increments of any rectangular room shape.
   - e.g I want to make a wide elevator that takes up 2 horizontal cells
