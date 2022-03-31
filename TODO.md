@@ -5,9 +5,11 @@
 
 ## Tasks
 
+- Debug resident walk along route to destination
 - namespace reorganization
   - Split "type definitions (Room, Route, Resident etc) into "Data" namespace
   - Rename "Stores" to "GameState" or something
+  - Rename "MapUI" to just "UI"
 - Wallet transation history
   - Wallet "batch" transactions so the transactions don't get flooded with lots of tiny transactions (e.g. desk income)
     - transactions will get added to queue, grouped by string id/message, then OnTick() they get applied
