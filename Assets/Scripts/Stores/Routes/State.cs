@@ -10,14 +10,14 @@ namespace TowerBuilder.Stores.Routes
         public List<Route> routes { get; private set; }
 
         public Route debugRoute;
-        public List<RouteAttempt> debugRouteAttempts;
+        public List<RouteAttempt> debugRouteAttempts { get; private set; } = new List<RouteAttempt>();
 
         public delegate void DebugRouteEvent();
         public DebugRouteEvent onDebugRouteCalculated;
         public DebugRouteEvent onDebugRouteCleared;
 
-        CellCoordinates debugRouteStartCoordinates;
-        CellCoordinates debugRouteEndCoordinates;
+        public CellCoordinates debugRouteStartCoordinates { get; private set; }
+        public CellCoordinates debugRouteEndCoordinates { get; private set; }
 
         public delegate void DebugRouteMarkerEvent(CellCoordinates cellCoordinates);
         public DebugRouteMarkerEvent onDebugRouteStartSet;

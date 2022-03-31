@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder;
 using TowerBuilder.Stores;
 
@@ -11,13 +12,19 @@ namespace TowerBuilder.Stores.Routes
 {
     public class Route
     {
-        RoomEntrance start;
-        RoomEntrance destination;
+        public CellCoordinates start { get { return this.segments.First().startNode.cellCoordinates; } }
+        public CellCoordinates destination { get { return this.segments.Last().endNode.cellCoordinates; } }
 
         public List<RouteSegment> segments { get; private set; }
 
-        public Route() { }
+        public Route(List<RouteSegment> segments)
+        {
+            this.segments = segments;
+        }
 
-        public void Build() { }
+        public Route(RouteAttempt routeAttempt)
+        {
+            this.segments = routeAttempt.routeSegments;
+        }
     }
 }

@@ -13,8 +13,18 @@ namespace TowerBuilder.Stores.Routes
     {
         public RouteStatus status = RouteStatus.Incomplete;
 
-        public List<Room> visitedRooms { get; private set; }
-        public List<RouteSegment> routeSegments { get; private set; }
+        public List<Room> visitedRooms { get; private set; } = new List<Room>();
+        public List<RouteSegment> routeSegments { get; private set; } = new List<RouteSegment>();
+
+        public int distance
+        {
+            get
+            {
+                return routeSegments
+                    .Select(routeSegment => routeSegment.distance)
+                    .Aggregate(0, (acc, segmentDistance) => acc + segmentDistance);
+            }
+        }
 
         public RouteAttempt(List<Room> vistedRooms, List<RouteSegment> routeSegments)
         {

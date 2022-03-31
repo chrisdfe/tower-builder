@@ -5,6 +5,7 @@
 
 ## Tasks
 
+- RouteFinder creates too many branches
 - Debug resident walk along route to destination
 - namespace reorganization
   - Split "type definitions (Room, Route, Resident etc) into "Data" namespace
