@@ -6,17 +6,17 @@ namespace TowerBuilder.Stores.Time
     public class TimeValue
     {
         // 0-59
-        public int minute;
+        public int minute = 0;
         // 0-23
-        public int hour;
+        public int hour = 0;
         // day of week
-        public int day;
+        public int day = 0;
         // week of season
-        public int week;
+        public int week = 0;
         // season of year
-        public int season;
+        public int season = 0;
         // 1 +
-        public int year;
+        public int year = 0;
 
         public static TimeValue zero
         {
@@ -70,6 +70,19 @@ namespace TowerBuilder.Stores.Time
             }
 
             return time;
+        }
+
+        public TimeValue Clone()
+        {
+            return new TimeValue()
+            {
+                minute = minute,
+                hour = hour,
+                day = day,
+                week = week,
+                season = season,
+                year = year
+            };
         }
     }
 }
