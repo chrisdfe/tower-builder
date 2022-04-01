@@ -184,7 +184,7 @@ namespace TowerBuilder.Stores.UI
             }
 
             // 
-            Registry.Stores.Wallet.SubtractBalance(currentBlueprint.GetPrice());
+            Registry.Stores.Wallet.SubtractBalance(currentBlueprint.room.GetPrice());
 
             // Decide whether to create a new room or to add to an existing one
             List<Room> roomsToCombineWith = FindRoomsToCombineWith(currentBlueprint.room);

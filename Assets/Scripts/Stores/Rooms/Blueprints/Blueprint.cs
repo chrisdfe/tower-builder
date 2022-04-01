@@ -135,38 +135,10 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
             this.room.SetRoomCells(roomCells);
         }
 
-        public int GetPrice()
-        {
-            RoomDetails roomDetails = room.roomDetails;
-
-            // Subtract appropriate balance from wallet
-            if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
-            {
-                return roomDetails.price;
-            }
-
-            CellCoordinates copies = GetCopies();
-            // Work out how many copies of the base blueprint size is being built
-            // roomDetails.price is per base blueprint copy
-            // TODO - this calculation should be elsewhere to allow this number to show up in the UI
-            //        as the blueprint is being built
-
-            int result = roomDetails.price * copies.x * copies.floor;
-
-            return result;
-        }
-
-        public CellCoordinates GetCopies()
-        {
-            return new CellCoordinates(
-                room.roomCells.GetWidth() / room.roomDetails.width,
-                room.roomCells.GetFloorSpan() / room.roomDetails.height
-            );
-        }
-
         public List<RoomValidationError> Validate(StoreRegistry stores)
         {
-            validationErrors = room.roomDetails.validator.Validate(room, stores);
+            RoomValidatorBase validator = room.roomDetails.validatorFactory();
+            validationErrors = validator.Validate(room, stores);
             return validationErrors;
         }
 

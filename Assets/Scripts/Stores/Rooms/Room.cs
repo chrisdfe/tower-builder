@@ -75,6 +75,34 @@ namespace TowerBuilder.Stores.Rooms
             ResetRoomEntrances();
         }
 
+        public int GetPrice()
+        {
+            // Subtract appropriate balance from wallet
+            if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
+            {
+                return roomDetails.price;
+            }
+
+            CellCoordinates copies = GetCopies();
+            // Work out how many copies of the base blueprint size is being built
+            // roomDetails.price is per base blueprint copy
+            // TODO - this calculation should be elsewhere to allow this number to show up in the UI
+            //        as the blueprint is being built
+
+            int result = roomDetails.price * copies.x * copies.floor;
+
+            return result;
+        }
+
+        public CellCoordinates GetCopies()
+        {
+            return new CellCoordinates(
+                roomCells.GetWidth() / roomDetails.width,
+                roomCells.GetFloorSpan() / roomDetails.height
+            );
+        }
+
+
         void GenerateId()
         {
             id = Interlocked.Increment(ref autoincrementingId);
@@ -88,9 +116,10 @@ namespace TowerBuilder.Stores.Rooms
 
         void ResetRoomEntrances()
         {
-            if (roomDetails.entranceBuilder != null)
+            if (roomDetails.entranceBuilderFactory != null)
             {
-                entrances = roomDetails.entranceBuilder.BuildRoomEntrances(roomCells);
+                RoomEntranceBuilderBase entranceBuilder = roomDetails.entranceBuilderFactory();
+                entrances = entranceBuilder.BuildRoomEntrances(roomCells);
             }
         }
 

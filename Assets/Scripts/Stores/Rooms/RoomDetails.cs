@@ -21,9 +21,12 @@ namespace TowerBuilder.Stores.Rooms
         public RoomResizability resizability = RoomResizability.Inflexible();
 
         public RoomPrivacy privacy = RoomPrivacy.Public;
-        public RoomEntranceBuilderBase entranceBuilder;
 
-        public RoomValidatorBase validator = new DefaultRoomValidator();
+        public delegate RoomEntranceBuilderBase EntranceBuilderFactory();
+        public EntranceBuilderFactory entranceBuilderFactory = () => new DefaultEntranceBuilder();
+
+        public delegate RoomValidatorBase RoomValidatorFactory();
+        public RoomValidatorFactory validatorFactory = () => new DefaultRoomValidator();
 
         public Color color = Color.white;
     }

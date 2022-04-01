@@ -5,8 +5,8 @@
 
 ## Tasks
 
-- RouteFinder creates too many branches
-- Debug resident walk along route to destination
+- Residents currently stay on the same cell for more than one cycle currently - because of repeating cellCoordinates in segment end/start
+- Move current route traversal Resident code out into separate "Walking" Behavior
 - namespace reorganization
   - Split "type definitions (Room, Route, Resident etc) into "Data" namespace
   - Rename "Stores" to "GameState" or something
@@ -25,7 +25,6 @@
 - Rename RoomDetails to RoomTemplate
 - Flexible-sized rooms should remember the 'blocks' they are made up of, to avoid having to recalculate it when you destroy individual blocks.
 - "Schedules" store, possibly right below timestore? residents will have schedules, but potentially weather effects and other such things could use this schedule mechanic
-- GetRoomPrice should live on Room, not Blueprint
 - Route weighting mechanism to figure out which route is the best to take 
   - probably as simple as fewer cells traveled > more cells traveled
 - Add residents
@@ -62,6 +61,7 @@
 
 ## Cleanup
 
+- RouteFinder creates too many branches
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - Blueprint validators should probably take in the entire Store object
@@ -85,6 +85,9 @@
 
 # Done
 
+- Use factories for RoomValidator and RoomEntranceBuilder, right now all rooms of the same type share the same instance
+- GetRoomPrice should live on Room, not Blueprint
+- Debug resident walk along route to destination
 - Perhaps Stores.Map.Rooms should just be Stores.Rooms and delete Stores.Map
   - Also rename "MapUI" to just "UI"
 - RoomEntrances namespace?

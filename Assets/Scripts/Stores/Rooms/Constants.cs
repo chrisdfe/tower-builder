@@ -29,8 +29,8 @@ namespace TowerBuilder.Stores.Rooms
                 resizability = RoomResizability.Flexible(),
                 privacy = RoomPrivacy.Public,
 
-                entranceBuilder = new HallwayEntranceBuilder(),
-                validator = new DefaultRoomValidator(),
+                entranceBuilderFactory = () => new HallwayEntranceBuilder(),
+                validatorFactory = () => new DefaultRoomValidator(),
 
                 color = Color.gray
             },
@@ -45,8 +45,8 @@ namespace TowerBuilder.Stores.Rooms
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
 
-                entranceBuilder = new LobbyEntranceBuilder(),
-                validator = new LobbyRoomValidator(),
+                entranceBuilderFactory = () => new LobbyEntranceBuilder(),
+                validatorFactory = () => new LobbyRoomValidator(),
 
                 color = Color.red,
             },
@@ -61,8 +61,8 @@ namespace TowerBuilder.Stores.Rooms
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
 
-                entranceBuilder = new LobbyEntranceBuilder(),
-                validator = new LobbyRoomValidator(),
+                entranceBuilderFactory = () => new LobbyEntranceBuilder(),
+                validatorFactory = () => new LobbyRoomValidator(),
 
                 color = Color.red,
             },
@@ -75,7 +75,7 @@ namespace TowerBuilder.Stores.Rooms
                 width = 3,
                 height = 1,
                 privacy = RoomPrivacy.Private,
-                entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
+                entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
                         new RoomEntrance() {
                             position = RoomEntrancePosition.Left,
@@ -88,7 +88,7 @@ namespace TowerBuilder.Stores.Rooms
                     }
                 ),
 
-                validator = new DefaultRoomValidator(),
+                validatorFactory = () => new DefaultRoomValidator(),
 
                 color = Color.green,
             },
@@ -103,7 +103,7 @@ namespace TowerBuilder.Stores.Rooms
                 height = 1,
                 privacy = RoomPrivacy.Private,
 
-                entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
+                entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
                         new RoomEntrance()
                         {
@@ -118,7 +118,7 @@ namespace TowerBuilder.Stores.Rooms
                     }
                 ),
 
-                validator = new DefaultRoomValidator(),
+                validatorFactory = () => new DefaultRoomValidator(),
 
                 color = Color.yellow,
             },
@@ -133,7 +133,7 @@ namespace TowerBuilder.Stores.Rooms
                 height = 1,
                 privacy = RoomPrivacy.Private,
 
-                entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
+                entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
                         new RoomEntrance() {
                             position = RoomEntrancePosition.Left,
@@ -146,7 +146,7 @@ namespace TowerBuilder.Stores.Rooms
                     }
                 ),
 
-                validator = new DefaultRoomValidator(),
+                validatorFactory = () => new DefaultRoomValidator(),
 
                 color = Color.yellow,
             },
@@ -160,7 +160,7 @@ namespace TowerBuilder.Stores.Rooms
                 height = 1,
                 privacy = RoomPrivacy.Private,
 
-                entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
+                entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
                         new RoomEntrance() {
                             position = RoomEntrancePosition.Left,
@@ -173,7 +173,7 @@ namespace TowerBuilder.Stores.Rooms
                     }
                 ),
 
-                validator = new DefaultRoomValidator(),
+                validatorFactory = () => new DefaultRoomValidator(),
 
                 color = Color.yellow,
             },
@@ -190,9 +190,9 @@ namespace TowerBuilder.Stores.Rooms
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
 
-                entranceBuilder = new ElevatorEntranceBuilder(),
+                entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
 
-                validator = new ElevatorRoomValidator(),
+                validatorFactory = () => new ElevatorRoomValidator(),
 
                 color = Color.magenta,
             },
@@ -208,9 +208,9 @@ namespace TowerBuilder.Stores.Rooms
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Private,
 
-                entranceBuilder = new ElevatorEntranceBuilder(),
+                entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
 
-                validator = new ElevatorRoomValidator(),
+                validatorFactory = () => new ElevatorRoomValidator(),
 
                 color = Color.yellow,
             },
@@ -226,8 +226,8 @@ namespace TowerBuilder.Stores.Rooms
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
 
-                entranceBuilder = new ElevatorEntranceBuilder(),
-                validator = new ElevatorRoomValidator(),
+                entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
+                validatorFactory = () => new ElevatorRoomValidator(),
 
                 color = Color.magenta,
             },
@@ -242,8 +242,8 @@ namespace TowerBuilder.Stores.Rooms
                 resizability = RoomResizability.Vertical(),
                 color = Color.yellow,
 
-                entranceBuilder = new StairwellEntranceBuilder(),
-                validator = new DefaultRoomValidator(),
+                entranceBuilderFactory = () => new StairwellEntranceBuilder(),
+                validatorFactory = () => new DefaultRoomValidator(),
 
                 privacy = RoomPrivacy.Public,
             },
@@ -258,8 +258,8 @@ namespace TowerBuilder.Stores.Rooms
                 resizability = RoomResizability.Vertical(),
                 color = Color.yellow,
 
-                entranceBuilder = new StairwellEntranceBuilder(),
-                validator = new DefaultRoomValidator(),
+                entranceBuilderFactory = () => new StairwellEntranceBuilder(),
+                validatorFactory = () => new DefaultRoomValidator(),
 
                 privacy = RoomPrivacy.Public,
             },
@@ -273,7 +273,7 @@ namespace TowerBuilder.Stores.Rooms
                 height = 1,
                 color = Color.green,
 
-                entranceBuilder = new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
+                entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                 {
                     new RoomEntrance() {
                         position = RoomEntrancePosition.Left,
@@ -284,7 +284,7 @@ namespace TowerBuilder.Stores.Rooms
                         cellCoordinates = new CellCoordinates(0, 0)
                     },
                 }),
-                validator = new DefaultRoomValidator(),
+                validatorFactory = () => new DefaultRoomValidator(),
 
                 privacy = RoomPrivacy.Public,
             }
