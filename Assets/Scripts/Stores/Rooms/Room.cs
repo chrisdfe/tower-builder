@@ -12,7 +12,9 @@ namespace TowerBuilder.Stores.Rooms
     {
         private static int autoincrementingId;
         public int id { get; private set; }
-        public RoomKey roomKey { get; private set; }
+
+        // public RoomKey roomKey { get; private set; }
+        public string roomKey { get; private set; } = "";
 
         public bool isInBlueprintMode = false;
 
@@ -31,24 +33,19 @@ namespace TowerBuilder.Stores.Rooms
             roomCells.onResize += OnRoomCellsResize;
         }
 
-        public Room(RoomKey roomKey) : this()
+        public Room(RoomDetails roomDetails) : this()
         {
-            SetRoomKey(roomKey);
+            this.roomDetails = roomDetails;
         }
 
-        public Room(RoomKey roomKey, List<RoomCell> roomCellList) : this(roomKey)
+        public Room(RoomDetails roomDetails, List<RoomCell> roomCellList) : this(roomDetails)
         {
             roomCells.Add(roomCellList);
             ResetRoomCellOrientations();
             ResetRoomEntrances();
         }
 
-        public Room(RoomKey roomKey, RoomCells roomCells) : this(roomKey, roomCells.cells) { }
-
-        public Room(RoomDetails roomDetails) : this()
-        {
-            this.roomDetails = roomDetails;
-        }
+        public Room(RoomDetails roomDetails, RoomCells roomCells) : this(roomDetails, roomCells.cells) { }
 
         public override string ToString()
         {
@@ -62,10 +59,9 @@ namespace TowerBuilder.Stores.Rooms
             InitializeFurniture();
         }
 
-        public void SetRoomKey(RoomKey roomKey)
+        public void SetTemplate(RoomDetails roomDetails)
         {
-            this.roomKey = roomKey;
-            this.roomDetails = Rooms.Constants.ROOM_DETAILS_MAP[roomKey];
+            this.roomDetails = roomDetails;
         }
 
         public void SetRoomCells(RoomCells roomCells)

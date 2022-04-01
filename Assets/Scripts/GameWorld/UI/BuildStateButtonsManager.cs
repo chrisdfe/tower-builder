@@ -38,79 +38,100 @@ namespace TowerBuilder.GameWorld.UI
 
             originalColor = LobbyButton.colors.normalColor;
 
-            SelectButton(Registry.Stores.UI.buildToolSubState.selectedRoomKey);
-            Registry.Stores.UI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            SelectButton(Registry.Stores.UI.buildToolSubState.selectedRoomDetails);
+            Registry.Stores.UI.buildToolSubState.onSelectedRoomDetailsUpdated += OnSelectedRoomDetailsUpdated;
         }
 
         void OnHallwayButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.Hallway);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("Hallway");
         }
 
         void OnLobbyButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.LargeLobby);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("LargeLobby");
         }
 
         void OnStairsButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.Stairwell);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("Stairwell");
         }
 
         void OnElevatorButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.LargeElevator);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("LargeElevator");
         }
 
         void OnOfficeButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.Office);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("Office");
         }
 
         void OnCondoButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomKey(RoomKey.Condo);
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("Condo");
         }
 
-        void OnSelectedRoomKeyUpdated(RoomKey roomKey)
+        void OnSelectedRoomDetailsUpdated(RoomDetails roomDetails)
         {
             if (currentButton != null)
             {
                 currentButton.image.color = originalColor;
             }
 
-            SelectButton(roomKey);
+            SelectButton(roomDetails);
         }
 
-        void SelectButton(RoomKey roomKey)
+        void SelectButton(RoomDetails roomDetails)
         {
-            currentButton = GetButtonFor(roomKey);
-            currentButton.image.color = PRESSED_COLOR;
+            currentButton = GetButtonFor(roomDetails);
+
+            if (currentButton != null)
+            {
+                currentButton.image.color = PRESSED_COLOR;
+            }
         }
 
-        Button GetButtonFor(RoomKey roomKey)
+        Button GetButtonFor(RoomDetails roomDetails)
         {
-            if (roomKey == RoomKey.Lobby)
+            if (roomDetails == null)
+            {
+                return null;
+            }
+
+            string roomKey = roomDetails.key;
+
+            if (roomKey == "Lobby")
             {
                 return LobbyButton;
             }
 
-            if (roomKey == RoomKey.Elevator)
+            if (roomKey == "Stairwell")
+            {
+                return StairsButton;
+            }
+
+            if (roomKey == "Elevator")
             {
                 return ElevatorButton;
             }
 
-            if (roomKey == RoomKey.Office)
+            if (roomKey == "Office")
             {
                 return OfficeButton;
             }
 
-            if (roomKey == RoomKey.Condo)
+            if (roomKey == "Condo")
             {
                 return CondoButton;
             }
 
-            return HallwayButton;
+            if (roomKey == "Hallway")
+            {
+                return HallwayButton;
+            }
+
+            return null;
         }
     }
 }

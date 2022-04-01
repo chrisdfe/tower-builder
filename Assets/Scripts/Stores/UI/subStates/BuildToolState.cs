@@ -15,9 +15,9 @@ namespace TowerBuilder.Stores.UI
         public CellCoordinates buildStartCell { get; private set; } = null;
         public UI.State.cellCoordinatesEvent onBuildStartCellUpdated;
 
-        public RoomKey selectedRoomKey { get; private set; }
-        public delegate void SelectedRoomKeyEvent(RoomKey selectedRoomKey);
-        public SelectedRoomKeyEvent onSelectedRoomKeyUpdated;
+        public RoomDetails selectedRoomDetails { get; private set; }
+        public delegate void SelectedRoomDetailsEvent(RoomDetails selectedRoomDetails);
+        public SelectedRoomDetailsEvent onSelectedRoomDetailsUpdated;
 
         public bool buildIsActive { get; private set; } = false;
 
@@ -64,17 +64,27 @@ namespace TowerBuilder.Stores.UI
             SearchForBlueprintRoomConnections();
         }
 
-
-        public void SetSelectedRoomKey(RoomKey roomKey)
+        public void SetSelectedRoomDetails(string roomKey)
         {
-            this.selectedRoomKey = roomKey;
+            // TODO - put this somewhere more general
+            RoomDetails roomDetails = Rooms.Constants.ROOM_DEFINITIONS.Find(details => details.key == roomKey);
 
-            currentBlueprint.SetRoomKey(this.selectedRoomKey);
+            if (roomDetails != null)
+            {
+                SetSelectedRoomDetails(roomDetails);
+            }
+        }
+
+        public void SetSelectedRoomDetails(RoomDetails roomDetails)
+        {
+            this.selectedRoomDetails = roomDetails;
+
+            currentBlueprint.SetRoomDetails(this.selectedRoomDetails);
             currentBlueprint.Validate(Registry.Stores);
 
-            if (onSelectedRoomKeyUpdated != null)
+            if (onSelectedRoomDetailsUpdated != null)
             {
-                onSelectedRoomKeyUpdated(selectedRoomKey);
+                onSelectedRoomDetailsUpdated(selectedRoomDetails);
             }
         }
 
@@ -104,7 +114,7 @@ namespace TowerBuilder.Stores.UI
 
         public void SetBuildStartCell()
         {
-            if (selectedRoomKey == RoomKey.None)
+            if (selectedRoomDetails == null)
             {
                 return;
             }
@@ -154,7 +164,7 @@ namespace TowerBuilder.Stores.UI
 
         void CreateBlueprint()
         {
-            currentBlueprint = new Blueprint(selectedRoomKey, parentState.currentSelectedCell);
+            currentBlueprint = new Blueprint(selectedRoomDetails, parentState.currentSelectedCell);
         }
 
         void DeleteBlueprint()
@@ -165,7 +175,7 @@ namespace TowerBuilder.Stores.UI
 
         void AttemptToCreateRoomFromCurrentBlueprint()
         {
-            if (selectedRoomKey == RoomKey.None)
+            if (selectedRoomDetails == null)
             {
                 return;
             }
@@ -246,7 +256,7 @@ namespace TowerBuilder.Stores.UI
                     {
                         if (
                             otherRoom != null &&
-                            otherRoom.roomKey == selectedRoomKey &&
+                            otherRoom.roomDetails.key == selectedRoomDetails.key &&
                             !result.Contains(otherRoom)
                         )
                         {
@@ -275,7 +285,7 @@ namespace TowerBuilder.Stores.UI
                     {
                         if (
                             otherRoom != null &&
-                            otherRoom.roomKey == selectedRoomKey &&
+                            otherRoom.roomDetails.key == selectedRoomDetails.key &&
                             !result.Contains(otherRoom)
                         )
                         {

@@ -4,6 +4,7 @@ using System.Runtime;
 using TowerBuilder.Stores;
 
 using TowerBuilder.Stores.Rooms;
+using TowerBuilder.Stores.Rooms.Blueprints;
 using TowerBuilder.Stores.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +32,7 @@ namespace TowerBuilder.GameWorld.UI
             UpdateDescriptionText();
 
             Registry.Stores.UI.onToolStateUpdated += OnToolStateUpdated;
-            Registry.Stores.UI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            Registry.Stores.UI.buildToolSubState.onSelectedRoomDetailsUpdated += OnSelectedRoomDetailsUpdated;
         }
 
         void Update()
@@ -64,7 +65,7 @@ namespace TowerBuilder.GameWorld.UI
             }
         }
 
-        void OnSelectedRoomKeyUpdated(RoomKey selectedRoomKey)
+        void OnSelectedRoomDetailsUpdated(RoomDetails selectedRoomDetails)
         {
             UpdateDescriptionText();
         }
@@ -74,16 +75,16 @@ namespace TowerBuilder.GameWorld.UI
             ToolState toolState = Registry.Stores.UI.toolState;
             if (toolState == ToolState.Build)
             {
-                RoomKey selectedRoomKey = Registry.Stores.UI.buildToolSubState.selectedRoomKey;
-                if (selectedRoomKey == RoomKey.None)
+                RoomDetails selectedRoomDetails = Registry.Stores.UI.buildToolSubState.selectedRoomDetails;
+                if (selectedRoomDetails == null)
                 {
-                    descriptionText.text = $"{toolState} - {selectedRoomKey}";
+                    descriptionText.text = $"{toolState}";
                 }
                 else
                 {
-                    RoomDetails roomDetails = Registry.Stores.UI.buildToolSubState.currentBlueprint.room.roomDetails;
-                    int price = roomDetails.price;
-                    descriptionText.text = $"{toolState} - {selectedRoomKey}: ${price}";
+                    Blueprint blueprint = Registry.Stores.UI.buildToolSubState.currentBlueprint;
+                    int price = blueprint.room.GetPrice();
+                    descriptionText.text = $"{toolState} - {selectedRoomDetails.title}: ${price}";
                 }
             }
             else

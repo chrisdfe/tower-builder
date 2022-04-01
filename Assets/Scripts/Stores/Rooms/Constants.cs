@@ -15,13 +15,12 @@ namespace TowerBuilder.Stores.Rooms
         // TODO - this should go somewhere else
         public static float TILE_SIZE = 1f;
 
-        public static Dictionary<RoomKey, RoomDetails> ROOM_DETAILS_MAP = new Dictionary<RoomKey, RoomDetails>()
+        public static List<RoomDetails> ROOM_DEFINITIONS = new List<RoomDetails>()
         {
-            [RoomKey.None] = new RoomDetails(),
-
-            [RoomKey.Hallway] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Hallway",
+                key = "Hallway",
                 price = 500,
                 category = RoomCategory.Hallway,
                 width = 1,
@@ -35,11 +34,14 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.gray
             },
 
-            [RoomKey.Lobby] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Lobby",
-                price = 5000,
+                key = "Lobby",
                 category = RoomCategory.Lobby,
+
+                price = 5000,
+
                 width = 1,
                 height = 1,
                 resizability = RoomResizability.Horizontal(),
@@ -51,9 +53,11 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.red,
             },
 
-            [RoomKey.LargeLobby] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Large Lobby",
+                key = "LargeLobby",
+
                 price = 12000,
                 category = RoomCategory.Lobby,
                 width = 1,
@@ -67,9 +71,11 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.red,
             },
 
-            [RoomKey.Office] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Office",
+                key = "Office",
+
                 price = 20000,
                 category = RoomCategory.Office,
                 width = 3,
@@ -93,9 +99,11 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.green,
             },
 
-            [RoomKey.Barracks] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Barracks",
+                key = "Barracks",
+
                 price = 30000,
                 category = RoomCategory.Residence,
 
@@ -123,9 +131,11 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.yellow,
             },
 
-            [RoomKey.Bedroom] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Bedroom",
+                key = "Bedroom",
+
                 price = 12000,
                 category = RoomCategory.Residence,
 
@@ -151,9 +161,11 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.yellow,
             },
 
-            [RoomKey.Condo] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Condo",
+                key = "Condo",
+
                 price = 50000,
                 category = RoomCategory.Residence,
                 width = 5,
@@ -178,9 +190,11 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.yellow,
             },
 
-            [RoomKey.Elevator] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Elevator",
+                key = "Elevator",
+
                 price = 2000,
                 category = RoomCategory.Elevator,
 
@@ -197,9 +211,11 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.magenta,
             },
 
-            [RoomKey.ServiceElevator] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Service Elevator",
+                key = "ServiceElevator",
+
                 price = 1500,
                 category = RoomCategory.Elevator,
 
@@ -215,9 +231,11 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.yellow,
             },
 
-            [RoomKey.LargeElevator] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Large Elevator",
+                key = "LargeElevator",
+
                 price = 5000,
                 category = RoomCategory.Elevator,
 
@@ -232,9 +250,11 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.magenta,
             },
 
-            [RoomKey.Stairwell] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Stairwell",
+                key = "Stairwell",
+
                 price = 5000,
                 category = RoomCategory.Stairs,
                 width = 1,
@@ -248,10 +268,13 @@ namespace TowerBuilder.Stores.Rooms
                 privacy = RoomPrivacy.Public,
             },
 
-            [RoomKey.LargeStairwell] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Large Stairwell",
+                key = "LargeStairwell",
+
                 price = 8000,
+
                 category = RoomCategory.Stairs,
                 width = 2,
                 height = 1,
@@ -264,10 +287,13 @@ namespace TowerBuilder.Stores.Rooms
                 privacy = RoomPrivacy.Public,
             },
 
-            [RoomKey.SmallPark] = new RoomDetails()
+            new RoomDetails()
             {
                 title = "Small Park",
+                key = "SmallPark",
+
                 price = 10000,
+
                 category = RoomCategory.Park,
                 width = 1,
                 height = 1,

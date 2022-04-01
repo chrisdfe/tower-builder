@@ -20,9 +20,9 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
         public CellCoordinates buildStartCoordinates { get; private set; }
         public CellCoordinates buildEndCoordinates { get; private set; }
 
-        public Blueprint(RoomKey roomKey, CellCoordinates buildStartCoordinates)
+        public Blueprint(RoomDetails roomDetails, CellCoordinates buildStartCoordinates)
         {
-            this.room = new Room(roomKey);
+            this.room = new Room(roomDetails);
             this.room.isInBlueprintMode = true;
 
             this.buildStartCoordinates = buildStartCoordinates.Clone();
@@ -37,13 +37,15 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
 
         public void Reset()
         {
-            RoomKey roomKey = this.room.roomKey;
-            this.room = new Room(roomKey);
+            this.room = new Room(this.room.roomDetails);
+            SetRoomCells();
+            ResetBlueprintCells();
+            this.room.isInBlueprintMode = true;
         }
 
-        public void SetRoomKey(RoomKey roomKey)
+        public void SetRoomDetails(RoomDetails roomDetails)
         {
-            room.SetRoomKey(roomKey);
+            room.SetTemplate(roomDetails);
             SetRoomCells();
             ResetBlueprintCells();
         }
@@ -66,6 +68,12 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
         {
             RoomDetails roomDetails = room.roomDetails;
             RoomCells roomCells;
+
+            if (roomDetails == null)
+            {
+                roomCells = new RoomCells(0, 0);
+                return;
+            }
 
             if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
             {
@@ -137,8 +145,14 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
 
         public List<RoomValidationError> Validate(StoreRegistry stores)
         {
-            RoomValidatorBase validator = room.roomDetails.validatorFactory();
-            validationErrors = validator.Validate(room, stores);
+            validationErrors = new List<RoomValidationError>();
+
+            if (room.roomDetails != null)
+            {
+                RoomValidatorBase validator = room.roomDetails.validatorFactory();
+                validationErrors = validator.Validate(room, stores);
+            }
+
             return validationErrors;
         }
 
