@@ -2,8 +2,8 @@ namespace TowerBuilder.Stores.Time
 {
     public class State
     {
-        public bool isActive { get; private set; }
-        public int tick { get; private set; }
+        public bool isActive { get; private set; } = false;
+        public int tick { get; private set; } = 0;
         public TimeValue time { get; private set; }
         public TimeSpeed speed { get; private set; }
 

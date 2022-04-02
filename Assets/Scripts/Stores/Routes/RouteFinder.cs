@@ -9,16 +9,6 @@ namespace TowerBuilder.Stores.Routes
 {
     public class RouteFinder
     {
-        public class RouteFinderError
-        {
-            public string message { get; private set; } = "";
-
-            public RouteFinderError(string message)
-            {
-                this.message = message;
-            }
-        }
-
         public List<RouteAttempt> routeAttempts;
 
         CellCoordinates startCoordinates;
@@ -48,14 +38,7 @@ namespace TowerBuilder.Stores.Routes
             routeAttempts = new List<RouteAttempt>();
 
             RouteAttempt firstRouteAttempt = new RouteAttempt(new List<Room>(), new List<RouteSegment>());
-            // TODO - this segment doesn't really need a startNode, it just needs an endNode
-            firstRouteAttempt.AddRouteSegment(
-                new RouteSegment(
-                    new RouteSegmentNode(startCoordinates, startRoom),
-                    new RouteSegmentNode(startCoordinates, startRoom),
-                    RouteSegmentType.WalkingAcrossRoom
-                )
-            );
+
             firstRouteAttempt.AddVisitedRoom(startRoom);
 
             ContinueRouteAttempt(firstRouteAttempt);
@@ -66,7 +49,15 @@ namespace TowerBuilder.Stores.Routes
 
         void ContinueRouteAttempt(RouteAttempt currentRouteAttempt)
         {
-            RouteSegmentNode latestSegmentNode = currentRouteAttempt.GetLatestSegmentNode();
+            RouteSegmentNode latestSegmentNode;
+            if (currentRouteAttempt.routeSegments.Count == 0)
+            {
+                latestSegmentNode = new RouteSegmentNode(startCoordinates, startRoom);
+            }
+            else
+            {
+                latestSegmentNode = currentRouteAttempt.GetLatestSegmentNode();
+            }
 
             Room currentRoom = latestSegmentNode.room;
 
@@ -97,6 +88,7 @@ namespace TowerBuilder.Stores.Routes
             foreach (RoomConnection roomConnection in roomConnections.connections)
             {
                 RouteAttempt routeAttemptBranch = BranchRouteAttempt(currentRouteAttempt);
+                // RouteAttempt routeAttemptBranch = BranchRouteAttempt(currentRouteAttempt);
                 Room otherRoom = roomConnection.GetConnectedRoom(currentRoom);
 
                 if (!routeAttemptBranch.visitedRooms.Contains(otherRoom))

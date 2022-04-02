@@ -80,7 +80,10 @@ namespace TowerBuilder.Stores.Residents
             currentRouteSegment = currentRoute.segments[currentRouteSegmentIndex];
 
             Debug.Log($"going to segment {index}");
-            GoToSegmentCellStep(0);
+            // Since the 1st cellStep is going to always have the same coordinates as
+            // the last step of the previous segment, and that segments will always have
+            // at least 2 nodes, we can safely go to the 2nd cellStep instead of the 1st
+            GoToSegmentCellStep(1);
         }
 
 

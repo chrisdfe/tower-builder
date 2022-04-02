@@ -103,5 +103,11 @@ namespace TowerBuilder.Stores.Residents
             debugResident.ProgressAlongCurrentRoute();
             SetResidentPosition(debugResident, debugResident.coordinates);
         }
+
+        public void ResetDebugResidentRouteProgress()
+        {
+            debugResident.StartOnRoute(debugResident.currentRoute);
+            SetResidentPosition(debugResident, debugResident.coordinates);
+        }
     }
 }
