@@ -21,10 +21,11 @@ namespace TowerBuilder.Stores.Rooms
             {
                 title = "Hallway",
                 key = "Hallway",
-                price = 500,
                 category = RoomCategory.Hallway,
-                width = 1,
-                height = 1,
+
+                price = 500,
+
+                blockDimensions = new Dimensions(1, 1),
                 resizability = RoomResizability.Flexible(),
                 privacy = RoomPrivacy.Public,
 
@@ -42,8 +43,7 @@ namespace TowerBuilder.Stores.Rooms
 
                 price = 5000,
 
-                width = 1,
-                height = 1,
+                blockDimensions = new Dimensions(1, 1),
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
 
@@ -60,8 +60,9 @@ namespace TowerBuilder.Stores.Rooms
 
                 price = 12000,
                 category = RoomCategory.Lobby,
-                width = 1,
-                height = 2,
+
+                blockDimensions = new Dimensions(1, 2),
+
                 resizability = RoomResizability.Horizontal(),
                 privacy = RoomPrivacy.Public,
 
@@ -78,8 +79,9 @@ namespace TowerBuilder.Stores.Rooms
 
                 price = 20000,
                 category = RoomCategory.Office,
-                width = 3,
-                height = 1,
+
+                blockDimensions = new Dimensions(3, 1),
+
                 privacy = RoomPrivacy.Private,
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
@@ -107,8 +109,8 @@ namespace TowerBuilder.Stores.Rooms
                 price = 30000,
                 category = RoomCategory.Residence,
 
-                width = 2,
-                height = 1,
+                blockDimensions = new Dimensions(2, 1),
+
                 privacy = RoomPrivacy.Private,
 
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
@@ -139,8 +141,8 @@ namespace TowerBuilder.Stores.Rooms
                 price = 12000,
                 category = RoomCategory.Residence,
 
-                width = 2,
-                height = 1,
+                blockDimensions = new Dimensions(2, 1),
+
                 privacy = RoomPrivacy.Private,
 
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
@@ -168,8 +170,9 @@ namespace TowerBuilder.Stores.Rooms
 
                 price = 50000,
                 category = RoomCategory.Residence,
-                width = 5,
-                height = 1,
+
+                blockDimensions = new Dimensions(5, 1),
+
                 privacy = RoomPrivacy.Private,
 
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
@@ -198,8 +201,7 @@ namespace TowerBuilder.Stores.Rooms
                 price = 2000,
                 category = RoomCategory.Elevator,
 
-                width = 1,
-                height = 1,
+                blockDimensions = new Dimensions(1, 1),
 
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
@@ -219,8 +221,8 @@ namespace TowerBuilder.Stores.Rooms
                 price = 1500,
                 category = RoomCategory.Elevator,
 
-                width = 1,
-                height = 1,
+                blockDimensions = new Dimensions(1, 1),
+
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Private,
 
@@ -239,8 +241,8 @@ namespace TowerBuilder.Stores.Rooms
                 price = 5000,
                 category = RoomCategory.Elevator,
 
-                width = 2,
-                height = 1,
+                blockDimensions = new Dimensions(2, 1),
+
                 resizability = RoomResizability.Vertical(),
                 privacy = RoomPrivacy.Public,
 
@@ -255,10 +257,12 @@ namespace TowerBuilder.Stores.Rooms
                 title = "Stairwell",
                 key = "Stairwell",
 
-                price = 5000,
                 category = RoomCategory.Stairs,
-                width = 1,
-                height = 1,
+
+                price = 5000,
+
+                blockDimensions = new Dimensions(1, 1),
+
                 resizability = RoomResizability.Vertical(),
                 color = Color.yellow,
 
@@ -276,8 +280,9 @@ namespace TowerBuilder.Stores.Rooms
                 price = 8000,
 
                 category = RoomCategory.Stairs,
-                width = 2,
-                height = 1,
+
+                blockDimensions = new Dimensions(2, 1),
+
                 resizability = RoomResizability.Vertical(),
                 color = Color.yellow,
 
@@ -295,9 +300,10 @@ namespace TowerBuilder.Stores.Rooms
                 price = 10000,
 
                 category = RoomCategory.Park,
-                width = 1,
-                height = 1,
-                color = Color.green,
+
+                blockDimensions = new Dimensions(1, 1),
+
+                resizability = RoomResizability.Flexible(),
 
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                 {
@@ -313,6 +319,8 @@ namespace TowerBuilder.Stores.Rooms
                 validatorFactory = () => new DefaultRoomValidator(),
 
                 privacy = RoomPrivacy.Public,
+
+                color = Color.green,
             }
         };
     }

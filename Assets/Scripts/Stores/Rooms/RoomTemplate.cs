@@ -20,8 +20,8 @@ namespace TowerBuilder.Stores.Rooms
 
         public List<RoomFurnitureAttributesBase> furnitureAttributes = new List<RoomFurnitureAttributesBase>();
 
-        public int width = 1;
-        public int height = 1;
+        public Dimensions blockDimensions;
+
         public RoomResizability resizability = RoomResizability.Inflexible();
 
         public RoomPrivacy privacy = RoomPrivacy.Public;

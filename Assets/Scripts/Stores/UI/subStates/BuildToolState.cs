@@ -202,19 +202,14 @@ namespace TowerBuilder.Stores.UI
             Room newRoom = currentBlueprint.room;
             if (roomsToCombineWith.Count > 0)
             {
-                RoomCells newRoomCells = currentBlueprint.room.roomCells;
                 foreach (Room otherRoom in roomsToCombineWith)
                 {
-                    // Group all of those roomcells into a single list
-                    newRoomCells.Add(otherRoom.roomCells);
+                    newRoom.AddBlocks(otherRoom.blocks);
 
-                    // Delete room
                     Registry.Stores.Rooms.DestroyRoom(otherRoom);
                 }
 
-                // Create new room with all of those room cells from previous rooms
                 // TODO - add to the 1st item in roomsToCombineWith instead of replacing both with a new room?
-                newRoom.SetRoomCells(newRoomCells);
             }
 
             Registry.Stores.Rooms.AddRoom(newRoom);

@@ -6,6 +6,8 @@ using System.Threading;
 using TowerBuilder.Stores.Rooms.Entrances;
 using TowerBuilder.Stores.Rooms.Furniture;
 
+using UnityEngine;
+
 namespace TowerBuilder.Stores.Rooms
 {
     public class Room
@@ -18,6 +20,10 @@ namespace TowerBuilder.Stores.Rooms
 
         public bool isInBlueprintMode = false;
 
+        public CellCoordinates bottomLeftCoordinates;
+        public CellCoordinates blockCount;
+
+        public List<RoomCells> blocks;
         public RoomCells roomCells;
 
         public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
@@ -64,11 +70,36 @@ namespace TowerBuilder.Stores.Rooms
             this.roomTemplate = roomTemplate;
         }
 
-        public void SetRoomCells(RoomCells roomCells)
+        public void CalculateRoomCells()
         {
-            this.roomCells.Set(roomCells);
+            roomCells = new RoomCells();
+            blocks = new List<RoomCells>();
+
+            Dimensions blockDimensions = this.roomTemplate.blockDimensions;
+            for (int x = 0; x < blockCount.x; x++)
+            {
+                for (int floor = 0; floor < blockCount.floor; floor++)
+                {
+                    RoomCells blockCells = new RoomCells(
+                        blockDimensions.width,
+                        blockDimensions.height
+                    );
+                    blockCells.PositionAtCoordinates(new CellCoordinates(
+                        bottomLeftCoordinates.x + (blockDimensions.width * x),
+                        bottomLeftCoordinates.floor + (blockDimensions.height * floor)
+                    ));
+                    blocks.Add(blockCells);
+                    roomCells.Add(blockCells);
+                }
+            }
+
             ResetRoomCellOrientations();
             ResetRoomEntrances();
+        }
+
+        public void AddBlocks(List<RoomCells> blocks)
+        {
+            this.blocks = this.blocks.Concat(blocks).ToList();
         }
 
         public int GetPrice()
@@ -79,24 +110,25 @@ namespace TowerBuilder.Stores.Rooms
                 return roomTemplate.price;
             }
 
-            CellCoordinates copies = GetCopies();
+            // CellCoordinates copies = GetCopies();
             // Work out how many copies of the base blueprint size is being built
             // roomTemplate.price is per base blueprint copy
             // TODO - this calculation should be elsewhere to allow this number to show up in the UI
             //        as the blueprint is being built
 
-            int result = roomTemplate.price * copies.x * copies.floor;
+            // int result = roomTemplate.price * copies.x * copies.floor;
+            int result = roomTemplate.price;
 
             return result;
         }
 
-        public CellCoordinates GetCopies()
-        {
-            return new CellCoordinates(
-                roomCells.GetWidth() / roomTemplate.width,
-                roomCells.GetFloorSpan() / roomTemplate.height
-            );
-        }
+        // public CellCoordinates GetCopies()
+        // {
+        //     return new CellCoordinates(
+        //         roomCells.GetWidth() / roomTemplate.width,
+        //         roomCells.GetFloorSpan() / roomTemplate.height
+        //     );
+        // }
 
 
         void GenerateId()

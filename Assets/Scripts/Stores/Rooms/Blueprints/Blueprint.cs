@@ -6,6 +6,7 @@ using System.Runtime;
 using TowerBuilder.Stores;
 using TowerBuilder.Stores.Rooms;
 using TowerBuilder.Stores.Rooms.Validators;
+using TowerBuilder.Utils;
 using UnityEngine;
 
 namespace TowerBuilder.Stores.Rooms.Blueprints
@@ -17,8 +18,17 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
 
         public Room room { get; private set; }
 
-        public CellCoordinates buildStartCoordinates { get; private set; }
-        public CellCoordinates buildEndCoordinates { get; private set; }
+        public CellCoordinates buildStartCoordinates { get; private set; } = new CellCoordinates(0, 0);
+        public CellCoordinates buildEndCoordinates { get; private set; } = new CellCoordinates(0, 0);
+
+        // TODO - this logic could go in selectionbox itself
+        SelectionBox selectionBox
+        {
+            get
+            {
+                return new SelectionBox(buildStartCoordinates, buildEndCoordinates);
+            }
+        }
 
         public Blueprint(RoomTemplate roomTemplate, CellCoordinates buildStartCoordinates)
         {
@@ -67,80 +77,33 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
         public void SetRoomCells()
         {
             RoomTemplate roomTemplate = room.roomTemplate;
-            RoomCells roomCells;
 
             if (roomTemplate == null)
             {
-                roomCells = new RoomCells(0, 0);
                 return;
             }
 
-            if (roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
-            {
-                roomCells = new RoomCells(roomTemplate.width, roomTemplate.height);
-                roomCells.PositionAtCoordinates(buildStartCoordinates);
-            }
-            else
-            {
-                CellCoordinates flexibleBuildStartCoordinates = buildStartCoordinates.Clone();
-                CellCoordinates flexibleBuildEndCoordinates = buildStartCoordinates.Clone();
+            room.bottomLeftCoordinates = selectionBox.bottomLeft;
 
+            CellCoordinates blockCount = new CellCoordinates(1, 1);
+
+            if (!roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
+            {
                 // Restrict resizability to X/Y depending on RoomFlexibility
-                // TODO - it's not super obvious what is going on here
-                if (
-                    roomTemplate.resizability.x &&
-                    buildEndCoordinates.x != buildStartCoordinates.x
-                )
+                if (roomTemplate.resizability.x)
                 {
-                    flexibleBuildEndCoordinates.x = buildEndCoordinates.x;
+                    blockCount.x = MathUtils.RoundUpToNearest(selectionBox.dimensions.width, roomTemplate.blockDimensions.width);
                 }
 
-                if (
-                    roomTemplate.resizability.floor &&
-                    buildEndCoordinates.floor != buildStartCoordinates.floor
-                )
+                if (roomTemplate.resizability.floor)
                 {
-                    flexibleBuildEndCoordinates.floor = buildEndCoordinates.floor;
+                    blockCount.floor = MathUtils.RoundUpToNearest(selectionBox.dimensions.height, roomTemplate.blockDimensions.height);
                 }
-
-                // Make sure that the start coordinates are in the top left
-                if (flexibleBuildStartCoordinates.x > flexibleBuildEndCoordinates.x)
-                {
-                    CellCoordinates temp = flexibleBuildEndCoordinates.Clone();
-                    flexibleBuildEndCoordinates = flexibleBuildStartCoordinates.Clone();
-                    flexibleBuildStartCoordinates = temp.Clone();
-                }
-
-                // Round up to fit base blueprint size
-                CellCoordinates selectionAreaDimensions = new CellCoordinates(
-                    (flexibleBuildEndCoordinates.x - flexibleBuildStartCoordinates.x) + 1,
-                    (flexibleBuildEndCoordinates.floor - flexibleBuildStartCoordinates.floor) + 1
-                );
-
-                // Dimensions rounded up to the nearest width or height
-                CellCoordinates roundedUpDimensions = new CellCoordinates(
-                    (int)(Mathf.Ceil(((float)selectionAreaDimensions.x / (float)roomTemplate.width)) * (float)roomTemplate.width),
-                    (int)(Mathf.Ceil(((float)selectionAreaDimensions.floor / (float)roomTemplate.height)) * (float)roomTemplate.height)
-                );
-
-                // Determine how many copies (number of the base room blueprint size) there are in each direction
-                // TODO - it feels like this "get copies"  code could be abstracted out into a new method
-                // Flexible room sizes need to know how many of the room blueprint can fit within
-                // the start+end coordinates
-                CellCoordinates copies = new CellCoordinates(
-                    (int)((float)roundedUpDimensions.x / (float)roomTemplate.width),
-                    (int)((float)roundedUpDimensions.floor / (float)roomTemplate.height)
-                );
-
-                flexibleBuildEndCoordinates = new CellCoordinates(
-                    flexibleBuildStartCoordinates.x + (copies.x * roomTemplate.width) - 1,
-                    flexibleBuildStartCoordinates.floor + (copies.floor * roomTemplate.height) - 1
-                );
-
-                roomCells = new RoomCells(flexibleBuildStartCoordinates, flexibleBuildEndCoordinates);
             }
 
-            this.room.SetRoomCells(roomCells);
+            room.blockCount = blockCount;
+
+            this.room.CalculateRoomCells();
         }
 
         public List<RoomValidationError> Validate(StoreRegistry stores)

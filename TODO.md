@@ -5,8 +5,9 @@
 
 ## Tasks
 
+- Ability to destroy a single block in a flexible room
 - Residents currently stay on the same cell for more than one cycle currently - because of repeating cellCoordinates in segment end/start
-- Move current route traversal Resident code out into separate "Walking" Behavior
+- Move current route traversal Resident code out into separate "motor" class
 - namespace reorganization
   - Split "type definitions (Room, Route, Resident etc) into "Data" namespace
   - Rename "Stores" to "GameState" or something
@@ -22,7 +23,6 @@
   - elevator cars???
     - potentially furniture could replace "room modules"
       - rooms would just be generic rooms, and furniture would dictate the behavior/functionality
-- Flexible-sized rooms should remember the 'blocks' they are made up of, to avoid having to recalculate it when you destroy individual blocks.
 - "Schedules" store, possibly right below timestore? residents will have schedules, but potentially weather effects and other such things could use this schedule mechanic
 - Route weighting mechanism to figure out which route is the best to take 
   - probably as simple as fewer cells traveled > more cells traveled
@@ -63,7 +63,6 @@
 - RouteFinder creates too many branches
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
-- Blueprint validators should probably take in the entire Store object
 - FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor
 - RoomCells could implememnt IEnumerable
 - A "UI settings" object I can tweak a bunch of stuff in the unity editor with, instead of public serializable fields on each script?
@@ -83,6 +82,8 @@
 
 # Done
 
+- Flexible-sized rooms should remember the 'blocks' they are made up of, to avoid having to recalculate it when you destroy individual blocks.
+- Blueprint validators should probably take in the entire Store object
 - Rename RoomDetails to RoomTemplate
 - Use factories for RoomValidator and RoomEntranceBuilder, right now all rooms of the same type share the same instance
 - GetRoomPrice should live on Room, not Blueprint
