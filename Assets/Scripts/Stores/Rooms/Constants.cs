@@ -15,9 +15,9 @@ namespace TowerBuilder.Stores.Rooms
         // TODO - this should go somewhere else
         public static float TILE_SIZE = 1f;
 
-        public static List<RoomDetails> ROOM_DEFINITIONS = new List<RoomDetails>()
+        public static List<RoomTemplate> ROOM_DEFINITIONS = new List<RoomTemplate>()
         {
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Hallway",
                 key = "Hallway",
@@ -34,7 +34,7 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.gray
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Lobby",
                 key = "Lobby",
@@ -53,7 +53,7 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.red,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Large Lobby",
                 key = "LargeLobby",
@@ -71,7 +71,7 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.red,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Office",
                 key = "Office",
@@ -99,7 +99,7 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.green,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Barracks",
                 key = "Barracks",
@@ -131,7 +131,7 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.yellow,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Bedroom",
                 key = "Bedroom",
@@ -161,7 +161,7 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.yellow,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Condo",
                 key = "Condo",
@@ -190,7 +190,7 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.yellow,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Elevator",
                 key = "Elevator",
@@ -211,7 +211,7 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.magenta,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Service Elevator",
                 key = "ServiceElevator",
@@ -231,7 +231,7 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.yellow,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Large Elevator",
                 key = "LargeElevator",
@@ -250,7 +250,7 @@ namespace TowerBuilder.Stores.Rooms
                 color = Color.magenta,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Stairwell",
                 key = "Stairwell",
@@ -268,7 +268,7 @@ namespace TowerBuilder.Stores.Rooms
                 privacy = RoomPrivacy.Public,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Large Stairwell",
                 key = "LargeStairwell",
@@ -287,7 +287,7 @@ namespace TowerBuilder.Stores.Rooms
                 privacy = RoomPrivacy.Public,
             },
 
-            new RoomDetails()
+            new RoomTemplate()
             {
                 title = "Small Park",
                 key = "SmallPark",

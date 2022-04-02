@@ -23,29 +23,29 @@ namespace TowerBuilder.Stores.Rooms
         public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
         public List<RoomFurnitureBase> furniture { get; private set; } = new List<RoomFurnitureBase>();
 
-        public RoomDetails roomDetails { get; private set; }
+        public RoomTemplate roomTemplate { get; private set; }
 
         public Room()
         {
             GenerateId();
-            roomDetails = new RoomDetails();
+            roomTemplate = new RoomTemplate();
             roomCells = new RoomCells();
             roomCells.onResize += OnRoomCellsResize;
         }
 
-        public Room(RoomDetails roomDetails) : this()
+        public Room(RoomTemplate roomTemplate) : this()
         {
-            this.roomDetails = roomDetails;
+            this.roomTemplate = roomTemplate;
         }
 
-        public Room(RoomDetails roomDetails, List<RoomCell> roomCellList) : this(roomDetails)
+        public Room(RoomTemplate roomTemplate, List<RoomCell> roomCellList) : this(roomTemplate)
         {
             roomCells.Add(roomCellList);
             ResetRoomCellOrientations();
             ResetRoomEntrances();
         }
 
-        public Room(RoomDetails roomDetails, RoomCells roomCells) : this(roomDetails, roomCells.cells) { }
+        public Room(RoomTemplate roomTemplate, RoomCells roomCells) : this(roomTemplate, roomCells.cells) { }
 
         public override string ToString()
         {
@@ -59,9 +59,9 @@ namespace TowerBuilder.Stores.Rooms
             InitializeFurniture();
         }
 
-        public void SetTemplate(RoomDetails roomDetails)
+        public void SetTemplate(RoomTemplate roomTemplate)
         {
-            this.roomDetails = roomDetails;
+            this.roomTemplate = roomTemplate;
         }
 
         public void SetRoomCells(RoomCells roomCells)
@@ -74,18 +74,18 @@ namespace TowerBuilder.Stores.Rooms
         public int GetPrice()
         {
             // Subtract appropriate balance from wallet
-            if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
+            if (roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
             {
-                return roomDetails.price;
+                return roomTemplate.price;
             }
 
             CellCoordinates copies = GetCopies();
             // Work out how many copies of the base blueprint size is being built
-            // roomDetails.price is per base blueprint copy
+            // roomTemplate.price is per base blueprint copy
             // TODO - this calculation should be elsewhere to allow this number to show up in the UI
             //        as the blueprint is being built
 
-            int result = roomDetails.price * copies.x * copies.floor;
+            int result = roomTemplate.price * copies.x * copies.floor;
 
             return result;
         }
@@ -93,8 +93,8 @@ namespace TowerBuilder.Stores.Rooms
         public CellCoordinates GetCopies()
         {
             return new CellCoordinates(
-                roomCells.GetWidth() / roomDetails.width,
-                roomCells.GetFloorSpan() / roomDetails.height
+                roomCells.GetWidth() / roomTemplate.width,
+                roomCells.GetFloorSpan() / roomTemplate.height
             );
         }
 
@@ -112,9 +112,9 @@ namespace TowerBuilder.Stores.Rooms
 
         void ResetRoomEntrances()
         {
-            if (roomDetails.entranceBuilderFactory != null)
+            if (roomTemplate.entranceBuilderFactory != null)
             {
-                RoomEntranceBuilderBase entranceBuilder = roomDetails.entranceBuilderFactory();
+                RoomEntranceBuilderBase entranceBuilder = roomTemplate.entranceBuilderFactory();
                 entrances = entranceBuilder.BuildRoomEntrances(roomCells);
             }
         }
@@ -162,7 +162,7 @@ namespace TowerBuilder.Stores.Rooms
             List<RoomModuleBase> result = new List<RoomModuleBase>();
 
             // TODO - there's probably a more elegant way of doing this that I will figure out later
-            foreach (RoomModuleDetailsBase roomUseDetails in roomDetails.moduleDetails)
+            foreach (RoomModuleDetailsBase roomUseDetails in roomTemplate.moduleDetails)
             {
                 switch (roomUseDetails.roomModuleKey)
                 {

@@ -38,53 +38,53 @@ namespace TowerBuilder.GameWorld.UI
 
             originalColor = LobbyButton.colors.normalColor;
 
-            SelectButton(Registry.Stores.UI.buildToolSubState.selectedRoomDetails);
-            Registry.Stores.UI.buildToolSubState.onSelectedRoomDetailsUpdated += OnSelectedRoomDetailsUpdated;
+            SelectButton(Registry.Stores.UI.buildToolSubState.selectedRoomTemplate);
+            Registry.Stores.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         void OnHallwayButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("Hallway");
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomTemplate("Hallway");
         }
 
         void OnLobbyButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("LargeLobby");
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomTemplate("LargeLobby");
         }
 
         void OnStairsButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("Stairwell");
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomTemplate("Stairwell");
         }
 
         void OnElevatorButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("LargeElevator");
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomTemplate("LargeElevator");
         }
 
         void OnOfficeButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("Office");
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomTemplate("Office");
         }
 
         void OnCondoButtonClick()
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomDetails("Condo");
+            Registry.Stores.UI.buildToolSubState.SetSelectedRoomTemplate("Condo");
         }
 
-        void OnSelectedRoomDetailsUpdated(RoomDetails roomDetails)
+        void OnSelectedRoomTemplateUpdated(RoomTemplate roomTemplate)
         {
             if (currentButton != null)
             {
                 currentButton.image.color = originalColor;
             }
 
-            SelectButton(roomDetails);
+            SelectButton(roomTemplate);
         }
 
-        void SelectButton(RoomDetails roomDetails)
+        void SelectButton(RoomTemplate roomTemplate)
         {
-            currentButton = GetButtonFor(roomDetails);
+            currentButton = GetButtonFor(roomTemplate);
 
             if (currentButton != null)
             {
@@ -92,14 +92,14 @@ namespace TowerBuilder.GameWorld.UI
             }
         }
 
-        Button GetButtonFor(RoomDetails roomDetails)
+        Button GetButtonFor(RoomTemplate roomTemplate)
         {
-            if (roomDetails == null)
+            if (roomTemplate == null)
             {
                 return null;
             }
 
-            string roomKey = roomDetails.key;
+            string roomKey = roomTemplate.key;
 
             if (roomKey == "Lobby")
             {

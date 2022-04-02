@@ -39,12 +39,12 @@ namespace TowerBuilder.GameWorld.UI
             RoomConnections roomConnections = Registry.Stores.Rooms.roomConnections.FindConnectionsForRoom(room);
 
             string text = room + "\n";
-            text += room.roomDetails.title + "\n";
-            text += room.roomDetails.price + "\n";
+            text += room.roomTemplate.title + "\n";
+            text += room.roomTemplate.price + "\n";
             text += "\n";
 
             text += $"{roomConnections.connections.Count} Connections\n";
-            // text += string.Join(", ", room.roomDetails.uses) + "\n";
+            // text += string.Join(", ", room.roomTemplate.uses) + "\n";
             foreach (RoomConnection connection in roomConnections.connections)
             {
                 // Room otherRoom = connection.GetConnectedRoom(room);

@@ -34,7 +34,7 @@ public class GroundManager : MonoBehaviour
         Registry.Stores.Rooms.onRoomDestroyed += OnRoomDestroyed;
         Registry.Stores.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
         Registry.Stores.UI.onToolStateUpdated += OnToolStateUpdated;
-        Registry.Stores.UI.buildToolSubState.onSelectedRoomDetailsUpdated += OnSelectedRoomDetailsUpdated;
+        Registry.Stores.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
     }
 
     void Start()
@@ -83,7 +83,7 @@ public class GroundManager : MonoBehaviour
         }
     }
 
-    void OnSelectedRoomDetailsUpdated(RoomDetails roomDetails)
+    void OnSelectedRoomTemplateUpdated(RoomTemplate roomTemplate)
     {
         UpdateBlueprintGroundCellsVisibility();
     }

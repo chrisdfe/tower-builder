@@ -20,9 +20,9 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
         public CellCoordinates buildStartCoordinates { get; private set; }
         public CellCoordinates buildEndCoordinates { get; private set; }
 
-        public Blueprint(RoomDetails roomDetails, CellCoordinates buildStartCoordinates)
+        public Blueprint(RoomTemplate roomTemplate, CellCoordinates buildStartCoordinates)
         {
-            this.room = new Room(roomDetails);
+            this.room = new Room(roomTemplate);
             this.room.isInBlueprintMode = true;
 
             this.buildStartCoordinates = buildStartCoordinates.Clone();
@@ -37,15 +37,15 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
 
         public void Reset()
         {
-            this.room = new Room(this.room.roomDetails);
+            this.room = new Room(this.room.roomTemplate);
             SetRoomCells();
             ResetBlueprintCells();
             this.room.isInBlueprintMode = true;
         }
 
-        public void SetRoomDetails(RoomDetails roomDetails)
+        public void SetRoomTemplate(RoomTemplate roomTemplate)
         {
-            room.SetTemplate(roomDetails);
+            room.SetTemplate(roomTemplate);
             SetRoomCells();
             ResetBlueprintCells();
         }
@@ -66,18 +66,18 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
 
         public void SetRoomCells()
         {
-            RoomDetails roomDetails = room.roomDetails;
+            RoomTemplate roomTemplate = room.roomTemplate;
             RoomCells roomCells;
 
-            if (roomDetails == null)
+            if (roomTemplate == null)
             {
                 roomCells = new RoomCells(0, 0);
                 return;
             }
 
-            if (roomDetails.resizability.Matches(RoomResizability.Inflexible()))
+            if (roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
             {
-                roomCells = new RoomCells(roomDetails.width, roomDetails.height);
+                roomCells = new RoomCells(roomTemplate.width, roomTemplate.height);
                 roomCells.PositionAtCoordinates(buildStartCoordinates);
             }
             else
@@ -88,7 +88,7 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
                 // Restrict resizability to X/Y depending on RoomFlexibility
                 // TODO - it's not super obvious what is going on here
                 if (
-                    roomDetails.resizability.x &&
+                    roomTemplate.resizability.x &&
                     buildEndCoordinates.x != buildStartCoordinates.x
                 )
                 {
@@ -96,7 +96,7 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
                 }
 
                 if (
-                    roomDetails.resizability.floor &&
+                    roomTemplate.resizability.floor &&
                     buildEndCoordinates.floor != buildStartCoordinates.floor
                 )
                 {
@@ -119,8 +119,8 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
 
                 // Dimensions rounded up to the nearest width or height
                 CellCoordinates roundedUpDimensions = new CellCoordinates(
-                    (int)(Mathf.Ceil(((float)selectionAreaDimensions.x / (float)roomDetails.width)) * (float)roomDetails.width),
-                    (int)(Mathf.Ceil(((float)selectionAreaDimensions.floor / (float)roomDetails.height)) * (float)roomDetails.height)
+                    (int)(Mathf.Ceil(((float)selectionAreaDimensions.x / (float)roomTemplate.width)) * (float)roomTemplate.width),
+                    (int)(Mathf.Ceil(((float)selectionAreaDimensions.floor / (float)roomTemplate.height)) * (float)roomTemplate.height)
                 );
 
                 // Determine how many copies (number of the base room blueprint size) there are in each direction
@@ -128,13 +128,13 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
                 // Flexible room sizes need to know how many of the room blueprint can fit within
                 // the start+end coordinates
                 CellCoordinates copies = new CellCoordinates(
-                    (int)((float)roundedUpDimensions.x / (float)roomDetails.width),
-                    (int)((float)roundedUpDimensions.floor / (float)roomDetails.height)
+                    (int)((float)roundedUpDimensions.x / (float)roomTemplate.width),
+                    (int)((float)roundedUpDimensions.floor / (float)roomTemplate.height)
                 );
 
                 flexibleBuildEndCoordinates = new CellCoordinates(
-                    flexibleBuildStartCoordinates.x + (copies.x * roomDetails.width) - 1,
-                    flexibleBuildStartCoordinates.floor + (copies.floor * roomDetails.height) - 1
+                    flexibleBuildStartCoordinates.x + (copies.x * roomTemplate.width) - 1,
+                    flexibleBuildStartCoordinates.floor + (copies.floor * roomTemplate.height) - 1
                 );
 
                 roomCells = new RoomCells(flexibleBuildStartCoordinates, flexibleBuildEndCoordinates);
@@ -147,9 +147,9 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
         {
             validationErrors = new List<RoomValidationError>();
 
-            if (room.roomDetails != null)
+            if (room.roomTemplate != null)
             {
-                RoomValidatorBase validator = room.roomDetails.validatorFactory();
+                RoomValidatorBase validator = room.roomTemplate.validatorFactory();
                 validationErrors = validator.Validate(room, stores);
             }
 

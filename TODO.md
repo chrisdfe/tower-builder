@@ -22,7 +22,6 @@
   - elevator cars???
     - potentially furniture could replace "room modules"
       - rooms would just be generic rooms, and furniture would dictate the behavior/functionality
-- Rename RoomDetails to RoomTemplate
 - Flexible-sized rooms should remember the 'blocks' they are made up of, to avoid having to recalculate it when you destroy individual blocks.
 - "Schedules" store, possibly right below timestore? residents will have schedules, but potentially weather effects and other such things could use this schedule mechanic
 - Route weighting mechanism to figure out which route is the best to take 
@@ -82,9 +81,9 @@
 
 - Periodic supplies delivery? big old quarry trucks, helicopers, pack mule, etc
 
-
 # Done
 
+- Rename RoomDetails to RoomTemplate
 - Use factories for RoomValidator and RoomEntranceBuilder, right now all rooms of the same type share the same instance
 - GetRoomPrice should live on Room, not Blueprint
 - Debug resident walk along route to destination
@@ -126,7 +125,7 @@
 - Add click-and-drag room building
 - Add flexble-sized rooms
 - Remove 'RoomStore' - having just MapStore should be fine
-  - Combine RoomDetails and RoomDetails
+  - Combine RoomTemplate and RoomTemplate
 - Room-specific validations
   - Lobby should be allowed on certain floors only
   - Elevators should not be allowed within a certain distance to each other

@@ -32,7 +32,7 @@ namespace TowerBuilder.GameWorld.UI
             UpdateDescriptionText();
 
             Registry.Stores.UI.onToolStateUpdated += OnToolStateUpdated;
-            Registry.Stores.UI.buildToolSubState.onSelectedRoomDetailsUpdated += OnSelectedRoomDetailsUpdated;
+            Registry.Stores.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         void Update()
@@ -65,7 +65,7 @@ namespace TowerBuilder.GameWorld.UI
             }
         }
 
-        void OnSelectedRoomDetailsUpdated(RoomDetails selectedRoomDetails)
+        void OnSelectedRoomTemplateUpdated(RoomTemplate selectedRoomTemplate)
         {
             UpdateDescriptionText();
         }
@@ -75,8 +75,8 @@ namespace TowerBuilder.GameWorld.UI
             ToolState toolState = Registry.Stores.UI.toolState;
             if (toolState == ToolState.Build)
             {
-                RoomDetails selectedRoomDetails = Registry.Stores.UI.buildToolSubState.selectedRoomDetails;
-                if (selectedRoomDetails == null)
+                RoomTemplate selectedRoomTemplate = Registry.Stores.UI.buildToolSubState.selectedRoomTemplate;
+                if (selectedRoomTemplate == null)
                 {
                     descriptionText.text = $"{toolState}";
                 }
@@ -84,7 +84,7 @@ namespace TowerBuilder.GameWorld.UI
                 {
                     Blueprint blueprint = Registry.Stores.UI.buildToolSubState.currentBlueprint;
                     int price = blueprint.room.GetPrice();
-                    descriptionText.text = $"{toolState} - {selectedRoomDetails.title}: ${price}";
+                    descriptionText.text = $"{toolState} - {selectedRoomTemplate.title}: ${price}";
                 }
             }
             else

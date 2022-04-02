@@ -15,9 +15,9 @@ namespace TowerBuilder.Stores.UI
         public CellCoordinates buildStartCell { get; private set; } = null;
         public UI.State.cellCoordinatesEvent onBuildStartCellUpdated;
 
-        public RoomDetails selectedRoomDetails { get; private set; }
-        public delegate void SelectedRoomDetailsEvent(RoomDetails selectedRoomDetails);
-        public SelectedRoomDetailsEvent onSelectedRoomDetailsUpdated;
+        public RoomTemplate selectedRoomTemplate { get; private set; }
+        public delegate void SelectedRoomTemplateEvent(RoomTemplate selectedRoomTemplate);
+        public SelectedRoomTemplateEvent onSelectedRoomTemplateUpdated;
 
         public bool buildIsActive { get; private set; } = false;
 
@@ -64,27 +64,27 @@ namespace TowerBuilder.Stores.UI
             SearchForBlueprintRoomConnections();
         }
 
-        public void SetSelectedRoomDetails(string roomKey)
+        public void SetSelectedRoomTemplate(string roomKey)
         {
             // TODO - put this somewhere more general
-            RoomDetails roomDetails = Rooms.Constants.ROOM_DEFINITIONS.Find(details => details.key == roomKey);
+            RoomTemplate roomTemplate = Rooms.Constants.ROOM_DEFINITIONS.Find(details => details.key == roomKey);
 
-            if (roomDetails != null)
+            if (roomTemplate != null)
             {
-                SetSelectedRoomDetails(roomDetails);
+                SetSelectedRoomTemplate(roomTemplate);
             }
         }
 
-        public void SetSelectedRoomDetails(RoomDetails roomDetails)
+        public void SetSelectedRoomTemplate(RoomTemplate roomTemplate)
         {
-            this.selectedRoomDetails = roomDetails;
+            this.selectedRoomTemplate = roomTemplate;
 
-            currentBlueprint.SetRoomDetails(this.selectedRoomDetails);
+            currentBlueprint.SetRoomTemplate(this.selectedRoomTemplate);
             currentBlueprint.Validate(Registry.Stores);
 
-            if (onSelectedRoomDetailsUpdated != null)
+            if (onSelectedRoomTemplateUpdated != null)
             {
-                onSelectedRoomDetailsUpdated(selectedRoomDetails);
+                onSelectedRoomTemplateUpdated(selectedRoomTemplate);
             }
         }
 
@@ -114,7 +114,7 @@ namespace TowerBuilder.Stores.UI
 
         public void SetBuildStartCell()
         {
-            if (selectedRoomDetails == null)
+            if (selectedRoomTemplate == null)
             {
                 return;
             }
@@ -164,7 +164,7 @@ namespace TowerBuilder.Stores.UI
 
         void CreateBlueprint()
         {
-            currentBlueprint = new Blueprint(selectedRoomDetails, parentState.currentSelectedCell);
+            currentBlueprint = new Blueprint(selectedRoomTemplate, parentState.currentSelectedCell);
         }
 
         void DeleteBlueprint()
@@ -175,7 +175,7 @@ namespace TowerBuilder.Stores.UI
 
         void AttemptToCreateRoomFromCurrentBlueprint()
         {
-            if (selectedRoomDetails == null)
+            if (selectedRoomTemplate == null)
             {
                 return;
             }
@@ -232,12 +232,12 @@ namespace TowerBuilder.Stores.UI
         {
             List<Room> result = new List<Room>();
 
-            if (room.roomDetails.resizability.Matches(RoomResizability.Inflexible()))
+            if (room.roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
             {
                 return result;
             }
 
-            if (room.roomDetails.resizability.x)
+            if (room.roomTemplate.resizability.x)
             {
                 //  Check on either side
                 foreach (int floor in room.roomCells.GetFloorRange())
@@ -256,7 +256,7 @@ namespace TowerBuilder.Stores.UI
                     {
                         if (
                             otherRoom != null &&
-                            otherRoom.roomDetails.key == selectedRoomDetails.key &&
+                            otherRoom.roomTemplate.key == selectedRoomTemplate.key &&
                             !result.Contains(otherRoom)
                         )
                         {
@@ -266,7 +266,7 @@ namespace TowerBuilder.Stores.UI
                 }
             }
 
-            if (room.roomDetails.resizability.floor)
+            if (room.roomTemplate.resizability.floor)
             {
                 //  Check on floors above and below
                 foreach (int x in room.roomCells.GetXRange())
@@ -285,7 +285,7 @@ namespace TowerBuilder.Stores.UI
                     {
                         if (
                             otherRoom != null &&
-                            otherRoom.roomDetails.key == selectedRoomDetails.key &&
+                            otherRoom.roomTemplate.key == selectedRoomTemplate.key &&
                             !result.Contains(otherRoom)
                         )
                         {

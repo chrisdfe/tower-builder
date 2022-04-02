@@ -37,7 +37,7 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
             CreateBlueprintCells();
 
             Registry.Stores.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-            Registry.Stores.UI.buildToolSubState.onSelectedRoomDetailsUpdated += OnSelectedRoomDetailsUpdated;
+            Registry.Stores.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         void OnDestroy()
@@ -46,7 +46,7 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
             DestroyBlueprintCells();
 
             Registry.Stores.UI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
-            Registry.Stores.UI.buildToolSubState.onSelectedRoomDetailsUpdated -= OnSelectedRoomDetailsUpdated;
+            Registry.Stores.UI.buildToolSubState.onSelectedRoomTemplateUpdated -= OnSelectedRoomTemplateUpdated;
         }
 
         void CreateBlueprintRoom()
@@ -115,7 +115,7 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
             ResetBlueprintCells();
         }
 
-        void OnSelectedRoomDetailsUpdated(RoomDetails selectedRoomDetails)
+        void OnSelectedRoomTemplateUpdated(RoomTemplate selectedRoomTemplate)
         {
             ResetBlueprintRoom();
             ResetBlueprintCells();

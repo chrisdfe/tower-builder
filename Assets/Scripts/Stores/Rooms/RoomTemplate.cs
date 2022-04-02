@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Stores.Rooms
 {
-    public class RoomDetails
+    public class RoomTemplate
     {
         public string title;
         public string key;

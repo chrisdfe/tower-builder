@@ -223,7 +223,7 @@ namespace TowerBuilder.GameWorld.Rooms
                 gameWorldRoomCell.transform.parent = transform;
                 gameWorldRoomCell.roomCell = roomCell;
                 gameWorldRoomCell.gameWorldRoom = this;
-                gameWorldRoomCell.baseColor = room.roomDetails.color;
+                gameWorldRoomCell.baseColor = room.roomTemplate.color;
 
                 gameWorldRoomCell.Initialize();
                 gameWorldRoomCells.Add(gameWorldRoomCell);

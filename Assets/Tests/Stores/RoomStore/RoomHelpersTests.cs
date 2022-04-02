@@ -22,7 +22,7 @@
 //     }
 
 //     [Test]
-//     public void findRoomDetailsById()
+//     public void findRoomTemplateById()
 //     {
 //         string roomId = "1";
 //         RoomKey roomKey = RoomKey.Lobby;
@@ -32,9 +32,9 @@
 //             [roomId] = roomKey
 //         };
 
-//         RoomDetails expectedRoomDetails = RoomConstants.ROOM_DETAILS_MAP[roomKey];
+//         RoomTemplate expectedRoomTemplate = RoomConstants.ROOM_DETAILS_MAP[roomKey];
 
-//         RoomDetails result = RoomHelpers.findRoomDetailsById(roomId, roomKeyMap);
-//         Assert.AreEqual(result, expectedRoomDetails);
+//         RoomTemplate result = RoomHelpers.findRoomTemplateById(roomId, roomKeyMap);
+//         Assert.AreEqual(result, expectedRoomTemplate);
 //     }
 // }
