@@ -43,6 +43,7 @@ namespace TowerBuilder.GameWorld.Rooms
             ResetColor();
         }
 
+        /* 
         public void HighlightEntrance(RoomEntrance roomEntrance)
         {
             foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
@@ -56,6 +57,12 @@ namespace TowerBuilder.GameWorld.Rooms
                     gameWorldRoomEntrance.ResetColor();
                 }
             }
+        }
+        */
+
+        public void UpdatePosition()
+        {
+            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
         }
 
         public void SetColor(Color color, float alpha = 1f)
@@ -163,11 +170,6 @@ namespace TowerBuilder.GameWorld.Rooms
             {
                 segment.GetComponent<MeshRenderer>().enabled = enabled;
             }
-        }
-
-        void UpdatePosition()
-        {
-            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
         }
     }
 }

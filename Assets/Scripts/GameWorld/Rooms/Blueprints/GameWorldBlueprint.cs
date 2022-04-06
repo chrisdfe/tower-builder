@@ -49,6 +49,18 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
             Registry.Stores.UI.buildToolSubState.onSelectedRoomTemplateUpdated -= OnSelectedRoomTemplateUpdated;
         }
 
+        void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell)
+        {
+            ResetBlueprintRoom();
+            ResetBlueprintCells();
+        }
+
+        void OnSelectedRoomTemplateUpdated(RoomTemplate selectedRoomTemplate)
+        {
+            ResetBlueprintRoom();
+            ResetBlueprintCells();
+        }
+
         void CreateBlueprintRoom()
         {
             Blueprint blueprint = Registry.Stores.UI.buildToolSubState.currentBlueprint;
@@ -70,10 +82,9 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
 
             foreach (BlueprintCell blueprintCell in blueprint.roomBlueprintCells)
             {
-                GameObject gameWorldBlueprintCellGameObject = Instantiate<GameObject>(gameWorldBlueprintCellPrefab);
+                GameObject gameWorldBlueprintCellGameObject = Instantiate<GameObject>(gameWorldBlueprintCellPrefab, transform);
                 GameWorldBlueprintCell gameWorldBlueprintCell = gameWorldBlueprintCellGameObject.GetComponent<GameWorldBlueprintCell>();
 
-                gameWorldBlueprintCell.transform.SetParent(transform);
                 gameWorldBlueprintCell.parentBlueprint = this;
                 gameWorldBlueprintCell.blueprintCell = blueprintCell;
 
@@ -106,19 +117,6 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
             }
 
             gameWorldBlueprintCells = new List<GameWorldBlueprintCell>();
-        }
-
-
-        void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell)
-        {
-            ResetBlueprintRoom();
-            ResetBlueprintCells();
-        }
-
-        void OnSelectedRoomTemplateUpdated(RoomTemplate selectedRoomTemplate)
-        {
-            ResetBlueprintRoom();
-            ResetBlueprintCells();
         }
     }
 }

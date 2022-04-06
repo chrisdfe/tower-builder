@@ -21,20 +21,7 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
 
         public void Initialize()
         {
-            // gameWorldRoomCell.roomCell = blueprintCell.roomCell;
-            // gameWorldRoomCell.Initialize();
-
             SetColor();
-        }
-
-        public void UpdatePosition()
-        {
-            // transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(blueprintCell.roomCell.coordinates);
-        }
-
-        void Awake()
-        {
-            // gameWorldRoomCell = transform.Find("RoomCell").GetComponent<GameWorldRoomCell>();
         }
 
         void SetColor()

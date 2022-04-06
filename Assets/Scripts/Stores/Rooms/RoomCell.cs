@@ -29,6 +29,7 @@ namespace TowerBuilder.Stores.Rooms
         public List<RoomEntrance> entrances = new List<RoomEntrance>();
         public List<RoomCellOrientation> orientation = new List<RoomCellOrientation>();
 
+        public bool hasFloor { get; private set; } = true;
 
         public RoomCell(RoomCells parent, int x, int floor)
         {
