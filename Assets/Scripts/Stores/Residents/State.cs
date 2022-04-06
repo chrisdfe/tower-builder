@@ -20,8 +20,6 @@ namespace TowerBuilder.Stores.Residents
         public ResidentEvent onResidentDestroyed;
         public ResidentEvent onResidentPositionUpdated;
 
-        public List<ResidentFurnitureOwnership> residentFurnitureOwnerships = new List<ResidentFurnitureOwnership>();
-
         Resident debugResident;
 
         public void AddResident(Resident resident)

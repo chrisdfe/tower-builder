@@ -11,13 +11,23 @@ namespace TowerBuilder.Stores.Residents
     public class Resident
     {
         public CellCoordinates coordinates;
-        public ResidentBehaviorState behaviorState;
+
+        public ResidentMotor motor { get; private set; }
+        public ResidentMood mood { get; private set; }
+        public ResidentNeeds needs { get; private set; }
 
         public Route currentRoute { get; private set; }
         public int currentRouteSegmentIndex { get; private set; } = 0;
         public RouteSegment currentRouteSegment { get; private set; }
         public int currentRouteSegmentCellStepIndex { get; private set; } = 0;
         public CellCoordinates currentRouteSegmentCellStep { get; private set; }
+
+        public Resident()
+        {
+            this.motor = new ResidentMotor(this);
+            this.mood = new ResidentMood(this);
+            this.needs = new ResidentNeeds(this);
+        }
 
         public void StartOnRoute(Route route)
         {
