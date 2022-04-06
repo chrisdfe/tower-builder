@@ -7,10 +7,11 @@ namespace TowerBuilder.Stores.Rooms.Furniture
 {
     public abstract class RoomFurnitureBase
     {
+        public virtual RoomFurnitureCategory category { get { return RoomFurnitureCategory.None; } }
+        public int occupancy;
+
         Room room;
         RoomFurnitureAttributesBase config;
-
-        public virtual RoomFurnitureCategory category { get { return RoomFurnitureCategory.None; } }
 
         public RoomFurnitureBase(Room room, RoomFurnitureAttributesBase config)
         {

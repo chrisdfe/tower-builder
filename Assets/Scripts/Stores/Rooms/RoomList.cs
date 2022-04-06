@@ -42,6 +42,19 @@ namespace TowerBuilder.Stores.Rooms
             return null;
         }
 
+        public Room FindRoomByRoomBlock(RoomCells roomBlock)
+        {
+            foreach (Room room in rooms)
+            {
+                if (room.ContainsBlock(roomBlock))
+                {
+                    return room;
+                }
+            }
+
+            return null;
+        }
+
         public static int GetLowestX(List<CellCoordinates> roomCells)
         {
             int lowestX = int.MaxValue;

@@ -97,39 +97,59 @@ namespace TowerBuilder.Stores.Rooms
             ResetRoomEntrances();
         }
 
+        public bool ContainsBlock(RoomCells roomBlock)
+        {
+            foreach (RoomCells block in blocks)
+            {
+                if (block == roomBlock)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void AddBlocks(List<RoomCells> blocks)
         {
             this.blocks = this.blocks.Concat(blocks).ToList();
         }
 
-        public int GetPrice()
+        public void RemoveBlock(RoomCells block)
         {
-            // Subtract appropriate balance from wallet
-            if (roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
+            foreach (RoomCell roomCell in block.cells)
             {
-                return roomTemplate.price;
+                roomCells.cells.Remove(roomCell);
             }
 
-            // CellCoordinates copies = GetCopies();
-            // Work out how many copies of the base blueprint size is being built
-            // roomTemplate.price is per base blueprint copy
-            // TODO - this calculation should be elsewhere to allow this number to show up in the UI
-            //        as the blueprint is being built
-
-            // int result = roomTemplate.price * copies.x * copies.floor;
-            int result = roomTemplate.price;
-
-            return result;
+            this.blocks.Remove(block);
         }
 
-        // public CellCoordinates GetCopies()
-        // {
-        //     return new CellCoordinates(
-        //         roomCells.GetWidth() / roomTemplate.width,
-        //         roomCells.GetFloorSpan() / roomTemplate.height
-        //     );
-        // }
+        public int GetPrice()
+        {
+            return roomTemplate.price * this.blocks.Count;
+        }
 
+        public RoomCells FindBlockByCellCoordinates(CellCoordinates cellCoordinates)
+        {
+            foreach (RoomCells block in blocks)
+            {
+                if (block.Contains(cellCoordinates))
+                {
+                    return block;
+                }
+            }
+
+            return null;
+        }
+
+        public void ResetRoomCellOrientations()
+        {
+            foreach (RoomCell roomCell in roomCells.cells)
+            {
+                SetRoomCellOrientation(roomCell);
+            }
+        }
 
         void GenerateId()
         {
@@ -151,68 +171,34 @@ namespace TowerBuilder.Stores.Rooms
             }
         }
 
-        void ResetRoomCellOrientations()
-        {
-            foreach (RoomCell roomCell in roomCells.cells)
-            {
-                SetRoomCellOrientation(roomCell);
-            }
-        }
-
         void SetRoomCellOrientation(RoomCell roomCell)
         {
             CellCoordinates coordinates = roomCell.coordinates;
 
             List<RoomCellOrientation> result = new List<RoomCellOrientation>();
 
-            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
+            if (!roomCells.Contains(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
             {
                 result.Add(RoomCellOrientation.Top);
             }
 
-            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
+            if (!roomCells.Contains(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
             {
                 result.Add(RoomCellOrientation.Right);
             }
 
-            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
+            if (!roomCells.Contains(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
             {
                 result.Add(RoomCellOrientation.Bottom);
             }
 
-            if (!roomCells.HasCellAtCoordinates(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
+            if (!roomCells.Contains(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
             {
                 result.Add(RoomCellOrientation.Left);
             }
 
             roomCell.orientation = result;
         }
-
-        /* 
-        void InitializeModules()
-        {
-            List<RoomModuleBase> result = new List<RoomModuleBase>();
-
-            // TODO - there's probably a more elegant way of doing this that I will figure out later
-            foreach (RoomModuleDetailsBase roomUseDetails in roomTemplate.moduleDetails)
-            {
-                switch (roomUseDetails.roomModuleKey)
-                {
-                    case RoomModuleKey.Elevator:
-                        ElevatorModule elevatorModule = new ElevatorModule(this);
-                        result.Add(elevatorModule);
-                        break;
-                }
-            }
-
-            foreach (RoomModuleBase roomModule in result)
-            {
-                roomModule.Initialize();
-            }
-
-            modules = result;
-        }
-        */
 
         void InitializeFurniture() { }
 

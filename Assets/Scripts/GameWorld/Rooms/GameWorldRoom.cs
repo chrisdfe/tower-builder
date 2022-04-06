@@ -42,9 +42,11 @@ namespace TowerBuilder.GameWorld.Rooms
             gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
 
             Registry.Stores.Rooms.onRoomAdded += OnRoomAdded;
+            Registry.Stores.Rooms.onRoomBlockDestroyed += OnRoomBlockDestroyed;
             Registry.Stores.Rooms.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
 
-            Registry.Stores.UI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
+            Registry.Stores.UI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
+            Registry.Stores.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
             Registry.Stores.UI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
             Registry.Stores.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated += OnBlueprintRoomConnectionsUpdated;
         }
@@ -54,6 +56,7 @@ namespace TowerBuilder.GameWorld.Rooms
             DestroyCells();
 
             Registry.Stores.Rooms.onRoomAdded -= OnRoomAdded;
+            Registry.Stores.Rooms.onRoomBlockDestroyed -= OnRoomBlockDestroyed;
             Registry.Stores.Rooms.onRoomConnectionsUpdated -= OnRoomConnectionsUpdated;
 
             Registry.Stores.UI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
@@ -63,7 +66,22 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnCurrentSelectedRoomUpdated(Room room)
         {
+            if (room == null)
+            {
+                foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
+                {
+                    roomCell.ResetColor();
+                }
+                return;
+            }
+
             if (room.isInBlueprintMode)
+            {
+                return;
+            }
+
+            // This is handled in OnCurrentSelectedRopmBlockUpdated
+            if (Registry.Stores.UI.toolState == ToolState.Destroy)
             {
                 return;
             }
@@ -76,23 +94,12 @@ namespace TowerBuilder.GameWorld.Rooms
 
             if (this.room.id == room.id)
             {
-                switch (Registry.Stores.UI.toolState)
+                if (!IsInCurrentInspectedRoom())
                 {
-                    case ToolState.Destroy:
-                        foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
-                        {
-                            roomCell.SetDestroyHoverColor();
-                        }
-                        break;
-                    default:
-                        if (!IsInCurrentInspectedRoom())
-                        {
-                            foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
-                            {
-                                roomCell.SetHoverColor();
-                            }
-                        }
-                        break;
+                    foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
+                    {
+                        roomCell.SetHoverColor();
+                    }
                 }
             }
             else
@@ -100,6 +107,33 @@ namespace TowerBuilder.GameWorld.Rooms
                 foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
                 {
                     roomCell.ResetColor();
+                }
+            }
+        }
+
+        void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock)
+        {
+            if (roomBlock == null)
+            {
+                foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
+                {
+                    gameWorldRoomCell.ResetColor();
+                }
+                return;
+            }
+
+            if (Registry.Stores.UI.toolState == ToolState.Destroy)
+            {
+                foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
+                {
+                    if (roomBlock.Contains(gameWorldRoomCell.roomCell.coordinates))
+                    {
+                        gameWorldRoomCell.SetDestroyHoverColor();
+                    }
+                    else
+                    {
+                        gameWorldRoomCell.ResetColor();
+                    }
                 }
             }
         }
@@ -141,6 +175,23 @@ namespace TowerBuilder.GameWorld.Rooms
             }
         }
 
+        void OnRoomBlockDestroyed(RoomCells roomBlock)
+        {
+            List<GameWorldRoomCell> gameWorldRoomCellsCopy = new List<GameWorldRoomCell>(gameWorldRoomCells);
+            foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
+            {
+                if (roomBlock.Contains(gameWorldRoomCell.roomCell))
+                {
+                    Destroy(gameWorldRoomCell.gameObject);
+                    gameWorldRoomCellsCopy.Remove(gameWorldRoomCell);
+                }
+            }
+
+            gameWorldRoomCells = gameWorldRoomCellsCopy;
+
+            UpdateRoomCells();
+        }
+
         void OnRoomConnectionsUpdated(RoomConnections roomConnections)
         {
             UpdateRoomEntrances();
@@ -149,11 +200,6 @@ namespace TowerBuilder.GameWorld.Rooms
         void OnBlueprintRoomConnectionsUpdated(RoomConnections blueprintRoomConnections)
         {
             UpdateRoomEntrances();
-        }
-
-        void UpdateRoomCells()
-        {
-
         }
 
         void UpdateRoomEntrances()
@@ -185,6 +231,14 @@ namespace TowerBuilder.GameWorld.Rooms
                 {
                     gameWorldRoomEntrance.ResetColor();
                 }
+            }
+        }
+
+        void UpdateRoomCells()
+        {
+            foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
+            {
+                gameWorldRoomCell.UpdateRoomCellMeshSegments();
             }
         }
 
@@ -234,7 +288,7 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
             {
-                Destroy(gameWorldRoomCell);
+                Destroy(gameWorldRoomCell.gameObject);
             }
 
             gameWorldRoomCells = new List<GameWorldRoomCell>();

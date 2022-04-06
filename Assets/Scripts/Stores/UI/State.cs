@@ -26,6 +26,10 @@ namespace TowerBuilder.Stores.UI
         public delegate void selectedRoomEvent(Room room);
         public selectedRoomEvent onCurrentSelectedRoomUpdated;
 
+        public RoomCells currentSelectedRoomBlock { get; private set; } = null;
+        public delegate void selectedRoomBlockEvent(RoomCells roomBlock);
+        public selectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
+
         public NoneToolState noneToolSubState;
         public BuildToolState buildToolSubState;
         public DestroyToolState destroyToolSubState;
@@ -63,19 +67,33 @@ namespace TowerBuilder.Stores.UI
         {
             this.currentSelectedCell = currentSelectedCell;
 
-            Room currentRoom = Registry.Stores.Rooms.rooms.FindRoomAtCell(currentSelectedCell);
-            this.currentSelectedRoom = currentRoom;
+            currentSelectedRoom = Registry.Stores.Rooms.rooms.FindRoomAtCell(currentSelectedCell);
 
-            GetCurrentActiveToolSubState().OnCurrentSelectedCellUpdated(currentSelectedCell);
+            currentSelectedRoomBlock = null;
+            if (currentSelectedRoom != null)
+            {
+                currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
+            }
+
+            ToolStateBase currentToolState = GetCurrentActiveToolSubState();
+            currentToolState.OnCurrentSelectedCellUpdated(currentSelectedCell);
+            currentToolState.OnCurrentSelectedRoomUpdated(currentSelectedRoom);
+            currentToolState.OnCurrentSelectedRoomBlockUpdated(currentSelectedRoomBlock);
 
             if (onCurrentSelectedCellUpdated != null)
             {
                 onCurrentSelectedCellUpdated(currentSelectedCell);
             }
 
+
             if (onCurrentSelectedRoomUpdated != null)
             {
-                onCurrentSelectedRoomUpdated(this.currentSelectedRoom);
+                onCurrentSelectedRoomUpdated(currentSelectedRoom);
+            }
+
+            if (onCurrentSelectedRoomBlockUpdated != null)
+            {
+                onCurrentSelectedRoomBlockUpdated(currentSelectedRoomBlock);
             }
         }
 

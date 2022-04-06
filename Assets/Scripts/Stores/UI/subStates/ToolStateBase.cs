@@ -18,5 +18,9 @@ namespace TowerBuilder.Stores.UI
         public virtual void Teardown() { }
 
         public virtual void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell) { }
+
+        public virtual void OnCurrentSelectedRoomUpdated(Room room) { }
+
+        public virtual void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock) { }
     }
 }

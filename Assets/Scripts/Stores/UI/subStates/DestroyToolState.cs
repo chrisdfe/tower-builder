@@ -11,14 +11,9 @@ namespace TowerBuilder.Stores.UI
     {
         public DestroyToolState(UI.State state) : base(state) { }
 
-        public void DestroyCurrentSelectedRoom()
+        public void DestroyCurrentSelectedRoomBlock()
         {
-            DestroyRoom(parentState.currentSelectedRoom);
-        }
-
-        public void DestroyRoom(Room room)
-        {
-            Registry.Stores.Rooms.DestroyRoom(room);
+            Registry.Stores.Rooms.DestroyRoomBlock(parentState.currentSelectedRoom, parentState.currentSelectedRoomBlock);
         }
     }
 }

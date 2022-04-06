@@ -5,6 +5,7 @@
 
 ## Tasks
 
+- colors should be tied to room category + not live on RoomTemplate
 - RouteFinder shouldn't look for every room entrance in the room, just on the current floor - it should also look for furniture on the current floor that could transport the resident elsewhere
 - Transportation room furniture interface - have a "connects to"
   - Room entrances could be "Doorway" furniture instead

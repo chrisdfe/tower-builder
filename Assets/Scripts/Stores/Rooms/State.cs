@@ -11,14 +11,14 @@ namespace TowerBuilder.Stores.Rooms
     {
         public RoomList rooms { get; private set; } = new RoomList();
 
-        public delegate void RoomAddedEvent(Room mapRoom);
+        public delegate void RoomAddedEvent(Room room);
         public RoomAddedEvent onRoomAdded;
 
-        public delegate void RoomDestroyedEvent(Room mapRoom);
-        public RoomAddedEvent onRoomDestroyed;
+        public delegate void RoomDestroyedEvent(Room room);
+        public RoomDestroyedEvent onRoomDestroyed;
 
-        // public delegate void ElevatorCarPositionEvent(ElevatorCar elevatorCar, ElevatorCarPosition destinationPosition);
-        // public ElevatorCarPositionEvent onElevatorCarPositionChanged;
+        public delegate void RoomBlockDestroyedEvent(RoomCells roomBlock);
+        public RoomBlockDestroyedEvent onRoomBlockDestroyed;
 
         public RoomConnections roomConnections { get; private set; } = new RoomConnections();
 
@@ -59,6 +59,29 @@ namespace TowerBuilder.Stores.Rooms
             }
         }
 
+        public void DestroyRoomBlock(Room room, RoomCells roomBlock)
+        {
+            // TODO - check if doing this is going to divide the room into 2
+            // if so, create another room right here
+
+            room.RemoveBlock(roomBlock);
+            room.ResetRoomCellOrientations();
+
+            // TODO - destroy connections block may have had
+
+            if (room.blocks.Count == 0)
+            {
+                DestroyRoom(room);
+            }
+            else
+            {
+                if (onRoomBlockDestroyed != null)
+                {
+                    onRoomBlockDestroyed(roomBlock);
+                }
+            }
+        }
+
         public void AddRoomConnections(RoomConnections newRoomConnections)
         {
             roomConnections.Add(newRoomConnections);
@@ -78,15 +101,5 @@ namespace TowerBuilder.Stores.Rooms
                 onRoomConnectionsUpdated(roomConnections);
             }
         }
-
-        // public void SetElevatorCarDestination(ElevatorCar elevatorCar, ElevatorCarPosition destinationPosition)
-        // {
-        //     elevatorCar.currentPosition = destinationPosition;
-
-        //     if (onElevatorCarPositionChanged != null)
-        //     {
-        //         onElevatorCarPositionChanged(elevatorCar, destinationPosition);
-        //     }
-        // }
     }
 }

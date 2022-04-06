@@ -39,7 +39,7 @@ namespace TowerBuilder.GameWorld.Rooms
         public void Initialize()
         {
             UpdatePosition();
-            InitializeRoomCellMeshSegments();
+            UpdateRoomCellMeshSegments();
             ResetColor();
         }
 
@@ -105,6 +105,38 @@ namespace TowerBuilder.GameWorld.Rooms
             }
         }
 
+        public void UpdateRoomCellMeshSegments()
+        {
+            foreach (Transform segment in wallSegments)
+            {
+                SetEnabled(segment, false);
+            }
+
+            foreach (RoomCellOrientation cellPosition in roomCell.orientation)
+            {
+                switch (cellPosition)
+                {
+                    case RoomCellOrientation.Top:
+                        SetEnabled(ceilingSegment, true);
+                        break;
+                    case RoomCellOrientation.Right:
+                        SetEnabled(rightWallSegment, true);
+                        break;
+                    case RoomCellOrientation.Bottom:
+                        SetEnabled(floorSegment, true);
+                        break;
+                    case RoomCellOrientation.Left:
+                        SetEnabled(leftWallSegment, true);
+                        break;
+                }
+            }
+
+            void SetEnabled(Transform segment, bool enabled)
+            {
+                segment.GetComponent<MeshRenderer>().enabled = enabled;
+            }
+        }
+
         void Awake()
         {
             transform.localPosition = Vector3.zero;
@@ -138,38 +170,6 @@ namespace TowerBuilder.GameWorld.Rooms
         void OnDestroy()
         {
             // Registry.Stores.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
-        }
-
-        void InitializeRoomCellMeshSegments()
-        {
-            foreach (Transform segment in wallSegments)
-            {
-                SetEnabled(segment, false);
-            }
-
-            foreach (RoomCellOrientation cellPosition in roomCell.orientation)
-            {
-                switch (cellPosition)
-                {
-                    case RoomCellOrientation.Top:
-                        SetEnabled(ceilingSegment, true);
-                        break;
-                    case RoomCellOrientation.Right:
-                        SetEnabled(rightWallSegment, true);
-                        break;
-                    case RoomCellOrientation.Bottom:
-                        SetEnabled(floorSegment, true);
-                        break;
-                    case RoomCellOrientation.Left:
-                        SetEnabled(leftWallSegment, true);
-                        break;
-                }
-            }
-
-            void SetEnabled(Transform segment, bool enabled)
-            {
-                segment.GetComponent<MeshRenderer>().enabled = enabled;
-            }
         }
     }
 }

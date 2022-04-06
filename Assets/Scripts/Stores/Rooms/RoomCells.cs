@@ -17,7 +17,6 @@ namespace TowerBuilder.Stores.Rooms
 
         public RoomCells()
         {
-            // this.room = room;
             this.cells = new List<RoomCell>();
         }
 
@@ -145,9 +144,14 @@ namespace TowerBuilder.Stores.Rooms
             return null;
         }
 
-        public bool HasCellAtCoordinates(CellCoordinates cellCoordinates)
+        public bool Contains(CellCoordinates cellCoordinates)
         {
             return FindCellByCoordinates(cellCoordinates) != null;
+        }
+
+        public bool Contains(RoomCell roomCell)
+        {
+            return FindCellByCoordinates(roomCell.coordinates) != null;
         }
 
         public int GetLowestX()

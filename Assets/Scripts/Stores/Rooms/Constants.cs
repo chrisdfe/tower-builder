@@ -50,7 +50,7 @@ namespace TowerBuilder.Stores.Rooms
                 entranceBuilderFactory = () => new LobbyEntranceBuilder(),
                 validatorFactory = () => new LobbyRoomValidator(),
 
-                color = Color.red,
+                color = Color.gray,
             },
 
             new RoomTemplate()
@@ -69,7 +69,7 @@ namespace TowerBuilder.Stores.Rooms
                 entranceBuilderFactory = () => new LobbyEntranceBuilder(),
                 validatorFactory = () => new LobbyRoomValidator(),
 
-                color = Color.red,
+                color = Color.gray,
             },
 
             new RoomTemplate()

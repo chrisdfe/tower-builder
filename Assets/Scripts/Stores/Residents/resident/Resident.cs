@@ -21,7 +21,6 @@ namespace TowerBuilder.Stores.Residents
 
         public void StartOnRoute(Route route)
         {
-            // behaviorState = ResidentBehaviorState.Traveling;
             currentRoute = route;
             currentRouteSegmentIndex = 0;
             currentRouteSegment = currentRoute.segments[currentRouteSegmentIndex];
