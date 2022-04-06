@@ -9,6 +9,7 @@ namespace TowerBuilder.Stores.Rooms.Furniture
     public abstract class RoomFurnitureBehaviorBase
     {
         RoomFurnitureBase roomFurniture;
+        Resident[] usageSlots;
 
         public RoomFurnitureBehaviorBase(RoomFurnitureBase roomFurniture)
         {
@@ -17,5 +18,6 @@ namespace TowerBuilder.Stores.Rooms.Furniture
 
         public abstract void OnInteractStart(Resident resident);
         public abstract void OnInteractEnd(Resident resident);
+        public abstract bool CanInteractWith(Resident resident);
     }
 }

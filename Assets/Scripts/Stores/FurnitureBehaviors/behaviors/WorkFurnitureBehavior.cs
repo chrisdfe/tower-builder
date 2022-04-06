@@ -12,5 +12,6 @@ namespace TowerBuilder.Stores.Rooms.Furniture
 
         public override void OnInteractStart(Resident resident) { }
         public override void OnInteractEnd(Resident resident) { }
+        public override bool CanInteractWith(Resident resident) { return false; }
     }
 }
