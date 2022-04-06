@@ -5,6 +5,17 @@
 
 ## Tasks
 
+- RouteFinder shouldn't look for every room entrance in the room, just on the current floor - it should also look for furniture on the current floor that could transport the resident elsewhere
+- Transportation room furniture interface - have a "connects to"
+  - Room entrances could be "Doorway" furniture instead
+- Furniture "usage slots" - an array of residents currently using this piece of furniture the size of the furnitures occupancy
+- roomcell "has floor" state - true or false
+  - additionally, a 
+- When casting the mouse ray, build a stack of interactable/inspectable elements 
+  - If that stack contains a ui element:
+    - on mouse down don't propagate
+    - on mouse up, still propagate but handle it further up the chain
+  - Eventually this will allow for multiple clicks in the same location cycling through this list
 - Ability to destroy a single block in a flexible room
 - Residents currently stay on the same cell for more than one cycle currently - because of repeating cellCoordinates in segment end/start
 - Move current route traversal Resident code out into separate "motor" class
@@ -36,8 +47,6 @@
 - Stop destroying/recreating roomCells whenever the cursor changes position - only when it needs resizing
 - Add GameWorldRoomList 
 - You should be able to delete a single block of a flexible-sized room
-- Generate rooms buttons in RoomBlueprintButtonsManager dynamically
-  - Room types in BuildToolPanel should be grouped by RoomCategory
 - blueprint price indicator for flexible rooms
 - destroy validation
 - rooms should not be able to be built in thin air above ground floor
@@ -82,6 +91,8 @@
 
 # Done
 
+- Generate rooms buttons in RoomBlueprintButtonsManager dynamically
+  - Room types in BuildToolPanel should be grouped by RoomCategory
 - Flexible-sized rooms should remember the 'blocks' they are made up of, to avoid having to recalculate it when you destroy individual blocks.
 - Blueprint validators should probably take in the entire Store object
 - Rename RoomDetails to RoomTemplate

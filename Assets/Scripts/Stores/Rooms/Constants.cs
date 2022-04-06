@@ -21,7 +21,7 @@ namespace TowerBuilder.Stores.Rooms
             {
                 title = "Hallway",
                 key = "Hallway",
-                category = RoomCategory.Hallway,
+                category = "Hallway",
 
                 price = 500,
 
@@ -39,7 +39,7 @@ namespace TowerBuilder.Stores.Rooms
             {
                 title = "Lobby",
                 key = "Lobby",
-                category = RoomCategory.Lobby,
+                category = "Lobby",
 
                 price = 5000,
 
@@ -59,7 +59,7 @@ namespace TowerBuilder.Stores.Rooms
                 key = "LargeLobby",
 
                 price = 12000,
-                category = RoomCategory.Lobby,
+                category = "Lobby",
 
                 blockDimensions = new Dimensions(1, 2),
 
@@ -78,7 +78,7 @@ namespace TowerBuilder.Stores.Rooms
                 key = "Office",
 
                 price = 20000,
-                category = RoomCategory.Office,
+                category = "Office",
 
                 blockDimensions = new Dimensions(3, 1),
 
@@ -107,7 +107,7 @@ namespace TowerBuilder.Stores.Rooms
                 key = "Barracks",
 
                 price = 30000,
-                category = RoomCategory.Residence,
+                category = "Residence",
 
                 blockDimensions = new Dimensions(2, 1),
 
@@ -139,7 +139,7 @@ namespace TowerBuilder.Stores.Rooms
                 key = "Bedroom",
 
                 price = 12000,
-                category = RoomCategory.Residence,
+                category = "Residence",
 
                 blockDimensions = new Dimensions(2, 1),
 
@@ -169,7 +169,7 @@ namespace TowerBuilder.Stores.Rooms
                 key = "Condo",
 
                 price = 50000,
-                category = RoomCategory.Residence,
+                category = "Residence",
 
                 blockDimensions = new Dimensions(5, 1),
 
@@ -199,7 +199,7 @@ namespace TowerBuilder.Stores.Rooms
                 key = "Elevator",
 
                 price = 2000,
-                category = RoomCategory.Elevator,
+                category = "Elevator",
 
                 blockDimensions = new Dimensions(1, 1),
 
@@ -219,7 +219,7 @@ namespace TowerBuilder.Stores.Rooms
                 key = "ServiceElevator",
 
                 price = 1500,
-                category = RoomCategory.Elevator,
+                category = "Elevator",
 
                 blockDimensions = new Dimensions(1, 1),
 
@@ -239,7 +239,7 @@ namespace TowerBuilder.Stores.Rooms
                 key = "LargeElevator",
 
                 price = 5000,
-                category = RoomCategory.Elevator,
+                category = "Elevator",
 
                 blockDimensions = new Dimensions(2, 1),
 
@@ -257,7 +257,7 @@ namespace TowerBuilder.Stores.Rooms
                 title = "Stairwell",
                 key = "Stairwell",
 
-                category = RoomCategory.Stairs,
+                category = "Stairs",
 
                 price = 5000,
 
@@ -279,7 +279,7 @@ namespace TowerBuilder.Stores.Rooms
 
                 price = 8000,
 
-                category = RoomCategory.Stairs,
+                category = "Stairs",
 
                 blockDimensions = new Dimensions(2, 1),
 
@@ -299,7 +299,7 @@ namespace TowerBuilder.Stores.Rooms
 
                 price = 10000,
 
-                category = RoomCategory.Park,
+                category = "Park",
 
                 blockDimensions = new Dimensions(1, 1),
 

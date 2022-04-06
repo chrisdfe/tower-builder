@@ -15,6 +15,10 @@ namespace TowerBuilder.Stores.UI
         public CellCoordinates buildStartCell { get; private set; } = null;
         public UI.State.cellCoordinatesEvent onBuildStartCellUpdated;
 
+        public string selectedRoomCategory { get; private set; }
+        public delegate void SelectedRoomCategoryEvent(string selectedRoomCategory);
+        public SelectedRoomCategoryEvent onSelectedRoomCategoryUpdated;
+
         public RoomTemplate selectedRoomTemplate { get; private set; }
         public delegate void SelectedRoomTemplateEvent(RoomTemplate selectedRoomTemplate);
         public SelectedRoomTemplateEvent onSelectedRoomTemplateUpdated;
@@ -59,28 +63,39 @@ namespace TowerBuilder.Stores.UI
                 currentBlueprint.SetBuildStartCell(currentSelectedCell);
             }
 
-
             currentBlueprint.Validate(Registry.Stores);
             SearchForBlueprintRoomConnections();
         }
 
-        public void SetSelectedRoomTemplate(string roomKey)
+        public void SetSelectedRoomCategory(string roomCategory)
         {
-            // TODO - put this somewhere more general
-            RoomTemplate roomTemplate = Rooms.Constants.ROOM_DEFINITIONS.Find(details => details.key == roomKey);
+            selectedRoomCategory = roomCategory;
+            List<RoomTemplate> roomTemplates = Rooms.Constants.ROOM_DEFINITIONS.FindAll(details => details.category == roomCategory);
+
+            RoomTemplate roomTemplate = roomTemplates[0];
 
             if (roomTemplate != null)
             {
-                SetSelectedRoomTemplate(roomTemplate);
+                SelectRoomTemplateAndUpdateBlueprint(roomTemplate);
+            }
+
+            if (onSelectedRoomCategoryUpdated != null)
+            {
+                onSelectedRoomCategoryUpdated(roomCategory);
+            }
+
+            if (roomTemplate != null && onSelectedRoomTemplateUpdated != null)
+            {
+                onSelectedRoomTemplateUpdated(selectedRoomTemplate);
             }
         }
 
         public void SetSelectedRoomTemplate(RoomTemplate roomTemplate)
         {
-            this.selectedRoomTemplate = roomTemplate;
+            // TODO - put this somewhere more general
+            // RoomTemplate roomTemplate = Rooms.Constants.ROOM_DEFINITIONS.Find(details => details.key == roomKey);
 
-            currentBlueprint.SetRoomTemplate(this.selectedRoomTemplate);
-            currentBlueprint.Validate(Registry.Stores);
+            SelectRoomTemplateAndUpdateBlueprint(roomTemplate);
 
             if (onSelectedRoomTemplateUpdated != null)
             {
@@ -160,6 +175,14 @@ namespace TowerBuilder.Stores.UI
             {
                 onBlueprintRoomConnectionsUpdated(this.blueprintRoomConnections);
             }
+        }
+
+        void SelectRoomTemplateAndUpdateBlueprint(RoomTemplate roomTemplate)
+        {
+            this.selectedRoomTemplate = roomTemplate;
+
+            currentBlueprint.SetRoomTemplate(this.selectedRoomTemplate);
+            currentBlueprint.Validate(Registry.Stores);
         }
 
         void CreateBlueprint()

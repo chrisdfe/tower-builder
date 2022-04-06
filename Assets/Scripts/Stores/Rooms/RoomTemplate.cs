@@ -16,7 +16,7 @@ namespace TowerBuilder.Stores.Rooms
         // TODO - generate this dynamically based off of x of tiles + furniture
         public int price;
 
-        public RoomCategory category = RoomCategory.None;
+        public string category = "None";
 
         public List<RoomFurnitureAttributesBase> furnitureAttributes = new List<RoomFurnitureAttributesBase>();
 
