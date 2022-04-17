@@ -12,6 +12,10 @@ namespace TowerBuilder.Stores.FurnitureBehaviors
     {
         public State()
         {
+        }
+
+        public void Setup()
+        {
             Registry.Stores.Time.onTick += OnTick;
             Registry.Stores.Rooms.onRoomAdded += OnRoomAdded;
         }

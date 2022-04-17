@@ -11,6 +11,10 @@ namespace TowerBuilder.Stores.ResidentBehaviors
     {
         public State()
         {
+        }
+
+        public void Setup()
+        {
             Registry.Stores.Time.onTick += OnTick;
             Registry.Stores.Residents.onResidentAdded += OnResidentAdded;
         }
