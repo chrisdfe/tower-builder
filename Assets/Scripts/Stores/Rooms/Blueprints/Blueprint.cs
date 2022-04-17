@@ -83,20 +83,31 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
                 return;
             }
 
-            room.bottomLeftCoordinates = selectionBox.bottomLeft;
-
             CellCoordinates blockCount = new CellCoordinates(1, 1);
 
-            if (!roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
+            if (roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
             {
+                room.bottomLeftCoordinates = buildStartCoordinates;
+            }
+            else
+            {
+
                 // Restrict resizability to X/Y depending on RoomFlexibility
                 if (roomTemplate.resizability.x)
                 {
+                    room.bottomLeftCoordinates = new CellCoordinates(
+                        selectionBox.bottomLeft.x,
+                        buildStartCoordinates.floor
+                    );
                     blockCount.x = MathUtils.RoundUpToNearest(selectionBox.dimensions.width, roomTemplate.blockDimensions.width);
                 }
 
                 if (roomTemplate.resizability.floor)
                 {
+                    room.bottomLeftCoordinates = new CellCoordinates(
+                        buildStartCoordinates.x,
+                        selectionBox.bottomLeft.floor
+                    );
                     blockCount.floor = MathUtils.RoundUpToNearest(selectionBox.dimensions.height, roomTemplate.blockDimensions.height);
                 }
             }

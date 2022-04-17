@@ -82,6 +82,7 @@
 
 ## Bugs
 
+- Room addition is broken again
 - Individual roomCells should know if they are valid again (right now it's just the room)
 - Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
 - RoomEntrances in the blueprint room aren't getting highlighted
