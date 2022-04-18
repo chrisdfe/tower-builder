@@ -92,9 +92,6 @@ namespace TowerBuilder.Stores.UI
 
         public void SetSelectedRoomTemplate(RoomTemplate roomTemplate)
         {
-            // TODO - put this somewhere more general
-            // RoomTemplate roomTemplate = Rooms.Constants.ROOM_DEFINITIONS.Find(details => details.key == roomKey);
-
             SelectRoomTemplateAndUpdateBlueprint(roomTemplate);
 
             if (onSelectedRoomTemplateUpdated != null)
@@ -233,6 +230,9 @@ namespace TowerBuilder.Stores.UI
                 }
 
                 // TODO - add to the 1st item in roomsToCombineWith instead of replacing both with a new room?
+
+                // TODO - this might not be the best place to call this
+                newRoom.Reset();
             }
 
             Registry.Stores.Rooms.AddRoom(newRoom);

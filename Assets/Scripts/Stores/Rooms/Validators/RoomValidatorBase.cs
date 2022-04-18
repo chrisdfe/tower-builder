@@ -43,16 +43,13 @@ namespace TowerBuilder.Stores.Rooms.Validators
             List<RoomValidationError> result = new List<RoomValidationError>();
 
             // Check for overlapping cells
-            foreach (Room room in allRooms.rooms)
+            foreach (Room otherRoom in allRooms.rooms)
             {
-                foreach (RoomCell otherRoomCell in room.roomCells.cells)
+                if (otherRoom.roomCells.Contains(roomCell))
                 {
-                    if (otherRoomCell.coordinates.Matches(roomCell.coordinates))
-                    {
-                        result.Add(
-                            new RoomValidationError("You cannot build rooms on top of each other.")
-                        );
-                    }
+                    result.Add(
+                        new RoomValidationError("You cannot build rooms on top of each other.")
+                    );
                 }
             }
 

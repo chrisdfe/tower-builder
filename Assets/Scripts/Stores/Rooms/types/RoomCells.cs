@@ -9,7 +9,6 @@ namespace TowerBuilder.Stores.Rooms
 {
     public class RoomCells
     {
-        // public Room room { get; private set; }
         public List<RoomCell> cells { get; private set; }
 
         public delegate void RoomCellsEvent(RoomCells roomCells);
@@ -152,6 +151,36 @@ namespace TowerBuilder.Stores.Rooms
         public bool Contains(RoomCell roomCell)
         {
             return FindCellByCoordinates(roomCell.coordinates) != null;
+        }
+
+        public bool OverlapsWith(RoomCells otherRoomCells)
+        {
+            return GetOverlappingRoomCells(otherRoomCells).Count != 0;
+        }
+
+        public bool OverlapsWith(List<RoomCell> roomCellList)
+        {
+            return GetOverlappingRoomCells(roomCellList).Count != 0;
+        }
+
+        public List<RoomCell> GetOverlappingRoomCells(List<RoomCell> roomCellList)
+        {
+            List<RoomCell> result = new List<RoomCell>();
+
+            foreach (RoomCell otherRoomCell in roomCellList)
+            {
+                if (Contains(otherRoomCell.coordinates))
+                {
+                    result.Add(otherRoomCell);
+                }
+            }
+
+            return result;
+        }
+
+        public List<RoomCell> GetOverlappingRoomCells(RoomCells otherRoomCells)
+        {
+            return GetOverlappingRoomCells(otherRoomCells.cells);
         }
 
         public int GetLowestX()

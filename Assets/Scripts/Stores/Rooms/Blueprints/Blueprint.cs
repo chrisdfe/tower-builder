@@ -21,7 +21,6 @@ namespace TowerBuilder.Stores.Rooms.Blueprints
         public CellCoordinates buildStartCoordinates { get; private set; } = new CellCoordinates(0, 0);
         public CellCoordinates buildEndCoordinates { get; private set; } = new CellCoordinates(0, 0);
 
-        // TODO - this logic could go in selectionbox itself
         SelectionBox selectionBox
         {
             get

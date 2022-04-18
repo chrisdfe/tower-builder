@@ -82,7 +82,6 @@
 
 ## Bugs
 
-- Room addition is broken again
 - Individual roomCells should know if they are valid again (right now it's just the room)
 - Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
 - RoomEntrances in the blueprint room aren't getting highlighted
@@ -95,6 +94,7 @@
 
 # Done
 
+- Room addition is broken again
 - Generate rooms buttons in RoomBlueprintButtonsManager dynamically
   - Room types in BuildToolPanel should be grouped by RoomCategory
 - Flexible-sized rooms should remember the 'blocks' they are made up of, to avoid having to recalculate it when you destroy individual blocks.

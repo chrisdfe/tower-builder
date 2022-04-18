@@ -64,9 +64,14 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.Stores.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
 
-        void OnCurrentSelectedRoomUpdated(Room room)
+        void OnCurrentSelectedRoomUpdated(Room selectedRoom)
         {
-            if (room == null)
+            if (this.room.isInBlueprintMode)
+            {
+                return;
+            }
+
+            if (selectedRoom == null)
             {
                 foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
                 {
@@ -75,24 +80,19 @@ namespace TowerBuilder.GameWorld.Rooms
                 return;
             }
 
-            if (room.isInBlueprintMode)
-            {
-                return;
-            }
-
-            // This is handled in OnCurrentSelectedRopmBlockUpdated
+            // This is handled in OnCurrentSelectedRoomBlockUpdated
             if (Registry.Stores.UI.toolState == ToolState.Destroy)
             {
                 return;
             }
 
-            if (room == null)
+            if (selectedRoom == null)
             {
                 ResetCellColors();
                 return;
             }
 
-            if (this.room.id == room.id)
+            if (this.room.id == selectedRoom.id)
             {
                 if (!IsInCurrentInspectedRoom())
                 {
@@ -113,6 +113,11 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock)
         {
+            if (room.isInBlueprintMode)
+            {
+                return;
+            }
+
             if (roomBlock == null)
             {
                 foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
@@ -211,8 +216,6 @@ namespace TowerBuilder.GameWorld.Rooms
 
                 bool isConnected = roomEntranceConnection != null;
 
-                // if (!room.isInBlueprintMode)
-                // {
                 RoomConnection blueprintRoomEntranceConnection =
                     Registry.Stores.UI.buildToolSubState.blueprintRoomConnections
                         .FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
@@ -221,7 +224,6 @@ namespace TowerBuilder.GameWorld.Rooms
                 {
                     isConnected = true;
                 }
-                // }
 
                 if (isConnected)
                 {

@@ -93,6 +93,11 @@ namespace TowerBuilder.Stores.Rooms
                 }
             }
 
+            Reset();
+        }
+
+        public void Reset()
+        {
             ResetRoomCellOrientations();
             ResetRoomEntrances();
         }
@@ -112,7 +117,11 @@ namespace TowerBuilder.Stores.Rooms
 
         public void AddBlocks(List<RoomCells> blocks)
         {
-            this.blocks = this.blocks.Concat(blocks).ToList();
+            foreach (RoomCells block in blocks)
+            {
+                this.blocks.Add(block);
+                roomCells.Add(block);
+            }
         }
 
         public void RemoveBlock(RoomCells block)
