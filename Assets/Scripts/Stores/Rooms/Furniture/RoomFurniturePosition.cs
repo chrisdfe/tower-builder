@@ -24,7 +24,7 @@ namespace TowerBuilder.Stores.Rooms.Furniture
         Down
     }
 
-    public class RoomFurnitureCoordinates
+    public struct RoomFurnitureCoordinates
     {
         int x;
         int y;
@@ -40,10 +40,6 @@ namespace TowerBuilder.Stores.Rooms.Furniture
 
     public class RoomFurniturePosition
     {
-        // 5 x 5 x 5 for now
-        // TODO - put this somewhere else that makes more sense when I figure out where that is
-        static RoomFurnitureCoordinates ROOM_CELL_SUBDIVISIONS = new RoomFurnitureCoordinates(5, 5, 5);
-
         // The plane this piece of furniture is 'attached' to
         RoomFurniturePositionPlane plane = RoomFurniturePositionPlane.Floor;
 
@@ -52,5 +48,12 @@ namespace TowerBuilder.Stores.Rooms.Furniture
 
         // the room 'sub cells' that this furniture takes up
         List<RoomFurnitureCoordinates> cells = new List<RoomFurnitureCoordinates>();
+    }
+
+    // As the furniture piece is defined in the RoomTemplate
+    public class RoomFurnitureDefinition
+    {
+        RoomFurniturePosition position;
+        CellCoordinates coordinates;
     }
 }
