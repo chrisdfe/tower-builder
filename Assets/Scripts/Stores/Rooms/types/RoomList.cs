@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 namespace TowerBuilder.Stores.Rooms
 {
+    [Serializable]
     public class RoomList
     {
         public List<Room> rooms { get; private set; }

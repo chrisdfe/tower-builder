@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.Stores;
@@ -7,6 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Stores.Rooms
 {
+    [Serializable]
     public class State
     {
         public RoomList rooms { get; private set; } = new RoomList();

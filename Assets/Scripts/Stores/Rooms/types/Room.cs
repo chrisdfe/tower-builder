@@ -10,6 +10,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Stores.Rooms
 {
+
     public class Room
     {
         private static int autoincrementingId;
