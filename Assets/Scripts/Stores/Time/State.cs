@@ -2,6 +2,14 @@ namespace TowerBuilder.Stores.Time
 {
     public class State
     {
+        public struct Input
+        {
+            public bool? isActive;
+            public int? tick;
+            public TimeValue time;
+            public TimeSpeed? speed;
+        }
+
         public bool isActive { get; private set; } = false;
         public int tick { get; private set; } = 0;
         public TimeValue time { get; private set; }
@@ -14,20 +22,14 @@ namespace TowerBuilder.Stores.Time
         public delegate void SpeedUpdatedEvent(TimeSpeed newTimeSpeed);
         public SpeedUpdatedEvent onTimeSpeedUpdated;
 
-        public State()
+        public State() : this(new Input()) { }
+
+        public State(Input input)
         {
-            isActive = false;
-            tick = 0;
-            time = new TimeValue()
-            {
-                minute = 0,
-                hour = 0,
-                day = 0,
-                week = 0,
-                season = 0,
-                year = 0,
-            };
-            speed = TimeSpeed.Normal;
+            isActive = input.isActive ?? false;
+            tick = input.tick ?? 0;
+            time = input.time ?? TimeValue.zero;
+            speed = input.speed ?? TimeSpeed.Normal;
         }
 
         public void UpdateTime(TimeValue newTime)

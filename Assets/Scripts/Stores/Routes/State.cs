@@ -7,6 +7,15 @@ namespace TowerBuilder.Stores.Routes
 {
     public class State
     {
+        public struct Input
+        {
+            public List<Route> routes;
+            public Route debugRoute;
+            public List<RouteAttempt> debugRouteAttempts;
+            public CellCoordinates debugRouteStartCoordinates;
+            public CellCoordinates debugRouteEndCoordinates;
+        }
+
         public List<Route> routes { get; private set; }
 
         public Route debugRoute;
@@ -23,7 +32,16 @@ namespace TowerBuilder.Stores.Routes
         public DebugRouteMarkerEvent onDebugRouteStartSet;
         public DebugRouteMarkerEvent onDebugRouteEndSet;
 
-        public State() { }
+        public State() : this(new Input()) { }
+
+        public State(Input input)
+        {
+            routes = input.routes ?? new List<Route>();
+            debugRoute = input.debugRoute ?? null;
+            debugRouteAttempts = input.debugRouteAttempts ?? new List<RouteAttempt>();
+            debugRouteStartCoordinates = input.debugRouteStartCoordinates ?? null;
+            debugRouteEndCoordinates = input.debugRouteEndCoordinates ?? null;
+        }
 
         public void SetDebugRouteStart(CellCoordinates cellCoordinates)
         {

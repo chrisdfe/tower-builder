@@ -9,6 +9,11 @@ namespace TowerBuilder.Stores.UI
 {
     public class RoutesToolState : ToolStateBase
     {
+        public struct Input
+        {
+            public ClickState? currentClickState;
+        }
+
         public enum ClickState
         {
             None,
@@ -16,9 +21,12 @@ namespace TowerBuilder.Stores.UI
             RouteEnd,
         }
 
-        public ClickState currentClickState { get; private set; } = ClickState.None;
+        public ClickState currentClickState { get; private set; }
 
-        public RoutesToolState(UI.State state) : base(state) { }
+        public RoutesToolState(UI.State state, Input input) : base(state)
+        {
+            currentClickState = input.currentClickState ?? ClickState.None;
+        }
 
         public override void Setup() { }
 

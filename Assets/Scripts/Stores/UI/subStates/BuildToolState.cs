@@ -12,6 +12,15 @@ namespace TowerBuilder.Stores.UI
 {
     public class BuildToolState : ToolStateBase
     {
+        public struct Input
+        {
+            public CellCoordinates buildStartCell;
+            public string selectedRoomCategory;
+            public RoomTemplate selectedRoomTemplate;
+            public bool? buildIsActive;
+            public RoomConnections blueprintRoomConnections;
+        }
+
         public CellCoordinates buildStartCell { get; private set; } = null;
         public UI.State.cellCoordinatesEvent onBuildStartCellUpdated;
 
@@ -32,11 +41,18 @@ namespace TowerBuilder.Stores.UI
         // this roomBlueprint is essentially just derived data, so no events needed
         public Blueprint currentBlueprint { get; private set; }
 
-        public RoomConnections blueprintRoomConnections = new RoomConnections();
+        public RoomConnections blueprintRoomConnections;
         public delegate void BlueprintRoomConnectionEvent(RoomConnections roomConnections);
         public BlueprintRoomConnectionEvent onBlueprintRoomConnectionsUpdated;
 
-        public BuildToolState(UI.State state) : base(state) { }
+        public BuildToolState(UI.State state, Input input) : base(state)
+        {
+            buildStartCell = input.buildStartCell ?? null;
+            selectedRoomCategory = input.selectedRoomCategory ?? "";
+            selectedRoomTemplate = input.selectedRoomTemplate ?? null;
+            buildIsActive = input.buildIsActive ?? false;
+            blueprintRoomConnections = input.blueprintRoomConnections ?? new RoomConnections();
+        }
 
         public override void Setup()
         {

@@ -11,6 +11,17 @@ namespace TowerBuilder.Stores.UI
 {
     public class State
     {
+        public struct Input
+        {
+            public ToolState? toolState;
+            public CellCoordinates currentSelectedCell;
+            public NoneToolState.Input noneToolState;
+            public BuildToolState.Input buildToolState;
+            public DestroyToolState.Input destroyToolState;
+            public InspectToolState.Input inspectToolState;
+            public RoutesToolState.Input routesToolState;
+        }
+
         public ToolState toolState { get; private set; }
 
         public delegate void ToolStateEvent(ToolState toolState, ToolState previousToolState);
@@ -36,16 +47,18 @@ namespace TowerBuilder.Stores.UI
         public InspectToolState inspectToolSubState;
         public RoutesToolState routesToolSubState;
 
-        public State()
-        {
-            toolState = ToolState.None;
-            currentSelectedCell = CellCoordinates.zero;
+        public State() : this(new Input()) { }
 
-            noneToolSubState = new NoneToolState(this);
-            buildToolSubState = new BuildToolState(this);
-            destroyToolSubState = new DestroyToolState(this);
-            inspectToolSubState = new InspectToolState(this);
-            routesToolSubState = new RoutesToolState(this);
+        public State(Input input)
+        {
+            toolState = input.toolState ?? ToolState.None;
+            currentSelectedCell = input.currentSelectedCell ?? CellCoordinates.zero;
+
+            noneToolSubState = new NoneToolState(this, input.noneToolState);
+            buildToolSubState = new BuildToolState(this, input.buildToolState);
+            destroyToolSubState = new DestroyToolState(this, input.destroyToolState);
+            inspectToolSubState = new InspectToolState(this, input.inspectToolState);
+            routesToolSubState = new RoutesToolState(this, input.routesToolState);
         }
 
         public void SetToolState(ToolState toolState)

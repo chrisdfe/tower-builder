@@ -10,7 +10,12 @@ namespace TowerBuilder.Stores.Residents
 {
     public class State
     {
-        public List<Resident> residents { get; private set; } = new List<Resident>();
+        public struct Input
+        {
+            public List<Resident> residents;
+        }
+
+        public List<Resident> residents { get; private set; }
 
         public delegate void ResidentsEvent(List<Resident> residents);
         public ResidentsEvent onResidentsUpdated;
@@ -21,6 +26,13 @@ namespace TowerBuilder.Stores.Residents
         public ResidentEvent onResidentPositionUpdated;
 
         Resident debugResident;
+
+        public State() : this(new Input()) { }
+
+        public State(Input input)
+        {
+            this.residents = input.residents ?? new List<Resident>();
+        }
 
         public void AddResident(Resident resident)
         {

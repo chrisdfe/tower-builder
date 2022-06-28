@@ -1,10 +1,12 @@
 # TODO
 
 ## Current
+- ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 
 
 ## Tasks
 
+- Rename current "State"s to "Store", add "State" as a struct inside that class. This is to separate the state values and the events more clearly
 - Delete room entrances when a block gets deleted as well
 - colors should be tied to room category + not live on RoomTemplate
 - RouteFinder shouldn't look for every room entrance in the room, just on the current floor - it should also look for furniture on the current floor that could transport the resident elsewhere
@@ -62,8 +64,8 @@
 
 ## Projects
 
+- turn this into a car game
 - Kitchen/restaurant room
-- ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 - Top-level "KeyBindingsManager" that listens for user input + dispatches actions
 - UI overlays
 - Dynamic weather 

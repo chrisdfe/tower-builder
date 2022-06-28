@@ -8,11 +8,19 @@ namespace TowerBuilder.Stores.UI
 {
     public class InspectToolState : ToolStateBase
     {
+        public struct Input
+        {
+            public Room currentInspectedRoom;
+        }
+
         public Room currentInspectedRoom;
         public delegate void RoomEvent(Room room);
         public RoomEvent onCurrentInspectedRoomUpdated;
 
-        public InspectToolState(UI.State state) : base(state) { }
+        public InspectToolState(UI.State state, Input input) : base(state)
+        {
+            currentInspectedRoom = input.currentInspectedRoom ?? null;
+        }
 
         public override void Teardown()
         {

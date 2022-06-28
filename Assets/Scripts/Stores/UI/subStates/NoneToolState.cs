@@ -5,6 +5,8 @@ namespace TowerBuilder.Stores.UI
 {
     public class NoneToolState : ToolStateBase
     {
-        public NoneToolState(UI.State state) : base(state) { }
+        public struct Input { }
+
+        public NoneToolState(UI.State state, Input input) : base(state) { }
     }
 }

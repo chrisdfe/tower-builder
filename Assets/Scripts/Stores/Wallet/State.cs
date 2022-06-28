@@ -8,14 +8,22 @@ namespace TowerBuilder.Stores.Wallet
 {
     public class State
     {
+        public struct Input
+        {
+            public int? balance;
+        }
+
         public int balance { get; private set; }
 
         public delegate void BalanceUpdatedEvent(int balance);
         public BalanceUpdatedEvent onBalanceUpdated;
 
-        public State()
+
+        public State() : this(new Input()) { }
+
+        public State(Input input)
         {
-            balance = Constants.STARTING_BALANCE;
+            balance = input.balance ?? 1000000;
         }
 
         public void UpdateBalance(int balance)

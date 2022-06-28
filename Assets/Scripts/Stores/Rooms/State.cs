@@ -11,6 +11,12 @@ namespace TowerBuilder.Stores.Rooms
     [Serializable]
     public class State
     {
+        public struct Input
+        {
+            public RoomList rooms;
+            public RoomConnections roomConnections;
+        }
+
         public RoomList rooms { get; private set; } = new RoomList();
 
         public delegate void RoomAddedEvent(Room room);
@@ -26,6 +32,14 @@ namespace TowerBuilder.Stores.Rooms
 
         public delegate void RoomConnectionsEvent(RoomConnections roomConnections);
         public RoomConnectionsEvent onRoomConnectionsUpdated;
+
+        public State() : this(new Input()) { }
+
+        public State(Input input)
+        {
+            rooms = input.rooms ?? new RoomList();
+            roomConnections = input.roomConnections ?? new RoomConnections();
+        }
 
         public void AddRoom(Room room)
         {
