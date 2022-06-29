@@ -13,26 +13,26 @@ namespace TowerBuilder.Stores.Wallet
             public int? balance;
         }
 
-        public int balance { get; private set; }
+        public int balance { get; private set; } = 1000000;
 
-        public delegate void BalanceUpdatedEvent(int balance);
+        public delegate void BalanceUpdatedEvent(int newBalance, int prevBalance);
         public BalanceUpdatedEvent onBalanceUpdated;
-
-
-        public State() : this(new Input()) { }
 
         public State(Input input)
         {
             balance = input.balance ?? 1000000;
         }
 
+        public State() : this(new Input()) { }
+
         public void UpdateBalance(int balance)
         {
+            int prevBalance = this.balance;
             this.balance = balance;
 
             if (onBalanceUpdated != null)
             {
-                onBalanceUpdated(balance);
+                onBalanceUpdated(this.balance, prevBalance);
             }
         }
 

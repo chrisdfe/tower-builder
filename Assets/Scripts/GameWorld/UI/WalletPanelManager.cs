@@ -40,7 +40,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.Stores.Wallet.AddBalance(1000);
         }
 
-        void OnBalanceUpdated(int amount)
+        void OnBalanceUpdated(int newBalance, int prevBalance)
         {
             UpdateBalanceText();
         }

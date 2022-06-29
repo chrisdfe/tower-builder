@@ -10,9 +10,9 @@ namespace TowerBuilder.Stores.Residents
 {
     public class State
     {
-        public struct Input
+        public class Input
         {
-            public List<Resident> residents;
+            public List<Resident> residents = new List<Resident>();
         }
 
         public List<Resident> residents { get; private set; }
@@ -31,7 +31,12 @@ namespace TowerBuilder.Stores.Residents
 
         public State(Input input)
         {
-            this.residents = input.residents ?? new List<Resident>();
+            if (input == null)
+            {
+                input = new Input();
+            }
+
+            this.residents = input.residents;
         }
 
         public void AddResident(Resident resident)
