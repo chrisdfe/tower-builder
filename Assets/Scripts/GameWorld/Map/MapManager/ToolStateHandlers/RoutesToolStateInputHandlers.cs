@@ -1,10 +1,9 @@
 using System;
 using TowerBuilder;
 using TowerBuilder.GameWorld.Rooms.Blueprints;
-using TowerBuilder.Stores;
-
-using TowerBuilder.Stores.Rooms;
-using TowerBuilder.Stores.UI;
+using TowerBuilder.State;
+using TowerBuilder.State.Rooms;
+using TowerBuilder.State.UI;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager
@@ -30,14 +29,14 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public override void OnMouseUp()
         {
-            CellCoordinates currentCell = Registry.Stores.UI.currentSelectedCell;
-            switch (Registry.Stores.UI.routesToolSubState.currentClickState)
+            CellCoordinates currentCell = Registry.appState.UI.currentSelectedCell;
+            switch (Registry.appState.UI.routesToolSubState.currentClickState)
             {
                 case RoutesToolState.ClickState.RouteStart:
-                    Registry.Stores.Routes.SetDebugRouteStart(currentCell);
+                    Registry.appState.Routes.SetDebugRouteStart(currentCell);
                     break;
                 case RoutesToolState.ClickState.RouteEnd:
-                    Registry.Stores.Routes.SetDebugRouteEnd(currentCell);
+                    Registry.appState.Routes.SetDebugRouteEnd(currentCell);
                     break;
                 default:
                     break;

@@ -1,6 +1,6 @@
-using TowerBuilder.Stores;
+using TowerBuilder.State;
 
-using TowerBuilder.Stores.UI;
+using TowerBuilder.State.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,34 +42,34 @@ namespace TowerBuilder.GameWorld.UI
 
             originalColor = routeStartButton.colors.normalColor;
 
-            // SelectButton(Registry.Stores.UI.buildToolSubState.selectedRoomKey);
-            // Registry.Stores.UI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            // SelectButton(Registry.appState.UI.buildToolSubState.selectedRoomKey);
+            // Registry.appState.UI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void OnRouteStartButtonClick()
         {
-            Registry.Stores.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteStart);
+            Registry.appState.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteStart);
         }
 
         void OnRouteEndButtonClick()
         {
-            Registry.Stores.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteEnd);
+            Registry.appState.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteEnd);
         }
 
         void OnRouteCalculateButtonClick()
         {
-            Registry.Stores.Routes.CalculateDebugRoute();
+            Registry.appState.Routes.CalculateDebugRoute();
         }
 
         void OnRouteClearButtonClick()
         {
-            Registry.Stores.Routes.ClearDebugRoute();
-            Registry.Stores.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.None);
+            Registry.appState.Routes.ClearDebugRoute();
+            Registry.appState.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.None);
         }
 
         void OnAddDebugResidentButtonClick()
         {
-            CellCoordinates routeStartCoordinates = Registry.Stores.Routes.debugRouteStartCoordinates;
+            CellCoordinates routeStartCoordinates = Registry.appState.Routes.debugRouteStartCoordinates;
 
             if (routeStartCoordinates == null)
             {
@@ -77,24 +77,24 @@ namespace TowerBuilder.GameWorld.UI
                 return;
             }
 
-            if (Registry.Stores.Routes.debugRouteEndCoordinates == null)
+            if (Registry.appState.Routes.debugRouteEndCoordinates == null)
             {
                 Debug.Log("route end coordinates need to be set first");
                 return;
             }
 
-            if (Registry.Stores.Routes.debugRouteAttempts == null)
+            if (Registry.appState.Routes.debugRouteAttempts == null)
             {
                 Debug.Log("no route attempts.");
                 return;
             }
 
-            Registry.Stores.Residents.CreateDebugResidentAtCoordinates(routeStartCoordinates);
+            Registry.appState.Residents.CreateDebugResidentAtCoordinates(routeStartCoordinates);
         }
 
         void OnNextPointOnRouteButtonClick()
         {
-            Registry.Stores.Residents.AdvanceDebugResidentAlongRoute();
+            Registry.appState.Residents.AdvanceDebugResidentAlongRoute();
         }
 
         void OnResetRouteProgressButtonClick()

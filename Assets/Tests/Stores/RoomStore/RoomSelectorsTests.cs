@@ -14,7 +14,7 @@
 //         [Test]
 //         public void SuccessfullyReturnsRoomKey()
 //         {
-//             StoreRegistry mockStoreRegistry = new StoreRegistry()
+//             AppState mockAppState = new AppState()
 //             {
 //                 roomStore = new RoomStore()
 //                 {
@@ -28,7 +28,7 @@
 //                 }
 //             };
 
-//             RoomKey roomKey = RoomSelectors.findRoomKeyById(mockStoreRegistry, "1");
+//             RoomKey roomKey = RoomSelectors.findRoomKeyById(mockAppState, "1");
 //             Assert.AreEqual(roomKey, RoomKey.Lobby);
 //         }
 //     }

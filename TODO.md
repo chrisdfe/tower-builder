@@ -6,7 +6,8 @@
 
 ## Tasks
 
-- Rename current "State"s to "Store", add "State" as a struct inside that class. This is to separate the state values and the events more clearly
+- Add concept of different "vehicles" or separate entities - groups of rooms. When you add/delete a room it can either add to an existing vehicle or create a new one
+- Move current RoomTemplates constants to a field in Registry - with ability to split up the "registering room template" logic into different files
 - Delete room entrances when a block gets deleted as well
 - colors should be tied to room category + not live on RoomTemplate
 - RouteFinder shouldn't look for every room entrance in the room, just on the current floor - it should also look for furniture on the current floor that could transport the resident elsewhere
@@ -105,7 +106,7 @@
 - Use factories for RoomValidator and RoomEntranceBuilder, right now all rooms of the same type share the same instance
 - GetRoomPrice should live on Room, not Blueprint
 - Debug resident walk along route to destination
-- Perhaps Stores.Map.Rooms should just be Stores.Rooms and delete Stores.Map
+- Perhaps AppState.Map.Rooms should just be AppState.Rooms and delete AppState.Map
   - Also rename "MapUI" to just "UI"
 - RoomEntrances namespace?
 - Make ground a cube, cut holes in it when you build a room

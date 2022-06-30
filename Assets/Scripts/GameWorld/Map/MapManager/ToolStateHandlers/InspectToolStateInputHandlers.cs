@@ -1,8 +1,8 @@
 using System;
-using TowerBuilder.Stores;
+using TowerBuilder.State;
 
-using TowerBuilder.Stores.Rooms;
-using TowerBuilder.Stores.UI;
+using TowerBuilder.State.Rooms;
+using TowerBuilder.State.UI;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager
@@ -20,7 +20,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public override void OnMouseUp()
         {
-            Registry.Stores.UI.inspectToolSubState.InspectCurrentSelectedRoom();
+            Registry.appState.UI.inspectToolSubState.InspectCurrentSelectedRoom();
         }
     }
 }

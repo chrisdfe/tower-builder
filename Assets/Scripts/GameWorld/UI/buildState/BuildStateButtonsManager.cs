@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.Stores;
-using TowerBuilder.Stores.Rooms;
-using TowerBuilder.Stores.UI;
+using TowerBuilder.State;
+using TowerBuilder.State.Rooms;
+using TowerBuilder.State.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,18 +35,18 @@ namespace TowerBuilder.GameWorld.UI
             SetupRoomCategoryButtons();
             ResetRoomTemplatesButtons();
 
-            Registry.Stores.UI.buildToolSubState.onSelectedRoomCategoryUpdated += OnSelectedRoomCategoryUpdated;
-            Registry.Stores.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
+            Registry.appState.UI.buildToolSubState.onSelectedRoomCategoryUpdated += OnSelectedRoomCategoryUpdated;
+            Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         void OnCategoryButtonClick(string roomCategory)
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomCategory(roomCategory);
+            Registry.appState.UI.buildToolSubState.SetSelectedRoomCategory(roomCategory);
         }
 
         void OnTemplateButtonClick(RoomTemplate roomTemplate)
         {
-            Registry.Stores.UI.buildToolSubState.SetSelectedRoomTemplate(roomTemplate);
+            Registry.appState.UI.buildToolSubState.SetSelectedRoomTemplate(roomTemplate);
         }
 
         void OnSelectedRoomCategoryUpdated(string roomCategory)
@@ -62,7 +62,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetSelectedRoomTemplateButton()
         {
-            RoomTemplate selectedTemplate = Registry.Stores.UI.buildToolSubState.selectedRoomTemplate;
+            RoomTemplate selectedTemplate = Registry.appState.UI.buildToolSubState.selectedRoomTemplate;
             foreach (UIRoomTemplateButton roomTemplateButton in roomTemplateButtons)
             {
                 roomTemplateButton.SetSelected(roomTemplateButton.roomTemplate.key == selectedTemplate.key);
@@ -71,7 +71,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetSelectedRoomCategoryButton()
         {
-            string currentCategory = Registry.Stores.UI.buildToolSubState.selectedRoomCategory;
+            string currentCategory = Registry.appState.UI.buildToolSubState.selectedRoomCategory;
 
             foreach (UIRoomCategoryButton roomCategoryButton in roomCategoryButtons)
             {
@@ -103,7 +103,7 @@ namespace TowerBuilder.GameWorld.UI
             DestroyRoomTemplateButtons();
 
             List<RoomTemplate> currentRoomTemplates = GetRoomTemplatesForCurrentCategory();
-            RoomTemplate currentTemplate = Registry.Stores.UI.buildToolSubState.selectedRoomTemplate;
+            RoomTemplate currentTemplate = Registry.appState.UI.buildToolSubState.selectedRoomTemplate;
 
             foreach (RoomTemplate roomTemplate in currentRoomTemplates)
             {
@@ -137,7 +137,7 @@ namespace TowerBuilder.GameWorld.UI
 
         List<RoomTemplate> GetRoomTemplatesForCurrentCategory()
         {
-            string currentCategory = Registry.Stores.UI.buildToolSubState.selectedRoomCategory;
+            string currentCategory = Registry.appState.UI.buildToolSubState.selectedRoomCategory;
             return Constants.ROOM_DEFINITIONS.FindAll(roomTemplate => roomTemplate.category == currentCategory).ToList();
         }
 

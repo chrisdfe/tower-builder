@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.Stores;
-using TowerBuilder.Stores.Notifications;
+using TowerBuilder.State;
+using TowerBuilder.State.Notifications;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,13 +16,13 @@ namespace TowerBuilder.GameWorld.UI
         Button button;
         Text text;
 
-        // TODO - why does it have to be Stores.Notification and not just Notifications?
-        Stores.Notifications.State notificationsStore;
+        // TODO - why does it have to be AppState.Notification and not just Notifications?
+        State.Notifications.State notificationsStore;
 
         void Awake()
         {
-            notificationsStore = Registry.Stores.Notifications;
-            Registry.Stores.Notifications.onNotificationAdded += OnNotificationAdded;
+            notificationsStore = Registry.appState.Notifications;
+            Registry.appState.Notifications.onNotificationAdded += OnNotificationAdded;
 
             button = transform.Find("Button").GetComponent<Button>();
             text = transform.Find("NotificationsText").GetComponent<Text>();
@@ -33,17 +33,17 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnClick()
         {
-            int notificationsLength = Registry.Stores.Notifications.notifications.Count;
+            int notificationsLength = Registry.appState.Notifications.notifications.Count;
             Notification[] notifications = new Notification[notificationsLength];
-            Registry.Stores.Notifications.notifications.CopyTo(notifications);
+            Registry.appState.Notifications.notifications.CopyTo(notifications);
 
-            Registry.Stores.Notifications.createNotification("new message " + (notificationsLength + 1));
+            Registry.appState.Notifications.createNotification("new message " + (notificationsLength + 1));
         }
 
         void OnNotificationAdded(Notification newNotification)
         {
-            int notificationsLength = Registry.Stores.Notifications.notifications.Count;
-            List<Notification> notifications = Registry.Stores.Notifications.notifications;
+            int notificationsLength = Registry.appState.Notifications.notifications.Count;
+            List<Notification> notifications = Registry.appState.Notifications.notifications;
             // Get the n most recent notifications
             List<Notification> displayNotifications = Enumerable.Reverse(notifications).Take(NOTIFICATIONS_LIMIT).ToList();
 

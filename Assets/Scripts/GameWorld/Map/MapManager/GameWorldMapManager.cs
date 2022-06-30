@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.GameWorld.Rooms;
-using TowerBuilder.Stores;
-using TowerBuilder.Stores.UI;
+using TowerBuilder.State;
+using TowerBuilder.State.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -70,9 +70,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
                     GameWorldMapCellHelpers.RoundToNearestTile(hit.point.y)
                 );
 
-                if (!hoveredCell.Matches(Registry.Stores.UI.currentSelectedCell))
+                if (!hoveredCell.Matches(Registry.appState.UI.currentSelectedCell))
                 {
-                    Registry.Stores.UI.SetCurrentSelectedCell(hoveredCell);
+                    Registry.appState.UI.SetCurrentSelectedCell(hoveredCell);
                 }
             }
         }
@@ -101,9 +101,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             SetCurrentToolStateHandlers();
             // Perform initialization of whatever tool state is the default
-            currentToolStateHandler.OnTransitionTo(Registry.Stores.UI.toolState);
+            currentToolStateHandler.OnTransitionTo(Registry.appState.UI.toolState);
 
-            Registry.Stores.UI.onToolStateUpdated += OnToolStateUpdated;
+            Registry.appState.UI.onToolStateUpdated += OnToolStateUpdated;
         }
 
         void OnToolStateUpdated(ToolState nextToolState, ToolState previousToolState)
@@ -115,7 +115,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void SetCurrentToolStateHandlers()
         {
-            ToolState currentToolState = Registry.Stores.UI.toolState;
+            ToolState currentToolState = Registry.appState.UI.toolState;
             currentToolStateHandler = toolStateHandlerMap[currentToolState];
         }
     }

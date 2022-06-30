@@ -1,5 +1,5 @@
 using System;
-using TowerBuilder.Stores.UI;
+using TowerBuilder.State.UI;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager

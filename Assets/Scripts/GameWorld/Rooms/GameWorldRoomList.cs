@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
-using TowerBuilder.Stores;
+using TowerBuilder.State;
 
-using TowerBuilder.Stores.Rooms;
+using TowerBuilder.State.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -22,8 +22,8 @@ namespace TowerBuilder.GameWorld.Rooms
             roomPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/Room");
             ResetRooms();
 
-            Registry.Stores.Rooms.onRoomAdded += OnRoomAdded;
-            Registry.Stores.Rooms.onRoomDestroyed += OnRoomDestroyed;
+            Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
+            Registry.appState.Rooms.onRoomDestroyed += OnRoomDestroyed;
         }
 
         void OnRoomAdded(Room room)

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder.Stores;
-using TowerBuilder.Stores.Residents;
+using TowerBuilder.State;
+using TowerBuilder.State.Residents;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Residents
@@ -15,8 +15,8 @@ namespace TowerBuilder.GameWorld.Residents
         {
             gameWorldResidentPrefab = Resources.Load<GameObject>("Prefabs/Residents/Resident");
 
-            Registry.Stores.Residents.onResidentAdded += OnResidentAdded;
-            Registry.Stores.Residents.onResidentDestroyed += OnResidentDestroyed;
+            Registry.appState.Residents.onResidentAdded += OnResidentAdded;
+            Registry.appState.Residents.onResidentDestroyed += OnResidentDestroyed;
         }
 
         void OnResidentAdded(Resident resident)

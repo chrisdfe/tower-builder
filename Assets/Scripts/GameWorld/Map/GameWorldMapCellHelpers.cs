@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder.Stores;
+using TowerBuilder.State;
 
-using TowerBuilder.Stores.Rooms;
+using TowerBuilder.State.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -12,7 +12,7 @@ namespace TowerBuilder.GameWorld.Rooms
     {
         public static int RoundToNearestTile(float number)
         {
-            float TILE_SIZE = Stores.Rooms.Constants.TILE_SIZE;
+            float TILE_SIZE = State.Rooms.Constants.TILE_SIZE;
             float rounded = (float)Math.Round(number / TILE_SIZE) * TILE_SIZE;
             return (int)rounded;
         }

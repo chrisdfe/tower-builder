@@ -14,17 +14,17 @@
 //         [Test]
 //         public void ItSuccessfullyBuildsRoom()
 //         {
-//             StoreRegistry mockStoreRegistry = new StoreRegistry();
-//             string newRoomId = RoomMutations.addRoomKeyToMap(mockStoreRegistry, RoomKey.EmptyFloor);
+//             AppState mockAppState = new AppState();
+//             string newRoomId = RoomMutations.addRoomKeyToMap(mockAppState, RoomKey.EmptyFloor);
 //             Assert.IsNotNull(newRoomId);
 //         }
 
 //         [Test]
 //         public void ItAddsRoomIdToRoomStore()
 //         {
-//             StoreRegistry mockStoreRegistry = new StoreRegistry();
-//             RoomStore roomStore = mockStoreRegistry.roomStore;
-//             string newRoomId = RoomMutations.addRoomKeyToMap(mockStoreRegistry, RoomKey.Lobby);
+//             AppState mockAppState = new AppState();
+//             RoomStore roomStore = mockAppState.roomStore;
+//             string newRoomId = RoomMutations.addRoomKeyToMap(mockAppState, RoomKey.Lobby);
 
 //             Assert.True(roomStore.state.roomKeyMap.ContainsKey(newRoomId));
 //         }

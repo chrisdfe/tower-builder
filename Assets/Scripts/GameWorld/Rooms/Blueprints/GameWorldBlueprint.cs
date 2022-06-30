@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.GameWorld.Rooms;
-using TowerBuilder.Stores;
-using TowerBuilder.Stores.Rooms;
-using TowerBuilder.Stores.Rooms.Blueprints;
+using TowerBuilder.State;
+using TowerBuilder.State.Rooms;
+using TowerBuilder.State.Rooms.Blueprints;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms.Blueprints
@@ -36,8 +36,8 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
             CreateBlueprintRoom();
             CreateBlueprintCells();
 
-            Registry.Stores.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-            Registry.Stores.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
+            Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         void OnDestroy()
@@ -45,8 +45,8 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
             DestroyBlueprintRoom();
             DestroyBlueprintCells();
 
-            Registry.Stores.UI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
-            Registry.Stores.UI.buildToolSubState.onSelectedRoomTemplateUpdated -= OnSelectedRoomTemplateUpdated;
+            Registry.appState.UI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
+            Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated -= OnSelectedRoomTemplateUpdated;
         }
 
         void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell)
@@ -63,7 +63,7 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
 
         void CreateBlueprintRoom()
         {
-            Blueprint blueprint = Registry.Stores.UI.buildToolSubState.currentBlueprint;
+            Blueprint blueprint = Registry.appState.UI.buildToolSubState.currentBlueprint;
             GameObject gameWorldRoomGameObject = Instantiate(gameWorldRoomPrefab);
             gameWorldRoom = gameWorldRoomGameObject.GetComponent<GameWorldRoom>();
             gameWorldRoom.SetRoom(blueprint.room);
@@ -78,7 +78,7 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
 
         void CreateBlueprintCells()
         {
-            Blueprint blueprint = Registry.Stores.UI.buildToolSubState.currentBlueprint;
+            Blueprint blueprint = Registry.appState.UI.buildToolSubState.currentBlueprint;
 
             foreach (BlueprintCell blueprintCell in blueprint.roomBlueprintCells)
             {

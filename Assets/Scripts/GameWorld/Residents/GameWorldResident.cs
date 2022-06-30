@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.GameWorld;
 using TowerBuilder.GameWorld.Rooms;
-using TowerBuilder.Stores;
-using TowerBuilder.Stores.Residents;
+using TowerBuilder.State;
+using TowerBuilder.State.Residents;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Residents
@@ -20,7 +20,7 @@ namespace TowerBuilder.GameWorld.Residents
 
         void Awake()
         {
-            Registry.Stores.Residents.onResidentPositionUpdated += OnResidentPositionUpdated;
+            Registry.appState.Residents.onResidentPositionUpdated += OnResidentPositionUpdated;
         }
 
         void OnResidentPositionUpdated(Resident resident)

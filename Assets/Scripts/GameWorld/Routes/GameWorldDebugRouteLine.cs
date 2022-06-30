@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.GameWorld.Map;
 using TowerBuilder.GameWorld.Rooms;
-using TowerBuilder.Stores.Routes;
+using TowerBuilder.State.Routes;
 using UnityEngine;
 
 public class GameWorldDebugRouteLine : MonoBehaviour

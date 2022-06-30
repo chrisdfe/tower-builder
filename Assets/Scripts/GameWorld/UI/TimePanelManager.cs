@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.Stores;
-using TowerBuilder.Stores.Time;
+using TowerBuilder.State;
+using TowerBuilder.State.Time;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,7 +37,7 @@ namespace TowerBuilder.GameWorld.UI
             speedText = transform.Find("SpeedText").GetComponent<Text>();
             UpdateSpeedText();
 
-            Registry.Stores.Time.onTimeUpdated += OnTimeStateUpdated;
+            Registry.appState.Time.onTimeUpdated += OnTimeStateUpdated;
 
             StartTick();
         }
@@ -67,7 +67,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void Add1Hour()
         {
-            Registry.Stores.Time.AddTime(new TimeInput()
+            Registry.appState.Time.AddTime(new TimeInput()
             {
                 hour = 1
             });
@@ -76,7 +76,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void Subtract1Hour()
         {
-            Registry.Stores.Time.SubtractTime(new TimeInput()
+            Registry.appState.Time.SubtractTime(new TimeInput()
             {
                 hour = 1
             });
@@ -91,7 +91,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void UpdateHoursMinutesText()
         {
-            Stores.Time.State state = Registry.Stores.Time;
+            State.Time.State state = Registry.appState.Time;
             int hour = state.time.hour;
             int minute = state.time.minute;
 
@@ -112,7 +112,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void UpdateWeeksSeasonsText()
         {
-            Stores.Time.State state = Registry.Stores.Time;
+            State.Time.State state = Registry.appState.Time;
             int day = state.time.day;
             int week = state.time.week;
             int season = state.time.season;
@@ -123,7 +123,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void UpdateSpeedText()
         {
-            TimeSpeed currentSpeed = Registry.Stores.Time.speed;
+            TimeSpeed currentSpeed = Registry.appState.Time.speed;
             speedText.text = $"Speed: {currentSpeed}";
         }
 
@@ -149,7 +149,7 @@ namespace TowerBuilder.GameWorld.UI
         // TODO - this doesn't belong here but it is fine for now
         void OnTick()
         {
-            Registry.Stores.Time.Tick();
+            Registry.appState.Time.Tick();
         }
 
         // TODO - this doesn't belong here but it is fine for now
@@ -157,7 +157,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             while (true)
             {
-                float interval = Stores.Time.Selectors.GetCurrentTickInterval(Registry.Stores.Time);
+                float interval = State.Time.Selectors.GetCurrentTickInterval(Registry.appState.Time);
                 yield return new WaitForSeconds(interval);
                 OnTick();
             }
@@ -166,7 +166,7 @@ namespace TowerBuilder.GameWorld.UI
         // TODO - this doesn't belong here but it is fine for now
         void UpdateSpeed(TimeSpeed timeSpeed)
         {
-            Registry.Stores.Time.UpdateSpeed(timeSpeed);
+            Registry.appState.Time.UpdateSpeed(timeSpeed);
             UpdateSpeedText();
 
             if (timeSpeed == TimeSpeed.Pause)

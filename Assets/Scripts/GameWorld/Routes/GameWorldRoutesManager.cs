@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder.Stores;
-
-using TowerBuilder.Stores.Routes;
+using TowerBuilder;
+using TowerBuilder.State;
+using TowerBuilder.State.Routes;
 using UnityEngine;
 
 public class GameWorldRoutesManager : MonoBehaviour
@@ -20,10 +20,10 @@ public class GameWorldRoutesManager : MonoBehaviour
         debugRouteMarkerPrefab = Resources.Load<GameObject>("Prefabs/Routes/DebugRouteMarker");
         debugRouteLinePrefab = Resources.Load<GameObject>("Prefabs/Routes/DebugRouteLine");
 
-        Registry.Stores.Routes.onDebugRouteStartSet += OnDebugRouteStartSet;
-        Registry.Stores.Routes.onDebugRouteEndSet += OnDebugRouteEndSet;
-        Registry.Stores.Routes.onDebugRouteCalculated += OnDebugRouteCalculated;
-        Registry.Stores.Routes.onDebugRouteCleared += OnDebugRouteCleared;
+        Registry.appState.Routes.onDebugRouteStartSet += OnDebugRouteStartSet;
+        Registry.appState.Routes.onDebugRouteEndSet += OnDebugRouteEndSet;
+        Registry.appState.Routes.onDebugRouteCalculated += OnDebugRouteCalculated;
+        Registry.appState.Routes.onDebugRouteCleared += OnDebugRouteCleared;
     }
 
     void OnDebugRouteStartSet(CellCoordinates cellCoordinates)
@@ -78,7 +78,7 @@ public class GameWorldRoutesManager : MonoBehaviour
         ClearDebugRoutes();
         debugRouteLines = new List<GameWorldDebugRouteLine>();
 
-        List<RouteAttempt> routeAttempts = Registry.Stores.Routes.debugRouteAttempts;
+        List<RouteAttempt> routeAttempts = Registry.appState.Routes.debugRouteAttempts;
 
         int attemptIndex = 0;
         foreach (RouteAttempt routeAttempt in routeAttempts)

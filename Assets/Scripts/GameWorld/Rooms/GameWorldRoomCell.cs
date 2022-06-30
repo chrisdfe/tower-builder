@@ -3,12 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.GameWorld;
-using TowerBuilder.Stores;
-
-using TowerBuilder.Stores.Rooms;
-using TowerBuilder.Stores.Rooms.Connections;
-using TowerBuilder.Stores.Rooms.Entrances;
-using TowerBuilder.Stores.UI;
+using TowerBuilder.State;
+using TowerBuilder.State.Rooms;
+using TowerBuilder.State.Rooms.Connections;
+using TowerBuilder.State.Rooms.Entrances;
+using TowerBuilder.State.UI;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -169,7 +168,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnDestroy()
         {
-            // Registry.Stores.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
+            // Registry.appState.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
     }
 }

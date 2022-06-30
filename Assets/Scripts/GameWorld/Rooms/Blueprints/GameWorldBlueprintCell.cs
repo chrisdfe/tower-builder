@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.GameWorld.Rooms;
-using TowerBuilder.Stores;
-using TowerBuilder.Stores.Rooms;
-using TowerBuilder.Stores.Rooms.Blueprints;
-using TowerBuilder.Stores.Rooms.Connections;
+using TowerBuilder.State;
+using TowerBuilder.State.Rooms;
+using TowerBuilder.State.Rooms.Blueprints;
+using TowerBuilder.State.Rooms.Connections;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms.Blueprints

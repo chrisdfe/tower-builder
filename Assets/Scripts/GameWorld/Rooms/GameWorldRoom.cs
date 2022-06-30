@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
-using TowerBuilder.Stores;
+using TowerBuilder.State;
 
-using TowerBuilder.Stores.Rooms;
-using TowerBuilder.Stores.Rooms.Connections;
-using TowerBuilder.Stores.Rooms.Entrances;
-using TowerBuilder.Stores.UI;
+using TowerBuilder.State.Rooms;
+using TowerBuilder.State.Rooms.Connections;
+using TowerBuilder.State.Rooms.Entrances;
+using TowerBuilder.State.UI;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -41,27 +41,27 @@ namespace TowerBuilder.GameWorld.Rooms
             roomCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomCell");
             gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
 
-            Registry.Stores.Rooms.onRoomAdded += OnRoomAdded;
-            Registry.Stores.Rooms.onRoomBlockDestroyed += OnRoomBlockDestroyed;
-            Registry.Stores.Rooms.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
+            Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
+            Registry.appState.Rooms.onRoomBlockDestroyed += OnRoomBlockDestroyed;
+            Registry.appState.Rooms.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
 
-            Registry.Stores.UI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
-            Registry.Stores.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
-            Registry.Stores.UI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
-            Registry.Stores.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated += OnBlueprintRoomConnectionsUpdated;
+            Registry.appState.UI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
+            Registry.appState.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
+            Registry.appState.UI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
+            Registry.appState.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated += OnBlueprintRoomConnectionsUpdated;
         }
 
         void OnDestroy()
         {
             DestroyCells();
 
-            Registry.Stores.Rooms.onRoomAdded -= OnRoomAdded;
-            Registry.Stores.Rooms.onRoomBlockDestroyed -= OnRoomBlockDestroyed;
-            Registry.Stores.Rooms.onRoomConnectionsUpdated -= OnRoomConnectionsUpdated;
+            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
+            Registry.appState.Rooms.onRoomBlockDestroyed -= OnRoomBlockDestroyed;
+            Registry.appState.Rooms.onRoomConnectionsUpdated -= OnRoomConnectionsUpdated;
 
-            Registry.Stores.UI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
-            Registry.Stores.UI.inspectToolSubState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
-            Registry.Stores.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
+            Registry.appState.UI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
+            Registry.appState.UI.inspectToolSubState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
+            Registry.appState.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
 
         void OnCurrentSelectedRoomUpdated(Room selectedRoom)
@@ -81,7 +81,7 @@ namespace TowerBuilder.GameWorld.Rooms
             }
 
             // This is handled in OnCurrentSelectedRoomBlockUpdated
-            if (Registry.Stores.UI.toolState == ToolState.Destroy)
+            if (Registry.appState.UI.toolState == ToolState.Destroy)
             {
                 return;
             }
@@ -127,7 +127,7 @@ namespace TowerBuilder.GameWorld.Rooms
                 return;
             }
 
-            if (Registry.Stores.UI.toolState == ToolState.Destroy)
+            if (Registry.appState.UI.toolState == ToolState.Destroy)
             {
                 foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
                 {
@@ -145,7 +145,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         bool IsInCurrentInspectedRoom()
         {
-            Room currentInspectedRoom = Registry.Stores.UI.inspectToolSubState.currentInspectedRoom;
+            Room currentInspectedRoom = Registry.appState.UI.inspectToolSubState.currentInspectedRoom;
             return currentInspectedRoom != null && currentInspectedRoom.id == room.id;
         }
 
@@ -212,12 +212,12 @@ namespace TowerBuilder.GameWorld.Rooms
             foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
             {
                 RoomConnection roomEntranceConnection =
-                   Registry.Stores.Rooms.roomConnections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
+                   Registry.appState.Rooms.roomConnections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
 
                 bool isConnected = roomEntranceConnection != null;
 
                 RoomConnection blueprintRoomEntranceConnection =
-                    Registry.Stores.UI.buildToolSubState.blueprintRoomConnections
+                    Registry.appState.UI.buildToolSubState.blueprintRoomConnections
                         .FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
 
                 if (blueprintRoomEntranceConnection != null)
@@ -266,7 +266,7 @@ namespace TowerBuilder.GameWorld.Rooms
             ResetCellColors();
             UpdateRoomEntrances();
 
-            Registry.Stores.Rooms.onRoomAdded -= OnRoomAdded;
+            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
         }
 
         void CreateCells()

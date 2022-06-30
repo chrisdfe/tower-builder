@@ -1,0 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
+
+using UnityEngine;
+
+namespace TowerBuilder.State.Rooms.Furniture
+{
+    public abstract class RoomFurnitureBase
+    {
+        public virtual RoomFurnitureCategory category { get { return RoomFurnitureCategory.None; } }
+        public int occupancy;
+
+        Room room;
+        RoomFurnitureAttributesBase config;
+
+        public RoomFurnitureBase(Room room, RoomFurnitureAttributesBase config)
+        {
+            this.room = room;
+            this.config = config;
+        }
+
+        public abstract void Initialize();
+        public abstract void OnDestroy();
+    }
+}

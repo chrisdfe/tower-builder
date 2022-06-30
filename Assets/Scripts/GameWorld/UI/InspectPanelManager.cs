@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
-using TowerBuilder.Stores;
+using TowerBuilder.State;
 
-using TowerBuilder.Stores.Rooms;
-using TowerBuilder.Stores.Rooms.Connections;
+using TowerBuilder.State.Rooms;
+using TowerBuilder.State.Rooms.Connections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,10 +16,10 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            Registry.Stores.UI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnCurrentInspectedRoomUpdated;
+            Registry.appState.UI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnCurrentInspectedRoomUpdated;
 
             inspectText = transform.Find("InspectText").GetComponent<Text>();
-            SetInspectText(Registry.Stores.UI.inspectToolSubState.currentInspectedRoom);
+            SetInspectText(Registry.appState.UI.inspectToolSubState.currentInspectedRoom);
         }
 
 
@@ -36,7 +36,7 @@ namespace TowerBuilder.GameWorld.UI
                 return;
             }
 
-            RoomConnections roomConnections = Registry.Stores.Rooms.roomConnections.FindConnectionsForRoom(room);
+            RoomConnections roomConnections = Registry.appState.Rooms.roomConnections.FindConnectionsForRoom(room);
 
             string text = room + "\n";
             text += room.roomTemplate.title + "\n";
