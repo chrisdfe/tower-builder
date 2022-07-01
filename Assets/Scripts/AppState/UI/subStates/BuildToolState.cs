@@ -211,125 +211,14 @@ namespace TowerBuilder.State.UI
 
         void AttemptToCreateRoomFromCurrentBlueprint()
         {
-            if (selectedRoomTemplate == null)
+            if (currentBlueprint == null)
             {
                 return;
             }
-
-            // TODO - should everything here on down go in MapState?
-            List<RoomValidationError> validationErrors = currentBlueprint.Validate(Registry.appState);
-
-            if (validationErrors.Count > 0)
-            {
-                // TODO - these should be unique messages - right now they are not
-                foreach (RoomValidationError validationError in validationErrors)
-                {
-                    Registry.appState.Notifications.createNotification(validationError.message);
-                }
-                return;
-            }
-
-            // 
-            Registry.appState.Wallet.SubtractBalance(currentBlueprint.room.GetPrice());
-
-            // Decide whether to create a new room or to add to an existing one
-            List<Room> roomsToCombineWith = FindRoomsToCombineWith(currentBlueprint.room);
-
-            Room newRoom = currentBlueprint.room;
-            if (roomsToCombineWith.Count > 0)
-            {
-                foreach (Room otherRoom in roomsToCombineWith)
-                {
-                    newRoom.AddBlocks(otherRoom.blocks);
-
-                    Registry.appState.Rooms.DestroyRoom(otherRoom);
-                }
-
-                // TODO - add to the 1st item in roomsToCombineWith instead of replacing both with a new room?
-
-                // TODO - this might not be the best place to call this
-                newRoom.Reset();
-            }
-
-            Registry.appState.Rooms.AddRoom(newRoom);
 
             SearchForBlueprintRoomConnections();
-
-            if (blueprintRoomConnections.connections.Count > 0)
-            {
-                Registry.appState.Rooms.AddRoomConnections(blueprintRoomConnections);
-            }
+            Registry.appState.Rooms.AttemptToAddRoom(currentBlueprint, blueprintRoomConnections);
             currentBlueprint.Reset();
-        }
-
-        List<Room> FindRoomsToCombineWith(Room room)
-        {
-            List<Room> result = new List<Room>();
-
-            if (room.roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
-            {
-                return result;
-            }
-
-            if (room.roomTemplate.resizability.x)
-            {
-                //  Check on either side
-                foreach (int floor in room.roomCells.GetFloorRange())
-                {
-                    Room leftRoom = Registry.appState.Rooms.rooms.FindRoomAtCell(new CellCoordinates(
-                        room.roomCells.GetLowestX() - 1,
-                        floor
-                    ));
-
-                    Room rightRoom = Registry.appState.Rooms.rooms.FindRoomAtCell(new CellCoordinates(
-                        room.roomCells.GetHighestX() + 1,
-                        floor
-                    ));
-
-                    foreach (Room otherRoom in new Room[] { leftRoom, rightRoom })
-                    {
-                        if (
-                            otherRoom != null &&
-                            otherRoom.roomTemplate.key == selectedRoomTemplate.key &&
-                            !result.Contains(otherRoom)
-                        )
-                        {
-                            result.Add(otherRoom);
-                        }
-                    }
-                }
-            }
-
-            if (room.roomTemplate.resizability.floor)
-            {
-                //  Check on floors above and below
-                foreach (int x in room.roomCells.GetXRange())
-                {
-                    Room aboveRoom = Registry.appState.Rooms.rooms.FindRoomAtCell(new CellCoordinates(
-                        x,
-                        room.roomCells.GetHighestFloor() + 1
-                    ));
-
-                    Room belowRoom = Registry.appState.Rooms.rooms.FindRoomAtCell(new CellCoordinates(
-                        x,
-                        room.roomCells.GetLowestFloor() - 1
-                    ));
-
-                    foreach (Room otherRoom in new Room[] { aboveRoom, belowRoom })
-                    {
-                        if (
-                            otherRoom != null &&
-                            otherRoom.roomTemplate.key == selectedRoomTemplate.key &&
-                            !result.Contains(otherRoom)
-                        )
-                        {
-                            result.Add(otherRoom);
-                        }
-                    }
-                }
-            }
-
-            return result;
         }
     }
 }

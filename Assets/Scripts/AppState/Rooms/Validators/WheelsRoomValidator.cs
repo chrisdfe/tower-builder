@@ -23,7 +23,7 @@ namespace TowerBuilder.State.Rooms.Validators
             bool isOnBottom = roomCell.GetRelativeCoordinates().floor == 0;
             if (isOnBottom && cellCoordinates.floor != 0)
             {
-                result.Add(new RoomValidationError("Lobbies must be placed on first floor"));
+                result.Add(new RoomValidationError("Wheels must be placed on first floor"));
             }
 
             return result;

@@ -90,7 +90,6 @@ namespace TowerBuilder.State.Rooms.Blueprints
             }
             else
             {
-
                 // Restrict resizability to X/Y depending on RoomFlexibility
                 if (roomTemplate.resizability.x)
                 {
