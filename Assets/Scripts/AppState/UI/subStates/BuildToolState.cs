@@ -86,7 +86,7 @@ namespace TowerBuilder.State.UI
         public void SetSelectedRoomCategory(string roomCategory)
         {
             selectedRoomCategory = roomCategory;
-            List<RoomTemplate> roomTemplates = Rooms.Constants.ROOM_DEFINITIONS.FindAll(details => details.category == roomCategory);
+            List<RoomTemplate> roomTemplates = Registry.roomTemplates.FindByCategory(selectedRoomCategory);
 
             RoomTemplate roomTemplate = roomTemplates[0];
 

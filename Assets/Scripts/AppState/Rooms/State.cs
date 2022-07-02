@@ -133,6 +133,8 @@ namespace TowerBuilder.State.Rooms
 
         public void DestroyRoomBlock(Room room, RoomCells roomBlock)
         {
+            if (room == null) return;
+
             // TODO - check if doing this is going to divide the room into 2
             // if so, create another room right here
 

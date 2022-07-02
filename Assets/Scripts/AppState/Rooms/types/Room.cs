@@ -16,7 +16,6 @@ namespace TowerBuilder.State.Rooms
         private static int autoincrementingId;
         public int id { get; private set; }
 
-        // public RoomKey roomKey { get; private set; }
         public string roomKey { get; private set; } = "";
 
         public bool isInBlueprintMode = false;

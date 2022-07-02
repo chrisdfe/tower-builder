@@ -7,7 +7,6 @@
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 - Blueprint should just be a room in RoomState - right now it lives in a seperate place in BuildToolState;
 - Add concept of different "vehicles" or separate entities - groups of rooms. When you add/delete a room it can either add to an existing vehicle or create a new one
-- Move current RoomTemplates constants to a field in Registry - with ability to split up the "registering room template" logic into different files
 - Delete room entrances when a block gets deleted as well
 - colors should be tied to room category + not live on RoomTemplate
 - RouteFinder shouldn't look for every room entrance in the room, just on the current floor - it should also look for furniture on the current floor that could transport the resident elsewhere
@@ -15,7 +14,7 @@
   - Room entrances could be "Doorway" furniture instead
 - Furniture "usage slots" - an array of residents currently using this piece of furniture the size of the furnitures occupancy
 - roomcell "has floor" boolean state - for tall rooms
-  - additionally, a 
+  - additionally, a "bridge" furniture type?
 - When casting the mouse ray, build a stack of interactable/inspectable elements 
   - If that stack contains a ui element:
     - on mouse down don't propagate
@@ -95,6 +94,7 @@
 
 # Done
 
+- Move current RoomTemplates constants to a field in Registry - with ability to split up the "registering room template" logic into different files
 - Moving camera around with middle mouse button
 - Camera zoom in/out
 - Room addition is broken again

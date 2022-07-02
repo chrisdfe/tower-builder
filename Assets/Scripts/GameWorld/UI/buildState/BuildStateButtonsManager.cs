@@ -3,6 +3,7 @@ using System.Linq;
 using TowerBuilder.State;
 using TowerBuilder.State.Rooms;
 using TowerBuilder.State.UI;
+using TowerBuilder.Templates;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,9 +29,6 @@ namespace TowerBuilder.GameWorld.UI
         {
             roomCategoryButtonsWrapper = transform.Find("RoomCategoryButtons");
             roomTemplatesButtonsWrapper = transform.Find("RoomTemplateButtons");
-
-            Debug.Log(roomCategoryButtonsWrapper);
-            Debug.Log(roomTemplatesButtonsWrapper);
 
             SetupRoomCategoryButtons();
             ResetRoomTemplatesButtons();
@@ -83,7 +81,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             DestroyRoomCategoryButtons();
 
-            List<string> allRoomCategories = GetAllRoomCategories();
+            List<string> allRoomCategories = Registry.roomTemplates.FindAllRoomCategories();
 
             foreach (string category in allRoomCategories)
             {
@@ -138,22 +136,10 @@ namespace TowerBuilder.GameWorld.UI
         List<RoomTemplate> GetRoomTemplatesForCurrentCategory()
         {
             string currentCategory = Registry.appState.UI.buildToolSubState.selectedRoomCategory;
-            return Constants.ROOM_DEFINITIONS.FindAll(roomTemplate => roomTemplate.category == currentCategory).ToList();
-        }
-
-        List<string> GetAllRoomCategories()
-        {
-            List<string> result = new List<string>();
-
-            foreach (RoomTemplate roomTemplate in Constants.ROOM_DEFINITIONS)
-            {
-                if (!result.Contains(roomTemplate.category))
-                {
-                    result.Add(roomTemplate.category);
-                }
-            }
-
-            return result;
+            Debug.Log("here:");
+            Debug.Log(Registry.roomTemplates.FindByCategory(currentCategory));
+            Debug.Log(Registry.roomTemplates.FindByCategory(currentCategory).Count);
+            return Registry.roomTemplates.FindByCategory(currentCategory);
         }
     }
 }
