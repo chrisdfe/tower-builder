@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Camera
+namespace TowerBuilder.GameWorld.CameraManager
 {
     public class CameraManager : MonoBehaviour
     {
         Transform cameraTransform;
+        Camera camera;
 
         // In secondds
         public static float ROTATION_TIME = 0.2f;
@@ -21,9 +22,29 @@ namespace TowerBuilder.GameWorld.Camera
         public const float MAX_VELOCITY = 0.25f;
         public const float DRAG = 0.025f;
 
+        public float zoomStartTime = 0;
+        public float zoomCurrentTime = 1f;
+        public float startZoom;
+        public float targetZoom;
+        public const float ZOOM_SPEED = 100f;
+        public float scrollDirection;
+
+        public bool isPanning = false;
+        public Vector2 panVelocity = Vector2.zero;
+        public Vector2 panStartPosition = Vector2.zero;
+        public Vector2 panStartMousePosition = Vector2.zero;
+        public Vector2 panCurrentPosition = Vector2.zero;
+        public Vector2 panCurrentMousePosition = Vector2.zero;
+
+        const float PAN_SPEED = 0.005f;
+        const float PAN_LIMIT = 10f;
+
         void Awake()
         {
             cameraTransform = transform.Find("Main Camera");
+            camera = cameraTransform.GetComponent<Camera>();
+            startZoom = camera.orthographicSize;
+            targetZoom = camera.orthographicSize;
 
             targetPosition = transform.position;
         }
@@ -31,11 +52,14 @@ namespace TowerBuilder.GameWorld.Camera
         void Update()
         {
             HandleInput();
+            // This doesn't work if it's in FixedUpdate
+            ZoomCamera();
         }
 
         void FixedUpdate()
         {
             MoveCamera();
+            PanCamera();
         }
 
         void HandleInput()
@@ -70,7 +94,6 @@ namespace TowerBuilder.GameWorld.Camera
                 OnMoveLeftReleased();
             }
 
-
             if (Input.GetKeyDown("d"))
             {
                 OnMoveRightPressed();
@@ -81,12 +104,33 @@ namespace TowerBuilder.GameWorld.Camera
                 OnMoveRightReleased();
             }
 
+            // Scrolling
+            scrollDirection = Input.GetAxis("Mouse ScrollWheel");
+
+            // Middle mouse pan
             if (Input.GetMouseButtonDown(2))
             {
+                if (!isPanning)
+                {
+                    // start panning
+                    isPanning = true;
+                    panStartPosition = new Vector2(transform.position.x, transform.position.y);
+                    panStartMousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+                }
             }
 
             if (Input.GetMouseButtonUp(2))
             {
+                if (isPanning)
+                {
+                    isPanning = false;
+                }
+            }
+
+            if (isPanning)
+            {
+                panCurrentPosition = new Vector2(transform.position.x, transform.position.y);
+                panCurrentMousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             }
         }
 
@@ -199,7 +243,51 @@ namespace TowerBuilder.GameWorld.Camera
                 transform.position.y + movementVelocity.y,
                 transform.position.z
             );
+        }
 
+        void ZoomCamera()
+        {
+            if (scrollDirection != 0)
+            {
+                startZoom = camera.orthographicSize;
+                // - instead of +: these 2 fields interact in the opposite way you'd expect
+                targetZoom = camera.orthographicSize - Input.mouseScrollDelta.y;
+                zoomStartTime = Time.time;
+                zoomCurrentTime = 0;
+            }
+
+            if (zoomCurrentTime < 1f)
+            {
+                camera.orthographicSize = Mathf.Lerp(startZoom, targetZoom, zoomCurrentTime * ZOOM_SPEED);
+                zoomCurrentTime += Time.deltaTime;
+            }
+        }
+
+        // TODO 
+        // 1) take camera zoom into account: the further it's zoomed out the more movement is needed
+        // 2) zoom towards where the cursor is pointing
+        void PanCamera()
+        {
+            if (!isPanning) return;
+
+
+            Vector2 mouseDifference = new Vector2(
+                Mathf.Clamp(-(panCurrentMousePosition.x - panStartMousePosition.x) * PAN_SPEED, -PAN_LIMIT, PAN_LIMIT),
+                Mathf.Clamp(-(panCurrentMousePosition.y - panStartMousePosition.y) * PAN_SPEED, -PAN_LIMIT, PAN_LIMIT)
+            );
+
+            Vector2 targetPosition = new Vector3(
+                panStartPosition.x + mouseDifference.x,
+                panStartPosition.y + mouseDifference.y
+            );
+
+            Debug.Log(mouseDifference);
+
+            transform.position = new Vector3(
+                targetPosition.x,
+                targetPosition.y,
+                transform.position.z
+            );
         }
     }
 }

@@ -1,11 +1,11 @@
 # TODO
 
 ## Current
-- ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
-
 
 ## Tasks
 
+- ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
+- Blueprint should just be a room in RoomState - right now it lives in a seperate place in BuildToolState;
 - Add concept of different "vehicles" or separate entities - groups of rooms. When you add/delete a room it can either add to an existing vehicle or create a new one
 - Move current RoomTemplates constants to a field in Registry - with ability to split up the "registering room template" logic into different files
 - Delete room entrances when a block gets deleted as well
@@ -14,7 +14,7 @@
 - Transportation room furniture interface - have a "connects to"
   - Room entrances could be "Doorway" furniture instead
 - Furniture "usage slots" - an array of residents currently using this piece of furniture the size of the furnitures occupancy
-- roomcell "has floor" state - true or false
+- roomcell "has floor" boolean state - for tall rooms
   - additionally, a 
 - When casting the mouse ray, build a stack of interactable/inspectable elements 
   - If that stack contains a ui element:
@@ -44,7 +44,6 @@
   - probably as simple as fewer cells traveled > more cells traveled
 - Add residents
 - Keybindings for build, destroy, inspect, none
-- Camera zoom in/out
 - 'closed' connections, e.g between 2 private rooms (e.g condo)
 - Stairwells should not be able to be placed next to elevators or other stairwells
   - Perhaps this should be part of "Transportation category validation"
@@ -55,7 +54,6 @@
 - blueprint price indicator for flexible rooms
 - destroy validation
 - rooms should not be able to be built in thin air above ground floor
-- Moving camera around with middle mouse button
 - Move Rooms dictionary in Rooms state somewhere else & make it more extensible
 - "Path" constants for paths used in Resource.Load - refactoring/moving things around would be easier
   if they're all in one place
@@ -97,6 +95,8 @@
 
 # Done
 
+- Moving camera around with middle mouse button
+- Camera zoom in/out
 - Room addition is broken again
 - Generate rooms buttons in RoomBlueprintButtonsManager dynamically
   - Room types in BuildToolPanel should be grouped by RoomCategory
@@ -106,7 +106,7 @@
 - Use factories for RoomValidator and RoomEntranceBuilder, right now all rooms of the same type share the same instance
 - GetRoomPrice should live on Room, not Blueprint
 - Debug resident walk along route to destination
-- Perhaps AppState.Map.Rooms should just be AppState.Rooms and delete AppState.Map
+- Perhaps Stores.Map.Rooms should just be Stores.Rooms and delete Stores.Map
   - Also rename "MapUI" to just "UI"
 - RoomEntrances namespace?
 - Make ground a cube, cut holes in it when you build a room
