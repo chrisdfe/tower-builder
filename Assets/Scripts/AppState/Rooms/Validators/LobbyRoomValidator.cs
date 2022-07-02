@@ -14,8 +14,6 @@ namespace TowerBuilder.State.Rooms.Validators
         {
             List<RoomValidationError> result = base.ValidateRoomCell(roomCell, stores);
 
-            RoomList allRooms = stores.Rooms.rooms;
-
             CellCoordinates cellCoordinates = roomCell.coordinates;
 
             // Lobbies must be on floor 0

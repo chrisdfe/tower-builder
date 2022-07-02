@@ -136,9 +136,6 @@ namespace TowerBuilder.GameWorld.UI
         List<RoomTemplate> GetRoomTemplatesForCurrentCategory()
         {
             string currentCategory = Registry.appState.UI.buildToolSubState.selectedRoomCategory;
-            Debug.Log("here:");
-            Debug.Log(Registry.roomTemplates.FindByCategory(currentCategory));
-            Debug.Log(Registry.roomTemplates.FindByCategory(currentCategory).Count);
             return Registry.roomTemplates.FindByCategory(currentCategory);
         }
     }

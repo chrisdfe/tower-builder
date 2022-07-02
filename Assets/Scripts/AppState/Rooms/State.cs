@@ -15,14 +15,14 @@ namespace TowerBuilder.State.Rooms
     {
         public struct Input
         {
-            public RoomList rooms;
+            // public RoomList rooms;
             public BuildingList buildings;
             public RoomConnections roomConnections;
         }
 
         public BuildingList buildings { get; private set; } = new BuildingList();
 
-        public RoomList rooms { get; private set; } = new RoomList();
+        // public RoomList rooms { get; private set; } = new RoomList();
 
         public delegate void RoomAddedEvent(Room room);
         public RoomAddedEvent onRoomAdded;
@@ -42,18 +42,26 @@ namespace TowerBuilder.State.Rooms
 
         public State(Input input)
         {
-            rooms = input.rooms ?? new RoomList();
+            // rooms = input.rooms ?? new RoomList();
+            buildings = input.buildings ?? new BuildingList();
             roomConnections = input.roomConnections ?? new RoomConnections();
         }
 
-        public void AddRoom(Room room)
+        // Buildings
+        public void AddBuilding(Building building)
+        {
+            buildings.Add(building);
+        }
+
+        // Rooms
+        public void AddRoom(Room room, Building building)
         {
             if (room == null)
             {
                 return;
             }
 
-            rooms.Add(room);
+            building.AddRoom(room);
 
             room.OnBuild();
 
@@ -99,8 +107,16 @@ namespace TowerBuilder.State.Rooms
                 // TODO - this might not be the best place to call this
                 newRoom.Reset();
             }
+            else
+            {
+                // TODO here determine if we should create a new building or not
+                // if there are no rooms on any tile on the immediate perimeter
+            }
 
-            AddRoom(newRoom);
+            Building building = new Building();
+            buildings.Add(building);
+
+            AddRoom(newRoom, building);
 
             if (roomConnections.connections.Count > 0)
             {
@@ -121,9 +137,12 @@ namespace TowerBuilder.State.Rooms
                 return;
             }
 
+            Building building = buildings.FindBuildingByRoom(room);
+
             RemoveRoomConnectionsForRoom(room);
 
-            rooms.Remove(room);
+            Building buildingContainingRoom = buildings.FindBuildingByRoom(room);
+            building.RemoveRoom(room);
 
             if (onRoomDestroyed != null)
             {
@@ -190,12 +209,12 @@ namespace TowerBuilder.State.Rooms
                 //  Check on either side
                 foreach (int floor in room.roomCells.GetFloorRange())
                 {
-                    Room leftRoom = rooms.FindRoomAtCell(new CellCoordinates(
+                    Room leftRoom = buildings.FindRoomAtCell(new CellCoordinates(
                         room.roomCells.GetLowestX() - 1,
                         floor
                     ));
 
-                    Room rightRoom = rooms.FindRoomAtCell(new CellCoordinates(
+                    Room rightRoom = buildings.FindRoomAtCell(new CellCoordinates(
                         room.roomCells.GetHighestX() + 1,
                         floor
                     ));
@@ -219,12 +238,12 @@ namespace TowerBuilder.State.Rooms
                 //  Check on floors above and below
                 foreach (int x in room.roomCells.GetXRange())
                 {
-                    Room aboveRoom = Registry.appState.Rooms.rooms.FindRoomAtCell(new CellCoordinates(
+                    Room aboveRoom = buildings.FindRoomAtCell(new CellCoordinates(
                         x,
                         room.roomCells.GetHighestFloor() + 1
                     ));
 
-                    Room belowRoom = Registry.appState.Rooms.rooms.FindRoomAtCell(new CellCoordinates(
+                    Room belowRoom = buildings.FindRoomAtCell(new CellCoordinates(
                         x,
                         room.roomCells.GetLowestFloor() - 1
                     ));

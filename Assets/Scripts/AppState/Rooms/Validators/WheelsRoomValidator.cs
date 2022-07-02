@@ -14,7 +14,7 @@ namespace TowerBuilder.State.Rooms.Validators
         {
             List<RoomValidationError> result = base.ValidateRoomCell(roomCell, stores);
 
-            RoomList allRooms = stores.Rooms.rooms;
+            RoomList allRooms = stores.Rooms.buildings.FindAllRooms();
 
             CellCoordinates cellCoordinates = roomCell.coordinates;
 

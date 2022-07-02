@@ -43,6 +43,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void CreateRoom(Room room)
         {
+            Debug.Log(room);
             GameObject roomGameObject = Instantiate<GameObject>(roomPrefab);
             roomGameObject.transform.parent = transform;
             GameWorldRoom gameWorldRoom = roomGameObject.GetComponent<GameWorldRoom>();

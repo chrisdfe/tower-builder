@@ -281,8 +281,6 @@ namespace TowerBuilder.GameWorld.CameraManager
                 panStartPosition.y + mouseDifference.y
             );
 
-            Debug.Log(mouseDifference);
-
             transform.position = new Vector3(
                 targetPosition.x,
                 targetPosition.y,

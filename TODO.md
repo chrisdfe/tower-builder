@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- 2 furniture layers - "transportation" layer and "other" (beds, desks, etc) layer - to simplify layout
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 - Blueprint should just be a room in RoomState - right now it lives in a seperate place in BuildToolState;
 - Add concept of different "vehicles" or separate entities - groups of rooms. When you add/delete a room it can either add to an existing vehicle or create a new one

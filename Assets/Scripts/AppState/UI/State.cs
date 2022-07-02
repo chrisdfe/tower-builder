@@ -80,7 +80,7 @@ namespace TowerBuilder.State.UI
         {
             this.currentSelectedCell = currentSelectedCell;
 
-            currentSelectedRoom = Registry.appState.Rooms.rooms.FindRoomAtCell(currentSelectedCell);
+            currentSelectedRoom = Registry.appState.Rooms.buildings.FindRoomAtCell(currentSelectedCell);
 
             currentSelectedRoomBlock = null;
             if (currentSelectedRoom != null)

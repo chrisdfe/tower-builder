@@ -118,6 +118,7 @@ namespace TowerBuilder.State.UI
 
         public void StartBuild()
         {
+            Debug.Log("start");
             buildIsActive = true;
 
             SetBuildStartCell();
@@ -130,6 +131,7 @@ namespace TowerBuilder.State.UI
 
         public void EndBuild()
         {
+            Debug.Log("end");
             buildIsActive = false;
 
             AttemptToCreateRoomFromCurrentBlueprint();
@@ -170,7 +172,7 @@ namespace TowerBuilder.State.UI
             }
 
             RoomConnections newBlueprintConnections =
-                blueprintRoomConnections.SearchForNewConnectionsToRoom(Registry.appState.Rooms.rooms, currentBlueprint.room);
+                blueprintRoomConnections.SearchForNewConnectionsToRoom(Registry.appState.Rooms.buildings.FindAllRooms(), currentBlueprint.room);
 
             this.blueprintRoomConnections = newBlueprintConnections;
 

@@ -39,7 +39,7 @@ namespace TowerBuilder.State.Rooms.Validators
 
         public virtual List<RoomValidationError> ValidateRoomCell(RoomCell roomCell, AppState stores)
         {
-            RoomList allRooms = stores.Rooms.rooms;
+            RoomList allRooms = stores.Rooms.buildings.FindAllRooms();
             List<RoomValidationError> result = new List<RoomValidationError>();
 
             // Check for overlapping cells

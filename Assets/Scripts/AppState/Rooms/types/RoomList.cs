@@ -13,6 +13,11 @@ namespace TowerBuilder.State.Rooms
             rooms = new List<Room>();
         }
 
+        public RoomList(List<Room> rooms)
+        {
+            this.rooms = rooms;
+        }
+
         public void Add(Room room)
         {
             rooms.Add(room);
@@ -50,6 +55,11 @@ namespace TowerBuilder.State.Rooms
             }
 
             return null;
+        }
+
+        public bool Contains(Room room)
+        {
+            return rooms.Contains(room);
         }
 
         public static int GetLowestX(List<CellCoordinates> roomCells)

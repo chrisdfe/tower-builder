@@ -11,7 +11,6 @@ namespace TowerBuilder.State.Rooms
 {
     public static class Constants
     {
-        // TODO - this should go somewhere else
         public static float TILE_SIZE = 1f;
     }
 }

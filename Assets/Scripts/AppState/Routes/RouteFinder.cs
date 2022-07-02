@@ -142,7 +142,7 @@ namespace TowerBuilder.State.Routes
 
         void ValidateRouteMarker(CellCoordinates cellCoordinates)
         {
-            Room room = Registry.appState.Rooms.rooms.FindRoomAtCell(cellCoordinates);
+            Room room = Registry.appState.Rooms.buildings.FindRoomAtCell(cellCoordinates);
 
             // The 0th floor is a special case, since it connects to the outside world
             // if (room == null && cellCoordinates.floor != 0)
@@ -155,7 +155,7 @@ namespace TowerBuilder.State.Routes
 
         Room FindRoomAtCoordinates(CellCoordinates cellCoordinates)
         {
-            return Registry.appState.Rooms.rooms.FindRoomAtCell(cellCoordinates);
+            return Registry.appState.Rooms.buildings.FindRoomAtCell(cellCoordinates);
         }
 
         RoomConnections GetRoomConnections(Room room)
