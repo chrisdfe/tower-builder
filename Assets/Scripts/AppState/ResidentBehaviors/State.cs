@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
+using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Time;
 using TowerBuilder.State;
-using TowerBuilder.State.Residents;
-using TowerBuilder.State.Time;
 
 namespace TowerBuilder.State.ResidentBehaviors
 {

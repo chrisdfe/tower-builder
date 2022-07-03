@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using TowerBuilder.State.Notifications;
+using TowerBuilder.DataTypes.Notifications;
 
 namespace TowerBuilder.State.Notifications
 {

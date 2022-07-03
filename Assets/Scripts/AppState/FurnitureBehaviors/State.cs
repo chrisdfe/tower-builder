@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.State;
-using TowerBuilder.State.Rooms.Furniture;
-using TowerBuilder.State.Time;
+using TowerBuilder.DataTypes.Time;
 
 namespace TowerBuilder.State.FurnitureBehaviors
 {

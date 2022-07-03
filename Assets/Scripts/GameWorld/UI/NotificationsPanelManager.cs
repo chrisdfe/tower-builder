@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.State;
-using TowerBuilder.State.Notifications;
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,12 +16,8 @@ namespace TowerBuilder.GameWorld.UI
         Button button;
         Text text;
 
-        // TODO - why does it have to be AppState.Notification and not just Notifications?
-        State.Notifications.State notificationsStore;
-
         void Awake()
         {
-            notificationsStore = Registry.appState.Notifications;
             Registry.appState.Notifications.onNotificationAdded += OnNotificationAdded;
 
             button = transform.Find("Button").GetComponent<Button>();

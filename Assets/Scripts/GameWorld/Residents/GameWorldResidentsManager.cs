@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder.State;
-using TowerBuilder.State.Residents;
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Residents;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Residents

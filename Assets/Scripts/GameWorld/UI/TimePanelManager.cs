@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.DataTypes.Time;
 using TowerBuilder.State;
 using TowerBuilder.State.Time;
 using UnityEngine;

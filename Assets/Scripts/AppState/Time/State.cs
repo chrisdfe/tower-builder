@@ -1,3 +1,5 @@
+using TowerBuilder.DataTypes.Time;
+
 namespace TowerBuilder.State.Time
 {
     public class State
