@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
-using TowerBuilder.State;
+using TowerBuilder.DataTypes;
 
-using TowerBuilder.State.Rooms;
-using TowerBuilder.State.Rooms.Entrances;
+using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Rooms.Entrances;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -52,7 +52,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void SetPosition()
         {
-            float TILE_SIZE = TowerBuilder.State.Rooms.Constants.TILE_SIZE;
+            float TILE_SIZE = DataTypes.Rooms.Constants.TILE_SIZE;
 
             transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomEntrance.cellCoordinates);
 

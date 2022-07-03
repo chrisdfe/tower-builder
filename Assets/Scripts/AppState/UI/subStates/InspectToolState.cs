@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.State.Rooms;
 using TowerBuilder.State.UI;
 using UnityEngine;

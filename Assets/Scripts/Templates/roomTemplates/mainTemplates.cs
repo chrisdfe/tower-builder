@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using TowerBuilder.State;
-using TowerBuilder.State.Rooms;
-using TowerBuilder.State.Rooms.Entrances;
-using TowerBuilder.State.Rooms.Validators;
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Rooms.Entrances;
+using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.Templates

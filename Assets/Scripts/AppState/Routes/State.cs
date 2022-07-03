@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using TowerBuilder.State.Rooms;
-
 using UnityEngine;
 
 namespace TowerBuilder.State.Routes

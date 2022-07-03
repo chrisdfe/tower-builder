@@ -1,5 +1,6 @@
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.State;
-
 using TowerBuilder.State.UI;
 using UnityEngine;
 using UnityEngine.UI;

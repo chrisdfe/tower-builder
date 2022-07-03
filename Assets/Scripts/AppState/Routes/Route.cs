@@ -2,10 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder;
-using TowerBuilder.State;
-
-using TowerBuilder.State.Rooms;
-using TowerBuilder.State.Rooms.Entrances;
+using TowerBuilder.DataTypes;
 using UnityEngine;
 
 namespace TowerBuilder.State.Routes

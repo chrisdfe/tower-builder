@@ -1,11 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
-using TowerBuilder.State.Rooms;
-using TowerBuilder.State.Rooms.Blueprints;
-using TowerBuilder.State.Rooms.Connections;
-using TowerBuilder.State.Rooms.Validators;
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Rooms.Blueprints;
+using TowerBuilder.DataTypes.Rooms.Connections;
 using UnityEngine;
 
 namespace TowerBuilder.State.UI

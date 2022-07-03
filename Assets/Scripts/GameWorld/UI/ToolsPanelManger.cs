@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
-using TowerBuilder.State;
-
-using TowerBuilder.State.Rooms;
-using TowerBuilder.State.Rooms.Blueprints;
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Rooms.Blueprints;
 using TowerBuilder.State.UI;
 using UnityEngine;
 using UnityEngine.UI;

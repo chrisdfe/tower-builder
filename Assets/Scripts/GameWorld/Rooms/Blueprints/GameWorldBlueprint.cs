@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Rooms.Blueprints;
 using TowerBuilder.GameWorld.Rooms;
 using TowerBuilder.State;
 using TowerBuilder.State.Rooms;
-using TowerBuilder.State.Rooms.Blueprints;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms.Blueprints

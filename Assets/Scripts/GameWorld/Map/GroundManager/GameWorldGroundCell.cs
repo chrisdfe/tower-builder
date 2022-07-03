@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using TowerBuilder.GameWorld.Rooms;
-using TowerBuilder.State;
 using UnityEngine;
 
 public class GameWorldGroundCell : MonoBehaviour

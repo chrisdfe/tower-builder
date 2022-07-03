@@ -1,8 +1,9 @@
 using System;
 using TowerBuilder;
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.GameWorld.Rooms.Blueprints;
 using TowerBuilder.State;
-using TowerBuilder.State.Rooms;
 using TowerBuilder.State.UI;
 using UnityEngine;
 

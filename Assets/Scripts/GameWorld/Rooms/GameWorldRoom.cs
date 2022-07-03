@@ -2,11 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
+using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Rooms.Connections;
+using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.State;
-
-using TowerBuilder.State.Rooms;
-using TowerBuilder.State.Rooms.Connections;
-using TowerBuilder.State.Rooms.Entrances;
 using TowerBuilder.State.UI;
 using UnityEngine;
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Rooms.Furniture;
 using TowerBuilder.State.Residents;
 using UnityEngine;
 
