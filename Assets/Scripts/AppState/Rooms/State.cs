@@ -122,7 +122,7 @@ namespace TowerBuilder.State.Rooms
                 {
                     newRoom.AddBlocks(otherRoom.blocks);
 
-                    DestroyRoom(otherRoom);
+                    DestroyRoom(otherRoom, false);
                 }
 
                 // TODO - this might not be the best place to call this
@@ -135,7 +135,7 @@ namespace TowerBuilder.State.Rooms
                 Debug.Log(perimeterRoomCellCoordinates.Count);
 
 
-                // find the first cellcoordinates that are part of a cell
+                // find the first cellcoordinates that are inside of a room
                 List<RoomCell> occupiedPerimeterRoomCells = new List<RoomCell>();
 
                 Room perimeterRoom = null;
@@ -149,8 +149,8 @@ namespace TowerBuilder.State.Rooms
                     }
                 }
 
-                // TODO - here - also check the immediate perimeter 
-                // if there are no rooms on any tile on the immediate perimeter
+                //  TODO somewhere here - also check if buildings should be combined???
+
                 if (perimeterRoom != null)
                 {
                     building = buildings.FindBuildingByRoom(perimeterRoom);
@@ -173,26 +173,29 @@ namespace TowerBuilder.State.Rooms
             }
         }
 
-        public void DestroyRoom(Room room)
+        public void DestroyRoom(Room room, bool checkForBuildingDestroy = true)
         {
             if (room == null)
             {
                 return;
             }
 
-            Building building = buildings.FindBuildingByRoom(room);
-
             RemoveRoomConnectionsForRoom(room);
 
-            Building buildingContainingRoom = buildings.FindBuildingByRoom(room);
-            building.RemoveRoom(room);
-
-            Debug.Log("building count: ");
-            Debug.Log(buildings.Count);
-
-            if (building.roomList.rooms.Count == 0)
+            if (checkForBuildingDestroy)
             {
-                DestroyBuilding(building);
+                Building building = buildings.FindBuildingByRoom(room);
+
+                Building buildingContainingRoom = buildings.FindBuildingByRoom(room);
+                building.RemoveRoom(room);
+
+                Debug.Log("building count: ");
+                Debug.Log(buildings.Count);
+
+                if (building.roomList.rooms.Count == 0)
+                {
+                    DestroyBuilding(building);
+                }
             }
 
             if (onRoomDestroyed != null)
