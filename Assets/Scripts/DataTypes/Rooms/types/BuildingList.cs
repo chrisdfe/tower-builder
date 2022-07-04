@@ -8,10 +8,24 @@ namespace TowerBuilder.DataTypes.Rooms
     {
         public List<Building> buildings { get; private set; } = new List<Building>();
 
+        public int Count
+        {
+            get
+            {
+                return buildings.Count;
+            }
+        }
+
         // Creation
         public void Add(Building building)
         {
             buildings.Add(building);
+        }
+
+        // Deletion
+        public void Remove(Building building)
+        {
+            buildings.Remove(building);
         }
 
         // Queries

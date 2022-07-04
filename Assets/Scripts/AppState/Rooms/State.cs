@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Blueprints;
@@ -22,6 +23,9 @@ namespace TowerBuilder.State.Rooms
         }
 
         public BuildingList buildings { get; private set; } = new BuildingList();
+        public delegate void BuildingConstructionEvent(Building building);
+        public BuildingConstructionEvent onBuildingAdded;
+        public BuildingConstructionEvent onBuildingDestroyed;
 
         // public RoomList rooms { get; private set; } = new RoomList();
 
@@ -52,6 +56,21 @@ namespace TowerBuilder.State.Rooms
         public void AddBuilding(Building building)
         {
             buildings.Add(building);
+
+            if (onBuildingAdded != null)
+            {
+                onBuildingAdded(building);
+            }
+        }
+
+        public void DestroyBuilding(Building building)
+        {
+            buildings.Remove(building);
+
+            if (onBuildingDestroyed != null)
+            {
+                onBuildingDestroyed(building);
+            }
         }
 
         // Rooms
@@ -74,7 +93,6 @@ namespace TowerBuilder.State.Rooms
 
         public void AttemptToAddRoom(Blueprint blueprint, RoomConnections roomConnections)
         {
-            // TODO - should everything here on down go in MapState?
             List<RoomValidationError> validationErrors = blueprint.Validate(Registry.appState);
 
             if (validationErrors.Count > 0)
@@ -94,8 +112,12 @@ namespace TowerBuilder.State.Rooms
             List<Room> roomsToCombineWith = FindRoomsToCombineWith(blueprint.room);
 
             Room newRoom = blueprint.room;
+            Building building;
+
             if (roomsToCombineWith.Count > 0)
             {
+                building = buildings.FindBuildingByRoom(roomsToCombineWith[0]);
+
                 foreach (Room otherRoom in roomsToCombineWith)
                 {
                     newRoom.AddBlocks(otherRoom.blocks);
@@ -103,32 +125,52 @@ namespace TowerBuilder.State.Rooms
                     DestroyRoom(otherRoom);
                 }
 
-                // TODO - add to the 1st item in roomsToCombineWith instead of replacing both with a new room?
-
                 // TODO - this might not be the best place to call this
                 newRoom.Reset();
             }
             else
             {
-                // TODO here determine if we should create a new building or not
+                List<CellCoordinates> perimeterRoomCellCoordinates = newRoom.roomCells.GetPerimeterCellCoordinates();
+                Debug.Log("perimeter room cells: ");
+                Debug.Log(perimeterRoomCellCoordinates.Count);
+
+
+                // find the first cellcoordinates that are part of a cell
+                List<RoomCell> occupiedPerimeterRoomCells = new List<RoomCell>();
+
+                Room perimeterRoom = null;
+
+                foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
+                {
+                    perimeterRoom = Registry.appState.Rooms.buildings.FindRoomAtCell(coordinates);
+                    if (perimeterRoom != null)
+                    {
+                        break;
+                    }
+                }
+
+                // TODO - here - also check the immediate perimeter 
                 // if there are no rooms on any tile on the immediate perimeter
+                if (perimeterRoom != null)
+                {
+                    building = buildings.FindBuildingByRoom(perimeterRoom);
+                }
+                else
+                {
+                    building = new Building();
+                    buildings.Add(building);
+                }
+
             }
 
-            Building building = new Building();
-            buildings.Add(building);
-
+            Debug.Log("building count: ");
+            Debug.Log(buildings.Count);
             AddRoom(newRoom, building);
 
             if (roomConnections.connections.Count > 0)
             {
                 AddRoomConnections(roomConnections);
             }
-        }
-
-
-        public void AddRoomCell(RoomCell roomCell)
-        {
-
         }
 
         public void DestroyRoom(Room room)
@@ -144,6 +186,14 @@ namespace TowerBuilder.State.Rooms
 
             Building buildingContainingRoom = buildings.FindBuildingByRoom(room);
             building.RemoveRoom(room);
+
+            Debug.Log("building count: ");
+            Debug.Log(buildings.Count);
+
+            if (building.roomList.rooms.Count == 0)
+            {
+                DestroyBuilding(building);
+            }
 
             if (onRoomDestroyed != null)
             {

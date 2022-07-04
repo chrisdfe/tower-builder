@@ -7,19 +7,6 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms
 {
-    // These can be combined to create corners,
-    // e.g {Top, Left} or {Bottom,Right}
-    // or tunnels
-    // e.g {Top, Bottom} or {Left, Right}
-    // or tunnel end points
-    // e.g {Top, Left, Right}
-    public enum RoomCellOrientation
-    {
-        Top,
-        Right,
-        Bottom,
-        Left,
-    }
 
     public class RoomCell
     {
@@ -44,6 +31,26 @@ namespace TowerBuilder.DataTypes.Rooms
         public CellCoordinates GetRelativeCoordinates()
         {
             return this.coordinates.Subtract(this.parent.GetBottomLeftCoordinates());
+        }
+
+        public CellCoordinates GetCoordinatesAbove()
+        {
+            return new CellCoordinates(coordinates.x, coordinates.floor + 1);
+        }
+
+        public CellCoordinates GetCoordinatesBelow()
+        {
+            return new CellCoordinates(coordinates.x, coordinates.floor - 1);
+        }
+
+        public CellCoordinates GetCoordinatesLeft()
+        {
+            return new CellCoordinates(coordinates.x - 1, coordinates.floor);
+        }
+
+        public CellCoordinates GetCoordinatesRight()
+        {
+            return new CellCoordinates(coordinates.x + 1, coordinates.floor);
         }
     }
 }

@@ -34,6 +34,14 @@ namespace TowerBuilder.DataTypes.Rooms
             this.cells = roomCells;
         }
 
+        public int Count
+        {
+            get
+            {
+                return cells.Count;
+            }
+        }
+
         public void Add(CellCoordinates cellCoordinates)
         {
             cells.Add(new RoomCell(this, cellCoordinates));
@@ -331,6 +339,31 @@ namespace TowerBuilder.DataTypes.Rooms
             int highestFloor = GetHighestFloor();
             int lowestFloor = GetLowestFloor();
             return (highestFloor - lowestFloor) + 1;
+        }
+
+        public List<CellCoordinates> GetPerimeterCellCoordinates()
+        {
+            List<CellCoordinates> result = new List<CellCoordinates>();
+
+            foreach (RoomCell roomCell in cells)
+            {
+                CellCoordinates[] adjacentCellCoordinatesList = new CellCoordinates[] {
+                    roomCell.GetCoordinatesAbove(),
+                    roomCell.GetCoordinatesRight(),
+                    roomCell.GetCoordinatesBelow(),
+                    roomCell.GetCoordinatesLeft()
+                };
+
+                foreach (CellCoordinates adjacentCellCoordinates in adjacentCellCoordinatesList)
+                {
+                    if (!result.Contains(adjacentCellCoordinates))
+                    {
+                        result.Add(adjacentCellCoordinates);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
