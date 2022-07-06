@@ -13,7 +13,7 @@ namespace TowerBuilder.GameWorld.CameraManager
         public static float ROTATION_TIME = 0.2f;
         public static float MOVEMENT_TIME = 0.5f;
 
-        public delegate void CameraKeyHandler();
+        public delegate void KeyHandler();
         Vector3 targetPosition = Vector3.zero;
         Vector2 movementVelocity = Vector2.zero;
         Vector2 movementSign = Vector2.zero;
@@ -39,6 +39,8 @@ namespace TowerBuilder.GameWorld.CameraManager
         const float PAN_SPEED = 0.005f;
         const float PAN_LIMIT = 10f;
 
+        Dictionary<string, (KeyHandler, KeyHandler)> inputHandlers;
+
         void Awake()
         {
             cameraTransform = transform.Find("Main Camera");
@@ -47,6 +49,14 @@ namespace TowerBuilder.GameWorld.CameraManager
             targetZoom = camera.orthographicSize;
 
             targetPosition = transform.position;
+
+            inputHandlers = new Dictionary<string, (KeyHandler, KeyHandler)>()
+            {
+                {"w", (OnMoveUpPressed, OnMoveUpReleased)},
+                {"s", (OnMoveDownPressed, OnMoveDownReleased)},
+                {"a", (OnMoveLeftPressed, OnMoveLeftReleased)},
+                {"d", (OnMoveRightPressed, OnMoveRightReleased)},
+            };
         }
 
         void Update()
@@ -64,44 +74,12 @@ namespace TowerBuilder.GameWorld.CameraManager
 
         void HandleInput()
         {
-            if (Input.GetKeyDown("w"))
+            foreach (KeyValuePair<string, (KeyHandler, KeyHandler)> entry in inputHandlers)
             {
-                OnMoveUpPressed();
-            }
-
-            if (Input.GetKeyUp("w"))
-            {
-                OnMoveUpReleased();
-            }
-
-            if (Input.GetKeyDown("s"))
-            {
-                OnMoveDownPressed();
-            }
-
-            if (Input.GetKeyUp("s"))
-            {
-                OnMoveDownReleased();
-            }
-
-            if (Input.GetKeyDown("a"))
-            {
-                OnMoveLeftPressed();
-            }
-
-            if (Input.GetKeyUp("a"))
-            {
-                OnMoveLeftReleased();
-            }
-
-            if (Input.GetKeyDown("d"))
-            {
-                OnMoveRightPressed();
-            }
-
-            if (Input.GetKeyUp("d"))
-            {
-                OnMoveRightReleased();
+                string key = entry.Key;
+                var (OnKeyDown, OnKeyUp) = entry.Value;
+                if (Input.GetKeyDown(key)) OnKeyDown();
+                if (Input.GetKeyUp(key)) OnKeyUp();
             }
 
             // Scrolling

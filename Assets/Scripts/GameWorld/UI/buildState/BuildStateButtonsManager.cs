@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.State;
 using TowerBuilder.State.Rooms;
 using TowerBuilder.State.UI;
 using TowerBuilder.Templates;
+using TowerBuilder.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,132 +17,39 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class BuildStateButtonsManager : MonoBehaviour
     {
-        public GameObject roomCategoryButtonPrefab;
-        public GameObject roomTemplateButtonPrefab;
-
-        Button HallwayButton;
-
         Color originalColor;
         Button currentButton;
 
-        List<UIRoomCategoryButton> roomCategoryButtons = new List<UIRoomCategoryButton>();
-        List<UIRoomTemplateButton> roomTemplateButtons = new List<UIRoomTemplateButton>();
+        Transform entityGroupButtonsWrapper;
 
-        Transform roomCategoryButtonsWrapper;
-        Transform roomTemplatesButtonsWrapper;
+        RoomEntityGroupButtons roomEntityGroupButtons;
 
         void Awake()
         {
-            roomCategoryButtonsWrapper = transform.Find("RoomCategoryButtons");
-            roomTemplatesButtonsWrapper = transform.Find("RoomTemplateButtons");
+            entityGroupButtonsWrapper = transform.Find("EntityGroupButtons");
 
-            SetupRoomCategoryButtons();
-            ResetRoomTemplatesButtons();
+            Transform roomEntityGroupButtonsWrapper = transform.Find("RoomEntityGroupButtons");
+            Transform furnitureEntityGroupButtonsWrapper = transform.Find("FurnitureEntityGroupButtons");
+            Transform residentEntityGroupButtonsWrapper = transform.Find("ResidentEntityGroupButtons");
 
-            Registry.appState.UI.buildToolSubState.onSelectedRoomCategoryUpdated += OnSelectedRoomCategoryUpdated;
-            Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
+            // entityGroupPanels = new Dictionary<EntityType, EntityGroupPanelWrapper>() {
+            //     { EntityType.Room, new RoomEntityGroupPanel(entityGroupButtonsWrapper, roomEntityGroupButtons) },
+            //     { EntityType.Furniture, new FurnitureEntityGroupPanel(entityGroupButtonsWrapper, furnitureEntityGroupButtons) },
+            //     { EntityType.Resident, new ResidentEntityGroupPanel(entityGroupButtonsWrapper, residentEntityGroupButtons) },
+            // };
+
+            roomEntityGroupButtons = new RoomEntityGroupButtons(roomEntityGroupButtonsWrapper);
+
+            TransformUtils.DestroyChildren(entityGroupButtonsWrapper);
+            UISelectButton roomEntityGroupButton = UISelectButton.Create(new UISelectButton.Input() { label = "rooms", value = "rooms" });
+            roomEntityGroupButton.transform.SetParent(entityGroupButtonsWrapper, false);
+            roomEntityGroupButton.onClick += OnEntityGroupButtonClick;
         }
 
-        void OnCategoryButtonClick(string roomCategory)
+        void OnEntityGroupButtonClick(string value)
         {
-            Registry.appState.UI.buildToolSubState.SetSelectedRoomCategory(roomCategory);
-        }
-
-        void OnTemplateButtonClick(RoomTemplate roomTemplate)
-        {
-            Registry.appState.UI.buildToolSubState.SetSelectedRoomTemplate(roomTemplate);
-        }
-
-        void OnSelectedRoomCategoryUpdated(string roomCategory)
-        {
-            SetSelectedRoomCategoryButton();
-            ResetRoomTemplatesButtons();
-        }
-
-        void OnSelectedRoomTemplateUpdated(RoomTemplate roomTemplate)
-        {
-            SetSelectedRoomTemplateButton();
-        }
-
-        void SetSelectedRoomTemplateButton()
-        {
-            RoomTemplate selectedTemplate = Registry.appState.UI.buildToolSubState.selectedRoomTemplate;
-            foreach (UIRoomTemplateButton roomTemplateButton in roomTemplateButtons)
-            {
-                roomTemplateButton.SetSelected(roomTemplateButton.roomTemplate.key == selectedTemplate.key);
-            }
-        }
-
-        void SetSelectedRoomCategoryButton()
-        {
-            string currentCategory = Registry.appState.UI.buildToolSubState.selectedRoomCategory;
-
-            foreach (UIRoomCategoryButton roomCategoryButton in roomCategoryButtons)
-            {
-                roomCategoryButton.SetSelected(roomCategoryButton.roomCategory == currentCategory);
-            }
-        }
-
-        void SetupRoomCategoryButtons()
-        {
-            DestroyRoomCategoryButtons();
-
-            List<string> allRoomCategories = Registry.roomTemplates.FindAllRoomCategories();
-
-            foreach (string category in allRoomCategories)
-            {
-                GameObject roomCategoryButtonGameObject = Instantiate(roomCategoryButtonPrefab, roomCategoryButtonsWrapper);
-                UIRoomCategoryButton categoryButton = roomCategoryButtonGameObject.GetComponent<UIRoomCategoryButton>();
-
-                categoryButton.onClick += OnCategoryButtonClick;
-                categoryButton.SetRoomCategory(category);
-                roomCategoryButtons.Add(categoryButton);
-            }
-
-            SetSelectedRoomCategoryButton();
-        }
-
-        void ResetRoomTemplatesButtons()
-        {
-            DestroyRoomTemplateButtons();
-
-            List<RoomTemplate> currentRoomTemplates = GetRoomTemplatesForCurrentCategory();
-            RoomTemplate currentTemplate = Registry.appState.UI.buildToolSubState.selectedRoomTemplate;
-
-            foreach (RoomTemplate roomTemplate in currentRoomTemplates)
-            {
-                GameObject roomTemplateButtonGameObject = GameObject.Instantiate(roomTemplateButtonPrefab, roomTemplatesButtonsWrapper);
-                UIRoomTemplateButton roomTemplateButton = roomTemplateButtonGameObject.GetComponent<UIRoomTemplateButton>();
-                roomTemplateButton.SetSelected(roomTemplate.key == currentTemplate.key);
-
-                roomTemplateButton.onClick += OnTemplateButtonClick;
-                roomTemplateButton.SetRoomTemplate(roomTemplate);
-                roomTemplateButtons.Add(roomTemplateButton);
-            }
-        }
-
-        void DestroyRoomCategoryButtons()
-        {
-            foreach (Transform child in roomCategoryButtonsWrapper.transform)
-            {
-                GameObject.Destroy(child.gameObject);
-            }
-        }
-
-        void DestroyRoomTemplateButtons()
-        {
-            foreach (Transform child in roomTemplatesButtonsWrapper.transform)
-            {
-                GameObject.Destroy(child.gameObject);
-            }
-
-            roomTemplateButtons = new List<UIRoomTemplateButton>();
-        }
-
-        List<RoomTemplate> GetRoomTemplatesForCurrentCategory()
-        {
-            string currentCategory = Registry.appState.UI.buildToolSubState.selectedRoomCategory;
-            return Registry.roomTemplates.FindByCategory(currentCategory);
+            // if value is "rooms":
+            roomEntityGroupButtons.Setup();
         }
     }
 }

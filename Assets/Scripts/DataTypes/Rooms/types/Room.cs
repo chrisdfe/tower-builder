@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TowerBuilder.DataTypes.Rooms.Entrances;
-using TowerBuilder.DataTypes.Rooms.Furniture;
-
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms
@@ -27,7 +25,7 @@ namespace TowerBuilder.DataTypes.Rooms
         public RoomCells roomCells;
 
         public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
-        public List<RoomFurnitureBase> furniture { get; private set; } = new List<RoomFurnitureBase>();
+        // public List<RoomFurnitureBase> furniture { get; private set; } = new List<RoomFurnitureBase>();
 
         public RoomTemplate roomTemplate { get; private set; }
 

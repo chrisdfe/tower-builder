@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.GameWorld.Rooms;
 using TowerBuilder.State;
 using TowerBuilder.State.UI;
@@ -27,6 +28,8 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         // TODO - move to UI.Constants
         public static Vector2 MAP_CURSOR_CLICK_BUFFER = new Vector2(150, 250);
 
+        int selectableEntityLayerMask;
+
         void Awake()
         {
             floorPlane = transform.Find("FloorPlane").GetComponent<GameWorldFloorPlane>();
@@ -35,10 +38,15 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             InitializeToolStateHandlers();
 
             roomList = transform.Find("RoomList");
+
+            // make a bit mask
+            selectableEntityLayerMask = 1 << LayerMask.NameToLayer("Selectable Entities");
+            // selectableEntityLayerMask = ~selectableEntityLayerMask;
         }
 
         void Update()
         {
+            UpdateSelectableEntityStack();
             UpdateCurrentSelectedCell();
 
             // TODO - handle transitions between "is in dead zone" and "is not in dead zone"
@@ -58,9 +66,43 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             currentToolStateHandler.Update();
         }
 
-        // TODO - this should go in GameWorldFloorPlane
+        void UpdateSelectableEntityStack()
+        {
+            Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit[] hits;
+            hits = Physics.RaycastAll(ray, 100, selectableEntityLayerMask);
+
+            SelectableEntityStack stack = new SelectableEntityStack();
+
+            if (hits.Length > 0)
+            {
+                // Debug.Log(hits.Length);
+
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    RaycastHit otherHit = hits[i];
+                    // Debug.Log(otherHit);
+
+                    // TODO - this should be called GameWorldSelectableEntity
+                    SelectableEntity selectableEntity = otherHit.transform.GetComponent<SelectableEntity>();
+
+                    // TODO - I think this is the wrong way around
+                    if (selectableEntity)
+                    {
+                        EntityBase entity = selectableEntity.entity;
+                        stack.Push(entity);
+                    }
+                }
+            }
+
+            // TODO - perhaps avoid doing this ever frame
+            Registry.appState.UI.SetEntityStack(stack);
+        }
+
         void UpdateCurrentSelectedCell()
         {
+            // TODO - this gets re-set twice per frame
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;

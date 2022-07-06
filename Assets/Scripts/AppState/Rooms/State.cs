@@ -5,6 +5,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Blueprints;
+using TowerBuilder.DataTypes.Rooms.Buildings;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using TowerBuilder.State;
@@ -17,7 +18,6 @@ namespace TowerBuilder.State.Rooms
     {
         public struct Input
         {
-            // public RoomList rooms;
             public BuildingList buildings;
             public RoomConnections roomConnections;
         }
@@ -26,8 +26,6 @@ namespace TowerBuilder.State.Rooms
         public delegate void BuildingConstructionEvent(Building building);
         public BuildingConstructionEvent onBuildingAdded;
         public BuildingConstructionEvent onBuildingDestroyed;
-
-        // public RoomList rooms { get; private set; } = new RoomList();
 
         public delegate void RoomAddedEvent(Room room);
         public RoomAddedEvent onRoomAdded;
@@ -47,7 +45,6 @@ namespace TowerBuilder.State.Rooms
 
         public State(Input input)
         {
-            // rooms = input.rooms ?? new RoomList();
             buildings = input.buildings ?? new BuildingList();
             roomConnections = input.roomConnections ?? new RoomConnections();
         }

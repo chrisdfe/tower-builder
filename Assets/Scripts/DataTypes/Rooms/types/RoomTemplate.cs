@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.DataTypes.Furniture;
 using TowerBuilder.DataTypes.Rooms.Entrances;
-using TowerBuilder.DataTypes.Rooms.Furniture;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
 
@@ -18,7 +18,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public string category = "None";
 
-        public List<RoomFurnitureAttributesBase> furnitureAttributes = new List<RoomFurnitureAttributesBase>();
+        public List<FurnitureAttributesBase> furnitureAttributes = new List<FurnitureAttributesBase>();
 
         public Dimensions blockDimensions;
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using UnityEngine;
@@ -45,6 +46,8 @@ namespace TowerBuilder.State.UI
         public DestroyToolState destroyToolSubState;
         public InspectToolState inspectToolSubState;
         public RoutesToolState routesToolSubState;
+
+        public SelectableEntityStack selectableEntityStack { get; private set; } = new SelectableEntityStack();
 
         public State() : this(new Input()) { }
 
@@ -107,6 +110,12 @@ namespace TowerBuilder.State.UI
             {
                 onCurrentSelectedRoomBlockUpdated(currentSelectedRoomBlock);
             }
+        }
+
+        public void SetEntityStack(SelectableEntityStack stack)
+        {
+            this.selectableEntityStack = stack;
+            // Debug.Log(stack.Count);
         }
 
         ToolStateBase GetCurrentActiveToolSubState()

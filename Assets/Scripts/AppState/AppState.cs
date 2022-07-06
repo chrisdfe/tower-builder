@@ -8,6 +8,7 @@ namespace TowerBuilder.State
             public Time.State.Input time;
             public Wallet.State.Input wallet;
             public Rooms.State.Input rooms;
+            public Furnitures.State.Input furnitures;
             public Routes.State.Input routes;
             public Residents.State.Input residents;
             public UI.State.Input ui;
@@ -18,6 +19,7 @@ namespace TowerBuilder.State
                 time = new Time.State.Input();
                 wallet = new Wallet.State.Input();
                 rooms = new Rooms.State.Input();
+                furnitures = new Furnitures.State.Input();
                 routes = new Routes.State.Input();
                 residents = new Residents.State.Input();
                 ui = new UI.State.Input();
@@ -28,6 +30,7 @@ namespace TowerBuilder.State
         public Time.State Time = new Time.State();
         public Wallet.State Wallet = new Wallet.State();
         public Rooms.State Rooms = new Rooms.State();
+        public Furnitures.State Furnitures = new Furnitures.State();
         public Routes.State Routes = new Routes.State();
         public Residents.State Residents = new Residents.State();
 
@@ -42,6 +45,7 @@ namespace TowerBuilder.State
             Time = new Time.State(input.time);
             Wallet = new Wallet.State(input.wallet);
             Rooms = new Rooms.State(input.rooms);
+            Furnitures = new Furnitures.State(input.furnitures);
             Routes = new Routes.State(input.routes);
             Residents = new Residents.State(input.residents);
             UI = new UI.State(input.ui);
