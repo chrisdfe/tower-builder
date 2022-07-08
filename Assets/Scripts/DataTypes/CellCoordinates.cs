@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
+    [System.Serializable]
     public class CellCoordinates
     {
         public int x;

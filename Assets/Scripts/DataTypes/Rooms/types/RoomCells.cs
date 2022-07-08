@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms
 {
+    [Serializable]
     public class RoomCells
     {
         public List<RoomCell> cells { get; private set; }

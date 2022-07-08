@@ -8,6 +8,8 @@ namespace TowerBuilder.DataTypes.Rooms
     {
         public List<Room> rooms { get; private set; }
 
+        public int Count { get { return rooms.Count; } }
+
         public RoomList()
         {
             rooms = new List<Room>();

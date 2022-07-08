@@ -6,6 +6,7 @@ namespace TowerBuilder.DataTypes.Rooms
     // e.g {Top, Bottom} or {Left, Right}
     // or tunnel end points
     // e.g {Top, Left, Right}
+    [System.Serializable]
     public enum RoomCellOrientation
     {
         Top,

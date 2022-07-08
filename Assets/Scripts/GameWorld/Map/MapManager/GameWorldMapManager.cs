@@ -72,6 +72,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             RaycastHit[] hits;
             hits = Physics.RaycastAll(ray, 100, selectableEntityLayerMask);
+            // hits = Physics.RaycastAll(ray, 100);
 
             SelectableEntityStack stack = new SelectableEntityStack();
 

@@ -15,6 +15,7 @@ namespace TowerBuilder.State.UI
         {
             public ToolState? toolState;
             public CellCoordinates currentSelectedCell;
+
             public NoneToolState.Input noneToolState;
             public BuildToolState.Input buildToolState;
             public DestroyToolState.Input destroyToolState;

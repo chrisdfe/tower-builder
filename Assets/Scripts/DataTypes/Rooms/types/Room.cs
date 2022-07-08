@@ -8,25 +8,32 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms
 {
-
+    [Serializable]
     public class Room
     {
         private static int autoincrementingId;
+
         public int id { get; private set; }
 
         public string roomKey { get; private set; } = "";
 
+        [NonSerialized]
         public bool isInBlueprintMode = false;
 
+        [NonSerialized]
         public CellCoordinates bottomLeftCoordinates;
+
+        [NonSerialized]
         public CellCoordinates blockCount;
 
         public List<RoomCells> blocks;
+
         public RoomCells roomCells;
 
         public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
         // public List<RoomFurnitureBase> furniture { get; private set; } = new List<RoomFurnitureBase>();
 
+        [SerializeField]
         public RoomTemplate roomTemplate { get; private set; }
 
         public Room()

@@ -6,6 +6,7 @@ using System.Threading;
 
 namespace TowerBuilder.DataTypes.Rooms.Entrances
 {
+    [Serializable]
     public class RoomEntrance
     {
         private static int autoincrementingId;

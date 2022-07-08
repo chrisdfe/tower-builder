@@ -7,13 +7,16 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms
 {
-
+    [Serializable]
     public class RoomCell
     {
-        public RoomCells parent { get; private set; }
+        [NonSerialized]
+        public RoomCells parent;
 
         public CellCoordinates coordinates = CellCoordinates.zero;
+
         public List<RoomEntrance> entrances = new List<RoomEntrance>();
+
         public List<RoomCellOrientation> orientation = new List<RoomCellOrientation>();
 
         public RoomCell(RoomCells parent, int x, int floor)
