@@ -3,51 +3,76 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Newtonsoft.Json;
 using TowerBuilder.DataTypes.Rooms.Entrances;
+using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms
 {
-    [Serializable]
     public class Room
     {
         private static int autoincrementingId;
 
         public int id { get; private set; }
 
-        public string roomKey { get; private set; } = "";
+        public string title { get; private set; } = "None";
 
-        [NonSerialized]
+        public string key { get; private set; } = "None";
+
+        public string category { get; private set; } = "None";
+
+        public int pricePerBlock { get; private set; } = 10;
+
+        public RoomResizability resizability = RoomResizability.Inflexible();
+
+        public Dimensions blockDimensions { get; private set; } = Dimensions.one;
+
+        // TODO - this is only JsonIgnore because it's a recursive type and
+        //        the serializer doesn't like that.
+        //        fix this instead of ignoring it
+        [JsonIgnore]
+        public Color color { get; private set; } = Color.white;
+
+
+        // Saved rooms should never be in blueprint mode
+        [JsonIgnore]
         public bool isInBlueprintMode = false;
 
-        [NonSerialized]
         public CellCoordinates bottomLeftCoordinates;
-
-        [NonSerialized]
-        public CellCoordinates blockCount;
 
         public List<RoomCells> blocks;
 
         public RoomCells roomCells;
 
         public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
-        // public List<RoomFurnitureBase> furniture { get; private set; } = new List<RoomFurnitureBase>();
 
-        [SerializeField]
-        public RoomTemplate roomTemplate { get; private set; }
+        public RoomValidatorBase validator { get; private set; }
+        public RoomEntranceBuilderBase entranceBuilder { get; private set; }
 
-        public Room()
+        [JsonIgnore]
+        public int price { get { return pricePerBlock * this.blocks.Count; } }
+
+        public Room(RoomTemplate roomTemplate)
         {
             GenerateId();
-            roomTemplate = new RoomTemplate();
+            // this.roomTemplate = roomTemplate;
+
+            this.title = roomTemplate.title;
+            this.key = roomTemplate.key;
+            this.category = roomTemplate.category;
+            this.pricePerBlock = roomTemplate.pricePerBlock;
+            this.resizability = roomTemplate.resizability;
+            this.validator = roomTemplate.validatorFactory();
+            this.entranceBuilder = roomTemplate.entranceBuilderFactory();
+
+            this.color = roomTemplate.color;
+
             roomCells = new RoomCells();
             roomCells.onResize += OnRoomCellsResize;
         }
 
-        public Room(RoomTemplate roomTemplate) : this()
-        {
-            this.roomTemplate = roomTemplate;
-        }
+        // public Room() : this(new RoomTemplate()) { }
 
         public Room(RoomTemplate roomTemplate, List<RoomCell> roomCellList) : this(roomTemplate)
         {
@@ -70,17 +95,12 @@ namespace TowerBuilder.DataTypes.Rooms
             InitializeFurniture();
         }
 
-        public void SetTemplate(RoomTemplate roomTemplate)
-        {
-            this.roomTemplate = roomTemplate;
-        }
-
-        public void CalculateRoomCells()
+        public void CalculateRoomCells(CellCoordinates blockCount)
         {
             roomCells = new RoomCells();
             blocks = new List<RoomCells>();
 
-            Dimensions blockDimensions = this.roomTemplate.blockDimensions;
+            Dimensions blockDimensions = this.blockDimensions;
             for (int x = 0; x < blockCount.x; x++)
             {
                 for (int floor = 0; floor < blockCount.floor; floor++)
@@ -139,11 +159,6 @@ namespace TowerBuilder.DataTypes.Rooms
             this.blocks.Remove(block);
         }
 
-        public int GetPrice()
-        {
-            return roomTemplate.price * this.blocks.Count;
-        }
-
         public RoomCells FindBlockByCellCoordinates(CellCoordinates cellCoordinates)
         {
             foreach (RoomCells block in blocks)
@@ -178,11 +193,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         void ResetRoomEntrances()
         {
-            if (roomTemplate.entranceBuilderFactory != null)
-            {
-                RoomEntranceBuilderBase entranceBuilder = roomTemplate.entranceBuilderFactory();
-                entrances = entranceBuilder.BuildRoomEntrances(roomCells);
-            }
+            entrances = entranceBuilder.BuildRoomEntrances(roomCells);
         }
 
         void SetRoomCellOrientation(RoomCell roomCell)

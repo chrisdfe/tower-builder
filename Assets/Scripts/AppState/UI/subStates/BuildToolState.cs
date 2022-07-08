@@ -5,6 +5,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Blueprints;
 using TowerBuilder.DataTypes.Rooms.Connections;
+using TowerBuilder.Templates;
 using UnityEngine;
 
 namespace TowerBuilder.State.UI
@@ -48,7 +49,7 @@ namespace TowerBuilder.State.UI
         {
             buildStartCell = input.buildStartCell ?? null;
             selectedRoomCategory = input.selectedRoomCategory ?? "";
-            selectedRoomTemplate = input.selectedRoomTemplate ?? null;
+            selectedRoomTemplate = input.selectedRoomTemplate ?? Registry.roomTemplates.roomTemplates[0];
             buildIsActive = input.buildIsActive ?? false;
             blueprintRoomConnections = input.blueprintRoomConnections ?? new RoomConnections();
         }

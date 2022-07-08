@@ -24,8 +24,8 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             Room rightRoom = allRooms.FindRoomAtCell(new CellCoordinates(cellCoordinates.x + 1, cellCoordinates.floor));
 
             if (
-                (leftRoom != null && leftRoom.roomTemplate.category == "Elevator") ||
-                (rightRoom != null && rightRoom.roomTemplate.category == "Elevator")
+                (leftRoom != null && leftRoom.category == "Elevator") ||
+                (rightRoom != null && rightRoom.category == "Elevator")
             )
             {
                 result.Add(

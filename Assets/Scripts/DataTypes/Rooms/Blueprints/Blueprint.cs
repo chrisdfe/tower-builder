@@ -13,6 +13,7 @@ namespace TowerBuilder.DataTypes.Rooms.Blueprints
         public List<RoomValidationError> validationErrors { get; private set; }
 
         public Room room { get; private set; }
+        public RoomTemplate roomTemplate;
 
         public CellCoordinates buildStartCoordinates { get; private set; } = new CellCoordinates(0, 0);
         public CellCoordinates buildEndCoordinates { get; private set; } = new CellCoordinates(0, 0);
@@ -27,6 +28,7 @@ namespace TowerBuilder.DataTypes.Rooms.Blueprints
 
         public Blueprint(RoomTemplate roomTemplate, CellCoordinates buildStartCoordinates)
         {
+            this.roomTemplate = roomTemplate;
             this.room = new Room(roomTemplate);
             this.room.isInBlueprintMode = true;
 
@@ -42,15 +44,18 @@ namespace TowerBuilder.DataTypes.Rooms.Blueprints
 
         public void Reset()
         {
-            this.room = new Room(this.room.roomTemplate);
+            this.room = new Room(this.roomTemplate);
+            this.room.isInBlueprintMode = true;
+
             SetRoomCells();
             ResetBlueprintCells();
-            this.room.isInBlueprintMode = true;
         }
 
         public void SetRoomTemplate(RoomTemplate roomTemplate)
         {
-            room.SetTemplate(roomTemplate);
+            this.roomTemplate = roomTemplate;
+            this.room = new Room(roomTemplate);
+            this.room.isInBlueprintMode = true;
             SetRoomCells();
             ResetBlueprintCells();
         }
@@ -71,55 +76,42 @@ namespace TowerBuilder.DataTypes.Rooms.Blueprints
 
         public void SetRoomCells()
         {
-            RoomTemplate roomTemplate = room.roomTemplate;
-
-            if (roomTemplate == null)
-            {
-                return;
-            }
-
             CellCoordinates blockCount = new CellCoordinates(1, 1);
 
-            if (roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
+            if (room.resizability.Matches(RoomResizability.Inflexible()))
             {
                 room.bottomLeftCoordinates = buildStartCoordinates;
             }
             else
             {
                 // Restrict resizability to X/Y depending on RoomFlexibility
-                if (roomTemplate.resizability.x)
+                if (room.resizability.x)
                 {
                     room.bottomLeftCoordinates = new CellCoordinates(
                         selectionBox.bottomLeft.x,
                         buildStartCoordinates.floor
                     );
-                    blockCount.x = MathUtils.RoundUpToNearest(selectionBox.dimensions.width, roomTemplate.blockDimensions.width);
+                    blockCount.x = MathUtils.RoundUpToNearest(selectionBox.dimensions.width, room.blockDimensions.width);
                 }
 
-                if (roomTemplate.resizability.floor)
+                if (room.resizability.floor)
                 {
                     room.bottomLeftCoordinates = new CellCoordinates(
                         buildStartCoordinates.x,
                         selectionBox.bottomLeft.floor
                     );
-                    blockCount.floor = MathUtils.RoundUpToNearest(selectionBox.dimensions.height, roomTemplate.blockDimensions.height);
+                    blockCount.floor = MathUtils.RoundUpToNearest(selectionBox.dimensions.height, room.blockDimensions.height);
                 }
             }
 
-            room.blockCount = blockCount;
-
-            this.room.CalculateRoomCells();
+            this.room.CalculateRoomCells(blockCount);
         }
 
         public List<RoomValidationError> Validate(AppState stores)
         {
             validationErrors = new List<RoomValidationError>();
 
-            if (room.roomTemplate != null)
-            {
-                RoomValidatorBase validator = room.roomTemplate.validatorFactory();
-                validationErrors = validator.Validate(room, stores);
-            }
+            validationErrors = room.validator.Validate(room, stores);
 
             return validationErrors;
         }

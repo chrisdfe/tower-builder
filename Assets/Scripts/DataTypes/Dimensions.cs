@@ -16,6 +16,14 @@ namespace TowerBuilder.DataTypes
             this.width = width;
             this.height = height;
         }
+
+        public static Dimensions one
+        {
+            get
+            {
+                return new Dimensions(1, 1);
+            }
+        }
     }
 }
 

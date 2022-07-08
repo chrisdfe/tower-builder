@@ -52,6 +52,7 @@ namespace TowerBuilder.GameWorld.UI
             foreach (RoomTemplate roomTemplate in currentRoomTemplates)
             {
                 UISelectButton selectButton = UISelectButton.Create(new UISelectButton.Input() { label = roomTemplate.title, value = roomTemplate.key });
+
                 result.Add(selectButton);
             }
 

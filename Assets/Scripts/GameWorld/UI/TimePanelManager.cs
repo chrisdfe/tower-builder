@@ -12,8 +12,6 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class TimePanelManager : MonoBehaviour
     {
-        Button add1HourButton;
-        Button subtract1HourButton;
         Text hoursMinutesText;
         Text weeksSeasonsText;
         Text speedText;
@@ -23,12 +21,6 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            add1HourButton = transform.Find("Add1HourButton").GetComponent<Button>();
-            add1HourButton.onClick.AddListener(Add1Hour);
-
-            subtract1HourButton = transform.Find("Subtract1HourButton").GetComponent<Button>();
-            subtract1HourButton.onClick.AddListener(Subtract1Hour);
-
             hoursMinutesText = transform.Find("HoursMinutesText").GetComponent<Text>();
             UpdateHoursMinutesText();
 
@@ -66,26 +58,10 @@ namespace TowerBuilder.GameWorld.UI
             }
         }
 
-        void Add1Hour()
-        {
-            Registry.appState.Time.AddTime(new TimeInput()
-            {
-                hour = 1
-            });
-            ResetTick();
-        }
-
-        void Subtract1Hour()
-        {
-            Registry.appState.Time.SubtractTime(new TimeInput()
-            {
-                hour = 1
-            });
-            ResetTick();
-        }
 
         void OnTimeStateUpdated(TimeValue time)
         {
+            ResetTick();
             UpdateHoursMinutesText();
             UpdateWeeksSeasonsText();
         }

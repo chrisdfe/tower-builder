@@ -17,7 +17,7 @@ namespace TowerBuilder.Templates
                 key = "Hallway",
                 category = "Hallway",
 
-                price = 500,
+                pricePerBlock = 500,
 
                 blockDimensions = new Dimensions(1, 1),
                 resizability = RoomResizability.Flexible(),
@@ -34,7 +34,7 @@ namespace TowerBuilder.Templates
                 key = "Lobby",
                 category = "Lobby",
 
-                price = 5000,
+                pricePerBlock = 5000,
 
                 blockDimensions = new Dimensions(1, 1),
                 resizability = RoomResizability.Horizontal(),
@@ -51,7 +51,7 @@ namespace TowerBuilder.Templates
                 key = "Wheels",
                 category = "Wheels",
 
-                price = 5000,
+                pricePerBlock = 5000,
 
                 blockDimensions = new Dimensions(1, 1),
                 resizability = RoomResizability.Horizontal(),
@@ -67,7 +67,7 @@ namespace TowerBuilder.Templates
                 title = "Large Lobby",
                 key = "LargeLobby",
 
-                price = 12000,
+                pricePerBlock = 12000,
                 category = "Lobby",
 
                 blockDimensions = new Dimensions(1, 2),
@@ -85,7 +85,7 @@ namespace TowerBuilder.Templates
                 title = "Office",
                 key = "Office",
 
-                price = 20000,
+                pricePerBlock = 20000,
                 category = "Office",
 
                 blockDimensions = new Dimensions(3, 1),
@@ -113,7 +113,7 @@ namespace TowerBuilder.Templates
                 title = "Barracks",
                 key = "Barracks",
 
-                price = 30000,
+                pricePerBlock = 30000,
                 category = "Residence",
 
                 blockDimensions = new Dimensions(2, 1),
@@ -143,7 +143,7 @@ namespace TowerBuilder.Templates
                 title = "Bedroom",
                 key = "Bedroom",
 
-                price = 12000,
+                pricePerBlock = 12000,
                 category = "Residence",
 
                 blockDimensions = new Dimensions(2, 1),
@@ -172,7 +172,7 @@ namespace TowerBuilder.Templates
                 title = "Condo",
                 key = "Condo",
 
-                price = 50000,
+                pricePerBlock = 50000,
                 category = "Residence",
 
                 blockDimensions = new Dimensions(5, 1),
@@ -201,7 +201,7 @@ namespace TowerBuilder.Templates
                 title = "Elevator",
                 key = "Elevator",
 
-                price = 2000,
+                pricePerBlock = 2000,
                 category = "Elevator",
 
                 blockDimensions = new Dimensions(1, 1),
@@ -220,7 +220,7 @@ namespace TowerBuilder.Templates
                 title = "Service Elevator",
                 key = "ServiceElevator",
 
-                price = 1500,
+                pricePerBlock = 1500,
                 category = "Elevator",
 
                 blockDimensions = new Dimensions(1, 1),
@@ -239,7 +239,7 @@ namespace TowerBuilder.Templates
                 title = "Large Elevator",
                 key = "LargeElevator",
 
-                price = 5000,
+                pricePerBlock = 5000,
                 category = "Elevator",
 
                 blockDimensions = new Dimensions(2, 1),
@@ -259,7 +259,7 @@ namespace TowerBuilder.Templates
 
                 category = "Stairs",
 
-                price = 5000,
+                pricePerBlock = 5000,
 
                 blockDimensions = new Dimensions(1, 1),
 
@@ -276,7 +276,7 @@ namespace TowerBuilder.Templates
                 title = "Large Stairwell",
                 key = "LargeStairwell",
 
-                price = 8000,
+                pricePerBlock = 8000,
 
                 category = "Stairs",
 
@@ -295,7 +295,7 @@ namespace TowerBuilder.Templates
                 title = "Small Park",
                 key = "SmallPark",
 
-                price = 10000,
+                pricePerBlock = 10000,
 
                 category = "Park",
 

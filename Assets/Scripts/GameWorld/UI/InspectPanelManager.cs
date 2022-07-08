@@ -38,8 +38,8 @@ namespace TowerBuilder.GameWorld.UI
             RoomConnections roomConnections = Registry.appState.Rooms.roomConnections.FindConnectionsForRoom(room);
 
             string text = room + "\n";
-            text += room.roomTemplate.title + "\n";
-            text += room.roomTemplate.price + "\n";
+            text += room.title + "\n";
+            text += room.price + "\n";
             text += "\n";
 
             text += $"{roomConnections.connections.Count} Connections\n";

@@ -82,7 +82,7 @@ namespace TowerBuilder.GameWorld.UI
                 else
                 {
                     Blueprint blueprint = Registry.appState.UI.buildToolSubState.currentBlueprint;
-                    int price = blueprint.room.GetPrice();
+                    int price = blueprint.room.price;
                     descriptionText.text = $"{toolState} - {selectedRoomTemplate.title}: ${price}";
                 }
             }

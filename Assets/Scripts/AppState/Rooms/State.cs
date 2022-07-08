@@ -103,7 +103,7 @@ namespace TowerBuilder.State.Rooms
             }
 
             // 
-            Registry.appState.Wallet.SubtractBalance(blueprint.room.GetPrice());
+            Registry.appState.Wallet.SubtractBalance(blueprint.room.price);
 
             // Decide whether to create a new room or to add to an existing one
             List<Room> roomsToCombineWith = FindRoomsToCombineWith(blueprint.room);
@@ -250,12 +250,12 @@ namespace TowerBuilder.State.Rooms
         {
             List<Room> result = new List<Room>();
 
-            if (room.roomTemplate.resizability.Matches(RoomResizability.Inflexible()))
+            if (room.resizability.Matches(RoomResizability.Inflexible()))
             {
                 return result;
             }
 
-            if (room.roomTemplate.resizability.x)
+            if (room.resizability.x)
             {
                 //  Check on either side
                 foreach (int floor in room.roomCells.GetFloorRange())
@@ -274,7 +274,7 @@ namespace TowerBuilder.State.Rooms
                     {
                         if (
                             otherRoom != null &&
-                            otherRoom.roomTemplate.key == room.roomTemplate.key &&
+                            otherRoom.key == room.key &&
                             !result.Contains(otherRoom)
                         )
                         {
@@ -284,7 +284,7 @@ namespace TowerBuilder.State.Rooms
                 }
             }
 
-            if (room.roomTemplate.resizability.floor)
+            if (room.resizability.floor)
             {
                 //  Check on floors above and below
                 foreach (int x in room.roomCells.GetXRange())
@@ -303,7 +303,7 @@ namespace TowerBuilder.State.Rooms
                     {
                         if (
                             otherRoom != null &&
-                            otherRoom.roomTemplate.key == room.roomTemplate.key &&
+                            otherRoom.key == room.key &&
                             !result.Contains(otherRoom)
                         )
                         {

@@ -13,7 +13,17 @@ namespace TowerBuilder.DataTypes.Rooms
         public List<RoomCell> cells { get; private set; }
 
         public delegate void RoomCellsEvent(RoomCells roomCells);
+
+        [NonSerialized]
         public RoomCellsEvent onResize;
+
+        public int Count
+        {
+            get
+            {
+                return cells.Count;
+            }
+        }
 
         public RoomCells()
         {
@@ -33,14 +43,6 @@ namespace TowerBuilder.DataTypes.Rooms
         public RoomCells(List<RoomCell> roomCells)
         {
             this.cells = roomCells;
-        }
-
-        public int Count
-        {
-            get
-            {
-                return cells.Count;
-            }
         }
 
         public void Add(CellCoordinates cellCoordinates)

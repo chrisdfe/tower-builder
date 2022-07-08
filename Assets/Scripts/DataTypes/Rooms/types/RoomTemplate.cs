@@ -14,7 +14,7 @@ namespace TowerBuilder.DataTypes.Rooms
         public string key;
 
         // TODO - rename to "pricePerTile"
-        public int price;
+        public int pricePerBlock;
 
         public string category = "None";
 
@@ -32,6 +32,7 @@ namespace TowerBuilder.DataTypes.Rooms
         public delegate RoomValidatorBase RoomValidatorFactory();
         public RoomValidatorFactory validatorFactory = () => new DefaultRoomValidator();
 
+        [NonSerialized]
         public Color color = Color.white;
     }
 }

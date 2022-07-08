@@ -29,7 +29,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 
             int walletBalance = stores.Wallet.balance;
 
-            if (walletBalance < room.roomTemplate.price)
+            if (walletBalance < room.price)
             {
                 result.Add(new RoomValidationError("Insufficient Funds."));
             }
