@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes.Furniture;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.Templates
+namespace TowerBuilder.Definitions.Templates
 {
     public class FurnitureTemplates
     {

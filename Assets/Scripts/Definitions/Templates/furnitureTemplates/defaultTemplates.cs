@@ -3,7 +3,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Furniture;
 using UnityEngine;
 
-namespace TowerBuilder.Templates
+namespace TowerBuilder.DefinitionsTemplates
 {
     public static class DefaultFurnitureTemplates
     {

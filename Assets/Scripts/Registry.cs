@@ -1,5 +1,5 @@
+using TowerBuilder.Definitions.Templates;
 using TowerBuilder.State;
-using TowerBuilder.Templates;
 
 namespace TowerBuilder
 {

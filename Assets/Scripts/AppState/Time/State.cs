@@ -46,14 +46,14 @@ namespace TowerBuilder.State.Time
 
         public void AddTime(TimeInput timeInput)
         {
-            TimeValue newTime = Helpers.AddTime(time, timeInput);
-            UpdateTime(newTime);
+            time.Add(timeInput);
+            UpdateTime(time);
         }
 
         public void SubtractTime(TimeInput timeInput)
         {
-            TimeValue newTime = Helpers.SubtractTime(time, timeInput);
-            UpdateTime(newTime);
+            time.Subtract(timeInput);
+            UpdateTime(time);
         }
 
 

@@ -15,9 +15,7 @@ namespace TowerBuilder.GameWorld.UI
         Text hoursMinutesText;
         Text weeksSeasonsText;
         Text speedText;
-
-        // TODO - this doesn't belong here but it is fine for now
-        IEnumerator timeCoroutine;
+        Text timeOfDayText;
 
         void Awake()
         {
@@ -30,40 +28,23 @@ namespace TowerBuilder.GameWorld.UI
             speedText = transform.Find("SpeedText").GetComponent<Text>();
             UpdateSpeedText();
 
+            timeOfDayText = transform.Find("TimeOfDayText").GetComponent<Text>();
+            UpdateTimeOfDayText();
+
             Registry.appState.Time.onTimeUpdated += OnTimeStateUpdated;
-
-            StartTick();
+            Registry.appState.Time.onTimeSpeedUpdated += OnTimeSpeedUpdated;
         }
-
-        void Update()
-        {
-            if (Input.GetKeyDown("`"))
-            {
-                UpdateSpeed(TimeSpeed.Pause);
-            }
-
-            if (Input.GetKeyDown("1"))
-            {
-                UpdateSpeed(TimeSpeed.Normal);
-            }
-
-            if (Input.GetKeyDown("2"))
-            {
-                UpdateSpeed(TimeSpeed.Fast);
-            }
-
-            if (Input.GetKeyDown("3"))
-            {
-                UpdateSpeed(TimeSpeed.Fastest);
-            }
-        }
-
 
         void OnTimeStateUpdated(TimeValue time)
         {
-            ResetTick();
             UpdateHoursMinutesText();
             UpdateWeeksSeasonsText();
+            UpdateTimeOfDayText();
+        }
+
+        void OnTimeSpeedUpdated(TimeSpeed speed)
+        {
+            UpdateSpeedText();
         }
 
         void UpdateHoursMinutesText()
@@ -104,56 +85,11 @@ namespace TowerBuilder.GameWorld.UI
             speedText.text = $"Speed: {currentSpeed}";
         }
 
-        // TODO - this doesn't belong here but it is fine for now
-        void ResetTick()
+        void UpdateTimeOfDayText()
         {
-            StopTick();
-            StartTick();
-        }
-
-        // TODO - this doesn't belong here but it is fine for now
-        void StartTick()
-        {
-            timeCoroutine = StartTimeCoroutine();
-            StartCoroutine(timeCoroutine);
-        }
-
-        void StopTick()
-        {
-            StopCoroutine(timeCoroutine);
-        }
-
-        // TODO - this doesn't belong here but it is fine for now
-        void OnTick()
-        {
-            Registry.appState.Time.Tick();
-        }
-
-        // TODO - this doesn't belong here but it is fine for now
-        IEnumerator StartTimeCoroutine()
-        {
-            while (true)
-            {
-                float interval = State.Time.Selectors.GetCurrentTickInterval(Registry.appState.Time);
-                yield return new WaitForSeconds(interval);
-                OnTick();
-            }
-        }
-
-        // TODO - this doesn't belong here but it is fine for now
-        void UpdateSpeed(TimeSpeed timeSpeed)
-        {
-            Registry.appState.Time.UpdateSpeed(timeSpeed);
-            UpdateSpeedText();
-
-            if (timeSpeed == TimeSpeed.Pause)
-            {
-                StopTick();
-            }
-            else
-            {
-                ResetTick();
-            }
+            TimeValue currentTime = Registry.appState.Time.time;
+            TimeOfDay currentTimeOfDay = currentTime.GetCurrentTimeOfDay();
+            timeOfDayText.text = currentTimeOfDay.name;
         }
     }
 }

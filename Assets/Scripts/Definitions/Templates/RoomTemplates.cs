@@ -4,7 +4,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.Templates
+namespace TowerBuilder.Definitions.Templates
 {
     public class RoomTemplates
     {

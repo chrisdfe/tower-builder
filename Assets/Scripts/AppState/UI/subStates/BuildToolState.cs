@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Blueprints;
 using TowerBuilder.DataTypes.Rooms.Connections;
-using TowerBuilder.Templates;
+using TowerBuilder.Definitions.Templates;
 using UnityEngine;
 
 namespace TowerBuilder.State.UI

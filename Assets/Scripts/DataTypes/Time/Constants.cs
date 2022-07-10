@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.DataTypes.Time;
+using TowerBuilder.Utils;
+using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Time
 {
@@ -9,7 +12,7 @@ namespace TowerBuilder.DataTypes.Time
         public const int MINUTES_ELAPSED_PER_TICK = 15;
 
         // 1 second
-        public const int TICK_INTERVAL = 1;
+        public const float TICK_INTERVAL = .8f;
 
         // tick intervals in seconds
         public static Dictionary<TimeSpeed, float> TIME_SPEED_TICK_INTERVALS = new Dictionary<TimeSpeed, float>()
@@ -67,5 +70,44 @@ namespace TowerBuilder.DataTypes.Time
         public static int SEASONS_PER_YEAR = SEASON_SEQUENCE.Length;
 
         public static int MINUTES_PER_YEAR = SEASONS_PER_YEAR * MINUTES_PER_SEASON;
+
+        public static TimeOfDay[] TIMES_OF_DAY = new TimeOfDay[]
+        {
+            new TimeOfDay() {
+                startsOnHour = 0,
+                name = "night",
+                skyColor = ColorUtils.ColorFromHex("#111E1E")
+            },
+            new TimeOfDay() {
+                startsOnHour = 5,
+                name = "dawn",
+                skyColor = ColorUtils.ColorFromHex("#E37768")
+            },
+            new TimeOfDay() {
+                startsOnHour = 7,
+                name = "morning",
+                skyColor = ColorUtils.ColorFromHex("#C7E6D5")
+            },
+            new TimeOfDay() {
+                startsOnHour = 12,
+                name = "afternoon",
+                skyColor = ColorUtils.ColorFromHex("#ECE4D5")
+            },
+            new TimeOfDay() {
+                startsOnHour = 17,
+                name = "evening",
+                skyColor = ColorUtils.ColorFromHex("#C8E6D6")
+            },
+            new TimeOfDay() {
+                startsOnHour = 19,
+                name = "dusk",
+                skyColor = ColorUtils.ColorFromHex("#FFA885")
+            },
+            new TimeOfDay() {
+                startsOnHour = 21,
+                name = "night",
+                skyColor = ColorUtils.ColorFromHex("#111E1E")
+            },
+        };
     }
 }

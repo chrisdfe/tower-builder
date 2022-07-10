@@ -12,6 +12,7 @@ namespace TowerBuilder.State.Time
         {
             TimeSpeed currentSpeed = timeState.speed;
             float interval = Constants.TICK_INTERVAL * Constants.TIME_SPEED_TICK_INTERVALS[currentSpeed];
+
             return interval;
         }
     }

@@ -35,41 +35,54 @@ namespace TowerBuilder.DataTypes.Time
             }
         }
 
-        public static TimeValue FromTimeInput(TimeInput timeInput)
-        {
-            TimeValue time = TimeValue.zero;
+        public TimeValue() { }
 
+        public TimeValue(TimeValue timeValue)
+        {
+            minute = (int)timeValue.minute;
+            hour = (int)timeValue.hour;
+            day = (int)timeValue.day;
+            week = (int)timeValue.week;
+            season = (int)timeValue.season;
+            year = (int)timeValue.year;
+        }
+
+        public TimeValue(TimeInput timeInput)
+        {
             if (timeInput.minute != null)
             {
-                time.minute = (int)timeInput.minute;
+                minute = (int)timeInput.minute;
             }
 
             if (timeInput.hour != null)
             {
-                time.hour = (int)timeInput.hour;
+                hour = (int)timeInput.hour;
             }
 
             if (timeInput.day != null)
             {
-                time.day = (int)timeInput.day;
+                day = (int)timeInput.day;
             }
 
             if (timeInput.week != null)
             {
-                time.week = (int)timeInput.week;
+                week = (int)timeInput.week;
             }
 
             if (timeInput.season != null)
             {
-                time.season = (int)timeInput.season;
+                season = (int)timeInput.season;
             }
 
             if (timeInput.year != null)
             {
-                time.year = (int)timeInput.year;
+                year = (int)timeInput.year;
             }
+        }
 
-            return time;
+        public TimeValue(int minutes)
+        {
+            SetFromMinutes(minutes);
         }
 
         public TimeValue Clone()
@@ -83,6 +96,103 @@ namespace TowerBuilder.DataTypes.Time
                 season = season,
                 year = year
             };
+        }
+
+        public int AsMinutes()
+        {
+            int minutes = minute;
+            int hourMinutes = hour * Constants.MINUTES_PER_HOUR;
+            int dayMinutes = day * Constants.MINUTES_PER_DAY;
+            int weekMinutes = week * Constants.MINUTES_PER_WEEK;
+            int seasonMinutes = season * Constants.MINUTES_PER_SEASON;
+            int yearMinutes = year * Constants.MINUTES_PER_YEAR;
+
+            return (
+                minutes +
+                hourMinutes +
+                dayMinutes +
+                weekMinutes +
+                seasonMinutes +
+                yearMinutes
+            );
+        }
+
+        public void SetFromMinutes(int minutes)
+        {
+            int leftover = minutes;
+            year = leftover / Constants.MINUTES_PER_YEAR;
+            leftover = leftover % Constants.MINUTES_PER_YEAR;
+
+            season = leftover / Constants.MINUTES_PER_SEASON;
+            leftover = leftover % Constants.MINUTES_PER_SEASON;
+
+            week = leftover / Constants.MINUTES_PER_WEEK;
+            leftover = leftover % Constants.MINUTES_PER_WEEK;
+
+            day = leftover / Constants.MINUTES_PER_DAY;
+            leftover = leftover % Constants.MINUTES_PER_DAY;
+
+            hour = leftover / Constants.MINUTES_PER_HOUR;
+            leftover = leftover % Constants.MINUTES_PER_HOUR;
+
+            minute = leftover;
+        }
+
+        public void Add(TimeInput timeInput)
+        {
+            int timeAsMinutes = AsMinutes();
+            int timeInputAsMinutes = new TimeValue(timeInput).AsMinutes();
+
+            int newMinutes = timeAsMinutes + timeInputAsMinutes;
+
+            SetFromMinutes(newMinutes);
+        }
+
+        // TODO - make sure time doesn't go below 0
+        public void Subtract(TimeInput timeInput)
+        {
+            int timeAsMinutes = AsMinutes();
+            int timeInputAsMinutes = new TimeValue(timeInput).AsMinutes();
+
+            int newMinutes = timeAsMinutes - timeInputAsMinutes;
+
+            SetFromMinutes(newMinutes);
+        }
+
+        public int GetCurrentTimeOfDayIndex()
+        {
+            for (int i = Constants.TIMES_OF_DAY.Length - 1; i >= 0; i--)
+            {
+                TimeOfDay timeOfDay = Constants.TIMES_OF_DAY[i];
+
+                if (hour >= timeOfDay.startsOnHour)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
+        }
+
+        public TimeOfDay GetCurrentTimeOfDay()
+        {
+            return Constants.TIMES_OF_DAY[GetCurrentTimeOfDayIndex()];
+        }
+
+        public int GetNextTimeOfDayIndex()
+        {
+            int index = GetCurrentTimeOfDayIndex();
+            index++;
+            if (index >= Constants.TIMES_OF_DAY.Length - 1)
+            {
+                index = 0;
+            }
+            return index;
+        }
+
+        public TimeOfDay GetNextTimeOfDay()
+        {
+            return Constants.TIMES_OF_DAY[GetNextTimeOfDayIndex()];
         }
     }
 }

@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- Replace ground cells with a simpler ground for now
 - 2 furniture layers - "transportation" layer and "other" (beds, desks, etc) layer - to simplify layout
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 - Blueprint should just be a room in RoomState - right now it lives in a seperate place in BuildToolState;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.CameraManager
@@ -38,6 +39,11 @@ namespace TowerBuilder.GameWorld.CameraManager
 
         const float PAN_SPEED = 0.005f;
         const float PAN_LIMIT = 10f;
+
+        static MinMaxBounds ZOOM_BOUNDS = new MinMaxBounds(2, 15);
+
+        static MinMaxBounds CAMERA_X_BOUNDS = new MinMaxBounds(-20, 20);
+        static MinMaxBounds CAMERA_Y_BOUNDS = new MinMaxBounds(-20, 20);
 
         Dictionary<string, (KeyHandler, KeyHandler)> inputHandlers;
 
@@ -229,7 +235,7 @@ namespace TowerBuilder.GameWorld.CameraManager
             {
                 startZoom = camera.orthographicSize;
                 // - instead of +: these 2 fields interact in the opposite way you'd expect
-                targetZoom = camera.orthographicSize - Input.mouseScrollDelta.y;
+                targetZoom = ZOOM_BOUNDS.Clamp(camera.orthographicSize - Input.mouseScrollDelta.y);
                 zoomStartTime = Time.time;
                 zoomCurrentTime = 0;
             }
@@ -248,15 +254,19 @@ namespace TowerBuilder.GameWorld.CameraManager
         {
             if (!isPanning) return;
 
+            // The more zoomed out the camera is the more it needs to move
+            float zoomMultiplier = camera.orthographicSize * .2f;
+            float panSpeed = PAN_SPEED * zoomMultiplier;
 
             Vector2 mouseDifference = new Vector2(
-                Mathf.Clamp(-(panCurrentMousePosition.x - panStartMousePosition.x) * PAN_SPEED, -PAN_LIMIT, PAN_LIMIT),
-                Mathf.Clamp(-(panCurrentMousePosition.y - panStartMousePosition.y) * PAN_SPEED, -PAN_LIMIT, PAN_LIMIT)
+                Mathf.Clamp(-(panCurrentMousePosition.x - panStartMousePosition.x) * panSpeed, -PAN_LIMIT, PAN_LIMIT),
+                Mathf.Clamp(-(panCurrentMousePosition.y - panStartMousePosition.y) * panSpeed, -PAN_LIMIT, PAN_LIMIT)
             );
 
+
             Vector2 targetPosition = new Vector3(
-                panStartPosition.x + mouseDifference.x,
-                panStartPosition.y + mouseDifference.y
+                (panStartPosition.x + mouseDifference.x),
+                (panStartPosition.y + mouseDifference.y)
             );
 
             transform.position = new Vector3(

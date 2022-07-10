@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
 
-namespace TowerBuilder.Templates
+namespace TowerBuilder.Definitions.Templates
 {
     public static class DefaultRoomTemplates
     {

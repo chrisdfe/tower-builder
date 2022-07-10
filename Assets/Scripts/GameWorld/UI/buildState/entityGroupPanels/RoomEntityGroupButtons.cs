@@ -5,11 +5,11 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.Definitions.Templates;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.State;
 using TowerBuilder.State.Rooms;
 using TowerBuilder.State.UI;
-using TowerBuilder.Templates;
 using UnityEngine;
 using UnityEngine.UI;
 

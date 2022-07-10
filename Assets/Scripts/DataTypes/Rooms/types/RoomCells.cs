@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms
@@ -14,16 +14,11 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public delegate void RoomCellsEvent(RoomCells roomCells);
 
-        [NonSerialized]
+        [JsonIgnore]
         public RoomCellsEvent onResize;
 
-        public int Count
-        {
-            get
-            {
-                return cells.Count;
-            }
-        }
+        [JsonIgnore]
+        public int Count { get { return cells.Count; } }
 
         public RoomCells()
         {
