@@ -20,6 +20,7 @@ namespace TowerBuilder.State.Time
         public delegate void TimeUpdatedEvent(TimeValue newTime);
         public TimeUpdatedEvent onTimeUpdated;
         public TimeUpdatedEvent onTick;
+        public TimeUpdatedEvent onTimeOfDayChanged;
 
         public delegate void SpeedUpdatedEvent(TimeSpeed newTimeSpeed);
         public SpeedUpdatedEvent onTimeSpeedUpdated;
@@ -56,9 +57,10 @@ namespace TowerBuilder.State.Time
             UpdateTime(time);
         }
 
-
         public void Tick()
         {
+            TimeValue previousTime = time.Clone();
+
             AddTime(new TimeInput()
             {
                 minute = Constants.MINUTES_ELAPSED_PER_TICK
@@ -67,6 +69,14 @@ namespace TowerBuilder.State.Time
             if (onTick != null)
             {
                 onTick(time);
+            }
+
+            if (previousTime.GetCurrentTimeOfDay() != time.GetCurrentTimeOfDay())
+            {
+                if (onTimeOfDayChanged != null)
+                {
+                    onTimeOfDayChanged(time);
+                }
             }
         }
 
@@ -78,6 +88,11 @@ namespace TowerBuilder.State.Time
             {
                 onTimeSpeedUpdated(speed);
             }
+        }
+
+        public float GetCurrentTickInterval()
+        {
+            return Constants.TICK_INTERVAL * Constants.TIME_SPEED_TICK_INTERVALS[speed];
         }
     }
 }

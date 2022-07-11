@@ -12,17 +12,18 @@ namespace TowerBuilder.GameWorld
 
         IEnumerator timeCoroutine;
 
-        float currentTransitionTimeInSeconds = 0;
+        float elapsedSinceLastTimeOfDay = 0f;
+        float elapsedSinceLastTick = 0f;
 
         void Awake()
         {
             camera = Camera.main;
 
+            Registry.appState.Time.onTick += OnTick;
             Registry.appState.Time.onTimeUpdated += OnTimeUpdated;
+            Registry.appState.Time.onTimeOfDayChanged += OnTimeOfDayChanged;
 
             StartTick();
-
-            currentTransitionTimeInSeconds = Time.deltaTime;
 
             // SetCurrentSkyColor();
             UpdateSkyColor();
@@ -30,6 +31,8 @@ namespace TowerBuilder.GameWorld
 
         void Update()
         {
+            elapsedSinceLastTick += Time.deltaTime;
+
             if (Input.GetKeyDown("`"))
             {
                 UpdateSpeed(TimeSpeed.Pause);
@@ -53,17 +56,22 @@ namespace TowerBuilder.GameWorld
             UpdateSkyColor();
         }
 
+        void OnTimeOfDayChanged(TimeValue timeValue)
+        {
+            Debug.Log("new time of day");
+            elapsedSinceLastTimeOfDay = 0;
+        }
+
         void OnTimeUpdated(TimeValue timeValue)
         {
             ResetTick();
 
-            GetProgressToNextTimeOfDay();
             UpdateSkyColor();
         }
 
-        void OnTick()
+        void OnTick(TimeValue timeValue)
         {
-            Registry.appState.Time.Tick();
+            elapsedSinceLastTick = 0f;
         }
 
         void UpdateSkyColor()
@@ -99,9 +107,9 @@ namespace TowerBuilder.GameWorld
         {
             while (true)
             {
-                float interval = State.Time.Selectors.GetCurrentTickInterval(Registry.appState.Time);
+                float interval = Registry.appState.Time.GetCurrentTickInterval();
                 yield return new WaitForSeconds(interval);
-                OnTick();
+                Registry.appState.Time.Tick();
             }
         }
 
@@ -119,71 +127,75 @@ namespace TowerBuilder.GameWorld
             }
         }
 
-        float GetProgressToNextTimeOfDay()
+        Color GetUpdateColorLerpProgressColor()
         {
             TimeValue currentTime = Registry.appState.Time.time;
+            TimeSpeed currentSpeed = Registry.appState.Time.speed;
             TimeValue absoluteCurrentTime = new TimeValue(new TimeInput()
             {
                 minute = currentTime.minute,
                 hour = currentTime.hour
             });
 
+            TimeOfDay currentTimeOfDay = currentTime.GetCurrentTimeOfDay();
+            TimeOfDay nextTimeOfDay = currentTime.GetNextTimeOfDay();
+
+            int currentTimeOfDayStartHourAsMinutes = new TimeValue(new TimeInput()
+            {
+                hour = currentTimeOfDay.startsOnHour
+            }).AsMinutes();
+
             int currentTimeAsMinutes = absoluteCurrentTime.AsMinutes();
 
-            TimeOfDay currentTimeOfDay = absoluteCurrentTime.GetCurrentTimeOfDay();
-            TimeOfDay nextTimeOfDay = absoluteCurrentTime.GetNextTimeOfDay();
+            int nextTimeOfDayStartHourAsMinutes = new TimeValue(new TimeInput()
+            {
+                hour = nextTimeOfDay.startsOnHour
+            }).AsMinutes();
 
-            int currentTimeOfDayStartHourAsMinutes = new TimeValue(new TimeInput() { hour = currentTimeOfDay.startsOnHour }).AsMinutes();
-            int nextTimeOfDayStartHourAsMinutes = new TimeValue(new TimeInput() { hour = nextTimeOfDay.startsOnHour }).AsMinutes();
+            int totalDifferenceAsMinutes = nextTimeOfDayStartHourAsMinutes - currentTimeOfDayStartHourAsMinutes;
+            int currentProgressAsMinutes = currentTimeAsMinutes - currentTimeOfDayStartHourAsMinutes;
 
-            int totalDifference = nextTimeOfDayStartHourAsMinutes - currentTimeOfDayStartHourAsMinutes;
-            int currentProgress = currentTimeAsMinutes - currentTimeOfDayStartHourAsMinutes;
-            float progress = (float)currentProgress / (float)totalDifference;
+            float minutesProgress = (float)currentProgressAsMinutes / (float)totalDifferenceAsMinutes;
 
-            return progress;
-        }
+            int currentProgressAsTicks = currentProgressAsMinutes * Constants.MINUTES_ELAPSED_PER_TICK;
+            int totalDifferenceAsTicks = totalDifferenceAsMinutes * Constants.MINUTES_ELAPSED_PER_TICK;
 
-        float GetCurrentTimeOfDayDistance()
-        {
-            TimeValue currentTime = Registry.appState.Time.time;
+            float ticksProgress = (float)currentProgressAsTicks / (float)totalDifferenceAsTicks;
 
-            TimeOfDay currentTimeOfDay = currentTime.GetCurrentTimeOfDay();
-            TimeOfDay nextTimeOfDay = currentTime.GetNextTimeOfDay();
+            // Work out frame-level progress
+            float currentProgressAsRealSeconds = InGameMinutesToRealSeconds(currentProgressAsMinutes);
+            float totalDifferenceAsRealSeconds = InGameMinutesToRealSeconds(totalDifferenceAsMinutes);
 
-            int currentTimeOfDayStartHourAsMinutes = new TimeValue(new TimeInput() { hour = currentTimeOfDay.startsOnHour }).AsMinutes();
-            int nextTimeOfDayStartHourAsMinutes = new TimeValue(new TimeInput() { hour = nextTimeOfDay.startsOnHour }).AsMinutes();
+            float minutesProgressInSeconds = currentProgressAsRealSeconds / currentProgressAsRealSeconds;
 
-            int totalDifference = nextTimeOfDayStartHourAsMinutes - currentTimeOfDayStartHourAsMinutes;
+            float currentTickInterval = Registry.appState.Time.GetCurrentTickInterval();
 
-            return totalDifference / Constants.MINUTES_ELAPSED_PER_TICK;
-        }
+            float currentTickProgress = elapsedSinceLastTick / currentTickInterval;
 
-        Color GetUpdateColorLerpProgressColor()
-        {
-            TimeValue currentTime = Registry.appState.Time.time;
-            TimeSpeed currentSpeed = Registry.appState.Time.speed;
+            float progress = (
+                // (elapsedSinceLastTimeOfDay / totalDifferenceAsRealSeconds) / currentTickInterval
+                (ticksProgress)
+            // + (currentTickProgress / totalDifferenceAsRealSeconds)
+            );
 
-            TimeOfDay currentTimeOfDay = currentTime.GetCurrentTimeOfDay();
-            TimeOfDay nextTimeOfDay = currentTime.GetNextTimeOfDay();
-
-            int currentTimeOfDayStartHourAsMinutes = new TimeValue(new TimeInput() { hour = currentTimeOfDay.startsOnHour }).AsMinutes();
-
-            // int currentTimeOfDayStartHourAsTicks = currentTimeOfDayStartHourAsMinutes / Constants.MINUTES_ELAPSED_PER_TICK;
-
-            int minutesSinceBeginningOfCurrentTimeOfDayStart = (currentTime.AsMinutes() - currentTimeOfDayStartHourAsMinutes);
-
-            int ticksSinceBeginningOfCurrentTimeOfDayStart = minutesSinceBeginningOfCurrentTimeOfDayStart / Constants.MINUTES_ELAPSED_PER_TICK;
-
-            float tickProgress = GetProgressToNextTimeOfDay();
-
-            // currentTransitionTimeInSeconds += Time.deltaTime;
-            // float currentTickInterval = Constants.TIME_SPEED_TICK_INTERVALS[currentSpeed];
-
+            // Debug.Log("---");
 
             return Color.Lerp(
                 currentTimeOfDay.skyColor,
                 nextTimeOfDay.skyColor,
-                tickProgress
+                progress
+            );
+        }
+
+        float InGameMinutesToRealSeconds(int minutes)
+        {
+            // float currentSpeed = Constants.TIME_SPEED_TICK_INTERVALS[Registry.appState.Time.speed];
+            // float framerate = 1 / Time.unscaledDeltaTime;
+            // Debug.Log("framerate: " + framerate);
+
+            return (
+                minutes *
+                (Constants.TICK_INTERVAL / Constants.MINUTES_ELAPSED_PER_TICK)
             );
         }
     }

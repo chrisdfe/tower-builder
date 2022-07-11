@@ -11,12 +11,13 @@ namespace TowerBuilder.DataTypes.Time
     {
         public const int MINUTES_ELAPSED_PER_TICK = 15;
 
-        // 1 second
+        // In seconds
         public const float TICK_INTERVAL = .8f;
 
         // tick intervals in seconds
         public static Dictionary<TimeSpeed, float> TIME_SPEED_TICK_INTERVALS = new Dictionary<TimeSpeed, float>()
         {
+            [TimeSpeed.Pause] = float.PositiveInfinity,
             [TimeSpeed.Normal] = 1.0f,
             [TimeSpeed.Fast] = 0.7f,
             [TimeSpeed.Fastest] = 0.1f,
