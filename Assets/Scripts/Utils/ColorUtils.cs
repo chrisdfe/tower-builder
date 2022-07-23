@@ -27,14 +27,11 @@ namespace TowerBuilder.Utils
             int gAsInt = Convert.ToInt32(g, 16);
             int bAsInt = Convert.ToInt32(b, 16);
 
-            Debug.Log(rAsInt + " " + gAsInt + " " + bAsInt);
-
             float rAsFloat = (float)rAsInt / 255f;
             float gAsFloat = (float)gAsInt / 255f;
             float bAsFloat = (float)bAsInt / 255f;
 
             Color color = new Color(rAsFloat, gAsFloat, bAsFloat);
-            Debug.Log(color);
 
             return color;
         }

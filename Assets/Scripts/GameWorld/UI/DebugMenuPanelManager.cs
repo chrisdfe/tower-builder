@@ -1,15 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
-using TowerBuilder;
-using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Buildings;
 using TowerBuilder.DataTypes.Time;
 using TowerBuilder.Systems;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -109,10 +102,6 @@ namespace TowerBuilder.GameWorld.UI
                     SaveLoadSystem.SaveToFile<Room>(room);
                 }
             }
-
-
-            // JsonWriter.WriteString("test.json", jsonifiedRoomStore);
-            // JsonWriter.ReadString();
         }
     }
 }

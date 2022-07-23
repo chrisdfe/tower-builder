@@ -46,7 +46,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void Update()
         {
-            UpdateSelectableEntityStack();
+            // UpdateSelectableEntityStack();
             UpdateCurrentSelectedCell();
 
             // TODO - handle transitions between "is in dead zone" and "is not in dead zone"
@@ -103,11 +103,10 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void UpdateCurrentSelectedCell()
         {
-            // TODO - this gets re-set twice per frame
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
-            if (floorPlaneCollider.Raycast(ray, out hit, 100))
+            if (floorPlaneCollider.Raycast(ray, out hit, 1000))
             {
                 CellCoordinates hoveredCell = new CellCoordinates(
                     GameWorldMapCellHelpers.RoundToNearestTile(hit.point.x),
