@@ -16,7 +16,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 
             CellCoordinates cellCoordinates = roomCell.coordinates;
 
-            RoomList allRooms = stores.Rooms.buildings.FindAllRooms();
+            RoomList allRooms = stores.Rooms.roomList;
 
             // Elevators can't be too close together
             // TODO - check above + to the left + right and below + to the left and right (not directly above or below, that's ok)

@@ -117,7 +117,7 @@ public class GroundManager : MonoBehaviour
     {
         foreach (CellCoordinates cellCoordinates in currentBlueprintCells)
         {
-            bool cellIsOccupied = Registry.appState.Rooms.buildings.FindRoomAtCell(cellCoordinates) != null;
+            bool cellIsOccupied = Registry.appState.Rooms.FindRoomAtCell(cellCoordinates) != null;
             if (
                 gameWorldGroundCells.ContainsKey((cellCoordinates.x, cellCoordinates.floor)) &&
                 !cellIsOccupied

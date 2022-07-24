@@ -1,6 +1,5 @@
 using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Buildings;
 using TowerBuilder.DataTypes.Time;
 using TowerBuilder.Systems;
 using UnityEngine;
@@ -91,16 +90,11 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnTestSaveButtonClick()
         {
-            if (Registry.appState.Rooms.buildings.Count > 0)
+            if (Registry.appState.Rooms.roomList.Count > 0)
             {
-                Building building = Registry.appState.Rooms.buildings.buildings[0];
+                Room room = Registry.appState.Rooms.roomList.rooms[0];
 
-                if (building.roomList.Count > 0)
-                {
-                    Room room = building.roomList.rooms[0];
-
-                    SaveLoadSystem.SaveToFile<Room>(room);
-                }
+                SaveLoadSystem.SaveToFile<Room>(room);
             }
         }
     }

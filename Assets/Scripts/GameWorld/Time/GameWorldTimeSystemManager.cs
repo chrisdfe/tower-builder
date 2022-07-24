@@ -58,7 +58,6 @@ namespace TowerBuilder.GameWorld
 
         void OnTimeOfDayChanged(TimeValue timeValue)
         {
-            Debug.Log("new time of day");
             elapsedSinceLastTimeOfDay = 0;
         }
 

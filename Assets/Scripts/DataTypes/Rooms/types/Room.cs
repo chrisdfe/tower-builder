@@ -12,14 +12,10 @@ namespace TowerBuilder.DataTypes.Rooms
 {
     public class Room
     {
-        private static int autoincrementingId;
-
         public int id { get; private set; }
 
         public string title { get; private set; } = "None";
-
         public string key { get; private set; } = "None";
-
         public string category { get; private set; } = "None";
 
         public int pricePerBlock { get; private set; } = 10;
@@ -27,6 +23,8 @@ namespace TowerBuilder.DataTypes.Rooms
         public RoomResizability resizability = RoomResizability.Inflexible();
 
         public Dimensions blockDimensions { get; private set; } = Dimensions.one;
+
+        public int buildingId = -1;
 
         // TODO - this is only JsonIgnore because it's a recursive type and
         //        the serializer doesn't like that.
@@ -55,9 +53,8 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public Room(RoomTemplate roomTemplate)
         {
-            GenerateId();
             // this.roomTemplate = roomTemplate;
-
+            this.id = UIDGenerator.Generate("room");
             this.title = roomTemplate.title;
             this.key = roomTemplate.key;
             this.category = roomTemplate.category;
@@ -180,11 +177,6 @@ namespace TowerBuilder.DataTypes.Rooms
             {
                 SetRoomCellOrientation(roomCell);
             }
-        }
-
-        void GenerateId()
-        {
-            id = Interlocked.Increment(ref autoincrementingId);
         }
 
         void OnRoomCellsResize(RoomCells roomCells)

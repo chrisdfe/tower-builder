@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Buildings;
 using TowerBuilder.Systems;
 using UnityEditor;
 using UnityEngine;
