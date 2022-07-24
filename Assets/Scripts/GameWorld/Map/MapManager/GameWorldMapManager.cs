@@ -41,12 +41,11 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             // make a bit mask
             selectableEntityLayerMask = 1 << LayerMask.NameToLayer("Selectable Entities");
-            // selectableEntityLayerMask = ~selectableEntityLayerMask;
         }
 
         void Update()
         {
-            // UpdateSelectableEntityStack();
+            UpdateSelectableEntityStack();
             UpdateCurrentSelectedCell();
 
             // TODO - handle transitions between "is in dead zone" and "is not in dead zone"
@@ -70,9 +69,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         {
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            RaycastHit[] hits;
-            hits = Physics.RaycastAll(ray, 100, selectableEntityLayerMask);
-            // hits = Physics.RaycastAll(ray, 100);
+            RaycastHit[] hits = Physics.RaycastAll(ray, 1000, selectableEntityLayerMask);
 
             SelectableEntityStack stack = new SelectableEntityStack();
 
@@ -83,7 +80,6 @@ namespace TowerBuilder.GameWorld.Map.MapManager
                 for (int i = 0; i < hits.Length; i++)
                 {
                     RaycastHit otherHit = hits[i];
-                    // Debug.Log(otherHit);
 
                     // TODO - this should be called GameWorldSelectableEntity
                     SelectableEntity selectableEntity = otherHit.transform.GetComponent<SelectableEntity>();

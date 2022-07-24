@@ -63,6 +63,8 @@ namespace TowerBuilder.DataTypes.Rooms
             this.category = roomTemplate.category;
             this.pricePerBlock = roomTemplate.pricePerBlock;
             this.resizability = roomTemplate.resizability;
+            this.blockDimensions = roomTemplate.blockDimensions;
+
             this.validator = roomTemplate.validatorFactory();
             this.entranceBuilder = roomTemplate.entranceBuilderFactory();
 
