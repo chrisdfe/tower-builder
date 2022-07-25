@@ -24,14 +24,14 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         {
             CreateBlueprint();
 
-            Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
+            Registry.appState.Rooms.roomList.onItemAdded += OnRoomAdded;
         }
 
         public override void OnTransitionFrom(ToolState nextToolState)
         {
             DestroyBlueprint();
 
-            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
+            Registry.appState.Rooms.roomList.onItemAdded -= OnRoomAdded;
         }
 
         public override void OnMouseDown()

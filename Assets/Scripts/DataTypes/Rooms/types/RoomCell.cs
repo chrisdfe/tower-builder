@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
+using Newtonsoft.Json;
 using TowerBuilder.DataTypes.Rooms.Entrances;
 using UnityEngine;
 
@@ -9,12 +10,14 @@ namespace TowerBuilder.DataTypes.Rooms
 {
     public class RoomCell
     {
-        [NonSerialized]
+        [JsonIgnore]
         public RoomCells parent;
+
+        public int id = UIDGenerator.Generate("roomCell");
 
         public CellCoordinates coordinates = CellCoordinates.zero;
 
-        [NonSerialized]
+        [JsonIgnore]
         public List<RoomCellOrientation> orientation = new List<RoomCellOrientation>();
 
         public RoomCell(RoomCells parent, int x, int floor)

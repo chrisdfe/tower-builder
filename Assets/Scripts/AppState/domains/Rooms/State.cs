@@ -22,20 +22,11 @@ namespace TowerBuilder.State.Rooms
             public RoomList roomList;
         }
 
-        public RoomList roomList;
-        public delegate void RoomAddedEvent(Room room);
-        public RoomAddedEvent onRoomAdded;
-
-        public delegate void RoomDestroyedEvent(Room room);
-        public RoomDestroyedEvent onRoomDestroyed;
-
-        public delegate void RoomBlockDestroyedEvent(RoomCells roomBlock);
-        public RoomBlockDestroyedEvent onRoomBlockDestroyed;
-
         public RoomConnections roomConnections { get; private set; } = new RoomConnections();
+        public RoomList roomList { get; private set; } = new RoomList();
 
-        public delegate void RoomConnectionsEvent(RoomConnections roomConnections);
-        public RoomConnectionsEvent onRoomConnectionsUpdated;
+        public delegate void RoomBlockEvent(RoomCells roomBlock);
+        public RoomBlockEvent onRoomBlockDestroyed;
 
         public State() : this(new Input()) { }
 
@@ -55,11 +46,6 @@ namespace TowerBuilder.State.Rooms
 
             roomList.Add(room);
             room.OnBuild();
-
-            if (onRoomAdded != null)
-            {
-                onRoomAdded(room);
-            }
         }
 
         public void AttemptToAddRoom(Blueprint blueprint, RoomConnections roomConnections)
@@ -87,8 +73,6 @@ namespace TowerBuilder.State.Rooms
 
             if (roomsToCombineWith.Count > 0)
             {
-                building = FindBuildingByRoom(roomsToCombineWith[0]);
-
                 foreach (Room otherRoom in roomsToCombineWith)
                 {
                     newRoom.AddBlocks(otherRoom.blocks);
@@ -101,7 +85,7 @@ namespace TowerBuilder.State.Rooms
             }
             else
             {
-                List<CellCoordinates> perimeterRoomCellCoordinates = newRoom.roomCells.GetPerimeterCellCoordinates();
+                List<CellCoordinates> perimeterRoomCellCoordinates = newRoom.cells.GetPerimeterCellCoordinates();
 
                 // find the first cellcoordinates that are inside of a room
                 List<RoomCell> occupiedPerimeterRoomCells = new List<RoomCell>();
@@ -126,16 +110,15 @@ namespace TowerBuilder.State.Rooms
                 else
                 {
                     building = new Building();
-                    Registry.appState.buildings.AddBuilding(building);
+                    Registry.appState.buildings.Add(building);
                 }
-
             }
 
             AddRoom(newRoom);
 
-            if (roomConnections.connections.Count > 0)
+            if (roomConnections.Count > 0)
             {
-                AddRoomConnections(roomConnections);
+                roomConnections.Add(roomConnections);
             }
         }
 
@@ -146,7 +129,7 @@ namespace TowerBuilder.State.Rooms
                 return;
             }
 
-            RemoveRoomConnectionsForRoom(room);
+            roomConnections.RemoveConnectionsForRoom(room);
 
             if (checkForBuildingDestroy)
             {
@@ -155,21 +138,19 @@ namespace TowerBuilder.State.Rooms
                 Building buildingContainingRoom = FindBuildingByRoom(room);
                 roomList.Remove(room);
 
-                if (roomList.rooms.Count == 0)
+                if (roomList.items.Count == 0)
                 {
-                    Registry.appState.buildings.DestroyBuilding(building);
+                    Registry.appState.buildings.Remove(building);
                 }
-            }
-
-            if (onRoomDestroyed != null)
-            {
-                onRoomDestroyed(room);
             }
         }
 
         public void DestroyRoomBlock(Room room, RoomCells roomBlock)
         {
-            if (room == null) return;
+            if (room == null)
+            {
+                return;
+            }
 
             // TODO - check if doing this is going to divide the room into 2
             // if so, create another room right here
@@ -183,25 +164,19 @@ namespace TowerBuilder.State.Rooms
             {
                 DestroyRoom(room);
             }
-            else
-            {
-                if (onRoomBlockDestroyed != null)
-                {
-                    onRoomBlockDestroyed(roomBlock);
-                }
-            }
         }
 
         // Queries
         public Building FindBuildingByRoom(Room room)
         {
-            foreach (Building building in Registry.appState.buildings.buildings.buildings)
+            foreach (Building building in Registry.appState.buildings.items)
             {
                 if (room.buildingId == building.id)
                 {
                     return building;
                 }
             }
+
             return null;
         }
 
@@ -209,7 +184,7 @@ namespace TowerBuilder.State.Rooms
         {
             RoomList buildingRooms = new RoomList();
 
-            foreach (Room room in roomList.rooms)
+            foreach (Room room in roomList.items)
             {
                 if (room.buildingId == building.id)
                 {
@@ -225,26 +200,6 @@ namespace TowerBuilder.State.Rooms
             return roomList.FindRoomAtCell(cellCoordinates);
         }
 
-        public void AddRoomConnections(RoomConnections newRoomConnections)
-        {
-            roomConnections.Add(newRoomConnections);
-
-            if (onRoomConnectionsUpdated != null)
-            {
-                onRoomConnectionsUpdated(roomConnections);
-            }
-        }
-
-        public void RemoveRoomConnectionsForRoom(Room roomBeingDestroyed)
-        {
-            roomConnections.RemoveConnectionsForRoom(roomBeingDestroyed);
-
-            if (onRoomConnectionsUpdated != null)
-            {
-                onRoomConnectionsUpdated(roomConnections);
-            }
-        }
-
         List<Room> FindRoomsToCombineWith(Room room)
         {
             List<Room> result = new List<Room>();
@@ -257,15 +212,15 @@ namespace TowerBuilder.State.Rooms
             if (room.resizability.x)
             {
                 //  Check on either side
-                foreach (int floor in room.roomCells.GetFloorRange())
+                foreach (int floor in room.cells.GetFloorRange())
                 {
                     Room leftRoom = FindRoomAtCell(new CellCoordinates(
-                        room.roomCells.GetLowestX() - 1,
+                        room.cells.GetLowestX() - 1,
                         floor
                     ));
 
                     Room rightRoom = FindRoomAtCell(new CellCoordinates(
-                        room.roomCells.GetHighestX() + 1,
+                        room.cells.GetHighestX() + 1,
                         floor
                     ));
 
@@ -286,16 +241,16 @@ namespace TowerBuilder.State.Rooms
             if (room.resizability.floor)
             {
                 //  Check on floors above and below
-                foreach (int x in room.roomCells.GetXRange())
+                foreach (int x in room.cells.GetXRange())
                 {
                     Room aboveRoom = FindRoomAtCell(new CellCoordinates(
                         x,
-                        room.roomCells.GetHighestFloor() + 1
+                        room.cells.GetHighestFloor() + 1
                     ));
 
                     Room belowRoom = FindRoomAtCell(new CellCoordinates(
                         x,
-                        room.roomCells.GetLowestFloor() - 1
+                        room.cells.GetLowestFloor() - 1
                     ));
 
                     foreach (Room otherRoom in new Room[] { aboveRoom, belowRoom })

@@ -42,18 +42,12 @@ namespace TowerBuilder.GameWorld.UI
             text += room.price + "\n";
             text += "\n";
 
-            text += $"{roomConnections.connections.Count} Connections\n";
+            text += $"{roomConnections.items.Count} Connections\n";
             // text += string.Join(", ", room.roomTemplate.uses) + "\n";
-            foreach (RoomConnection connection in roomConnections.connections)
+            foreach (RoomConnection connection in roomConnections.items)
             {
-                // Room otherRoom = connection.GetConnectedRoom(room);
                 text += connection + "\n";
             }
-
-            // foreach (RoomCell roomCell in room.roomCells.cells)
-            // {
-            //     text += roomCell.coordinates + "\n";
-            // }
 
             inspectText.text = text;
         }

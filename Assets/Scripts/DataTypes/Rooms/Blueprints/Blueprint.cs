@@ -18,6 +18,7 @@ namespace TowerBuilder.DataTypes.Rooms.Blueprints
         public CellCoordinates buildStartCoordinates { get; private set; } = new CellCoordinates(0, 0);
         public CellCoordinates buildEndCoordinates { get; private set; } = new CellCoordinates(0, 0);
 
+        // TODO - use this property as a cache and/or have a GetSelectionBox method
         SelectionBox selectionBox
         {
             get
@@ -128,7 +129,7 @@ namespace TowerBuilder.DataTypes.Rooms.Blueprints
             // TODO - clean up existing roomBlueprintCells first?
             roomBlueprintCells = new List<BlueprintCell>();
 
-            foreach (RoomCell roomCell in room.roomCells.cells)
+            foreach (RoomCell roomCell in room.cells.items)
             {
                 BlueprintCell newBlueprintCell = new BlueprintCell(this, roomCell);
                 roomBlueprintCells.Add(newBlueprintCell);

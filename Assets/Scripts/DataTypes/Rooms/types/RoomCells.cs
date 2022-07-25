@@ -8,22 +8,10 @@ using UnityEngine;
 namespace TowerBuilder.DataTypes.Rooms
 {
     [Serializable]
-    public class RoomCells
+    public class RoomCells : ResourceList<RoomCell>
     {
-        public List<RoomCell> cells { get; private set; }
-
-        public delegate void RoomCellsEvent(RoomCells roomCells);
-
-        [JsonIgnore]
-        public RoomCellsEvent onResize;
-
-        [JsonIgnore]
-        public int Count { get { return cells.Count; } }
-
-        public RoomCells()
-        {
-            this.cells = new List<RoomCell>();
-        }
+        public RoomCells() : base() { }
+        public RoomCells(List<RoomCell> roomCells) : base(roomCells) { }
 
         public RoomCells(int width, int height)
         {
@@ -35,47 +23,15 @@ namespace TowerBuilder.DataTypes.Rooms
             CreateRectangularRoom(startCellCoordinates, endCellCoordinates);
         }
 
-        public RoomCells(List<RoomCell> roomCells)
+        public override void Add(RoomCell roomCell)
         {
-            this.cells = roomCells;
+            RoomCell newRoomCell = new RoomCell(this, roomCell.coordinates);
+            base.Add(newRoomCell);
         }
 
         public void Add(CellCoordinates cellCoordinates)
         {
-            cells.Add(new RoomCell(this, cellCoordinates));
-            if (onResize != null)
-            {
-                onResize(this);
-            }
-        }
-
-        public void Add(RoomCell roomCell)
-        {
-            cells.Add(new RoomCell(this, roomCell.coordinates));
-            if (onResize != null)
-            {
-                onResize(this);
-            }
-        }
-
-        public void Add(List<RoomCell> roomCellsList)
-        {
-            cells = cells.Concat(roomCellsList).ToList();
-
-            if (onResize != null)
-            {
-                onResize(this);
-            }
-        }
-
-        public void Add(RoomCells otherRoomCells)
-        {
-            Add(otherRoomCells.cells);
-        }
-
-        public void Set(RoomCells otherRoomCells)
-        {
-            this.cells = otherRoomCells.cells;
+            Add(new RoomCell(this, cellCoordinates));
         }
 
         public void CreateRectangularRoom(int xWidth, int floors)
@@ -90,12 +46,7 @@ namespace TowerBuilder.DataTypes.Rooms
                 }
             }
 
-            this.cells = result;
-
-            if (onResize != null)
-            {
-                onResize(this);
-            }
+            Set(result);
         }
 
         public void CreateRectangularRoom(CellCoordinates a, CellCoordinates b)
@@ -115,30 +66,25 @@ namespace TowerBuilder.DataTypes.Rooms
                 }
             }
 
-            this.cells = result;
-
-            if (onResize != null)
-            {
-                onResize(this);
-            }
+            Set(result);
         }
 
         public void PositionAtCoordinates(CellCoordinates newBaseCoordinates)
         {
             List<RoomCell> result = new List<RoomCell>();
 
-            foreach (RoomCell roomCell in cells)
+            foreach (RoomCell roomCell in items)
             {
                 RoomCell newRoomCell = new RoomCell(this, newBaseCoordinates.Add(roomCell.coordinates));
                 result.Add(newRoomCell);
             }
 
-            cells = result;
+            Set(result);
         }
 
         public RoomCell FindCellByCoordinates(CellCoordinates cellCoordinates)
         {
-            foreach (RoomCell roomCell in cells)
+            foreach (RoomCell roomCell in items)
             {
                 if (roomCell.coordinates.Matches(cellCoordinates))
                 {
@@ -154,7 +100,7 @@ namespace TowerBuilder.DataTypes.Rooms
             return FindCellByCoordinates(cellCoordinates) != null;
         }
 
-        public bool Contains(RoomCell roomCell)
+        public override bool Contains(RoomCell roomCell)
         {
             return FindCellByCoordinates(roomCell.coordinates) != null;
         }
@@ -186,14 +132,14 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public List<RoomCell> GetOverlappingRoomCells(RoomCells otherRoomCells)
         {
-            return GetOverlappingRoomCells(otherRoomCells.cells);
+            return GetOverlappingRoomCells(otherRoomCells.items);
         }
 
         public int GetLowestX()
         {
             int lowestX = int.MaxValue;
 
-            foreach (RoomCell roomCell in cells)
+            foreach (RoomCell roomCell in items)
             {
                 if (roomCell.coordinates.x < lowestX)
                 {
@@ -208,7 +154,7 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             int highestX = int.MinValue;
 
-            foreach (RoomCell roomCell in cells)
+            foreach (RoomCell roomCell in items)
             {
                 if (roomCell.coordinates.x > highestX)
                 {
@@ -224,7 +170,7 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             int lowestFloor = int.MaxValue;
 
-            foreach (RoomCell roomCell in cells)
+            foreach (RoomCell roomCell in items)
             {
                 if (roomCell.coordinates.floor < lowestFloor)
                 {
@@ -239,7 +185,7 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             int highestFloor = int.MinValue;
 
-            foreach (RoomCell roomCell in cells)
+            foreach (RoomCell roomCell in items)
             {
                 if (roomCell.coordinates.floor > highestFloor)
                 {
@@ -254,7 +200,7 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             List<int> result = new List<int>();
 
-            foreach (RoomCell roomCell in cells)
+            foreach (RoomCell roomCell in items)
             {
                 if (!result.Contains(roomCell.coordinates.x))
                 {
@@ -269,7 +215,7 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             List<int> result = new List<int>();
 
-            foreach (RoomCell roomCell in cells)
+            foreach (RoomCell roomCell in items)
             {
                 if (!result.Contains(roomCell.coordinates.floor))
                 {
@@ -285,7 +231,7 @@ namespace TowerBuilder.DataTypes.Rooms
             List<RoomCell> result = new List<RoomCell>();
             CellCoordinates bottomLeftCoordinates = GetBottomLeftCoordinates();
 
-            foreach (RoomCell roomCell in cells)
+            foreach (RoomCell roomCell in items)
             {
                 result.Add(new RoomCell(this, roomCell.coordinates.Subtract(bottomLeftCoordinates)));
             }
@@ -343,7 +289,7 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             List<CellCoordinates> result = new List<CellCoordinates>();
 
-            foreach (RoomCell roomCell in cells)
+            foreach (RoomCell roomCell in items)
             {
                 CellCoordinates[] adjacentCellCoordinatesList = new CellCoordinates[] {
                     roomCell.GetCoordinatesAbove(),
@@ -362,6 +308,11 @@ namespace TowerBuilder.DataTypes.Rooms
             }
 
             return result;
+        }
+
+        public List<int> SelectIds()
+        {
+            return items.Select(item => item.id).ToList();
         }
     }
 }

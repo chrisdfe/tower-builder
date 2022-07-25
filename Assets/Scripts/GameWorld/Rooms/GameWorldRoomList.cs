@@ -19,10 +19,21 @@ namespace TowerBuilder.GameWorld.Rooms
         void Awake()
         {
             roomPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/Room");
-            ResetRooms();
+            Setup();
+        }
 
-            Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
-            Registry.appState.Rooms.onRoomDestroyed += OnRoomDestroyed;
+        public void Setup()
+        {
+            Registry.appState.Rooms.roomList.onItemAdded += OnRoomAdded;
+            Registry.appState.Rooms.roomList.onItemRemoved += OnRoomDestroyed;
+            // Registry.appState.Rooms.roomList.onItemsChanged += OnRoomsChanged;
+        }
+
+        public void Teardown()
+        {
+            Registry.appState.Rooms.roomList.onItemAdded -= OnRoomAdded;
+            Registry.appState.Rooms.roomList.onItemRemoved -= OnRoomDestroyed;
+            // Registry.appState.Rooms.roomList.onItemsChanged += OnRoomsChanged;
         }
 
         void OnRoomAdded(Room room)
@@ -35,14 +46,8 @@ namespace TowerBuilder.GameWorld.Rooms
             RemoveRoom(room);
         }
 
-        void ResetRooms()
-        {
-
-        }
-
         void CreateRoom(Room room)
         {
-            Debug.Log(room);
             GameObject roomGameObject = Instantiate<GameObject>(roomPrefab);
             roomGameObject.transform.parent = transform;
             GameWorldRoom gameWorldRoom = roomGameObject.GetComponent<GameWorldRoom>();

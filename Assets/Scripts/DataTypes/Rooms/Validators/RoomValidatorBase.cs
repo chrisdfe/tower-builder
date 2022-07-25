@@ -15,7 +15,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             List<RoomValidationError> result = new List<RoomValidationError>();
             result = result.Concat(ValidateRoom(room, stores)).ToList();
 
-            foreach (RoomCell roomCell in room.roomCells.cells)
+            foreach (RoomCell roomCell in room.cells.items)
             {
                 result = result.Concat(ValidateRoomCell(roomCell, stores)).ToList();
             }
@@ -43,9 +43,9 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             List<RoomValidationError> result = new List<RoomValidationError>();
 
             // Check for overlapping cells
-            foreach (Room otherRoom in allRooms.rooms)
+            foreach (Room otherRoom in allRooms.items)
             {
-                if (otherRoom.roomCells.Contains(roomCell))
+                if (otherRoom.cells.Contains(roomCell))
                 {
                     result.Add(
                         new RoomValidationError("You cannot build rooms on top of each other.")

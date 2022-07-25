@@ -39,8 +39,8 @@ namespace TowerBuilder.State.UI
         public selectedRoomEvent onCurrentSelectedRoomUpdated;
 
         public RoomCells currentSelectedRoomBlock { get; private set; } = null;
-        public delegate void selectedRoomBlockEvent(RoomCells roomBlock);
-        public selectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
+        public delegate void SelectedRoomBlockEvent(RoomCells roomBlock);
+        public SelectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
 
         public NoneToolState noneToolSubState;
         public BuildToolState buildToolSubState;
@@ -88,7 +88,13 @@ namespace TowerBuilder.State.UI
             currentSelectedRoomBlock = null;
             if (currentSelectedRoom != null)
             {
+                if (Registry.appState.UI.toolState == ToolState.Destroy)
+                {
+                    Debug.Log("");
+                }
+
                 currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
+
             }
 
             ToolStateBase currentToolState = GetCurrentActiveToolSubState();

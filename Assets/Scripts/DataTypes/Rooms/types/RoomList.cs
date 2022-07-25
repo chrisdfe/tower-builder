@@ -3,38 +3,39 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.DataTypes.Rooms
 {
-    [Serializable]
-    public class RoomList
+    public class RoomList : ResourceList<Room>
     {
-        public List<Room> rooms { get; private set; }
+        public delegate void RoomBlockEvent(RoomCells roomBlock);
+        public RoomBlockEvent onRoomBlockRemoved;
 
-        public int Count { get { return rooms.Count; } }
-
-        public RoomList()
+        public override void Add(Room room)
         {
-            rooms = new List<Room>();
+            base.Add(room);
+
+            room.OnBuild();
+            room.blocks.onItemRemoved += OnRoomBlockRemoved;
         }
 
-        public RoomList(List<Room> rooms)
+        public override void Remove(Room room)
         {
-            this.rooms = rooms;
+            base.Remove(room);
+            room.OnDestroy();
+            room.blocks.onItemRemoved -= OnRoomBlockRemoved;
         }
 
-        public void Add(Room room)
+        public void OnRoomBlockRemoved(RoomCells roomBlock)
         {
-            rooms.Add(room);
-        }
-
-        public void Remove(Room room)
-        {
-            rooms.Remove(room);
+            if (onRoomBlockRemoved != null)
+            {
+                onRoomBlockRemoved(roomBlock);
+            }
         }
 
         public Room FindRoomAtCell(CellCoordinates targetCellCoordinates)
         {
-            foreach (Room room in rooms)
+            foreach (Room room in items)
             {
-                foreach (RoomCell roomCell in room.roomCells.cells)
+                foreach (RoomCell roomCell in room.cells.items)
                 {
                     if (roomCell.coordinates.Matches(targetCellCoordinates))
                     {
@@ -48,7 +49,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public Room FindRoomByRoomBlock(RoomCells roomBlock)
         {
-            foreach (Room room in rooms)
+            foreach (Room room in items)
             {
                 if (room.ContainsBlock(roomBlock))
                 {
@@ -57,59 +58,6 @@ namespace TowerBuilder.DataTypes.Rooms
             }
 
             return null;
-        }
-
-        public bool Contains(Room room)
-        {
-            return rooms.Contains(room);
-        }
-
-        public static int GetLowestX(List<CellCoordinates> roomCells)
-        {
-            int lowestX = int.MaxValue;
-
-            foreach (CellCoordinates cellCoordinates in roomCells)
-            {
-                if (cellCoordinates.x < lowestX)
-                {
-                    lowestX = cellCoordinates.x;
-                }
-            }
-
-            return lowestX;
-        }
-
-
-        public static int GetHighestX(List<CellCoordinates> roomCells)
-        {
-            int highestX = int.MinValue;
-
-            foreach (CellCoordinates cellCoordinates in roomCells)
-            {
-                if (cellCoordinates.x > highestX)
-                {
-                    highestX = cellCoordinates.x;
-                }
-            }
-
-            return highestX;
-        }
-
-        public static bool CellIsOccupied(CellCoordinates cellCoordinates, List<Room> rooms)
-        {
-            // List<MapRoom> mapRooms = Registry.appState.Rooms.mapRooms;
-
-            foreach (Room room in rooms)
-            {
-                foreach (RoomCell roomCell in room.roomCells.cells)
-                {
-                    if (cellCoordinates.Matches(roomCell.coordinates))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
     }
 }

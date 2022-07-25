@@ -2,16 +2,7 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.DataTypes.Furniture
 {
-    public class FurnitureList
+    public class FurnitureList : ResourceList<FurnitureBase>
     {
-        List<FurnitureBase> furnitureList = new List<FurnitureBase>();
-
-        public int Count
-        {
-            get
-            {
-                return furnitureList.Count;
-            }
-        }
     }
 }

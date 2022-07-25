@@ -40,9 +40,9 @@ namespace TowerBuilder.GameWorld.Rooms
             roomCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomCell");
             gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
 
-            Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
-            Registry.appState.Rooms.onRoomBlockDestroyed += OnRoomBlockDestroyed;
-            Registry.appState.Rooms.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
+            Registry.appState.Rooms.roomList.onItemAdded += OnRoomAdded;
+            Registry.appState.Rooms.roomList.onRoomBlockRemoved += OnRoomBlockDestroyed;
+            Registry.appState.Rooms.roomConnections.onItemsChanged += OnRoomConnectionsUpdated;
 
             Registry.appState.UI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
@@ -54,11 +54,12 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             DestroyCells();
 
-            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
-            Registry.appState.Rooms.onRoomBlockDestroyed -= OnRoomBlockDestroyed;
-            Registry.appState.Rooms.onRoomConnectionsUpdated -= OnRoomConnectionsUpdated;
+            Registry.appState.Rooms.roomList.onItemAdded -= OnRoomAdded;
+            Registry.appState.Rooms.roomList.onRoomBlockRemoved -= OnRoomBlockDestroyed;
+            Registry.appState.Rooms.roomConnections.onItemsChanged -= OnRoomConnectionsUpdated;
 
             Registry.appState.UI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
+            Registry.appState.UI.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
             Registry.appState.UI.inspectToolSubState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
             Registry.appState.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
@@ -130,7 +131,7 @@ namespace TowerBuilder.GameWorld.Rooms
             {
                 foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
                 {
-                    if (roomBlock.Contains(gameWorldRoomCell.roomCell.coordinates))
+                    if (roomBlock.Contains(gameWorldRoomCell.roomCell))
                     {
                         gameWorldRoomCell.SetDestroyHoverColor();
                     }
@@ -173,10 +174,10 @@ namespace TowerBuilder.GameWorld.Rooms
         // TODO - this is how to determine when this room goes from blueprint mode to getting added to the map
         void OnRoomAdded(Room room)
         {
-            if (this.room.id == room.id)
-            {
-                OnBuild();
-            }
+            // if (this.room.id == room.id)
+            // {
+            //     OnBuild();
+            // }
         }
 
         void OnRoomBlockDestroyed(RoomCells roomBlock)
@@ -196,7 +197,7 @@ namespace TowerBuilder.GameWorld.Rooms
             UpdateRoomCells();
         }
 
-        void OnRoomConnectionsUpdated(RoomConnections roomConnections)
+        void OnRoomConnectionsUpdated(List<RoomConnection> roomConnections)
         {
             UpdateRoomEntrances();
         }
@@ -265,12 +266,12 @@ namespace TowerBuilder.GameWorld.Rooms
             ResetCellColors();
             UpdateRoomEntrances();
 
-            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
+            Registry.appState.Rooms.roomList.onItemAdded -= OnRoomAdded;
         }
 
         void CreateCells()
         {
-            foreach (RoomCell roomCell in room.roomCells.cells)
+            foreach (RoomCell roomCell in room.cells.items)
             {
                 GameObject roomCellGameObject = Instantiate<GameObject>(roomCellPrefab);
                 GameWorldRoomCell gameWorldRoomCell = roomCellGameObject.GetComponent<GameWorldRoomCell>();

@@ -31,8 +31,8 @@ public class GroundManager : MonoBehaviour
 
         groundPlaceholder.SetActive(false);
 
-        Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
-        Registry.appState.Rooms.onRoomDestroyed += OnRoomDestroyed;
+        Registry.appState.Rooms.roomList.onItemAdded += OnRoomAdded;
+        Registry.appState.Rooms.roomList.onItemRemoved += OnRoomDestroyed;
         Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
         Registry.appState.UI.onToolStateUpdated += OnToolStateUpdated;
         Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
@@ -45,7 +45,7 @@ public class GroundManager : MonoBehaviour
 
     void OnRoomAdded(Room room)
     {
-        foreach (RoomCell roomCell in room.roomCells.cells)
+        foreach (RoomCell roomCell in room.cells.items)
         {
             SetGroundCellVisibility(roomCell.coordinates, false);
         }
@@ -53,7 +53,7 @@ public class GroundManager : MonoBehaviour
 
     void OnRoomDestroyed(Room room)
     {
-        foreach (RoomCell roomCell in room.roomCells.cells)
+        foreach (RoomCell roomCell in room.cells.items)
         {
             SetGroundCellVisibility(roomCell.coordinates, true);
         }
@@ -92,7 +92,7 @@ public class GroundManager : MonoBehaviour
     void SetCurrentBlueprintCells()
     {
         Blueprint currentBlueprint = Registry.appState.UI.buildToolSubState.currentBlueprint;
-        currentBlueprintCells = currentBlueprint.room.roomCells.cells.Select(roomCell => roomCell.coordinates).ToList();
+        currentBlueprintCells = currentBlueprint.room.cells.items.Select(roomCell => roomCell.coordinates).ToList();
     }
 
     void CreateGroundCells()

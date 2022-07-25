@@ -39,9 +39,8 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public CellCoordinates bottomLeftCoordinates;
 
-        public List<RoomCells> blocks;
-
-        public RoomCells roomCells;
+        public RoomBlocks blocks;
+        public RoomCells cells;
 
         public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
 
@@ -53,7 +52,6 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public Room(RoomTemplate roomTemplate)
         {
-            // this.roomTemplate = roomTemplate;
             this.id = UIDGenerator.Generate("room");
             this.title = roomTemplate.title;
             this.key = roomTemplate.key;
@@ -67,20 +65,18 @@ namespace TowerBuilder.DataTypes.Rooms
 
             this.color = roomTemplate.color;
 
-            roomCells = new RoomCells();
-            roomCells.onResize += OnRoomCellsResize;
+            cells = new RoomCells();
+            blocks = new RoomBlocks();
         }
-
-        // public Room() : this(new RoomTemplate()) { }
 
         public Room(RoomTemplate roomTemplate, List<RoomCell> roomCellList) : this(roomTemplate)
         {
-            roomCells.Add(roomCellList);
+            cells.Add(roomCellList);
             ResetRoomCellOrientations();
             ResetRoomEntrances();
         }
 
-        public Room(RoomTemplate roomTemplate, RoomCells roomCells) : this(roomTemplate, roomCells.cells) { }
+        public Room(RoomTemplate roomTemplate, RoomCells roomCells) : this(roomTemplate, roomCells.items) { }
 
         public override string ToString()
         {
@@ -90,16 +86,21 @@ namespace TowerBuilder.DataTypes.Rooms
         public void OnBuild()
         {
             isInBlueprintMode = false;
-
             InitializeFurniture();
+
+            cells.onItemsChanged += OnRoomCellsResize;
+        }
+
+        public void OnDestroy()
+        {
+            cells.onItemsChanged -= OnRoomCellsResize;
         }
 
         public void CalculateRoomCells(CellCoordinates blockCount)
         {
-            roomCells = new RoomCells();
-            blocks = new List<RoomCells>();
+            RoomCells newCells = new RoomCells();
+            RoomBlocks newBlocks = new RoomBlocks();
 
-            Dimensions blockDimensions = this.blockDimensions;
             for (int x = 0; x < blockCount.x; x++)
             {
                 for (int floor = 0; floor < blockCount.floor; floor++)
@@ -112,10 +113,14 @@ namespace TowerBuilder.DataTypes.Rooms
                         bottomLeftCoordinates.x + (blockDimensions.width * x),
                         bottomLeftCoordinates.floor + (blockDimensions.height * floor)
                     ));
-                    blocks.Add(blockCells);
-                    roomCells.Add(blockCells);
+
+                    newBlocks.Add(blockCells);
+                    newCells.Add(blockCells);
                 }
             }
+
+            this.cells = newCells;
+            this.blocks = newBlocks;
 
             Reset();
         }
@@ -128,7 +133,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public bool ContainsBlock(RoomCells roomBlock)
         {
-            foreach (RoomCells block in blocks)
+            foreach (RoomCells block in blocks.items)
             {
                 if (block == roomBlock)
                 {
@@ -139,32 +144,32 @@ namespace TowerBuilder.DataTypes.Rooms
             return false;
         }
 
-        public void AddBlocks(List<RoomCells> blocks)
+        public void AddBlocks(RoomBlocks roomBlocks)
         {
-            foreach (RoomCells block in blocks)
+            this.blocks.Add(roomBlocks);
+
+            foreach (RoomCells roomBlock in roomBlocks.items)
             {
-                this.blocks.Add(block);
-                roomCells.Add(block);
+                cells.Add(roomBlock.items);
             }
         }
 
         public void RemoveBlock(RoomCells block)
         {
-            foreach (RoomCell roomCell in block.cells)
-            {
-                roomCells.cells.Remove(roomCell);
-            }
-
+            cells.items.RemoveAll(cell => block.items.Contains(cell));
             this.blocks.Remove(block);
         }
 
         public RoomCells FindBlockByCellCoordinates(CellCoordinates cellCoordinates)
         {
-            foreach (RoomCells block in blocks)
+            foreach (RoomCells block in blocks.items)
             {
-                if (block.Contains(cellCoordinates))
+                foreach (RoomCell cell in block.items)
                 {
-                    return block;
+                    if (cell.coordinates.Matches(cellCoordinates))
+                    {
+                        return block;
+                    }
                 }
             }
 
@@ -173,13 +178,13 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public void ResetRoomCellOrientations()
         {
-            foreach (RoomCell roomCell in roomCells.cells)
+            foreach (RoomCell roomCell in cells.items)
             {
                 SetRoomCellOrientation(roomCell);
             }
         }
 
-        void OnRoomCellsResize(RoomCells roomCells)
+        void OnRoomCellsResize(List<RoomCell> roomCells)
         {
             ResetRoomCellOrientations();
             ResetRoomEntrances();
@@ -187,7 +192,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         void ResetRoomEntrances()
         {
-            entrances = entranceBuilder.BuildRoomEntrances(roomCells);
+            entrances = entranceBuilder.BuildRoomEntrances(cells);
         }
 
         void SetRoomCellOrientation(RoomCell roomCell)
@@ -196,22 +201,22 @@ namespace TowerBuilder.DataTypes.Rooms
 
             List<RoomCellOrientation> result = new List<RoomCellOrientation>();
 
-            if (!roomCells.Contains(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
+            if (!cells.Contains(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
             {
                 result.Add(RoomCellOrientation.Top);
             }
 
-            if (!roomCells.Contains(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
+            if (!cells.Contains(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
             {
                 result.Add(RoomCellOrientation.Right);
             }
 
-            if (!roomCells.Contains(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
+            if (!cells.Contains(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
             {
                 result.Add(RoomCellOrientation.Bottom);
             }
 
-            if (!roomCells.Contains(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
+            if (!cells.Contains(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
             {
                 result.Add(RoomCellOrientation.Left);
             }
@@ -224,8 +229,8 @@ namespace TowerBuilder.DataTypes.Rooms
         CellCoordinates GetRelativeCoordinates(RoomCell roomCell)
         {
             return roomCell.coordinates.Subtract(new CellCoordinates(
-                roomCells.GetLowestX(),
-                roomCells.GetLowestFloor()
+                cells.GetLowestX(),
+                cells.GetLowestFloor()
             ));
         }
     }
