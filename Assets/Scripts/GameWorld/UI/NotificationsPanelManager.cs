@@ -24,8 +24,8 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnNotificationAdded(Notification newNotification)
         {
-            int notificationsLength = Registry.appState.Notifications.notifications.Count;
-            List<Notification> notifications = Registry.appState.Notifications.notifications;
+            int notificationsLength = Registry.appState.Notifications.allNotifications.Count;
+            List<Notification> notifications = Registry.appState.Notifications.allNotifications.items;
             // Get the n most recent notifications
             List<Notification> displayNotifications = Enumerable.Reverse(notifications).Take(NOTIFICATIONS_LIMIT).ToList();
 

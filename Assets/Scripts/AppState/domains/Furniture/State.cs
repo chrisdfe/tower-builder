@@ -7,18 +7,11 @@ namespace TowerBuilder.State.Furnitures
     {
         public struct Input
         {
-            // public BuildingList buildings;
-            // public RoomConnections roomConnections;
+
         }
+
+        public State(Input input) { }
 
         public State() : this(new Input()) { }
-
-        public State(Input input)
-        {
-            // buildings = input.buildings ?? new BuildingList();
-            // roomConnections = input.roomConnections ?? new RoomConnections();
-        }
-
-        // public void AddFurniture() { }
     }
 }

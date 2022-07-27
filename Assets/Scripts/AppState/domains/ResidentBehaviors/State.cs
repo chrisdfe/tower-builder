@@ -16,7 +16,7 @@ namespace TowerBuilder.State.ResidentBehaviors
         public void Setup()
         {
             Registry.appState.Time.onTick += OnTick;
-            Registry.appState.Residents.onResidentAdded += OnResidentAdded;
+            Registry.appState.Residents.allResidents.onItemAdded += OnResidentAdded;
         }
 
         void OnTick(TimeValue timeValue)

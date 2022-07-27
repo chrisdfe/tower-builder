@@ -15,8 +15,8 @@ namespace TowerBuilder.GameWorld.Residents
         {
             gameWorldResidentPrefab = Resources.Load<GameObject>("Prefabs/Residents/Resident");
 
-            Registry.appState.Residents.onResidentAdded += OnResidentAdded;
-            Registry.appState.Residents.onResidentDestroyed += OnResidentDestroyed;
+            Registry.appState.Residents.allResidents.onItemAdded += OnResidentAdded;
+            Registry.appState.Residents.allResidents.onItemRemoved += OnResidentDestroyed;
         }
 
         void OnResidentAdded(Resident resident)

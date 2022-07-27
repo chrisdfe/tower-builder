@@ -110,7 +110,7 @@ namespace TowerBuilder.State.Rooms
                 else
                 {
                     building = new Building();
-                    Registry.appState.buildings.Add(building);
+                    Registry.appState.buildings.buildingList.Add(building);
                 }
             }
 
@@ -140,7 +140,7 @@ namespace TowerBuilder.State.Rooms
 
                 if (roomList.items.Count == 0)
                 {
-                    Registry.appState.buildings.Remove(building);
+                    Registry.appState.buildings.buildingList.Remove(building);
                 }
             }
         }
@@ -169,7 +169,7 @@ namespace TowerBuilder.State.Rooms
         // Queries
         public Building FindBuildingByRoom(Room room)
         {
-            foreach (Building building in Registry.appState.buildings.items)
+            foreach (Building building in Registry.appState.buildings.buildingList.items)
             {
                 if (room.buildingId == building.id)
                 {

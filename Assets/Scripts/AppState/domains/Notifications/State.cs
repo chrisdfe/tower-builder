@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Notifications;
 
 namespace TowerBuilder.State.Notifications
@@ -9,10 +10,10 @@ namespace TowerBuilder.State.Notifications
     {
         public class Input
         {
-            public List<Notification> notifications;
+            public List<Notification> allNotifications;
         }
 
-        public List<Notification> notifications { get; private set; }
+        public ResourceList<Notification> allNotifications { get; private set; }
         public delegate void OnNotificationAdded(Notification newNotification);
         public OnNotificationAdded onNotificationAdded;
 
@@ -21,13 +22,13 @@ namespace TowerBuilder.State.Notifications
         public State(Input input)
         {
             if (input == null) return;
-            notifications = input.notifications ?? new List<Notification>();
+            allNotifications.Set(input.allNotifications ?? new List<Notification>());
         }
 
         public void createNotification(string message)
         {
             Notification newNotification = new Notification(message);
-            notifications.Add(newNotification);
+            allNotifications.Add(newNotification);
 
             if (onNotificationAdded != null)
             {

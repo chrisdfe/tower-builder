@@ -14,17 +14,12 @@ namespace TowerBuilder.State.Residents
     {
         public class Input
         {
-            public List<Resident> residents = new List<Resident>();
+            public List<Resident> allResidents = new List<Resident>();
         }
 
-        public List<Resident> residents { get; private set; }
-
-        public delegate void ResidentsEvent(List<Resident> residents);
-        public ResidentsEvent onResidentsUpdated;
+        public ResourceList<Resident> allResidents { get; private set; }
 
         public delegate void ResidentEvent(Resident resident);
-        public ResidentEvent onResidentAdded;
-        public ResidentEvent onResidentDestroyed;
         public ResidentEvent onResidentPositionUpdated;
 
         Resident debugResident;
@@ -38,27 +33,7 @@ namespace TowerBuilder.State.Residents
                 input = new Input();
             }
 
-            this.residents = input.residents;
-        }
-
-        public void AddResident(Resident resident)
-        {
-            residents.Add(resident);
-
-            if (onResidentAdded != null)
-            {
-                onResidentAdded(resident);
-            }
-        }
-
-        public void RemoveResident(Resident resident)
-        {
-            residents.Remove(resident);
-
-            if (onResidentDestroyed != null)
-            {
-                onResidentDestroyed(resident);
-            }
+            this.allResidents.Set(input.allResidents);
         }
 
         public void SetResidentPosition(Resident resident, CellCoordinates cellCoordinates)
@@ -75,12 +50,12 @@ namespace TowerBuilder.State.Residents
         {
             if (debugResident != null)
             {
-                RemoveResident(debugResident);
+                allResidents.Remove(debugResident);
             }
 
             debugResident = new Resident();
             debugResident.coordinates = cellCoordinates;
-            AddResident(debugResident);
+            allResidents.Add(debugResident);
 
             List<RouteAttempt> routeAttempts = Registry.appState.Routes.debugRouteAttempts;
             Debug.Log("routeAttempts");

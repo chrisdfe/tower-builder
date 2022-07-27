@@ -81,10 +81,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void AddTestNotification()
         {
-            int notificationsLength = Registry.appState.Notifications.notifications.Count;
-            Notification[] notifications = new Notification[notificationsLength];
-            Registry.appState.Notifications.notifications.CopyTo(notifications);
-
+            int notificationsLength = Registry.appState.Notifications.allNotifications.Count;
             Registry.appState.Notifications.createNotification("new message " + (notificationsLength + 1));
         }
 
@@ -93,7 +90,6 @@ namespace TowerBuilder.GameWorld.UI
             if (Registry.appState.Rooms.roomList.Count > 0)
             {
                 Room room = Registry.appState.Rooms.roomList.items[0];
-
                 SaveLoadSystem.SaveToFile<Room>(room);
             }
         }

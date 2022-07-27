@@ -11,7 +11,12 @@ namespace TowerBuilder.DataTypes
             public List<TItem> items;
         }
 
-        public List<TItem> items { get; private set; }
+        public class Options
+        {
+            public bool fireEvent = true;
+        }
+
+        public List<TItem> items { get; private set; } = new List<TItem>();
 
         [JsonIgnore]
         public int Count { get { return items.Count; } }
@@ -63,7 +68,7 @@ namespace TowerBuilder.DataTypes
             }
         }
 
-        public virtual void Add(ResourceList<TItem> resourceList)
+        public void Add(ResourceList<TItem> resourceList)
         {
             Add(resourceList.items);
         }
