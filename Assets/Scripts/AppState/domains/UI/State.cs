@@ -23,10 +23,7 @@ namespace TowerBuilder.State.UI
             public RoutesToolState.Input routesToolState;
         }
 
-        public ToolState toolState { get; private set; }
-
-        public delegate void ToolStateEvent(ToolState toolState, ToolState previousToolState);
-        public ToolStateEvent onToolStateUpdated;
+        public ResourceStructField<ToolState> toolState { get; private set; }
 
         public CellCoordinates currentSelectedCell { get; private set; } = null;
         public delegate void cellCoordinatesEvent(CellCoordinates currentSelectedCell);
@@ -54,7 +51,7 @@ namespace TowerBuilder.State.UI
 
         public State(Input input)
         {
-            toolState = input.toolState ?? ToolState.None;
+            toolState.value = input.toolState ?? ToolState.None;
             currentSelectedCell = input.currentSelectedCell ?? CellCoordinates.zero;
 
             noneToolSubState = new NoneToolState(this, input.noneToolState);
@@ -68,15 +65,10 @@ namespace TowerBuilder.State.UI
         {
             GetCurrentActiveToolSubState().Teardown();
 
-            ToolState previousToolState = this.toolState;
-            this.toolState = toolState;
+            ToolState previousToolState = this.toolState.value;
+            this.toolState.value = toolState;
 
             GetCurrentActiveToolSubState().Setup();
-
-            if (onToolStateUpdated != null)
-            {
-                onToolStateUpdated(toolState, previousToolState);
-            }
         }
 
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedCell)
@@ -88,7 +80,7 @@ namespace TowerBuilder.State.UI
             currentSelectedRoomBlock = null;
             if (currentSelectedRoom != null)
             {
-                if (Registry.appState.UI.toolState == ToolState.Destroy)
+                if (Registry.appState.UI.toolState.value == ToolState.Destroy)
                 {
                     Debug.Log("");
                 }
@@ -128,22 +120,22 @@ namespace TowerBuilder.State.UI
         ToolStateBase GetCurrentActiveToolSubState()
         {
 
-            if (toolState == ToolState.Build)
+            if (toolState.value == ToolState.Build)
             {
                 return buildToolSubState;
             }
 
-            if (toolState == ToolState.Destroy)
+            if (toolState.value == ToolState.Destroy)
             {
                 return destroyToolSubState;
             }
 
-            if (toolState == ToolState.Inspect)
+            if (toolState.value == ToolState.Inspect)
             {
                 return inspectToolSubState;
             }
 
-            if (toolState == ToolState.Routes)
+            if (toolState.value == ToolState.Routes)
             {
                 return routesToolSubState;
             }

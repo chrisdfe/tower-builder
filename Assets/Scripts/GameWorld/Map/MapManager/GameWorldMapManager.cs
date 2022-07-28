@@ -140,9 +140,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             SetCurrentToolStateHandlers();
             // Perform initialization of whatever tool state is the default
-            currentToolStateHandler.OnTransitionTo(Registry.appState.UI.toolState);
+            currentToolStateHandler.OnTransitionTo(Registry.appState.UI.toolState.value);
 
-            Registry.appState.UI.onToolStateUpdated += OnToolStateUpdated;
+            Registry.appState.UI.toolState.onValueChanged += OnToolStateUpdated;
         }
 
         void OnToolStateUpdated(ToolState nextToolState, ToolState previousToolState)
@@ -154,7 +154,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void SetCurrentToolStateHandlers()
         {
-            ToolState currentToolState = Registry.appState.UI.toolState;
+            ToolState currentToolState = Registry.appState.UI.toolState.value;
             currentToolStateHandler = toolStateHandlerMap[currentToolState];
         }
     }

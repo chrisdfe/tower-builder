@@ -34,7 +34,7 @@ public class GroundManager : MonoBehaviour
         Registry.appState.Rooms.roomList.onItemAdded += OnRoomAdded;
         Registry.appState.Rooms.roomList.onItemRemoved += OnRoomDestroyed;
         Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-        Registry.appState.UI.onToolStateUpdated += OnToolStateUpdated;
+        Registry.appState.UI.toolState.onValueChanged += OnToolStateUpdated;
         Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
     }
 
@@ -61,7 +61,7 @@ public class GroundManager : MonoBehaviour
 
     void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)
     {
-        if (Registry.appState.UI.toolState != ToolState.Build)
+        if (Registry.appState.UI.toolState.value != ToolState.Build)
         {
             return;
         }

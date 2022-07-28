@@ -6,8 +6,13 @@ using Newtonsoft.Json;
 
 namespace TowerBuilder.DataTypes
 {
-    public class ResourceField<TValue> where TValue : IEquatable<TValue>
+    public class ResourceField<TValue>
     {
+        public class UpdateOptions
+        {
+            public bool fireEvent = true;
+        }
+
         public delegate void ValueChangedEvent(TValue value);
         public ValueChangedEvent onValueChanged;
 
@@ -37,5 +42,22 @@ namespace TowerBuilder.DataTypes
         }
 
         public ResourceField() { }
+
+        public void Set(TValue value, UpdateOptions options)
+        {
+            if (!EqualityComparer<TValue>.Default.Equals(value, _value))
+            {
+                _value = value;
+
+                if (onValueChanged != null && options.fireEvent)
+                {
+                    onValueChanged(_value);
+                }
+            }
+        }
+        public void Set(TValue value)
+        {
+            this.Set(value, new UpdateOptions());
+        }
     }
 }

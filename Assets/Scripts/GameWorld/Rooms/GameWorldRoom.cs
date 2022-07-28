@@ -81,7 +81,7 @@ namespace TowerBuilder.GameWorld.Rooms
             }
 
             // This is handled in OnCurrentSelectedRoomBlockUpdated
-            if (Registry.appState.UI.toolState == ToolState.Destroy)
+            if (Registry.appState.UI.toolState.value == ToolState.Destroy)
             {
                 return;
             }
@@ -127,7 +127,7 @@ namespace TowerBuilder.GameWorld.Rooms
                 return;
             }
 
-            if (Registry.appState.UI.toolState == ToolState.Destroy)
+            if (Registry.appState.UI.toolState.value == ToolState.Destroy)
             {
                 foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
                 {
