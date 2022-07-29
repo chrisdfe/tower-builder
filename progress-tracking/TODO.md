@@ -82,15 +82,6 @@
 - A "UI settings" object I can tweak a bunch of stuff in the unity editor with, instead of public serializable fields on each script?
 - Awkward naming conflict between ToolState + tool sub states
 
-## Bugs
-
-- Clicking on buttons in the UI also clicks on what ever is behind it, e.g. building a room when you meant to click on the button
-- Individual roomCells should know if they are valid again (right now it's just the room)
-- Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
-- RoomEntrances in the blueprint room aren't getting highlighted
-- Input.GetMouseButtonDown(0) does not work consistently on macos
-- UI is way too big on my laptop
-
 ## Ideas
 
 - Periodic supplies delivery? big old quarry trucks, helicopers, pack mule, etc

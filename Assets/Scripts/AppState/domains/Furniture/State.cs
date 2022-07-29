@@ -5,10 +5,7 @@ namespace TowerBuilder.State.Furnitures
     [Serializable]
     public class State
     {
-        public struct Input
-        {
-
-        }
+        public struct Input { }
 
         public State(Input input) { }
 

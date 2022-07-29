@@ -17,7 +17,7 @@ namespace TowerBuilder.State.Residents
             public List<Resident> allResidents = new List<Resident>();
         }
 
-        public ResourceList<Resident> allResidents { get; private set; }
+        public ResourceList<Resident> allResidents { get; private set; } = new ResourceList<Resident>();
 
         public delegate void ResidentEvent(Resident resident);
         public ResidentEvent onResidentPositionUpdated;

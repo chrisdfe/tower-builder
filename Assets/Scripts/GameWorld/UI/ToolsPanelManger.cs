@@ -39,7 +39,7 @@ namespace TowerBuilder.GameWorld.UI
             // Right click to exit out of current state?
             if (Input.GetMouseButtonDown(1) && Registry.appState.UI.toolState.value != ToolState.None)
             {
-                Registry.appState.UI.SetToolState(ToolState.None);
+                Registry.appState.UI.toolState.value = ToolState.None;
             }
         }
 

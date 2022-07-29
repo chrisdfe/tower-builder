@@ -23,7 +23,7 @@ namespace TowerBuilder.State.UI
             public RoutesToolState.Input routesToolState;
         }
 
-        public ResourceStructField<ToolState> toolState { get; private set; }
+        public ResourceStructField<ToolState> toolState { get; private set; } = new ResourceStructField<ToolState>(ToolState.None);
 
         public CellCoordinates currentSelectedCell { get; private set; } = null;
         public delegate void cellCoordinatesEvent(CellCoordinates currentSelectedCell);
@@ -47,11 +47,11 @@ namespace TowerBuilder.State.UI
 
         public SelectableEntityStack selectableEntityStack { get; private set; } = new SelectableEntityStack();
 
-        public State() : this(new Input()) { }
-
         public State(Input input)
         {
+            toolState.onValueChanged += TransitionToolState;
             toolState.value = input.toolState ?? ToolState.None;
+
             currentSelectedCell = input.currentSelectedCell ?? CellCoordinates.zero;
 
             noneToolSubState = new NoneToolState(this, input.noneToolState);
@@ -59,17 +59,25 @@ namespace TowerBuilder.State.UI
             destroyToolSubState = new DestroyToolState(this, input.destroyToolState);
             inspectToolSubState = new InspectToolState(this, input.inspectToolState);
             routesToolSubState = new RoutesToolState(this, input.routesToolState);
+
         }
 
-        public void SetToolState(ToolState toolState)
+        public State() : this(new Input()) { }
+
+        public void TransitionToolState(ToolState toolState, ToolState previousToolState)
         {
-            GetCurrentActiveToolSubState().Teardown();
-
-            ToolState previousToolState = this.toolState.value;
-            this.toolState.value = toolState;
-
-            GetCurrentActiveToolSubState().Setup();
+            Debug.Log("transitioning from " + previousToolState);
+            Debug.Log("to " + toolState);
+            GetToolSubState(previousToolState).Teardown();
+            GetToolSubState(toolState).Setup();
         }
+
+        // public void SetToolState(ToolState toolState)
+        // {
+        //     GetCurrentActiveToolSubState().Teardown();
+
+        //     ToolState previousToolState = this.toolState.value;
+        // }
 
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedCell)
         {
@@ -80,11 +88,6 @@ namespace TowerBuilder.State.UI
             currentSelectedRoomBlock = null;
             if (currentSelectedRoom != null)
             {
-                if (Registry.appState.UI.toolState.value == ToolState.Destroy)
-                {
-                    Debug.Log("");
-                }
-
                 currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
 
             }
@@ -98,7 +101,6 @@ namespace TowerBuilder.State.UI
             {
                 onCurrentSelectedCellUpdated(currentSelectedCell);
             }
-
 
             if (onCurrentSelectedRoomUpdated != null)
             {
@@ -119,23 +121,27 @@ namespace TowerBuilder.State.UI
 
         ToolStateBase GetCurrentActiveToolSubState()
         {
+            return GetToolSubState(toolState.value);
+        }
 
-            if (toolState.value == ToolState.Build)
+        ToolStateBase GetToolSubState(ToolState toolState)
+        {
+            if (toolState == ToolState.Build)
             {
                 return buildToolSubState;
             }
 
-            if (toolState.value == ToolState.Destroy)
+            if (toolState == ToolState.Destroy)
             {
                 return destroyToolSubState;
             }
 
-            if (toolState.value == ToolState.Inspect)
+            if (toolState == ToolState.Inspect)
             {
                 return inspectToolSubState;
             }
 
-            if (toolState.value == ToolState.Routes)
+            if (toolState == ToolState.Routes)
             {
                 return routesToolSubState;
             }

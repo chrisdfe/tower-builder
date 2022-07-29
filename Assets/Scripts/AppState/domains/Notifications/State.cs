@@ -13,9 +13,7 @@ namespace TowerBuilder.State.Notifications
             public List<Notification> allNotifications;
         }
 
-        public ResourceList<Notification> allNotifications { get; private set; }
-        public delegate void OnNotificationAdded(Notification newNotification);
-        public OnNotificationAdded onNotificationAdded;
+        public ResourceList<Notification> allNotifications { get; private set; } = new ResourceList<Notification>();
 
         public State() : this(new Input()) { }
 
@@ -27,13 +25,7 @@ namespace TowerBuilder.State.Notifications
 
         public void createNotification(string message)
         {
-            Notification newNotification = new Notification(message);
-            allNotifications.Add(newNotification);
-
-            if (onNotificationAdded != null)
-            {
-                onNotificationAdded(newNotification);
-            }
+            allNotifications.Add(new Notification(message));
         }
     }
 }

@@ -37,7 +37,5 @@ namespace TowerBuilder.DataTypes
         {
             _value = value;
         }
-
-        public ResourceStructField() { }
     }
 }

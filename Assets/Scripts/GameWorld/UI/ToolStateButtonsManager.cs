@@ -68,7 +68,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             ToolState currentToolState = Registry.appState.UI.toolState.value;
             ToolState newToolState = (currentToolState == toolState) ? ToolState.None : toolState;
-            Registry.appState.UI.SetToolState(newToolState);
+            Registry.appState.UI.toolState.value = newToolState;
         }
 
         void OnToolStateUpdated(ToolState toolState, ToolState previousToolState)
