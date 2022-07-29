@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
+using TowerBuilder.DataTypes.Buildings;
 using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public Dimensions blockDimensions { get; private set; } = Dimensions.one;
 
-        public int buildingId = -1;
+        public Building building;
 
         // TODO - this is only JsonIgnore because it's a recursive type and
         //        the serializer doesn't like that.

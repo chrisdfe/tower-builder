@@ -109,6 +109,8 @@ namespace TowerBuilder.State.Rooms
                     building = new Building();
                     Registry.appState.buildings.buildingList.Add(building);
                 }
+
+                newRoom.building = building;
             }
 
             AddRoom(newRoom);
@@ -168,7 +170,7 @@ namespace TowerBuilder.State.Rooms
         {
             foreach (Building building in Registry.appState.buildings.buildingList.items)
             {
-                if (room.buildingId == building.id)
+                if (room.building == building)
                 {
                     return building;
                 }
@@ -183,7 +185,7 @@ namespace TowerBuilder.State.Rooms
 
             foreach (Room room in roomList.items)
             {
-                if (room.buildingId == building.id)
+                if (room.building == building)
                 {
                     buildingRooms.Add(room);
                 }

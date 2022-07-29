@@ -2,6 +2,12 @@
 
 ## Current
 
+
+## TODO
+
+- Room connections don't work reliably (probably because of room blocks)
+- Inspect highlight doesn't stay after user mouses out
+- Rooms + buildings still don't get destroyed properly
 - Sometimes room entrances don't get deleted  
 - Clicking on buttons in the UI also clicks on what ever is behind it, e.g. building a room when you meant to click on the button
 - Individual roomCells should know if they are valid again (right now it's just the room)

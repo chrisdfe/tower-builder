@@ -53,6 +53,14 @@ namespace TowerBuilder.GameWorld.UI
             int hour = state.time.value.hour;
             int minute = state.time.value.minute;
 
+            string amPm = "am";
+
+            if (hour > 12)
+            {
+                amPm = "pm";
+                hour -= 12;
+            }
+
             string hourAsString = hour.ToString();
             if (hour < 10)
             {
@@ -65,7 +73,7 @@ namespace TowerBuilder.GameWorld.UI
                 minuteAsString = "0" + minute.ToString();
             }
 
-            hoursMinutesText.text = hourAsString + ":" + minuteAsString;
+            hoursMinutesText.text = hourAsString + ":" + minuteAsString + amPm;
         }
 
         void UpdateWeeksSeasonsText()

@@ -20,7 +20,7 @@ namespace TowerBuilder.Definitions.Templates
                 pricePerBlock = 500,
 
                 blockDimensions = new Dimensions(1, 1),
-                resizability = RoomResizability.Flexible(),
+                resizability = RoomResizability.Horizontal(),
 
                 entranceBuilderFactory = () => new HallwayEntranceBuilder(),
                 validatorFactory = () => new DefaultRoomValidator(),

@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- "reset" button to reset state to default
 - Replace ground cells with a simpler ground for now
 - 2 furniture layers - "transportation" layer and "other" (beds, desks, etc) layer - to simplify layout
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc

@@ -5,6 +5,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.GameWorld.Rooms;
+using TowerBuilder.GameWorld.UI;
 using TowerBuilder.State;
 using TowerBuilder.State.UI;
 using UnityEngine;
@@ -29,6 +30,8 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         public static Vector2 MAP_CURSOR_CLICK_BUFFER = new Vector2(150, 250);
 
         int selectableEntityLayerMask;
+        int uiLayer;
+        UIManager uiManager;
 
         void Awake()
         {
@@ -41,6 +44,8 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             // make a bit mask
             selectableEntityLayerMask = 1 << LayerMask.NameToLayer("Selectable Entities");
+            uiLayer = LayerMask.NameToLayer("UI");
+            uiManager = UIManager.Find();
         }
 
         void Update()
@@ -48,15 +53,17 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             UpdateSelectableEntityStack();
             UpdateCurrentSelectedCell();
 
-            // TODO - handle transitions between "is in dead zone" and "is not in dead zone"
-            if (!MouseCursorIsInDeadZone())
+            if (Input.GetMouseButtonDown(0))
             {
-                if (Input.GetMouseButtonDown(0))
+                if (!uiManager.mouseIsOverUI)
                 {
                     currentToolStateHandler.OnMouseDown();
                 }
+            }
 
-                if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0))
+            {
+                if (!uiManager.mouseIsOverUI)
                 {
                     currentToolStateHandler.OnMouseUp();
                 }
@@ -75,8 +82,6 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             if (hits.Length > 0)
             {
-                // Debug.Log(hits.Length);
-
                 for (int i = 0; i < hits.Length; i++)
                 {
                     RaycastHit otherHit = hits[i];
