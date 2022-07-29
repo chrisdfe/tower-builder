@@ -3,20 +3,30 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.DataTypes.Time
 {
-    public class TimeValue
+    public struct TimeValue
     {
+        public struct Input
+        {
+            public int? minute;
+            public int? hour;
+            public int? day;
+            public int? week;
+            public int? season;
+            public int? year;
+        }
+
         // 0-59
-        public int minute = 0;
+        public int minute;
         // 0-23
-        public int hour = 0;
+        public int hour;
         // day of week
-        public int day = 0;
+        public int day;
         // week of season
-        public int week = 0;
+        public int week;
         // season of year
-        public int season = 0;
+        public int season;
         // 1 +
-        public int year = 0;
+        public int year;
 
         public static TimeValue zero
         {
@@ -35,52 +45,27 @@ namespace TowerBuilder.DataTypes.Time
             }
         }
 
-        public TimeValue() { }
-
         public TimeValue(TimeValue timeValue)
         {
-            minute = (int)timeValue.minute;
-            hour = (int)timeValue.hour;
-            day = (int)timeValue.day;
-            week = (int)timeValue.week;
-            season = (int)timeValue.season;
-            year = (int)timeValue.year;
+            minute = timeValue.minute;
+            hour = timeValue.hour;
+            day = timeValue.day;
+            week = timeValue.week;
+            season = timeValue.season;
+            year = timeValue.year;
         }
 
-        public TimeValue(TimeInput timeInput)
+        public TimeValue(Input input)
         {
-            if (timeInput.minute != null)
-            {
-                minute = (int)timeInput.minute;
-            }
-
-            if (timeInput.hour != null)
-            {
-                hour = (int)timeInput.hour;
-            }
-
-            if (timeInput.day != null)
-            {
-                day = (int)timeInput.day;
-            }
-
-            if (timeInput.week != null)
-            {
-                week = (int)timeInput.week;
-            }
-
-            if (timeInput.season != null)
-            {
-                season = (int)timeInput.season;
-            }
-
-            if (timeInput.year != null)
-            {
-                year = (int)timeInput.year;
-            }
+            minute = input.minute ?? 0;
+            hour = input.hour ?? 0;
+            day = input.day ?? 0;
+            week = input.week ?? 0;
+            season = input.season ?? 0;
+            year = input.year ?? 0;
         }
 
-        public TimeValue(int minutes)
+        public TimeValue(int minutes) : this(new Input())
         {
             SetFromMinutes(minutes);
         }
@@ -138,27 +123,6 @@ namespace TowerBuilder.DataTypes.Time
             minute = leftover;
         }
 
-        public void Add(TimeInput timeInput)
-        {
-            int timeAsMinutes = AsMinutes();
-            int timeInputAsMinutes = new TimeValue(timeInput).AsMinutes();
-
-            int newMinutes = timeAsMinutes + timeInputAsMinutes;
-
-            SetFromMinutes(newMinutes);
-        }
-
-        // TODO - make sure time doesn't go below 0
-        public void Subtract(TimeInput timeInput)
-        {
-            int timeAsMinutes = AsMinutes();
-            int timeInputAsMinutes = new TimeValue(timeInput).AsMinutes();
-
-            int newMinutes = timeAsMinutes - timeInputAsMinutes;
-
-            SetFromMinutes(newMinutes);
-        }
-
         public int GetCurrentTimeOfDayIndex()
         {
             for (int i = Constants.TIMES_OF_DAY.Length - 1; i >= 0; i--)
@@ -193,6 +157,27 @@ namespace TowerBuilder.DataTypes.Time
         public TimeOfDay GetNextTimeOfDay()
         {
             return Constants.TIMES_OF_DAY[GetNextTimeOfDayIndex()];
+        }
+
+        public static TimeValue Add(TimeValue timeValue, Input timeInput)
+        {
+            int timeAsMinutes = timeValue.AsMinutes();
+            int timeInputAsMinutes = new TimeValue(timeInput).AsMinutes();
+
+            int newMinutes = timeAsMinutes + timeInputAsMinutes;
+
+            return new TimeValue(newMinutes);
+        }
+
+        // TODO - make sure time doesn't go below 0
+        public static TimeValue Subtract(TimeValue timeValue, Input timeInput)
+        {
+            int timeAsMinutes = timeValue.AsMinutes();
+            int timeInputAsMinutes = new TimeValue(timeInput).AsMinutes();
+
+            int newMinutes = timeAsMinutes - timeInputAsMinutes;
+
+            return new TimeValue(newMinutes);
         }
     }
 }

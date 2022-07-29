@@ -1,4 +1,6 @@
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Time;
+using UnityEngine;
 
 namespace TowerBuilder.State.Time
 {
@@ -8,91 +10,79 @@ namespace TowerBuilder.State.Time
         {
             public bool? isActive;
             public int? tick;
-            public TimeValue time;
+            public TimeValue? time;
             public TimeSpeed? speed;
         }
 
-        public bool isActive { get; private set; } = false;
-        public int tick { get; private set; } = 0;
-        public TimeValue time { get; private set; }
-        public TimeSpeed speed { get; private set; }
+        public ResourceStructField<bool> isActive { get; private set; } = new ResourceStructField<bool>(false);
+        public ResourceStructField<int> tick { get; private set; } = new ResourceStructField<int>(0);
+        public ResourceStructField<TimeValue> time { get; private set; } = new ResourceStructField<TimeValue>(TimeValue.zero);
+        public ResourceField<TimeSpeed> speed { get; private set; } = new ResourceField<TimeSpeed>();
 
         public delegate void TimeUpdatedEvent(TimeValue newTime);
-        public TimeUpdatedEvent onTimeUpdated;
-        public TimeUpdatedEvent onTick;
         public TimeUpdatedEvent onTimeOfDayChanged;
-
-        public delegate void SpeedUpdatedEvent(TimeSpeed newTimeSpeed);
-        public SpeedUpdatedEvent onTimeSpeedUpdated;
+        public TimeUpdatedEvent onTick;
 
         public State() : this(new Input()) { }
 
         public State(Input input)
         {
-            isActive = input.isActive ?? false;
-            tick = input.tick ?? 0;
-            time = input.time ?? TimeValue.zero;
-            speed = input.speed ?? TimeSpeed.Normal;
+            isActive.value = input.isActive ?? false;
+            tick.value = input.tick ?? 0;
+            time.value = input.time ?? TimeValue.zero;
+            speed.value = input.speed ?? TimeSpeed.Normal;
         }
 
         public void UpdateTime(TimeValue newTime)
         {
-            time = newTime;
+            TimeValue previousTime = time.value.Clone();
 
-            if (onTimeUpdated != null)
+            time.value = newTime;
+
+            if (previousTime.GetCurrentTimeOfDay() != time.value.GetCurrentTimeOfDay())
             {
-                onTimeUpdated(newTime);
+                if (onTimeOfDayChanged != null)
+                {
+                    onTimeOfDayChanged(time.value);
+                }
             }
         }
 
-        public void AddTime(TimeInput timeInput)
+        public void AddTime(TimeValue.Input timeInput)
         {
-            time.Add(timeInput);
-            UpdateTime(time);
+            TimeValue newTime = TimeValue.Add(time.value, timeInput);
+            UpdateTime(newTime);
         }
 
-        public void SubtractTime(TimeInput timeInput)
+        public void SubtractTime(TimeValue.Input timeInput)
         {
-            time.Subtract(timeInput);
-            UpdateTime(time);
+            TimeValue newTime = TimeValue.Subtract(time.value, timeInput);
+            UpdateTime(newTime);
         }
 
         public void Tick()
         {
-            TimeValue previousTime = time.Clone();
-
-            AddTime(new TimeInput()
+            AddTime(new TimeValue.Input()
             {
                 minute = Constants.MINUTES_ELAPSED_PER_TICK
             });
 
+            tick.value += 1;
+
             if (onTick != null)
             {
-                onTick(time);
-            }
-
-            if (previousTime.GetCurrentTimeOfDay() != time.GetCurrentTimeOfDay())
-            {
-                if (onTimeOfDayChanged != null)
-                {
-                    onTimeOfDayChanged(time);
-                }
+                onTick(time.value);
             }
         }
 
         public void UpdateSpeed(TimeSpeed newTimeSpeed)
         {
-            speed = newTimeSpeed;
-
-            if (onTimeSpeedUpdated != null)
-            {
-                onTimeSpeedUpdated(speed);
-            }
+            speed.value = newTimeSpeed;
         }
 
         public float GetCurrentTickInterval()
         {
-            return Constants.TICK_INTERVAL * Constants.TIME_SPEED_TICK_INTERVALS[speed];
+            return Constants.TICK_INTERVAL * Constants.TIME_SPEED_TICK_INTERVALS[speed.value];
         }
     }
 }

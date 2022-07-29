@@ -19,6 +19,7 @@ namespace TowerBuilder.DataTypes.Rooms
         public override void Remove(Room room)
         {
             base.Remove(room);
+
             room.OnDestroy();
             room.blocks.onItemRemoved -= OnRoomBlockRemoved;
         }

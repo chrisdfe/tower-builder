@@ -2,6 +2,7 @@ using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Time;
 using TowerBuilder.Systems;
+using TowerBuilder.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,28 +21,29 @@ namespace TowerBuilder.GameWorld.UI
         Button testSaveButton;
 
         Transform panel;
+        Transform contentWrapper;
 
         void Awake()
         {
             panel = transform.Find("DebugMenuPanel");
             panel.gameObject.SetActive(false);
 
-            add1HourButton = panel.Find("Add1HourButton").GetComponent<Button>();
+            add1HourButton = TransformUtils.FindDeepChild(panel, "Add1HourButton").GetComponent<Button>();
             add1HourButton.onClick.AddListener(Add1Hour);
 
-            subtract1HourButton = panel.Find("Subtract1HourButton").GetComponent<Button>();
+            subtract1HourButton = TransformUtils.FindDeepChild(panel, "Subtract1HourButton").GetComponent<Button>();
             subtract1HourButton.onClick.AddListener(Subtract1Hour);
 
-            add1000Button = panel.Find("Add1000Button").GetComponent<Button>();
-            subtract1000Button = panel.Find("Subtract1000Button").GetComponent<Button>();
+            add1000Button = TransformUtils.FindDeepChild(panel, "Add1000Button").GetComponent<Button>();
+            subtract1000Button = TransformUtils.FindDeepChild(panel, "Subtract1000Button").GetComponent<Button>();
 
             subtract1000Button.onClick.AddListener(Subtract1000FromBalance);
             add1000Button.onClick.AddListener(Add1000ToBalance);
 
-            addTestNotificationButton = panel.Find("AddTestNotificationButton").GetComponent<Button>();
+            addTestNotificationButton = TransformUtils.FindDeepChild(panel, "AddTestNotificationButton").GetComponent<Button>();
             addTestNotificationButton.onClick.AddListener(AddTestNotification);
 
-            testSaveButton = panel.Find("TestSaveButton").GetComponent<Button>();
+            testSaveButton = TransformUtils.FindDeepChild(panel, "TestSaveButton").GetComponent<Button>();
             testSaveButton.onClick.AddListener(OnTestSaveButtonClick);
         }
 
@@ -55,7 +57,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void Add1Hour()
         {
-            Registry.appState.Time.AddTime(new TimeInput()
+            Registry.appState.Time.AddTime(new TimeValue.Input()
             {
                 hour = 1
             });
@@ -63,7 +65,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void Subtract1Hour()
         {
-            Registry.appState.Time.SubtractTime(new TimeInput()
+            Registry.appState.Time.SubtractTime(new TimeValue.Input()
             {
                 hour = 1
             });

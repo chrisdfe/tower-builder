@@ -25,9 +25,6 @@ namespace TowerBuilder.State.Rooms
         public RoomConnections roomConnections { get; private set; } = new RoomConnections();
         public RoomList roomList { get; private set; } = new RoomList();
 
-        public delegate void RoomBlockEvent(RoomCells roomBlock);
-        public RoomBlockEvent onRoomBlockDestroyed;
-
         public State() : this(new Input()) { }
 
         public State(Input input)

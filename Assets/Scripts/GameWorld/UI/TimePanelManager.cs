@@ -31,11 +31,11 @@ namespace TowerBuilder.GameWorld.UI
             timeOfDayText = transform.Find("TimeOfDayText").GetComponent<Text>();
             UpdateTimeOfDayText();
 
-            Registry.appState.Time.onTimeUpdated += OnTimeStateUpdated;
-            Registry.appState.Time.onTimeSpeedUpdated += OnTimeSpeedUpdated;
+            Registry.appState.Time.time.onValueChanged += OnTimeStateUpdated;
+            Registry.appState.Time.speed.onValueChanged += OnTimeSpeedUpdated;
         }
 
-        void OnTimeStateUpdated(TimeValue time)
+        void OnTimeStateUpdated(TimeValue time, TimeValue previousTime)
         {
             UpdateHoursMinutesText();
             UpdateWeeksSeasonsText();
@@ -50,8 +50,8 @@ namespace TowerBuilder.GameWorld.UI
         void UpdateHoursMinutesText()
         {
             State.Time.State state = Registry.appState.Time;
-            int hour = state.time.hour;
-            int minute = state.time.minute;
+            int hour = state.time.value.hour;
+            int minute = state.time.value.minute;
 
             string hourAsString = hour.ToString();
             if (hour < 10)
@@ -71,23 +71,23 @@ namespace TowerBuilder.GameWorld.UI
         void UpdateWeeksSeasonsText()
         {
             State.Time.State state = Registry.appState.Time;
-            int day = state.time.day;
-            int week = state.time.week;
-            int season = state.time.season;
-            int year = state.time.year;
+            int day = state.time.value.day;
+            int week = state.time.value.week;
+            int season = state.time.value.season;
+            int year = state.time.value.year;
 
             weeksSeasonsText.text = $"Day: {day}, Week: {week}, Season: {season}, Year: {year}";
         }
 
         void UpdateSpeedText()
         {
-            TimeSpeed currentSpeed = Registry.appState.Time.speed;
+            TimeSpeed currentSpeed = Registry.appState.Time.speed.value;
             speedText.text = $"Speed: {currentSpeed}";
         }
 
         void UpdateTimeOfDayText()
         {
-            TimeValue currentTime = Registry.appState.Time.time;
+            TimeValue currentTime = Registry.appState.Time.time.value;
             TimeOfDay currentTimeOfDay = currentTime.GetCurrentTimeOfDay();
             timeOfDayText.text = currentTimeOfDay.name;
         }
