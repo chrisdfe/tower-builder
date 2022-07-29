@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,15 +20,20 @@ namespace TowerBuilder.GameWorld.UI.Components
         Button button;
         Text buttonText;
 
-        Color defaultColor = Color.white;
-        Color selectedColor = Color.red;
+        static Color TEAL = ColorUtils.ColorFromHex("#033A34");
+        Color defaultBackgroundColor = Color.white;
+        Color defaultTextColor = TEAL;
+
+        Color selectedBackgroundColor = TEAL;
+        Color selectedTextColor = Color.white;
 
         public delegate void ClickEvent(string value);
         public ClickEvent onClick;
 
         public void SetSelected(bool isSelected)
         {
-            button.image.color = isSelected ? selectedColor : defaultColor;
+            button.image.color = isSelected ? selectedBackgroundColor : defaultBackgroundColor;
+            buttonText.color = isSelected ? selectedTextColor : defaultTextColor;
         }
 
         public void ConsumeInput(Input input)
