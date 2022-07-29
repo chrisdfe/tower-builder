@@ -76,14 +76,14 @@ namespace TowerBuilder.GameWorld.UI
             return Registry.roomTemplates.FindByCategory(currentCategory);
         }
 
-        void OnSelectedRoomCategoryUpdated(string roomCategory)
+        void OnSelectedRoomCategoryUpdated(string newRoomCategory)
         {
-            SetSelectedCategory(roomCategory);
+            SetSelectedCategory(newRoomCategory);
         }
 
         void OnSelectedRoomTemplateUpdated(RoomTemplate roomTemplate)
         {
-            SetSelectedTemplate(selectedTemplate);
+            SetSelectedTemplate(roomTemplate.key);
         }
     }
 }

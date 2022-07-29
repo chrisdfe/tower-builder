@@ -49,10 +49,11 @@ namespace TowerBuilder.GameWorld.UI
             TransformUtils.DestroyChildren(templateButtonsWrapper);
         }
 
-        public void Setup()
+        public virtual void Setup()
         {
             ClearCategoryButtons();
             CreateCategoryButtons();
+            selectedCategory = categoryButtons[0].value;
             HighlightSelectedCategoryButton();
 
             ClearTemplateButtons();
@@ -60,7 +61,7 @@ namespace TowerBuilder.GameWorld.UI
             HighlightSelectedTemplateButton();
         }
 
-        public void Teardown()
+        public virtual void Teardown()
         {
             DestroyCategoryButtons();
             DestroyTemplateButtons();

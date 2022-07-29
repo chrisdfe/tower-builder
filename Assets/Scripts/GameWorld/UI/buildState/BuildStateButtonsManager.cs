@@ -24,6 +24,8 @@ namespace TowerBuilder.GameWorld.UI
 
         RoomEntityGroupButtons roomEntityGroupButtons;
 
+        UISelectButton roomEntityGroupButton;
+
         void Awake()
         {
             entityGroupButtonsWrapper = transform.Find("EntityGroupButtons");
@@ -41,7 +43,8 @@ namespace TowerBuilder.GameWorld.UI
             roomEntityGroupButtons = new RoomEntityGroupButtons(roomEntityGroupButtonsWrapper);
 
             TransformUtils.DestroyChildren(entityGroupButtonsWrapper);
-            UISelectButton roomEntityGroupButton = UISelectButton.Create(new UISelectButton.Input() { label = "rooms", value = "rooms" });
+
+            roomEntityGroupButton = UISelectButton.Create(new UISelectButton.Input() { label = "rooms", value = "rooms" });
             roomEntityGroupButton.transform.SetParent(entityGroupButtonsWrapper, false);
             roomEntityGroupButton.onClick += OnEntityGroupButtonClick;
         }
@@ -49,6 +52,7 @@ namespace TowerBuilder.GameWorld.UI
         void OnEntityGroupButtonClick(string value)
         {
             // if value is "rooms":
+            roomEntityGroupButton.SetSelected(true);
             roomEntityGroupButtons.Setup();
         }
     }
