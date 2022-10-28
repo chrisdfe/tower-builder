@@ -23,7 +23,7 @@ namespace TowerBuilder.State.UI
             public RoutesToolState.Input routesToolState;
         }
 
-        public ResourceStructField<ToolState> toolState { get; private set; } = new ResourceStructField<ToolState>(ToolState.None);
+        public ToolState toolState { get; private set; } = ToolState.None;
 
         public CellCoordinates currentSelectedCell { get; private set; } = null;
         public delegate void cellCoordinatesEvent(CellCoordinates currentSelectedCell);
@@ -45,12 +45,14 @@ namespace TowerBuilder.State.UI
         public InspectToolState inspectToolSubState;
         public RoutesToolState routesToolSubState;
 
+        public delegate void ToolStateUpdatedEvent(ToolState toolState, ToolState previousToolState);
+        public ToolStateUpdatedEvent onToolStateUpdated;
+
         public SelectableEntityStack selectableEntityStack { get; private set; } = new SelectableEntityStack();
 
         public State(Input input)
         {
-            toolState.onValueChanged += TransitionToolState;
-            toolState.value = input.toolState ?? ToolState.None;
+            toolState = input.toolState ?? ToolState.None;
 
             currentSelectedCell = input.currentSelectedCell ?? CellCoordinates.zero;
 
@@ -64,6 +66,17 @@ namespace TowerBuilder.State.UI
 
         public State() : this(new Input()) { }
 
+        public void SetToolState(ToolState newToolState)
+        {
+            if (newToolState == toolState) return;
+
+            TransitionToolState(newToolState, toolState);
+            if (onToolStateUpdated != null)
+            {
+                onToolStateUpdated(toolState, toolState);
+            }
+        }
+
         public void TransitionToolState(ToolState toolState, ToolState previousToolState)
         {
             Debug.Log("transitioning from " + previousToolState);
@@ -71,13 +84,6 @@ namespace TowerBuilder.State.UI
             GetToolSubState(previousToolState).Teardown();
             GetToolSubState(toolState).Setup();
         }
-
-        // public void SetToolState(ToolState toolState)
-        // {
-        //     GetCurrentActiveToolSubState().Teardown();
-
-        //     ToolState previousToolState = this.toolState.value;
-        // }
 
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedCell)
         {
@@ -116,12 +122,11 @@ namespace TowerBuilder.State.UI
         public void SetEntityStack(SelectableEntityStack stack)
         {
             this.selectableEntityStack = stack;
-            // Debug.Log(stack.Count);
         }
 
         ToolStateBase GetCurrentActiveToolSubState()
         {
-            return GetToolSubState(toolState.value);
+            return GetToolSubState(toolState);
         }
 
         ToolStateBase GetToolSubState(ToolState toolState)

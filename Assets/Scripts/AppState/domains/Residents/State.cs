@@ -17,9 +17,11 @@ namespace TowerBuilder.State.Residents
             public List<Resident> allResidents = new List<Resident>();
         }
 
-        public ResourceList<Resident> allResidents { get; private set; } = new ResourceList<Resident>();
+        public List<Resident> allResidents { get; private set; } = new List<Resident>();
 
         public delegate void ResidentEvent(Resident resident);
+        public ResidentEvent onResidentAdded;
+        public ResidentEvent onResidentRemoved;
         public ResidentEvent onResidentPositionUpdated;
 
         Resident debugResident;
@@ -33,7 +35,7 @@ namespace TowerBuilder.State.Residents
                 input = new Input();
             }
 
-            this.allResidents.Set(input.allResidents);
+            this.allResidents = input.allResidents;
         }
 
         public void SetResidentPosition(Resident resident, CellCoordinates cellCoordinates)

@@ -30,16 +30,16 @@ namespace TowerBuilder.GameWorld.UI
             ToggleRoutesStateButtonsPanel(false);
             UpdateDescriptionText();
 
-            Registry.appState.UI.toolState.onValueChanged += OnToolStateUpdated;
+            Registry.appState.UI.onToolStateUpdated += OnToolStateUpdated;
             Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         void Update()
         {
             // Right click to exit out of current state?
-            if (Input.GetMouseButtonDown(1) && Registry.appState.UI.toolState.value != ToolState.None)
+            if (Input.GetMouseButtonDown(1) && Registry.appState.UI.toolState != ToolState.None)
             {
-                Registry.appState.UI.toolState.value = ToolState.None;
+                Registry.appState.UI.SetToolState(ToolState.None);
             }
         }
 
@@ -71,7 +71,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void UpdateDescriptionText()
         {
-            ToolState toolState = Registry.appState.UI.toolState.value;
+            ToolState toolState = Registry.appState.UI.toolState;
             if (toolState == ToolState.Build)
             {
                 RoomTemplate selectedRoomTemplate = Registry.appState.UI.buildToolSubState.selectedRoomTemplate;

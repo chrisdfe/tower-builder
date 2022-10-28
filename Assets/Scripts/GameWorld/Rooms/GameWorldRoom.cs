@@ -16,11 +16,7 @@ namespace TowerBuilder.GameWorld.Rooms
         public Room room { get; private set; }
 
         public List<GameWorldRoomCell> gameWorldRoomCells = new List<GameWorldRoomCell>();
-
         public List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
-
-        GameObject roomCellPrefab;
-        GameObject gameWorldRoomEntrancePrefab;
 
         public void SetRoom(Room room)
         {
@@ -37,12 +33,9 @@ namespace TowerBuilder.GameWorld.Rooms
         void Awake()
         {
             transform.localPosition = Vector3.zero;
-            roomCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomCell");
-            gameWorldRoomEntrancePrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
-
-            Registry.appState.Rooms.roomList.onItemAdded += OnRoomAdded;
-            Registry.appState.Rooms.roomList.onRoomBlockRemoved += OnRoomBlockDestroyed;
-            Registry.appState.Rooms.roomConnections.onItemsChanged += OnRoomConnectionsUpdated;
+            Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
+            Registry.appState.Rooms.onRoomBlockAdded += OnRoomBlockAdded;
+            Registry.appState.Rooms.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
 
             Registry.appState.UI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
@@ -54,9 +47,9 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             DestroyCells();
 
-            Registry.appState.Rooms.roomList.onItemAdded -= OnRoomAdded;
-            Registry.appState.Rooms.roomList.onRoomBlockRemoved -= OnRoomBlockDestroyed;
-            Registry.appState.Rooms.roomConnections.onItemsChanged -= OnRoomConnectionsUpdated;
+            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
+            Registry.appState.Rooms.onRoomBlockAdded -= OnRoomBlockAdded;
+            Registry.appState.Rooms.onRoomConnectionsUpdated -= OnRoomConnectionsUpdated;
 
             Registry.appState.UI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
@@ -81,7 +74,7 @@ namespace TowerBuilder.GameWorld.Rooms
             }
 
             // This is handled in OnCurrentSelectedRoomBlockUpdated
-            if (Registry.appState.UI.toolState.value == ToolState.Destroy)
+            if (Registry.appState.UI.toolState == ToolState.Destroy)
             {
                 return;
             }
@@ -127,7 +120,7 @@ namespace TowerBuilder.GameWorld.Rooms
                 return;
             }
 
-            if (Registry.appState.UI.toolState.value == ToolState.Destroy)
+            if (Registry.appState.UI.toolState == ToolState.Destroy)
             {
                 foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
                 {
@@ -180,6 +173,11 @@ namespace TowerBuilder.GameWorld.Rooms
             // }
         }
 
+        void OnRoomBlockAdded(RoomCells roomBlock)
+        {
+            UpdateRoomCells();
+        }
+
         void OnRoomBlockDestroyed(RoomCells roomBlock)
         {
             List<GameWorldRoomCell> gameWorldRoomCellsCopy = new List<GameWorldRoomCell>(gameWorldRoomCells);
@@ -197,7 +195,7 @@ namespace TowerBuilder.GameWorld.Rooms
             UpdateRoomCells();
         }
 
-        void OnRoomConnectionsUpdated(List<RoomConnection> roomConnections)
+        void OnRoomConnectionsUpdated(RoomConnections roomConnections)
         {
             UpdateRoomEntrances();
         }
@@ -238,6 +236,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void UpdateRoomCells()
         {
+            Debug.Log("updating room cells");
             foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
             {
                 gameWorldRoomCell.UpdateRoomCellMeshSegments();
@@ -248,16 +247,11 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             foreach (RoomEntrance roomEntrance in room.entrances)
             {
-                GameObject roomEntranceGameObject = Instantiate<GameObject>(gameWorldRoomEntrancePrefab);
-                roomEntranceGameObject.transform.parent = transform;
-
-                GameWorldRoomEntrance gameWorldRoomEntrance = roomEntranceGameObject.GetComponent<GameWorldRoomEntrance>();
+                GameWorldRoomEntrance gameWorldRoomEntrance = GameWorldRoomEntrance.Create(transform);
                 gameWorldRoomEntrance.roomEntrance = roomEntrance;
                 gameWorldRoomEntrance.Initialize();
                 gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
             }
-
-            // UpdateRoomEntrances();
         }
 
         // When this has been converted from a blueprint room to a actual room
@@ -266,17 +260,15 @@ namespace TowerBuilder.GameWorld.Rooms
             ResetCellColors();
             UpdateRoomEntrances();
 
-            Registry.appState.Rooms.roomList.onItemAdded -= OnRoomAdded;
+            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
         }
 
         void CreateCells()
         {
-            foreach (RoomCell roomCell in room.cells.items)
+            foreach (RoomCell roomCell in room.cells.cells)
             {
-                GameObject roomCellGameObject = Instantiate<GameObject>(roomCellPrefab);
-                GameWorldRoomCell gameWorldRoomCell = roomCellGameObject.GetComponent<GameWorldRoomCell>();
+                GameWorldRoomCell gameWorldRoomCell = GameWorldRoomCell.Create(transform);
 
-                gameWorldRoomCell.transform.parent = transform;
                 gameWorldRoomCell.roomCell = roomCell;
                 gameWorldRoomCell.gameWorldRoom = this;
                 gameWorldRoomCell.baseColor = room.color;
@@ -308,6 +300,17 @@ namespace TowerBuilder.GameWorld.Rooms
             {
                 gameWorldRoomCell.ResetColor();
             }
+        }
+
+        public static GameWorldRoom Create(Transform parent)
+        {
+            GameObject roomPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/Room");
+            GameObject roomGameObject = Instantiate<GameObject>(roomPrefab);
+
+            roomGameObject.transform.parent = parent;
+
+            GameWorldRoom gameWorldRoom = roomGameObject.GetComponent<GameWorldRoom>();
+            return gameWorldRoom;
         }
     }
 }

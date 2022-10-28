@@ -75,5 +75,16 @@ namespace TowerBuilder.GameWorld.Rooms
                 );
             }
         }
+
+        public static GameWorldRoomEntrance Create(Transform parent)
+        {
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");
+            GameObject roomEntranceGameObject = Instantiate<GameObject>(prefab);
+
+            roomEntranceGameObject.transform.parent = parent;
+
+            GameWorldRoomEntrance gameWorldRoomEntrance = roomEntranceGameObject.GetComponent<GameWorldRoomEntrance>();
+            return gameWorldRoomEntrance;
+        }
     }
 }

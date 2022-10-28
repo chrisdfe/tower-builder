@@ -42,9 +42,9 @@ namespace TowerBuilder.GameWorld.UI
             text += room.price + "\n";
             text += "\n";
 
-            text += $"{roomConnections.items.Count} Connections\n";
+            text += $"{roomConnections.connections.Count} Connections\n";
             // text += string.Join(", ", room.roomTemplate.uses) + "\n";
-            foreach (RoomConnection connection in roomConnections.items)
+            foreach (RoomConnection connection in roomConnections.connections)
             {
                 text += connection + "\n";
             }

@@ -3,40 +3,33 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.DataTypes.Rooms
 {
-    public class RoomList : ResourceList<Room>
+    public class RoomList
     {
-        public delegate void RoomBlockEvent(RoomCells roomBlock);
-        public RoomBlockEvent onRoomBlockRemoved;
+        public List<Room> rooms { get; private set; } = new List<Room>();
 
-        public override void Add(Room room)
+        public int Count { get { return rooms.Count; } }
+
+        public RoomList() { }
+        public RoomList(List<Room> rooms)
         {
-            base.Add(room);
+            this.rooms = rooms;
+        }
 
+        public void Add(Room room)
+        {
             room.OnBuild();
-            room.blocks.onItemRemoved += OnRoomBlockRemoved;
         }
 
-        public override void Remove(Room room)
+        public void Remove(Room room)
         {
-            base.Remove(room);
-
             room.OnDestroy();
-            room.blocks.onItemRemoved -= OnRoomBlockRemoved;
-        }
-
-        public void OnRoomBlockRemoved(RoomCells roomBlock)
-        {
-            if (onRoomBlockRemoved != null)
-            {
-                onRoomBlockRemoved(roomBlock);
-            }
         }
 
         public Room FindRoomAtCell(CellCoordinates targetCellCoordinates)
         {
-            foreach (Room room in items)
+            foreach (Room room in rooms)
             {
-                foreach (RoomCell roomCell in room.cells.items)
+                foreach (RoomCell roomCell in room.cells.cells)
                 {
                     if (roomCell.coordinates.Matches(targetCellCoordinates))
                     {
@@ -50,7 +43,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public Room FindRoomByRoomBlock(RoomCells roomBlock)
         {
-            foreach (Room room in items)
+            foreach (Room room in rooms)
             {
                 if (room.ContainsBlock(roomBlock))
                 {

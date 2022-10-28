@@ -23,8 +23,8 @@ namespace TowerBuilder.GameWorld.UI
         void Awake()
         {
             Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-            Registry.appState.buildings.buildingList.onItemsChanged += OnBuildingListUpdated;
-            Registry.appState.Rooms.roomList.onItemsChanged += OnRoomListUpdated;
+            Registry.appState.buildings.onBuildingListUpdated += OnBuildingListUpdated;
+            Registry.appState.Rooms.onRoomListUpdated += OnRoomListUpdated;
 
             currentSelectedCellText = TransformUtils.FindDeepChild(transform, "CurrentSelectedCellText").GetComponent<Text>();
             currentSelectedCellText.text = "";
@@ -50,7 +50,7 @@ namespace TowerBuilder.GameWorld.UI
             SetBuildingCountText();
         }
 
-        void OnRoomListUpdated(List<Room> roomList)
+        void OnRoomListUpdated(RoomList roomList)
         {
             SetRoomCountText();
         }
@@ -63,7 +63,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetBuildingCountText()
         {
-            ResourceList<Building> allBuildings = Registry.appState.buildings.buildingList;
+            List<Building> allBuildings = Registry.appState.buildings.buildingList;
             buildingCountText.text = $"Buildings: {allBuildings.Count}";
         }
 

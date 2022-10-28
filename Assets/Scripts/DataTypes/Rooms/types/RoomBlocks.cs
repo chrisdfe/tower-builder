@@ -7,5 +7,23 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms
 {
-    public class RoomBlocks : ResourceList<RoomCells> { }
+    public class RoomBlocks
+    {
+        public List<RoomCells> blocks { get; private set; } = new List<RoomCells>();
+
+        public void Add(RoomBlocks otherBlocks)
+        {
+            blocks = blocks.Concat(otherBlocks.blocks).ToList();
+        }
+
+        public void Add(RoomCells blockCells)
+        {
+            blocks.Add(blockCells);
+        }
+
+        public void Remove(RoomCells block)
+        {
+            blocks.RemoveAll(otherBlock => otherBlock == block);
+        }
+    }
 }

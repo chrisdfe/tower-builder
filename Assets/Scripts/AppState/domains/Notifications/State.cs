@@ -13,14 +13,21 @@ namespace TowerBuilder.State.Notifications
             public List<Notification> allNotifications;
         }
 
-        public ResourceList<Notification> allNotifications { get; private set; } = new ResourceList<Notification>();
+        public List<Notification> allNotifications { get; private set; } = new List<Notification>();
+
+        public delegate void NotificationsListEvent(List<Notification> notifications, Notification notification);
+        public NotificationsListEvent onNotificationAdded;
+        public NotificationsListEvent onNotificationRemoved;
+
+        public delegate void NotificationsListUpdateEvent(List<Notification> notifications);
+        public NotificationsListUpdateEvent onNotificationsUpdated;
 
         public State() : this(new Input()) { }
 
         public State(Input input)
         {
             if (input == null) return;
-            allNotifications.Set(input.allNotifications ?? new List<Notification>());
+            allNotifications = input.allNotifications ?? new List<Notification>();
         }
 
         public void createNotification(string message)

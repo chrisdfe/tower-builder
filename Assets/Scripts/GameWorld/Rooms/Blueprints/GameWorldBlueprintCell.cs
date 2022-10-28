@@ -50,5 +50,16 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
 
             return true;
         }
+
+        public static GameWorldBlueprintCell Create(Transform parent)
+        {
+            GameObject roomPrefab = Resources.Load<GameObject>("Prefabs/Map/Blueprints/BlueprintCell");
+            GameObject roomGameObject = Instantiate<GameObject>(roomPrefab);
+
+            roomGameObject.transform.parent = parent;
+
+            GameWorldBlueprintCell gameWorldBlueprintCell = roomGameObject.GetComponent<GameWorldBlueprintCell>();
+            return gameWorldBlueprintCell;
+        }
     }
 }

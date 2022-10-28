@@ -49,7 +49,7 @@ namespace TowerBuilder.DataTypes.Rooms
         public RoomEntranceBuilderBase entranceBuilder { get; private set; }
 
         [JsonIgnore]
-        public int price { get { return pricePerBlock * this.blocks.Count; } }
+        public int price { get { return pricePerBlock * this.blocks.blocks.Count; } }
 
         public Room(RoomTemplate roomTemplate)
         {
@@ -77,7 +77,7 @@ namespace TowerBuilder.DataTypes.Rooms
             ResetRoomEntrances();
         }
 
-        public Room(RoomTemplate roomTemplate, RoomCells roomCells) : this(roomTemplate, roomCells.items) { }
+        public Room(RoomTemplate roomTemplate, RoomCells roomCells) : this(roomTemplate, roomCells.cells) { }
 
         public override string ToString()
         {
@@ -88,13 +88,10 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             isInBlueprintMode = false;
             InitializeFurniture();
-
-            cells.onItemsChanged += OnRoomCellsResize;
         }
 
         public void OnDestroy()
         {
-            cells.onItemsChanged -= OnRoomCellsResize;
         }
 
         public void CalculateRoomCells(CellCoordinates blockCount)
@@ -134,7 +131,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public bool ContainsBlock(RoomCells roomBlock)
         {
-            foreach (RoomCells block in blocks.items)
+            foreach (RoomCells block in blocks.blocks)
             {
                 if (block == roomBlock)
                 {
@@ -149,23 +146,23 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             this.blocks.Add(roomBlocks);
 
-            foreach (RoomCells roomBlock in roomBlocks.items)
+            foreach (RoomCells roomBlock in roomBlocks.blocks)
             {
-                cells.Add(roomBlock.items);
+                cells.Add(roomBlock.cells);
             }
         }
 
         public void RemoveBlock(RoomCells block)
         {
-            cells.items.RemoveAll(cell => block.items.Contains(cell));
+            cells.cells.RemoveAll(cell => block.cells.Contains(cell));
             this.blocks.Remove(block);
         }
 
         public RoomCells FindBlockByCellCoordinates(CellCoordinates cellCoordinates)
         {
-            foreach (RoomCells block in blocks.items)
+            foreach (RoomCells block in blocks.blocks)
             {
-                foreach (RoomCell cell in block.items)
+                foreach (RoomCell cell in block.cells)
                 {
                     if (cell.coordinates.Matches(cellCoordinates))
                     {
@@ -179,7 +176,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public void ResetRoomCellOrientations()
         {
-            foreach (RoomCell roomCell in cells.items)
+            foreach (RoomCell roomCell in cells.cells)
             {
                 SetRoomCellOrientation(roomCell);
             }

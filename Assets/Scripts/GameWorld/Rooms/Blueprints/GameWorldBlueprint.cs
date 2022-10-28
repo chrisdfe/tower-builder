@@ -6,17 +6,30 @@ using TowerBuilder.DataTypes.Rooms.Blueprints;
 using TowerBuilder.GameWorld.Rooms;
 using TowerBuilder.State;
 using TowerBuilder.State.Rooms;
+using TowerBuilder.State.UI;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms.Blueprints
 {
     public class GameWorldBlueprint : MonoBehaviour
     {
-        GameObject gameWorldRoomPrefab;
-        GameObject gameWorldBlueprintCellPrefab;
-
         GameWorldRoom gameWorldRoom;
         List<GameWorldBlueprintCell> gameWorldBlueprintCells = new List<GameWorldBlueprintCell>();
+
+        public static GameWorldBlueprint Create()
+        {
+            GameObject blueprintPrefab = Resources.Load<GameObject>("Prefabs/Map/Blueprints/Blueprint");
+            GameObject blueprintGameObject = GameObject.Instantiate<GameObject>(blueprintPrefab);
+            GameWorldBlueprint blueprint = blueprintGameObject.GetComponent<GameWorldBlueprint>();
+            Debug.Log("Blueprint has been created");
+            return blueprint;
+        }
+
+        public void Initialize()
+        {
+            CreateBlueprintRoom();
+            CreateBlueprintCells();
+        }
 
         public void ResetBlueprintCells()
         {
@@ -32,23 +45,15 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
 
         void Awake()
         {
-            gameWorldBlueprintCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Blueprints/BlueprintCell");
-            gameWorldRoomPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/Room");
-
+            Debug.Log("Blueprint has been awoken");
             CreateBlueprintRoom();
             CreateBlueprintCells();
-
-            Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-            Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         void OnDestroy()
         {
             DestroyBlueprintRoom();
             DestroyBlueprintCells();
-
-            Registry.appState.UI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
-            Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated -= OnSelectedRoomTemplateUpdated;
         }
 
         void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell)
@@ -59,15 +64,28 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
 
         void OnSelectedRoomTemplateUpdated(RoomTemplate selectedRoomTemplate)
         {
+            // Debug.Log("on selected room template updated");
+            // Debug.Log(Registry.appState.UI.buildToolSubState.currentBlueprint);
             ResetBlueprintRoom();
             ResetBlueprintCells();
+        }
+
+        void OnToolStateChanged(ToolState toolState, ToolState previousToolState)
+        {
+            // if (toolState == ToolState.Build) {
+
+            // }
+            // Debug.Log("OnToolStateChanged");
+            // Debug.Log(Registry.appState.UI.buildToolSubState.currentBlueprint);
+            // ResetBlueprintCells();
         }
 
         void CreateBlueprintRoom()
         {
             Blueprint blueprint = Registry.appState.UI.buildToolSubState.currentBlueprint;
-            GameObject gameWorldRoomGameObject = Instantiate(gameWorldRoomPrefab);
-            gameWorldRoom = gameWorldRoomGameObject.GetComponent<GameWorldRoom>();
+            gameWorldRoom = GameWorldRoom.Create(transform);
+            // Debug.Log("gameworldRoom");
+            // Debug.Log(gameWorldRoom);
             gameWorldRoom.SetRoom(blueprint.room);
             gameWorldRoom.Initialize();
         }
@@ -84,8 +102,7 @@ namespace TowerBuilder.GameWorld.Rooms.Blueprints
 
             foreach (BlueprintCell blueprintCell in blueprint.roomBlueprintCells)
             {
-                GameObject gameWorldBlueprintCellGameObject = Instantiate<GameObject>(gameWorldBlueprintCellPrefab, transform);
-                GameWorldBlueprintCell gameWorldBlueprintCell = gameWorldBlueprintCellGameObject.GetComponent<GameWorldBlueprintCell>();
+                GameWorldBlueprintCell gameWorldBlueprintCell = GameWorldBlueprintCell.Create(transform);
 
                 gameWorldBlueprintCell.parentBlueprint = this;
                 gameWorldBlueprintCell.blueprintCell = blueprintCell;

@@ -21,8 +21,8 @@ namespace TowerBuilder.GameWorld
             camera = Camera.main;
 
             Registry.appState.Time.onTick += OnTick;
-            Registry.appState.Time.time.onValueChanged += OnTimeUpdated;
-            Registry.appState.Time.onTimeOfDayChanged += OnTimeOfDayChanged;
+            Registry.appState.Time.onTimeUpdated += OnTimeUpdated;
+            Registry.appState.Time.onTimeOfDayUpdated += OnTimeOfDayUpdated;
 
             UpdateSkyColor();
         }
@@ -35,7 +35,7 @@ namespace TowerBuilder.GameWorld
         void Update()
         {
             elapsedSinceLastTick += Time.deltaTime;
-            TimeSpeed currentSpeed = Registry.appState.Time.speed.value;
+            TimeSpeed currentSpeed = Registry.appState.Time.speed;
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -71,12 +71,12 @@ namespace TowerBuilder.GameWorld
             UpdateSkyColor();
         }
 
-        void OnTimeOfDayChanged(TimeValue timeValue)
+        void OnTimeOfDayUpdated(TimeValue timeValue)
         {
             elapsedSinceLastTimeOfDay = 0;
         }
 
-        void OnTimeUpdated(TimeValue timeValue, TimeValue previousTimeValue)
+        void OnTimeUpdated(TimeValue timeValue)
         {
             ResetTick();
             UpdateSkyColor();
@@ -142,8 +142,8 @@ namespace TowerBuilder.GameWorld
 
         Color GetUpdateColorLerpProgressColor()
         {
-            TimeValue currentTime = Registry.appState.Time.time.value;
-            TimeSpeed currentSpeed = Registry.appState.Time.speed.value;
+            TimeValue currentTime = Registry.appState.Time.time;
+            TimeSpeed currentSpeed = Registry.appState.Time.speed;
             TimeValue absoluteCurrentTime = new TimeValue(new TimeValue.Input()
             {
                 minute = currentTime.minute,

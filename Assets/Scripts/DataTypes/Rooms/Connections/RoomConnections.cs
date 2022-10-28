@@ -5,35 +5,50 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms.Connections
 {
-    public class RoomConnections : ResourceList<RoomConnection>
+    public class RoomConnections
     {
+        public List<RoomConnection> connections = new List<RoomConnection>();
+
         public RoomConnections() { }
-        public RoomConnections(List<RoomConnection> connections) : base(connections) { }
+        public RoomConnections(List<RoomConnection> connections)
+        {
+            this.connections = connections;
+        }
+
+        public void Add(RoomConnections roomConnections)
+        {
+            connections = connections.Concat(roomConnections.connections).ToList();
+        }
+
+        public void Remove(RoomConnections roomConnections)
+        {
+            connections.RemoveAll(roomConnection => roomConnections.connections.Contains(roomConnection));
+        }
 
         public RoomConnections FindConnectionsForRoom(Room room)
         {
             return new RoomConnections(
-                items.FindAll(roomConnection => roomConnection.ContainsRoom(room))
+                connections.FindAll(roomConnection => roomConnection.ContainsRoom(room))
             );
         }
 
         public RoomConnection FindConnectionForRoomEntrance(RoomEntrance roomEntrance)
         {
-            return items.Find(roomConnection => roomConnection.ContainsRoomEntrance(roomEntrance));
+            return connections.Find(roomConnection => roomConnection.ContainsRoomEntrance(roomEntrance));
         }
 
         public void RemoveConnectionsForRoom(Room room)
         {
-            Set(items.Where(
+            connections = connections.Where(
                 roomConnection => !roomConnection.ContainsRoom(room)
-            ).ToList());
+            ).ToList();
         }
 
         public void RemoveConnectionsBetween(Room roomA, Room roomB)
         {
-            Set(items.Where(
+            connections = connections.Where(
                 roomConnection => !roomConnection.ContainsRooms(roomA, roomB)
-            ).ToList());
+            ).ToList();
         }
 
         public RoomConnections SearchForNewConnectionsToRoom(RoomList roomList, Room targetRoom)

@@ -10,12 +10,10 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 {
     public class BuildToolStateInputHandlers : ToolStateInputHandlersBase
     {
-        GameObject blueprintPrefab;
         public GameWorldBlueprint gameWorldBlueprint;
 
         public BuildToolStateInputHandlers(GameWorldMapManager parentMapManager) : base(parentMapManager)
         {
-            blueprintPrefab = Resources.Load<GameObject>("Prefabs/Map/Blueprints/Blueprint");
         }
 
         public override void Update() { }
@@ -24,14 +22,14 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         {
             CreateBlueprint();
 
-            Registry.appState.Rooms.roomList.onItemAdded += OnRoomAdded;
+            Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
         }
 
         public override void OnTransitionFrom(ToolState nextToolState)
         {
             DestroyBlueprint();
 
-            Registry.appState.Rooms.roomList.onItemAdded -= OnRoomAdded;
+            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
         }
 
         public override void OnMouseDown()
@@ -54,10 +52,8 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void CreateBlueprint()
         {
-            GameObject blueprintGameObject = GameObject.Instantiate<GameObject>(blueprintPrefab);
-            blueprintGameObject.transform.parent = parentMapManager.transform;
-
-            gameWorldBlueprint = blueprintGameObject.GetComponent<GameWorldBlueprint>();
+            gameWorldBlueprint = GameWorldBlueprint.Create();
+            gameWorldBlueprint.transform.parent = parentMapManager.transform;
             gameWorldBlueprint.transform.SetParent(parentMapManager.transform);
 
             // TODO - set this to current selected cell

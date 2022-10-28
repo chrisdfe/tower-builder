@@ -17,17 +17,17 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            Registry.appState.Notifications.allNotifications.onItemAdded += OnNotificationAdded;
+            Registry.appState.Notifications.onNotificationAdded += OnNotificationAdded;
             text = transform.Find("NotificationsText").GetComponent<Text>();
             text.text = "";
         }
 
-        void OnNotificationAdded(Notification newNotification)
+        void OnNotificationAdded(List<Notification> allNotifications, Notification newNotification)
         {
-            int notificationsLength = Registry.appState.Notifications.allNotifications.Count;
-            List<Notification> notifications = Registry.appState.Notifications.allNotifications.items;
+            int notificationsLength = allNotifications.Count;
+
             // Get the n most recent notifications
-            List<Notification> displayNotifications = Enumerable.Reverse(notifications).Take(NOTIFICATIONS_LIMIT).ToList();
+            List<Notification> displayNotifications = Enumerable.Reverse(allNotifications).Take(NOTIFICATIONS_LIMIT).ToList();
 
             string newText = "";
             foreach (Notification notification in displayNotifications)

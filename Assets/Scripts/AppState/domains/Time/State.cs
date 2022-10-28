@@ -14,49 +14,58 @@ namespace TowerBuilder.State.Time
             public TimeSpeed? speed;
         }
 
-        public ResourceStructField<bool> isActive { get; private set; } = new ResourceStructField<bool>(false);
-        public ResourceStructField<int> tick { get; private set; } = new ResourceStructField<int>(0);
-        public ResourceStructField<TimeValue> time { get; private set; } = new ResourceStructField<TimeValue>(TimeValue.zero);
-        public ResourceField<TimeSpeed> speed { get; private set; } = new ResourceField<TimeSpeed>();
+        public bool isActive { get; private set; } = false;
+        public int tick { get; private set; } = 0;
+        public TimeValue time { get; private set; } = TimeValue.zero;
+        public TimeSpeed speed { get; private set; } = TimeSpeed.Normal;
 
         public delegate void TimeUpdatedEvent(TimeValue newTime);
-        public TimeUpdatedEvent onTimeOfDayChanged;
+        public TimeUpdatedEvent onTimeUpdated;
+        public TimeUpdatedEvent onTimeOfDayUpdated;
         public TimeUpdatedEvent onTick;
+
+        public delegate void TimeSpeedUpdatedEvent(TimeSpeed newTimeSpeed);
+        public TimeSpeedUpdatedEvent onTimeSpeedUpdated;
 
         public State() : this(new Input()) { }
 
         public State(Input input)
         {
-            isActive.value = input.isActive ?? false;
-            tick.value = input.tick ?? 0;
-            time.value = input.time ?? TimeValue.zero;
-            speed.value = input.speed ?? TimeSpeed.Normal;
+            isActive = input.isActive ?? false;
+            tick = input.tick ?? 0;
+            time = input.time ?? TimeValue.zero;
+            speed = input.speed ?? TimeSpeed.Normal;
         }
 
         public void UpdateTime(TimeValue newTime)
         {
-            TimeValue previousTime = time.value.Clone();
+            TimeValue previousTime = time;
 
-            time.value = newTime;
+            time = newTime;
 
-            if (previousTime.GetCurrentTimeOfDay() != time.value.GetCurrentTimeOfDay())
+            if (previousTime.GetCurrentTimeOfDay() != time.GetCurrentTimeOfDay())
             {
-                if (onTimeOfDayChanged != null)
+                if (onTimeOfDayUpdated != null)
                 {
-                    onTimeOfDayChanged(time.value);
+                    onTimeOfDayUpdated(time);
                 }
+            }
+
+            if (onTimeUpdated != null)
+            {
+                onTimeUpdated(time);
             }
         }
 
         public void AddTime(TimeValue.Input timeInput)
         {
-            TimeValue newTime = TimeValue.Add(time.value, timeInput);
+            TimeValue newTime = TimeValue.Add(time, timeInput);
             UpdateTime(newTime);
         }
 
         public void SubtractTime(TimeValue.Input timeInput)
         {
-            TimeValue newTime = TimeValue.Subtract(time.value, timeInput);
+            TimeValue newTime = TimeValue.Subtract(time, timeInput);
             UpdateTime(newTime);
         }
 
@@ -67,22 +76,22 @@ namespace TowerBuilder.State.Time
                 minute = Constants.MINUTES_ELAPSED_PER_TICK
             });
 
-            tick.value += 1;
+            tick += 1;
 
             if (onTick != null)
             {
-                onTick(time.value);
+                onTick(time);
             }
         }
 
         public void UpdateSpeed(TimeSpeed newTimeSpeed)
         {
-            speed.value = newTimeSpeed;
+            speed = newTimeSpeed;
         }
 
         public float GetCurrentTickInterval()
         {
-            return Constants.TICK_INTERVAL * Constants.TIME_SPEED_TICK_INTERVALS[speed.value];
+            return Constants.TICK_INTERVAL * Constants.TIME_SPEED_TICK_INTERVALS[speed];
         }
     }
 }

@@ -170,5 +170,16 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             // Registry.appState.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
+
+        public static GameWorldRoomCell Create(Transform parent)
+        {
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomCell");
+            GameObject roomCellGameObject = Instantiate<GameObject>(prefab);
+
+            roomCellGameObject.transform.parent = parent;
+
+            GameWorldRoomCell gameWorldRoomCell = roomCellGameObject.GetComponent<GameWorldRoomCell>();
+            return gameWorldRoomCell;
+        }
     }
 }

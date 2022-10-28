@@ -36,7 +36,7 @@ namespace TowerBuilder.GameWorld.UI
 
             originalColor = NoneButton.colors.normalColor;
 
-            Registry.appState.UI.toolState.onValueChanged += OnToolStateUpdated;
+            Registry.appState.UI.onToolStateUpdated += OnToolStateUpdated;
         }
 
         void OnNoneButtonClick()
@@ -66,9 +66,9 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnToolButtonClick(ToolState toolState)
         {
-            ToolState currentToolState = Registry.appState.UI.toolState.value;
+            ToolState currentToolState = Registry.appState.UI.toolState;
             ToolState newToolState = (currentToolState == toolState) ? ToolState.None : toolState;
-            Registry.appState.UI.toolState.value = newToolState;
+            Registry.appState.UI.SetToolState(newToolState);
         }
 
         void OnToolStateUpdated(ToolState toolState, ToolState previousToolState)

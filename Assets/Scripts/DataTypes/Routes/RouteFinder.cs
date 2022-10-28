@@ -87,7 +87,7 @@ namespace TowerBuilder.DataTypes.Routes
             // Keep searching for connections
             RoomConnections roomConnections = GetRoomConnections(currentRoom);
 
-            foreach (RoomConnection roomConnection in roomConnections.items)
+            foreach (RoomConnection roomConnection in roomConnections.connections)
             {
                 RouteAttempt routeAttemptBranch = BranchRouteAttempt(currentRouteAttempt);
                 // RouteAttempt routeAttemptBranch = BranchRouteAttempt(currentRouteAttempt);

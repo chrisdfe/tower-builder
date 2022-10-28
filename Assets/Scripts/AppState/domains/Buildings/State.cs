@@ -14,11 +14,18 @@ namespace TowerBuilder.State.Buildings
             public List<Building> buildingList;
         }
 
-        public ResourceList<Building> buildingList = new ResourceList<Building>();
+        public List<Building> buildingList = new List<Building>();
+
+        public delegate void BuildingListEvent(List<Building> buildingList);
+        public BuildingListEvent onBuildingListUpdated;
+
+        public delegate void BuildingListChangeEvent(List<Building> buildingList, Building building);
+        public BuildingListChangeEvent onBuildingAdded;
+        public BuildingListChangeEvent onBuildingRemoved;
 
         public State(Input input)
         {
-            buildingList.Set(input.buildingList ?? new List<Building>());
+            buildingList = input.buildingList ?? new List<Building>();
         }
 
         public State() : this(new Input()) { }

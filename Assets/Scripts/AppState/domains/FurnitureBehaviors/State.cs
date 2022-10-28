@@ -15,7 +15,7 @@ namespace TowerBuilder.State.FurnitureBehaviors
         public void Setup()
         {
             Registry.appState.Time.onTick += OnTick;
-            Registry.appState.Rooms.roomList.onItemAdded += OnRoomAdded;
+            Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
         }
 
         void OnTick(TimeValue timeValue)

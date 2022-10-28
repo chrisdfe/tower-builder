@@ -20,8 +20,6 @@ public class GroundManager : MonoBehaviour
     const int MAP_CELLS_HEIGHT = 50;
     const int GROUND_STARTING_FLOOR = -1;
 
-
-    // List<GameWorldGroundCell> gameWorldGroundCells = new List<GameWorldGroundCell>();
     Dictionary<(int x, int floor), GameWorldGroundCell> gameWorldGroundCells = new Dictionary<(int x, int floor), GameWorldGroundCell>();
 
     void Awake()
@@ -31,10 +29,10 @@ public class GroundManager : MonoBehaviour
 
         groundPlaceholder.SetActive(false);
 
-        Registry.appState.Rooms.roomList.onItemAdded += OnRoomAdded;
-        Registry.appState.Rooms.roomList.onItemRemoved += OnRoomDestroyed;
+        Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
+        Registry.appState.Rooms.onRoomRemoved += OnRoomDestroyed;
         Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-        Registry.appState.UI.toolState.onValueChanged += OnToolStateUpdated;
+        Registry.appState.UI.onToolStateUpdated += OnToolStateUpdated;
         Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
     }
 
@@ -43,9 +41,18 @@ public class GroundManager : MonoBehaviour
         CreateGroundCells();
     }
 
+    void OnDestroy()
+    {
+        Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
+        Registry.appState.Rooms.onRoomRemoved -= OnRoomDestroyed;
+        Registry.appState.UI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
+        Registry.appState.UI.onToolStateUpdated -= OnToolStateUpdated;
+        Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated -= OnSelectedRoomTemplateUpdated;
+    }
+
     void OnRoomAdded(Room room)
     {
-        foreach (RoomCell roomCell in room.cells.items)
+        foreach (RoomCell roomCell in room.cells.cells)
         {
             SetGroundCellVisibility(roomCell.coordinates, false);
         }
@@ -53,7 +60,7 @@ public class GroundManager : MonoBehaviour
 
     void OnRoomDestroyed(Room room)
     {
-        foreach (RoomCell roomCell in room.cells.items)
+        foreach (RoomCell roomCell in room.cells.cells)
         {
             SetGroundCellVisibility(roomCell.coordinates, true);
         }
@@ -61,7 +68,7 @@ public class GroundManager : MonoBehaviour
 
     void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)
     {
-        if (Registry.appState.UI.toolState.value != ToolState.Build)
+        if (Registry.appState.UI.toolState != ToolState.Build)
         {
             return;
         }
@@ -92,7 +99,7 @@ public class GroundManager : MonoBehaviour
     void SetCurrentBlueprintCells()
     {
         Blueprint currentBlueprint = Registry.appState.UI.buildToolSubState.currentBlueprint;
-        currentBlueprintCells = currentBlueprint.room.cells.items.Select(roomCell => roomCell.coordinates).ToList();
+        currentBlueprintCells = currentBlueprint.room.cells.cells.Select(roomCell => roomCell.coordinates).ToList();
     }
 
     void CreateGroundCells()

@@ -129,7 +129,7 @@ namespace TowerBuilder.DataTypes.Rooms.Blueprints
             // TODO - clean up existing roomBlueprintCells first?
             roomBlueprintCells = new List<BlueprintCell>();
 
-            foreach (RoomCell roomCell in room.cells.items)
+            foreach (RoomCell roomCell in room.cells.cells)
             {
                 BlueprintCell newBlueprintCell = new BlueprintCell(this, roomCell);
                 roomBlueprintCells.Add(newBlueprintCell);
