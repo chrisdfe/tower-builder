@@ -33,7 +33,6 @@ namespace TowerBuilder.DataTypes.Rooms
         [JsonIgnore]
         public Color color { get; private set; } = Color.white;
 
-
         // Saved rooms should never be in blueprint mode
         [JsonIgnore]
         public bool isInBlueprintMode = false;
@@ -61,7 +60,7 @@ namespace TowerBuilder.DataTypes.Rooms
             this.resizability = roomTemplate.resizability;
             this.blockDimensions = roomTemplate.blockDimensions;
 
-            this.validator = roomTemplate.validatorFactory();
+            this.validator = roomTemplate.validatorFactory(this);
             this.entranceBuilder = roomTemplate.entranceBuilderFactory();
 
             this.color = roomTemplate.color;
@@ -73,8 +72,7 @@ namespace TowerBuilder.DataTypes.Rooms
         public Room(RoomTemplate roomTemplate, List<RoomCell> roomCellList) : this(roomTemplate)
         {
             cells.Add(roomCellList);
-            ResetRoomCellOrientations();
-            ResetRoomEntrances();
+            Reset();
         }
 
         public Room(RoomTemplate roomTemplate, RoomCells roomCells) : this(roomTemplate, roomCells.cells) { }
@@ -94,39 +92,35 @@ namespace TowerBuilder.DataTypes.Rooms
         {
         }
 
-        public void CalculateRoomCells(CellCoordinates blockCount)
-        {
-            RoomCells newCells = new RoomCells();
-            RoomBlocks newBlocks = new RoomBlocks();
-
-            for (int x = 0; x < blockCount.x; x++)
-            {
-                for (int floor = 0; floor < blockCount.floor; floor++)
-                {
-                    RoomCells blockCells = new RoomCells(
-                        blockDimensions.width,
-                        blockDimensions.height
-                    );
-                    blockCells.PositionAtCoordinates(new CellCoordinates(
-                        bottomLeftCoordinates.x + (blockDimensions.width * x),
-                        bottomLeftCoordinates.floor + (blockDimensions.height * floor)
-                    ));
-
-                    newBlocks.Add(blockCells);
-                    newCells.Add(blockCells);
-                }
-            }
-
-            this.cells = newCells;
-            this.blocks = newBlocks;
-
-            Reset();
-        }
-
         public void Reset()
         {
             ResetRoomCellOrientations();
             ResetRoomEntrances();
+        }
+
+        /* 
+            RoomBlock
+        */
+        public void AddBlock(RoomCells roomBlock)
+        {
+            blocks.Add(roomBlock);
+            cells.Add(roomBlock);
+        }
+
+        public void AddBlocks(RoomBlocks roomBlocks)
+        {
+            blocks.Add(roomBlocks);
+
+            foreach (RoomCells roomBlock in roomBlocks.blocks)
+            {
+                cells.Add(roomBlock);
+            }
+        }
+
+        public void RemoveBlock(RoomCells block)
+        {
+            cells.cells.RemoveAll(cell => block.cells.Contains(cell));
+            this.blocks.Remove(block);
         }
 
         public bool ContainsBlock(RoomCells roomBlock)
@@ -140,22 +134,6 @@ namespace TowerBuilder.DataTypes.Rooms
             }
 
             return false;
-        }
-
-        public void AddBlocks(RoomBlocks roomBlocks)
-        {
-            this.blocks.Add(roomBlocks);
-
-            foreach (RoomCells roomBlock in roomBlocks.blocks)
-            {
-                cells.Add(roomBlock.cells);
-            }
-        }
-
-        public void RemoveBlock(RoomCells block)
-        {
-            cells.cells.RemoveAll(cell => block.cells.Contains(cell));
-            this.blocks.Remove(block);
         }
 
         public RoomCells FindBlockByCellCoordinates(CellCoordinates cellCoordinates)
@@ -174,55 +152,77 @@ namespace TowerBuilder.DataTypes.Rooms
             return null;
         }
 
+        /* 
+            RoomCells
+        */
+
+        // TODO - this feels like a weird place for this to live, perhaps it should be in State instead
+        public void CalculateRoomCells(CellCoordinates blockCount)
+        {
+            RoomCells newCells = new RoomCells();
+            RoomBlocks newBlocks = new RoomBlocks();
+
+            for (int x = 0; x < blockCount.x; x++)
+            {
+                for (int floor = 0; floor < blockCount.floor; floor++)
+                {
+                    RoomCells blockCells = new RoomCells(
+                        blockDimensions.width,
+                        blockDimensions.height
+                    );
+
+                    blockCells.PositionAtCoordinates(new CellCoordinates(
+                        bottomLeftCoordinates.x + (blockDimensions.width * x),
+                        bottomLeftCoordinates.floor + (blockDimensions.height * floor)
+                    ));
+
+                    newBlocks.Add(blockCells);
+                    newCells.Add(blockCells);
+                }
+            }
+
+            this.cells = newCells;
+            this.blocks = newBlocks;
+
+            Reset();
+        }
+
         public void ResetRoomCellOrientations()
         {
             foreach (RoomCell roomCell in cells.cells)
             {
                 SetRoomCellOrientation(roomCell);
             }
-        }
 
-        void OnRoomCellsResize(List<RoomCell> roomCells)
-        {
-            ResetRoomCellOrientations();
-            ResetRoomEntrances();
-        }
-
-        void ResetRoomEntrances()
-        {
-            entrances = entranceBuilder.BuildRoomEntrances(cells);
-        }
-
-        void SetRoomCellOrientation(RoomCell roomCell)
-        {
-            CellCoordinates coordinates = roomCell.coordinates;
-
-            List<RoomCellOrientation> result = new List<RoomCellOrientation>();
-
-            if (!cells.Contains(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
+            void SetRoomCellOrientation(RoomCell roomCell)
             {
-                result.Add(RoomCellOrientation.Top);
-            }
+                CellCoordinates coordinates = roomCell.coordinates;
 
-            if (!cells.Contains(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
-            {
-                result.Add(RoomCellOrientation.Right);
-            }
+                List<RoomCellOrientation> result = new List<RoomCellOrientation>();
 
-            if (!cells.Contains(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
-            {
-                result.Add(RoomCellOrientation.Bottom);
-            }
+                if (!cells.Contains(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
+                {
+                    result.Add(RoomCellOrientation.Top);
+                }
 
-            if (!cells.Contains(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
-            {
-                result.Add(RoomCellOrientation.Left);
-            }
+                if (!cells.Contains(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
+                {
+                    result.Add(RoomCellOrientation.Right);
+                }
 
-            roomCell.orientation = result;
+                if (!cells.Contains(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
+                {
+                    result.Add(RoomCellOrientation.Bottom);
+                }
+
+                if (!cells.Contains(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
+                {
+                    result.Add(RoomCellOrientation.Left);
+                }
+
+                roomCell.orientation = result;
+            }
         }
-
-        void InitializeFurniture() { }
 
         CellCoordinates GetRelativeCoordinates(RoomCell roomCell)
         {
@@ -231,6 +231,36 @@ namespace TowerBuilder.DataTypes.Rooms
                 cells.GetLowestFloor()
             ));
         }
+
+        /* 
+            RoomEntrances
+        */
+        public void RemoveEntrance(RoomEntrance entrance)
+        {
+            entrances.Remove(entrance);
+        }
+
+        public void ResetRoomEntrances()
+        {
+            DestroyRoomEntrances();
+            CreateRoomEntrances();
+        }
+
+        void CreateRoomEntrances()
+        {
+            entrances = entranceBuilder.BuildRoomEntrances(cells);
+        }
+
+        void DestroyRoomEntrances()
+        {
+            entrances = null;
+        }
+
+
+        /*
+            Furniture 
+         */
+        void InitializeFurniture() { }
     }
 }
 

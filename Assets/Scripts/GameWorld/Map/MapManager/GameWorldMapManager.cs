@@ -7,7 +7,7 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.GameWorld.Rooms;
 using TowerBuilder.GameWorld.UI;
 using TowerBuilder.State;
-using TowerBuilder.State.UI;
+using TowerBuilder.State.Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -99,7 +99,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             }
 
             // TODO - perhaps avoid doing this ever frame
-            Registry.appState.UI.SetEntityStack(stack);
+            // Registry.appState.UI.SetEntityStack(stack);
         }
 
         void UpdateCurrentSelectedCell()
@@ -145,9 +145,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             SetCurrentToolStateHandlers();
             // Perform initialization of whatever tool state is the default
-            currentToolStateHandler.OnTransitionTo(Registry.appState.UI.toolState);
+            currentToolStateHandler.OnTransitionTo(Registry.appState.Tools.toolState);
 
-            Registry.appState.UI.onToolStateUpdated += OnToolStateUpdated;
+            Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
         }
 
         void OnToolStateUpdated(ToolState nextToolState, ToolState previousToolState)
@@ -159,7 +159,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void SetCurrentToolStateHandlers()
         {
-            ToolState currentToolState = Registry.appState.UI.toolState;
+            ToolState currentToolState = Registry.appState.Tools.toolState;
             currentToolStateHandler = toolStateHandlerMap[currentToolState];
         }
     }

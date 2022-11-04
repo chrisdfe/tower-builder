@@ -23,7 +23,7 @@ namespace TowerBuilder.Definitions.Templates
                 resizability = RoomResizability.Horizontal(),
 
                 entranceBuilderFactory = () => new HallwayEntranceBuilder(),
-                validatorFactory = () => new DefaultRoomValidator(),
+                validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
                 color = Color.gray
             },
@@ -40,7 +40,7 @@ namespace TowerBuilder.Definitions.Templates
                 resizability = RoomResizability.Horizontal(),
 
                 entranceBuilderFactory = () => new LobbyEntranceBuilder(),
-                validatorFactory = () => new LobbyRoomValidator(),
+                validatorFactory = (Room room) => new LobbyRoomValidator(room),
 
                 color = Color.gray,
             },
@@ -57,7 +57,7 @@ namespace TowerBuilder.Definitions.Templates
                 resizability = RoomResizability.Horizontal(),
 
                 entranceBuilderFactory = () => new EmptyEntranceBuilder(),
-                validatorFactory = () => new WheelsRoomValidator(),
+                validatorFactory = (Room room) => new WheelsRoomValidator(room),
 
                 color = Color.gray,
             },
@@ -75,7 +75,7 @@ namespace TowerBuilder.Definitions.Templates
                 resizability = RoomResizability.Horizontal(),
 
                 entranceBuilderFactory = () => new LobbyEntranceBuilder(),
-                validatorFactory = () => new LobbyRoomValidator(),
+                validatorFactory = (Room room) => new LobbyRoomValidator(room),
 
                 color = Color.gray,
             },
@@ -103,7 +103,7 @@ namespace TowerBuilder.Definitions.Templates
                     }
                 ),
 
-                validatorFactory = () => new DefaultRoomValidator(),
+                validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
                 color = Color.green,
             },
@@ -133,7 +133,7 @@ namespace TowerBuilder.Definitions.Templates
                     }
                 ),
 
-                validatorFactory = () => new DefaultRoomValidator(),
+                validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
                 color = Color.yellow,
             },
@@ -162,7 +162,7 @@ namespace TowerBuilder.Definitions.Templates
                     }
                 ),
 
-                validatorFactory = () => new DefaultRoomValidator(),
+                validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
                 color = Color.yellow,
             },
@@ -191,7 +191,7 @@ namespace TowerBuilder.Definitions.Templates
                     }
                 ),
 
-                validatorFactory = () => new DefaultRoomValidator(),
+                validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
                 color = Color.yellow,
             },
@@ -210,7 +210,7 @@ namespace TowerBuilder.Definitions.Templates
 
                 entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
 
-                validatorFactory = () => new ElevatorRoomValidator(),
+                validatorFactory = (Room room) => new ElevatorRoomValidator(room),
 
                 color = Color.magenta,
             },
@@ -229,7 +229,7 @@ namespace TowerBuilder.Definitions.Templates
 
                 entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
 
-                validatorFactory = () => new ElevatorRoomValidator(),
+                validatorFactory = (Room room) => new ElevatorRoomValidator(room),
 
                 color = Color.yellow,
             },
@@ -247,7 +247,7 @@ namespace TowerBuilder.Definitions.Templates
                 resizability = RoomResizability.Vertical(),
 
                 entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
-                validatorFactory = () => new ElevatorRoomValidator(),
+                validatorFactory = (Room room) => new ElevatorRoomValidator(room),
 
                 color = Color.magenta,
             },
@@ -267,7 +267,7 @@ namespace TowerBuilder.Definitions.Templates
                 color = Color.yellow,
 
                 entranceBuilderFactory = () => new StairwellEntranceBuilder(),
-                validatorFactory = () => new DefaultRoomValidator(),
+                validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
             },
 
@@ -286,7 +286,7 @@ namespace TowerBuilder.Definitions.Templates
                 color = Color.yellow,
 
                 entranceBuilderFactory = () => new StairwellEntranceBuilder(),
-                validatorFactory = () => new DefaultRoomValidator(),
+                validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
             },
 
@@ -314,7 +314,7 @@ namespace TowerBuilder.Definitions.Templates
                         cellCoordinates = new CellCoordinates(0, 0)
                     },
                 }),
-                validatorFactory = () => new DefaultRoomValidator(),
+                validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
 
                 color = Color.green,

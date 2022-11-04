@@ -4,162 +4,112 @@ using System.Linq;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Blueprints;
 using TowerBuilder.State;
+using TowerBuilder.State.Tools;
 using TowerBuilder.State.UI;
 using UnityEngine;
 
-public class GroundManager : MonoBehaviour
+namespace TowerBuilder.GameWorld.Map
 {
-    GameObject gameWorldGroundCellPrefab;
-    GameObject groundPlaceholder;
-    List<CellCoordinates> currentBlueprintCells = new List<CellCoordinates>();
-
-    // TODO - put these somewhere else
-    const int MAP_CELLS_WIDTH = 50;
-    const int MAP_CELLS_HEIGHT = 50;
-    const int GROUND_STARTING_FLOOR = -1;
-
-    Dictionary<(int x, int floor), GameWorldGroundCell> gameWorldGroundCells = new Dictionary<(int x, int floor), GameWorldGroundCell>();
-
-    void Awake()
+    public class GroundManager : MonoBehaviour
     {
-        gameWorldGroundCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Ground/GroundCell");
-        groundPlaceholder = transform.Find("GroundPlaceholder").gameObject;
+        GameObject gameWorldGroundCellPrefab;
+        GameObject groundPlaceholder;
 
-        groundPlaceholder.SetActive(false);
+        // TODO - put these somewhere else
+        const int MAP_CELLS_WIDTH = 50;
+        const int MAP_CELLS_HEIGHT = 50;
+        const int GROUND_STARTING_FLOOR = -1;
 
-        Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
-        Registry.appState.Rooms.onRoomRemoved += OnRoomDestroyed;
-        Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-        Registry.appState.UI.onToolStateUpdated += OnToolStateUpdated;
-        Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
-    }
+        Dictionary<(int x, int floor), GameWorldGroundCell> gameWorldGroundCells = new Dictionary<(int x, int floor), GameWorldGroundCell>();
 
-    void Start()
-    {
-        CreateGroundCells();
-    }
-
-    void OnDestroy()
-    {
-        Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
-        Registry.appState.Rooms.onRoomRemoved -= OnRoomDestroyed;
-        Registry.appState.UI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
-        Registry.appState.UI.onToolStateUpdated -= OnToolStateUpdated;
-        Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated -= OnSelectedRoomTemplateUpdated;
-    }
-
-    void OnRoomAdded(Room room)
-    {
-        foreach (RoomCell roomCell in room.cells.cells)
+        void Awake()
         {
-            SetGroundCellVisibility(roomCell.coordinates, false);
-        }
-    }
+            gameWorldGroundCellPrefab = Resources.Load<GameObject>("Prefabs/Map/Ground/GroundCell");
+            groundPlaceholder = transform.Find("GroundPlaceholder").gameObject;
 
-    void OnRoomDestroyed(Room room)
-    {
-        foreach (RoomCell roomCell in room.cells.cells)
-        {
-            SetGroundCellVisibility(roomCell.coordinates, true);
-        }
-    }
+            groundPlaceholder.SetActive(false);
 
-    void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)
-    {
-        if (Registry.appState.UI.toolState != ToolState.Build)
-        {
-            return;
+            Registry.appState.Rooms.events.onRoomAdded += OnRoomAdded;
+            Registry.appState.Rooms.events.onRoomRemoved += OnRoomDestroyed;
+            Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
+            Registry.appState.Tools.buildToolSubState.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
-        UpdateBlueprintGroundCellsVisibility();
-    }
-
-    void OnToolStateUpdated(ToolState toolState, ToolState previousToolState)
-    {
-        if (toolState == ToolState.Build)
+        void Start()
         {
-            SetCurrentBlueprintCells();
-            SetBlueprintGroundCellsVisibility(false);
-            SetGroundCellsVisibility(currentBlueprintCells, false);
+            // CreateGroundCells();
         }
-        else if (previousToolState == ToolState.Build)
+
+        void OnDestroy()
         {
-            SetBlueprintGroundCellsVisibility(true);
-            currentBlueprintCells = new List<CellCoordinates>();
+            Registry.appState.Rooms.events.onRoomAdded -= OnRoomAdded;
+            Registry.appState.Rooms.events.onRoomRemoved -= OnRoomDestroyed;
+            Registry.appState.UI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
+            Registry.appState.Tools.events.onToolStateUpdated -= OnToolStateUpdated;
+            Registry.appState.Tools.buildToolSubState.events.onSelectedRoomTemplateUpdated -= OnSelectedRoomTemplateUpdated;
         }
-    }
 
-    void OnSelectedRoomTemplateUpdated(RoomTemplate roomTemplate)
-    {
-        UpdateBlueprintGroundCellsVisibility();
-    }
-
-    void SetCurrentBlueprintCells()
-    {
-        Blueprint currentBlueprint = Registry.appState.UI.buildToolSubState.currentBlueprint;
-        currentBlueprintCells = currentBlueprint.room.cells.cells.Select(roomCell => roomCell.coordinates).ToList();
-    }
-
-    void CreateGroundCells()
-    {
-        for (int x = -MAP_CELLS_WIDTH; x < MAP_CELLS_WIDTH; x++)
+        void OnRoomAdded(Room room)
         {
-            for (int floor = GROUND_STARTING_FLOOR; floor > GROUND_STARTING_FLOOR - MAP_CELLS_HEIGHT; floor--)
+            foreach (RoomCell roomCell in room.cells.cells)
             {
-                CreateGroundCellAtCoordinates(new CellCoordinates(x, floor));
+                SetGroundCellVisibility(roomCell.coordinates, false);
             }
         }
-    }
 
-    void UpdateBlueprintGroundCellsVisibility()
-    {
-        SetBlueprintGroundCellsVisibility(true);
-        SetCurrentBlueprintCells();
-        SetBlueprintGroundCellsVisibility(false);
-    }
-
-    void SetBlueprintGroundCellsVisibility(bool isVisible)
-    {
-        foreach (CellCoordinates cellCoordinates in currentBlueprintCells)
+        void OnRoomDestroyed(Room room)
         {
-            bool cellIsOccupied = Registry.appState.Rooms.FindRoomAtCell(cellCoordinates) != null;
-            if (
-                gameWorldGroundCells.ContainsKey((cellCoordinates.x, cellCoordinates.floor)) &&
-                !cellIsOccupied
-            )
+            foreach (RoomCell roomCell in room.cells.cells)
+            {
+                SetGroundCellVisibility(roomCell.coordinates, true);
+            }
+        }
+
+        void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates) { }
+
+        void OnToolStateUpdated(ToolState toolState, ToolState previousToolState) { }
+
+        void OnSelectedRoomTemplateUpdated(RoomTemplate roomTemplate) { }
+
+        void CreateGroundCells()
+        {
+            for (int x = -MAP_CELLS_WIDTH; x < MAP_CELLS_WIDTH; x++)
+            {
+                for (int floor = GROUND_STARTING_FLOOR; floor > GROUND_STARTING_FLOOR - MAP_CELLS_HEIGHT; floor--)
+                {
+                    CreateGroundCellAtCoordinates(new CellCoordinates(x, floor));
+                }
+            }
+        }
+
+        void CreateGroundCellAtCoordinates(CellCoordinates cellCoordinates)
+        {
+            GameObject gameWorldGroundCellGameObject = Instantiate<GameObject>(gameWorldGroundCellPrefab);
+            GameWorldGroundCell groundCell = gameWorldGroundCellGameObject.GetComponent<GameWorldGroundCell>();
+
+            groundCell.transform.parent = transform;
+            groundCell.SetCoordinates(cellCoordinates);
+
+            gameWorldGroundCells[(cellCoordinates.x, cellCoordinates.floor)] = groundCell;
+        }
+
+        void SetGroundCellsVisibility(List<CellCoordinates> cells, bool isVisible)
+        {
+            foreach (CellCoordinates cellCoordinates in cells)
             {
                 SetGroundCellVisibility(cellCoordinates, isVisible);
             }
         }
-    }
 
-    void CreateGroundCellAtCoordinates(CellCoordinates cellCoordinates)
-    {
-        GameObject gameWorldGroundCellGameObject = Instantiate<GameObject>(gameWorldGroundCellPrefab);
-        GameWorldGroundCell groundCell = gameWorldGroundCellGameObject.GetComponent<GameWorldGroundCell>();
-
-        groundCell.transform.parent = transform;
-        groundCell.SetCoordinates(cellCoordinates);
-
-        gameWorldGroundCells[(cellCoordinates.x, cellCoordinates.floor)] = groundCell;
-    }
-
-    void SetGroundCellsVisibility(List<CellCoordinates> cells, bool isVisible)
-    {
-        foreach (CellCoordinates cellCoordinates in cells)
+        void SetGroundCellVisibility(CellCoordinates cellCoordinates, bool isVisible)
         {
-            SetGroundCellVisibility(cellCoordinates, isVisible);
-        }
-    }
-
-    void SetGroundCellVisibility(CellCoordinates cellCoordinates, bool isVisible)
-    {
-        if (gameWorldGroundCells.ContainsKey((cellCoordinates.x, cellCoordinates.floor)))
-        {
-            GameWorldGroundCell groundCell = gameWorldGroundCells[(cellCoordinates.x, cellCoordinates.floor)];
-            groundCell.SetVisible(isVisible);
+            if (gameWorldGroundCells.ContainsKey((cellCoordinates.x, cellCoordinates.floor)))
+            {
+                GameWorldGroundCell groundCell = gameWorldGroundCells[(cellCoordinates.x, cellCoordinates.floor)];
+                groundCell.SetVisible(isVisible);
+            }
         }
     }
 }

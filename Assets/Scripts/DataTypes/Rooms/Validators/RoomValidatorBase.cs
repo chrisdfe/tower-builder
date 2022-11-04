@@ -10,50 +10,48 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 {
     public class RoomValidatorBase
     {
-        public virtual List<RoomValidationError> Validate(Room room, AppState stores)
+        Room room;
+
+        public List<RoomValidationError> errors { get; private set; } = new List<RoomValidationError>();
+
+        public bool isValid { get { return errors.Count == 0; } }
+
+        protected virtual List<GenericRoomValidations.ValidationFunc> RoomValidators { get; } = new List<GenericRoomValidations.ValidationFunc>();
+        protected virtual List<GenericRoomCellValidations.ValidationFunc> RoomCellValidators { get; } = new List<GenericRoomCellValidations.ValidationFunc>();
+
+        // Room Validators that get run on every room
+        List<GenericRoomValidations.ValidationFunc> BaseRoomValidators { get; } = new List<GenericRoomValidations.ValidationFunc>() {
+          GenericRoomValidations.ValidateWallet
+        };
+
+        List<GenericRoomCellValidations.ValidationFunc> BaseRoomCellValidators { get; } = new List<GenericRoomCellValidations.ValidationFunc>() {
+          GenericRoomCellValidations.ValidateOverlap
+        };
+
+        public RoomValidatorBase(Room room)
         {
-            List<RoomValidationError> result = new List<RoomValidationError>();
-            result = result.Concat(ValidateRoom(room, stores)).ToList();
+            this.room = room;
+        }
+
+        public void Validate(AppState appState)
+        {
+            errors = new List<RoomValidationError>();
+
+            List<GenericRoomValidations.ValidationFunc> AllRoomValidators = RoomValidators.Concat(BaseRoomValidators).ToList();
+            List<GenericRoomCellValidations.ValidationFunc> AllRoomCellValidators = RoomCellValidators.Concat(BaseRoomCellValidators).ToList();
+
+            foreach (GenericRoomValidations.ValidationFunc RoomValidationFunc in AllRoomValidators)
+            {
+                errors = errors.Concat(RoomValidationFunc(appState, room)).ToList();
+            }
 
             foreach (RoomCell roomCell in room.cells.cells)
             {
-                result = result.Concat(ValidateRoomCell(roomCell, stores)).ToList();
-            }
-
-            return result;
-        }
-
-        public virtual List<RoomValidationError> ValidateRoom(Room room, AppState stores)
-        {
-            List<RoomValidationError> result = new List<RoomValidationError>();
-
-            int walletBalance = stores.Wallet.balance;
-
-            if (walletBalance < room.price)
-            {
-                result.Add(new RoomValidationError("Insufficient Funds."));
-            }
-
-            return result;
-        }
-
-        public virtual List<RoomValidationError> ValidateRoomCell(RoomCell roomCell, AppState stores)
-        {
-            RoomList allRooms = stores.Rooms.roomList;
-            List<RoomValidationError> result = new List<RoomValidationError>();
-
-            // Check for overlapping cells
-            foreach (Room otherRoom in allRooms.rooms)
-            {
-                if (otherRoom.cells.Contains(roomCell))
+                foreach (GenericRoomCellValidations.ValidationFunc RoomCellValidationFunc in AllRoomCellValidators)
                 {
-                    result.Add(
-                        new RoomValidationError("You cannot build rooms on top of each other.")
-                    );
+                    errors = errors.Concat(RoomCellValidationFunc(appState, room, roomCell)).ToList();
                 }
             }
-
-            return result;
         }
     }
 }

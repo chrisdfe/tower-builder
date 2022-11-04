@@ -13,23 +13,13 @@ namespace TowerBuilder.State.UI
     {
         public struct Input
         {
-            public ToolState? toolState;
             public CellCoordinates currentSelectedCell;
-
-            public NoneToolState.Input noneToolState;
-            public BuildToolState.Input buildToolState;
-            public DestroyToolState.Input destroyToolState;
-            public InspectToolState.Input inspectToolState;
-            public RoutesToolState.Input routesToolState;
         }
 
-        public ToolState toolState { get; private set; } = ToolState.None;
-
         public CellCoordinates currentSelectedCell { get; private set; } = null;
-        public delegate void cellCoordinatesEvent(CellCoordinates currentSelectedCell);
-        public cellCoordinatesEvent onCurrentSelectedCellUpdated;
 
-        public RoomConnections blueprintRoomConnections = new RoomConnections();
+        public delegate void CellCoordinatesEvent(CellCoordinates currentSelectedCell);
+        public CellCoordinatesEvent onCurrentSelectedCellUpdated;
 
         public Room currentSelectedRoom { get; private set; } = null;
         public delegate void selectedRoomEvent(Room room);
@@ -39,57 +29,20 @@ namespace TowerBuilder.State.UI
         public delegate void SelectedRoomBlockEvent(RoomCells roomBlock);
         public SelectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
 
-        public NoneToolState noneToolSubState;
-        public BuildToolState buildToolSubState;
-        public DestroyToolState destroyToolSubState;
-        public InspectToolState inspectToolSubState;
-        public RoutesToolState routesToolSubState;
-
-        public delegate void ToolStateUpdatedEvent(ToolState toolState, ToolState previousToolState);
-        public ToolStateUpdatedEvent onToolStateUpdated;
-
-        public SelectableEntityStack selectableEntityStack { get; private set; } = new SelectableEntityStack();
+        // public SelectableEntityStack selectableEntityStack { get; private set; } = new SelectableEntityStack();
 
         public State(Input input)
         {
-            toolState = input.toolState ?? ToolState.None;
-
             currentSelectedCell = input.currentSelectedCell ?? CellCoordinates.zero;
-
-            noneToolSubState = new NoneToolState(this, input.noneToolState);
-            buildToolSubState = new BuildToolState(this, input.buildToolState);
-            destroyToolSubState = new DestroyToolState(this, input.destroyToolState);
-            inspectToolSubState = new InspectToolState(this, input.inspectToolState);
-            routesToolSubState = new RoutesToolState(this, input.routesToolState);
-
         }
 
         public State() : this(new Input()) { }
-
-        public void SetToolState(ToolState newToolState)
-        {
-            if (newToolState == toolState) return;
-
-            TransitionToolState(newToolState, toolState);
-            if (onToolStateUpdated != null)
-            {
-                onToolStateUpdated(toolState, toolState);
-            }
-        }
-
-        public void TransitionToolState(ToolState toolState, ToolState previousToolState)
-        {
-            Debug.Log("transitioning from " + previousToolState);
-            Debug.Log("to " + toolState);
-            GetToolSubState(previousToolState).Teardown();
-            GetToolSubState(toolState).Setup();
-        }
 
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedCell)
         {
             this.currentSelectedCell = currentSelectedCell;
 
-            currentSelectedRoom = Registry.appState.Rooms.FindRoomAtCell(currentSelectedCell);
+            currentSelectedRoom = Registry.appState.Rooms.queries.FindRoomAtCell(currentSelectedCell);
 
             currentSelectedRoomBlock = null;
             if (currentSelectedRoom != null)
@@ -98,10 +51,10 @@ namespace TowerBuilder.State.UI
 
             }
 
-            ToolStateBase currentToolState = GetCurrentActiveToolSubState();
-            currentToolState.OnCurrentSelectedCellUpdated(currentSelectedCell);
-            currentToolState.OnCurrentSelectedRoomUpdated(currentSelectedRoom);
-            currentToolState.OnCurrentSelectedRoomBlockUpdated(currentSelectedRoomBlock);
+            // ToolStateBase currentToolState = GetCurrentActiveToolSubState();
+            // currentToolState.OnCurrentSelectedCellUpdated(currentSelectedCell);
+            // currentToolState.OnCurrentSelectedRoomUpdated(currentSelectedRoom);
+            // currentToolState.OnCurrentSelectedRoomBlockUpdated(currentSelectedRoomBlock);
 
             if (onCurrentSelectedCellUpdated != null)
             {
@@ -117,41 +70,6 @@ namespace TowerBuilder.State.UI
             {
                 onCurrentSelectedRoomBlockUpdated(currentSelectedRoomBlock);
             }
-        }
-
-        public void SetEntityStack(SelectableEntityStack stack)
-        {
-            this.selectableEntityStack = stack;
-        }
-
-        ToolStateBase GetCurrentActiveToolSubState()
-        {
-            return GetToolSubState(toolState);
-        }
-
-        ToolStateBase GetToolSubState(ToolState toolState)
-        {
-            if (toolState == ToolState.Build)
-            {
-                return buildToolSubState;
-            }
-
-            if (toolState == ToolState.Destroy)
-            {
-                return destroyToolSubState;
-            }
-
-            if (toolState == ToolState.Inspect)
-            {
-                return inspectToolSubState;
-            }
-
-            if (toolState == ToolState.Routes)
-            {
-                return routesToolSubState;
-            }
-
-            return noneToolSubState;
         }
     }
 }

@@ -5,7 +5,7 @@ using TowerBuilder.State.Rooms;
 using TowerBuilder.State.UI;
 using UnityEngine;
 
-namespace TowerBuilder.State.UI
+namespace TowerBuilder.State.Tools
 {
     public class InspectToolState : ToolStateBase
     {
@@ -18,19 +18,20 @@ namespace TowerBuilder.State.UI
         public delegate void RoomEvent(Room room);
         public RoomEvent onCurrentInspectedRoomUpdated;
 
-        public InspectToolState(UI.State state, Input input) : base(state)
+        public InspectToolState(Tools.State state, Input input) : base(state)
         {
             currentInspectedRoom = input.currentInspectedRoom ?? null;
         }
 
         public override void Teardown()
         {
+            base.Teardown();
             InspectRoom(null);
         }
 
         public void InspectCurrentSelectedRoom()
         {
-            InspectRoom(parentState.currentSelectedRoom);
+            InspectRoom(Registry.appState.UI.currentSelectedRoom);
         }
 
         public void InspectRoom(Room room)

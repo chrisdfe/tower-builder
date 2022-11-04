@@ -1,4 +1,4 @@
-namespace TowerBuilder.State.UI
+namespace TowerBuilder.State.Tools
 {
     public enum ToolState
     {

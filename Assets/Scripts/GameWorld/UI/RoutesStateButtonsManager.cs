@@ -1,7 +1,7 @@
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.State;
-using TowerBuilder.State.UI;
+using TowerBuilder.State.Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,12 +49,12 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnRouteStartButtonClick()
         {
-            Registry.appState.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteStart);
+            Registry.appState.Tools.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteStart);
         }
 
         void OnRouteEndButtonClick()
         {
-            Registry.appState.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteEnd);
+            Registry.appState.Tools.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteEnd);
         }
 
         void OnRouteCalculateButtonClick()
@@ -65,7 +65,7 @@ namespace TowerBuilder.GameWorld.UI
         void OnRouteClearButtonClick()
         {
             Registry.appState.Routes.ClearDebugRoute();
-            Registry.appState.UI.routesToolSubState.SetClickState(RoutesToolState.ClickState.None);
+            Registry.appState.Tools.routesToolSubState.SetClickState(RoutesToolState.ClickState.None);
         }
 
         void OnAddDebugResidentButtonClick()

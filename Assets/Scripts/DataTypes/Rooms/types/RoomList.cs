@@ -17,12 +17,12 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public void Add(Room room)
         {
-            room.OnBuild();
+            rooms.Add(room);
         }
 
         public void Remove(Room room)
         {
-            room.OnDestroy();
+            rooms.Remove(room);
         }
 
         public Room FindRoomAtCell(CellCoordinates targetCellCoordinates)

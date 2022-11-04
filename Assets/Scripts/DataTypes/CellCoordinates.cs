@@ -37,6 +37,11 @@ namespace TowerBuilder.DataTypes
             return CellCoordinates.Matches(this, b);
         }
 
+        public CellCoordinates Clone()
+        {
+            return new CellCoordinates(x, floor);
+        }
+
         public static CellCoordinates Add(CellCoordinates a, CellCoordinates b)
         {
             return new CellCoordinates(a.x + b.x, a.floor + b.floor);
@@ -53,11 +58,6 @@ namespace TowerBuilder.DataTypes
                 a.x == b.x &&
                 a.floor == b.floor
             );
-        }
-
-        public CellCoordinates Clone()
-        {
-            return new CellCoordinates(x, floor);
         }
 
         public static CellCoordinates zero

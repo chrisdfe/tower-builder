@@ -9,6 +9,8 @@ namespace TowerBuilder.DataTypes.Rooms.Connections
     {
         public List<RoomConnection> connections = new List<RoomConnection>();
 
+        public int Count { get { return connections.Count; } }
+
         public RoomConnections() { }
         public RoomConnections(List<RoomConnection> connections)
         {
@@ -18,6 +20,11 @@ namespace TowerBuilder.DataTypes.Rooms.Connections
         public void Add(RoomConnections roomConnections)
         {
             connections = connections.Concat(roomConnections.connections).ToList();
+        }
+
+        public void Remove(RoomConnection roomConnection)
+        {
+            connections.Remove(roomConnection);
         }
 
         public void Remove(RoomConnections roomConnections)
@@ -35,20 +42,6 @@ namespace TowerBuilder.DataTypes.Rooms.Connections
         public RoomConnection FindConnectionForRoomEntrance(RoomEntrance roomEntrance)
         {
             return connections.Find(roomConnection => roomConnection.ContainsRoomEntrance(roomEntrance));
-        }
-
-        public void RemoveConnectionsForRoom(Room room)
-        {
-            connections = connections.Where(
-                roomConnection => !roomConnection.ContainsRoom(room)
-            ).ToList();
-        }
-
-        public void RemoveConnectionsBetween(Room roomA, Room roomB)
-        {
-            connections = connections.Where(
-                roomConnection => !roomConnection.ContainsRooms(roomA, roomB)
-            ).ToList();
         }
 
         public RoomConnections SearchForNewConnectionsToRoom(RoomList roomList, Room targetRoom)

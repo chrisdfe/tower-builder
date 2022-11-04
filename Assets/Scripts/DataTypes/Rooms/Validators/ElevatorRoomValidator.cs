@@ -10,13 +10,25 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 {
     public class ElevatorRoomValidator : RoomValidatorBase
     {
-        public override List<RoomValidationError> ValidateRoomCell(RoomCell roomCell, AppState stores)
+        public ElevatorRoomValidator(Room room) : base(room) { }
+
+        protected override List<GenericRoomCellValidations.ValidationFunc> RoomCellValidators
         {
-            List<RoomValidationError> result = base.ValidateRoomCell(roomCell, stores);
+            get
+            {
+                return new List<GenericRoomCellValidations.ValidationFunc>() {
+                    ValidateElevatorDistance
+                };
+            }
+        }
+
+        List<RoomValidationError> ValidateElevatorDistance(AppState appState, Room room, RoomCell roomCell)
+        {
+            List<RoomValidationError> errors = new List<RoomValidationError>();
 
             CellCoordinates cellCoordinates = roomCell.coordinates;
 
-            RoomList allRooms = stores.Rooms.roomList;
+            RoomList allRooms = appState.Rooms.roomList;
 
             // Elevators can't be too close together
             // TODO - check above + to the left + right and below + to the left and right (not directly above or below, that's ok)
@@ -28,12 +40,12 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
                 (rightRoom != null && rightRoom.category == "Elevator")
             )
             {
-                result.Add(
+                errors.Add(
                     new RoomValidationError("Elevators cannot be placed direclty next to each other.")
                 );
             }
 
-            return result;
+            return errors;
         }
     }
 }

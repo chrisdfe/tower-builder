@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.State;
-using TowerBuilder.State.UI;
+using TowerBuilder.State.Tools;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -26,244 +27,52 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Initialize()
         {
-            CreateCells();
-            InitializeRoomEntrances();
+            CreateRoomCells();
+            CreateRoomEntrances();
+        }
+
+        public void Teardown()
+        {
+            DestroyRoomCells();
+            DestroyRoomEntrances();
+        }
+
+        public void Reset()
+        {
+            ResetRoomCells();
+            ResetRoomEntrances();
+        }
+
+        // When this has been converted from a blueprint room to a actual room
+        public void OnBuild()
+        {
+            ResetRoomCells();
+            ResetRoomEntrances();
         }
 
         void Awake()
         {
             transform.localPosition = Vector3.zero;
-            Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
-            Registry.appState.Rooms.onRoomBlockAdded += OnRoomBlockAdded;
-            Registry.appState.Rooms.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
-
-            Registry.appState.UI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
-            Registry.appState.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
-            Registry.appState.UI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
-            Registry.appState.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated += OnBlueprintRoomConnectionsUpdated;
         }
 
         void OnDestroy()
         {
-            DestroyCells();
-
-            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
-            Registry.appState.Rooms.onRoomBlockAdded -= OnRoomBlockAdded;
-            Registry.appState.Rooms.onRoomConnectionsUpdated -= OnRoomConnectionsUpdated;
-
-            Registry.appState.UI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
-            Registry.appState.UI.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
-            Registry.appState.UI.inspectToolSubState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
-            Registry.appState.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
+            DestroyRoomCells();
+            DestroyRoomEntrances();
         }
 
-        void OnCurrentSelectedRoomUpdated(Room selectedRoom)
+        /* 
+            Room Cells
+         */
+        public void SetRoomCellColors()
         {
-            if (this.room.isInBlueprintMode)
-            {
-                return;
-            }
-
-            if (selectedRoom == null)
-            {
-                foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
-                {
-                    roomCell.ResetColor();
-                }
-                return;
-            }
-
-            // This is handled in OnCurrentSelectedRoomBlockUpdated
-            if (Registry.appState.UI.toolState == ToolState.Destroy)
-            {
-                return;
-            }
-
-            if (selectedRoom == null)
-            {
-                ResetCellColors();
-                return;
-            }
-
-            if (this.room.id == selectedRoom.id)
-            {
-                if (!IsInCurrentInspectedRoom())
-                {
-                    foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
-                    {
-                        roomCell.SetHoverColor();
-                    }
-                }
-            }
-            else
-            {
-                foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
-                {
-                    roomCell.ResetColor();
-                }
-            }
-        }
-
-        void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock)
-        {
-            if (room.isInBlueprintMode)
-            {
-                return;
-            }
-
-            if (roomBlock == null)
-            {
-                foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
-                {
-                    gameWorldRoomCell.ResetColor();
-                }
-                return;
-            }
-
-            if (Registry.appState.UI.toolState == ToolState.Destroy)
-            {
-                foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
-                {
-                    if (roomBlock.Contains(gameWorldRoomCell.roomCell))
-                    {
-                        gameWorldRoomCell.SetDestroyHoverColor();
-                    }
-                    else
-                    {
-                        gameWorldRoomCell.ResetColor();
-                    }
-                }
-            }
-        }
-
-        bool IsInCurrentInspectedRoom()
-        {
-            Room currentInspectedRoom = Registry.appState.UI.inspectToolSubState.currentInspectedRoom;
-            return currentInspectedRoom != null && currentInspectedRoom.id == room.id;
-        }
-
-        void OnInspectRoomUpdated(Room currentInspectRoom)
-        {
-            if (room.isInBlueprintMode)
-            {
-                return;
-            }
-
-            foreach (GameWorldRoomCell roomCell in gameWorldRoomCells)
-            {
-                if (IsInCurrentInspectedRoom())
-                {
-                    roomCell.SetInspectColor();
-                }
-                else
-                {
-                    roomCell.ResetColor();
-                }
-            }
-
-            UpdateRoomEntrances();
-        }
-
-        // TODO - this is how to determine when this room goes from blueprint mode to getting added to the map
-        void OnRoomAdded(Room room)
-        {
-            // if (this.room.id == room.id)
-            // {
-            //     OnBuild();
-            // }
-        }
-
-        void OnRoomBlockAdded(RoomCells roomBlock)
-        {
-            UpdateRoomCells();
-        }
-
-        void OnRoomBlockDestroyed(RoomCells roomBlock)
-        {
-            List<GameWorldRoomCell> gameWorldRoomCellsCopy = new List<GameWorldRoomCell>(gameWorldRoomCells);
             foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
             {
-                if (roomBlock.Contains(gameWorldRoomCell.roomCell))
-                {
-                    Destroy(gameWorldRoomCell.gameObject);
-                    gameWorldRoomCellsCopy.Remove(gameWorldRoomCell);
-                }
-            }
-
-            gameWorldRoomCells = gameWorldRoomCellsCopy;
-
-            UpdateRoomCells();
-        }
-
-        void OnRoomConnectionsUpdated(RoomConnections roomConnections)
-        {
-            UpdateRoomEntrances();
-        }
-
-        void OnBlueprintRoomConnectionsUpdated(RoomConnections blueprintRoomConnections)
-        {
-            UpdateRoomEntrances();
-        }
-
-        void UpdateRoomEntrances()
-        {
-            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
-            {
-                RoomConnection roomEntranceConnection =
-                   Registry.appState.Rooms.roomConnections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
-
-                bool isConnected = roomEntranceConnection != null;
-
-                RoomConnection blueprintRoomEntranceConnection =
-                    Registry.appState.UI.buildToolSubState.blueprintRoomConnections
-                        .FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
-
-                if (blueprintRoomEntranceConnection != null)
-                {
-                    isConnected = true;
-                }
-
-                if (isConnected)
-                {
-                    gameWorldRoomEntrance.SetConnectedColor();
-                }
-                else
-                {
-                    gameWorldRoomEntrance.ResetColor();
-                }
+                SetRoomCellColor(gameWorldRoomCell);
             }
         }
 
-        void UpdateRoomCells()
-        {
-            Debug.Log("updating room cells");
-            foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
-            {
-                gameWorldRoomCell.UpdateRoomCellMeshSegments();
-            }
-        }
-
-        void InitializeRoomEntrances()
-        {
-            foreach (RoomEntrance roomEntrance in room.entrances)
-            {
-                GameWorldRoomEntrance gameWorldRoomEntrance = GameWorldRoomEntrance.Create(transform);
-                gameWorldRoomEntrance.roomEntrance = roomEntrance;
-                gameWorldRoomEntrance.Initialize();
-                gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
-            }
-        }
-
-        // When this has been converted from a blueprint room to a actual room
-        void OnBuild()
-        {
-            ResetCellColors();
-            UpdateRoomEntrances();
-
-            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
-        }
-
-        void CreateCells()
+        void CreateRoomCells()
         {
             foreach (RoomCell roomCell in room.cells.cells)
             {
@@ -274,11 +83,12 @@ namespace TowerBuilder.GameWorld.Rooms
                 gameWorldRoomCell.baseColor = room.color;
 
                 gameWorldRoomCell.Initialize();
+                SetRoomCellColor(gameWorldRoomCell);
                 gameWorldRoomCells.Add(gameWorldRoomCell);
             }
         }
 
-        void DestroyCells()
+        void DestroyRoomCells()
         {
             foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
             {
@@ -288,20 +98,104 @@ namespace TowerBuilder.GameWorld.Rooms
             gameWorldRoomCells = new List<GameWorldRoomCell>();
         }
 
-        void ResetCells()
-        {
-            DestroyCells();
-            CreateCells();
-        }
-
-        void ResetCellColors()
+        void UpdateRoomCells()
         {
             foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
             {
-                gameWorldRoomCell.ResetColor();
+                gameWorldRoomCell.UpdateRoomCellMeshSegments();
             }
         }
 
+        void ResetRoomCells()
+        {
+            DestroyRoomCells();
+            CreateRoomCells();
+        }
+
+        void SetRoomCellColor(GameWorldRoomCell gameWorldRoomCell)
+        {
+            CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
+            Room currentSelectedRoom = Registry.appState.UI.currentSelectedRoom;
+            RoomCells currentSelectedRoomBlock = Registry.appState.UI.currentSelectedRoomBlock;
+
+            ToolState toolState = Registry.appState.Tools.toolState;
+
+            bool roomContainsCurrentSelectedRoomBlock = room.ContainsBlock(currentSelectedRoomBlock);
+            bool hasUpdated = false;
+
+            switch (toolState)
+            {
+                case (ToolState.Destroy):
+                    if (currentSelectedRoomBlock != null && currentSelectedRoomBlock.Contains(gameWorldRoomCell.roomCell))
+                    {
+                        gameWorldRoomCell.SetDestroyHoverColor();
+                        hasUpdated = true;
+                    }
+                    break;
+                default:
+                    if (room.ContainsBlock(currentSelectedRoomBlock))
+                    {
+                        gameWorldRoomCell.SetHoverColor();
+                        hasUpdated = true;
+                    }
+                    break;
+            }
+
+            if (!hasUpdated)
+            {
+                gameWorldRoomCell.SetBaseColor();
+            }
+        }
+
+        /* 
+            Room Entrances
+         */
+        void CreateRoomEntrances()
+        {
+            foreach (RoomEntrance roomEntrance in room.entrances)
+            {
+                GameWorldRoomEntrance gameWorldRoomEntrance = GameWorldRoomEntrance.Create(transform);
+                gameWorldRoomEntrance.roomEntrance = roomEntrance;
+                gameWorldRoomEntrance.Initialize();
+                SetRoomEntranceColor(gameWorldRoomEntrance);
+                gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
+            }
+        }
+
+        void DestroyRoomEntrances()
+        {
+            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
+            {
+                GameObject.Destroy(gameWorldRoomEntrance.gameObject);
+            }
+
+            gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
+        }
+
+        void ResetRoomEntrances()
+        {
+            DestroyRoomEntrances();
+            CreateRoomEntrances();
+        }
+
+        void SetRoomEntranceColor(GameWorldRoomEntrance gameWorldRoomEntrance)
+        {
+            RoomConnection roomEntranceConnection =
+                               Registry.appState.Rooms.roomConnections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
+
+            if (roomEntranceConnection != null)
+            {
+                gameWorldRoomEntrance.SetConnectedColor();
+            }
+            else
+            {
+                gameWorldRoomEntrance.ResetColor();
+            }
+        }
+
+        /* 
+            Static API
+         */
         public static GameWorldRoom Create(Transform parent)
         {
             GameObject roomPrefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/Room");

@@ -6,6 +6,7 @@ using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Buildings;
 using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.Systems;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -19,12 +20,14 @@ namespace TowerBuilder.GameWorld.UI
         Text currentSelectedCellText;
         Text buildingCountText;
         Text roomCountText;
+        Text roomConnectionsText;
 
         void Awake()
         {
             Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-            Registry.appState.buildings.onBuildingListUpdated += OnBuildingListUpdated;
-            Registry.appState.Rooms.onRoomListUpdated += OnRoomListUpdated;
+            Registry.appState.buildings.events.onBuildingListUpdated += OnBuildingListUpdated;
+            Registry.appState.Rooms.events.onRoomListUpdated += OnRoomListUpdated;
+            Registry.appState.Rooms.events.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
 
             currentSelectedCellText = TransformUtils.FindDeepChild(transform, "CurrentSelectedCellText").GetComponent<Text>();
             currentSelectedCellText.text = "";
@@ -35,9 +38,13 @@ namespace TowerBuilder.GameWorld.UI
             roomCountText = TransformUtils.FindDeepChild(transform, "RoomCountText").GetComponent<Text>();
             roomCountText.text = "";
 
+            roomConnectionsText = TransformUtils.FindDeepChild(transform, "RoomConnectionsText").GetComponent<Text>();
+            roomConnectionsText.text = "";
+
             SetCurrentSelectedCellText();
             SetBuildingCountText();
             SetRoomCountText();
+            SetRoomConnectionsText();
         }
 
         void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)
@@ -53,6 +60,11 @@ namespace TowerBuilder.GameWorld.UI
         void OnRoomListUpdated(RoomList roomList)
         {
             SetRoomCountText();
+        }
+
+        void OnRoomConnectionsUpdated(RoomConnections roomConnection)
+        {
+            SetRoomConnectionsText();
         }
 
         void SetCurrentSelectedCellText()
@@ -73,5 +85,10 @@ namespace TowerBuilder.GameWorld.UI
             roomCountText.text = $"Rooms: {roomsList.Count}";
         }
 
+        void SetRoomConnectionsText()
+        {
+            RoomConnections roomConnections = Registry.appState.Rooms.roomConnections;
+            roomConnectionsText.text = $"Room Connections: {roomConnections.Count}";
+        }
     }
 }

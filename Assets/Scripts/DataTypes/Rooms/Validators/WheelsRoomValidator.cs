@@ -10,11 +10,21 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 {
     public class WheelsRoomValidator : RoomValidatorBase
     {
-        public override List<RoomValidationError> ValidateRoomCell(RoomCell roomCell, AppState stores)
-        {
-            List<RoomValidationError> result = base.ValidateRoomCell(roomCell, stores);
+        public WheelsRoomValidator(Room room) : base(room) { }
 
-            RoomList allRooms = stores.Rooms.roomList;
+        protected override List<GenericRoomCellValidations.ValidationFunc> RoomCellValidators
+        {
+            get
+            {
+                return new List<GenericRoomCellValidations.ValidationFunc>() {
+                    ValidateWheelsAreOnCorrectFloor
+                };
+            }
+        }
+
+        List<RoomValidationError> ValidateWheelsAreOnCorrectFloor(AppState appState, Room room, RoomCell roomCell)
+        {
+            List<RoomValidationError> errors = new List<RoomValidationError>();
 
             CellCoordinates cellCoordinates = roomCell.coordinates;
 
@@ -23,10 +33,10 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             bool isOnBottom = roomCell.GetRelativeCoordinates().floor == 0;
             if (isOnBottom && cellCoordinates.floor != 0)
             {
-                result.Add(new RoomValidationError("Wheels must be placed on first floor"));
+                errors.Add(new RoomValidationError("Wheels must be placed on first floor"));
             }
 
-            return result;
+            return errors;
         }
     }
 }

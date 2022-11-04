@@ -35,107 +35,9 @@ namespace TowerBuilder.GameWorld.Rooms
         Transform[] segments;
         Transform[] wallSegments;
 
-        public void Initialize()
-        {
-            UpdatePosition();
-            UpdateRoomCellMeshSegments();
-            ResetColor();
-        }
-
         /* 
-        public void HighlightEntrance(RoomEntrance roomEntrance)
-        {
-            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
-            {
-                if (gameWorldRoomEntrance.roomEntrance == roomEntrance)
-                {
-                    gameWorldRoomEntrance.SetConnectedColor();
-                }
-                else
-                {
-                    gameWorldRoomEntrance.ResetColor();
-                }
-            }
-        }
+            Lifecycle methods
         */
-
-        public void UpdatePosition()
-        {
-            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
-        }
-
-        public void SetColor(Color color, float alpha = 1f)
-        {
-            foreach (Transform segment in wallSegments)
-            {
-                Material material = segment.GetComponent<MeshRenderer>().material;
-                Color currentColor = material.color;
-                material.color = new Color(color.r, color.g, color.b, alpha);
-            }
-        }
-
-        public void ResetColor()
-        {
-            SetColor(baseColor, 1f);
-        }
-
-        public void SetHoverColor()
-        {
-            SetColor(baseColor, 0.4f);
-        }
-
-        public void SetDestroyHoverColor()
-        {
-            SetColor(Color.red, 0.7f);
-        }
-
-        public void SetInspectColor()
-        {
-            SetColor(Color.white, 0.7f);
-        }
-
-        public void SetColorAlpha(float alpha)
-        {
-            foreach (Transform segment in segments)
-            {
-                Material material = segment.GetComponent<MeshRenderer>().material;
-                Color currentColor = material.color;
-                material.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
-            }
-        }
-
-        public void UpdateRoomCellMeshSegments()
-        {
-            foreach (Transform segment in wallSegments)
-            {
-                SetEnabled(segment, false);
-            }
-
-            foreach (RoomCellOrientation cellPosition in roomCell.orientation)
-            {
-                switch (cellPosition)
-                {
-                    case RoomCellOrientation.Top:
-                        SetEnabled(ceilingSegment, true);
-                        break;
-                    case RoomCellOrientation.Right:
-                        SetEnabled(rightWallSegment, true);
-                        break;
-                    case RoomCellOrientation.Bottom:
-                        SetEnabled(floorSegment, true);
-                        break;
-                    case RoomCellOrientation.Left:
-                        SetEnabled(leftWallSegment, true);
-                        break;
-                }
-            }
-
-            void SetEnabled(Transform segment, bool enabled)
-            {
-                segment.GetComponent<MeshRenderer>().enabled = enabled;
-            }
-        }
-
         void Awake()
         {
             transform.localPosition = Vector3.zero;
@@ -168,9 +70,104 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnDestroy()
         {
-            // Registry.appState.UI.buildToolSubState.onBlueprintRoomConnectionsUpdated -= OnBlueprintRoomConnectionsUpdated;
         }
 
+        public void Initialize()
+        {
+            SetPosition();
+            UpdateRoomCellMeshSegments();
+            SetBaseColor();
+        }
+
+        /* 
+            Position
+        */
+        public void SetPosition()
+        {
+            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
+        }
+
+        /* 
+            Color
+        */
+        public void SetBaseColor()
+        {
+            SetColor(baseColor, 1f);
+        }
+
+        public void SetHoverColor()
+        {
+            SetColor(baseColor, 0.4f);
+        }
+
+        public void SetDestroyHoverColor()
+        {
+            SetColor(Color.red, 0.7f);
+        }
+
+        public void SetInspectColor()
+        {
+            SetColor(Color.white, 0.7f);
+        }
+
+        void SetColor(Color color, float alpha = 1f)
+        {
+            foreach (Transform segment in wallSegments)
+            {
+                Material material = segment.GetComponent<MeshRenderer>().material;
+                Color currentColor = material.color;
+                material.color = new Color(color.r, color.g, color.b, alpha);
+            }
+        }
+
+        void SetColorAlpha(float alpha)
+        {
+            foreach (Transform segment in segments)
+            {
+                Material material = segment.GetComponent<MeshRenderer>().material;
+                Color currentColor = material.color;
+                material.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
+            }
+        }
+
+        /* 
+            Mesh Segments
+         */
+        public void UpdateRoomCellMeshSegments()
+        {
+            foreach (Transform segment in wallSegments)
+            {
+                SetEnabled(segment, false);
+            }
+
+            foreach (RoomCellOrientation cellPosition in roomCell.orientation)
+            {
+                switch (cellPosition)
+                {
+                    case RoomCellOrientation.Top:
+                        SetEnabled(ceilingSegment, true);
+                        break;
+                    case RoomCellOrientation.Right:
+                        SetEnabled(rightWallSegment, true);
+                        break;
+                    case RoomCellOrientation.Bottom:
+                        SetEnabled(floorSegment, true);
+                        break;
+                    case RoomCellOrientation.Left:
+                        SetEnabled(leftWallSegment, true);
+                        break;
+                }
+            }
+
+            void SetEnabled(Transform segment, bool enabled)
+            {
+                segment.GetComponent<MeshRenderer>().enabled = enabled;
+            }
+        }
+
+        /*
+            Static API
+        */
         public static GameWorldRoomCell Create(Transform parent)
         {
             GameObject prefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomCell");

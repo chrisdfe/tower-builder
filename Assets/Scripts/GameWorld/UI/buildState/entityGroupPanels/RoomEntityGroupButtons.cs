@@ -22,8 +22,8 @@ namespace TowerBuilder.GameWorld.UI
 
         public RoomEntityGroupButtons(Transform panelWrapper) : base(panelWrapper)
         {
-            Registry.appState.UI.buildToolSubState.onSelectedRoomCategoryUpdated += OnSelectedRoomCategoryUpdated;
-            Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
+            Registry.appState.Tools.buildToolSubState.events.onSelectedRoomCategoryUpdated += OnSelectedRoomCategoryUpdated;
+            Registry.appState.Tools.buildToolSubState.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         protected override List<UISelectButton> GenerateCategoryButtons()
@@ -31,7 +31,7 @@ namespace TowerBuilder.GameWorld.UI
             List<UISelectButton> result = new List<UISelectButton>();
 
             List<string> allRoomCategories = Registry.roomTemplates.FindAllRoomCategories();
-            string currentCategory = Registry.appState.UI.buildToolSubState.selectedRoomCategory;
+            string currentCategory = Registry.appState.Tools.buildToolSubState.selectedRoomCategory;
 
             foreach (string category in allRoomCategories)
             {
@@ -47,7 +47,7 @@ namespace TowerBuilder.GameWorld.UI
             List<UISelectButton> result = new List<UISelectButton>();
 
             List<RoomTemplate> currentRoomTemplates = GetRoomTemplatesForCurrentCategory();
-            RoomTemplate currentTemplate = Registry.appState.UI.buildToolSubState.selectedRoomTemplate;
+            RoomTemplate currentTemplate = Registry.appState.Tools.buildToolSubState.selectedRoomTemplate;
 
             foreach (RoomTemplate roomTemplate in currentRoomTemplates)
             {
@@ -61,18 +61,18 @@ namespace TowerBuilder.GameWorld.UI
 
         protected override void OnCategoryButtonClick(string roomCategory)
         {
-            Registry.appState.UI.buildToolSubState.SetSelectedRoomCategory(roomCategory);
+            Registry.appState.Tools.buildToolSubState.SetSelectedRoomCategory(roomCategory);
         }
 
         protected override void OnTemplateButtonClick(string roomTemplateKey)
         {
             RoomTemplate selectedRoomTemplate = Registry.roomTemplates.FindByKey(roomTemplateKey);
-            Registry.appState.UI.buildToolSubState.SetSelectedRoomTemplate(selectedRoomTemplate);
+            Registry.appState.Tools.buildToolSubState.SetSelectedRoomTemplate(selectedRoomTemplate);
         }
 
         List<RoomTemplate> GetRoomTemplatesForCurrentCategory()
         {
-            string currentCategory = Registry.appState.UI.buildToolSubState.selectedRoomCategory;
+            string currentCategory = Registry.appState.Tools.buildToolSubState.selectedRoomCategory;
             return Registry.roomTemplates.FindByCategory(currentCategory);
         }
 

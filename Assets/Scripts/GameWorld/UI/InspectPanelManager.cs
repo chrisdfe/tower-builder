@@ -15,10 +15,10 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            Registry.appState.UI.inspectToolSubState.onCurrentInspectedRoomUpdated += OnCurrentInspectedRoomUpdated;
+            Registry.appState.Tools.inspectToolSubState.onCurrentInspectedRoomUpdated += OnCurrentInspectedRoomUpdated;
 
             inspectText = transform.Find("InspectText").GetComponent<Text>();
-            SetInspectText(Registry.appState.UI.inspectToolSubState.currentInspectedRoom);
+            SetInspectText(Registry.appState.Tools.inspectToolSubState.currentInspectedRoom);
         }
 
 

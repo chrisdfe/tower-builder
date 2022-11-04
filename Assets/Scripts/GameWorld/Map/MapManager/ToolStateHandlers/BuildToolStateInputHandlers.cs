@@ -2,74 +2,47 @@ using System;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.GameWorld.Rooms.Blueprints;
-using TowerBuilder.State.UI;
+using TowerBuilder.State.Tools;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager
 {
     public class BuildToolStateInputHandlers : ToolStateInputHandlersBase
     {
-        public GameWorldBlueprint gameWorldBlueprint;
-
         public BuildToolStateInputHandlers(GameWorldMapManager parentMapManager) : base(parentMapManager)
         {
         }
 
         public override void Update() { }
 
-        public override void OnTransitionTo(ToolState previousToolState)
+        public override void OnTransitionTo(ToolState newToolState)
         {
-            CreateBlueprint();
-
-            Registry.appState.Rooms.onRoomAdded += OnRoomAdded;
+            // CreateBlueprint();
+            Registry.appState.Rooms.events.onRoomAdded += OnRoomAdded;
         }
 
-        public override void OnTransitionFrom(ToolState nextToolState)
+        public override void OnTransitionFrom(ToolState previousToolState)
         {
-            DestroyBlueprint();
-
-            Registry.appState.Rooms.onRoomAdded -= OnRoomAdded;
+            // DestroyBlueprint();
+            Registry.appState.Rooms.events.onRoomAdded -= OnRoomAdded;
         }
 
         public override void OnMouseDown()
         {
-            Registry.appState.UI.buildToolSubState.StartBuild();
+            Registry.appState.Tools.buildToolSubState.StartBuild();
         }
 
         public override void OnMouseUp()
         {
-            Registry.appState.UI.buildToolSubState.EndBuild();
+            Registry.appState.Tools.buildToolSubState.EndBuild();
         }
 
         void OnRoomAdded(Room room)
         {
-            if (room.id == Registry.appState.UI.buildToolSubState.currentBlueprint.room.id)
-            {
-                ResetBlueprint();
-            }
-        }
-
-        void CreateBlueprint()
-        {
-            gameWorldBlueprint = GameWorldBlueprint.Create();
-            gameWorldBlueprint.transform.parent = parentMapManager.transform;
-            gameWorldBlueprint.transform.SetParent(parentMapManager.transform);
-
-            // TODO - set this to current selected cell
-            gameWorldBlueprint.transform.position = Vector3.zero;
-        }
-
-        void DestroyBlueprint()
-        {
-            GameObject.Destroy(gameWorldBlueprint.gameObject);
-            gameWorldBlueprint = null;
-        }
-
-        void ResetBlueprint()
-        {
-            DestroyBlueprint();
-            CreateBlueprint();
+            // if (room.id == Registry.appState.Tools.buildToolSubState.currentBlueprint.room.id)
+            // {
+            //     ResetBlueprint();
+            // }
         }
     }
 }

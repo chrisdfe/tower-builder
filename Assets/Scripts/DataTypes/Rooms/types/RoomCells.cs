@@ -12,6 +12,8 @@ namespace TowerBuilder.DataTypes.Rooms
     {
         public List<RoomCell> cells = new List<RoomCell>();
 
+        public int Count { get { return cells.Count; } }
+
         public RoomCells() { }
         public RoomCells(List<RoomCell> cells)
         {
@@ -30,7 +32,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public void Add(List<RoomCell> roomCells)
         {
-            cells.Concat(roomCells);
+            cells = cells.Concat(roomCells).ToList();
         }
 
         public void Add(RoomCells roomCells)

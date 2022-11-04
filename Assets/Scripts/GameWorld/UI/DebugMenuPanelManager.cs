@@ -84,7 +84,7 @@ namespace TowerBuilder.GameWorld.UI
         void AddTestNotification()
         {
             int notificationsLength = Registry.appState.Notifications.allNotifications.Count;
-            Registry.appState.Notifications.createNotification("new message " + (notificationsLength + 1));
+            Registry.appState.Notifications.AddNotification("new message " + (notificationsLength + 1));
         }
 
         void OnTestSaveButtonClick()

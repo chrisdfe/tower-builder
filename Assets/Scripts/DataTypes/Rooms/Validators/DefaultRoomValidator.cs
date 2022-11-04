@@ -8,5 +8,8 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms.Validators
 {
-    public class DefaultRoomValidator : RoomValidatorBase { }
+    public class DefaultRoomValidator : RoomValidatorBase
+    {
+        public DefaultRoomValidator(Room room) : base(room) { }
+    }
 }

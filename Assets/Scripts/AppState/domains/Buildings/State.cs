@@ -14,20 +14,46 @@ namespace TowerBuilder.State.Buildings
             public List<Building> buildingList;
         }
 
+        public class Events
+        {
+            public delegate void BuildingListEvent(List<Building> buildingList);
+            public BuildingListEvent onBuildingListUpdated;
+
+            public delegate void BuildingListChangeEvent(Building building);
+            public BuildingListChangeEvent onBuildingAdded;
+            public BuildingListChangeEvent onBuildingRemoved;
+        }
+
         public List<Building> buildingList = new List<Building>();
 
-        public delegate void BuildingListEvent(List<Building> buildingList);
-        public BuildingListEvent onBuildingListUpdated;
-
-        public delegate void BuildingListChangeEvent(List<Building> buildingList, Building building);
-        public BuildingListChangeEvent onBuildingAdded;
-        public BuildingListChangeEvent onBuildingRemoved;
+        public Events events;
 
         public State(Input input)
         {
             buildingList = input.buildingList ?? new List<Building>();
+            events = new Events();
         }
 
         public State() : this(new Input()) { }
+
+        public void AddBuilding(Building building)
+        {
+            buildingList.Add(building);
+
+            if (events.onBuildingAdded != null)
+            {
+                events.onBuildingAdded(building);
+            }
+        }
+
+        public void RemoveBuilding(Building building)
+        {
+            buildingList.Remove(building);
+
+            if (events.onBuildingRemoved != null)
+            {
+                events.onBuildingRemoved(building);
+            }
+        }
     }
 }

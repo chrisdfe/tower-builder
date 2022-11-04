@@ -2,7 +2,7 @@ using System;
 using TowerBuilder.DataTypes;
 using TowerBuilder.State;
 using TowerBuilder.State.Rooms;
-using TowerBuilder.State.UI;
+using TowerBuilder.State.Tools;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager
@@ -17,7 +17,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public override void OnMouseUp()
         {
-            Registry.appState.UI.destroyToolSubState.DestroyCurrentSelectedRoomBlock();
+            Registry.appState.Tools.destroyToolSubState.DestroyCurrentSelectedRoomBlock();
         }
     }
 }

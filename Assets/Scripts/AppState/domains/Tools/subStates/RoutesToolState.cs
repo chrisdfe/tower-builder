@@ -5,7 +5,7 @@ using TowerBuilder.State.Rooms;
 using TowerBuilder.State.UI;
 using UnityEngine;
 
-namespace TowerBuilder.State.UI
+namespace TowerBuilder.State.Tools
 {
     public class RoutesToolState : ToolStateBase
     {
@@ -23,14 +23,10 @@ namespace TowerBuilder.State.UI
 
         public ClickState currentClickState { get; private set; }
 
-        public RoutesToolState(UI.State state, Input input) : base(state)
+        public RoutesToolState(Tools.State state, Input input) : base(state)
         {
             currentClickState = input.currentClickState ?? ClickState.None;
         }
-
-        public override void Setup() { }
-
-        public override void Teardown() { }
 
         public void SetClickState(ClickState clickState)
         {

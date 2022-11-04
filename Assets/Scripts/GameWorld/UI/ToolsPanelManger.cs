@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Blueprints;
-using TowerBuilder.State.UI;
+using TowerBuilder.State.Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,16 +29,16 @@ namespace TowerBuilder.GameWorld.UI
             ToggleRoutesStateButtonsPanel(false);
             UpdateDescriptionText();
 
-            Registry.appState.UI.onToolStateUpdated += OnToolStateUpdated;
-            Registry.appState.UI.buildToolSubState.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
+            Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
+            Registry.appState.Tools.buildToolSubState.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         void Update()
         {
             // Right click to exit out of current state?
-            if (Input.GetMouseButtonDown(1) && Registry.appState.UI.toolState != ToolState.None)
+            if (Input.GetMouseButtonDown(1) && Registry.appState.Tools.toolState != ToolState.None)
             {
-                Registry.appState.UI.SetToolState(ToolState.None);
+                Registry.appState.Tools.SetToolState(ToolState.None);
             }
         }
 
@@ -71,18 +70,19 @@ namespace TowerBuilder.GameWorld.UI
 
         void UpdateDescriptionText()
         {
-            ToolState toolState = Registry.appState.UI.toolState;
+            ToolState toolState = Registry.appState.Tools.toolState;
+
             if (toolState == ToolState.Build)
             {
-                RoomTemplate selectedRoomTemplate = Registry.appState.UI.buildToolSubState.selectedRoomTemplate;
+                RoomTemplate selectedRoomTemplate = Registry.appState.Tools.buildToolSubState.selectedRoomTemplate;
                 if (selectedRoomTemplate == null)
                 {
                     descriptionText.text = $"{toolState}";
                 }
                 else
                 {
-                    Blueprint blueprint = Registry.appState.UI.buildToolSubState.currentBlueprint;
-                    int price = blueprint.room.price;
+                    Room blueprintRoom = Registry.appState.Tools.buildToolSubState.blueprintRoom;
+                    int price = blueprintRoom.price;
                     descriptionText.text = $"{toolState} - {selectedRoomTemplate.title}: ${price}";
                 }
             }

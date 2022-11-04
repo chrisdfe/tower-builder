@@ -9,9 +9,21 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 {
     public class LobbyRoomValidator : RoomValidatorBase
     {
-        public override List<RoomValidationError> ValidateRoomCell(RoomCell roomCell, AppState stores)
+        public LobbyRoomValidator(Room room) : base(room) { }
+
+        protected override List<GenericRoomCellValidations.ValidationFunc> RoomCellValidators
         {
-            List<RoomValidationError> result = base.ValidateRoomCell(roomCell, stores);
+            get
+            {
+                return new List<GenericRoomCellValidations.ValidationFunc>() {
+                    ValidateLobbyIsOnCorrectFloor
+                };
+            }
+        }
+
+        List<RoomValidationError> ValidateLobbyIsOnCorrectFloor(AppState appState, Room room, RoomCell roomCell)
+        {
+            List<RoomValidationError> errors = new List<RoomValidationError>();
 
             CellCoordinates cellCoordinates = roomCell.coordinates;
 
@@ -20,10 +32,10 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             bool isOnBottom = roomCell.GetRelativeCoordinates().floor == 0;
             if (isOnBottom && cellCoordinates.floor != 0)
             {
-                result.Add(new RoomValidationError("Lobbies must be placed on first floor"));
+                errors.Add(new RoomValidationError("Lobbies must be placed on first floor"));
             }
 
-            return result;
+            return errors;
         }
     }
 }

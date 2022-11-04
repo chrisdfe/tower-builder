@@ -5,8 +5,8 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Buildings;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Blueprints;
 using TowerBuilder.DataTypes.Rooms.Connections;
+using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using TowerBuilder.State;
 using UnityEngine;
@@ -14,7 +14,7 @@ using UnityEngine;
 namespace TowerBuilder.State.Rooms
 {
     [Serializable]
-    public class State
+    public partial class State
     {
         public struct Input
         {
@@ -25,26 +25,8 @@ namespace TowerBuilder.State.Rooms
         public RoomList roomList { get; private set; } = new RoomList();
         public RoomConnections roomConnections { get; private set; } = new RoomConnections();
 
-        public delegate void RoomEvent(Room room);
-        public RoomEvent onRoomAdded;
-        public RoomEvent onRoomRemoved;
-
-        public delegate void RoomListEvent(RoomList roomList);
-        public RoomListEvent onRoomListUpdated;
-
-        public delegate void RoomCellsEvent(Room room, RoomCells cells);
-        public RoomCellsEvent onRoomCellsAdded;
-        public RoomCellsEvent onRoomCellsRemoved;
-
-        public delegate void RoomBlockEvent(RoomCells roomBlock);
-        public RoomBlockEvent onRoomBlockRemoved;
-        public RoomBlockEvent onRoomBlockAdded;
-
-        public delegate void RoomConnectionsEvent(RoomConnections allRoomConnections, RoomConnections roomConnections);
-        public RoomConnectionsEvent onRoomConnectionsAdded;
-        public RoomConnectionsEvent onRoomConnectionsRemoved;
-        public delegate void RoomConnectionsUpdatedEvent(RoomConnections allRoomConnections);
-        public RoomConnectionsUpdatedEvent onRoomConnectionsUpdated;
+        public State.Events events;
+        public State.Queries queries;
 
         public State() : this(new Input()) { }
 
@@ -52,203 +34,272 @@ namespace TowerBuilder.State.Rooms
         {
             roomConnections = input.roomConnections ?? new RoomConnections();
             roomList = input.roomList ?? new RoomList();
+
+            events = new State.Events();
+            queries = new State.Queries(this);
         }
 
-        public void AttemptToAddRoom(Blueprint blueprint, RoomConnections roomConnections)
+        /* 
+            Rooms
+         */
+        public void AddRoom(Room room)
         {
-            List<RoomValidationError> validationErrors = blueprint.Validate(Registry.appState);
+            roomList.Add(room);
 
-            if (validationErrors.Count > 0)
+            if (events.onRoomAdded != null)
+            {
+                events.onRoomAdded(room);
+            }
+
+            if (events.onRoomListUpdated != null)
+            {
+                events.onRoomListUpdated(roomList);
+            }
+
+            room.validator.Validate(Registry.appState);
+        }
+
+        public void BuildRoom(Room room)
+        {
+            room.validator.Validate(Registry.appState);
+
+            if (!room.validator.isValid)
             {
                 // TODO - these should be unique messages - right now they are not
-                foreach (RoomValidationError validationError in validationErrors)
+                foreach (RoomValidationError validationError in room.validator.errors)
                 {
-                    Registry.appState.Notifications.createNotification(validationError.message);
+                    Registry.appState.Notifications.AddNotification(validationError.message);
                 }
                 return;
             }
 
             // 
-            Registry.appState.Wallet.SubtractBalance(blueprint.room.price);
+            Registry.appState.Wallet.SubtractBalance(room.price);
 
             // Decide whether to create a new room or to add to an existing one
-            List<Room> roomsToCombineWith = FindRoomsToCombineWith(blueprint.room);
+            List<Room> roomsToCombineWith = queries.FindRoomsToCombineWith(room);
 
-            Room newRoom = blueprint.room;
-            Building building;
 
             if (roomsToCombineWith.Count > 0)
             {
                 foreach (Room otherRoom in roomsToCombineWith)
                 {
-                    newRoom.AddBlocks(otherRoom.blocks);
-
+                    room.AddBlocks(otherRoom.blocks);
                     DestroyRoom(otherRoom, false);
                 }
 
-                // TODO - this might not be the best place to call this
-                newRoom.Reset();
+                room.Reset();
             }
-            else
+
+            FindAndAddConnectionsForRoom(room);
+
+            room.isInBlueprintMode = false;
+            room.building = FindOrCreateRoomBuilding();
+            room.OnBuild();
+
+            if (events.onRoomBuilt != null)
             {
-                List<CellCoordinates> perimeterRoomCellCoordinates = newRoom.cells.GetPerimeterCellCoordinates();
+                events.onRoomBuilt(room);
+            }
 
-                // find the first cellcoordinates that are inside of a room
-                List<RoomCell> occupiedPerimeterRoomCells = new List<RoomCell>();
+            Building FindOrCreateRoomBuilding()
+            {
+                List<Room> perimeterRooms = FindPerimeterRooms();
 
-                Room perimeterRoom = null;
+                if (perimeterRooms.Count > 0)
+                {
+                    // TODO here - if perimeterRooms has more than 1 then combine them
+                    return queries.FindBuildingByRoom(perimeterRooms[0]);
+                }
+
+                Building building = new Building();
+                Registry.appState.buildings.AddBuilding(building);
+                return building;
+            }
+
+            List<Room> FindPerimeterRooms()
+            {
+                List<CellCoordinates> perimeterRoomCellCoordinates = room.cells.GetPerimeterCellCoordinates();
+                List<Room> result = new List<Room>();
 
                 foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
                 {
-                    perimeterRoom = FindRoomAtCell(coordinates);
+                    Room perimeterRoom = queries.FindRoomAtCell(coordinates);
                     if (perimeterRoom != null)
                     {
-                        break;
+                        result.Add(perimeterRoom);
                     }
                 }
 
-                //  TODO somewhere here - also check if buildings should be combined???
-
-                if (perimeterRoom != null)
-                {
-                    building = FindBuildingByRoom(perimeterRoom);
-                }
-                else
-                {
-                    building = new Building();
-                    Registry.appState.buildings.buildingList.Add(building);
-                }
-
-                newRoom.building = building;
-            }
-
-            AddRoom(newRoom);
-
-            if (roomConnections.connections.Count > 0)
-            {
-                AddRoomConnections(roomConnections);
+                return result;
             }
         }
 
-        // Rooms
-        public void AddRoom(Room room)
+
+        public void AddAndBuildRoom(Room room)
         {
-            if (room == null)
-            {
-                return;
-            }
-
-            roomList.Add(room);
-            room.OnBuild();
-
-            if (onRoomAdded != null)
-            {
-                onRoomAdded(room);
-            }
-
-            if (onRoomListUpdated != null)
-            {
-                onRoomListUpdated(roomList);
-            }
+            AddRoom(room);
+            BuildRoom(room);
         }
 
         public void DestroyRoom(Room room, bool checkForBuildingDestroy = true)
         {
-            if (room == null)
+            roomList.Remove(room);
+
+            if (events.onRoomRemoved != null)
             {
-                return;
+                events.onRoomRemoved(room);
             }
 
-            roomConnections.RemoveConnectionsForRoom(room);
+            if (events.onRoomListUpdated != null)
+            {
+                events.onRoomListUpdated(roomList);
+            }
+
+            room.OnDestroy();
+
+            RemoveConnectionsForRoom(room);
 
             if (checkForBuildingDestroy)
             {
-                Building building = FindBuildingByRoom(room);
+                Building buildingContainingRoom = queries.FindBuildingByRoom(room);
 
-                roomList.Remove(room);
-
-                Building buildingContainingRoom = FindBuildingByRoom(room);
-
-                roomList.Remove(room);
-
-                if (onRoomRemoved != null)
-                {
-                    onRoomRemoved(room);
-                }
-
-                if (onRoomListUpdated != null)
-                {
-                    onRoomListUpdated(roomList);
-                }
-
-                room.OnDestroy();
-
-                RoomList roomsInBuilding = FindRoomsInBuilding(buildingContainingRoom);
+                RoomList roomsInBuilding = queries.FindRoomsInBuilding(buildingContainingRoom);
 
                 if (roomsInBuilding.Count == 0)
                 {
-                    Registry.appState.buildings.buildingList.Remove(building);
+                    Registry.appState.buildings.RemoveBuilding(buildingContainingRoom);
                 }
             }
         }
 
-        // Room Cells
-        public void AddRoomCells(Room room, RoomCells cells)
+        /* 
+            Room Blocks
+         */
+        public void AddRoomBlock(Room room, RoomCells roomBlock)
         {
-            room.cells.Add(cells);
+            room.AddBlock(roomBlock);
+            room.Reset();
 
-            if (onRoomCellsAdded != null)
+            RemoveConnectionsForRoom(room);
+            FindAndAddConnectionsForRoom(room);
+
+            if (events.onRoomBlockAdded != null)
             {
-                onRoomCellsAdded(room, cells);
+                events.onRoomBlockAdded(room, roomBlock);
+            }
+
+            if (events.onRoomBlocksUpdated != null)
+            {
+                events.onRoomBlocksUpdated(room);
             }
         }
 
-        public void RemoveRoomCells(Room room, RoomCells cells)
-        {
-            room.cells.Remove(cells);
-
-            if (onRoomCellsRemoved != null)
-            {
-                onRoomCellsRemoved(room, cells);
-            }
-        }
-
-        // Room Blocks
         public void DestroyRoomBlock(Room room, RoomCells roomBlock)
         {
-            if (room == null)
-            {
-                return;
-            }
-
             // TODO - check if doing this is going to divide the room into 2
             // if so, create another room right here
 
             room.RemoveBlock(roomBlock);
-            room.ResetRoomCellOrientations();
 
-            // TODO - destroy connections block may have had
+            room.Reset();
+            RemoveConnectionsForRoom(room);
+            FindAndAddConnectionsForRoom(room);
 
-            if (room.blocks.blocks.Count == 0)
+            if (room.blocks.Count == 0)
             {
                 DestroyRoom(room);
             }
-        }
-
-        // RoomConnections
-
-        public void AddRoomConnections(RoomConnections roomConnections)
-        {
-            this.roomConnections.Add(roomConnections);
-
-            if (onRoomConnectionsAdded != null)
+            else
             {
-                onRoomConnectionsAdded(this.roomConnections, roomConnections);
+                if (events.onRoomBlockRemoved != null)
+                {
+                    events.onRoomBlockRemoved(room, roomBlock);
+                }
+
+                if (events.onRoomBlocksUpdated != null)
+                {
+                    events.onRoomBlocksUpdated(room);
+                }
             }
 
-            if (onRoomConnectionsUpdated != null)
+            /* 
+            List<RoomEntrance> GetEntrancesInBlock()
             {
-                onRoomConnectionsUpdated(this.roomConnections);
+                List<RoomEntrance> result = new List<RoomEntrance>();
+
+                foreach (RoomEntrance entrance in room.entrances)
+                {
+                    if (roomBlock.Contains(entrance.cellCoordinates))
+                    {
+                        result.Add(entrance);
+                    }
+                }
+
+                return result;
+            }
+            */
+        }
+
+        /*
+            RoomConnections
+        */
+        public void FindAndAddConnectionsForRoom(Room room)
+        {
+            RoomConnections connections = roomConnections.SearchForNewConnectionsToRoom(roomList, room);
+
+            if (connections.Count > 0)
+            {
+                AddRoomConnections(connections);
+            }
+        }
+
+        public void AddRoomConnections(RoomConnections newRoomConnections)
+        {
+            this.roomConnections.Add(newRoomConnections);
+
+            if (events.onRoomConnectionsAdded != null)
+            {
+                events.onRoomConnectionsAdded(this.roomConnections, newRoomConnections);
+            }
+
+            if (events.onRoomConnectionsUpdated != null)
+            {
+                events.onRoomConnectionsUpdated(this.roomConnections);
+            }
+        }
+
+        public void RemoveRoomConnection(RoomConnection roomConnection)
+        {
+            roomConnections.Remove(roomConnection);
+
+            if (events.onRoomConnectionsRemoved != null)
+            {
+                events.onRoomConnectionsRemoved(this.roomConnections, new RoomConnections(new List<RoomConnection>() { roomConnection }));
+            }
+
+            if (events.onRoomConnectionsUpdated != null)
+            {
+                events.onRoomConnectionsUpdated(this.roomConnections);
+            }
+        }
+
+        public void RemoveConnectionsForRoom(Room room)
+        {
+            RoomConnections roomConnectionsForRoom = this.roomConnections.FindConnectionsForRoom(room);
+
+            if (roomConnectionsForRoom.Count == 0) return;
+
+            roomConnections.Remove(roomConnectionsForRoom);
+
+            if (events.onRoomConnectionsRemoved != null)
+            {
+                events.onRoomConnectionsRemoved(this.roomConnections, roomConnectionsForRoom);
+            }
+
+            if (events.onRoomConnectionsUpdated != null)
+            {
+                events.onRoomConnectionsUpdated(this.roomConnections);
             }
         }
 
@@ -256,119 +307,15 @@ namespace TowerBuilder.State.Rooms
         {
             this.roomConnections.Remove(roomConnections);
 
-            if (onRoomConnectionsRemoved != null)
+            if (events.onRoomConnectionsRemoved != null)
             {
-                onRoomConnectionsRemoved(this.roomConnections, roomConnections);
+                events.onRoomConnectionsRemoved(this.roomConnections, roomConnections);
             }
 
-            if (onRoomConnectionsUpdated != null)
+            if (events.onRoomConnectionsUpdated != null)
             {
-                onRoomConnectionsUpdated(this.roomConnections);
+                events.onRoomConnectionsUpdated(this.roomConnections);
             }
-        }
-
-        // Queries
-        public Building FindBuildingByRoom(Room room)
-        {
-            foreach (Building building in Registry.appState.buildings.buildingList)
-            {
-                if (room.building == building)
-                {
-                    return building;
-                }
-            }
-
-            return null;
-        }
-
-        public RoomList FindRoomsInBuilding(Building building)
-        {
-            RoomList buildingRooms = new RoomList();
-
-            foreach (Room room in roomList.rooms)
-            {
-                if (room.building == building)
-                {
-                    buildingRooms.Add(room);
-                }
-            }
-
-            return buildingRooms;
-        }
-
-        public Room FindRoomAtCell(CellCoordinates cellCoordinates)
-        {
-            return roomList.FindRoomAtCell(cellCoordinates);
-        }
-
-        List<Room> FindRoomsToCombineWith(Room room)
-        {
-            List<Room> result = new List<Room>();
-
-            if (room.resizability.Matches(RoomResizability.Inflexible()))
-            {
-                return result;
-            }
-
-            if (room.resizability.x)
-            {
-                //  Check on either side
-                foreach (int floor in room.cells.GetFloorRange())
-                {
-                    Room leftRoom = FindRoomAtCell(new CellCoordinates(
-                        room.cells.GetLowestX() - 1,
-                        floor
-                    ));
-
-                    Room rightRoom = FindRoomAtCell(new CellCoordinates(
-                        room.cells.GetHighestX() + 1,
-                        floor
-                    ));
-
-                    foreach (Room otherRoom in new Room[] { leftRoom, rightRoom })
-                    {
-                        if (
-                            otherRoom != null &&
-                            otherRoom.key == room.key &&
-                            !result.Contains(otherRoom)
-                        )
-                        {
-                            result.Add(otherRoom);
-                        }
-                    }
-                }
-            }
-
-            if (room.resizability.floor)
-            {
-                //  Check on floors above and below
-                foreach (int x in room.cells.GetXRange())
-                {
-                    Room aboveRoom = FindRoomAtCell(new CellCoordinates(
-                        x,
-                        room.cells.GetHighestFloor() + 1
-                    ));
-
-                    Room belowRoom = FindRoomAtCell(new CellCoordinates(
-                        x,
-                        room.cells.GetLowestFloor() - 1
-                    ));
-
-                    foreach (Room otherRoom in new Room[] { aboveRoom, belowRoom })
-                    {
-                        if (
-                            otherRoom != null &&
-                            otherRoom.key == room.key &&
-                            !result.Contains(otherRoom)
-                        )
-                        {
-                            result.Add(otherRoom);
-                        }
-                    }
-                }
-            }
-
-            return result;
         }
     }
 }

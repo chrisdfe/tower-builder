@@ -11,6 +11,8 @@ namespace TowerBuilder.DataTypes.Rooms
     {
         public List<RoomCells> blocks { get; private set; } = new List<RoomCells>();
 
+        public int Count { get { return blocks.Count; } }
+
         public void Add(RoomBlocks otherBlocks)
         {
             blocks = blocks.Concat(otherBlocks.blocks).ToList();

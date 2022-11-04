@@ -29,8 +29,8 @@ namespace TowerBuilder.DataTypes.Rooms
         public delegate RoomEntranceBuilderBase EntranceBuilderFactory();
         public EntranceBuilderFactory entranceBuilderFactory = () => new DefaultEntranceBuilder();
 
-        public delegate RoomValidatorBase RoomValidatorFactory();
-        public RoomValidatorFactory validatorFactory = () => new DefaultRoomValidator();
+        public delegate RoomValidatorBase RoomValidatorFactory(Room room);
+        public RoomValidatorFactory validatorFactory = (Room room) => new DefaultRoomValidator(room);
 
         [NonSerialized]
         public Color color = Color.white;
