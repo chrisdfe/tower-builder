@@ -70,6 +70,8 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnDestroy()
         {
+            Debug.Log("GameWorldRoomCell OnDestroy");
+            GameObject.Destroy(roomCellMesh.gameObject);
         }
 
         public void Initialize()
@@ -103,6 +105,16 @@ namespace TowerBuilder.GameWorld.Rooms
         public void SetDestroyHoverColor()
         {
             SetColor(Color.red, 0.7f);
+        }
+
+        public void SetValidBlueprintColor()
+        {
+            SetColor(Color.blue, 1.0f);
+        }
+
+        public void SetInvalidBlueprintColor()
+        {
+            SetColor(Color.red, 1.0f);
         }
 
         public void SetInspectColor()

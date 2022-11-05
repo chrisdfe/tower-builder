@@ -30,12 +30,12 @@ namespace TowerBuilder.State.Tools
             public delegate void SelectedRoomTemplateEvent(RoomTemplate selectedRoomTemplate);
             public SelectedRoomTemplateEvent onSelectedRoomTemplateUpdated;
 
-            public delegate void buildIsActiveEvent(bool buildIsActive);
+            public delegate void buildIsActiveEvent();
             public buildIsActiveEvent onBuildStart;
             public buildIsActiveEvent onBuildEnd;
 
-            public delegate void BlueprintRoomConnectionEvent(RoomConnections roomConnections);
-            public BlueprintRoomConnectionEvent onBlueprintRoomConnectionsUpdated;
+            public delegate void blueprintUpdateEvent(Room blueprintRoom);
+            public blueprintUpdateEvent onBlueprintRoomUpdated;
         }
 
         public CellCoordinates buildStartCell { get; private set; } = null;
@@ -107,6 +107,11 @@ namespace TowerBuilder.State.Tools
 
             ResetBlueprintRoom();
             blueprintRoom.validator.Validate(Registry.appState);
+
+            if (events.onBlueprintRoomUpdated != null)
+            {
+                events.onBlueprintRoomUpdated(blueprintRoom);
+            }
         }
 
         public void SetSelectedRoomCategory(string roomCategory)
@@ -151,13 +156,12 @@ namespace TowerBuilder.State.Tools
 
             if (events.onBuildStart != null)
             {
-                events.onBuildStart(buildIsActive);
+                events.onBuildStart();
             }
         }
 
         public void EndBuild()
         {
-            Debug.Log("EndBuild");
             buildIsActive = false;
 
             blueprintRoom.validator.Validate(Registry.appState);
@@ -165,6 +169,8 @@ namespace TowerBuilder.State.Tools
             if (blueprintRoom.validator.isValid)
             {
                 BuildBlueprintRoom();
+
+                ResetBuildCoordinates();
                 CreateBlueprintRoom();
             }
             else
@@ -173,12 +179,13 @@ namespace TowerBuilder.State.Tools
                     blueprintRoom.validator.errors.Select(error => error.message).ToArray()
                 );
 
+                ResetBuildCoordinates();
                 ResetBlueprintRoom();
             }
 
             if (events.onBuildEnd != null)
             {
-                events.onBuildEnd(buildIsActive);
+                events.onBuildEnd();
             }
         }
 
@@ -214,6 +221,13 @@ namespace TowerBuilder.State.Tools
         {
             DestroyBlueprintRoom();
             CreateBlueprintRoom();
+        }
+
+        void ResetBuildCoordinates()
+        {
+            CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
+            buildStartCoordinates = currentSelectedCell;
+            buildEndCoordinates = currentSelectedCell;
         }
 
         void SetBlueprintRoomCells()

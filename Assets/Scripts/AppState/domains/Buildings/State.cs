@@ -44,6 +44,11 @@ namespace TowerBuilder.State.Buildings
             {
                 events.onBuildingAdded(building);
             }
+
+            if (events.onBuildingListUpdated != null)
+            {
+                events.onBuildingListUpdated(buildingList);
+            }
         }
 
         public void RemoveBuilding(Building building)
@@ -53,6 +58,11 @@ namespace TowerBuilder.State.Buildings
             if (events.onBuildingRemoved != null)
             {
                 events.onBuildingRemoved(building);
+            }
+
+            if (events.onBuildingListUpdated != null)
+            {
+                events.onBuildingListUpdated(buildingList);
             }
         }
     }

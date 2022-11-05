@@ -8,19 +8,22 @@ namespace TowerBuilder.State.Wallet
 {
     public class State
     {
+        // static int DEFAULT_STARTING_BALANCE = 1000000;
+        static int DEFAULT_STARTING_BALANCE = 1000;
+
         public struct Input
         {
             public int? balance;
         }
 
-        public int balance { get; private set; } = 1000000;
+        public int balance { get; private set; } = DEFAULT_STARTING_BALANCE;
 
         public delegate void BalanceUpdatedEvent(int newBalance, int prevBalance);
         public BalanceUpdatedEvent onBalanceUpdated;
 
         public State(Input input)
         {
-            balance = input.balance ?? 1000000;
+            balance = input.balance ?? DEFAULT_STARTING_BALANCE;
         }
 
         public State() : this(new Input()) { }

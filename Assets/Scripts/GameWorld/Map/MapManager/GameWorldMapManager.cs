@@ -72,6 +72,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             currentToolStateHandler.Update();
         }
 
+        // TODO - this probably belongs in UIManager
         void UpdateSelectableEntityStack()
         {
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);

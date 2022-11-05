@@ -57,6 +57,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnDestroy()
         {
+            Debug.Log("room ondestroy");
             DestroyRoomCells();
             DestroyRoomEntrances();
         }
@@ -125,6 +126,21 @@ namespace TowerBuilder.GameWorld.Rooms
 
             switch (toolState)
             {
+                case (ToolState.Build):
+                    if (room.isInBlueprintMode)
+                    {
+                        if (room.validator.isValid)
+                        {
+                            gameWorldRoomCell.SetValidBlueprintColor();
+                        }
+                        else
+                        {
+                            gameWorldRoomCell.SetInvalidBlueprintColor();
+                        }
+
+                        hasUpdated = true;
+                    }
+                    break;
                 case (ToolState.Destroy):
                     if (currentSelectedRoomBlock != null && currentSelectedRoomBlock.Contains(gameWorldRoomCell.roomCell))
                     {

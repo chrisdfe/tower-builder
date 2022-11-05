@@ -17,8 +17,8 @@ namespace TowerBuilder.GameWorld.UI
 {
     class RoomEntityGroupButtons : EntityGroupButtonsBase
     {
-        protected override string categoryButtonsWrapperName { get { return "RoomCategoryButtons"; } }
-        protected override string templateButtonsWrapperName { get { return "RoomTemplateButtons"; } }
+        protected override string categoryButtonsWrapperName { get { return "CategoryButtons"; } }
+        protected override string templateButtonsWrapperName { get { return "TemplateButtons"; } }
 
         public RoomEntityGroupButtons(Transform panelWrapper) : base(panelWrapper)
         {

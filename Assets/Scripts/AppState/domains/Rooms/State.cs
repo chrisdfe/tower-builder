@@ -57,6 +57,11 @@ namespace TowerBuilder.State.Rooms
             }
 
             room.validator.Validate(Registry.appState);
+
+            if (room.validator.isValid)
+            {
+                FindAndAddConnectionsForRoom(room);
+            }
         }
 
         public void BuildRoom(Room room)
@@ -79,7 +84,6 @@ namespace TowerBuilder.State.Rooms
             // Decide whether to create a new room or to add to an existing one
             List<Room> roomsToCombineWith = queries.FindRoomsToCombineWith(room);
 
-
             if (roomsToCombineWith.Count > 0)
             {
                 foreach (Room otherRoom in roomsToCombineWith)
@@ -90,8 +94,6 @@ namespace TowerBuilder.State.Rooms
 
                 room.Reset();
             }
-
-            FindAndAddConnectionsForRoom(room);
 
             room.isInBlueprintMode = false;
             room.building = FindOrCreateRoomBuilding();
@@ -105,9 +107,11 @@ namespace TowerBuilder.State.Rooms
             Building FindOrCreateRoomBuilding()
             {
                 List<Room> perimeterRooms = FindPerimeterRooms();
+                Debug.Log("perimeterRooms: " + perimeterRooms.Count);
 
                 if (perimeterRooms.Count > 0)
                 {
+                    Debug.Log("queries.FindBuildingByRoom(perimeterRooms[0]) : " + queries.FindBuildingByRoom(perimeterRooms[0]));
                     // TODO here - if perimeterRooms has more than 1 then combine them
                     return queries.FindBuildingByRoom(perimeterRooms[0]);
                 }
@@ -125,7 +129,7 @@ namespace TowerBuilder.State.Rooms
                 foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
                 {
                     Room perimeterRoom = queries.FindRoomAtCell(coordinates);
-                    if (perimeterRoom != null)
+                    if (perimeterRoom != null && perimeterRoom != room)
                     {
                         result.Add(perimeterRoom);
                     }

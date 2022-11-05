@@ -18,13 +18,13 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         public override void OnTransitionTo(ToolState newToolState)
         {
             // CreateBlueprint();
-            Registry.appState.Rooms.events.onRoomAdded += OnRoomAdded;
+            // Registry.appState.Rooms.events.onRoomAdded += OnRoomAdded;
         }
 
         public override void OnTransitionFrom(ToolState previousToolState)
         {
             // DestroyBlueprint();
-            Registry.appState.Rooms.events.onRoomAdded -= OnRoomAdded;
+            // Registry.appState.Rooms.events.onRoomAdded -= OnRoomAdded;
         }
 
         public override void OnMouseDown()

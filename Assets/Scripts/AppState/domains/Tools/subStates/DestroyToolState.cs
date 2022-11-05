@@ -15,7 +15,10 @@ namespace TowerBuilder.State.Tools
 
         public void DestroyCurrentSelectedRoomBlock()
         {
-            Registry.appState.Rooms.DestroyRoomBlock(Registry.appState.UI.currentSelectedRoom, Registry.appState.UI.currentSelectedRoomBlock);
+            if (Registry.appState.UI.currentSelectedRoom != null)
+            {
+                Registry.appState.Rooms.DestroyRoomBlock(Registry.appState.UI.currentSelectedRoom, Registry.appState.UI.currentSelectedRoomBlock);
+            }
         }
     }
 }

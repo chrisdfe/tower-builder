@@ -58,11 +58,12 @@ namespace TowerBuilder.State.Tools
         {
             if (newToolState == toolState) return;
 
+            ToolState previousToolState = toolState;
             TransitionToolState(newToolState, toolState);
 
             if (events.onToolStateUpdated != null)
             {
-                events.onToolStateUpdated(newToolState, toolState);
+                events.onToolStateUpdated(newToolState, previousToolState);
             }
         }
 
