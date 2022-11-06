@@ -22,7 +22,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public Dimensions blockDimensions;
 
-        public RoomResizability resizability = RoomResizability.Inflexible();
+        public RoomResizability resizability = RoomResizability.Inflexible;
 
         // public RoomPrivacy privacy = RoomPrivacy.Public;
 

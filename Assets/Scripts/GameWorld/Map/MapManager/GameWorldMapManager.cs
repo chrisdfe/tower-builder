@@ -57,6 +57,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             {
                 if (!uiManager.mouseIsOverUI)
                 {
+                    Registry.appState.UI.SelectStart();
                     currentToolStateHandler.OnMouseDown();
                 }
             }
@@ -65,6 +66,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             {
                 if (!uiManager.mouseIsOverUI)
                 {
+                    Registry.appState.UI.SelectEnd();
                     currentToolStateHandler.OnMouseUp();
                 }
             }

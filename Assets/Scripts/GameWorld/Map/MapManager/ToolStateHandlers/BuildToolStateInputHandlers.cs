@@ -29,12 +29,12 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public override void OnMouseDown()
         {
-            Registry.appState.Tools.buildToolSubState.StartBuild();
+            // Registry.appState.Tools.buildToolSubState.StartBuild();
         }
 
         public override void OnMouseUp()
         {
-            Registry.appState.Tools.buildToolSubState.EndBuild();
+            // Registry.appState.Tools.buildToolSubState.EndBuild();
         }
 
         void OnRoomAdded(Room room)

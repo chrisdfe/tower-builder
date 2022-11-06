@@ -11,29 +11,45 @@ namespace TowerBuilder.State.UI
 {
     public class State
     {
-        public struct Input
+        public class Input
         {
             public CellCoordinates currentSelectedCell;
         }
 
+        public class Events
+        {
+            public delegate void CellCoordinatesEvent(CellCoordinates currentSelectedCell);
+            public CellCoordinatesEvent onCurrentSelectedCellUpdated;
+
+            public delegate void selectedRoomEvent(Room room);
+            public selectedRoomEvent onCurrentSelectedRoomUpdated;
+
+            public delegate void SelectedRoomBlockEvent(RoomCells roomBlock);
+            public SelectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
+
+            public delegate void SelectionBoxEvent(SelectionBox selectionBox);
+            public SelectionBoxEvent onSelectionBoxUpdated;
+            public SelectionBoxEvent onSelectionStart;
+            public SelectionBoxEvent onSelectionEnd;
+        }
+
         public CellCoordinates currentSelectedCell { get; private set; } = null;
-
-        public delegate void CellCoordinatesEvent(CellCoordinates currentSelectedCell);
-        public CellCoordinatesEvent onCurrentSelectedCellUpdated;
-
         public Room currentSelectedRoom { get; private set; } = null;
-        public delegate void selectedRoomEvent(Room room);
-        public selectedRoomEvent onCurrentSelectedRoomUpdated;
-
         public RoomCells currentSelectedRoomBlock { get; private set; } = null;
-        public delegate void SelectedRoomBlockEvent(RoomCells roomBlock);
-        public SelectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
 
+        public SelectionBox selectionBox { get; private set; }
+        public bool selectionIsActive { get; private set; } = false;
         // public SelectableEntityStack selectableEntityStack { get; private set; } = new SelectableEntityStack();
+
+        public Events events;
 
         public State(Input input)
         {
             currentSelectedCell = input.currentSelectedCell ?? CellCoordinates.zero;
+
+            selectionBox = new SelectionBox(currentSelectedCell);
+
+            events = new Events();
         }
 
         public State() : this(new Input()) { }
@@ -48,27 +64,69 @@ namespace TowerBuilder.State.UI
             if (currentSelectedRoom != null)
             {
                 currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
-
             }
 
-            // ToolStateBase currentToolState = GetCurrentActiveToolSubState();
-            // currentToolState.OnCurrentSelectedCellUpdated(currentSelectedCell);
-            // currentToolState.OnCurrentSelectedRoomUpdated(currentSelectedRoom);
-            // currentToolState.OnCurrentSelectedRoomBlockUpdated(currentSelectedRoomBlock);
-
-            if (onCurrentSelectedCellUpdated != null)
+            if (selectionIsActive)
             {
-                onCurrentSelectedCellUpdated(currentSelectedCell);
+                selectionBox.SetEnd(currentSelectedCell);
+            }
+            else
+            {
+                selectionBox.SetStartAndEnd(currentSelectedCell);
             }
 
-            if (onCurrentSelectedRoomUpdated != null)
+            if (events.onCurrentSelectedCellUpdated != null)
             {
-                onCurrentSelectedRoomUpdated(currentSelectedRoom);
+                events.onCurrentSelectedCellUpdated(currentSelectedCell);
             }
 
-            if (onCurrentSelectedRoomBlockUpdated != null)
+            if (events.onCurrentSelectedRoomUpdated != null)
             {
-                onCurrentSelectedRoomBlockUpdated(currentSelectedRoomBlock);
+                events.onCurrentSelectedRoomUpdated(currentSelectedRoom);
+            }
+
+            if (events.onCurrentSelectedRoomBlockUpdated != null)
+            {
+                events.onCurrentSelectedRoomBlockUpdated(currentSelectedRoomBlock);
+            }
+
+            if (events.onSelectionBoxUpdated != null)
+            {
+                events.onSelectionBoxUpdated(selectionBox);
+            }
+        }
+
+        public void SelectStart()
+        {
+            selectionIsActive = true;
+            selectionBox.SetStartAndEnd(currentSelectedCell);
+
+            if (events.onSelectionStart != null)
+            {
+                events.onSelectionStart(selectionBox);
+            }
+        }
+
+        public void SelectEnd()
+        {
+            selectionIsActive = false;
+            selectionBox.SetEnd(currentSelectedCell);
+
+            if (events.onSelectionEnd != null)
+            {
+                events.onSelectionEnd(selectionBox);
+            }
+
+            ResetSelectionBox();
+        }
+
+        void ResetSelectionBox()
+        {
+            selectionBox = new SelectionBox(currentSelectedCell);
+
+            if (events.onSelectionBoxUpdated != null)
+            {
+                events.onSelectionBoxUpdated(selectionBox);
             }
         }
     }

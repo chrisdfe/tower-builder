@@ -14,12 +14,12 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Awake()
         {
-            Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            // Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
         }
 
-        public void OnCurrentSelectedCellUpdated(CellCoordinates clelCoordinates)
-        {
+        // public void OnCurrentSelectedCellUpdated(CellCoordinates clelCoordinates)
+        // {
 
-        }
+        // }
     }
 }

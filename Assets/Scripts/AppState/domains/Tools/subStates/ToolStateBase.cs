@@ -16,22 +16,32 @@ namespace TowerBuilder.State.Tools
 
         public virtual void Setup()
         {
-            Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-            Registry.appState.UI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
-            Registry.appState.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
+            Registry.appState.UI.events.onSelectionStart += OnSelectionStart;
+            Registry.appState.UI.events.onSelectionEnd += OnSelectionEnd;
+            Registry.appState.UI.events.onSelectionBoxUpdated += OnSelectionBoxUpdated;
+
+            Registry.appState.UI.events.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
+            Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
         }
 
         public virtual void Teardown()
         {
-            Registry.appState.UI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
-            Registry.appState.UI.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
-            Registry.appState.UI.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
+            Registry.appState.UI.events.onSelectionStart -= OnSelectionStart;
+            Registry.appState.UI.events.onSelectionEnd -= OnSelectionEnd;
+            Registry.appState.UI.events.onSelectionBoxUpdated -= OnSelectionBoxUpdated;
+
+            Registry.appState.UI.events.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
+            Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
         }
 
-        public virtual void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell) { }
+        protected virtual void OnSelectionBoxUpdated(SelectionBox selectionBox) { }
 
-        public virtual void OnCurrentSelectedRoomUpdated(Room room) { }
+        protected virtual void OnCurrentSelectedRoomUpdated(Room room) { }
 
-        public virtual void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock) { }
+        protected virtual void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock) { }
+
+        protected virtual void OnSelectionStart(SelectionBox selectionBox) { }
+
+        protected virtual void OnSelectionEnd(SelectionBox selectionBox) { }
     }
 }

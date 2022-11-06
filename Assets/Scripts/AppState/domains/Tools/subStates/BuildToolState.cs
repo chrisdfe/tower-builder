@@ -14,7 +14,6 @@ namespace TowerBuilder.State.Tools
     {
         public struct Input
         {
-            public CellCoordinates buildStartCell;
             public string selectedRoomCategory;
             public RoomTemplate selectedRoomTemplate;
             public bool? buildIsActive;
@@ -22,8 +21,6 @@ namespace TowerBuilder.State.Tools
 
         public class Events
         {
-            public UI.State.CellCoordinatesEvent onBuildStartCellUpdated;
-
             public delegate void SelectedRoomCategoryEvent(string selectedRoomCategory);
             public SelectedRoomCategoryEvent onSelectedRoomCategoryUpdated;
 
@@ -38,33 +35,17 @@ namespace TowerBuilder.State.Tools
             public blueprintUpdateEvent onBlueprintRoomUpdated;
         }
 
-        public CellCoordinates buildStartCell { get; private set; } = null;
         public string selectedRoomCategory { get; private set; }
         public RoomTemplate selectedRoomTemplate { get; private set; }
-        public bool buildIsActive { get; private set; } = false;
 
         public Room blueprintRoom { get; private set; } = null;
 
-        public CellCoordinates buildStartCoordinates { get; private set; } = new CellCoordinates(0, 0);
-        public CellCoordinates buildEndCoordinates { get; private set; } = new CellCoordinates(0, 0);
-
         public BuildToolState.Events events;
-
-        // TODO - use this property as a cache and/or have a GetSelectionBox method
-        SelectionBox selectionBox
-        {
-            get
-            {
-                return new SelectionBox(buildStartCoordinates, buildEndCoordinates);
-            }
-        }
 
         public BuildToolState(Tools.State state, Input input) : base(state)
         {
-            buildStartCell = input.buildStartCell ?? null;
             selectedRoomCategory = input.selectedRoomCategory ?? "";
             selectedRoomTemplate = input.selectedRoomTemplate ?? Registry.roomTemplates.roomTemplates[0];
-            buildIsActive = input.buildIsActive ?? false;
 
             events = new BuildToolState.Events();
         }
@@ -72,39 +53,31 @@ namespace TowerBuilder.State.Tools
         public override void Setup()
         {
             base.Setup();
-            CreateBlueprintRoom();
-
-            Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
 
             CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
-            buildStartCoordinates = currentSelectedCell;
-            buildEndCoordinates = currentSelectedCell;
-            buildIsActive = false;
+
+            CreateBlueprintRoom();
         }
 
         public override void Teardown()
         {
             base.Teardown();
+
             DestroyBlueprintRoom();
-
-            Registry.appState.UI.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
-
-            buildStartCell = null;
-            buildIsActive = false;
         }
 
-        public override void OnCurrentSelectedCellUpdated(CellCoordinates currentSelectedCell)
+        protected override void OnSelectionStart(SelectionBox selectionBox)
         {
-            if (buildIsActive)
-            {
-                buildEndCoordinates = currentSelectedCell;
-            }
-            else
-            {
-                buildStartCoordinates = currentSelectedCell;
-                buildEndCoordinates = currentSelectedCell;
-            }
+            StartBuild();
+        }
 
+        protected override void OnSelectionEnd(SelectionBox selectionBox)
+        {
+            EndBuild();
+        }
+
+        protected override void OnSelectionBoxUpdated(SelectionBox selectionBox)
+        {
             ResetBlueprintRoom();
             blueprintRoom.validator.Validate(Registry.appState);
 
@@ -147,30 +120,23 @@ namespace TowerBuilder.State.Tools
             }
         }
 
-        public void StartBuild()
+        void StartBuild()
         {
-            buildIsActive = true;
-
-            buildStartCoordinates = Registry.appState.UI.currentSelectedCell.Clone();
-            buildEndCoordinates = Registry.appState.UI.currentSelectedCell.Clone();
-
             if (events.onBuildStart != null)
             {
                 events.onBuildStart();
             }
         }
 
-        public void EndBuild()
+        void EndBuild()
         {
-            buildIsActive = false;
-
             blueprintRoom.validator.Validate(Registry.appState);
 
             if (blueprintRoom.validator.isValid)
             {
                 BuildBlueprintRoom();
 
-                ResetBuildCoordinates();
+                // ResetBuildCoordinates();
                 CreateBlueprintRoom();
             }
             else
@@ -179,7 +145,7 @@ namespace TowerBuilder.State.Tools
                     blueprintRoom.validator.errors.Select(error => error.message).ToArray()
                 );
 
-                ResetBuildCoordinates();
+                // ResetBuildCoordinates();
                 ResetBlueprintRoom();
             }
 
@@ -223,20 +189,20 @@ namespace TowerBuilder.State.Tools
             CreateBlueprintRoom();
         }
 
-        void ResetBuildCoordinates()
-        {
-            CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
-            buildStartCoordinates = currentSelectedCell;
-            buildEndCoordinates = currentSelectedCell;
-        }
+        // void ResetBuildCoordinates()
+        // {
+        // CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
+        // selectionBox.SetStartAndEnd(currentSelectedCell);
+        // }
 
         void SetBlueprintRoomCells()
         {
+            SelectionBox selectionBox = Registry.appState.UI.selectionBox;
             CellCoordinates blockCount = new CellCoordinates(1, 1);
 
-            if (blueprintRoom.resizability.Matches(RoomResizability.Inflexible()))
+            if (blueprintRoom.resizability == RoomResizability.Inflexible)
             {
-                blueprintRoom.bottomLeftCoordinates = buildStartCoordinates;
+                blueprintRoom.bottomLeftCoordinates = selectionBox.start;
             }
             else
             {
@@ -245,7 +211,7 @@ namespace TowerBuilder.State.Tools
                 {
                     blueprintRoom.bottomLeftCoordinates = new CellCoordinates(
                         selectionBox.bottomLeft.x,
-                        buildStartCoordinates.floor
+                        selectionBox.start.floor
                     );
                     blockCount.x = MathUtils.RoundUpToNearest(selectionBox.dimensions.width, blueprintRoom.blockDimensions.width);
                 }
@@ -253,7 +219,7 @@ namespace TowerBuilder.State.Tools
                 if (blueprintRoom.resizability.floor)
                 {
                     blueprintRoom.bottomLeftCoordinates = new CellCoordinates(
-                        buildStartCoordinates.x,
+                        selectionBox.start.x,
                         selectionBox.bottomLeft.floor
                     );
                     blockCount.floor = MathUtils.RoundUpToNearest(selectionBox.dimensions.height, blueprintRoom.blockDimensions.height);

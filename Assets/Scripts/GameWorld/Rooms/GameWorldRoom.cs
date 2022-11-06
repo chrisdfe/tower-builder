@@ -57,7 +57,6 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnDestroy()
         {
-            Debug.Log("room ondestroy");
             DestroyRoomCells();
             DestroyRoomEntrances();
         }
@@ -121,7 +120,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
             ToolState toolState = Registry.appState.Tools.toolState;
 
-            bool roomContainsCurrentSelectedRoomBlock = room.ContainsBlock(currentSelectedRoomBlock);
+            bool roomContainsCurrentSelectedRoomBlock = room.blocks.ContainsBlock(currentSelectedRoomBlock);
             bool hasUpdated = false;
 
             switch (toolState)
@@ -149,7 +148,7 @@ namespace TowerBuilder.GameWorld.Rooms
                     }
                     break;
                 default:
-                    if (room.ContainsBlock(currentSelectedRoomBlock))
+                    if (room.blocks.ContainsBlock(currentSelectedRoomBlock))
                     {
                         gameWorldRoomCell.SetHoverColor();
                         hasUpdated = true;

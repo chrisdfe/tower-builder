@@ -21,7 +21,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public int pricePerBlock { get; private set; } = 10;
 
-        public RoomResizability resizability = RoomResizability.Inflexible();
+        public RoomResizability resizability = RoomResizability.Inflexible;
 
         public Dimensions blockDimensions { get; private set; } = Dimensions.one;
 
@@ -123,6 +123,7 @@ namespace TowerBuilder.DataTypes.Rooms
             this.blocks.Remove(block);
         }
 
+        /*
         public bool ContainsBlock(RoomCells roomBlock)
         {
             foreach (RoomCells block in blocks.blocks)
@@ -135,6 +136,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
             return false;
         }
+        */
 
         public RoomCells FindBlockByCellCoordinates(CellCoordinates cellCoordinates)
         {

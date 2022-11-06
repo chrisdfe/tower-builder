@@ -8,8 +8,8 @@ namespace TowerBuilder.State.Wallet
 {
     public class State
     {
-        // static int DEFAULT_STARTING_BALANCE = 1000000;
-        static int DEFAULT_STARTING_BALANCE = 1000;
+        static int DEFAULT_STARTING_BALANCE = 1000000;
+        // static int DEFAULT_STARTING_BALANCE = 1000;
 
         public struct Input
         {

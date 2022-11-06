@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- Draggable destroy tool
 - "reset" button to reset state to default
 - Replace ground cells with a simpler ground for now
 - 2 furniture layers - "transportation" layer and "other" (beds, desks, etc) layer - to simplify layout
@@ -18,7 +19,7 @@
 - Furniture "usage slots" - an array of residents currently using this piece of furniture the size of the furnitures occupancy
 - roomcell "has floor" boolean state - for tall rooms
   - additionally, a "bridge" furniture type?
-- When casting the mouse ray, build a stack of interactable/inspectable elements 
+- When casting the mouse ray, build a stack of interactable/inspectable elements
   - If that stack contains a ui element:
     - on mouse down don't propagate
     - on mouse up, still propagate but handle it further up the chain
@@ -42,7 +43,7 @@
     - potentially furniture could replace "room modules"
       - rooms would just be generic rooms, and furniture would dictate the behavior/functionality
 - "Schedules" store, possibly right below timestore? residents will have schedules, but potentially weather effects and other such things could use this schedule mechanic
-- Route weighting mechanism to figure out which route is the best to take 
+- Route weighting mechanism to figure out which route is the best to take
   - probably as simple as fewer cells traveled > more cells traveled
 - Add residents
 - Keybindings for build, destroy, inspect, none
@@ -51,7 +52,7 @@
   - Perhaps this should be part of "Transportation category validation"
 - Resizing rooms should also reset their entrances (e.g if an elevator had a connection but has been resized)
 - Stop destroying/recreating roomCells whenever the cursor changes position - only when it needs resizing
-- Add GameWorldRoomList 
+- Add GameWorldRoomList
 - You should be able to delete a single block of a flexible-sized room
 - blueprint price indicator for flexible rooms
 - destroy validation
@@ -69,7 +70,7 @@
 - Kitchen/restaurant room
 - Top-level "KeyBindingsManager" that listens for user input + dispatches actions
 - UI overlays
-- Dynamic weather 
+- Dynamic weather
 - save/load
 
 ## Cleanup
@@ -118,7 +119,7 @@
 - things are feeling kind of messy because roomCells are having to know way too much about their room - I should make things more unidirectional
 - Rooms should stay white until they're not being inspected anymore - right now they return to default color on mouse out
 - Removing rooms should also delete their room connections
-- Add blueprint room connections to main room connections list in MapStore when the room gets built 
+- Add blueprint room connections to main room connections list in MapStore when the room gets built
 - Elevator entrances should only be at the top and bottom - maybe get ElevatorModule to do this?
   - Similar thing with hallways and lobbies
 - Mesh for rooms with left, middle, right etc. segment tiles

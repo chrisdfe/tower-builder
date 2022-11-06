@@ -24,7 +24,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
             Registry.appState.buildings.events.onBuildingListUpdated += OnBuildingListUpdated;
             Registry.appState.Rooms.events.onRoomListUpdated += OnRoomListUpdated;
             Registry.appState.Rooms.events.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;

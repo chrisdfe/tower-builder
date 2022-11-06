@@ -337,11 +337,6 @@ namespace TowerBuilder.DataTypes.Rooms
 
             return result;
         }
-
-        public List<int> SelectIds()
-        {
-            return cells.Select(item => item.id).ToList();
-        }
     }
 }
 

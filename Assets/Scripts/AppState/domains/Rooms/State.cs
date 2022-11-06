@@ -106,7 +106,7 @@ namespace TowerBuilder.State.Rooms
 
             Building FindOrCreateRoomBuilding()
             {
-                List<Room> perimeterRooms = FindPerimeterRooms();
+                List<Room> perimeterRooms = FindPerimeterRooms(room);
                 Debug.Log("perimeterRooms: " + perimeterRooms.Count);
 
                 if (perimeterRooms.Count > 0)
@@ -119,23 +119,6 @@ namespace TowerBuilder.State.Rooms
                 Building building = new Building();
                 Registry.appState.buildings.AddBuilding(building);
                 return building;
-            }
-
-            List<Room> FindPerimeterRooms()
-            {
-                List<CellCoordinates> perimeterRoomCellCoordinates = room.cells.GetPerimeterCellCoordinates();
-                List<Room> result = new List<Room>();
-
-                foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
-                {
-                    Room perimeterRoom = queries.FindRoomAtCell(coordinates);
-                    if (perimeterRoom != null && perimeterRoom != room)
-                    {
-                        result.Add(perimeterRoom);
-                    }
-                }
-
-                return result;
             }
         }
 
@@ -177,6 +160,23 @@ namespace TowerBuilder.State.Rooms
             }
         }
 
+        List<Room> FindPerimeterRooms(Room room)
+        {
+            List<CellCoordinates> perimeterRoomCellCoordinates = room.cells.GetPerimeterCellCoordinates();
+            List<Room> result = new List<Room>();
+
+            foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
+            {
+                Room perimeterRoom = queries.FindRoomAtCell(coordinates);
+                if (perimeterRoom != null && perimeterRoom != room)
+                {
+                    result.Add(perimeterRoom);
+                }
+            }
+
+            return result;
+        }
+
         /* 
             Room Blocks
          */
@@ -199,6 +199,7 @@ namespace TowerBuilder.State.Rooms
             }
         }
 
+        /*
         public void DestroyRoomBlock(Room room, RoomCells roomBlock)
         {
             // TODO - check if doing this is going to divide the room into 2
@@ -226,23 +227,43 @@ namespace TowerBuilder.State.Rooms
                     events.onRoomBlocksUpdated(room);
                 }
             }
+        }
+        */
 
-            /* 
-            List<RoomEntrance> GetEntrancesInBlock()
+        public void DestroyRoomBlocks(Room room, RoomBlocks roomBlocks)
+        {
+            // TODO - check if doing this is going to divide the room into 2
+            // if so, create another room right here
+
+            Debug.Log("before");
+            Debug.Log(room.blocks.blocks.Count);
+            foreach (RoomCells block in roomBlocks.blocks)
             {
-                List<RoomEntrance> result = new List<RoomEntrance>();
+                room.RemoveBlock(block);
+            }
+            Debug.Log("after");
+            Debug.Log(room.blocks.blocks.Count);
 
-                foreach (RoomEntrance entrance in room.entrances)
+            if (room.blocks.Count == 0)
+            {
+                DestroyRoom(room);
+            }
+            else
+            {
+                room.Reset();
+                RemoveConnectionsForRoom(room);
+                FindAndAddConnectionsForRoom(room);
+
+                if (events.onRoomBlocksRemoved != null)
                 {
-                    if (roomBlock.Contains(entrance.cellCoordinates))
-                    {
-                        result.Add(entrance);
-                    }
+                    events.onRoomBlocksRemoved(room, roomBlocks);
                 }
 
-                return result;
+                if (events.onRoomBlocksUpdated != null)
+                {
+                    events.onRoomBlocksUpdated(room);
+                }
             }
-            */
         }
 
         /*

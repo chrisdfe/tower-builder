@@ -59,7 +59,7 @@ namespace TowerBuilder.State.Rooms
             {
                 List<Room> result = new List<Room>();
 
-                if (room.resizability.Matches(RoomResizability.Inflexible()))
+                if (room.resizability.Matches(RoomResizability.Inflexible))
                 {
                     return result;
                 }

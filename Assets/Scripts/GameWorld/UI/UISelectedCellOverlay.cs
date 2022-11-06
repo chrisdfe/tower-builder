@@ -14,7 +14,7 @@ namespace TowerBuilder.GameWorld.UI
     {
         public void Awake()
         {
-            Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
         }
 
         void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)

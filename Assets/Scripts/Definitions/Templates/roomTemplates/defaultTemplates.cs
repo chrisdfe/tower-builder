@@ -20,7 +20,7 @@ namespace TowerBuilder.Definitions.Templates
                 pricePerBlock = 500,
 
                 blockDimensions = new Dimensions(1, 1),
-                resizability = RoomResizability.Horizontal(),
+                resizability = RoomResizability.Horizontal,
 
                 entranceBuilderFactory = () => new HallwayEntranceBuilder(),
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
@@ -37,7 +37,7 @@ namespace TowerBuilder.Definitions.Templates
                 pricePerBlock = 5000,
 
                 blockDimensions = new Dimensions(1, 1),
-                resizability = RoomResizability.Horizontal(),
+                resizability = RoomResizability.Horizontal,
 
                 entranceBuilderFactory = () => new LobbyEntranceBuilder(),
                 validatorFactory = (Room room) => new LobbyRoomValidator(room),
@@ -54,7 +54,7 @@ namespace TowerBuilder.Definitions.Templates
                 pricePerBlock = 5000,
 
                 blockDimensions = new Dimensions(1, 1),
-                resizability = RoomResizability.Horizontal(),
+                resizability = RoomResizability.Horizontal,
 
                 entranceBuilderFactory = () => new EmptyEntranceBuilder(),
                 validatorFactory = (Room room) => new WheelsRoomValidator(room),
@@ -72,7 +72,7 @@ namespace TowerBuilder.Definitions.Templates
 
                 blockDimensions = new Dimensions(1, 2),
 
-                resizability = RoomResizability.Horizontal(),
+                resizability = RoomResizability.Horizontal,
 
                 entranceBuilderFactory = () => new LobbyEntranceBuilder(),
                 validatorFactory = (Room room) => new LobbyRoomValidator(room),
@@ -206,7 +206,7 @@ namespace TowerBuilder.Definitions.Templates
 
                 blockDimensions = new Dimensions(1, 1),
 
-                resizability = RoomResizability.Vertical(),
+                resizability = RoomResizability.Vertical,
 
                 entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
 
@@ -225,7 +225,7 @@ namespace TowerBuilder.Definitions.Templates
 
                 blockDimensions = new Dimensions(1, 1),
 
-                resizability = RoomResizability.Vertical(),
+                resizability = RoomResizability.Vertical,
 
                 entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
 
@@ -244,7 +244,7 @@ namespace TowerBuilder.Definitions.Templates
 
                 blockDimensions = new Dimensions(2, 1),
 
-                resizability = RoomResizability.Vertical(),
+                resizability = RoomResizability.Vertical,
 
                 entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
                 validatorFactory = (Room room) => new ElevatorRoomValidator(room),
@@ -263,7 +263,7 @@ namespace TowerBuilder.Definitions.Templates
 
                 blockDimensions = new Dimensions(1, 1),
 
-                resizability = RoomResizability.Vertical(),
+                resizability = RoomResizability.Vertical,
                 color = Color.yellow,
 
                 entranceBuilderFactory = () => new StairwellEntranceBuilder(),
@@ -282,7 +282,7 @@ namespace TowerBuilder.Definitions.Templates
 
                 blockDimensions = new Dimensions(2, 1),
 
-                resizability = RoomResizability.Vertical(),
+                resizability = RoomResizability.Vertical,
                 color = Color.yellow,
 
                 entranceBuilderFactory = () => new StairwellEntranceBuilder(),
@@ -301,7 +301,7 @@ namespace TowerBuilder.Definitions.Templates
 
                 blockDimensions = new Dimensions(1, 1),
 
-                resizability = RoomResizability.Flexible(),
+                resizability = RoomResizability.Flexible,
 
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                 {

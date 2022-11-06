@@ -1,8 +1,8 @@
-
+using System;
 
 namespace TowerBuilder.DataTypes.Rooms
 {
-    public struct RoomResizability
+    public class RoomResizability
     {
         public bool x { get; private set; }
         public bool floor { get; private set; }
@@ -23,26 +23,13 @@ namespace TowerBuilder.DataTypes.Rooms
             return a.x == b.x && a.floor == b.floor;
         }
 
-        public static RoomResizability Inflexible()
-        {
-            return new RoomResizability(false, false);
-        }
+        public static RoomResizability Inflexible { get { return new RoomResizability(false, false); } }
 
-        public static RoomResizability Horizontal()
-        {
-            return new RoomResizability(true, false);
-        }
+        public static RoomResizability Horizontal { get { return new RoomResizability(true, false); } }
 
-        public static RoomResizability Vertical()
-        {
-            return new RoomResizability(false, true);
-        }
+        public static RoomResizability Vertical { get { return new RoomResizability(false, true); } }
 
-        public static RoomResizability Flexible()
-        {
-            return new RoomResizability(true, true);
-
-        }
+        public static RoomResizability Flexible { get { return new RoomResizability(true, true); } }
     }
 }
 

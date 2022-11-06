@@ -8,6 +8,9 @@ namespace TowerBuilder.DataTypes
 {
     public class SelectionBox
     {
+        public CellCoordinates start { get; private set; }
+        public CellCoordinates end { get; private set; }
+
         public CellCoordinates bottomLeft { get; private set; }
         public CellCoordinates topRight { get; private set; }
 
@@ -27,10 +30,50 @@ namespace TowerBuilder.DataTypes
 
         public SelectionBox(CellCoordinates start, CellCoordinates end)
         {
-            CalculateBetween(start, end);
+            this.start = start;
+            this.end = end;
+            CalculateBox();
         }
 
-        public void CalculateBetween(CellCoordinates start, CellCoordinates end)
+        public SelectionBox(CellCoordinates coordinates) : this(coordinates, coordinates) { }
+
+        public SelectionBox() : this(CellCoordinates.zero, CellCoordinates.zero) { }
+
+        public List<CellCoordinates> GetCells()
+        {
+            List<CellCoordinates> result = new List<CellCoordinates>();
+
+            for (int x = topLeft.x; x <= topRight.x; x++)
+            {
+                for (int floor = topLeft.floor; floor >= bottomLeft.floor; floor--)
+                {
+                    result.Add(new CellCoordinates(x, floor));
+                }
+            }
+
+            return result;
+        }
+
+        public void SetStart(CellCoordinates start)
+        {
+            this.start = start;
+            CalculateBox();
+        }
+
+        public void SetEnd(CellCoordinates end)
+        {
+            this.end = end;
+            CalculateBox();
+        }
+
+        public void SetStartAndEnd(CellCoordinates coordinates)
+        {
+            this.start = coordinates;
+            this.end = coordinates;
+            CalculateBox();
+        }
+
+        void CalculateBox()
         {
             bottomLeft = new CellCoordinates(
                 Math.Min(start.x, end.x),

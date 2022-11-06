@@ -13,6 +13,13 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public int Count { get { return blocks.Count; } }
 
+        public RoomBlocks() { }
+
+        public RoomBlocks(List<RoomCells> blocks)
+        {
+            this.blocks = blocks;
+        }
+
         public void Add(RoomBlocks otherBlocks)
         {
             blocks = blocks.Concat(otherBlocks.blocks).ToList();
@@ -26,6 +33,24 @@ namespace TowerBuilder.DataTypes.Rooms
         public void Remove(RoomCells block)
         {
             blocks.RemoveAll(otherBlock => otherBlock == block);
+        }
+
+        public void Set(RoomCells blockCells)
+        {
+            blocks = new List<RoomCells> { blockCells };
+        }
+
+        public bool ContainsBlock(RoomCells roomBlock)
+        {
+            foreach (RoomCells block in blocks)
+            {
+                if (block == roomBlock)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

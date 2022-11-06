@@ -45,7 +45,7 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             foreach (Room room in rooms)
             {
-                if (room.ContainsBlock(roomBlock))
+                if (room.blocks.ContainsBlock(roomBlock))
                 {
                     return room;
                 }

@@ -28,6 +28,10 @@ namespace TowerBuilder.State.Rooms
             public RoomBlockEvent onRoomBlockAdded;
             public RoomBlockEvent onRoomBlockRemoved;
 
+            public delegate void RoomBlocksEvent(Room room, RoomBlocks roomBlocks);
+            public RoomBlocksEvent onRoomBlocksAdded;
+            public RoomBlocksEvent onRoomBlocksRemoved;
+
             public delegate void RoomBlockUpdatedEvent(Room room);
             public RoomBlockUpdatedEvent onRoomBlocksUpdated;
 
