@@ -200,7 +200,7 @@ namespace TowerBuilder.State.Tools
             SelectionBox selectionBox = Registry.appState.UI.selectionBox;
             CellCoordinates blockCount = new CellCoordinates(1, 1);
 
-            if (blueprintRoom.resizability == RoomResizability.Inflexible)
+            if (blueprintRoom.resizability.Matches(RoomResizability.Inflexible))
             {
                 blueprintRoom.bottomLeftCoordinates = selectionBox.start;
             }

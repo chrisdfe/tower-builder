@@ -32,11 +32,6 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public RoomCells(CellCoordinatesList cellCoordinatesList) : this(cellCoordinatesList.items.Select(cellCoordinates => new RoomCell(cellCoordinates)).ToList()) { }
 
-        // public void Reset()
-        // {
-        //     SetRoomCellOrientations();
-        // }
-
         public void PositionAtCoordinates(CellCoordinates newBaseCoordinates)
         {
             List<RoomCell> result = new List<RoomCell>();

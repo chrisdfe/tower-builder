@@ -70,7 +70,6 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnDestroy()
         {
-            Debug.Log("GameWorldRoomCell OnDestroy");
             GameObject.Destroy(roomCellMesh.gameObject);
         }
 

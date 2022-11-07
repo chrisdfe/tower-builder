@@ -148,7 +148,6 @@ namespace TowerBuilder.Definitions.Templates
 
                 blockDimensions = new Dimensions(2, 1),
 
-
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
                         new RoomEntrance() {
@@ -176,7 +175,6 @@ namespace TowerBuilder.Definitions.Templates
                 category = "Residence",
 
                 blockDimensions = new Dimensions(5, 1),
-
 
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
