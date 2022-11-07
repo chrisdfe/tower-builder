@@ -74,7 +74,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void CreateRoomCells()
         {
-            foreach (RoomCell roomCell in room.cells.cells)
+            foreach (RoomCell roomCell in room.blocks.cells.cells)
             {
                 GameWorldRoomCell gameWorldRoomCell = GameWorldRoomCell.Create(transform);
 

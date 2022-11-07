@@ -57,7 +57,7 @@ namespace TowerBuilder.GameWorld.Map
 
         void OnRoomAdded(Room room)
         {
-            foreach (RoomCell roomCell in room.cells.cells)
+            foreach (RoomCell roomCell in room.blocks.cells.cells)
             {
                 SetGroundCellVisibility(roomCell.coordinates, false);
             }
@@ -65,7 +65,7 @@ namespace TowerBuilder.GameWorld.Map
 
         void OnRoomDestroyed(Room room)
         {
-            foreach (RoomCell roomCell in room.cells.cells)
+            foreach (RoomCell roomCell in room.blocks.cells.cells)
             {
                 SetGroundCellVisibility(roomCell.coordinates, true);
             }

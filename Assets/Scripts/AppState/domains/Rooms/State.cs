@@ -88,7 +88,7 @@ namespace TowerBuilder.State.Rooms
             {
                 foreach (Room otherRoom in roomsToCombineWith)
                 {
-                    room.AddBlocks(otherRoom.blocks);
+                    room.blocks.Add(otherRoom.blocks);
                     DestroyRoom(otherRoom, false);
                 }
 
@@ -107,11 +107,9 @@ namespace TowerBuilder.State.Rooms
             Building FindOrCreateRoomBuilding()
             {
                 List<Room> perimeterRooms = FindPerimeterRooms(room);
-                Debug.Log("perimeterRooms: " + perimeterRooms.Count);
 
                 if (perimeterRooms.Count > 0)
                 {
-                    Debug.Log("queries.FindBuildingByRoom(perimeterRooms[0]) : " + queries.FindBuildingByRoom(perimeterRooms[0]));
                     // TODO here - if perimeterRooms has more than 1 then combine them
                     return queries.FindBuildingByRoom(perimeterRooms[0]);
                 }
@@ -121,7 +119,6 @@ namespace TowerBuilder.State.Rooms
                 return building;
             }
         }
-
 
         public void AddAndBuildRoom(Room room)
         {
@@ -162,7 +159,7 @@ namespace TowerBuilder.State.Rooms
 
         List<Room> FindPerimeterRooms(Room room)
         {
-            List<CellCoordinates> perimeterRoomCellCoordinates = room.cells.GetPerimeterCellCoordinates();
+            List<CellCoordinates> perimeterRoomCellCoordinates = room.blocks.cells.GetPerimeterCellCoordinates();
             List<Room> result = new List<Room>();
 
             foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
@@ -182,7 +179,7 @@ namespace TowerBuilder.State.Rooms
          */
         public void AddRoomBlock(Room room, RoomCells roomBlock)
         {
-            room.AddBlock(roomBlock);
+            room.blocks.Add(roomBlock);
             room.Reset();
 
             RemoveConnectionsForRoom(room);
@@ -235,14 +232,10 @@ namespace TowerBuilder.State.Rooms
             // TODO - check if doing this is going to divide the room into 2
             // if so, create another room right here
 
-            Debug.Log("before");
-            Debug.Log(room.blocks.blocks.Count);
             foreach (RoomCells block in roomBlocks.blocks)
             {
-                room.RemoveBlock(block);
+                room.blocks.Remove(block);
             }
-            Debug.Log("after");
-            Debug.Log(room.blocks.blocks.Count);
 
             if (room.blocks.Count == 0)
             {

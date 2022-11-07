@@ -40,7 +40,6 @@ namespace TowerBuilder.DataTypes.Rooms
         public CellCoordinates bottomLeftCoordinates;
 
         public RoomBlocks blocks;
-        public RoomCells cells;
 
         public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
 
@@ -65,17 +64,8 @@ namespace TowerBuilder.DataTypes.Rooms
 
             this.color = roomTemplate.color;
 
-            cells = new RoomCells();
             blocks = new RoomBlocks();
         }
-
-        public Room(RoomTemplate roomTemplate, List<RoomCell> roomCellList) : this(roomTemplate)
-        {
-            cells.Add(roomCellList);
-            Reset();
-        }
-
-        public Room(RoomTemplate roomTemplate, RoomCells roomCells) : this(roomTemplate, roomCells.cells) { }
 
         public override string ToString()
         {
@@ -88,55 +78,13 @@ namespace TowerBuilder.DataTypes.Rooms
             InitializeFurniture();
         }
 
-        public void OnDestroy()
-        {
-        }
+        public void OnDestroy() { }
 
         public void Reset()
         {
             ResetRoomCellOrientations();
             ResetRoomEntrances();
         }
-
-        /* 
-            RoomBlock
-        */
-        public void AddBlock(RoomCells roomBlock)
-        {
-            blocks.Add(roomBlock);
-            cells.Add(roomBlock);
-        }
-
-        public void AddBlocks(RoomBlocks roomBlocks)
-        {
-            blocks.Add(roomBlocks);
-
-            foreach (RoomCells roomBlock in roomBlocks.blocks)
-            {
-                cells.Add(roomBlock);
-            }
-        }
-
-        public void RemoveBlock(RoomCells block)
-        {
-            cells.cells.RemoveAll(cell => block.cells.Contains(cell));
-            this.blocks.Remove(block);
-        }
-
-        /*
-        public bool ContainsBlock(RoomCells roomBlock)
-        {
-            foreach (RoomCells block in blocks.blocks)
-            {
-                if (block == roomBlock)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        */
 
         public RoomCells FindBlockByCellCoordinates(CellCoordinates cellCoordinates)
         {
@@ -161,7 +109,6 @@ namespace TowerBuilder.DataTypes.Rooms
         // TODO - this feels like a weird place for this to live, perhaps it should be in State instead
         public void CalculateRoomCells(CellCoordinates blockCount)
         {
-            RoomCells newCells = new RoomCells();
             RoomBlocks newBlocks = new RoomBlocks();
 
             for (int x = 0; x < blockCount.x; x++)
@@ -179,11 +126,9 @@ namespace TowerBuilder.DataTypes.Rooms
                     ));
 
                     newBlocks.Add(blockCells);
-                    newCells.Add(blockCells);
                 }
             }
 
-            this.cells = newCells;
             this.blocks = newBlocks;
 
             Reset();
@@ -191,6 +136,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public void ResetRoomCellOrientations()
         {
+            RoomCells cells = blocks.cells;
             foreach (RoomCell roomCell in cells.cells)
             {
                 SetRoomCellOrientation(roomCell);
@@ -229,19 +175,14 @@ namespace TowerBuilder.DataTypes.Rooms
         CellCoordinates GetRelativeCoordinates(RoomCell roomCell)
         {
             return roomCell.coordinates.Subtract(new CellCoordinates(
-                cells.GetLowestX(),
-                cells.GetLowestFloor()
+                blocks.cells.GetLowestX(),
+                blocks.cells.GetLowestFloor()
             ));
         }
 
         /* 
             RoomEntrances
         */
-        public void RemoveEntrance(RoomEntrance entrance)
-        {
-            entrances.Remove(entrance);
-        }
-
         public void ResetRoomEntrances()
         {
             DestroyRoomEntrances();
@@ -250,7 +191,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         void CreateRoomEntrances()
         {
-            entrances = entranceBuilder.BuildRoomEntrances(cells);
+            entrances = entranceBuilder.BuildRoomEntrances(blocks.cells);
         }
 
         void DestroyRoomEntrances()

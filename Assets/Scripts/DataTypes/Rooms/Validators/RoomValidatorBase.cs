@@ -45,7 +45,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
                 errors = errors.Concat(RoomValidationFunc(appState, room)).ToList();
             }
 
-            foreach (RoomCell roomCell in room.cells.cells)
+            foreach (RoomCell roomCell in room.blocks.cells.cells)
             {
                 foreach (GenericRoomCellValidations.ValidationFunc RoomCellValidationFunc in AllRoomCellValidators)
                 {

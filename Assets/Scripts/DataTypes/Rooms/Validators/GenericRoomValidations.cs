@@ -36,7 +36,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             // Check for overlapping cells
             foreach (Room otherRoom in allRooms.rooms)
             {
-                if (otherRoom != room && otherRoom.cells.Contains(roomCell))
+                if (otherRoom != room && otherRoom.blocks.cells.Contains(roomCell))
                 {
                     errors.Add(
                         new RoomValidationError("You cannot build rooms on top of each other.")

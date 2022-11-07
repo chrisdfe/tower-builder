@@ -29,7 +29,7 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             foreach (Room room in rooms)
             {
-                foreach (RoomCell roomCell in room.cells.cells)
+                foreach (RoomCell roomCell in room.blocks.cells.cells)
                 {
                     if (roomCell.coordinates.Matches(targetCellCoordinates))
                     {

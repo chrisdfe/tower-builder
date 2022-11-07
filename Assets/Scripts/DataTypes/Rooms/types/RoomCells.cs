@@ -12,6 +12,8 @@ namespace TowerBuilder.DataTypes.Rooms
     {
         public List<RoomCell> cells = new List<RoomCell>();
 
+        // public CellCoordinatesList coordinatesList { get; private set; } = new CellCoordinatesList();
+
         public int Count { get { return cells.Count; } }
 
         public RoomCells() { }
