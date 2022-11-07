@@ -29,7 +29,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 
             // Lobbies must be on floor 0
             // Since lobbies can be 1-2 tiles high, make sure the cell we're validating here is the bottom-most cell
-            bool isOnBottom = roomCell.GetRelativeCoordinates().floor == 0;
+            bool isOnBottom = room.blocks.cells.GetRelativeRoomCellCoordinates(roomCell).floor == 0;
             if (isOnBottom && cellCoordinates.floor != 0)
             {
                 errors.Add(new RoomValidationError("Lobbies must be placed on first floor"));

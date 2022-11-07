@@ -159,7 +159,7 @@ namespace TowerBuilder.State.Rooms
 
         List<Room> FindPerimeterRooms(Room room)
         {
-            List<CellCoordinates> perimeterRoomCellCoordinates = room.blocks.cells.GetPerimeterCellCoordinates();
+            List<CellCoordinates> perimeterRoomCellCoordinates = room.blocks.cells.coordinatesList.GetPerimeterCellCoordinates();
             List<Room> result = new List<Room>();
 
             foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
@@ -195,37 +195,6 @@ namespace TowerBuilder.State.Rooms
                 events.onRoomBlocksUpdated(room);
             }
         }
-
-        /*
-        public void DestroyRoomBlock(Room room, RoomCells roomBlock)
-        {
-            // TODO - check if doing this is going to divide the room into 2
-            // if so, create another room right here
-
-            room.RemoveBlock(roomBlock);
-
-            room.Reset();
-            RemoveConnectionsForRoom(room);
-            FindAndAddConnectionsForRoom(room);
-
-            if (room.blocks.Count == 0)
-            {
-                DestroyRoom(room);
-            }
-            else
-            {
-                if (events.onRoomBlockRemoved != null)
-                {
-                    events.onRoomBlockRemoved(room, roomBlock);
-                }
-
-                if (events.onRoomBlocksUpdated != null)
-                {
-                    events.onRoomBlocksUpdated(room);
-                }
-            }
-        }
-        */
 
         public void DestroyRoomBlocks(Room room, RoomBlocks roomBlocks)
         {

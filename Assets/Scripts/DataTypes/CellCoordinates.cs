@@ -42,6 +42,29 @@ namespace TowerBuilder.DataTypes
             return new CellCoordinates(x, floor);
         }
 
+        public CellCoordinates GetCoordinatesAbove()
+        {
+            return new CellCoordinates(x, floor + 1);
+        }
+
+        public CellCoordinates GetCoordinatesBelow()
+        {
+            return new CellCoordinates(x, floor - 1);
+        }
+
+        public CellCoordinates GetCoordinatesLeft()
+        {
+            return new CellCoordinates(x - 1, floor);
+        }
+
+        public CellCoordinates GetCoordinatesRight()
+        {
+            return new CellCoordinates(x + 1, floor);
+        }
+
+        /* 
+            Static API
+        */
         public static CellCoordinates Add(CellCoordinates a, CellCoordinates b)
         {
             return new CellCoordinates(a.x + b.x, a.floor + b.floor);

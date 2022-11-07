@@ -12,92 +12,30 @@ namespace TowerBuilder.DataTypes.Rooms
     {
         public List<RoomCell> cells = new List<RoomCell>();
 
-        // public CellCoordinatesList coordinatesList { get; private set; } = new CellCoordinatesList();
-
         public int Count { get { return cells.Count; } }
 
+        public CellCoordinatesList coordinatesList
+        {
+            get
+            {
+                return new CellCoordinatesList(cells.Select(roomCell => roomCell.coordinates).ToList());
+            }
+        }
+
         public RoomCells() { }
+
         public RoomCells(List<RoomCell> cells)
         {
             this.cells = cells;
+            SetRoomCellOrientations();
         }
 
-        public RoomCells(int width, int height)
-        {
-            CreateRectangularRoom(width, height);
-        }
+        public RoomCells(CellCoordinatesList cellCoordinatesList) : this(cellCoordinatesList.items.Select(cellCoordinates => new RoomCell(cellCoordinates)).ToList()) { }
 
-        public RoomCells(CellCoordinates startCellCoordinates, CellCoordinates endCellCoordinates)
-        {
-            CreateRectangularRoom(startCellCoordinates, endCellCoordinates);
-        }
-
-        public void Add(List<RoomCell> roomCells)
-        {
-            cells = cells.Concat(roomCells).ToList();
-        }
-
-        public void Add(RoomCells roomCells)
-        {
-            Add(roomCells.cells);
-        }
-
-        public void Add(RoomCell roomCell)
-        {
-            RoomCell newRoomCell = new RoomCell(this, roomCell.coordinates);
-            cells.Add(newRoomCell);
-        }
-
-        public void Add(CellCoordinates cellCoordinates)
-        {
-            Add(new RoomCell(this, cellCoordinates));
-        }
-
-        public void Remove(RoomCells roomCellsToDelete)
-        {
-            foreach (RoomCell cell in roomCellsToDelete.cells)
-            {
-                if (cells.Contains(cell))
-                {
-                    cells.Remove(cell);
-                }
-            }
-        }
-
-        public void CreateRectangularRoom(int xWidth, int floors)
-        {
-            List<RoomCell> result = new List<RoomCell>();
-
-            for (int x = 0; x < xWidth; x++)
-            {
-                for (int floor = 0; floor < floors; floor++)
-                {
-                    result.Add(new RoomCell(this, x, floor));
-                }
-            }
-
-            cells = result;
-        }
-
-        public void CreateRectangularRoom(CellCoordinates a, CellCoordinates b)
-        {
-            List<RoomCell> result = new List<RoomCell>();
-
-            // startCoordinates = top left room
-            // endCoordinates = bottom right room
-            CellCoordinates startCoordinates = new CellCoordinates(Mathf.Min(a.x, b.x), Mathf.Min(a.floor, b.floor));
-            CellCoordinates endCoordinates = new CellCoordinates(Mathf.Max(a.x, b.x), Mathf.Max(a.floor, b.floor));
-
-            for (int floor = startCoordinates.floor; floor <= endCoordinates.floor; floor++)
-            {
-                for (int x = startCoordinates.x; x <= endCoordinates.x; x++)
-                {
-                    result.Add(new RoomCell(this, x, floor));
-                }
-            }
-
-            cells = result;
-        }
+        // public void Reset()
+        // {
+        //     SetRoomCellOrientations();
+        // }
 
         public void PositionAtCoordinates(CellCoordinates newBaseCoordinates)
         {
@@ -105,11 +43,16 @@ namespace TowerBuilder.DataTypes.Rooms
 
             foreach (RoomCell roomCell in cells)
             {
-                RoomCell newRoomCell = new RoomCell(this, newBaseCoordinates.Add(roomCell.coordinates));
+                RoomCell newRoomCell = new RoomCell(CellCoordinates.Add(newBaseCoordinates, roomCell.coordinates));
                 result.Add(newRoomCell);
             }
 
             cells = result;
+        }
+
+        public CellCoordinates GetRelativeRoomCellCoordinates(RoomCell roomCell)
+        {
+            return CellCoordinates.Subtract(roomCell.coordinates, coordinatesList.GetBottomLeftCoordinates());
         }
 
         public RoomCell FindCellByCoordinates(CellCoordinates cellCoordinates)
@@ -125,219 +68,57 @@ namespace TowerBuilder.DataTypes.Rooms
             return null;
         }
 
-        public bool Contains(CellCoordinates cellCoordinates)
+        void SetRoomCellOrientations()
         {
-            return FindCellByCoordinates(cellCoordinates) != null;
+            foreach (RoomCell roomCell in cells)
+            {
+                SetRoomCellOrientation(roomCell);
+            }
         }
 
-        public bool Contains(RoomCell roomCell)
+        void SetRoomCellOrientation(RoomCell roomCell)
         {
-            return FindCellByCoordinates(roomCell.coordinates) != null;
+            CellCoordinates coordinates = roomCell.coordinates;
+
+            List<RoomCellOrientation> result = new List<RoomCellOrientation>();
+
+            if (!coordinatesList.Contains(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
+            {
+                result.Add(RoomCellOrientation.Top);
+            }
+
+            if (!coordinatesList.Contains(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
+            {
+                result.Add(RoomCellOrientation.Right);
+            }
+
+            if (!coordinatesList.Contains(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
+            {
+                result.Add(RoomCellOrientation.Bottom);
+            }
+
+            if (!coordinatesList.Contains(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
+            {
+                result.Add(RoomCellOrientation.Left);
+            }
+
+            roomCell.orientation = result;
         }
 
-        public bool OverlapsWith(RoomCells otherRoomCells)
-        {
-            return GetOverlappingRoomCells(otherRoomCells).Count != 0;
-        }
-
-        public bool OverlapsWith(List<RoomCell> roomCellList)
-        {
-            return GetOverlappingRoomCells(roomCellList).Count != 0;
-        }
-
-        public List<RoomCell> GetOverlappingRoomCells(List<RoomCell> roomCellList)
+        /* 
+            Static API
+         */
+        public static RoomCells ToRelativeCoordinates(RoomCells roomCells)
         {
             List<RoomCell> result = new List<RoomCell>();
+            CellCoordinates bottomLeftCoordinates = roomCells.coordinatesList.GetBottomLeftCoordinates();
 
-            foreach (RoomCell otherRoomCell in roomCellList)
+            foreach (RoomCell roomCell in roomCells.cells)
             {
-                if (Contains(otherRoomCell.coordinates))
-                {
-                    result.Add(otherRoomCell);
-                }
-            }
-
-            return result;
-        }
-
-        public List<RoomCell> GetOverlappingRoomCells(RoomCells otherRoomCells)
-        {
-            return GetOverlappingRoomCells(otherRoomCells.cells);
-        }
-
-        public int GetLowestX()
-        {
-            int lowestX = int.MaxValue;
-
-            foreach (RoomCell roomCell in cells)
-            {
-                if (roomCell.coordinates.x < lowestX)
-                {
-                    lowestX = roomCell.coordinates.x;
-                }
-            }
-
-            return lowestX;
-        }
-
-        public int GetHighestX()
-        {
-            int highestX = int.MinValue;
-
-            foreach (RoomCell roomCell in cells)
-            {
-                if (roomCell.coordinates.x > highestX)
-                {
-                    highestX = roomCell.coordinates.x;
-                }
-            }
-
-            return highestX;
-        }
-
-
-        public int GetLowestFloor()
-        {
-            int lowestFloor = int.MaxValue;
-
-            foreach (RoomCell roomCell in cells)
-            {
-                if (roomCell.coordinates.floor < lowestFloor)
-                {
-                    lowestFloor = roomCell.coordinates.floor;
-                }
-            }
-
-            return lowestFloor;
-        }
-
-        public int GetHighestFloor()
-        {
-            int highestFloor = int.MinValue;
-
-            foreach (RoomCell roomCell in cells)
-            {
-                if (roomCell.coordinates.floor > highestFloor)
-                {
-                    highestFloor = roomCell.coordinates.floor;
-                }
-            }
-
-            return highestFloor;
-        }
-
-        public List<int> GetXRange()
-        {
-            List<int> result = new List<int>();
-
-            foreach (RoomCell roomCell in cells)
-            {
-                if (!result.Contains(roomCell.coordinates.x))
-                {
-                    result.Add(roomCell.coordinates.x);
-                }
-            }
-
-            return result;
-        }
-
-        public List<int> GetFloorRange()
-        {
-            List<int> result = new List<int>();
-
-            foreach (RoomCell roomCell in cells)
-            {
-                if (!result.Contains(roomCell.coordinates.floor))
-                {
-                    result.Add(roomCell.coordinates.floor);
-                }
-            }
-
-            return result;
-        }
-
-        public RoomCells ToRelativeCoordinates()
-        {
-            List<RoomCell> result = new List<RoomCell>();
-            CellCoordinates bottomLeftCoordinates = GetBottomLeftCoordinates();
-
-            foreach (RoomCell roomCell in cells)
-            {
-                result.Add(new RoomCell(this, roomCell.coordinates.Subtract(bottomLeftCoordinates)));
+                result.Add(new RoomCell(CellCoordinates.Subtract(roomCell.coordinates, bottomLeftCoordinates)));
             }
 
             return new RoomCells(result);
-        }
-
-        public CellCoordinates GetBottomLeftCoordinates()
-        {
-            return new CellCoordinates(
-                GetLowestX(),
-                GetLowestFloor()
-            );
-        }
-
-        public CellCoordinates GetBottomRightCoordinates()
-        {
-            return new CellCoordinates(
-                GetHighestX(),
-                GetLowestFloor()
-            );
-        }
-
-        public CellCoordinates GetTopLeftCoordinates()
-        {
-            return new CellCoordinates(
-                GetLowestX(),
-                GetHighestFloor()
-            );
-        }
-
-        public CellCoordinates GetTopRightCoordinates()
-        {
-            return new CellCoordinates(
-                GetHighestX(),
-                GetHighestFloor()
-            );
-        }
-
-        public int GetWidth()
-        {
-            int highestX = GetHighestX();
-            int lowestX = GetLowestX();
-            return (highestX - lowestX) + 1;
-        }
-
-        public int GetFloorSpan()
-        {
-            int highestFloor = GetHighestFloor();
-            int lowestFloor = GetLowestFloor();
-            return (highestFloor - lowestFloor) + 1;
-        }
-
-        public List<CellCoordinates> GetPerimeterCellCoordinates()
-        {
-            List<CellCoordinates> result = new List<CellCoordinates>();
-
-            foreach (RoomCell roomCell in cells)
-            {
-                CellCoordinates[] adjacentCellCoordinatesList = new CellCoordinates[] {
-                    roomCell.GetCoordinatesAbove(),
-                    roomCell.GetCoordinatesRight(),
-                    roomCell.GetCoordinatesBelow(),
-                    roomCell.GetCoordinatesLeft()
-                };
-
-                foreach (CellCoordinates adjacentCellCoordinates in adjacentCellCoordinatesList)
-                {
-                    if (!result.Contains(adjacentCellCoordinates))
-                    {
-                        result.Add(adjacentCellCoordinates);
-                    }
-                }
-            }
-
-            return result;
         }
     }
 }

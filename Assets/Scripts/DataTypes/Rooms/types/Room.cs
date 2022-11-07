@@ -82,7 +82,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public void Reset()
         {
-            ResetRoomCellOrientations();
+            // blocks.cells.Refresh();
             ResetRoomEntrances();
         }
 
@@ -116,8 +116,10 @@ namespace TowerBuilder.DataTypes.Rooms
                 for (int floor = 0; floor < blockCount.floor; floor++)
                 {
                     RoomCells blockCells = new RoomCells(
-                        blockDimensions.width,
-                        blockDimensions.height
+                        CellCoordinatesList.CreateRectangle(
+                            blockDimensions.width,
+                            blockDimensions.height
+                        )
                     );
 
                     blockCells.PositionAtCoordinates(new CellCoordinates(
@@ -132,52 +134,6 @@ namespace TowerBuilder.DataTypes.Rooms
             this.blocks = newBlocks;
 
             Reset();
-        }
-
-        public void ResetRoomCellOrientations()
-        {
-            RoomCells cells = blocks.cells;
-            foreach (RoomCell roomCell in cells.cells)
-            {
-                SetRoomCellOrientation(roomCell);
-            }
-
-            void SetRoomCellOrientation(RoomCell roomCell)
-            {
-                CellCoordinates coordinates = roomCell.coordinates;
-
-                List<RoomCellOrientation> result = new List<RoomCellOrientation>();
-
-                if (!cells.Contains(new CellCoordinates(coordinates.x, coordinates.floor + 1)))
-                {
-                    result.Add(RoomCellOrientation.Top);
-                }
-
-                if (!cells.Contains(new CellCoordinates(coordinates.x + 1, coordinates.floor)))
-                {
-                    result.Add(RoomCellOrientation.Right);
-                }
-
-                if (!cells.Contains(new CellCoordinates(coordinates.x, coordinates.floor - 1)))
-                {
-                    result.Add(RoomCellOrientation.Bottom);
-                }
-
-                if (!cells.Contains(new CellCoordinates(coordinates.x - 1, coordinates.floor)))
-                {
-                    result.Add(RoomCellOrientation.Left);
-                }
-
-                roomCell.orientation = result;
-            }
-        }
-
-        CellCoordinates GetRelativeCoordinates(RoomCell roomCell)
-        {
-            return roomCell.coordinates.Subtract(new CellCoordinates(
-                blocks.cells.GetLowestX(),
-                blocks.cells.GetLowestFloor()
-            ));
         }
 
         /* 

@@ -9,18 +9,18 @@ namespace TowerBuilder.DataTypes.Rooms.Entrances
         public override List<RoomEntrance> BuildRoomEntrances(RoomCells roomCells)
         {
             List<RoomEntrance> result = new List<RoomEntrance>();
-            int width = roomCells.GetWidth();
+            int width = roomCells.coordinatesList.GetWidth();
 
             result.Add(new RoomEntrance()
             {
-                cellCoordinates = roomCells.GetBottomLeftCoordinates(),
+                cellCoordinates = roomCells.coordinatesList.GetBottomLeftCoordinates(),
                 position = RoomEntrancePosition.Left
             });
 
 
             result.Add(new RoomEntrance()
             {
-                cellCoordinates = roomCells.GetBottomRightCoordinates(),
+                cellCoordinates = roomCells.coordinatesList.GetBottomRightCoordinates(),
                 position = RoomEntrancePosition.Right
             });
 

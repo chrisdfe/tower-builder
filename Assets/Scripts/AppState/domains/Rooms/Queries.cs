@@ -67,15 +67,15 @@ namespace TowerBuilder.State.Rooms
                 if (room.resizability.x)
                 {
                     //  Check on either side
-                    foreach (int floor in room.blocks.cells.GetFloorRange())
+                    foreach (int floor in room.blocks.cells.coordinatesList.GetFloorValues())
                     {
                         Room leftRoom = FindRoomAtCell(new CellCoordinates(
-                            room.blocks.cells.GetLowestX() - 1,
+                            room.blocks.cells.coordinatesList.GetLowestX() - 1,
                             floor
                         ));
 
                         Room rightRoom = FindRoomAtCell(new CellCoordinates(
-                            room.blocks.cells.GetHighestX() + 1,
+                            room.blocks.cells.coordinatesList.GetHighestX() + 1,
                             floor
                         ));
 
@@ -96,16 +96,16 @@ namespace TowerBuilder.State.Rooms
                 if (room.resizability.floor)
                 {
                     //  Check on floors above and below
-                    foreach (int x in room.blocks.cells.GetXRange())
+                    foreach (int x in room.blocks.cells.coordinatesList.GetXValues())
                     {
                         Room aboveRoom = FindRoomAtCell(new CellCoordinates(
                             x,
-                            room.blocks.cells.GetHighestFloor() + 1
+                            room.blocks.cells.coordinatesList.GetHighestFloor() + 1
                         ));
 
                         Room belowRoom = FindRoomAtCell(new CellCoordinates(
                             x,
-                            room.blocks.cells.GetLowestFloor() - 1
+                            room.blocks.cells.coordinatesList.GetLowestFloor() - 1
                         ));
 
                         foreach (Room otherRoom in new Room[] { aboveRoom, belowRoom })

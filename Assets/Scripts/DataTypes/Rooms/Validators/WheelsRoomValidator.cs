@@ -30,7 +30,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 
             // Wheels must be on floor 0
             // Since wheels can be 1-2 tiles high, make sure the cell we're validating here is the bottom-most cell
-            bool isOnBottom = roomCell.GetRelativeCoordinates().floor == 0;
+            bool isOnBottom = room.blocks.cells.GetRelativeRoomCellCoordinates(roomCell).floor == 0;
             if (isOnBottom && cellCoordinates.floor != 0)
             {
                 errors.Add(new RoomValidationError("Wheels must be placed on first floor"));
