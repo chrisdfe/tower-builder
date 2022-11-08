@@ -189,25 +189,35 @@ namespace TowerBuilder.State.Tools
             CreateBlueprintRoom();
         }
 
-        // void ResetBuildCoordinates()
-        // {
-        // CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
-        // selectionBox.SetStartAndEnd(currentSelectedCell);
-        // }
-
         void SetBlueprintRoomCells()
         {
             SelectionBox selectionBox = Registry.appState.UI.selectionBox;
             CellCoordinates blockCount = new CellCoordinates(1, 1);
 
-            if (blueprintRoom.resizability.Matches(RoomResizability.Inflexible))
+            if (blueprintRoom.resizability == RoomResizability.Inflexible)
             {
                 blueprintRoom.bottomLeftCoordinates = selectionBox.start;
             }
             else
             {
                 // Restrict resizability to X/floor depending on RoomFlexibility
-                if (blueprintRoom.resizability.x)
+                switch (blueprintRoom.resizability)
+                {
+                    case RoomResizability.Flexible:
+                        CalculateHorizontalBlocks();
+                        CalculateVerticalBlocks();
+                        break;
+                    case RoomResizability.Horizontal:
+                        CalculateHorizontalBlocks();
+                        break;
+                    case RoomResizability.Vertical:
+                        CalculateVerticalBlocks();
+                        break;
+                    case RoomResizability.Inflexible:
+                        break;
+                }
+
+                void CalculateHorizontalBlocks()
                 {
                     blueprintRoom.bottomLeftCoordinates = new CellCoordinates(
                         selectionBox.cellCoordinatesList.GetBottomLeftCoordinates().x,
@@ -216,7 +226,7 @@ namespace TowerBuilder.State.Tools
                     blockCount.x = MathUtils.RoundUpToNearest(selectionBox.dimensions.width, blueprintRoom.blockDimensions.width);
                 }
 
-                if (blueprintRoom.resizability.floor)
+                void CalculateVerticalBlocks()
                 {
                     blueprintRoom.bottomLeftCoordinates = new CellCoordinates(
                         selectionBox.start.x,

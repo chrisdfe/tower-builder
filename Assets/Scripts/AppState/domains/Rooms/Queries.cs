@@ -76,12 +76,25 @@ namespace TowerBuilder.State.Rooms
             {
                 List<Room> result = new List<Room>();
 
-                if (room.resizability.Matches(RoomResizability.Inflexible))
+                switch (room.resizability)
                 {
-                    return result;
+                    case RoomResizability.Flexible:
+                        SearchHorizontallyForRooms();
+                        SearchVerticallyForRooms();
+                        break;
+                    case RoomResizability.Horizontal:
+                        SearchHorizontallyForRooms();
+                        break;
+                    case RoomResizability.Vertical:
+                        SearchVerticallyForRooms();
+                        break;
+                    case RoomResizability.Inflexible:
+                        break;
                 }
 
-                if (room.resizability.x)
+                return result;
+
+                void SearchHorizontallyForRooms()
                 {
                     //  Check on either side
                     foreach (int floor in room.blocks.cells.coordinatesList.GetFloorValues())
@@ -110,7 +123,7 @@ namespace TowerBuilder.State.Rooms
                     }
                 }
 
-                if (room.resizability.floor)
+                void SearchVerticallyForRooms()
                 {
                     //  Check on floors above and below
                     foreach (int x in room.blocks.cells.coordinatesList.GetXValues())
@@ -138,8 +151,6 @@ namespace TowerBuilder.State.Rooms
                         }
                     }
                 }
-
-                return result;
             }
         }
     }

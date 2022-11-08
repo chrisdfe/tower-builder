@@ -63,7 +63,6 @@ namespace TowerBuilder.State.Tools
 
         protected override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
-            Debug.Log("DestroyToolSubstate on selection bosx updated");
             CalculateDeleteCells();
 
             if (events.onDestroySelectionUpdated != null)
@@ -130,8 +129,6 @@ namespace TowerBuilder.State.Tools
                     blocksToDelete.Add(roomBlockToDelete);
                 }
             }
-
-            Debug.Log("BlocksToDelete " + blocksToDelete.Count);
         }
     }
 }
