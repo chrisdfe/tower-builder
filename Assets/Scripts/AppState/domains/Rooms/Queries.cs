@@ -55,6 +55,23 @@ namespace TowerBuilder.State.Rooms
                 return state.roomList.FindRoomAtCell(cellCoordinates);
             }
 
+            public (Room, RoomCells) FindRoomBlockAtCell(CellCoordinates cellCoordinates)
+            {
+                Room room = FindRoomAtCell(cellCoordinates);
+
+                if (room != null)
+                {
+                    RoomCells roomBlock = room.FindBlockByCellCoordinates(cellCoordinates);
+
+                    if (roomBlock != null)
+                    {
+                        return (room, roomBlock);
+                    }
+                }
+
+                return (null, null);
+            }
+
             public List<Room> FindRoomsToCombineWith(Room room)
             {
                 List<Room> result = new List<Room>();

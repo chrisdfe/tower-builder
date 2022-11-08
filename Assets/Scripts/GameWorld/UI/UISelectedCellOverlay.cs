@@ -12,20 +12,41 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class UISelectedCellOverlay : MonoBehaviour
     {
+        const int Z_INDEX = 70;
+
         public void Awake()
         {
-            Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            Registry.appState.UI.events.onSelectionBoxUpdated += OnSelectionBoxUpdated;
         }
 
-        void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)
+        public void OnDestroy()
         {
+            Registry.appState.UI.events.onSelectionBoxUpdated -= OnSelectionBoxUpdated;
+        }
+
+        void OnSelectionBoxUpdated(SelectionBox selectionBox)
+        {
+            ResizeAndSetPosition();
+        }
+
+        void ResizeAndSetPosition()
+        {
+            SelectionBox selectionBox = Registry.appState.UI.selectionBox;
+            float width = selectionBox.cellCoordinatesList.GetWidth();
+            float height = selectionBox.cellCoordinatesList.GetFloorSpan();
+            CellCoordinates bottomLeft = selectionBox.cellCoordinatesList.GetBottomLeftCoordinates();
+
             transform.position = new Vector3(
-                cellCoordinates.x * Constants.TILE_SIZE,
-                cellCoordinates.floor * Constants.TILE_SIZE,
-                70
+                (bottomLeft.x * Constants.TILE_SIZE) + (width / 2),
+                (bottomLeft.floor * Constants.TILE_SIZE) + (height / 2),
+                Z_INDEX
+            );
+
+            transform.localScale = new Vector3(
+                width * 0.1f,
+                0.1f,
+                height * 0.1f
             );
         }
-
-        void SetPosition() { }
     }
 }

@@ -17,7 +17,10 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public void Add(Room room)
         {
-            rooms.Add(room);
+            if (!rooms.Contains(room))
+            {
+                rooms.Add(room);
+            }
         }
 
         public void Remove(Room room)

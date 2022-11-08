@@ -18,13 +18,29 @@ namespace TowerBuilder.State.Tools
             public delegate void DestroyEvent();
             public DestroyEvent onDestroyStart;
             public DestroyEvent onDestroyEnd;
+            public DestroyEvent onDestroySelectionUpdated;
         }
 
         public Events events { get; private set; }
 
         // TODO - List<CellCoordinates> is all a room block is, but maybe it should be its own RoomBlock class
-        public Room roomToDeleteBlocksFrom { get; private set; }
-        public RoomBlocks blocksToDelete { get; private set; }
+        public RoomList roomsToDeleteBlocksFrom { get; private set; } = new RoomList();
+        public RoomBlocks blocksToDelete { get; private set; } = new RoomBlocks();
+
+        public CellCoordinatesList cellsToDelete
+        {
+            get
+            {
+                List<CellCoordinates> list = new List<CellCoordinates>();
+
+                foreach (RoomCells roomBlock in blocksToDelete.blocks)
+                {
+                    list = list.Concat(roomBlock.coordinatesList.items).ToList();
+                }
+
+                return new CellCoordinatesList(list);
+            }
+        }
 
         public DestroyToolState(Tools.State state, Input input) : base(state)
         {
@@ -34,18 +50,25 @@ namespace TowerBuilder.State.Tools
         public override void Setup()
         {
             base.Setup();
+            roomsToDeleteBlocksFrom = new RoomList();
+            blocksToDelete = new RoomBlocks();
         }
 
         public override void Teardown()
         {
             base.Teardown();
+            roomsToDeleteBlocksFrom = new RoomList();
+            blocksToDelete = new RoomBlocks();
         }
 
         protected override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
-            if (Registry.appState.UI.selectionIsActive)
+            Debug.Log("DestroyToolSubstate on selection bosx updated");
+            CalculateDeleteCells();
+
+            if (events.onDestroySelectionUpdated != null)
             {
-                CalculateDeleteCells();
+                events.onDestroySelectionUpdated();
             }
         }
 
@@ -61,6 +84,8 @@ namespace TowerBuilder.State.Tools
 
         void StartDestroy()
         {
+            CalculateDeleteCells();
+
             if (events.onDestroyStart != null)
             {
                 events.onDestroyStart();
@@ -70,12 +95,16 @@ namespace TowerBuilder.State.Tools
         void EndDestroy()
         {
             // Restrict destroy to whichever room destroy started on
-            if (roomToDeleteBlocksFrom != null && blocksToDelete.Count > 0)
+            if (roomsToDeleteBlocksFrom.Count > 0 && blocksToDelete.Count > 0)
             {
-                Registry.appState.Rooms.DestroyRoomBlocks(roomToDeleteBlocksFrom, blocksToDelete);
+                foreach (Room roomToDelete in roomsToDeleteBlocksFrom.rooms)
+                {
+                    RoomBlocks roomBlocksToDelete = new RoomBlocks(blocksToDelete.blocks.FindAll(roomBlock => roomToDelete.blocks.ContainsBlock(roomBlock)));
+                    Registry.appState.Rooms.DestroyRoomBlocks(roomToDelete, roomBlocksToDelete);
+                }
             }
 
-            roomToDeleteBlocksFrom = null;
+            roomsToDeleteBlocksFrom = new RoomList();
             blocksToDelete = new RoomBlocks();
 
             if (events.onDestroyEnd != null)
@@ -88,46 +117,21 @@ namespace TowerBuilder.State.Tools
         {
             SelectionBox selectionBox = Registry.appState.UI.selectionBox;
 
+            roomsToDeleteBlocksFrom = new RoomList();
             blocksToDelete = new RoomBlocks();
 
-            CellCoordinates endCell = selectionBox.end;
-            roomToDeleteBlocksFrom = Registry.appState.Rooms.queries.FindRoomAtCell(endCell);
+            foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
+            {
+                var (roomToDelete, roomBlockToDelete) = Registry.appState.Rooms.queries.FindRoomBlockAtCell(cellCoordinates);
 
-            if (roomToDeleteBlocksFrom != null)
-            {
-                // Just for testing
-                // blocksToDelete = roomToDeleteBlocksFrom.blocks;
-                blocksToDelete.Set(roomToDeleteBlocksFrom.FindBlockByCellCoordinates(selectionBox.end));
-                Debug.Log("blocksToDelete.Count");
-                Debug.Log(blocksToDelete.Count);
+                if (roomToDelete != null && roomBlockToDelete != null)
+                {
+                    roomsToDeleteBlocksFrom.Add(roomToDelete);
+                    blocksToDelete.Add(roomBlockToDelete);
+                }
             }
 
-            /* // Determine which blocks in that room to destroy:
-            if (startCellRoom.resizability.Matches(RoomResizability.Horizontal))
-            {
-                // TODO - account for double tall rooms
-                cellsToDelete = selectionBox.GetCells().FindAll(cellCoordinates => cellCoordinates.floor == startCellRoom.bottomLeftCoordinates.floor).ToList();
-            }
-            else if (startCellRoom.resizability.Matches(RoomResizability.Vertical))
-            {
-                cellsToDelete = selectionBox.GetCells().FindAll(cellCoordinates => cellCoordinates.floor == startCellRoom.bottomLeftCoordinates.x).ToList();
-            }
-            else if (startCellRoom.resizability.Matches(RoomResizability.Flexible))
-            {
-                // Find overlap between cells
-            }
-            else
-            {
-                // Just delete whole room
-            } */
+            Debug.Log("BlocksToDelete " + blocksToDelete.Count);
         }
-
-        // public void DestroyCurrentSelectedRoomBlock()
-        // {
-        //     if (Registry.appState.UI.currentSelectedRoom != null)
-        //     {
-        //         Registry.appState.Rooms.DestroyRoomBlock(Registry.appState.UI.currentSelectedRoom, Registry.appState.UI.currentSelectedRoomBlock);
-        //     }
-        // }
     }
 }

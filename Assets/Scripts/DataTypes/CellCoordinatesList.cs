@@ -20,6 +20,11 @@ namespace TowerBuilder.DataTypes
             this.items = items;
         }
 
+        public void Set(List<CellCoordinates> cellCoordinatesList)
+        {
+            this.items = cellCoordinatesList;
+        }
+
         public void Add(List<CellCoordinates> cellCoordinatesList)
         {
             items = items.Concat(cellCoordinatesList).ToList();

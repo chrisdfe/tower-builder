@@ -35,6 +35,8 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
 
+            Registry.appState.Tools.destroyToolSubState.events.onDestroySelectionUpdated += OnDestroySelectionUpdated;
+
             Registry.appState.Tools.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
         }
 
@@ -48,6 +50,8 @@ namespace TowerBuilder.GameWorld.Rooms
 
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
+
+            Registry.appState.Tools.destroyToolSubState.events.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
 
             Registry.appState.Tools.inspectToolSubState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
         }
@@ -92,6 +96,11 @@ namespace TowerBuilder.GameWorld.Rooms
         void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock) { }
 
         void OnInspectRoomUpdated(Room currentInspectedRoom) { }
+
+        void OnDestroySelectionUpdated()
+        {
+            gameWorldRooms.ForEach(gameWorldRoom => gameWorldRoom.SetRoomCellColors());
+        }
 
         /*
          * Rooms 

@@ -210,7 +210,7 @@ namespace TowerBuilder.State.Tools
                 if (blueprintRoom.resizability.x)
                 {
                     blueprintRoom.bottomLeftCoordinates = new CellCoordinates(
-                        selectionBox.bottomLeft.x,
+                        selectionBox.cellCoordinatesList.GetBottomLeftCoordinates().x,
                         selectionBox.start.floor
                     );
                     blockCount.x = MathUtils.RoundUpToNearest(selectionBox.dimensions.width, blueprintRoom.blockDimensions.width);
@@ -220,7 +220,7 @@ namespace TowerBuilder.State.Tools
                 {
                     blueprintRoom.bottomLeftCoordinates = new CellCoordinates(
                         selectionBox.start.x,
-                        selectionBox.bottomLeft.floor
+                        selectionBox.cellCoordinatesList.GetBottomLeftCoordinates().floor
                     );
                     blockCount.floor = MathUtils.RoundUpToNearest(selectionBox.dimensions.height, blueprintRoom.blockDimensions.height);
                 }

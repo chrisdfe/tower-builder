@@ -141,7 +141,8 @@ namespace TowerBuilder.GameWorld.Rooms
                     }
                     break;
                 case (ToolState.Destroy):
-                    if (currentSelectedRoomBlock != null && currentSelectedRoomBlock.cells.Contains(gameWorldRoomCell.roomCell))
+                    CellCoordinatesList cellsToDestroy = Registry.appState.Tools.destroyToolSubState.cellsToDelete;
+                    if (currentSelectedRoomBlock != null && cellsToDestroy.items.Contains(gameWorldRoomCell.roomCell.coordinates))
                     {
                         gameWorldRoomCell.SetDestroyHoverColor();
                         hasUpdated = true;
