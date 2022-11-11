@@ -87,20 +87,20 @@ namespace TowerBuilder.State.Residents
             }
 
             Route residentRoute = new Route(chosenRouteAttempt);
-            debugResident.StartOnRoute(residentRoute);
+            debugResident.motor.StartOnRoute(residentRoute);
             SetResidentPosition(debugResident, debugResident.coordinates);
         }
 
         public void AdvanceDebugResidentAlongRoute()
         {
             Debug.Log("advancing resident along route");
-            debugResident.ProgressAlongCurrentRoute();
+            debugResident.motor.ProgressAlongCurrentRoute();
             SetResidentPosition(debugResident, debugResident.coordinates);
         }
 
         public void ResetDebugResidentRouteProgress()
         {
-            debugResident.StartOnRoute(debugResident.currentRoute);
+            debugResident.motor.StartOnRoute(debugResident.motor.currentRoute);
             SetResidentPosition(debugResident, debugResident.coordinates);
         }
     }
