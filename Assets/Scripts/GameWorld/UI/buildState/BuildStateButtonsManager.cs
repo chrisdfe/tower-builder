@@ -23,37 +23,81 @@ namespace TowerBuilder.GameWorld.UI
         Transform entityGroupButtonsWrapper;
 
         RoomEntityGroupButtons roomEntityGroupButtons;
+        FurnitureEntityGroupButtons furnitureEntityGroupButtons;
 
         UISelectButton roomEntityGroupButton;
+        UISelectButton furnitureEntityGroupButton;
+
+        string currentCategory = "";
 
         void Awake()
         {
             entityGroupButtonsWrapper = transform.Find("EntityGroupButtons");
 
+            Debug.Log("entityGroupButtonsWrapper");
+            Debug.Log(entityGroupButtonsWrapper);
+
             Transform roomEntityGroupButtonsWrapper = transform.Find("RoomEntityGroupButtons");
             Transform furnitureEntityGroupButtonsWrapper = transform.Find("FurnitureEntityGroupButtons");
-            Transform residentEntityGroupButtonsWrapper = transform.Find("ResidentEntityGroupButtons");
-
-            // entityGroupPanels = new Dictionary<EntityType, EntityGroupPanelWrapper>() {
-            //     { EntityType.Room, new RoomEntityGroupPanel(entityGroupButtonsWrapper, roomEntityGroupButtons) },
-            //     { EntityType.Furniture, new FurnitureEntityGroupPanel(entityGroupButtonsWrapper, furnitureEntityGroupButtons) },
-            //     { EntityType.Resident, new ResidentEntityGroupPanel(entityGroupButtonsWrapper, residentEntityGroupButtons) },
-            // };
+            // Transform residentEntityGroupButtonsWrapper = transform.Find("ResidentEntityGroupButtons");
 
             roomEntityGroupButtons = new RoomEntityGroupButtons(roomEntityGroupButtonsWrapper);
+            furnitureEntityGroupButtons = new FurnitureEntityGroupButtons(furnitureEntityGroupButtonsWrapper);
 
-            TransformUtils.DestroyChildren(entityGroupButtonsWrapper);
-
-            roomEntityGroupButton = UISelectButton.Create(new UISelectButton.Input() { label = "rooms", value = "rooms" });
-            roomEntityGroupButton.transform.SetParent(entityGroupButtonsWrapper, false);
-            roomEntityGroupButton.onClick += OnEntityGroupButtonClick;
+            CreateEntityGroupButtons();
         }
 
-        void OnEntityGroupButtonClick(string value)
+        void CreateEntityGroupButtons()
         {
-            // if value is "rooms":
-            roomEntityGroupButton.SetSelected(true);
-            roomEntityGroupButtons.Setup();
+            TransformUtils.DestroyChildren(entityGroupButtonsWrapper);
+
+            roomEntityGroupButton = CreateEntityGroupButton("rooms");
+            furnitureEntityGroupButton = CreateEntityGroupButton("furniture");
+
+            UISelectButton CreateEntityGroupButton(string value)
+            {
+                UISelectButton entityButton = UISelectButton.Create(new UISelectButton.Input() { label = value, value = value });
+                entityButton.transform.SetParent(entityGroupButtonsWrapper, false);
+                entityButton.onClick += OnEntityGroupButtonClick;
+                return entityButton;
+            }
+        }
+
+        void OnEntityGroupButtonClick(string newCategory)
+        {
+            TeardownCurrentCategory();
+            currentCategory = newCategory;
+
+            switch (newCategory)
+            {
+                case "rooms":
+                    roomEntityGroupButton.SetSelected(true);
+                    roomEntityGroupButtons.Setup();
+                    Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.Room);
+                    break;
+                case "furniture":
+                    Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.Furniture);
+                    break;
+            }
+
+        }
+
+        void TeardownCurrentCategory()
+        {
+            Debug.Log("tearing down current category: " + currentCategory);
+            switch (currentCategory)
+            {
+                case "rooms":
+                    roomEntityGroupButtons.Teardown();
+                    roomEntityGroupButton.SetSelected(false);
+                    break;
+                case "furniture":
+                    furnitureEntityGroupButtons.Teardown();
+                    furnitureEntityGroupButton.SetSelected(false);
+                    break;
+            }
+
+            currentCategory = "";
         }
     }
 }

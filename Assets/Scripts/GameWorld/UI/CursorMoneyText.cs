@@ -24,9 +24,10 @@ namespace TowerBuilder.GameWorld.UI
             text = GetComponent<Text>();
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
-            Registry.appState.Tools.buildToolSubState.events.onBlueprintRoomUpdated += OnBlueprintRoomUpdated;
-            Registry.appState.Tools.buildToolSubState.events.onBuildStart += OnBuildStart;
-            Registry.appState.Tools.buildToolSubState.events.onBuildEnd += OnBuildEnd;
+
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onBlueprintRoomUpdated += OnBlueprintRoomUpdated;
+            Registry.appState.Tools.buildToolState.events.onBuildStart += OnBuildStart;
+            Registry.appState.Tools.buildToolState.events.onBuildEnd += OnBuildEnd;
 
             Hide();
         }
@@ -34,9 +35,9 @@ namespace TowerBuilder.GameWorld.UI
         void OnDestroy()
         {
             Registry.appState.Tools.events.onToolStateUpdated -= OnToolStateUpdated;
-            Registry.appState.Tools.buildToolSubState.events.onBlueprintRoomUpdated -= OnBlueprintRoomUpdated;
-            Registry.appState.Tools.buildToolSubState.events.onBuildStart -= OnBuildStart;
-            Registry.appState.Tools.buildToolSubState.events.onBuildEnd -= OnBuildEnd;
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onBlueprintRoomUpdated -= OnBlueprintRoomUpdated;
+            Registry.appState.Tools.buildToolState.events.onBuildStart -= OnBuildStart;
+            Registry.appState.Tools.buildToolState.events.onBuildEnd -= OnBuildEnd;
         }
 
         void OnToolStateUpdated(ToolState newToolState, ToolState previousToolState)
@@ -104,7 +105,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetText()
         {
-            Room blueprintRoom = Registry.appState.Tools.buildToolSubState.blueprintRoom;
+            Room blueprintRoom = Registry.appState.Tools.buildToolState.subStates.roomEntityType.blueprintRoom;
             int amount = blueprintRoom.price;
             text.text = String.Format("${0:n0}", amount);
 

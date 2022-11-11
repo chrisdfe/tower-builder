@@ -17,62 +17,42 @@ namespace TowerBuilder.GameWorld.UI
 {
     class RoomEntityGroupButtons : EntityGroupButtonsBase
     {
-        protected override string categoryButtonsWrapperName { get { return "CategoryButtons"; } }
-        protected override string templateButtonsWrapperName { get { return "TemplateButtons"; } }
-
         public RoomEntityGroupButtons(Transform panelWrapper) : base(panelWrapper)
         {
-            Registry.appState.Tools.buildToolSubState.events.onSelectedRoomCategoryUpdated += OnSelectedRoomCategoryUpdated;
-            Registry.appState.Tools.buildToolSubState.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onSelectedRoomCategoryUpdated += OnSelectedRoomCategoryUpdated;
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
-        protected override List<UISelectButton> GenerateCategoryButtons()
+        protected override List<UISelectButton.Input> GenerateCategoryButtonInputs()
         {
             List<UISelectButton> result = new List<UISelectButton>();
 
             List<string> allRoomCategories = Registry.roomTemplates.FindAllRoomCategories();
-            string currentCategory = Registry.appState.Tools.buildToolSubState.selectedRoomCategory;
-
-            foreach (string category in allRoomCategories)
-            {
-                UISelectButton categoryButton = UISelectButton.Create(new UISelectButton.Input() { label = category, value = category });
-                result.Add(categoryButton);
-            }
-
-            return result;
+            return allRoomCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
         }
 
-        protected override List<UISelectButton> GenerateTemplateButtons()
+        protected override List<UISelectButton.Input> GenerateTemplateButtonInputs()
         {
             List<UISelectButton> result = new List<UISelectButton>();
 
             List<RoomTemplate> currentRoomTemplates = GetRoomTemplatesForCurrentCategory();
-            RoomTemplate currentTemplate = Registry.appState.Tools.buildToolSubState.selectedRoomTemplate;
-
-            foreach (RoomTemplate roomTemplate in currentRoomTemplates)
-            {
-                UISelectButton selectButton = UISelectButton.Create(new UISelectButton.Input() { label = roomTemplate.title, value = roomTemplate.key });
-
-                result.Add(selectButton);
-            }
-
-            return result;
+            return currentRoomTemplates.Select(roomTemplate => new UISelectButton.Input() { label = roomTemplate.title, value = roomTemplate.key }).ToList();
         }
 
         protected override void OnCategoryButtonClick(string roomCategory)
         {
-            Registry.appState.Tools.buildToolSubState.SetSelectedRoomCategory(roomCategory);
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.SetSelectedRoomCategory(roomCategory);
         }
 
         protected override void OnTemplateButtonClick(string roomTemplateKey)
         {
             RoomTemplate selectedRoomTemplate = Registry.roomTemplates.FindByKey(roomTemplateKey);
-            Registry.appState.Tools.buildToolSubState.SetSelectedRoomTemplate(selectedRoomTemplate);
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.SetSelectedRoomTemplate(selectedRoomTemplate);
         }
 
         List<RoomTemplate> GetRoomTemplatesForCurrentCategory()
         {
-            string currentCategory = Registry.appState.Tools.buildToolSubState.selectedRoomCategory;
+            string currentCategory = Registry.appState.Tools.buildToolState.subStates.roomEntityType.selectedRoomCategory;
             return Registry.roomTemplates.FindByCategory(currentCategory);
         }
 

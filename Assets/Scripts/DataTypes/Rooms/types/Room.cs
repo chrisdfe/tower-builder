@@ -75,7 +75,6 @@ namespace TowerBuilder.DataTypes.Rooms
         public void OnBuild()
         {
             isInBlueprintMode = false;
-            InitializeFurniture();
         }
 
         public void OnDestroy() { }
@@ -154,12 +153,6 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             entrances = null;
         }
-
-
-        /*
-            Furniture 
-         */
-        void InitializeFurniture() { }
     }
 }
 

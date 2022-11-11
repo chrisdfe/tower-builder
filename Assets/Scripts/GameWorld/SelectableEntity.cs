@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
 public class SelectableEntity : MonoBehaviour
@@ -12,22 +15,22 @@ public class SelectableEntity : MonoBehaviour
 
     void Awake()
     {
-        switch (entityType)
-        {
-            case (EntityType.Room):
-                entity = new RoomEntity();
-                break;
-            case (EntityType.Furniture):
-                entity = new FurnitureEntity();
-                break;
-            case (EntityType.Resident):
-                entity = new ResidentEntity();
-                break;
-            default:
-                break;
-        }
-
         originalMaterial = transform.GetComponent<Material>();
+    }
+
+    public void SetRoomEntity(Room room)
+    {
+        this.entity = new RoomEntity(room);
+    }
+
+    public void SetFurnitureEntity(Furniture furniture)
+    {
+        this.entity = new FurnitureEntity(furniture);
+    }
+
+    public void SetResidentEntity(Resident resident)
+    {
+        this.entity = new ResidentEntity(resident);
     }
 
     public void OnSelect()

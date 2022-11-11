@@ -6,13 +6,7 @@ namespace TowerBuilder.DataTypes.Entities
     {
         public Stack<EntityBase> entities { get; private set; } = new Stack<EntityBase>();
 
-        public int Count
-        {
-            get
-            {
-                return entities.Count;
-            }
-        }
+        public int Count { get { return entities.Count; } }
 
         public SelectableEntityStack() { }
 

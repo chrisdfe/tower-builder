@@ -8,7 +8,9 @@ namespace TowerBuilder.DataTypes.Furnitures
     public abstract class Furniture
     {
         public virtual FurnitureCategory category { get { return FurnitureCategory.None; } }
-        public int occupancy;
+        // public int occupancy;
+
+        public bool isInBlueprintMode { get; private set; } = false;
 
         Room room;
         List<FurnitureAttributesBase> configs;
@@ -19,7 +21,19 @@ namespace TowerBuilder.DataTypes.Furnitures
             this.configs = configs;
         }
 
-        public abstract void Initialize();
-        public abstract void OnDestroy();
+        public void OnBuild()
+        {
+            isInBlueprintMode = false;
+        }
+
+        public void Initialize()
+        {
+
+        }
+
+        public void OnDestroy()
+        {
+
+        }
     }
 }

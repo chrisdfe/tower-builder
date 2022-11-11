@@ -31,11 +31,11 @@ namespace TowerBuilder.State.Tools
 
         public ToolState toolState { get; private set; } = ToolState.None;
 
-        public NoneToolState noneToolSubState;
-        public BuildToolState buildToolSubState;
-        public DestroyToolState destroyToolSubState;
-        public InspectToolState inspectToolSubState;
-        public RoutesToolState routesToolSubState;
+        public NoneToolState noneToolState;
+        public BuildToolState buildToolState;
+        public DestroyToolState destroyToolState;
+        public InspectToolState inspectToolState;
+        public RoutesToolState routesToolState;
 
         public Events events;
 
@@ -43,11 +43,11 @@ namespace TowerBuilder.State.Tools
         {
             toolState = input.toolState ?? ToolState.None;
 
-            noneToolSubState = new NoneToolState(this, input.noneToolState);
-            buildToolSubState = new BuildToolState(this, input.buildToolState);
-            destroyToolSubState = new DestroyToolState(this, input.destroyToolState);
-            inspectToolSubState = new InspectToolState(this, input.inspectToolState);
-            routesToolSubState = new RoutesToolState(this, input.routesToolState);
+            noneToolState = new NoneToolState(this, input.noneToolState);
+            buildToolState = new BuildToolState(this, input.buildToolState);
+            destroyToolState = new DestroyToolState(this, input.destroyToolState);
+            inspectToolState = new InspectToolState(this, input.inspectToolState);
+            routesToolState = new RoutesToolState(this, input.routesToolState);
 
             events = new State.Events();
         }
@@ -71,39 +71,39 @@ namespace TowerBuilder.State.Tools
         {
             Debug.Log("transitioning from " + previousToolState);
             Debug.Log("to " + toolState);
-            GetToolSubState(previousToolState).Teardown();
+            GetToolState(previousToolState).Teardown();
             this.toolState = toolState;
-            GetToolSubState(toolState).Setup();
+            GetToolState(toolState).Setup();
         }
 
-        ToolStateBase GetCurrentActiveToolSubState()
+        ToolStateBase GetCurrentActiveToolState()
         {
-            return GetToolSubState(toolState);
+            return GetToolState(toolState);
         }
 
-        ToolStateBase GetToolSubState(ToolState toolState)
+        ToolStateBase GetToolState(ToolState toolState)
         {
             if (toolState == ToolState.Build)
             {
-                return buildToolSubState;
+                return buildToolState;
             }
 
             if (toolState == ToolState.Destroy)
             {
-                return destroyToolSubState;
+                return destroyToolState;
             }
 
             if (toolState == ToolState.Inspect)
             {
-                return inspectToolSubState;
+                return inspectToolState;
             }
 
             if (toolState == ToolState.Routes)
             {
-                return routesToolSubState;
+                return routesToolState;
             }
 
-            return noneToolSubState;
+            return noneToolState;
         }
     }
 }

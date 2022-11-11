@@ -17,7 +17,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public override void OnMouseUp()
         {
-            // Registry.appState.Tools.destroyToolSubState.DestroyCurrentSelectedRoomBlock();
+            // Registry.appState.Tools.destroyToolState.DestroyCurrentSelectedRoomBlock();
         }
     }
 }

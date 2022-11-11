@@ -20,7 +20,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public override void OnMouseUp()
         {
-            Registry.appState.Tools.inspectToolSubState.InspectCurrentSelectedRoom();
+            Registry.appState.Tools.inspectToolState.InspectCurrentSelectedRoom();
         }
     }
 }

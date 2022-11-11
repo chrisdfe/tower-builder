@@ -35,9 +35,9 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
 
-            Registry.appState.Tools.destroyToolSubState.events.onDestroySelectionUpdated += OnDestroySelectionUpdated;
+            Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated += OnDestroySelectionUpdated;
 
-            Registry.appState.Tools.inspectToolSubState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
+            Registry.appState.Tools.inspectToolState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
         }
 
         public void Teardown()
@@ -51,9 +51,9 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
 
-            Registry.appState.Tools.destroyToolSubState.events.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
+            Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
 
-            Registry.appState.Tools.inspectToolSubState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
+            Registry.appState.Tools.inspectToolState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
         }
 
         /* 
@@ -115,7 +115,12 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void RemoveRoom(Room room)
         {
+            // Debug.Log("gameWorldRooms count: " + gameWorldRooms.Count);
             GameWorldRoom gameWorldRoom = gameWorldRooms.Find(otherRoom => otherRoom.room == room);
+
+            // Debug.Log("gameWorldRoom");
+            // Debug.Log(gameWorldRoom);
+
             gameWorldRooms.Remove(gameWorldRoom);
             Destroy(gameWorldRoom.gameObject);
         }

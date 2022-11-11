@@ -148,6 +148,8 @@ namespace TowerBuilder.State.Rooms
             {
                 Building buildingContainingRoom = queries.FindBuildingByRoom(room);
 
+                if (buildingContainingRoom == null) return;
+
                 RoomList roomsInBuilding = queries.FindRoomsInBuilding(buildingContainingRoom);
 
                 if (roomsInBuilding.Count == 0)

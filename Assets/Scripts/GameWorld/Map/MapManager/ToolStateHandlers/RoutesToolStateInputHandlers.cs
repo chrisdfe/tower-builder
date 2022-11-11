@@ -30,7 +30,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         public override void OnMouseUp()
         {
             CellCoordinates currentCell = Registry.appState.UI.currentSelectedCell;
-            switch (Registry.appState.Tools.routesToolSubState.currentClickState)
+            switch (Registry.appState.Tools.routesToolState.currentClickState)
             {
                 case RoutesToolState.ClickState.RouteStart:
                     Registry.appState.Routes.SetDebugRouteStart(currentCell);

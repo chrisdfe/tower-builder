@@ -30,7 +30,7 @@ namespace TowerBuilder.GameWorld.UI
             UpdateDescriptionText();
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
-            Registry.appState.Tools.buildToolSubState.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         void Update()
@@ -74,16 +74,23 @@ namespace TowerBuilder.GameWorld.UI
 
             if (toolState == ToolState.Build)
             {
-                RoomTemplate selectedRoomTemplate = Registry.appState.Tools.buildToolSubState.selectedRoomTemplate;
+                RoomTemplate selectedRoomTemplate = Registry.appState.Tools.buildToolState.subStates.roomEntityType.selectedRoomTemplate;
                 if (selectedRoomTemplate == null)
                 {
                     descriptionText.text = $"{toolState}";
                 }
                 else
                 {
-                    Room blueprintRoom = Registry.appState.Tools.buildToolSubState.blueprintRoom;
-                    int price = blueprintRoom.price;
-                    descriptionText.text = $"{toolState} - {selectedRoomTemplate.title}: ${price}";
+                    Room blueprintRoom = Registry.appState.Tools.buildToolState.subStates.roomEntityType.blueprintRoom;
+                    if (blueprintRoom != null)
+                    {
+                        int price = blueprintRoom.price;
+                        descriptionText.text = $"{toolState} - {selectedRoomTemplate.title}: ${price}";
+                    }
+                    else
+                    {
+                        descriptionText.text = $"{toolState}";
+                    }
                 }
             }
             else

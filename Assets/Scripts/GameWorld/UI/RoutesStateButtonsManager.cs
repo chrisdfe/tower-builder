@@ -43,18 +43,18 @@ namespace TowerBuilder.GameWorld.UI
 
             originalColor = routeStartButton.colors.normalColor;
 
-            // SelectButton(Registry.appState.UI.buildToolSubState.selectedRoomKey);
-            // Registry.appState.UI.buildToolSubState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
+            // SelectButton(Registry.appState.UI.buildToolState.selectedRoomKey);
+            // Registry.appState.UI.buildToolState.onSelectedRoomKeyUpdated += OnSelectedRoomKeyUpdated;
         }
 
         void OnRouteStartButtonClick()
         {
-            Registry.appState.Tools.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteStart);
+            Registry.appState.Tools.routesToolState.SetClickState(RoutesToolState.ClickState.RouteStart);
         }
 
         void OnRouteEndButtonClick()
         {
-            Registry.appState.Tools.routesToolSubState.SetClickState(RoutesToolState.ClickState.RouteEnd);
+            Registry.appState.Tools.routesToolState.SetClickState(RoutesToolState.ClickState.RouteEnd);
         }
 
         void OnRouteCalculateButtonClick()
@@ -65,7 +65,7 @@ namespace TowerBuilder.GameWorld.UI
         void OnRouteClearButtonClick()
         {
             Registry.appState.Routes.ClearDebugRoute();
-            Registry.appState.Tools.routesToolSubState.SetClickState(RoutesToolState.ClickState.None);
+            Registry.appState.Tools.routesToolState.SetClickState(RoutesToolState.ClickState.None);
         }
 
         void OnAddDebugResidentButtonClick()

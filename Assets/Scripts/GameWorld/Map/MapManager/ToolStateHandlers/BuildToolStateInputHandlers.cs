@@ -29,17 +29,17 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public override void OnMouseDown()
         {
-            // Registry.appState.Tools.buildToolSubState.StartBuild();
+            // Registry.appState.Tools.buildToolState.StartBuild();
         }
 
         public override void OnMouseUp()
         {
-            // Registry.appState.Tools.buildToolSubState.EndBuild();
+            // Registry.appState.Tools.buildToolState.EndBuild();
         }
 
         void OnRoomAdded(Room room)
         {
-            // if (room.id == Registry.appState.Tools.buildToolSubState.currentBlueprint.room.id)
+            // if (room.id == Registry.appState.Tools.buildToolState.currentBlueprint.room.id)
             // {
             //     ResetBlueprint();
             // }

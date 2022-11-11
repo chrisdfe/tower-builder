@@ -66,10 +66,25 @@ namespace TowerBuilder.GameWorld.UI.Components
         public static UISelectButton Create(Input input)
         {
             UISelectButton button = Instantiate<GameObject>(UISelectButton.GetPrefab()).GetComponent<UISelectButton>();
-
             button.ConsumeInput(input);
             button.RenderText();
             return button;
+        }
+
+        /* 
+            Static API
+        */
+        public static List<UISelectButton> CreateButtonListFromInputList(List<Input> inputList)
+        {
+            List<UISelectButton> result = new List<UISelectButton>();
+
+            foreach (UISelectButton.Input input in inputList)
+            {
+                UISelectButton selectButton = UISelectButton.Create(new UISelectButton.Input() { label = input.label, value = input.value });
+                result.Add(selectButton);
+            }
+
+            return result;
         }
 
         static GameObject GetPrefab()

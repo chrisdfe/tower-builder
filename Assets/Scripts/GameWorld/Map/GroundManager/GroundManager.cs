@@ -36,7 +36,7 @@ namespace TowerBuilder.GameWorld.Map
             Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
-            Registry.appState.Tools.buildToolSubState.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
         void Start()
@@ -52,7 +52,7 @@ namespace TowerBuilder.GameWorld.Map
             Registry.appState.UI.events.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
 
             Registry.appState.Tools.events.onToolStateUpdated -= OnToolStateUpdated;
-            Registry.appState.Tools.buildToolSubState.events.onSelectedRoomTemplateUpdated -= OnSelectedRoomTemplateUpdated;
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onSelectedRoomTemplateUpdated -= OnSelectedRoomTemplateUpdated;
         }
 
         void OnRoomAdded(Room room)
