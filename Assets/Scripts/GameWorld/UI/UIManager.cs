@@ -27,7 +27,6 @@ namespace TowerBuilder.GameWorld.UI
 
             //Calculate layermask to Raycast to. (Raycast to "cube" && "sphere" layers only)
             int uiLayerIndex = LayerMask.NameToLayer("UI");
-            Debug.Log("uiLayerIndex: " + uiLayerIndex);
             int layerMask = (1 << uiLayerIndex);
             graphicRaycaster.blockingMask = uiLayerIndex;
         }

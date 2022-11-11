@@ -64,11 +64,11 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             if (Input.GetMouseButtonUp(0))
             {
-                if (!uiManager.mouseIsOverUI)
-                {
-                    Registry.appState.UI.SelectEnd();
-                    currentToolStateHandler.OnMouseUp();
-                }
+                // if (!uiManager.mouseIsOverUI)
+                // {
+                Registry.appState.UI.SelectEnd();
+                currentToolStateHandler.OnMouseUp();
+                // }
             }
 
             currentToolStateHandler.Update();

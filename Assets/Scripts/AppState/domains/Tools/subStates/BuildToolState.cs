@@ -16,7 +16,6 @@ namespace TowerBuilder.State.Tools
         {
             public string selectedRoomCategory;
             public RoomTemplate selectedRoomTemplate;
-            public bool? buildIsActive;
         }
 
         public class Events
@@ -41,6 +40,8 @@ namespace TowerBuilder.State.Tools
         public Room blueprintRoom { get; private set; } = null;
 
         public BuildToolState.Events events;
+
+        bool buildIsActive = false;
 
         public BuildToolState(Tools.State state, Input input) : base(state)
         {
@@ -122,6 +123,8 @@ namespace TowerBuilder.State.Tools
 
         void StartBuild()
         {
+            buildIsActive = true;
+
             if (events.onBuildStart != null)
             {
                 events.onBuildStart();
@@ -130,6 +133,10 @@ namespace TowerBuilder.State.Tools
 
         void EndBuild()
         {
+            // This happens when the mouse click up happens outside the screen or over a UI element
+            if (!buildIsActive) return;
+
+            buildIsActive = false;
             blueprintRoom.validator.Validate(Registry.appState);
 
             if (blueprintRoom.validator.isValid)

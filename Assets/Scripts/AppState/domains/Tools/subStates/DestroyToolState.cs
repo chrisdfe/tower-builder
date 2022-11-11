@@ -27,6 +27,8 @@ namespace TowerBuilder.State.Tools
         public RoomList roomsToDeleteBlocksFrom { get; private set; } = new RoomList();
         public RoomBlocks blocksToDelete { get; private set; } = new RoomBlocks();
 
+        bool destroyIsActive = false;
+
         public CellCoordinatesList cellsToDelete
         {
             get
@@ -83,6 +85,7 @@ namespace TowerBuilder.State.Tools
 
         void StartDestroy()
         {
+            destroyIsActive = true;
             CalculateDeleteCells();
 
             if (events.onDestroyStart != null)
@@ -93,6 +96,10 @@ namespace TowerBuilder.State.Tools
 
         void EndDestroy()
         {
+            // This happens when the mouse click up happens outside the screen or over a UI element
+            if (!destroyIsActive) return;
+
+            destroyIsActive = false;
             // Restrict destroy to whichever room destroy started on
             if (roomsToDeleteBlocksFrom.Count > 0 && blocksToDelete.Count > 0)
             {
