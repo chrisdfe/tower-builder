@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Furniture
+namespace TowerBuilder.DataTypes.Furnitures
 {
-    public abstract class FurnitureBase
+    public abstract class Furniture
     {
         public virtual FurnitureCategory category { get { return FurnitureCategory.None; } }
         public int occupancy;
 
         Room room;
-        FurnitureAttributesBase config;
+        List<FurnitureAttributesBase> configs;
 
-        public FurnitureBase(Room room, FurnitureAttributesBase config)
+        public Furniture(Room room, List<FurnitureAttributesBase> configs)
         {
             this.room = room;
-            this.config = config;
+            this.configs = configs;
         }
 
         public abstract void Initialize();

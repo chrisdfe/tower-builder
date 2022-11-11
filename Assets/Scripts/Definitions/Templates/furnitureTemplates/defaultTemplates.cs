@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Furniture;
+using TowerBuilder.DataTypes.Furnitures;
 using UnityEngine;
 
 namespace TowerBuilder.DefinitionsTemplates

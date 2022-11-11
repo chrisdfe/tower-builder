@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 
-namespace TowerBuilder.DataTypes.Furniture
+namespace TowerBuilder.DataTypes.Furnitures
 {
     public class FurnitureList
     {
-        public List<FurnitureBase> furnitureList { get; private set; } = new List<FurnitureBase>();
+        public List<Furniture> furnitureList { get; private set; } = new List<Furniture>();
     }
 }

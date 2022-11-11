@@ -1,19 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Furniture;
+using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.State.Rooms.Furniture
+namespace TowerBuilder.State.Rooms.Furnitures
 {
     public abstract class FurnitureBehaviorBase
     {
-        FurnitureBase roomFurniture;
+        Furniture roomFurniture;
         Resident[] usageSlots;
 
-        public FurnitureBehaviorBase(FurnitureBase roomFurniture)
+        public FurnitureBehaviorBase(Furniture roomFurniture)
         {
             this.roomFurniture = roomFurniture;
         }

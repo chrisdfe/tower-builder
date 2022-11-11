@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Furniture;
+using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 

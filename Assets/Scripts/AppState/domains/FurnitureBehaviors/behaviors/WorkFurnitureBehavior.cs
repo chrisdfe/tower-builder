@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Furniture;
+using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 using UnityEngine;
 
-namespace TowerBuilder.State.Rooms.Furniture
+namespace TowerBuilder.State.Rooms.Furnitures
 {
     public class WorkFurnitureBehavior : FurnitureBehaviorBase
     {
-        public WorkFurnitureBehavior(FurnitureBase roomFurniture) : base(roomFurniture) { }
+        public WorkFurnitureBehavior(Furniture furniture) : base(furniture) { }
 
         public override void OnInteractStart(Resident resident) { }
         public override void OnInteractEnd(Resident resident) { }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder.DataTypes.Furniture;
+using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;

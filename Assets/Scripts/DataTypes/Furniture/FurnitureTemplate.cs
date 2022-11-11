@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TowerBuilder.DataTypes.Furniture
+namespace TowerBuilder.DataTypes.Furnitures
 {
     public class FurnitureTemplate
     {

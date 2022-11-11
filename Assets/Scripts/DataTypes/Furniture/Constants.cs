@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Furniture
+namespace TowerBuilder.DataTypes.Furnitures
 {
     public static class Constants
     {
