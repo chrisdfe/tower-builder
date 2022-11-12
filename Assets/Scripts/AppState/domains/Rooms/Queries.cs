@@ -24,7 +24,7 @@ namespace TowerBuilder.State.Rooms
 
             public Building FindBuildingByRoom(Room room)
             {
-                foreach (Building building in Registry.appState.buildings.buildingList)
+                foreach (Building building in Registry.appState.Buildings.buildingList)
                 {
                     if (room.building == building)
                     {

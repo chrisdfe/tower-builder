@@ -113,7 +113,7 @@ namespace TowerBuilder.State.Rooms
                 }
 
                 Building building = new Building();
-                appState.buildings.AddBuilding(building);
+                appState.Buildings.AddBuilding(building);
                 return building;
             }
         }
@@ -152,7 +152,7 @@ namespace TowerBuilder.State.Rooms
 
                 if (roomsInBuilding.Count == 0)
                 {
-                    appState.buildings.RemoveBuilding(buildingContainingRoom);
+                    appState.Buildings.RemoveBuilding(buildingContainingRoom);
                 }
             }
         }

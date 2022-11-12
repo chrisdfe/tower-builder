@@ -43,7 +43,7 @@ namespace TowerBuilder.State
         public Time.State Time;
         public Wallet.State Wallet;
 
-        public Buildings.State buildings;
+        public Buildings.State Buildings;
         public Furnitures.State Furnitures;
         public Rooms.State Rooms;
 
@@ -59,7 +59,7 @@ namespace TowerBuilder.State
             Time = new Time.State(this, input.time);
             Wallet = new Wallet.State(this, input.wallet);
 
-            buildings = new Buildings.State(this, input.buildings);
+            Buildings = new Buildings.State(this, input.buildings);
             Rooms = new Rooms.State(this, input.rooms);
 
             Residents = new Residents.State(this, input.residents);

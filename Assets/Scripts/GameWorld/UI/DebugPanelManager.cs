@@ -28,7 +28,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
             Registry.appState.UI.events.onSelectionBoxUpdated += OnSelectionBoxUpdated;
 
-            Registry.appState.buildings.events.onBuildingListUpdated += OnBuildingListUpdated;
+            Registry.appState.Buildings.events.onBuildingListUpdated += OnBuildingListUpdated;
 
             Registry.appState.Rooms.events.onRoomListUpdated += OnRoomListUpdated;
             Registry.appState.Rooms.events.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
@@ -99,7 +99,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetBuildingCountText()
         {
-            List<Building> allBuildings = Registry.appState.buildings.buildingList;
+            List<Building> allBuildings = Registry.appState.Buildings.buildingList;
             buildingCountText.text = $"Buildings: {allBuildings.Count}";
         }
 
