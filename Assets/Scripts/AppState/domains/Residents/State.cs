@@ -57,7 +57,7 @@ namespace TowerBuilder.State.Residents
             debugResident.coordinates = cellCoordinates;
             allResidents.Add(debugResident);
 
-            List<RouteAttempt> routeAttempts = Registry.appState.Routes.debugRouteAttempts;
+            List<RouteAttempt> routeAttempts = appState.Routes.debugRouteAttempts;
             Debug.Log("routeAttempts");
             Debug.Log(routeAttempts.Count);
 

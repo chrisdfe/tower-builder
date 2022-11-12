@@ -54,7 +54,7 @@ namespace TowerBuilder.State.Rooms
                 events.onRoomListUpdated(roomList);
             }
 
-            room.validator.Validate(Registry.appState);
+            room.validator.Validate(appState);
 
             if (room.validator.isValid)
             {
@@ -64,20 +64,20 @@ namespace TowerBuilder.State.Rooms
 
         public void BuildRoom(Room room)
         {
-            room.validator.Validate(Registry.appState);
+            room.validator.Validate(appState);
 
             if (!room.validator.isValid)
             {
                 // TODO - these should be unique messages - right now they are not
                 foreach (RoomValidationError validationError in room.validator.errors)
                 {
-                    Registry.appState.Notifications.AddNotification(validationError.message);
+                    appState.Notifications.AddNotification(validationError.message);
                 }
                 return;
             }
 
             // 
-            Registry.appState.Wallet.SubtractBalance(room.price);
+            appState.Wallet.SubtractBalance(room.price);
 
             // Decide whether to create a new room or to add to an existing one
             List<Room> roomsToCombineWith = queries.FindRoomsToCombineWith(room);
@@ -113,7 +113,7 @@ namespace TowerBuilder.State.Rooms
                 }
 
                 Building building = new Building();
-                Registry.appState.buildings.AddBuilding(building);
+                appState.buildings.AddBuilding(building);
                 return building;
             }
         }
@@ -152,7 +152,7 @@ namespace TowerBuilder.State.Rooms
 
                 if (roomsInBuilding.Count == 0)
                 {
-                    Registry.appState.buildings.RemoveBuilding(buildingContainingRoom);
+                    appState.buildings.RemoveBuilding(buildingContainingRoom);
                 }
             }
         }

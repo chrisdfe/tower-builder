@@ -71,17 +71,17 @@ namespace TowerBuilder.State.Tools
             currentSubState.Teardown();
         }
 
-        protected override void OnSelectionStart(SelectionBox selectionBox)
+        public override void OnSelectionStart(SelectionBox selectionBox)
         {
             StartBuild();
         }
 
-        protected override void OnSelectionEnd(SelectionBox selectionBox)
+        public override void OnSelectionEnd(SelectionBox selectionBox)
         {
             EndBuild();
         }
 
-        protected override void OnSelectionBoxUpdated(SelectionBox selectionBox)
+        public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
             if (isLocked) return;
 

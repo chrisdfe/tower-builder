@@ -39,6 +39,8 @@ namespace TowerBuilder.State.Tools
 
         public Events events;
 
+        ToolStateBase activeToolState { get { return GetToolState(toolState); } }
+
         public State(AppState appState, Input input) : base(appState)
         {
             toolState = input.toolState ?? ToolState.None;
@@ -50,6 +52,13 @@ namespace TowerBuilder.State.Tools
             routesToolState = new RoutesToolState(this, input.routesToolState);
 
             events = new State.Events();
+
+            appState.UI.events.onSelectionStart += OnSelectionStart;
+            appState.UI.events.onSelectionEnd += OnSelectionEnd;
+            appState.UI.events.onSelectionBoxUpdated += OnSelectionBoxUpdated;
+
+            appState.UI.events.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
+            appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
         }
 
         public void SetToolState(ToolState newToolState)
@@ -74,9 +83,29 @@ namespace TowerBuilder.State.Tools
             GetToolState(toolState).Setup();
         }
 
-        ToolStateBase GetCurrentActiveToolState()
+        void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
-            return GetToolState(toolState);
+            activeToolState.OnSelectionBoxUpdated(selectionBox);
+        }
+
+        void OnCurrentSelectedRoomUpdated(Room room)
+        {
+            activeToolState.OnCurrentSelectedRoomUpdated(room);
+        }
+
+        void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock)
+        {
+            activeToolState.OnCurrentSelectedRoomBlockUpdated(roomBlock);
+        }
+
+        void OnSelectionStart(SelectionBox selectionBox)
+        {
+            activeToolState.OnSelectionStart(selectionBox);
+        }
+
+        void OnSelectionEnd(SelectionBox selectionBox)
+        {
+            activeToolState.OnSelectionEnd(selectionBox);
         }
 
         ToolStateBase GetToolState(ToolState toolState)

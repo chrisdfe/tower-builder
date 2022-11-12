@@ -63,7 +63,7 @@ namespace TowerBuilder.State.Tools
             blocksToDelete = new RoomBlocks();
         }
 
-        protected override void OnSelectionBoxUpdated(SelectionBox selectionBox)
+        public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
             CalculateDeleteCells();
 
@@ -73,12 +73,12 @@ namespace TowerBuilder.State.Tools
             }
         }
 
-        protected override void OnSelectionStart(SelectionBox selectionBox)
+        public override void OnSelectionStart(SelectionBox selectionBox)
         {
             StartDestroy();
         }
 
-        protected override void OnSelectionEnd(SelectionBox selectionBox)
+        public override void OnSelectionEnd(SelectionBox selectionBox)
         {
             EndDestroy();
         }
