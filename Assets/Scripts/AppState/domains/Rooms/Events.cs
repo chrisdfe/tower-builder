@@ -24,10 +24,6 @@ namespace TowerBuilder.State.Rooms
             public delegate void RoomListEvent(RoomList roomList);
             public RoomListEvent onRoomListUpdated;
 
-            public delegate void RoomBlockEvent(Room room, RoomCells roomBlock);
-            public RoomBlockEvent onRoomBlockAdded;
-            public RoomBlockEvent onRoomBlockRemoved;
-
             public delegate void RoomBlocksEvent(Room room, RoomBlocks roomBlocks);
             public RoomBlocksEvent onRoomBlocksAdded;
             public RoomBlocksEvent onRoomBlocksRemoved;

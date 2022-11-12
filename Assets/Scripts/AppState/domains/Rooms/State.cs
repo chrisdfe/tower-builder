@@ -185,9 +185,9 @@ namespace TowerBuilder.State.Rooms
             RemoveConnectionsForRoom(room);
             FindAndAddConnectionsForRoom(room);
 
-            if (events.onRoomBlockAdded != null)
+            if (events.onRoomBlocksAdded != null)
             {
-                events.onRoomBlockAdded(room, roomBlock);
+                events.onRoomBlocksAdded(room, new RoomBlocks(roomBlock));
             }
 
             if (events.onRoomBlocksUpdated != null)

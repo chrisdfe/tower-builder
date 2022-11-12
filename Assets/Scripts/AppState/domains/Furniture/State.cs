@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
@@ -21,6 +23,42 @@ namespace TowerBuilder.State.Furnitures
             public FurnitureListEvent onFurnitureListUpdated;
         }
 
+        public class Queries
+        {
+            State state;
+
+            public Queries(State state)
+            {
+                this.state = state;
+            }
+
+            public FurnitureList FindFurnitureByRoom(Room room)
+            {
+                return new FurnitureList(
+                    state.furnitureList.items.FindAll(furniture => furniture.room == room)
+                );
+            }
+
+            public FurnitureList FindFurnitureInBlocks(RoomBlocks roomBlocks)
+            {
+                List<Furniture> furnitureList = new List<Furniture>();
+
+                foreach (RoomCells block in roomBlocks.blocks)
+                {
+                    foreach (CellCoordinates cellCoordinates in block.coordinatesList.items)
+                    {
+                        Furniture furnitureAtCell = state.furnitureList.FindFurnitureAtCell(cellCoordinates);
+                        if (furnitureAtCell != null)
+                        {
+                            furnitureList.Add(furnitureAtCell);
+                        }
+                    }
+                }
+
+                return new FurnitureList(furnitureList);
+            }
+        }
+
         public FurnitureList furnitureList { get; private set; } = new FurnitureList();
 
         public Events events;
@@ -33,6 +71,16 @@ namespace TowerBuilder.State.Furnitures
 
             appState.Rooms.events.onRoomAdded += OnRoomAdded;
             appState.Rooms.events.onRoomRemoved += OnRoomRemoved;
+            appState.Rooms.events.onRoomBlocksAdded += OnRoomBlocksAdded;
+            appState.Rooms.events.onRoomBlocksRemoved += OnRoomBlocksRemoved;
+        }
+
+        public void Teardown()
+        {
+            appState.Rooms.events.onRoomAdded -= OnRoomAdded;
+            appState.Rooms.events.onRoomRemoved -= OnRoomRemoved;
+            appState.Rooms.events.onRoomBlocksAdded -= OnRoomBlocksAdded;
+            appState.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
         }
 
         public void AddFurniture(FurnitureList furnitureList)
@@ -88,21 +136,15 @@ namespace TowerBuilder.State.Furnitures
             RemoveFurniture(furnituresToRemove);
         }
 
-        public class Queries
+        void OnRoomBlocksAdded(Room room, RoomBlocks roomBlocks)
         {
-            State state;
+            // Recalculate furniture in room
+        }
 
-            public Queries(State state)
-            {
-                this.state = state;
-            }
-
-            public FurnitureList FindFurnitureByRoom(Room room)
-            {
-                return new FurnitureList(
-                    state.furnitureList.items.FindAll(furniture => furniture.room == room)
-                );
-            }
+        void OnRoomBlocksRemoved(Room room, RoomBlocks roomBlocks)
+        {
+            FurnitureList furnituresInBlock = queries.FindFurnitureInBlocks(roomBlocks);
+            RemoveFurniture(furnituresInBlock);
         }
     }
 }

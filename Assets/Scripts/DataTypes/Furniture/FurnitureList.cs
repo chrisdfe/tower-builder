@@ -60,7 +60,14 @@ namespace TowerBuilder.DataTypes.Furnitures
 
         public FurnitureList FindFurnitureByRoom(Room room)
         {
-            return new FurnitureList(items.FindAll(furniture => furniture.room == room));
+            return new FurnitureList(
+                items.FindAll(furniture => furniture.room == room)
+            );
+        }
+
+        public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates)
+        {
+            return items.Find(furniture => furniture.cellCoordinates == cellCoordinates);
         }
     }
 }

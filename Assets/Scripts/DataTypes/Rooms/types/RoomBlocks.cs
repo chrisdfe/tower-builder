@@ -31,6 +31,11 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public RoomBlocks() { }
 
+        public RoomBlocks(RoomCells roomBlock)
+        {
+            this.blocks = new List<RoomCells>() { roomBlock };
+        }
+
         public RoomBlocks(List<RoomCells> blocks)
         {
             this.blocks = blocks;
