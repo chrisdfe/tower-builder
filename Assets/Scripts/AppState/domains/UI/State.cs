@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using UnityEngine;
@@ -39,7 +40,8 @@ namespace TowerBuilder.State.UI
 
         public SelectionBox selectionBox { get; private set; }
         public bool selectionIsActive { get; private set; } = false;
-        // public SelectableEntityStack selectableEntityStack { get; private set; } = new SelectableEntityStack();
+
+        public EntityList currentSelectedCellEntityList { get; private set; } = new EntityList();
 
         public Events events;
 
@@ -72,6 +74,8 @@ namespace TowerBuilder.State.UI
             {
                 selectionBox.SetStartAndEnd(currentSelectedCell);
             }
+
+            SetEntityList();
 
             if (events.onCurrentSelectedCellUpdated != null)
             {
@@ -126,6 +130,38 @@ namespace TowerBuilder.State.UI
             {
                 events.onSelectionBoxUpdated(selectionBox);
             }
+        }
+
+        void SetEntityList()
+        {
+            EntityList entityList = new EntityList();
+
+            if (currentSelectedCell != null)
+            {
+                if (currentSelectedRoom != null)
+                {
+                    RoomEntity roomEntity = new RoomEntity(currentSelectedRoom);
+                    entityList.Add(roomEntity);
+                }
+
+                if (currentSelectedRoomBlock != null)
+                {
+                    RoomBlockEntity roomBlockEntity = new RoomBlockEntity(currentSelectedRoomBlock);
+                    entityList.Add(roomBlockEntity);
+                }
+
+                Furniture furnitureAtCell = appState.Furnitures.queries.FindFurnitureAtCell(currentSelectedCell);
+
+                if (furnitureAtCell != null)
+                {
+                    FurnitureEntity furnitureEntity = new FurnitureEntity(furnitureAtCell);
+                    entityList.Add(furnitureEntity);
+                }
+
+                // TODO - add residents entities
+            }
+
+            currentSelectedCellEntityList = entityList;
         }
     }
 }

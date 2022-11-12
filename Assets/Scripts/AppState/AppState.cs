@@ -61,9 +61,8 @@ namespace TowerBuilder.State
 
             Buildings = new Buildings.State(this, input.buildings);
             Rooms = new Rooms.State(this, input.rooms);
-
-            Residents = new Residents.State(this, input.residents);
             Furnitures = new Furnitures.State(this, input.furnitures);
+            Residents = new Residents.State(this, input.residents);
 
             Routes = new Routes.State(this, input.routes);
 

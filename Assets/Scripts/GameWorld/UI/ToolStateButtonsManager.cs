@@ -26,6 +26,8 @@ namespace TowerBuilder.GameWorld.UI
         Button currentButton;
         Color originalColor;
 
+        List<Button> buttons;
+
         void Awake()
         {
             // NoneButton = transform.Find("NoneButton").GetComponent<Button>();
@@ -40,19 +42,12 @@ namespace TowerBuilder.GameWorld.UI
             InspectButton.onClick.AddListener(OnInspectButtonClick);
             RoutesButton.onClick.AddListener(OnRoutesButtonClick);
 
-            new List<Button> { BuildButton, DestroyButton, InspectButton, RoutesButton }.ForEach(button =>
-            {
-                button.image.color = DEFAULT_BG_COLOR;
-                button.transform.Find("Text").GetComponent<Text>().color = DEFAULT_TEXT_COLOR;
-            });
+            currentButton = GetToolStateButton(Registry.appState.Tools.toolState);
+            buttons = new List<Button> { BuildButton, DestroyButton, InspectButton, RoutesButton };
+            HighlightCurrentButton();
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
         }
-
-        // void OnNoneButtonClick()
-        // {
-        //     OnToolButtonClick(ToolState.None);
-        // }
 
         void OnBuildButtonClick()
         {
@@ -77,25 +72,42 @@ namespace TowerBuilder.GameWorld.UI
         void OnToolButtonClick(ToolState toolState)
         {
             ToolState currentToolState = Registry.appState.Tools.toolState;
-            ToolState newToolState = (currentToolState == toolState) ? ToolState.None : toolState;
+            ToolState newToolState = (currentToolState == toolState) ? State.Tools.State.DEFAULT_TOOL_STATE : toolState;
             Registry.appState.Tools.SetToolState(newToolState);
         }
 
         void OnToolStateUpdated(ToolState toolState, ToolState previousToolState)
         {
-            if (currentButton != null)
-            {
-                currentButton.image.color = DEFAULT_BG_COLOR;
-                currentButton.transform.Find("Text").GetComponent<Text>().color = DEFAULT_TEXT_COLOR;
-            }
-
             currentButton = GetToolStateButton(toolState);
 
-            if (currentButton != null)
+            HighlightCurrentButton();
+        }
+
+        void HighlightCurrentButton()
+        {
+            buttons.ForEach(button =>
             {
-                currentButton.image.color = PRESSED_BG_COLOR;
-                currentButton.transform.Find("Text").GetComponent<Text>().color = PRESSED_TEXT_COLOR;
-            }
+                if (button == currentButton)
+                {
+                    HighlightButton(button);
+                }
+                else
+                {
+                    UnHighlightButton(button);
+                }
+            });
+        }
+
+        void UnHighlightButton(Button button)
+        {
+            button.image.color = DEFAULT_BG_COLOR;
+            button.transform.Find("Text").GetComponent<Text>().color = DEFAULT_TEXT_COLOR;
+        }
+
+        void HighlightButton(Button button)
+        {
+            button.image.color = PRESSED_BG_COLOR;
+            button.transform.Find("Text").GetComponent<Text>().color = PRESSED_TEXT_COLOR;
         }
 
         Button GetToolStateButton(ToolState toolState)
@@ -120,7 +132,6 @@ namespace TowerBuilder.GameWorld.UI
                 return RoutesButton;
             }
 
-            // return NoneButton;
             return null;
         }
     }

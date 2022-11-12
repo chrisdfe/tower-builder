@@ -44,7 +44,7 @@ namespace TowerBuilder.State.Tools
             }
         }
 
-        public DestroyToolState(Tools.State state, Input input) : base(state)
+        public DestroyToolState(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
             events = new Events();
         }

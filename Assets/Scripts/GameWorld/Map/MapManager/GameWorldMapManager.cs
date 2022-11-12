@@ -50,7 +50,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void Update()
         {
-            UpdateSelectableEntityStack();
+            // UpdateSelectableEntityStack();
             UpdateCurrentSelectedCell();
 
             if (Input.GetMouseButtonDown(0))
@@ -71,10 +71,17 @@ namespace TowerBuilder.GameWorld.Map.MapManager
                 // }
             }
 
+            // Right click to exit out of current state?
+            if (Input.GetMouseButtonDown(1) && Registry.appState.Tools.toolState != State.Tools.State.DEFAULT_TOOL_STATE)
+            {
+                Registry.appState.Tools.SetToolState(State.Tools.State.DEFAULT_TOOL_STATE);
+            }
+
             currentToolStateHandler.Update();
         }
 
         // TODO - this probably belongs in UIManager
+        /*
         void UpdateSelectableEntityStack()
         {
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -104,6 +111,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             // TODO - perhaps avoid doing this ever frame
             // Registry.appState.UI.SetEntityStack(stack);
         }
+        */
 
         void UpdateCurrentSelectedCell()
         {
@@ -139,9 +147,8 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         {
             toolStateHandlerMap = new Dictionary<ToolState, ToolStateInputHandlersBase>()
             {
-                [ToolState.None] = new NoneToolStateInputHandlers(this),
-                [ToolState.Build] = new BuildToolStateInputHandlers(this),
                 [ToolState.Inspect] = new InspectToolStateInputHandlers(this),
+                [ToolState.Build] = new BuildToolStateInputHandlers(this),
                 [ToolState.Destroy] = new DestroyToolStateInputHandlers(this),
                 [ToolState.Routes] = new RoutesToolStateInputHandlers(this),
             };

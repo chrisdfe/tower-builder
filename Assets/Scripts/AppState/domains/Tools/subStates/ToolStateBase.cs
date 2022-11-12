@@ -7,10 +7,12 @@ namespace TowerBuilder.State.Tools
 {
     public abstract class ToolStateBase
     {
+        protected AppState appState;
         protected Tools.State parentState;
 
-        public ToolStateBase(Tools.State state)
+        public ToolStateBase(AppState appState, Tools.State state)
         {
+            this.appState = appState;
             parentState = state;
         }
 

@@ -52,7 +52,7 @@ namespace TowerBuilder.State.Tools
 
         public EntityTypeSubState currentSubState { get { return GetSubState(selectedEntityType); } }
 
-        public BuildToolState(Tools.State state, Input input) : base(state)
+        public BuildToolState(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
             events = new BuildToolState.Events();
 

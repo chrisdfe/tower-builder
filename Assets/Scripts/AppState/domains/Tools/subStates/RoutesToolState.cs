@@ -23,7 +23,7 @@ namespace TowerBuilder.State.Tools
 
         public ClickState currentClickState { get; private set; }
 
-        public RoutesToolState(Tools.State state, Input input) : base(state)
+        public RoutesToolState(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
             currentClickState = input.currentClickState ?? ClickState.None;
         }

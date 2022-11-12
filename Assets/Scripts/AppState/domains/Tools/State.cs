@@ -11,12 +11,14 @@ namespace TowerBuilder.State.Tools
 {
     public class State : StateSlice
     {
+        public static ToolState DEFAULT_TOOL_STATE = ToolState.Inspect;
+
         public struct Input
         {
             public ToolState? toolState;
             public CellCoordinates currentSelectedCell;
 
-            public NoneToolState.Input noneToolState;
+            // public NoneToolState.Input noneToolState;
             public BuildToolState.Input buildToolState;
             public DestroyToolState.Input destroyToolState;
             public InspectToolState.Input inspectToolState;
@@ -29,9 +31,9 @@ namespace TowerBuilder.State.Tools
             public ToolStateUpdatedEvent onToolStateUpdated;
         }
 
-        public ToolState toolState { get; private set; } = ToolState.None;
+        public ToolState toolState { get; private set; } = DEFAULT_TOOL_STATE;
 
-        public NoneToolState noneToolState;
+        // public NoneToolState noneToolState;
         public BuildToolState buildToolState;
         public DestroyToolState destroyToolState;
         public InspectToolState inspectToolState;
@@ -43,13 +45,13 @@ namespace TowerBuilder.State.Tools
 
         public State(AppState appState, Input input) : base(appState)
         {
-            toolState = input.toolState ?? ToolState.None;
+            toolState = input.toolState ?? DEFAULT_TOOL_STATE;
 
-            noneToolState = new NoneToolState(this, input.noneToolState);
-            buildToolState = new BuildToolState(this, input.buildToolState);
-            destroyToolState = new DestroyToolState(this, input.destroyToolState);
-            inspectToolState = new InspectToolState(this, input.inspectToolState);
-            routesToolState = new RoutesToolState(this, input.routesToolState);
+            // noneToolState = new NoneToolState(this, input.noneToolState);
+            buildToolState = new BuildToolState(appState, this, input.buildToolState);
+            destroyToolState = new DestroyToolState(appState, this, input.destroyToolState);
+            inspectToolState = new InspectToolState(appState, this, input.inspectToolState);
+            routesToolState = new RoutesToolState(appState, this, input.routesToolState);
 
             events = new State.Events();
 
@@ -76,8 +78,6 @@ namespace TowerBuilder.State.Tools
 
         public void TransitionToolState(ToolState toolState, ToolState previousToolState)
         {
-            Debug.Log("transitioning from " + previousToolState);
-            Debug.Log("to " + toolState);
             GetToolState(previousToolState).Teardown();
             this.toolState = toolState;
             GetToolState(toolState).Setup();
@@ -120,17 +120,12 @@ namespace TowerBuilder.State.Tools
                 return destroyToolState;
             }
 
-            if (toolState == ToolState.Inspect)
-            {
-                return inspectToolState;
-            }
-
             if (toolState == ToolState.Routes)
             {
                 return routesToolState;
             }
 
-            return noneToolState;
+            return inspectToolState;
         }
     }
 }

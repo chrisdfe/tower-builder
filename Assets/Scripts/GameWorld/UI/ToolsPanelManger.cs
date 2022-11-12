@@ -33,15 +33,6 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
         }
 
-        void Update()
-        {
-            // Right click to exit out of current state?
-            if (Input.GetMouseButtonDown(1) && Registry.appState.Tools.toolState != ToolState.None)
-            {
-                Registry.appState.Tools.SetToolState(ToolState.None);
-            }
-        }
-
         void OnToolStateUpdated(ToolState toolState, ToolState previousToolState)
         {
             UpdateDescriptionText();

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Buildings;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.Systems;
@@ -82,8 +83,14 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetCurrentSelectedCellText()
         {
+            foreach (EntityBase entity in Registry.appState.UI.currentSelectedCellEntityList.entities)
+            {
+                Debug.Log(entity);
+            }
+
             CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
-            currentSelectedCellText.text = $"x: {currentSelectedCell.x}, floor: {currentSelectedCell.floor}";
+            currentSelectedCellText.text = $"x: {currentSelectedCell.x}, floor: {currentSelectedCell.floor}\n"
+                + $"entityStack: {Registry.appState.UI.currentSelectedCellEntityList.Count}";
         }
 
         void SetSelectionBoxText()

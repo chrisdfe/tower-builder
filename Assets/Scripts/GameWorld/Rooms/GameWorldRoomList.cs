@@ -36,8 +36,6 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
 
             Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated += OnDestroySelectionUpdated;
-
-            Registry.appState.Tools.inspectToolState.onCurrentInspectedRoomUpdated += OnInspectRoomUpdated;
         }
 
         public void Teardown()
@@ -52,8 +50,6 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
 
             Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
-
-            Registry.appState.Tools.inspectToolState.onCurrentInspectedRoomUpdated -= OnInspectRoomUpdated;
         }
 
         /* 

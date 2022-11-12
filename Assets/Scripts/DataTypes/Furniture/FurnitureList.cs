@@ -67,7 +67,7 @@ namespace TowerBuilder.DataTypes.Furnitures
 
         public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates)
         {
-            return items.Find(furniture => furniture.cellCoordinates == cellCoordinates);
+            return items.Find(furniture => furniture.cellCoordinates.Matches(cellCoordinates));
         }
     }
 }

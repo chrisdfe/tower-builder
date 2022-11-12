@@ -39,6 +39,11 @@ namespace TowerBuilder.State.Furnitures
                 );
             }
 
+            public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates)
+            {
+                return state.furnitureList.FindFurnitureAtCell(cellCoordinates);
+            }
+
             public FurnitureList FindFurnitureInBlocks(RoomBlocks roomBlocks)
             {
                 List<Furniture> furnitureList = new List<Furniture>();
@@ -47,7 +52,7 @@ namespace TowerBuilder.State.Furnitures
                 {
                     foreach (CellCoordinates cellCoordinates in block.coordinatesList.items)
                     {
-                        Furniture furnitureAtCell = state.furnitureList.FindFurnitureAtCell(cellCoordinates);
+                        Furniture furnitureAtCell = FindFurnitureAtCell(cellCoordinates);
                         if (furnitureAtCell != null)
                         {
                             furnitureList.Add(furnitureAtCell);

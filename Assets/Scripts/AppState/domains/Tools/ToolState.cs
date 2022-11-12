@@ -2,9 +2,8 @@ namespace TowerBuilder.State.Tools
 {
     public enum ToolState
     {
-        None,
-        Build,
         Inspect,
+        Build,
         Destroy,
         Routes,
     }
