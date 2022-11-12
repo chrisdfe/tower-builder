@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerBuilder.State.Routes
 {
-    public class State
+    public class State : StateSlice
     {
         public struct Input
         {
@@ -33,9 +33,7 @@ namespace TowerBuilder.State.Routes
         public DebugRouteMarkerEvent onDebugRouteStartSet;
         public DebugRouteMarkerEvent onDebugRouteEndSet;
 
-        public State() : this(new Input()) { }
-
-        public State(Input input)
+        public State(AppState appState, Input input) : base(appState)
         {
             routes = input.routes ?? new List<Route>();
             debugRoute = input.debugRoute ?? null;

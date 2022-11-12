@@ -45,6 +45,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public RoomValidatorBase validator { get; private set; }
         public RoomEntranceBuilderBase entranceBuilder { get; private set; }
+        public RoomFurnitureBuilder furnitureBuilder { get; private set; }
 
         [JsonIgnore]
         public int price { get { return pricePerBlock * this.blocks.blocks.Count; } }
@@ -61,6 +62,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
             this.validator = roomTemplate.validatorFactory(this);
             this.entranceBuilder = roomTemplate.entranceBuilderFactory();
+            this.furnitureBuilder = roomTemplate.furnitureBuilderFactory(this);
 
             this.color = roomTemplate.color;
 

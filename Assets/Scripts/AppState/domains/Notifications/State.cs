@@ -6,7 +6,7 @@ using TowerBuilder.DataTypes.Notifications;
 
 namespace TowerBuilder.State.Notifications
 {
-    public class State
+    public class State : StateSlice
     {
         public class Input
         {
@@ -27,9 +27,7 @@ namespace TowerBuilder.State.Notifications
 
         public Events events;
 
-        public State() : this(new Input()) { }
-
-        public State(Input input)
+        public State(AppState appState, Input input) : base(appState)
         {
             events = new Events();
 

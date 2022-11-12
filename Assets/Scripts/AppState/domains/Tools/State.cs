@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.State.Tools
 {
-    public class State
+    public class State : StateSlice
     {
         public struct Input
         {
@@ -39,7 +39,7 @@ namespace TowerBuilder.State.Tools
 
         public Events events;
 
-        public State(Input input)
+        public State(AppState appState, Input input) : base(appState)
         {
             toolState = input.toolState ?? ToolState.None;
 
@@ -51,8 +51,6 @@ namespace TowerBuilder.State.Tools
 
             events = new State.Events();
         }
-
-        public State() : this(new Input()) { }
 
         public void SetToolState(ToolState newToolState)
         {

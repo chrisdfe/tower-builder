@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.State.UI
 {
-    public class State
+    public class State : StateSlice
     {
         public class Input
         {
@@ -43,7 +43,7 @@ namespace TowerBuilder.State.UI
 
         public Events events;
 
-        public State(Input input)
+        public State(AppState appState, Input input) : base(appState)
         {
             currentSelectedCell = input.currentSelectedCell ?? CellCoordinates.zero;
 
@@ -51,8 +51,6 @@ namespace TowerBuilder.State.UI
 
             events = new Events();
         }
-
-        public State() : this(new Input()) { }
 
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedCell)
         {

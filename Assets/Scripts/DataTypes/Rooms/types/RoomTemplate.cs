@@ -24,10 +24,11 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public RoomResizability resizability = RoomResizability.Inflexible;
 
-        // public RoomPrivacy privacy = RoomPrivacy.Public;
-
         public delegate RoomEntranceBuilderBase EntranceBuilderFactory();
         public EntranceBuilderFactory entranceBuilderFactory = () => new DefaultEntranceBuilder();
+
+        public delegate RoomFurnitureBuilder FurnitureBuilderFactory(Room room);
+        public FurnitureBuilderFactory furnitureBuilderFactory = (Room room) => new RoomFurnitureBuilder(room);
 
         public delegate RoomValidatorBase RoomValidatorFactory(Room room);
         public RoomValidatorFactory validatorFactory = (Room room) => new DefaultRoomValidator(room);

@@ -14,7 +14,7 @@ using UnityEngine;
 namespace TowerBuilder.State.Rooms
 {
     [Serializable]
-    public partial class State
+    public partial class State : StateSlice
     {
         public struct Input
         {
@@ -28,9 +28,7 @@ namespace TowerBuilder.State.Rooms
         public State.Events events;
         public State.Queries queries;
 
-        public State() : this(new Input()) { }
-
-        public State(Input input)
+        public State(AppState appState, Input input) : base(appState)
         {
             roomConnections = input.roomConnections ?? new RoomConnections();
             roomList = input.roomList ?? new RoomList();
@@ -41,7 +39,7 @@ namespace TowerBuilder.State.Rooms
 
         /* 
             Rooms
-         */
+        */
         public void AddRoom(Room room)
         {
             roomList.Add(room);

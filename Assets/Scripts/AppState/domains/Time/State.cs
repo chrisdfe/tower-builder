@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TowerBuilder.State.Time
 {
-    public class State
+    public class State : StateSlice
     {
         public struct Input
         {
@@ -27,9 +27,7 @@ namespace TowerBuilder.State.Time
         public delegate void TimeSpeedUpdatedEvent(TimeSpeed newTimeSpeed);
         public TimeSpeedUpdatedEvent onTimeSpeedUpdated;
 
-        public State() : this(new Input()) { }
-
-        public State(Input input)
+        public State(AppState appState, Input input) : base(appState)
         {
             isActive = input.isActive ?? false;
             tick = input.tick ?? 0;

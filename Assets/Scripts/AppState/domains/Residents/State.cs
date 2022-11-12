@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace TowerBuilder.State.Residents
 {
-    public class State
+    public class State : StateSlice
     {
         public class Input
         {
@@ -26,9 +26,7 @@ namespace TowerBuilder.State.Residents
 
         Resident debugResident;
 
-        public State() : this(new Input()) { }
-
-        public State(Input input)
+        public State(AppState appState, Input input) : base(appState)
         {
             if (input == null)
             {

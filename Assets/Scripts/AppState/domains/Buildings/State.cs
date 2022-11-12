@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerBuilder.State.Buildings
 {
-    public class State
+    public class State : StateSlice
     {
         public class Input
         {
@@ -28,13 +28,11 @@ namespace TowerBuilder.State.Buildings
 
         public Events events;
 
-        public State(Input input)
+        public State(AppState appState, Input input) : base(appState)
         {
             buildingList = input.buildingList ?? new List<Building>();
             events = new Events();
         }
-
-        public State() : this(new Input()) { }
 
         public void AddBuilding(Building building)
         {

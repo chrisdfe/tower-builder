@@ -109,18 +109,13 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             GameWorldRoom gameWorldRoom = GameWorldRoom.Create(transform);
             gameWorldRoom.SetRoom(room);
-            gameWorldRoom.Initialize();
+            gameWorldRoom.Setup();
             gameWorldRooms.Add(gameWorldRoom);
         }
 
         void RemoveRoom(Room room)
         {
-            // Debug.Log("gameWorldRooms count: " + gameWorldRooms.Count);
             GameWorldRoom gameWorldRoom = gameWorldRooms.Find(otherRoom => otherRoom.room == room);
-
-            // Debug.Log("gameWorldRoom");
-            // Debug.Log(gameWorldRoom);
-
             gameWorldRooms.Remove(gameWorldRoom);
             Destroy(gameWorldRoom.gameObject);
         }

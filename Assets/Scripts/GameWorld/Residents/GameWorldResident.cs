@@ -12,7 +12,6 @@ namespace TowerBuilder.GameWorld.Residents
     {
         public Resident resident;
 
-
         public void Initialize()
         {
             UpdatePosition();
@@ -20,22 +19,25 @@ namespace TowerBuilder.GameWorld.Residents
 
         void Awake()
         {
-            Registry.appState.Residents.onResidentPositionUpdated += OnResidentPositionUpdated;
-        }
-
-        void OnResidentPositionUpdated(Resident resident)
-        {
-            if (resident != this.resident)
-            {
-                return;
-            }
-
-            UpdatePosition();
         }
 
         void UpdatePosition()
         {
             transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(resident.coordinates);
+        }
+
+        /* 
+            Static API
+         */
+        public static GameWorldResident Create(Transform parent)
+        {
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/Map/Residents/Resident");
+            GameObject gameObject = Instantiate<GameObject>(prefab);
+
+            gameObject.transform.parent = parent;
+
+            GameWorldResident gameWorldResident = gameObject.GetComponent<GameWorldResident>();
+            return gameWorldResident;
         }
     }
 }

@@ -5,15 +5,19 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Furnitures
 {
-    public abstract class Furniture
+    public class Furniture
     {
-        public virtual FurnitureCategory category { get { return FurnitureCategory.None; } }
-        // public int occupancy;
+        public FurnitureCategory category { get { return FurnitureCategory.None; } }
 
-        public bool isInBlueprintMode { get; private set; } = false;
+        public Room room { get; set; }
 
-        Room room;
+        public bool isInBlueprintMode = false;
+
+        public CellCoordinates cellCoordinates = CellCoordinates.zero;
+
         List<FurnitureAttributesBase> configs;
+
+        public Furniture() { }
 
         public Furniture(Room room, List<FurnitureAttributesBase> configs)
         {
@@ -21,17 +25,23 @@ namespace TowerBuilder.DataTypes.Furnitures
             this.configs = configs;
         }
 
+
         public void OnBuild()
         {
             isInBlueprintMode = false;
         }
 
-        public void Initialize()
+        public void OnDestroy()
         {
 
         }
 
-        public void OnDestroy()
+        public void Setup()
+        {
+
+        }
+
+        public void Teardown()
         {
 
         }

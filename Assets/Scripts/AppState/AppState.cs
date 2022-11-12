@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace TowerBuilder.State
 {
     public class AppState
@@ -9,12 +11,12 @@ namespace TowerBuilder.State
             public Wallet.State.Input wallet;
 
             public Buildings.State.Input buildings;
-            public Furnitures.State.Input furnitures;
-
             public Rooms.State.Input rooms;
 
-            public Routes.State.Input routes;
+            public Furnitures.State.Input furnitures;
             public Residents.State.Input residents;
+
+            public Routes.State.Input routes;
 
             public UI.State.Input ui;
             public Tools.State.Input tools;
@@ -37,37 +39,36 @@ namespace TowerBuilder.State
             }
         }
 
-        public Notifications.State Notifications = new Notifications.State();
-        public Time.State Time = new Time.State();
-        public Wallet.State Wallet = new Wallet.State();
+        public Notifications.State Notifications;
+        public Time.State Time;
+        public Wallet.State Wallet;
 
-        public Buildings.State buildings = new Buildings.State();
-        public Furnitures.State Furnitures = new Furnitures.State();
-        public Rooms.State Rooms = new Rooms.State();
+        public Buildings.State buildings;
+        public Furnitures.State Furnitures;
+        public Rooms.State Rooms;
 
-        public Routes.State Routes = new Routes.State();
-        public Residents.State Residents = new Residents.State();
+        public Routes.State Routes;
+        public Residents.State Residents;
 
-        public FurnitureBehaviors.State FurnitureBehaviors = new FurnitureBehaviors.State();
-        public ResidentBehaviors.State ResidentBehaviors = new ResidentBehaviors.State();
-
-        public UI.State UI = new UI.State();
-        public Tools.State Tools = new Tools.State();
+        public UI.State UI;
+        public Tools.State Tools;
 
         public AppState(Input input)
         {
-            Notifications = new Notifications.State(input.notifications);
-            Time = new Time.State(input.time);
-            Wallet = new Wallet.State(input.wallet);
+            Notifications = new Notifications.State(this, input.notifications);
+            Time = new Time.State(this, input.time);
+            Wallet = new Wallet.State(this, input.wallet);
 
-            buildings = new Buildings.State(input.buildings);
-            Furnitures = new Furnitures.State(input.furnitures);
-            Rooms = new Rooms.State(input.rooms);
+            buildings = new Buildings.State(this, input.buildings);
+            Rooms = new Rooms.State(this, input.rooms);
 
-            Routes = new Routes.State(input.routes);
-            Residents = new Residents.State(input.residents);
-            UI = new UI.State(input.ui);
-            Tools = new Tools.State(input.tools);
+            Residents = new Residents.State(this, input.residents);
+            Furnitures = new Furnitures.State(this, input.furnitures);
+
+            Routes = new Routes.State(this, input.routes);
+
+            UI = new UI.State(this, input.ui);
+            Tools = new Tools.State(this, input.tools);
         }
 
         public AppState() : this(new Input()) { }

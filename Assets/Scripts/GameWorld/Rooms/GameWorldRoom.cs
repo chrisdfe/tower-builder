@@ -25,7 +25,7 @@ namespace TowerBuilder.GameWorld.Rooms
             gameObject.name = $"Room {room.id}";
         }
 
-        public void Initialize()
+        public void Setup()
         {
             CreateRoomCells();
             CreateRoomEntrances();

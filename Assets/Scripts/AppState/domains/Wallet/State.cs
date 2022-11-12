@@ -6,7 +6,7 @@ using TowerBuilder.State;
 
 namespace TowerBuilder.State.Wallet
 {
-    public class State
+    public class State : StateSlice
     {
         static int DEFAULT_STARTING_BALANCE = 1000000;
         // static int DEFAULT_STARTING_BALANCE = 1000;
@@ -21,13 +21,10 @@ namespace TowerBuilder.State.Wallet
         public delegate void BalanceUpdatedEvent(int newBalance, int prevBalance);
         public BalanceUpdatedEvent onBalanceUpdated;
 
-        public State(Input input)
+        public State(AppState appState, Input input) : base(appState)
         {
             balance = input.balance ?? DEFAULT_STARTING_BALANCE;
         }
-
-        public State() : this(new Input()) { }
-
         public void UpdateBalance(int balance)
         {
             int prevBalance = this.balance;
