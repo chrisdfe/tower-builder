@@ -4,6 +4,7 @@ using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using UnityEngine;
@@ -161,7 +162,13 @@ namespace TowerBuilder.State.UI
                     entityList.Add(furnitureEntity);
                 }
 
-                // TODO - add residents entities
+                Resident residentAtCell = appState.Residents.queries.FindResidentAtCell(currentSelectedCell);
+
+                if (residentAtCell != null)
+                {
+                    ResidentEntity residentEntity = new ResidentEntity(residentAtCell);
+                    entityList.Add(residentEntity);
+                }
             }
 
             currentSelectedCellEntityList = entityList;

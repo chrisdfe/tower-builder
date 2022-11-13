@@ -66,7 +66,7 @@ namespace TowerBuilder.DataTypes.Residents
 
         public bool IsAtEndOfCurrentRoute()
         {
-            return resident.coordinates == currentRoute.destination;
+            return resident.cellCoordinates == currentRoute.destination;
         }
 
         void ProgressToNextSegment()
@@ -103,7 +103,7 @@ namespace TowerBuilder.DataTypes.Residents
             Debug.Log($"going to segment cell step {index}");
             currentRouteSegmentCellStepIndex = index;
             currentRouteSegmentCellStep = currentRouteSegment.cellSteps[index];
-            resident.coordinates = currentRouteSegmentCellStep;
+            resident.cellCoordinates = currentRouteSegmentCellStep;
         }
     }
 }

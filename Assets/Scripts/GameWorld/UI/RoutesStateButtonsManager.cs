@@ -33,13 +33,13 @@ namespace TowerBuilder.GameWorld.UI
             nextPointOnRouteButton = transform.Find("NextPointOnRouteButton").GetComponent<Button>();
             resetRouteProgressButton = transform.Find("ResetRouteProgressButton").GetComponent<Button>();
 
-            routeStartButton.onClick.AddListener(OnRouteStartButtonClick);
-            routeEndButton.onClick.AddListener(OnRouteEndButtonClick);
-            routeCalculateButton.onClick.AddListener(OnRouteCalculateButtonClick);
-            routeClearButton.onClick.AddListener(OnRouteClearButtonClick);
-            addDebugResidentButton.onClick.AddListener(OnAddDebugResidentButtonClick);
-            nextPointOnRouteButton.onClick.AddListener(OnNextPointOnRouteButtonClick);
-            resetRouteProgressButton.onClick.AddListener(OnResetRouteProgressButtonClick);
+            // routeStartButton.onClick.AddListener(OnRouteStartButtonClick);
+            // routeEndButton.onClick.AddListener(OnRouteEndButtonClick);
+            // routeCalculateButton.onClick.AddListener(OnRouteCalculateButtonClick);
+            // routeClearButton.onClick.AddListener(OnRouteClearButtonClick);
+            // addDebugResidentButton.onClick.AddListener(OnAddDebugResidentButtonClick);
+            // nextPointOnRouteButton.onClick.AddListener(OnNextPointOnRouteButtonClick);
+            // resetRouteProgressButton.onClick.AddListener(OnResetRouteProgressButtonClick);
 
             originalColor = routeStartButton.colors.normalColor;
 
@@ -49,12 +49,12 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnRouteStartButtonClick()
         {
-            Registry.appState.Tools.routesToolState.SetClickState(RoutesToolState.ClickState.RouteStart);
+            // Registry.appState.Tools.routesToolState.SetClickState(RoutesToolState.ClickState.RouteStart);
         }
 
         void OnRouteEndButtonClick()
         {
-            Registry.appState.Tools.routesToolState.SetClickState(RoutesToolState.ClickState.RouteEnd);
+            // Registry.appState.Tools.routesToolState.SetClickState(RoutesToolState.ClickState.RouteEnd);
         }
 
         void OnRouteCalculateButtonClick()
@@ -65,37 +65,37 @@ namespace TowerBuilder.GameWorld.UI
         void OnRouteClearButtonClick()
         {
             Registry.appState.Routes.ClearDebugRoute();
-            Registry.appState.Tools.routesToolState.SetClickState(RoutesToolState.ClickState.None);
+            // Registry.appState.Tools.routesToolState.SetClickState(RoutesToolState.ClickState.None);
         }
 
         void OnAddDebugResidentButtonClick()
         {
-            CellCoordinates routeStartCoordinates = Registry.appState.Routes.debugRouteStartCoordinates;
+            // CellCoordinates routeStartCoordinates = Registry.appState.Routes.debugRouteStartCoordinates;
 
-            if (routeStartCoordinates == null)
-            {
-                Debug.Log("route start coordinates need to be set first");
-                return;
-            }
+            // if (routeStartCoordinates == null)
+            // {
+            //     Debug.Log("route start coordinates need to be set first");
+            //     return;
+            // }
 
-            if (Registry.appState.Routes.debugRouteEndCoordinates == null)
-            {
-                Debug.Log("route end coordinates need to be set first");
-                return;
-            }
+            // if (Registry.appState.Routes.debugRouteEndCoordinates == null)
+            // {
+            //     Debug.Log("route end coordinates need to be set first");
+            //     return;
+            // }
 
-            if (Registry.appState.Routes.debugRouteAttempts == null)
-            {
-                Debug.Log("no route attempts.");
-                return;
-            }
+            // if (Registry.appState.Routes.debugRouteAttempts == null)
+            // {
+            //     Debug.Log("no route attempts.");
+            //     return;
+            // }
 
-            Registry.appState.Residents.CreateDebugResidentAtCoordinates(routeStartCoordinates);
+            // Registry.appState.Residents.CreateDebugResidentAtCoordinates(routeStartCoordinates);
         }
 
         void OnNextPointOnRouteButtonClick()
         {
-            Registry.appState.Residents.AdvanceDebugResidentAlongRoute();
+            // Registry.appState.Residents.AdvanceDebugResidentAlongRoute();
         }
 
         void OnResetRouteProgressButtonClick()

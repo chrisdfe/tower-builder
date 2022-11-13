@@ -24,9 +24,11 @@ namespace TowerBuilder.GameWorld.UI
 
         RoomEntityGroupButtons roomEntityGroupButtons;
         FurnitureEntityGroupButtons furnitureEntityGroupButtons;
+        ResidentEntityGroupButtons residentEntityGroupButtons;
 
         UISelectButton roomEntityGroupButton;
         UISelectButton furnitureEntityGroupButton;
+        UISelectButton residentEntityGroupButton;
 
         string currentCategory = "";
 
@@ -36,10 +38,11 @@ namespace TowerBuilder.GameWorld.UI
 
             Transform roomEntityGroupButtonsWrapper = transform.Find("RoomEntityGroupButtons");
             Transform furnitureEntityGroupButtonsWrapper = transform.Find("FurnitureEntityGroupButtons");
-            // Transform residentEntityGroupButtonsWrapper = transform.Find("ResidentEntityGroupButtons");
+            Transform residentEntityGroupButtonsWrapper = transform.Find("ResidentEntityGroupButtons");
 
             roomEntityGroupButtons = new RoomEntityGroupButtons(roomEntityGroupButtonsWrapper);
             furnitureEntityGroupButtons = new FurnitureEntityGroupButtons(furnitureEntityGroupButtonsWrapper);
+            residentEntityGroupButtons = new ResidentEntityGroupButtons(residentEntityGroupButtonsWrapper);
 
             CreateEntityGroupButtons();
         }
@@ -50,6 +53,7 @@ namespace TowerBuilder.GameWorld.UI
 
             roomEntityGroupButton = CreateEntityGroupButton("rooms");
             furnitureEntityGroupButton = CreateEntityGroupButton("furniture");
+            residentEntityGroupButton = CreateEntityGroupButton("residents");
 
             UISelectButton CreateEntityGroupButton(string value)
             {
@@ -75,13 +79,15 @@ namespace TowerBuilder.GameWorld.UI
                 case "furniture":
                     Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.Furniture);
                     break;
+                case "residents":
+                    Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.Resident);
+                    break;
             }
 
         }
 
         void TeardownCurrentCategory()
         {
-            Debug.Log("tearing down current category: " + currentCategory);
             switch (currentCategory)
             {
                 case "rooms":
@@ -91,6 +97,10 @@ namespace TowerBuilder.GameWorld.UI
                 case "furniture":
                     furnitureEntityGroupButtons.Teardown();
                     furnitureEntityGroupButton.SetSelected(false);
+                    break;
+                case "residents":
+                    residentEntityGroupButtons.Teardown();
+                    residentEntityGroupButton.SetSelected(false);
                     break;
             }
 

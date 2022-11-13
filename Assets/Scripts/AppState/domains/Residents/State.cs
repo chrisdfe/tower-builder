@@ -14,17 +14,39 @@ namespace TowerBuilder.State.Residents
     {
         public class Input
         {
-            public List<Resident> allResidents = new List<Resident>();
+            public ResidentsList allResidents = new ResidentsList();
         }
 
-        public List<Resident> allResidents { get; private set; } = new List<Resident>();
+        public class Events
+        {
+            public delegate void ResidentsEvent(ResidentsList residents);
+            public ResidentsEvent onResidentsAdded;
+            public ResidentsEvent onResidentsRemoved;
+            public ResidentsEvent onResidentsBuilt;
 
-        public delegate void ResidentEvent(Resident resident);
-        public ResidentEvent onResidentAdded;
-        public ResidentEvent onResidentRemoved;
-        public ResidentEvent onResidentPositionUpdated;
+            public delegate void ResidentEvent(Resident resident);
+            public ResidentEvent onResidentPositionUpdated;
+        }
 
-        Resident debugResident;
+        public class Queries
+        {
+            State state;
+
+            public Queries(State state)
+            {
+                this.state = state;
+            }
+
+            public Resident FindResidentAtCell(CellCoordinates cellCoordinates)
+            {
+                return state.allResidents.FindResidentAtCell(cellCoordinates);
+            }
+        }
+
+        public ResidentsList allResidents { get; private set; } = new ResidentsList();
+
+        public Events events { get; private set; }
+        public Queries queries { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
         {
@@ -33,19 +55,55 @@ namespace TowerBuilder.State.Residents
                 input = new Input();
             }
 
-            this.allResidents = input.allResidents;
+            this.allResidents = input.allResidents ?? new ResidentsList();
+
+            events = new Events();
+            queries = new Queries(this);
+        }
+
+        public void AddResident(Resident resident)
+        {
+            allResidents.Add(resident);
+
+            if (events.onResidentsAdded != null)
+            {
+                events.onResidentsAdded(new ResidentsList(resident));
+            }
+        }
+
+        public void BuildResident(Resident resident)
+        {
+            resident.OnBuild();
+
+            if (events.onResidentsBuilt != null)
+            {
+                events.onResidentsBuilt(new ResidentsList(resident));
+            }
+        }
+
+        public void RemoveResident(Resident resident)
+        {
+            allResidents.Remove(resident);
+
+            Debug.Log("RemoveResident");
+
+            if (events.onResidentsRemoved != null)
+            {
+                events.onResidentsRemoved(new ResidentsList(resident));
+            }
         }
 
         public void SetResidentPosition(Resident resident, CellCoordinates cellCoordinates)
         {
-            resident.coordinates = cellCoordinates;
+            resident.cellCoordinates = cellCoordinates;
 
-            if (onResidentPositionUpdated != null)
+            if (events.onResidentPositionUpdated != null)
             {
-                onResidentPositionUpdated(resident);
+                events.onResidentPositionUpdated(resident);
             }
         }
 
+        /*
         public void CreateDebugResidentAtCoordinates(CellCoordinates cellCoordinates)
         {
             if (debugResident != null)
@@ -101,5 +159,6 @@ namespace TowerBuilder.State.Residents
             debugResident.motor.StartOnRoute(debugResident.motor.currentRoute);
             SetResidentPosition(debugResident, debugResident.coordinates);
         }
+        */
     }
 }

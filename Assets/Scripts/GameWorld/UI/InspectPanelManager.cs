@@ -4,6 +4,7 @@ using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.GameWorld.UI.Components;
@@ -76,6 +77,9 @@ namespace TowerBuilder.GameWorld.UI
                 case FurnitureEntity furnitureEntity:
                     SetInspectedFurnitureText(furnitureEntity.furniture);
                     break;
+                case ResidentEntity residentEntity:
+                    SetInspectedResidentText(residentEntity.resident);
+                    break;
                 default:
                     SetNullInspectedText();
                     break;
@@ -118,6 +122,13 @@ namespace TowerBuilder.GameWorld.UI
             {
                 text += $"    {connection.nodeA.room} - {connection.nodeB.room}\n";
             }
+
+            inspectText.text = text;
+        }
+
+        void SetInspectedResidentText(Resident resident)
+        {
+            string text = "Resident";
 
             inspectText.text = text;
         }

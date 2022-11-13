@@ -11,17 +11,20 @@ namespace TowerBuilder.DataTypes.Residents
 {
     public class Resident
     {
-        public CellCoordinates coordinates;
+        public CellCoordinates cellCoordinates;
+
+        public bool isInBlueprintMode = false;
 
         public ResidentMotor motor { get; private set; }
-        public ResidentMood mood { get; private set; }
-        public ResidentNeeds needs { get; private set; }
 
         public Resident()
         {
             this.motor = new ResidentMotor(this);
-            this.mood = new ResidentMood(this);
-            this.needs = new ResidentNeeds(this);
+        }
+
+        public void OnBuild()
+        {
+            this.isInBlueprintMode = false;
         }
     }
 }

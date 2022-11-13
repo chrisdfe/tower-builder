@@ -12,18 +12,28 @@ namespace TowerBuilder.GameWorld.Residents
     {
         public Resident resident;
 
-        public void Initialize()
+        Transform cube;
+
+        void Awake()
+        {
+            cube = transform.Find("Cube");
+        }
+
+        void OnDestroy()
+        {
+            Teardown();
+        }
+
+        public void Setup()
         {
             UpdatePosition();
         }
 
-        void Awake()
-        {
-        }
+        public void Teardown() { }
 
         void UpdatePosition()
         {
-            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(resident.coordinates);
+            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(resident.cellCoordinates);
         }
 
         /* 
@@ -31,7 +41,7 @@ namespace TowerBuilder.GameWorld.Residents
          */
         public static GameWorldResident Create(Transform parent)
         {
-            GameObject prefab = Resources.Load<GameObject>("Prefabs/Map/Residents/Resident");
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/Residents/Resident");
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;

@@ -40,11 +40,13 @@ namespace TowerBuilder.State.Tools
         {
             public RoomEntityTypeSubState roomEntityType;
             public FurnitureEntityTypeSubState furnitureEntityType;
+            public ResidentEntityTypeSubState residentEntityType;
 
             public SubStates(BuildToolState buildToolState)
             {
                 roomEntityType = new RoomEntityTypeSubState(buildToolState);
                 furnitureEntityType = new FurnitureEntityTypeSubState(buildToolState);
+                residentEntityType = new ResidentEntityTypeSubState(buildToolState);
             }
         }
 
@@ -54,7 +56,7 @@ namespace TowerBuilder.State.Tools
 
         public BuildToolState(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
-            events = new BuildToolState.Events();
+            events = new Events();
 
             subStates = new SubStates(this);
         }
@@ -144,6 +146,8 @@ namespace TowerBuilder.State.Tools
                     return subStates.roomEntityType;
                 case EntityType.Furniture:
                     return subStates.furnitureEntityType;
+                case EntityType.Resident:
+                    return subStates.residentEntityType;
                 default:
                     throw new NotImplementedException("invalid room entity type: " + entityType);
             }
