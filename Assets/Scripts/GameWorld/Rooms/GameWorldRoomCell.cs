@@ -98,7 +98,12 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void SetHoverColor()
         {
-            SetColor(baseColor, 0.4f);
+            SetColor(Color.green, 0.4f);
+        }
+
+        public void SetInspectedColor()
+        {
+            SetColor(Color.cyan, 0.4f);
         }
 
         public void SetDestroyHoverColor()

@@ -60,6 +60,19 @@ namespace TowerBuilder.State.Tools
             base.Teardown();
 
             appState.Furnitures.events.onFurnituresRemoved -= OnFurnituresRemoved;
+
+            inspectedEntityList = new EntityList();
+            inspectedEntityIndex = -1;
+
+            if (events.onInspectedEntityListUpdated != null)
+            {
+                events.onInspectedEntityListUpdated(inspectedEntityList);
+            }
+
+            if (events.onCurrentSelectedEntityUpdated != null)
+            {
+                events.onCurrentSelectedEntityUpdated(inspectedEntity);
+            }
         }
 
         public override void OnSelectionStart(SelectionBox selectionBox)

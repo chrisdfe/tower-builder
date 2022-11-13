@@ -11,10 +11,16 @@ namespace TowerBuilder.GameWorld.Furnitures
 {
     public class GameWorldFurniture : MonoBehaviour
     {
-        public Furniture furniture { get; private set; }
+        public Furniture furniture { get; set; }
+
+
+        Transform cube;
+        Color defaultColor;
 
         void Awake()
         {
+            cube = transform.Find("Cube");
+            defaultColor = cube.GetComponent<MeshRenderer>().material.color;
         }
 
         public void Setup()
@@ -27,9 +33,20 @@ namespace TowerBuilder.GameWorld.Furnitures
 
         }
 
-        public void SetFurniture(Furniture furniture)
+        public void SetDefaultColor()
         {
-            this.furniture = furniture;
+            SetColor(defaultColor);
+        }
+
+        public void SetInspectedColor()
+        {
+            SetColor(Color.cyan);
+        }
+
+        public void SetColor(Color color, float alpha = 1.0f)
+        {
+            Material material = cube.GetComponent<MeshRenderer>().material;
+            material.color = new Color(color.r, color.g, color.b, alpha);
         }
 
         void UpdatePosition()

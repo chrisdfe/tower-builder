@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.GameWorld;
 using TowerBuilder.GameWorld.Furnitures;
@@ -27,12 +28,16 @@ namespace TowerBuilder.GameWorld.Furnitures
         {
             Registry.appState.Furnitures.events.onFurnituresAdded += OnFurnituresAdded;
             Registry.appState.Furnitures.events.onFurnituresRemoved += OnFurnituresRemoved;
+
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
         void Teardown()
         {
             Registry.appState.Furnitures.events.onFurnituresAdded -= OnFurnituresAdded;
             Registry.appState.Furnitures.events.onFurnituresRemoved -= OnFurnituresRemoved;
+
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
         void OnFurnituresAdded(FurnitureList furnitureList)
@@ -48,6 +53,21 @@ namespace TowerBuilder.GameWorld.Furnitures
             foreach (Furniture furniture in furnitureList.items)
             {
                 RemoveFurniture(furniture);
+            }
+        }
+
+        void OnCurrentSelectedEntityUpdated(EntityBase entity)
+        {
+            foreach (GameWorldFurniture gameWorldFurniture in gameWorldFurnitureList)
+            {
+                if ((entity is FurnitureEntity) && ((FurnitureEntity)entity).furniture == gameWorldFurniture.furniture)
+                {
+                    gameWorldFurniture.SetInspectedColor();
+                }
+                else
+                {
+                    gameWorldFurniture.SetDefaultColor();
+                }
             }
         }
 
@@ -71,7 +91,7 @@ namespace TowerBuilder.GameWorld.Furnitures
         GameWorldFurniture CreateGameWorldFurniture(Furniture furniture)
         {
             GameWorldFurniture gameWorldFurniture = GameWorldFurniture.Create(transform);
-            gameWorldFurniture.SetFurniture(furniture);
+            gameWorldFurniture.furniture = furniture;
             gameWorldFurniture.Setup();
             return gameWorldFurniture;
         }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.DataTypes.Rooms.Entrances;
@@ -126,40 +127,72 @@ namespace TowerBuilder.GameWorld.Rooms
             switch (toolState)
             {
                 case (ToolState.Build):
-                    if (room.isInBlueprintMode)
-                    {
-                        if (room.validator.isValid)
-                        {
-                            gameWorldRoomCell.SetValidBlueprintColor();
-                        }
-                        else
-                        {
-                            gameWorldRoomCell.SetInvalidBlueprintColor();
-                        }
-
-                        hasUpdated = true;
-                    }
+                    SetBuildStateColor();
                     break;
                 case (ToolState.Destroy):
-                    CellCoordinatesList cellsToDestroy = Registry.appState.Tools.destroyToolState.cellsToDelete;
-                    if (cellsToDestroy.items.Contains(gameWorldRoomCell.roomCell.coordinates))
-                    {
-                        gameWorldRoomCell.SetDestroyHoverColor();
-                        hasUpdated = true;
-                    }
+                    SetDestroyStateColor();
                     break;
                 default:
-                    if (room.blocks.ContainsBlock(currentSelectedRoomBlock))
-                    {
-                        gameWorldRoomCell.SetHoverColor();
-                        hasUpdated = true;
-                    }
+                    SetInspectStateColor();
                     break;
             }
 
             if (!hasUpdated)
             {
                 gameWorldRoomCell.SetBaseColor();
+            }
+
+            void SetBuildStateColor()
+            {
+                if (room.isInBlueprintMode)
+                {
+                    if (room.validator.isValid)
+                    {
+                        gameWorldRoomCell.SetValidBlueprintColor();
+                    }
+                    else
+                    {
+                        gameWorldRoomCell.SetInvalidBlueprintColor();
+                    }
+
+                    hasUpdated = true;
+                }
+            }
+
+            void SetDestroyStateColor()
+            {
+                CellCoordinatesList cellsToDestroy = Registry.appState.Tools.destroyToolState.cellsToDelete;
+                if (cellsToDestroy.items.Contains(gameWorldRoomCell.roomCell.coordinates))
+                {
+                    gameWorldRoomCell.SetDestroyHoverColor();
+                    hasUpdated = true;
+                }
+            }
+
+            void SetInspectStateColor()
+            {
+                EntityList inspectedEntityList = Registry.appState.Tools.inspectToolState.inspectedEntityList;
+                EntityBase inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+
+                if (inspectedEntity == null) return;
+
+                Debug.Log(inspectedEntity.GetType());
+
+                // Check for hover
+                // if (room.blocks.ContainsBlock(currentSelectedRoomBlock))
+                // {
+                //     gameWorldRoomCell.SetHoverColor();
+                //     hasUpdated = true;
+                // }
+
+                if (
+                    ((inspectedEntity is RoomEntity) && ((RoomEntity)inspectedEntity).room == room) ||
+                    ((inspectedEntity is RoomBlockEntity) && ((RoomBlockEntity)inspectedEntity).roomBlock.cells.Contains(gameWorldRoomCell.roomCell))
+                )
+                {
+                    gameWorldRoomCell.SetInspectedColor();
+                    hasUpdated = true;
+                }
             }
         }
 

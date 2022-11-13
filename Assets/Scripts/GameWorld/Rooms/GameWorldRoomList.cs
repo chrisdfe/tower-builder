@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.DataTypes.Rooms.Entrances;
@@ -36,6 +37,7 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
 
             Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated += OnDestroySelectionUpdated;
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
         public void Teardown()
@@ -50,6 +52,7 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
 
             Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
         /* 
@@ -81,12 +84,12 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnRoomConnectionsUpdated(RoomConnections roomConnections)
         {
-            gameWorldRooms.ForEach(gameWorldRoom => gameWorldRoom.Reset());
+            SetRoomCellColors();
         }
 
         void OnCurrentSelectedRoomUpdated(Room selectedRoom)
         {
-            gameWorldRooms.ForEach(gameWorldRoom => gameWorldRoom.SetRoomCellColors());
+            SetRoomCellColors();
         }
 
         void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock) { }
@@ -95,7 +98,12 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnDestroySelectionUpdated()
         {
-            gameWorldRooms.ForEach(gameWorldRoom => gameWorldRoom.SetRoomCellColors());
+            SetRoomCellColors();
+        }
+
+        void OnCurrentSelectedEntityUpdated(EntityBase entity)
+        {
+            SetRoomCellColors();
         }
 
         /*
@@ -119,6 +127,15 @@ namespace TowerBuilder.GameWorld.Rooms
         GameWorldRoom FindGameWorldRoomByRoom(Room room)
         {
             return gameWorldRooms.Find(gwr => gwr.room == room);
+        }
+
+        /*
+         * Room Cells 
+         */
+
+        void SetRoomCellColors()
+        {
+            gameWorldRooms.ForEach(gameWorldRoom => gameWorldRoom.SetRoomCellColors());
         }
     }
 }

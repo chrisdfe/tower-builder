@@ -13,6 +13,8 @@ namespace TowerBuilder.DataTypes.Furnitures
 
         public bool isInBlueprintMode = false;
 
+        public int condition { get; private set; } = 100;
+
         public CellCoordinates cellCoordinates = CellCoordinates.zero;
 
         List<FurnitureAttributesBase> configs;

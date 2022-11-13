@@ -89,7 +89,8 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectedFurnitureText(Furniture furniture)
         {
-            string text = "Furniture";
+            string text = "Furniture\n"
+                + $"   condition: {furniture.condition}";
 
             inspectText.text = text;
         }
@@ -106,10 +107,11 @@ namespace TowerBuilder.GameWorld.UI
             RoomConnections roomConnections = Registry.appState.Rooms.roomConnections.FindConnectionsForRoom(room);
 
             string text = "Room\n"
-            + $"name: {room}\n"
-            + $"title: {room.title}\n"
-            + $"price: {room.price}\n";
+            + $"    name: {room}\n"
+            + $"    title: {room.title}\n"
+            + $"    price: {room.price}\n";
 
+            text += "\n";
             text += $"{roomConnections.connections.Count} Connection{(roomConnections.connections.Count == 1 ? "" : "s")}\n";
 
             foreach (RoomConnection connection in roomConnections.connections)
