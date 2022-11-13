@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.State.Rooms;
 using TowerBuilder.State.UI;
@@ -53,6 +54,7 @@ namespace TowerBuilder.State.Tools
             base.Setup();
 
             appState.Furnitures.events.onFurnituresRemoved += OnFurnituresRemoved;
+            appState.Residents.events.onResidentsRemoved += OnResidentsRemoved;
         }
 
         public override void Teardown()
@@ -60,6 +62,7 @@ namespace TowerBuilder.State.Tools
             base.Teardown();
 
             appState.Furnitures.events.onFurnituresRemoved -= OnFurnituresRemoved;
+            appState.Residents.events.onResidentsRemoved -= OnResidentsRemoved;
 
             inspectedEntityList = new EntityList();
             inspectedEntityIndex = -1;
@@ -127,6 +130,31 @@ namespace TowerBuilder.State.Tools
                 {
                     shouldReset = true;
                     inspectedEntityList.Remove(furniture);
+                }
+            }
+
+            if (shouldReset)
+            {
+                // back up to the top
+                inspectedEntityIndex = inspectedEntityList.Count - 1;
+
+                if (events.onCurrentSelectedEntityUpdated != null)
+                {
+                    events.onCurrentSelectedEntityUpdated(inspectedEntity);
+                }
+            }
+        }
+
+        void OnResidentsRemoved(ResidentsList residentsList)
+        {
+            bool shouldReset = false;
+
+            foreach (Resident resident in residentsList.items)
+            {
+                if (inspectedEntityList.Contains(resident))
+                {
+                    shouldReset = true;
+                    inspectedEntityList.Remove(resident);
                 }
             }
 

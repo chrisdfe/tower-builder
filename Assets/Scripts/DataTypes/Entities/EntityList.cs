@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Residents;
 
 namespace TowerBuilder.DataTypes.Entities
 {
@@ -32,11 +33,27 @@ namespace TowerBuilder.DataTypes.Entities
             });
         }
 
+        public void Remove(Resident resident)
+        {
+            entities.RemoveAll(entity =>
+            {
+                return (entity is ResidentEntity) && ((ResidentEntity)entity).resident == resident;
+            });
+        }
+
         public bool Contains(Furniture furniture)
         {
             return entities.Find(entity =>
             {
                 return (entity is FurnitureEntity) && ((FurnitureEntity)entity).furniture == furniture;
+            }) != null;
+        }
+
+        public bool Contains(Resident resident)
+        {
+            return entities.Find(entity =>
+            {
+                return (entity is ResidentEntity) && ((ResidentEntity)entity).resident == resident;
             }) != null;
         }
     }

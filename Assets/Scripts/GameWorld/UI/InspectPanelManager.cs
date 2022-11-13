@@ -148,6 +148,9 @@ namespace TowerBuilder.GameWorld.UI
                 case FurnitureEntity furnitureEntity:
                     CreateFurnitureActionButtons(furnitureEntity.furniture);
                     break;
+                case ResidentEntity residentEntity:
+                    CreateResidentActionButtons(residentEntity.resident);
+                    break;
             }
         }
 
@@ -161,6 +164,21 @@ namespace TowerBuilder.GameWorld.UI
         {
             UISelectButton removeButton = UISelectButton.Create(new UISelectButton.Input() { label = "delete", value = "delete" });
             removeButton.onClick += (value) => { Registry.appState.Furnitures.RemoveFurniture(furniture); };
+            removeButton.transform.SetParent(actionButtonsWrapper);
+            removeButton.transform.localScale = Vector3.one;
+
+            float wrapperHeight = actionButtonsWrapper.GetComponent<RectTransform>().rect.height;
+            RectTransform removeButtonRectTransform = removeButton.GetComponent<RectTransform>();
+            removeButtonRectTransform.sizeDelta = new Vector2(
+                removeButtonRectTransform.rect.width,
+                wrapperHeight
+            );
+        }
+
+        void CreateResidentActionButtons(Resident resident)
+        {
+            UISelectButton removeButton = UISelectButton.Create(new UISelectButton.Input() { label = "delete", value = "delete" });
+            removeButton.onClick += (value) => { Registry.appState.Residents.RemoveResident(resident); };
             removeButton.transform.SetParent(actionButtonsWrapper);
             removeButton.transform.localScale = Vector3.one;
 

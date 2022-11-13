@@ -13,7 +13,6 @@ namespace TowerBuilder.GameWorld.Furnitures
     {
         public Furniture furniture { get; set; }
 
-
         Transform cube;
         Color defaultColor;
 

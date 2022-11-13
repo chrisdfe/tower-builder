@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Residents;
 using UnityEngine;
 
@@ -14,6 +15,16 @@ namespace TowerBuilder.GameWorld.Residents
         {
             Registry.appState.Residents.events.onResidentsAdded += OnResidentsAdded;
             Registry.appState.Residents.events.onResidentsRemoved += OnResidentsRemoved;
+
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
+        }
+
+        public void OnDestroy()
+        {
+            Registry.appState.Residents.events.onResidentsAdded -= OnResidentsAdded;
+            Registry.appState.Residents.events.onResidentsRemoved -= OnResidentsRemoved;
+
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
         void OnResidentsAdded(ResidentsList residentList)
@@ -29,6 +40,21 @@ namespace TowerBuilder.GameWorld.Residents
             foreach (Resident resident in residentList.items)
             {
                 RemoveResident(resident);
+            }
+        }
+
+        void OnCurrentSelectedEntityUpdated(EntityBase entity)
+        {
+            foreach (GameWorldResident gameWorldResident in gameWorldResidentsList)
+            {
+                if ((entity is ResidentEntity) && ((ResidentEntity)entity).resident == gameWorldResident.resident)
+                {
+                    gameWorldResident.SetInspectedColor();
+                }
+                else
+                {
+                    gameWorldResident.SetDefaultColor();
+                }
             }
         }
 

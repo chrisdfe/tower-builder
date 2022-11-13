@@ -88,6 +88,9 @@ namespace TowerBuilder.GameWorld.Furnitures
             }
         }
 
+        /* 
+            Static API
+        */
         GameWorldFurniture CreateGameWorldFurniture(Furniture furniture)
         {
             GameWorldFurniture gameWorldFurniture = GameWorldFurniture.Create(transform);

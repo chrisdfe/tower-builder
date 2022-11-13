@@ -13,10 +13,12 @@ namespace TowerBuilder.GameWorld.Residents
         public Resident resident;
 
         Transform cube;
+        Color defaultColor;
 
         void Awake()
         {
             cube = transform.Find("Cube");
+            defaultColor = cube.GetComponent<MeshRenderer>().material.color;
         }
 
         void OnDestroy()
@@ -29,7 +31,26 @@ namespace TowerBuilder.GameWorld.Residents
             UpdatePosition();
         }
 
-        public void Teardown() { }
+        public void Teardown()
+        {
+
+        }
+
+        public void SetDefaultColor()
+        {
+            SetColor(defaultColor);
+        }
+
+        public void SetInspectedColor()
+        {
+            SetColor(Color.cyan);
+        }
+
+        public void SetColor(Color color, float alpha = 1.0f)
+        {
+            Material material = cube.GetComponent<MeshRenderer>().material;
+            material.color = new Color(color.r, color.g, color.b, alpha);
+        }
 
         void UpdatePosition()
         {
