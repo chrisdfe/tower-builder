@@ -4,13 +4,11 @@
 
 ## Tasks
 
-- Rooms are combining correctly anymore
+- Convert other List wrappers to use the new ListWrapper generic
+- Rooms aren't combining correctly anymore
 - "reset" button to reset state to default
 - Replace ground cells with a simpler ground for now
-- 2 furniture layers - "transportation" layer and "other" (beds, desks, etc) layer - to simplify layout
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
-- Add concept of different "vehicles" or separate entities - groups of rooms. When you add/delete a room it can either add to an existing vehicle or create a new one
-- Delete room entrances when a block gets deleted as well
 - colors should be tied to room category + not live on RoomTemplate
 - RouteFinder shouldn't look for every room entrance in the room, just on the current floor - it should also look for furniture on the current floor that could transport the resident elsewhere
 - Transportation room furniture interface - have a "connects to"
@@ -18,17 +16,7 @@
 - Furniture "usage slots" - an array of residents currently using this piece of furniture the size of the furnitures occupancy
 - roomcell "has floor" boolean state - for tall rooms
   - additionally, a "bridge" furniture type?
-- When casting the mouse ray, build a stack of interactable/inspectable elements
-  - If that stack contains a ui element:
-    - on mouse down don't propagate
-    - on mouse up, still propagate but handle it further up the chain
-  - Eventually this will allow for multiple clicks in the same location cycling through this list
-- Ability to destroy a single block in a flexible room
 - Residents currently stay on the same cell for more than one cycle currently - because of repeating cellCoordinates in segment end/start
-- Move current route traversal Resident code out into separate "motor" class
-- namespace reorganization
-  - Split "type definitions (Room, Route, Resident etc) into "Data" namespace
-  - Rename "Stores" to "GameState" or something
 - Wallet transation history
   - Wallet "batch" transactions so the transactions don't get flooded with lots of tiny transactions (e.g. desk income)
     - transactions will get added to queue, grouped by string id/message, then OnTick() they get applied
@@ -44,19 +32,14 @@
 - "Schedules" store, possibly right below timestore? residents will have schedules, but potentially weather effects and other such things could use this schedule mechanic
 - Route weighting mechanism to figure out which route is the best to take
   - probably as simple as fewer cells traveled > more cells traveled
-- Add residents
 - Keybindings for build, destroy, inspect, none
 - 'closed' connections, e.g between 2 private rooms (e.g condo)
 - Stairwells should not be able to be placed next to elevators or other stairwells
   - Perhaps this should be part of "Transportation category validation"
 - Resizing rooms should also reset their entrances (e.g if an elevator had a connection but has been resized)
 - Stop destroying/recreating roomCells whenever the cursor changes position - only when it needs resizing
-- Add GameWorldRoomList
-- You should be able to delete a single block of a flexible-sized room
-- blueprint price indicator for flexible rooms
 - destroy validation
 - rooms should not be able to be built in thin air above ground floor
-- Move Rooms dictionary in Rooms state somewhere else & make it more extensible
 - "Path" constants for paths used in Resource.Load - refactoring/moving things around would be easier
   if they're all in one place
 - Z-index constants
@@ -74,21 +57,42 @@
 
 ## Cleanup
 
-- Registry.Stores.Rooms => Registry.Stores.RoomsState, etc
+- Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - RouteFinder creates too many branches
 - RoomCells -> RoomCellList OR RoomList -> Rooms
-- Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor
-- RoomCells could implememnt IEnumerable
+- ListWrapper should implememnt IEnumerable
 - A "UI settings" object I can tweak a bunch of stuff in the unity editor with, instead of public serializable fields on each script?
 - Awkward naming conflict between ToolState + tool sub states
 
 ## Ideas
 
+- this game loop:
+  - Vehicles (moving buildings) need fuel
+  - You need scrap (currency) to buy fuel
+  - You get scrap by traveling and looting/farming/gathering
+  - You also need residents using the "engine" furniture
 - Periodic supplies delivery? big old quarry trucks, helicopers, pack mule, etc
 
 # Done
 
+- Delete room entrances when a block gets deleted as well
+- Move current route traversal Resident code out into separate "motor" class
+- Ability to destroy a single block in a flexible room
+- Move Rooms dictionary in Rooms state somewhere else & make it more extensible
+- blueprint price indicator for flexible rooms
+- Add GameWorldRoomList
+- You should be able to delete a single block of a flexible-sized room
+- Add residents
+- namespace reorganization
+  - Split "type definitions (Room, Route, Resident etc) into "Data" namespace
+  - Rename "Stores" to "GameState" or something
+- When casting the mouse ray, build a stack of interactable/inspectable elements
+  - If that stack contains a ui element:
+    - on mouse down don't propagate
+    - on mouse up, still propagate but handle it further up the chain
+  - Eventually this will allow for multiple clicks in the same location cycling through this list
+- Add concept of different "vehicles" or separate entities - groups of rooms. When you add/delete a room it can either add to an existing vehicle or create a new one
 - Blueprint should just be a room in RoomState - right now it lives in a seperate place in BuildToolState;
 - Draggable destroy tool
 - Move current RoomTemplates constants to a field in Registry - with ability to split up the "registering room template" logic into different files
