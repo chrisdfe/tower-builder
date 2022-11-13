@@ -42,9 +42,6 @@ namespace TowerBuilder.GameWorld.UI
         {
             this.panelWrapper = panelWrapper;
 
-            Debug.Log("categoryButtonsWrapperName");
-            Debug.Log(categoryButtonsWrapperName);
-
             categoryButtonsWrapper = panelWrapper.Find(categoryButtonsWrapperName);
             templateButtonsWrapper = panelWrapper.Find(templateButtonsWrapperName);
 
@@ -66,7 +63,6 @@ namespace TowerBuilder.GameWorld.UI
 
         public virtual void Teardown()
         {
-            Debug.Log("Teardown");
             DestroyCategoryButtons();
             DestroyTemplateButtons();
         }

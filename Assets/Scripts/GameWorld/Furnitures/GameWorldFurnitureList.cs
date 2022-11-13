@@ -60,7 +60,6 @@ namespace TowerBuilder.GameWorld.Furnitures
         void RemoveFurniture(Furniture furniture)
         {
             GameWorldFurniture gameWorldFurnitureToRemove = gameWorldFurnitureList.Find(gameWorldFurniture => gameWorldFurniture.furniture == furniture);
-            Debug.Log("gameWorldFurnitureToRemove: " + gameWorldFurnitureToRemove);
 
             if (gameWorldFurnitureToRemove != null)
             {

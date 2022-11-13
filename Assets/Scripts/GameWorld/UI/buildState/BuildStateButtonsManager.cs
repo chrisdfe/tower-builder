@@ -34,9 +34,6 @@ namespace TowerBuilder.GameWorld.UI
         {
             entityGroupButtonsWrapper = transform.Find("EntityGroupButtons");
 
-            Debug.Log("entityGroupButtonsWrapper");
-            Debug.Log(entityGroupButtonsWrapper);
-
             Transform roomEntityGroupButtonsWrapper = transform.Find("RoomEntityGroupButtons");
             Transform furnitureEntityGroupButtonsWrapper = transform.Find("FurnitureEntityGroupButtons");
             // Transform residentEntityGroupButtonsWrapper = transform.Find("ResidentEntityGroupButtons");

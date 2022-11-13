@@ -36,13 +36,11 @@ namespace TowerBuilder.GameWorld.UI
 
         protected override void OnCategoryButtonClick(string furnitureCategory)
         {
-            Debug.Log("furnitureCategory: " + furnitureCategory);
             // Registry.appState.Tools.buildToolState.SetSelectedRoomCategory(roomCategory);
         }
 
         protected override void OnTemplateButtonClick(string furnitureTemplateKey)
         {
-            Debug.Log("furnitureTemplateKey: " + furnitureTemplateKey);
             // RoomTemplate selectedRoomTemplate = Registry.roomTemplates.FindByKey(roomTemplateKey);
             // Registry.appState.Tools.buildToolState.SetSelectedRoomTemplate(selectedRoomTemplate);
         }

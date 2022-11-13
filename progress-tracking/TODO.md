@@ -4,13 +4,11 @@
 
 ## Tasks
 
-- Draggable destroy tool
 - Rooms are combining correctly anymore
 - "reset" button to reset state to default
 - Replace ground cells with a simpler ground for now
 - 2 furniture layers - "transportation" layer and "other" (beds, desks, etc) layer - to simplify layout
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
-- Blueprint should just be a room in RoomState - right now it lives in a seperate place in BuildToolState;
 - Add concept of different "vehicles" or separate entities - groups of rooms. When you add/delete a room it can either add to an existing vehicle or create a new one
 - Delete room entrances when a block gets deleted as well
 - colors should be tied to room category + not live on RoomTemplate
@@ -91,6 +89,8 @@
 
 # Done
 
+- Blueprint should just be a room in RoomState - right now it lives in a seperate place in BuildToolState;
+- Draggable destroy tool
 - Move current RoomTemplates constants to a field in Registry - with ability to split up the "registering room template" logic into different files
 - Moving camera around with middle mouse button
 - Camera zoom in/out
