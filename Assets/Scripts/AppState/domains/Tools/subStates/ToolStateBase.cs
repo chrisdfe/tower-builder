@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.State.Rooms;
 
@@ -25,6 +26,8 @@ namespace TowerBuilder.State.Tools
         public virtual void OnCurrentSelectedRoomUpdated(Room room) { }
 
         public virtual void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock) { }
+
+        public virtual void OnCurrentSelectedEntityListUpdated(EntityList entityList) { }
 
         public virtual void OnSelectionStart(SelectionBox selectionBox) { }
 

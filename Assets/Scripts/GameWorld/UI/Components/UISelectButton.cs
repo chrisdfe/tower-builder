@@ -50,6 +50,11 @@ namespace TowerBuilder.GameWorld.UI.Components
             buttonText = button.transform.Find("Text").GetComponent<Text>();
         }
 
+        void OnDestroy()
+        {
+            button.onClick.RemoveListener(OnClick);
+        }
+
         void RenderText()
         {
             buttonText.text = label;
@@ -63,6 +68,9 @@ namespace TowerBuilder.GameWorld.UI.Components
             }
         }
 
+        /* 
+            Static API
+        */
         public static UISelectButton Create(Input input)
         {
             UISelectButton button = Instantiate<GameObject>(UISelectButton.GetPrefab()).GetComponent<UISelectButton>();
@@ -71,9 +79,6 @@ namespace TowerBuilder.GameWorld.UI.Components
             return button;
         }
 
-        /* 
-            Static API
-        */
         public static List<UISelectButton> CreateButtonListFromInputList(List<Input> inputList)
         {
             List<UISelectButton> result = new List<UISelectButton>();

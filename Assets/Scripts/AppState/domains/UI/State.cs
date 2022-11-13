@@ -32,6 +32,9 @@ namespace TowerBuilder.State.UI
             public SelectionBoxEvent onSelectionBoxUpdated;
             public SelectionBoxEvent onSelectionStart;
             public SelectionBoxEvent onSelectionEnd;
+
+            public delegate void SelectedCellEntityListEvent(EntityList entityList);
+            public SelectedCellEntityListEvent onCurrentSelectedEntityListUpdated;
         }
 
         public CellCoordinates currentSelectedCell { get; private set; } = null;
@@ -162,6 +165,11 @@ namespace TowerBuilder.State.UI
             }
 
             currentSelectedCellEntityList = entityList;
+
+            if (events.onCurrentSelectedEntityListUpdated != null)
+            {
+                events.onCurrentSelectedEntityListUpdated(currentSelectedCellEntityList);
+            }
         }
     }
 }

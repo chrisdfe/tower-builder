@@ -61,6 +61,7 @@ namespace TowerBuilder.State.Tools
 
             appState.UI.events.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
             appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
+            appState.UI.events.onCurrentSelectedEntityListUpdated += OnCurrentSelectedEntityListUpdated;
         }
 
         public void SetToolState(ToolState newToolState)
@@ -106,6 +107,11 @@ namespace TowerBuilder.State.Tools
         void OnSelectionEnd(SelectionBox selectionBox)
         {
             activeToolState.OnSelectionEnd(selectionBox);
+        }
+
+        void OnCurrentSelectedEntityListUpdated(EntityList entityList)
+        {
+            activeToolState.OnCurrentSelectedEntityListUpdated(entityList);
         }
 
         ToolStateBase GetToolState(ToolState toolState)

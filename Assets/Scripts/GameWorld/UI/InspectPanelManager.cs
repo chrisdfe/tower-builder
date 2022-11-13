@@ -6,6 +6,8 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
+using TowerBuilder.GameWorld.UI.Components;
+using TowerBuilder.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,17 +17,26 @@ namespace TowerBuilder.GameWorld.UI
     {
         Text inspectIndexText;
         Text inspectText;
+        Transform actionButtonsWrapper;
+
+        List<UISelectButton> actionButtons = new List<UISelectButton>();
 
         void Awake()
         {
-            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
-
             inspectText = transform.Find("InspectText").GetComponent<Text>();
             inspectIndexText = transform.Find("InspectIndexText").GetComponent<Text>();
+            actionButtonsWrapper = transform.Find("ActionButtonsWrapper");
 
             SetText();
+
+            Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
+        void OnInspectedEntityListUpdated(EntityList entityList)
+        {
+            SetText();
+        }
 
         void OnCurrentSelectedEntityUpdated(EntityBase entity)
         {
@@ -36,18 +47,22 @@ namespace TowerBuilder.GameWorld.UI
         {
             SetInspectIndexText();
             SetInspectText();
+            SetActionButtons();
         }
 
         void SetInspectIndexText()
         {
+            EntityList inspectedEntityList = Registry.appState.Tools.inspectToolState.inspectedEntityList;
             int index = Registry.appState.Tools.inspectToolState.inspectedEntityIndex;
-            inspectIndexText.text = $"index: {index}";
+
+            string text = $"entityList: {inspectedEntityList.Count}\n"
+                + $"index: {index}";
+
+            inspectIndexText.text = text;
         }
 
         void SetInspectText()
         {
-            Debug.Log(Registry.appState.Tools.inspectToolState.inspectedEntityIndex);
-            Debug.Log(Registry.appState.Tools.inspectToolState.inspectedEntity);
             EntityBase inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
 
             switch (inspectedEntity)
@@ -103,6 +118,45 @@ namespace TowerBuilder.GameWorld.UI
             }
 
             inspectText.text = text;
+        }
+
+        void SetActionButtons()
+        {
+            DestroyActionButtons();
+
+            EntityBase inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+
+            switch (inspectedEntity)
+            {
+                case RoomEntity roomEntity:
+                    break;
+                case RoomBlockEntity roomBlockEntity:
+                    break;
+                case FurnitureEntity furnitureEntity:
+                    CreateFurnitureActionButtons(furnitureEntity.furniture);
+                    break;
+            }
+        }
+
+        void DestroyActionButtons()
+        {
+            actionButtons = new List<UISelectButton>();
+            TransformUtils.DestroyChildren(actionButtonsWrapper);
+        }
+
+        void CreateFurnitureActionButtons(Furniture furniture)
+        {
+            UISelectButton removeButton = UISelectButton.Create(new UISelectButton.Input() { label = "delete", value = "delete" });
+            removeButton.onClick += (value) => { Registry.appState.Furnitures.RemoveFurniture(furniture); };
+            removeButton.transform.SetParent(actionButtonsWrapper);
+            removeButton.transform.localScale = Vector3.one;
+
+            float wrapperHeight = actionButtonsWrapper.GetComponent<RectTransform>().rect.height;
+            RectTransform removeButtonRectTransform = removeButton.GetComponent<RectTransform>();
+            removeButtonRectTransform.sizeDelta = new Vector2(
+                removeButtonRectTransform.rect.width,
+                wrapperHeight
+            );
         }
     }
 }

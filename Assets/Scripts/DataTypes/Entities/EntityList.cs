@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TowerBuilder.DataTypes.Furnitures;
 
 namespace TowerBuilder.DataTypes.Entities
 {
@@ -16,6 +17,27 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 entities.Add(entity);
             }
+        }
+
+        public void Remove(EntityBase entity)
+        {
+            entities.Remove(entity);
+        }
+
+        public void Remove(Furniture furniture)
+        {
+            entities.RemoveAll(entity =>
+            {
+                return (entity is FurnitureEntity) && ((FurnitureEntity)entity).furniture == furniture;
+            });
+        }
+
+        public bool Contains(Furniture furniture)
+        {
+            return entities.Find(entity =>
+            {
+                return (entity is FurnitureEntity) && ((FurnitureEntity)entity).furniture == furniture;
+            }) != null;
         }
     }
 }
