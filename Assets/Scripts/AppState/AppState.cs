@@ -18,6 +18,9 @@ namespace TowerBuilder.State
 
             public Routes.State.Input routes;
 
+            public ResidentBehaviors.State.Input residentBehaviors;
+            public FurnitureBehaviors.State.Input furnitureBehaviors;
+
             public UI.State.Input ui;
             public Tools.State.Input tools;
 
@@ -33,6 +36,9 @@ namespace TowerBuilder.State
 
                 routes = new Routes.State.Input();
                 residents = new Residents.State.Input();
+
+                residentBehaviors = new ResidentBehaviors.State.Input();
+                furnitureBehaviors = new FurnitureBehaviors.State.Input();
 
                 ui = new UI.State.Input();
                 tools = new Tools.State.Input();
@@ -50,6 +56,9 @@ namespace TowerBuilder.State
         public Routes.State Routes;
         public Residents.State Residents;
 
+        public FurnitureBehaviors.State FurnitureBehaviors;
+        public ResidentBehaviors.State ResidentBehaviors;
+
         public UI.State UI;
         public Tools.State Tools;
 
@@ -65,6 +74,9 @@ namespace TowerBuilder.State
             Residents = new Residents.State(this, input.residents);
 
             Routes = new Routes.State(this, input.routes);
+
+            FurnitureBehaviors = new FurnitureBehaviors.State(this, input.furnitureBehaviors);
+            ResidentBehaviors = new ResidentBehaviors.State(this, input.residentBehaviors);
 
             UI = new UI.State(this, input.ui);
             Tools = new Tools.State(this, input.tools);

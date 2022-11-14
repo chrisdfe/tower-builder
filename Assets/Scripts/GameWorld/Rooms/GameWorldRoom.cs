@@ -176,8 +176,6 @@ namespace TowerBuilder.GameWorld.Rooms
 
                 if (inspectedEntity == null) return;
 
-                Debug.Log(inspectedEntity.GetType());
-
                 // Check for hover
                 // if (room.blocks.ContainsBlock(currentSelectedRoomBlock))
                 // {

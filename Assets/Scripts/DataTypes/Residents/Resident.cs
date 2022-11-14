@@ -16,12 +16,10 @@ namespace TowerBuilder.DataTypes.Residents
         public bool isInBlueprintMode = false;
 
         public ResidentMotor motor { get; private set; }
-        public ResidentBehavior behavior { get; private set; }
 
         public Resident()
         {
             this.motor = new ResidentMotor(this);
-            this.behavior = new ResidentBehavior(this);
         }
 
         public void OnBuild()
