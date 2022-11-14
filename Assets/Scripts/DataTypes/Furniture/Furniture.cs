@@ -17,16 +17,15 @@ namespace TowerBuilder.DataTypes.Furnitures
 
         public CellCoordinates cellCoordinates = CellCoordinates.zero;
 
-        List<FurnitureAttributesBase> configs;
+        List<FurnitureAttributesBase> attributesList;
 
         public Furniture() { }
 
-        public Furniture(Room room, List<FurnitureAttributesBase> configs)
+        public Furniture(Room room, List<FurnitureAttributesBase> attributesList)
         {
             this.room = room;
-            this.configs = configs;
+            this.attributesList = attributesList;
         }
-
 
         public void OnBuild()
         {

@@ -7,6 +7,8 @@ namespace TowerBuilder.DataTypes
     {
         public List<ItemType> items { get; private set; } = new List<ItemType>();
 
+        public int Count { get { return items.Count; } }
+
         public ListWrapper() { }
 
         public ListWrapper(ItemType item)

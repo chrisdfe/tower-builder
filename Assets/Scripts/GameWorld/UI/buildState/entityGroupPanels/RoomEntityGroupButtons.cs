@@ -5,7 +5,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.Definitions.Templates;
+using TowerBuilder.Definitions;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.State;
 using TowerBuilder.State.Rooms;
@@ -27,7 +27,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             List<UISelectButton> result = new List<UISelectButton>();
 
-            List<string> allRoomCategories = Registry.roomTemplates.FindAllRoomCategories();
+            List<string> allRoomCategories = Registry.roomDefinitions.FindAllRoomCategories();
             return allRoomCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
         }
 
@@ -35,8 +35,8 @@ namespace TowerBuilder.GameWorld.UI
         {
             List<UISelectButton> result = new List<UISelectButton>();
 
-            List<RoomTemplate> currentRoomTemplates = GetRoomTemplatesForCurrentCategory();
-            return currentRoomTemplates.Select(roomTemplate => new UISelectButton.Input() { label = roomTemplate.title, value = roomTemplate.key }).ToList();
+            List<RoomTemplate> currentRoomDefinitions = GetRoomDefinitionsForCurrentCategory();
+            return currentRoomDefinitions.Select(roomTemplate => new UISelectButton.Input() { label = roomTemplate.title, value = roomTemplate.key }).ToList();
         }
 
         protected override void OnCategoryButtonClick(string roomCategory)
@@ -46,14 +46,14 @@ namespace TowerBuilder.GameWorld.UI
 
         protected override void OnTemplateButtonClick(string roomTemplateKey)
         {
-            RoomTemplate selectedRoomTemplate = Registry.roomTemplates.FindByKey(roomTemplateKey);
+            RoomTemplate selectedRoomTemplate = Registry.roomDefinitions.FindByKey(roomTemplateKey);
             Registry.appState.Tools.buildToolState.subStates.roomEntityType.SetSelectedRoomTemplate(selectedRoomTemplate);
         }
 
-        List<RoomTemplate> GetRoomTemplatesForCurrentCategory()
+        List<RoomTemplate> GetRoomDefinitionsForCurrentCategory()
         {
             string currentCategory = Registry.appState.Tools.buildToolState.subStates.roomEntityType.selectedRoomCategory;
-            return Registry.roomTemplates.FindByCategory(currentCategory);
+            return Registry.roomDefinitions.FindByCategory(currentCategory);
         }
 
         void OnSelectedRoomCategoryUpdated(string newRoomCategory)

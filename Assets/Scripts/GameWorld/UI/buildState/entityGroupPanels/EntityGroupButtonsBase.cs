@@ -4,7 +4,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.Definitions.Templates;
+using TowerBuilder.Definitions;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.State;
 using TowerBuilder.State.Rooms;

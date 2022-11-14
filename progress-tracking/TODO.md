@@ -4,6 +4,8 @@
 
 ## Tasks
 
+- consider putting buildings state further down in the heirarchy - having buildings be able to query their contents in various ways
+  (e.g how many residents are currently inside of it, or whether it has a cockpit/engine) would be helpful
 - Convert other List wrappers to use the new ListWrapper generic
 - Rooms aren't combining correctly anymore
 - "reset" button to reset state to default
@@ -95,7 +97,7 @@
 - Add concept of different "vehicles" or separate entities - groups of rooms. When you add/delete a room it can either add to an existing vehicle or create a new one
 - Blueprint should just be a room in RoomState - right now it lives in a seperate place in BuildToolState;
 - Draggable destroy tool
-- Move current RoomTemplates constants to a field in Registry - with ability to split up the "registering room template" logic into different files
+- Move current RoomDefinitions constants to a field in Registry - with ability to split up the "registering room template" logic into different files
 - Moving camera around with middle mouse button
 - Camera zoom in/out
 - Room addition is broken again

@@ -1,16 +1,16 @@
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
 
-namespace TowerBuilder.Definitions.Templates
+namespace TowerBuilder.Definitions
 {
-    public static class DefaultRoomTemplates
+    public class RoomDefinitions
     {
-        public static List<RoomTemplate> roomTemplates = new List<RoomTemplate>()
-        {
+        public List<RoomTemplate> templates { get; } = new List<RoomTemplate>() {
             new RoomTemplate()
             {
                 title = "Hallway",
@@ -318,5 +318,37 @@ namespace TowerBuilder.Definitions.Templates
                 color = Color.green,
             }
         };
+
+        // Queries
+        public RoomTemplate FindByTitle(string title)
+        {
+            return templates.Find(template => template.title == title);
+        }
+
+        public RoomTemplate FindByKey(string key)
+        {
+            return templates.Find(template => template.key == key);
+        }
+
+        public List<RoomTemplate> FindByCategory(string category)
+        {
+            return templates.FindAll(template => template.category == category).ToList();
+        }
+
+        public List<string> FindAllRoomCategories()
+        {
+            List<string> result = new List<string>();
+
+            foreach (RoomTemplate roomTemplate in templates)
+            {
+                if (!result.Contains(roomTemplate.category))
+                {
+                    result.Add(roomTemplate.category);
+                }
+            }
+
+            return result;
+
+        }
     }
 }

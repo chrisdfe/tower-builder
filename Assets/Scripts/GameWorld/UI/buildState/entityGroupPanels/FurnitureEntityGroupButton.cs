@@ -5,7 +5,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.Definitions.Templates;
+using TowerBuilder.Definitions;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.State;
 using TowerBuilder.State.Rooms;
@@ -41,14 +41,14 @@ namespace TowerBuilder.GameWorld.UI
 
         protected override void OnTemplateButtonClick(string furnitureTemplateKey)
         {
-            // RoomTemplate selectedRoomTemplate = Registry.roomTemplates.FindByKey(roomTemplateKey);
+            // RoomTemplate selectedRoomTemplate = Registry.roomDefinitions.FindByKey(roomTemplateKey);
             // Registry.appState.Tools.buildToolState.SetSelectedRoomTemplate(selectedRoomTemplate);
         }
 
-        List<RoomTemplate> GetRoomTemplatesForCurrentCategory()
+        List<RoomTemplate> GetRoomDefinitionsForCurrentCategory()
         {
             string currentCategory = Registry.appState.Tools.buildToolState.subStates.roomEntityType.selectedRoomCategory;
-            return Registry.roomTemplates.FindByCategory(currentCategory);
+            return Registry.roomDefinitions.FindByCategory(currentCategory);
         }
 
         // void OnSelectedRoomCategoryUpdated(string newRoomCategory)
