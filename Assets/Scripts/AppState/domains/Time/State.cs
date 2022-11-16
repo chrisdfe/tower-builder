@@ -14,18 +14,23 @@ namespace TowerBuilder.ApplicationState.Time
             public TimeSpeed? speed;
         }
 
+        public class Events
+        {
+            public delegate void TimeUpdatedEvent(TimeValue newTime);
+            public TimeUpdatedEvent onTimeUpdated;
+            public TimeUpdatedEvent onTimeOfDayUpdated;
+            public TimeUpdatedEvent onTick;
+
+            public delegate void TimeSpeedUpdatedEvent(TimeSpeed newTimeSpeed);
+            public TimeSpeedUpdatedEvent onTimeSpeedUpdated;
+        }
+
         public bool isActive { get; private set; } = false;
         public int tick { get; private set; } = 0;
         public TimeValue time { get; private set; } = TimeValue.zero;
         public TimeSpeed speed { get; private set; } = TimeSpeed.Normal;
 
-        public delegate void TimeUpdatedEvent(TimeValue newTime);
-        public TimeUpdatedEvent onTimeUpdated;
-        public TimeUpdatedEvent onTimeOfDayUpdated;
-        public TimeUpdatedEvent onTick;
-
-        public delegate void TimeSpeedUpdatedEvent(TimeSpeed newTimeSpeed);
-        public TimeSpeedUpdatedEvent onTimeSpeedUpdated;
+        public Events events { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
         {
@@ -33,6 +38,8 @@ namespace TowerBuilder.ApplicationState.Time
             tick = input.tick ?? 0;
             time = input.time ?? TimeValue.zero;
             speed = input.speed ?? TimeSpeed.Normal;
+
+            events = new Events();
         }
 
         public void UpdateTime(TimeValue newTime)
@@ -43,15 +50,15 @@ namespace TowerBuilder.ApplicationState.Time
 
             if (previousTime.GetCurrentTimeOfDay() != time.GetCurrentTimeOfDay())
             {
-                if (onTimeOfDayUpdated != null)
+                if (events.onTimeOfDayUpdated != null)
                 {
-                    onTimeOfDayUpdated(time);
+                    events.onTimeOfDayUpdated(time);
                 }
             }
 
-            if (onTimeUpdated != null)
+            if (events.onTimeUpdated != null)
             {
-                onTimeUpdated(time);
+                events.onTimeUpdated(time);
             }
         }
 
@@ -76,9 +83,9 @@ namespace TowerBuilder.ApplicationState.Time
 
             tick += 1;
 
-            if (onTick != null)
+            if (events.onTick != null)
             {
-                onTick(time);
+                events.onTick(time);
             }
         }
 

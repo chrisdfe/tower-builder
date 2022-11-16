@@ -20,9 +20,9 @@ namespace TowerBuilder.GameWorld
         {
             camera = Camera.main;
 
-            Registry.appState.Time.onTick += OnTick;
-            Registry.appState.Time.onTimeUpdated += OnTimeUpdated;
-            Registry.appState.Time.onTimeOfDayUpdated += OnTimeOfDayUpdated;
+            Registry.appState.Time.events.onTick += OnTick;
+            Registry.appState.Time.events.onTimeUpdated += OnTimeUpdated;
+            Registry.appState.Time.events.onTimeOfDayUpdated += OnTimeOfDayUpdated;
 
             UpdateSkyColor();
         }

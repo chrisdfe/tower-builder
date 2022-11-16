@@ -29,7 +29,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         public void Setup()
         {
-            appState.Time.onTick += OnTick;
+            appState.Time.events.onTick += OnTick;
 
             appState.Residents.events.onResidentsAdded += OnResidentsAdded;
             appState.Residents.events.onResidentsRemoved += OnResidentsRemoved;
@@ -38,7 +38,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         public void Teardown()
         {
-            appState.Time.onTick -= OnTick;
+            appState.Time.events.onTick -= OnTick;
 
             appState.Residents.events.onResidentsAdded -= OnResidentsAdded;
             appState.Residents.events.onResidentsRemoved -= OnResidentsRemoved;
