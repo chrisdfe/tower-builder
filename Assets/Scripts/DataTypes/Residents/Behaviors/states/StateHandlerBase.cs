@@ -6,19 +6,14 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 {
     public abstract class StateHandlerBase
     {
-        public ResidentBehavior residentBehavior { get; private set; }
+        public abstract class TransitionPayloadBase { }
 
-        public abstract class TransitionPayloadBase
-        {
-            public virtual ResidentBehavior.StateType stateType { get; }
-        }
+        public ResidentBehavior residentBehavior { get; private set; }
 
         public StateHandlerBase(ResidentBehavior residentBehavior)
         {
             this.residentBehavior = residentBehavior;
         }
-
-        public virtual void Setup() { }
 
         public virtual void Teardown() { }
 

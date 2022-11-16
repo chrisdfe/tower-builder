@@ -1,5 +1,4 @@
 using TowerBuilder.DataTypes.Residents;
-using TowerBuilder.DataTypes.Residents.Behaviors;
 using TowerBuilder.DataTypes.Residents.Motors;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
@@ -12,12 +11,12 @@ namespace TowerBuilder.State.ResidentMotors
 
         public class Events
         {
-            public delegate void ResidentBehaviorEvent(ResidentBehavior residentBehavior);
-            public ResidentBehaviorEvent onResidentBehaviorAdded;
-            public ResidentBehaviorEvent onResidentBehaviorRemoved;
+            public delegate void ResidentMotorEvent(ResidentMotor residentMotor);
+            public ResidentMotorEvent onResidentMotorAdded;
+            public ResidentMotorEvent onResidentMotorRemoved;
         }
 
-        public ResidentMotorsList ResidentMotorsList { get; private set; } = new ResidentMotorsList();
+        public ResidentMotorsList residentMotorsList { get; private set; } = new ResidentMotorsList();
 
         public Events events { get; private set; }
 
@@ -51,10 +50,6 @@ namespace TowerBuilder.State.ResidentMotors
          */
         void OnTick(TimeValue time)
         {
-            foreach (ResidentBehavior residentBehavior in ResidentMotorsList.items)
-            {
-                residentBehavior.ProcessTick(appState);
-            }
         }
 
         void OnResidentsAdded(ResidentsList residentsList)
@@ -63,7 +58,7 @@ namespace TowerBuilder.State.ResidentMotors
             {
                 if (!resident.isInBlueprintMode)
                 {
-                    AddBehaviorForResident(resident);
+                    AddMotorForResident(resident);
                 }
             }
         }
@@ -72,7 +67,7 @@ namespace TowerBuilder.State.ResidentMotors
         {
             foreach (Resident resident in residentsList.items)
             {
-                AddBehaviorForResident(resident);
+                AddMotorForResident(resident);
             }
         }
 
@@ -80,50 +75,51 @@ namespace TowerBuilder.State.ResidentMotors
         {
             foreach (Resident resident in residentsList.items)
             {
-                RemoveBehaviorForResident(resident);
+                RemoveMotorForResident(resident);
             }
         }
 
         /* 
             Public API
          */
-        public void AddBehaviorForResident(Resident resident)
+        public void AddMotorForResident(Resident resident)
         {
-            ResidentBehavior residentBehavior = new ResidentBehavior(resident);
-            residentBehavior.Setup();
-            AddResidentBehavior(residentBehavior);
+            ResidentMotor residentMotor = new ResidentMotor(resident);
+            residentMotor.Setup();
+            AddResidentMotor(residentMotor);
         }
 
-        public void RemoveBehaviorForResident(Resident resident)
+        public void RemoveMotorForResident(Resident resident)
         {
-            ResidentBehavior residentBehavior = ResidentMotorsList.FindByResident(resident);
-            Debug.Log("findbyresidnet: ");
-            Debug.Log(residentBehavior);
-            if (residentBehavior != null)
+            ResidentMotor residentMotor = residentMotorsList.FindByResident(resident);
+
+            if (residentMotor != null)
             {
-                RemoveResidentBehavior(residentBehavior);
-            }
-
-            Debug.Log(ResidentMotorsList.Count);
-        }
-
-        public void AddResidentBehavior(ResidentBehavior residentBehavior)
-        {
-            ResidentMotorsList.Add(residentBehavior);
-
-            if (events.onResidentBehaviorAdded != null)
-            {
-                events.onResidentBehaviorAdded(residentBehavior);
+                RemoveResidentMotor(residentMotor);
             }
         }
 
-        public void RemoveResidentBehavior(ResidentBehavior residentBehavior)
+        public void AddResidentMotor(ResidentMotor residentMotor)
         {
-            ResidentMotorsList.Remove(residentBehavior);
+            residentMotorsList.Add(residentMotor);
 
-            if (events.onResidentBehaviorRemoved != null)
+            Debug.Log("resident motor added");
+
+            if (events.onResidentMotorAdded != null)
             {
-                events.onResidentBehaviorRemoved(residentBehavior);
+                events.onResidentMotorAdded(residentMotor);
+            }
+        }
+
+        public void RemoveResidentMotor(ResidentMotor residentMotor)
+        {
+            residentMotorsList.Remove(residentMotor);
+
+            Debug.Log("resident motor removed");
+
+            if (events.onResidentMotorRemoved != null)
+            {
+                events.onResidentMotorRemoved(residentMotor);
             }
         }
     }

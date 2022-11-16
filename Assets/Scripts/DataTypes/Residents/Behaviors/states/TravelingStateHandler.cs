@@ -9,7 +9,6 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
     {
         public class TransitionPayload : TransitionPayloadBase
         {
-            public override ResidentBehavior.StateType stateType { get { return ResidentBehavior.StateType.Traveling; } }
             // For now assume that residents always travel between pieces of furniture
             public Furniture furniture;
         }
@@ -37,9 +36,8 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
         {
         }
 
-        public override void Setup()
+        public void Setup(TransitionPayload payload)
         {
-            base.Setup();
         }
 
         public override void Teardown()

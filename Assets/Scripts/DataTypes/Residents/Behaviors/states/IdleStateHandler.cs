@@ -8,16 +8,14 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
     {
         public class TransitionPayload : TransitionPayloadBase
         {
-            public override ResidentBehavior.StateType stateType { get { return ResidentBehavior.StateType.Idle; } }
         }
 
         public IdleStateHandler(ResidentBehavior residentBehavior) : base(residentBehavior)
         {
         }
 
-        public override void Setup()
+        public void Setup(TransitionPayload payload)
         {
-            base.Setup();
         }
 
         public override void Teardown()

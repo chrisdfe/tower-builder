@@ -6,11 +6,11 @@ using TowerBuilder.DataTypes.Routes;
 
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Residents
+namespace TowerBuilder.DataTypes.Residents.Motors
 {
     public class ResidentMotor
     {
-        Resident resident;
+        public Resident resident { get; private set; }
 
         public Route currentRoute { get; private set; }
         public int currentRouteSegmentIndex { get; private set; } = 0;
@@ -22,6 +22,10 @@ namespace TowerBuilder.DataTypes.Residents
         {
             this.resident = resident;
         }
+
+        public void Setup() { }
+
+        public void Teardown() { }
 
         public void StartOnRoute(Route route)
         {

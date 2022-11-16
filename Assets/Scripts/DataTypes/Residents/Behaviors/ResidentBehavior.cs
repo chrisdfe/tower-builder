@@ -22,7 +22,9 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
         public ResidentBehavior(Resident resident)
         {
             this.resident = resident;
-            currentStateHandler = GetStateHandlerForStateType(currentState);
+
+            currentStateHandler = new IdleStateHandler(this);
+            (currentStateHandler as IdleStateHandler).Setup(new IdleStateHandler.TransitionPayload());
         }
 
         public void Setup()
@@ -43,34 +45,35 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
             if (nextStatePayload != null)
             {
-                TransitionTo(nextState);
+                TransitionTo(nextStatePayload);
             }
         }
 
-        void TransitionTo(TransitionPayloadBase nextState)
+        void TransitionTo(StateHandlerBase.TransitionPayloadBase nextStatePayload)
         {
-            if (nextState == currentState) return;
-            Debug.Log($"Transitioning {resident} behavior from {currentState} to {nextState}");
+            StateType previousState = currentState;
             currentStateHandler.Teardown();
 
-            currentState = nextState;
-            currentStateHandler = GetStateHandlerForStateType(currentState);
-            currentStateHandler.Setup();
-        }
-
-        StateHandlerBase GetStateHandlerForStateType(StateType stateType)
-        {
-            switch (currentState)
+            switch (nextStatePayload)
             {
-                case StateType.Idle:
-                    return new IdleStateHandler(this);
-                case StateType.Traveling:
-                    return new TravelingStateHandler(this);
-                case StateType.InteractingWithFurniture:
-                    return new InteractingWithFurnitureStateHandler(this);
+                case IdleStateHandler.TransitionPayload idleStatePayload:
+                    currentState = StateType.Idle;
+                    currentStateHandler = new IdleStateHandler(this);
+                    (currentStateHandler as IdleStateHandler).Setup(idleStatePayload);
+                    break;
+                case TravelingStateHandler.TransitionPayload travelingStatePayload:
+                    currentState = StateType.Traveling;
+                    currentStateHandler = new TravelingStateHandler(this);
+                    (currentStateHandler as TravelingStateHandler).Setup(travelingStatePayload);
+                    break;
+                case InteractingWithFurnitureStateHandler.TransitionPayload interactingWithFurnitureStatePayload:
+                    currentState = StateType.InteractingWithFurniture;
+                    currentStateHandler = new InteractingWithFurnitureStateHandler(this);
+                    (currentStateHandler as InteractingWithFurnitureStateHandler).Setup(interactingWithFurnitureStatePayload);
+                    break;
             }
 
-            return new IdleStateHandler(this);
+            Debug.Log($"Transitioned {resident} behavior from {previousState} to {currentState}");
         }
     }
 }
