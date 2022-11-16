@@ -1,9 +1,10 @@
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Residents.Behaviors;
+using TowerBuilder.DataTypes.Residents.Motors;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
-namespace TowerBuilder.State.ResidentBehaviors
+namespace TowerBuilder.State.ResidentMotors
 {
     public class State : StateSlice
     {
@@ -16,7 +17,7 @@ namespace TowerBuilder.State.ResidentBehaviors
             public ResidentBehaviorEvent onResidentBehaviorRemoved;
         }
 
-        public ResidentBehaviorsList residentBehaviorsList { get; private set; } = new ResidentBehaviorsList();
+        public ResidentMotorsList ResidentMotorsList { get; private set; } = new ResidentMotorsList();
 
         public Events events { get; private set; }
 
@@ -50,7 +51,7 @@ namespace TowerBuilder.State.ResidentBehaviors
          */
         void OnTick(TimeValue time)
         {
-            foreach (ResidentBehavior residentBehavior in residentBehaviorsList.items)
+            foreach (ResidentBehavior residentBehavior in ResidentMotorsList.items)
             {
                 residentBehavior.ProcessTick(appState);
             }
@@ -95,7 +96,7 @@ namespace TowerBuilder.State.ResidentBehaviors
 
         public void RemoveBehaviorForResident(Resident resident)
         {
-            ResidentBehavior residentBehavior = residentBehaviorsList.FindByResident(resident);
+            ResidentBehavior residentBehavior = ResidentMotorsList.FindByResident(resident);
             Debug.Log("findbyresidnet: ");
             Debug.Log(residentBehavior);
             if (residentBehavior != null)
@@ -103,12 +104,12 @@ namespace TowerBuilder.State.ResidentBehaviors
                 RemoveResidentBehavior(residentBehavior);
             }
 
-            Debug.Log(residentBehaviorsList.Count);
+            Debug.Log(ResidentMotorsList.Count);
         }
 
         public void AddResidentBehavior(ResidentBehavior residentBehavior)
         {
-            residentBehaviorsList.Add(residentBehavior);
+            ResidentMotorsList.Add(residentBehavior);
 
             if (events.onResidentBehaviorAdded != null)
             {
@@ -118,7 +119,7 @@ namespace TowerBuilder.State.ResidentBehaviors
 
         public void RemoveResidentBehavior(ResidentBehavior residentBehavior)
         {
-            residentBehaviorsList.Remove(residentBehavior);
+            ResidentMotorsList.Remove(residentBehavior);
 
             if (events.onResidentBehaviorRemoved != null)
             {

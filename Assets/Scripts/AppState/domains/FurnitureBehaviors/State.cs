@@ -1,5 +1,6 @@
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Time;
+using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Furnitures.Behaviors;
 using UnityEngine;
 
 namespace TowerBuilder.State.FurnitureBehaviors
@@ -12,6 +13,8 @@ namespace TowerBuilder.State.FurnitureBehaviors
         {
 
         }
+
+        public FurnitureBehaviorList furnitureBehaviorList { get; private set; } = new FurnitureBehaviorList();
 
         public Events events { get; private set; }
 

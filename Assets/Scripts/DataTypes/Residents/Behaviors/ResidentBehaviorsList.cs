@@ -11,5 +11,9 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 {
     public class ResidentBehaviorsList : ListWrapper<ResidentBehavior>
     {
+        public ResidentBehavior FindByResident(Resident resident)
+        {
+            return items.Find(residentBehavior => residentBehavior.resident == resident);
+        }
     }
 }

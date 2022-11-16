@@ -4,11 +4,9 @@ using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Furnitures
+namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 {
-    public enum FurnitureBehaviorTag
+    public class FurnitureBehaviorList : ListWrapper<FurnitureBehaviorBase>
     {
-        Cockpit,
-        Engine
     }
 }
