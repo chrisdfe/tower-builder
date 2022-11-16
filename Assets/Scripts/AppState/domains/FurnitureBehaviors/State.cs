@@ -3,7 +3,7 @@ using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Furnitures.Behaviors;
 using UnityEngine;
 
-namespace TowerBuilder.State.FurnitureBehaviors
+namespace TowerBuilder.ApplicationState.FurnitureBehaviors
 {
     public class State : StateSlice
     {

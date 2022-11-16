@@ -1,10 +1,10 @@
 using System.Collections.Generic;
+using TowerBuilder.ApplicationState.Rooms;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Routes;
-using TowerBuilder.State.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.State.Routes
+namespace TowerBuilder.ApplicationState.Routes
 {
     public class State : StateSlice
     {

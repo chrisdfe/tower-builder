@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.Utils;
 
-namespace TowerBuilder.State.Tools
+namespace TowerBuilder.ApplicationState.Tools
 {
     public partial class BuildToolState : ToolStateBase
     {

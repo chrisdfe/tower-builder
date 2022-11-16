@@ -3,7 +3,7 @@ using TowerBuilder.DataTypes.Residents.Motors;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
-namespace TowerBuilder.State.ResidentMotors
+namespace TowerBuilder.ApplicationState.ResidentMotors
 {
     public class State : StateSlice
     {

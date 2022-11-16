@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.State;
-using TowerBuilder.State.Notifications;
-using TowerBuilder.State.Wallet;
+using TowerBuilder.ApplicationState;
+using TowerBuilder.ApplicationState.Notifications;
+using TowerBuilder.ApplicationState.Wallet;
 using UnityEngine;
 using UnityEngine.UI;
 

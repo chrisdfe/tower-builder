@@ -3,7 +3,7 @@ using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.State
+namespace TowerBuilder.ApplicationState
 {
     [Serializable]
     public class StateSlice

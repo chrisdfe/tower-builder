@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.ApplicationState;
+using TowerBuilder.ApplicationState.Time;
 using TowerBuilder.DataTypes.Time;
-using TowerBuilder.State;
-using TowerBuilder.State.Time;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,7 +49,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void UpdateHoursMinutesText()
         {
-            State.Time.State state = Registry.appState.Time;
+            ApplicationState.Time.State state = Registry.appState.Time;
             int hour = state.time.hour;
             int minute = state.time.minute;
 
@@ -78,7 +78,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void UpdateWeeksSeasonsText()
         {
-            State.Time.State state = Registry.appState.Time;
+            ApplicationState.Time.State state = Registry.appState.Time;
             int day = state.time.day;
             int week = state.time.week;
             int season = state.time.season;

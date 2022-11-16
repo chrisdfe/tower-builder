@@ -1,7 +1,7 @@
 using TowerBuilder.DataTypes.Furnitures;
 using UnityEngine;
 
-namespace TowerBuilder.State.Tools
+namespace TowerBuilder.ApplicationState.Tools
 {
     public partial class BuildToolState : ToolStateBase
     {

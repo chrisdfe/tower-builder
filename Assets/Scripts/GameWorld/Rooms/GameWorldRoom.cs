@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
+using TowerBuilder.ApplicationState;
+using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.DataTypes.Rooms.Entrances;
-using TowerBuilder.State;
-using TowerBuilder.State.Tools;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms

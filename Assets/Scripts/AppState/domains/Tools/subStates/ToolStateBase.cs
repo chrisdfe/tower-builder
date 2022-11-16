@@ -1,10 +1,10 @@
 using System.Collections.Generic;
+using TowerBuilder.ApplicationState.Rooms;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.State.Rooms;
 
-namespace TowerBuilder.State.Tools
+namespace TowerBuilder.ApplicationState.Tools
 {
     public abstract class ToolStateBase
     {

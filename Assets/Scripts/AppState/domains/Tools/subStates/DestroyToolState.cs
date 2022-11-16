@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.ApplicationState;
+using TowerBuilder.ApplicationState.Rooms;
+using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.State;
-using TowerBuilder.State.Rooms;
-using TowerBuilder.State.UI;
 using UnityEngine;
 
-namespace TowerBuilder.State.Tools
+namespace TowerBuilder.ApplicationState.Tools
 {
     public class DestroyToolState : ToolStateBase
     {

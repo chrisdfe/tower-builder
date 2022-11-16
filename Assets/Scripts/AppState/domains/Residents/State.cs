@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.ApplicationState.Routes;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Routes;
-using TowerBuilder.State.Routes;
-
 using UnityEngine;
 
-namespace TowerBuilder.State.Residents
+namespace TowerBuilder.ApplicationState.Residents
 {
     public class State : StateSlice
     {

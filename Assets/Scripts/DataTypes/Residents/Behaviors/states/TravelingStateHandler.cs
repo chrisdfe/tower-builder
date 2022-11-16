@@ -1,6 +1,6 @@
+using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Time;
-using TowerBuilder.State;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Residents.Behaviors

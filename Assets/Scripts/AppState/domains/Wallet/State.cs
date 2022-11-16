@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 using TowerBuilder;
-using TowerBuilder.State;
+using TowerBuilder.ApplicationState;
 
-namespace TowerBuilder.State.Wallet
+namespace TowerBuilder.ApplicationState.Wallet
 {
     public class State : StateSlice
     {

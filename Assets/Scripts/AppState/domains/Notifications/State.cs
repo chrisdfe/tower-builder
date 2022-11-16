@@ -4,7 +4,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Notifications;
 
-namespace TowerBuilder.State.Notifications
+namespace TowerBuilder.ApplicationState.Notifications
 {
     public class State : StateSlice
     {

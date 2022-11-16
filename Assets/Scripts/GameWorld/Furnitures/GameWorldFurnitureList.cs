@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.GameWorld;
 using TowerBuilder.GameWorld.Furnitures;
-using TowerBuilder.State;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Furnitures

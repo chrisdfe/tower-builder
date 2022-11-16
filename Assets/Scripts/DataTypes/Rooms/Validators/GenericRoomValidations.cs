@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
-using TowerBuilder.State;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms.Validators

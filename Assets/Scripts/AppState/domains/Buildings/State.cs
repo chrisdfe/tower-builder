@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Buildings;
 using UnityEngine;
 
-namespace TowerBuilder.State.Buildings
+namespace TowerBuilder.ApplicationState.Buildings
 {
     public class State : StateSlice
     {

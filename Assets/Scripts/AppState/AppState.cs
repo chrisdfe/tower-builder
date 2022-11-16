@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TowerBuilder.State
+namespace TowerBuilder.ApplicationState
 {
     public class AppState
     {

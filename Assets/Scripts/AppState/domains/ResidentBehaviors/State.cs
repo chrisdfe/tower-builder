@@ -3,7 +3,7 @@ using TowerBuilder.DataTypes.Residents.Behaviors;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
-namespace TowerBuilder.State.ResidentBehaviors
+namespace TowerBuilder.ApplicationState.ResidentBehaviors
 {
     public class State : StateSlice
     {

@@ -9,7 +9,7 @@ using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using UnityEngine;
 
-namespace TowerBuilder.State.UI
+namespace TowerBuilder.ApplicationState.UI
 {
     public class State : StateSlice
     {

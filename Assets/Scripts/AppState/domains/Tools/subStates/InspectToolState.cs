@@ -1,14 +1,14 @@
 using System.Collections.Generic;
+using TowerBuilder.ApplicationState.Rooms;
+using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.State.Rooms;
-using TowerBuilder.State.UI;
 using UnityEngine;
 
-namespace TowerBuilder.State.Tools
+namespace TowerBuilder.ApplicationState.Tools
 {
     public class InspectToolState : ToolStateBase
     {

@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.ApplicationState;
+using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.GameWorld.Rooms;
 using TowerBuilder.GameWorld.UI;
-using TowerBuilder.State;
-using TowerBuilder.State.Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -72,9 +72,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             }
 
             // Right click to exit out of current state?
-            if (Input.GetMouseButtonDown(1) && Registry.appState.Tools.toolState != State.Tools.State.DEFAULT_TOOL_STATE)
+            if (Input.GetMouseButtonDown(1) && Registry.appState.Tools.toolState != ApplicationState.Tools.State.DEFAULT_TOOL_STATE)
             {
-                Registry.appState.Tools.SetToolState(State.Tools.State.DEFAULT_TOOL_STATE);
+                Registry.appState.Tools.SetToolState(ApplicationState.Tools.State.DEFAULT_TOOL_STATE);
             }
 
             currentToolStateHandler.Update();

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder.State;
-using TowerBuilder.State.Tools;
+using TowerBuilder.ApplicationState;
+using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -72,7 +72,7 @@ namespace TowerBuilder.GameWorld.UI
         void OnToolButtonClick(ToolState toolState)
         {
             ToolState currentToolState = Registry.appState.Tools.toolState;
-            ToolState newToolState = (currentToolState == toolState) ? State.Tools.State.DEFAULT_TOOL_STATE : toolState;
+            ToolState newToolState = (currentToolState == toolState) ? ApplicationState.Tools.State.DEFAULT_TOOL_STATE : toolState;
             Registry.appState.Tools.SetToolState(newToolState);
         }
 

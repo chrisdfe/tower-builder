@@ -2,7 +2,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
-namespace TowerBuilder.State.Time
+namespace TowerBuilder.ApplicationState.Time
 {
     public class State : StateSlice
     {

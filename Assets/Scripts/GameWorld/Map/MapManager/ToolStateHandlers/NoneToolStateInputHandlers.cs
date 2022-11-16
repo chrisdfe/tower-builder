@@ -1,6 +1,6 @@
 using System;
+using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
-using TowerBuilder.State.UI;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager
