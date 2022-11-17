@@ -21,29 +21,20 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public StateHandlerBase currentStateHandler { get; private set; }
 
-        public abstract class GoalBase { }
-
-        public class TravelGoal : GoalBase
-        {
-            public Route route;
-        }
-
-        public class InteractingWithFurnitureGoal : GoalBase
-        {
-            public Furniture targetFurniture;
-        }
-
         public Queue<GoalBase> goalQueue { get; private set; } = new Queue<GoalBase>();
 
-        public ResidentBehavior(Resident resident)
+        AppState appState;
+
+        public ResidentBehavior(AppState appState, Resident resident)
         {
+            this.appState = appState;
             this.resident = resident;
         }
 
         public void Setup()
         {
             currentStateHandler = new IdleStateHandler(this);
-            (currentStateHandler as IdleStateHandler).Setup(new IdleStateHandler.TransitionPayload());
+            (currentStateHandler as IdleStateHandler).Setup(appState, new IdleStateHandler.TransitionPayload());
         }
 
         public void Teardown()
@@ -53,9 +44,9 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public void ProcessTick(AppState appState)
         {
-            currentStateHandler.ProcessTick(appState);
+            currentStateHandler.ProcessTick();
 
-            StateHandlerBase.TransitionPayloadBase nextStatePayload = currentStateHandler.GetNextState(appState);
+            StateHandlerBase.TransitionPayloadBase nextStatePayload = currentStateHandler.GetNextState();
 
             if (nextStatePayload != null)
             {
@@ -83,16 +74,16 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
         public StateHandlerBase.TransitionPayloadBase GetNextGoalTransitionPayload()
         {
             // search for goals
-            ResidentBehavior.GoalBase nextGoal = GetNextGoal();
+            GoalBase nextGoal = GetNextGoal();
             Debug.Log("next goal: " + nextGoal);
 
             if (nextGoal != null)
             {
                 switch (nextGoal)
                 {
-                    case ResidentBehavior.TravelGoal travelGoal:
+                    case TravelGoal travelGoal:
                         return new TravelingStateHandler.TransitionPayload() { route = travelGoal.route };
-                    case ResidentBehavior.InteractingWithFurnitureGoal furnitureGoal:
+                    case InteractingWithFurnitureGoal furnitureGoal:
                         return new InteractingWithFurnitureStateHandler.TransitionPayload() { furniture = furnitureGoal.targetFurniture };
                 }
             }
@@ -111,17 +102,17 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
                 case IdleStateHandler.TransitionPayload idleStatePayload:
                     currentState = StateType.Idle;
                     currentStateHandler = new IdleStateHandler(this);
-                    (currentStateHandler as IdleStateHandler).Setup(idleStatePayload);
+                    (currentStateHandler as IdleStateHandler).Setup(appState, idleStatePayload);
                     break;
                 case TravelingStateHandler.TransitionPayload travelingStatePayload:
                     currentState = StateType.Traveling;
                     currentStateHandler = new TravelingStateHandler(this);
-                    (currentStateHandler as TravelingStateHandler).Setup(travelingStatePayload);
+                    (currentStateHandler as TravelingStateHandler).Setup(appState, travelingStatePayload);
                     break;
                 case InteractingWithFurnitureStateHandler.TransitionPayload interactingWithFurnitureStatePayload:
                     currentState = StateType.InteractingWithFurniture;
                     currentStateHandler = new InteractingWithFurnitureStateHandler(this);
-                    (currentStateHandler as InteractingWithFurnitureStateHandler).Setup(interactingWithFurnitureStatePayload);
+                    (currentStateHandler as InteractingWithFurnitureStateHandler).Setup(appState, interactingWithFurnitureStatePayload);
                     break;
             }
 

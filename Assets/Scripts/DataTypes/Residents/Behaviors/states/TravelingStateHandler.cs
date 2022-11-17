@@ -43,8 +43,10 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public TravelingStateHandler(ResidentBehavior residentBehavior) : base(residentBehavior) { }
 
-        public void Setup(TransitionPayload payload)
+        public void Setup(AppState appState, TransitionPayload payload)
         {
+            base.Setup(appState);
+
             this.route = payload.route;
         }
 
@@ -53,7 +55,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
             base.Teardown();
         }
 
-        public override TransitionPayloadBase GetNextState(AppState appState)
+        public override TransitionPayloadBase GetNextState()
         {
             if (isAtEndOfRoute)
             {
@@ -63,7 +65,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
             return null;
         }
 
-        public override void ProcessTick(AppState appState)
+        public override void ProcessTick()
         {
             if (isAtFinalCellStepIndex)
             {

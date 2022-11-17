@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 {
-    public abstract class FurnitureBehaviorBase
+    public class FurnitureBehaviorBase
     {
-        protected Furniture furniture;
+        public Furniture furniture { get; private set; }
 
         public ResidentsList interactingResidentsList { get; private set; } = new ResidentsList();
 
@@ -25,11 +25,13 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 
         public virtual void InteractStart(Resident resident)
         {
+            Debug.Log("Interact start");
             interactingResidentsList.Add(resident);
         }
 
         public virtual void InteractEnd(Resident resident)
         {
+            Debug.Log("Interact end");
             interactingResidentsList.Remove(resident);
         }
 

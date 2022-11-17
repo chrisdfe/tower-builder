@@ -73,7 +73,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
          */
         public void AddBehaviorForResident(Resident resident)
         {
-            ResidentBehavior residentBehavior = new ResidentBehavior(resident);
+            ResidentBehavior residentBehavior = new ResidentBehavior(appState, resident);
             residentBehavior.Setup();
             AddResidentBehavior(residentBehavior);
         }
@@ -108,11 +108,11 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             }
         }
 
-        public void AddResidentBehaviorGoals(Resident resident, ResidentBehavior.GoalBase[] goals)
+        public void AddResidentBehaviorGoals(Resident resident, GoalBase[] goals)
         {
             ResidentBehavior residentBehavior = queries.FindByResident(resident);
 
-            foreach (ResidentBehavior.GoalBase goal in goals)
+            foreach (GoalBase goal in goals)
             {
                 residentBehavior.EnqueueGoal(goal);
             }
@@ -120,28 +120,26 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         public void SendResidentTo(Resident resident, Furniture furniture)
         {
-            RouteFinder routeFinder = new RouteFinder();
-            Route route = routeFinder.FindRouteBetween(resident.cellCoordinates, furniture.cellCoordinates);
+            Route route = new RouteFinder().FindRouteBetween(resident.cellCoordinates, furniture.cellCoordinates);
 
             if (route != null)
             {
-                ResidentBehavior.TravelGoal travelGoal = new ResidentBehavior.TravelGoal() { route = route };
-                ResidentBehavior.InteractingWithFurnitureGoal furnitureGoal = new ResidentBehavior.InteractingWithFurnitureGoal() { targetFurniture = furniture };
+                TravelGoal travelGoal = new TravelGoal() { route = route };
+                InteractingWithFurnitureGoal furnitureGoal = new InteractingWithFurnitureGoal() { targetFurniture = furniture };
 
-                AddResidentBehaviorGoals(resident, new ResidentBehavior.GoalBase[] { travelGoal, furnitureGoal });
+                AddResidentBehaviorGoals(resident, new GoalBase[] { travelGoal, furnitureGoal });
             }
         }
 
         public void SendResidentTo(Resident resident, CellCoordinates cellCoordinates)
         {
-            RouteFinder routeFinder = new RouteFinder();
-            Route route = routeFinder.FindRouteBetween(resident.cellCoordinates, cellCoordinates);
+            Route route = new RouteFinder().FindRouteBetween(resident.cellCoordinates, cellCoordinates);
 
             if (route != null)
             {
-                ResidentBehavior.TravelGoal travelGoal = new ResidentBehavior.TravelGoal() { route = route };
+                TravelGoal travelGoal = new TravelGoal() { route = route };
 
-                AddResidentBehaviorGoals(resident, new ResidentBehavior.GoalBase[] { travelGoal });
+                AddResidentBehaviorGoals(resident, new GoalBase[] { travelGoal });
             }
         }
 
