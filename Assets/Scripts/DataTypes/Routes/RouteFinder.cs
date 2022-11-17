@@ -11,7 +11,7 @@ namespace TowerBuilder.DataTypes.Routes
 {
     public class RouteFinder
     {
-        public List<RouteAttempt> routeAttempts;
+        public List<RouteAttempt> routeAttempts = new List<RouteAttempt>();
 
         CellCoordinates startCoordinates;
         CellCoordinates endCoordinates;
@@ -21,14 +21,32 @@ namespace TowerBuilder.DataTypes.Routes
 
         public List<RouteFinderError> errors = new List<RouteFinderError>();
 
-        public void FindRouteBetween(CellCoordinates startCoordinates, CellCoordinates endCoordinates)
+        public List<RouteAttempt> sucessfulRouteAttempts
+        {
+            get
+            {
+                return routeAttempts.FindAll(routeAttempt => routeAttempt.status == RouteAttempt.Status.Complete);
+            }
+        }
+
+        public RouteAttempt bestRouteAttempt
+        {
+            get
+            {
+                if (sucessfulRouteAttempts.Count == 0) return null;
+                // TODO - find shortest
+                return sucessfulRouteAttempts[0];
+            }
+        }
+
+        public Route FindRouteBetween(CellCoordinates startCoordinates, CellCoordinates endCoordinates)
         {
             ValidateRouteMarker(startCoordinates);
             ValidateRouteMarker(endCoordinates);
 
             if (errors.Count > 0)
             {
-                return;
+                return null;
             }
 
             this.startCoordinates = startCoordinates;
@@ -45,8 +63,12 @@ namespace TowerBuilder.DataTypes.Routes
 
             ContinueRouteAttempt(firstRouteAttempt);
 
-            // At this point all possible route attempts have been calculated
-            // TODO - create Routes for successful attempts
+            if (bestRouteAttempt != null)
+            {
+                return new Route(bestRouteAttempt);
+            }
+
+            return null;
         }
 
         void ContinueRouteAttempt(RouteAttempt currentRouteAttempt)
@@ -78,7 +100,7 @@ namespace TowerBuilder.DataTypes.Routes
                 );
 
                 // The route is now over
-                currentRouteAttempt.status = RouteStatus.Complete;
+                currentRouteAttempt.status = RouteAttempt.Status.Complete;
                 routeAttempts.Add(currentRouteAttempt);
 
                 return;

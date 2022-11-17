@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Time;
+using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Routes;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Residents.Behaviors
@@ -19,17 +21,29 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public StateHandlerBase currentStateHandler { get; private set; }
 
+        public abstract class GoalBase { }
+
+        public class TravelGoal : GoalBase
+        {
+            public Route route;
+        }
+
+        public class InteractingWithFurnitureGoal : GoalBase
+        {
+            public Furniture targetFurniture;
+        }
+
+        public Queue<GoalBase> goalQueue { get; private set; } = new Queue<GoalBase>();
+
         public ResidentBehavior(Resident resident)
         {
             this.resident = resident;
-
-            currentStateHandler = new IdleStateHandler(this);
-            (currentStateHandler as IdleStateHandler).Setup(new IdleStateHandler.TransitionPayload());
         }
 
         public void Setup()
         {
-            Debug.Log("Resident behavior created");
+            currentStateHandler = new IdleStateHandler(this);
+            (currentStateHandler as IdleStateHandler).Setup(new IdleStateHandler.TransitionPayload());
         }
 
         public void Teardown()
@@ -47,6 +61,44 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
             {
                 TransitionTo(nextStatePayload);
             }
+        }
+
+        public void EnqueueGoal(GoalBase goal)
+        {
+            goalQueue.Enqueue(goal);
+        }
+
+        public void CompleteCurrentGoal()
+        {
+            Debug.Log("completing current goal");
+            goalQueue.Dequeue();
+        }
+
+        public GoalBase GetNextGoal()
+        {
+            if (goalQueue.Count == 0) return null;
+            return goalQueue.Peek();
+        }
+
+        public StateHandlerBase.TransitionPayloadBase GetNextGoalTransitionPayload()
+        {
+            // search for goals
+            ResidentBehavior.GoalBase nextGoal = GetNextGoal();
+            Debug.Log("next goal: " + nextGoal);
+
+            if (nextGoal != null)
+            {
+                switch (nextGoal)
+                {
+                    case ResidentBehavior.TravelGoal travelGoal:
+                        return new TravelingStateHandler.TransitionPayload() { route = travelGoal.route };
+                    case ResidentBehavior.InteractingWithFurnitureGoal furnitureGoal:
+                        return new InteractingWithFurnitureStateHandler.TransitionPayload() { furniture = furnitureGoal.targetFurniture };
+                }
+            }
+
+            // return to idleness
+            return new IdleStateHandler.TransitionPayload();
         }
 
         void TransitionTo(StateHandlerBase.TransitionPayloadBase nextStatePayload)

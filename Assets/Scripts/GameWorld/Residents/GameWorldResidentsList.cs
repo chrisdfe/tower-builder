@@ -16,6 +16,8 @@ namespace TowerBuilder.GameWorld.Residents
             Registry.appState.Residents.events.onResidentsAdded += OnResidentsAdded;
             Registry.appState.Residents.events.onResidentsRemoved += OnResidentsRemoved;
 
+            Registry.appState.Residents.events.onResidentPositionUpdated += OnResidentPositionUpdated;
+
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
@@ -24,9 +26,14 @@ namespace TowerBuilder.GameWorld.Residents
             Registry.appState.Residents.events.onResidentsAdded -= OnResidentsAdded;
             Registry.appState.Residents.events.onResidentsRemoved -= OnResidentsRemoved;
 
+            Registry.appState.Residents.events.onResidentPositionUpdated -= OnResidentPositionUpdated;
+
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
+        /*
+            Event handlers
+        */
         void OnResidentsAdded(ResidentsList residentList)
         {
             foreach (Resident resident in residentList.items)
@@ -41,6 +48,12 @@ namespace TowerBuilder.GameWorld.Residents
             {
                 RemoveResident(resident);
             }
+        }
+
+        void OnResidentPositionUpdated(Resident resident)
+        {
+            GameWorldResident gameWorldResident = gameWorldResidentsList.Find(gameWorldResident => gameWorldResident.resident == resident);
+            gameWorldResident.UpdatePosition();
         }
 
         void OnCurrentSelectedEntityUpdated(EntityBase entity)

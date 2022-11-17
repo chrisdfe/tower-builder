@@ -53,12 +53,22 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             // UpdateSelectableEntityStack();
             UpdateCurrentSelectedCell();
 
+            if (Input.GetButtonDown("Alt Action"))
+            {
+                Registry.appState.UI.AltActionStart();
+            }
+            else if (Input.GetButtonUp("Alt Action"))
+            {
+                Registry.appState.UI.AltActionEnd();
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
                 if (!uiManager.mouseIsOverUI)
                 {
-                    Registry.appState.UI.SelectStart();
-                    currentToolStateHandler.OnMouseDown();
+                    // Registry.appState.UI.SelectStart();
+                    Registry.appState.UI.LeftClickStart();
+                    // currentToolStateHandler.OnMouseDown();
                 }
             }
 
@@ -66,8 +76,8 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             {
                 // if (!uiManager.mouseIsOverUI)
                 // {
-                Registry.appState.UI.SelectEnd();
-                currentToolStateHandler.OnMouseUp();
+                Registry.appState.UI.LeftClickEnd();
+                // currentToolStateHandler.OnMouseUp();
                 // }
             }
 

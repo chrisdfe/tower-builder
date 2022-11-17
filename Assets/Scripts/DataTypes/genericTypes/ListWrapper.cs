@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TowerBuilder.DataTypes
 {
-    public abstract class ListWrapper<ItemType>
+    public class ListWrapper<ItemType>
     {
         public List<ItemType> items { get; private set; } = new List<ItemType>();
 

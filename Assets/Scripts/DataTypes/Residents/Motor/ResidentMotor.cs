@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using TowerBuilder.ApplicationState;
+using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Routes;
-
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Residents.Motors

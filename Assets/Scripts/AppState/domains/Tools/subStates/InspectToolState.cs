@@ -55,6 +55,8 @@ namespace TowerBuilder.ApplicationState.Tools
 
             appState.Furnitures.events.onFurnituresRemoved += OnFurnituresRemoved;
             appState.Residents.events.onResidentsRemoved += OnResidentsRemoved;
+
+            appState.UI.events.onSecondaryActionPerformed += OnSecondaryActionPerformed;
         }
 
         public override void Teardown()
@@ -63,6 +65,8 @@ namespace TowerBuilder.ApplicationState.Tools
 
             appState.Furnitures.events.onFurnituresRemoved -= OnFurnituresRemoved;
             appState.Residents.events.onResidentsRemoved -= OnResidentsRemoved;
+
+            appState.UI.events.onSecondaryActionPerformed -= OnSecondaryActionPerformed;
 
             inspectedEntityList = new EntityList();
             inspectedEntityIndex = -1;
@@ -120,6 +124,9 @@ namespace TowerBuilder.ApplicationState.Tools
             }
         }
 
+        /* 
+            Event handlers
+         */
         void OnFurnituresRemoved(FurnitureList furnitureList)
         {
             bool shouldReset = false;
@@ -167,6 +174,24 @@ namespace TowerBuilder.ApplicationState.Tools
                 {
                     events.onCurrentSelectedEntityUpdated(inspectedEntity);
                 }
+            }
+        }
+
+        void OnSecondaryActionPerformed()
+        {
+            if (!(inspectedEntity is ResidentEntity)) return;
+
+            Resident resident = (inspectedEntity as ResidentEntity).resident;
+            CellCoordinates targetCellCoordinates = appState.UI.currentSelectedCell;
+            Furniture furnitureAtTarget = appState.Furnitures.queries.FindFurnitureAtCell(targetCellCoordinates);
+
+            if (furnitureAtTarget != null)
+            {
+                appState.ResidentBehaviors.SendResidentTo(resident, furnitureAtTarget);
+            }
+            else
+            {
+                appState.ResidentBehaviors.SendResidentTo(resident, targetCellCoordinates);
             }
         }
     }

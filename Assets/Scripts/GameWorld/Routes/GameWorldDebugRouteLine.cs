@@ -35,7 +35,7 @@ public class GameWorldDebugRouteLine : MonoBehaviour
             i++;
         }
 
-        Color lineColor = routeAttempt.status == RouteStatus.Complete ? Color.green : Color.red;
+        Color lineColor = routeAttempt.status == RouteAttempt.Status.Complete ? Color.green : Color.red;
         lineRenderer.startColor = lineColor;
         lineRenderer.endColor = lineColor;
     }

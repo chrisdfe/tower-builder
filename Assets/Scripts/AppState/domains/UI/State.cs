@@ -36,7 +36,12 @@ namespace TowerBuilder.ApplicationState.UI
 
             public delegate void SelectedCellEntityListEvent(EntityList entityList);
             public SelectedCellEntityListEvent onCurrentSelectedEntityListUpdated;
+
+            public delegate void ActionEvent();
+            public ActionEvent onSecondaryActionPerformed;
         }
+
+        public class Queries { }
 
         public CellCoordinates currentSelectedCell { get; private set; } = null;
         public Room currentSelectedRoom { get; private set; } = null;
@@ -48,6 +53,9 @@ namespace TowerBuilder.ApplicationState.UI
         public EntityList currentSelectedCellEntityList { get; private set; } = new EntityList();
 
         public Events events;
+        public Queries queries;
+
+        bool altActionIsActive = false;
 
         public State(AppState appState, Input input) : base(appState)
         {
@@ -56,6 +64,34 @@ namespace TowerBuilder.ApplicationState.UI
             selectionBox = new SelectionBox(currentSelectedCell);
 
             events = new Events();
+            queries = new Queries();
+        }
+
+        public void LeftClickStart()
+        {
+            if (altActionIsActive)
+            {
+                PerformSecondaryAction();
+            }
+            else
+            {
+                SelectStart();
+            }
+        }
+
+        public void LeftClickEnd()
+        {
+            SelectEnd();
+        }
+
+        public void AltActionStart()
+        {
+            altActionIsActive = true;
+        }
+
+        public void AltActionEnd()
+        {
+            altActionIsActive = false;
         }
 
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedCell)
@@ -136,6 +172,16 @@ namespace TowerBuilder.ApplicationState.UI
             }
         }
 
+        void PerformSecondaryAction()
+        {
+            Debug.Log("secondary action");
+
+            if (events.onSecondaryActionPerformed != null)
+            {
+                events.onSecondaryActionPerformed();
+            }
+        }
+
         void SetEntityList()
         {
             EntityList entityList = new EntityList();
@@ -148,11 +194,11 @@ namespace TowerBuilder.ApplicationState.UI
                     entityList.Add(roomEntity);
                 }
 
-                if (currentSelectedRoomBlock != null)
-                {
-                    RoomBlockEntity roomBlockEntity = new RoomBlockEntity(currentSelectedRoomBlock);
-                    entityList.Add(roomBlockEntity);
-                }
+                // if (currentSelectedRoomBlock != null)
+                // {
+                //     RoomBlockEntity roomBlockEntity = new RoomBlockEntity(currentSelectedRoomBlock);
+                //     entityList.Add(roomBlockEntity);
+                // }
 
                 Furniture furnitureAtCell = appState.Furnitures.queries.FindFurnitureAtCell(currentSelectedCell);
 

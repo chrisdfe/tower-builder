@@ -7,6 +7,8 @@ namespace TowerBuilder.DataTypes.Furnitures
 {
     public class Furniture
     {
+        public int id { get; private set; }
+
         public FurnitureCategory category { get { return FurnitureCategory.None; } }
 
         public Room room { get; set; }
@@ -19,12 +21,21 @@ namespace TowerBuilder.DataTypes.Furnitures
 
         List<FurnitureAttributesBase> attributesList;
 
-        public Furniture() { }
+        public Furniture()
+        {
+            this.id = UIDGenerator.Generate("furniture");
 
-        public Furniture(Room room, List<FurnitureAttributesBase> attributesList)
+        }
+
+        public Furniture(Room room, List<FurnitureAttributesBase> attributesList) : this()
         {
             this.room = room;
             this.attributesList = attributesList;
+        }
+
+        public override string ToString()
+        {
+            return $"Furniture {id}";
         }
 
         public void OnBuild()

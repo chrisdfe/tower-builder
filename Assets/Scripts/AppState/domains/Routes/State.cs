@@ -71,11 +71,8 @@ namespace TowerBuilder.ApplicationState.Routes
                 return;
             }
 
-            Debug.Log("calculating debug route");
-
             RouteFinder routeFinder = new RouteFinder();
             routeFinder.FindRouteBetween(debugRouteStartCoordinates, debugRouteEndCoordinates);
-            Debug.Log(routeFinder.routeAttempts.Count);
             debugRouteAttempts = routeFinder.routeAttempts;
 
             if (onDebugRouteCalculated != null)

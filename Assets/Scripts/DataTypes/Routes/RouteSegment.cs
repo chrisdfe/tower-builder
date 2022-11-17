@@ -10,12 +10,11 @@ namespace TowerBuilder.DataTypes.Routes
 {
     public class RouteSegment
     {
-        // RouteSegmentTransportationType transportationType = RouteSegmentTransportationType.Walking;
         public RouteSegmentNode startNode;
         public RouteSegmentNode endNode;
         public RouteSegmentType type;
 
-        public List<CellCoordinates> cellSteps = new List<CellCoordinates>();
+        public List<CellCoordinates> cellSteps { get; private set; } = new List<CellCoordinates>();
         public int distance { get { return cellSteps.Count; } }
 
         public RouteSegment(RouteSegmentNode startNode, RouteSegmentNode endNode, RouteSegmentType type)

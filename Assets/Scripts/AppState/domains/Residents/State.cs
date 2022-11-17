@@ -84,8 +84,6 @@ namespace TowerBuilder.ApplicationState.Residents
         {
             allResidents.Remove(resident);
 
-            Debug.Log("RemoveResident");
-
             if (events.onResidentsRemoved != null)
             {
                 events.onResidentsRemoved(new ResidentsList(resident));

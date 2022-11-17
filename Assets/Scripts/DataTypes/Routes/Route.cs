@@ -13,6 +13,22 @@ namespace TowerBuilder.DataTypes.Routes
 
         public List<RouteSegment> segments { get; private set; }
 
+        public RouteSegmentNode firstSegmentNode
+        {
+            get
+            {
+                return segments[0].startNode;
+            }
+        }
+
+        public RouteSegmentNode lastSegmentNode
+        {
+            get
+            {
+                return segments[segments.Count - 1].endNode;
+            }
+        }
+
         public Route(List<RouteSegment> segments)
         {
             this.segments = segments;

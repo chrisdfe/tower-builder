@@ -23,16 +23,12 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 base.Setup();
 
-                Debug.Log("hello");
-
                 CreateBlueprintResident();
             }
 
             public override void Teardown()
             {
                 base.Teardown();
-
-                Debug.Log("goodby");
 
                 DestroyBlueprintResident();
             }

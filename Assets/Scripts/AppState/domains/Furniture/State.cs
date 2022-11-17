@@ -10,7 +10,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
     [Serializable]
     public class State : StateSlice
     {
-        public struct Input { }
+        public class Input { }
 
         public class Events
         {
@@ -74,6 +74,11 @@ namespace TowerBuilder.ApplicationState.Furnitures
             events = new Events();
             queries = new Queries(this);
 
+            Setup();
+        }
+
+        public void Setup()
+        {
             appState.Rooms.events.onRoomAdded += OnRoomAdded;
             appState.Rooms.events.onRoomRemoved += OnRoomRemoved;
             appState.Rooms.events.onRoomBlocksAdded += OnRoomBlocksAdded;

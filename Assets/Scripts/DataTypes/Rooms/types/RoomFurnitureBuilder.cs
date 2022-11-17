@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.DataTypes.Furnitures;
+using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms
 {
@@ -18,7 +19,8 @@ namespace TowerBuilder.DataTypes.Rooms
         {
             List<Furniture> items = new List<Furniture>();
 
-            // FOr now just put one furniture in each cell
+            /*
+            // For now just put one furniture in each cell
             foreach (CellCoordinates cellCoordinates in room.blocks.cells.coordinatesList.items)
             {
                 Furniture furniture = new Furniture();
@@ -26,6 +28,7 @@ namespace TowerBuilder.DataTypes.Rooms
                 furniture.cellCoordinates = cellCoordinates;
                 items.Add(furniture);
             }
+            */
 
             return new FurnitureList(items);
         }

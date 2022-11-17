@@ -5,6 +5,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Residents.Behaviors;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.GameWorld.UI.Components;
@@ -94,6 +95,7 @@ namespace TowerBuilder.GameWorld.UI
         void SetInspectedFurnitureText(Furniture furniture)
         {
             string text = "Furniture\n"
+                + $"   name: {furniture}\n"
                 + $"   condition: {furniture.condition}";
 
             inspectText.text = text;
@@ -128,7 +130,11 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectedResidentText(Resident resident)
         {
-            string text = "Resident";
+            ResidentBehavior residentBehavior = Registry.appState.ResidentBehaviors.queries.FindByResident(resident);
+
+            string text = "Resident"
+            + $"   name: {resident}\n"
+            + $"   state: {residentBehavior.currentState}\n";
 
             inspectText.text = text;
         }

@@ -15,6 +15,9 @@ namespace TowerBuilder.GameWorld.Residents
         Transform cube;
         Color defaultColor;
 
+        /* 
+            Lifecycle Methods
+        */
         void Awake()
         {
             cube = transform.Find("Cube");
@@ -31,9 +34,14 @@ namespace TowerBuilder.GameWorld.Residents
             UpdatePosition();
         }
 
-        public void Teardown()
-        {
+        public void Teardown() { }
 
+        /* 
+            Public API
+        */
+        public void UpdatePosition()
+        {
+            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(resident.cellCoordinates);
         }
 
         public void SetDefaultColor()
@@ -50,11 +58,6 @@ namespace TowerBuilder.GameWorld.Residents
         {
             Material material = cube.GetComponent<MeshRenderer>().material;
             material.color = new Color(color.r, color.g, color.b, alpha);
-        }
-
-        void UpdatePosition()
-        {
-            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(resident.cellCoordinates);
         }
 
         /* 

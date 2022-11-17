@@ -11,7 +11,13 @@ namespace TowerBuilder.DataTypes.Routes
 {
     public class RouteAttempt
     {
-        public RouteStatus status = RouteStatus.Incomplete;
+        public enum Status
+        {
+            Incomplete,
+            Complete
+        }
+
+        public Status status = Status.Incomplete;
 
         public List<Room> visitedRooms { get; private set; } = new List<Room>();
         public List<RouteSegment> routeSegments { get; private set; } = new List<RouteSegment>();

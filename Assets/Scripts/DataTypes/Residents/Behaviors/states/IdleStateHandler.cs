@@ -23,14 +23,14 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
             base.Teardown();
         }
 
-        public override TransitionPayloadBase GetNextState(AppState appState)
-        {
-            return null;
-        }
-
         public override void ProcessTick(AppState appState)
         {
             Debug.Log("Idle");
+        }
+
+        public override TransitionPayloadBase GetNextState(AppState appState)
+        {
+            return residentBehavior.GetNextGoalTransitionPayload();
         }
     }
 }
