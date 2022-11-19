@@ -2,12 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Buildings;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Connections;
-using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Rooms
@@ -20,34 +16,6 @@ namespace TowerBuilder.ApplicationState.Rooms
             public Queries(State state)
             {
                 this.state = state;
-            }
-
-            public Building FindBuildingByRoom(Room room)
-            {
-                foreach (Building building in Registry.appState.Buildings.buildingList)
-                {
-                    if (room.building == building)
-                    {
-                        return building;
-                    }
-                }
-
-                return null;
-            }
-
-            public RoomList FindRoomsInBuilding(Building building)
-            {
-                RoomList buildingRooms = new RoomList();
-
-                foreach (Room room in state.roomList.rooms)
-                {
-                    if (room.building == building)
-                    {
-                        buildingRooms.Add(room);
-                    }
-                }
-
-                return buildingRooms;
             }
 
             public Room FindRoomAtCell(CellCoordinates cellCoordinates)
@@ -70,6 +38,23 @@ namespace TowerBuilder.ApplicationState.Rooms
                 }
 
                 return (null, null);
+            }
+
+            public List<Room> FindPerimeterRooms(Room room)
+            {
+                List<CellCoordinates> perimeterRoomCellCoordinates = room.blocks.cells.coordinatesList.GetPerimeterCellCoordinates();
+                List<Room> result = new List<Room>();
+
+                foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
+                {
+                    Room perimeterRoom = FindRoomAtCell(coordinates);
+                    if (perimeterRoom != null && perimeterRoom != room)
+                    {
+                        result.Add(perimeterRoom);
+                    }
+                }
+
+                return result;
             }
 
             public List<Room> FindRoomsToCombineWith(Room room)

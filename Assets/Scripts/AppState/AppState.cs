@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace TowerBuilder.ApplicationState
 {
     public class AppState
@@ -10,13 +8,13 @@ namespace TowerBuilder.ApplicationState
             public Time.State.Input time;
             public Wallet.State.Input wallet;
 
-            public Buildings.State.Input buildings;
             public Rooms.State.Input rooms;
-
             public Furnitures.State.Input furnitures;
             public Residents.State.Input residents;
 
             public Routes.State.Input routes;
+
+            public Vehicles.State.Input vehicles;
 
             public ResidentMotors.State.Input residentMotors;
 
@@ -32,12 +30,13 @@ namespace TowerBuilder.ApplicationState
                 time = new Time.State.Input();
                 wallet = new Wallet.State.Input();
 
-                buildings = new Buildings.State.Input();
-                furnitures = new Furnitures.State.Input();
                 rooms = new Rooms.State.Input();
+                furnitures = new Furnitures.State.Input();
+                residents = new Residents.State.Input();
 
                 routes = new Routes.State.Input();
-                residents = new Residents.State.Input();
+
+                vehicles = new Vehicles.State.Input();
 
                 residentMotors = new ResidentMotors.State.Input();
 
@@ -53,7 +52,7 @@ namespace TowerBuilder.ApplicationState
         public Time.State Time;
         public Wallet.State Wallet;
 
-        public Buildings.State Buildings;
+        public Vehicles.State Vehicles;
         public Furnitures.State Furnitures;
         public Rooms.State Rooms;
 
@@ -74,12 +73,13 @@ namespace TowerBuilder.ApplicationState
             Time = new Time.State(this, input.time);
             Wallet = new Wallet.State(this, input.wallet);
 
-            Buildings = new Buildings.State(this, input.buildings);
             Rooms = new Rooms.State(this, input.rooms);
             Furnitures = new Furnitures.State(this, input.furnitures);
             Residents = new Residents.State(this, input.residents);
 
             Routes = new Routes.State(this, input.routes);
+
+            Vehicles = new Vehicles.State(this, input.vehicles);
 
             ResidentMotors = new ResidentMotors.State(this, input.residentMotors);
 

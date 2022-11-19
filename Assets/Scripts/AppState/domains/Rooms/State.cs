@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Buildings;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.DataTypes.Rooms.Entrances;
@@ -94,27 +93,11 @@ namespace TowerBuilder.ApplicationState.Rooms
             }
 
             room.isInBlueprintMode = false;
-            room.building = FindOrCreateRoomBuilding();
             room.OnBuild();
 
             if (events.onRoomBuilt != null)
             {
                 events.onRoomBuilt(room);
-            }
-
-            Building FindOrCreateRoomBuilding()
-            {
-                List<Room> perimeterRooms = FindPerimeterRooms(room);
-
-                if (perimeterRooms.Count > 0)
-                {
-                    // TODO here - if perimeterRooms has more than 1 then combine them
-                    return queries.FindBuildingByRoom(perimeterRooms[0]);
-                }
-
-                Building building = new Building();
-                appState.Buildings.AddBuilding(building);
-                return building;
             }
         }
 
@@ -141,34 +124,6 @@ namespace TowerBuilder.ApplicationState.Rooms
             room.OnDestroy();
 
             RemoveConnectionsForRoom(room);
-
-            Building buildingContainingRoom = queries.FindBuildingByRoom(room);
-
-            if (buildingContainingRoom == null) return;
-
-            RoomList roomsInBuilding = queries.FindRoomsInBuilding(buildingContainingRoom);
-
-            if (roomsInBuilding.Count == 0)
-            {
-                appState.Buildings.RemoveBuilding(buildingContainingRoom);
-            }
-        }
-
-        List<Room> FindPerimeterRooms(Room room)
-        {
-            List<CellCoordinates> perimeterRoomCellCoordinates = room.blocks.cells.coordinatesList.GetPerimeterCellCoordinates();
-            List<Room> result = new List<Room>();
-
-            foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
-            {
-                Room perimeterRoom = queries.FindRoomAtCell(coordinates);
-                if (perimeterRoom != null && perimeterRoom != room)
-                {
-                    result.Add(perimeterRoom);
-                }
-            }
-
-            return result;
         }
 
         /* 

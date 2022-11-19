@@ -2,14 +2,13 @@
 
 ## Current
 
-
 ## TODO
 
 - Room connections don't work reliably (probably because of room blocks)
 - Inspect highlight doesn't stay after user mouses out
-- Rooms + buildings still don't get destroyed properly
-- Sometimes room entrances don't get deleted  
-- Clicking on buttons in the UI also clicks on what ever is behind it, e.g. building a room when you meant to click on the button
+- Rooms + vehicles still don't get destroyed properly
+- Sometimes room entrances don't get deleted
+- Clicking on buttons in the UI also clicks on what ever is behind it, e.g. vehicle a room when you meant to click on the button
 - Individual roomCells should know if they are valid again (right now it's just the room)
 - Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
 - RoomEntrances in the blueprint room aren't getting highlighted
@@ -17,4 +16,3 @@
 - UI is way too big on my laptop
 
 # Done
-

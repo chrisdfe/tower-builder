@@ -4,7 +4,7 @@
 
 ## Tasks
 
-- consider putting buildings state further down in the heirarchy - having buildings be able to query their contents in various ways
+- consider putting vehicles state further down in the heirarchy - having vehicles be able to query their contents in various ways
   (e.g how many residents are currently inside of it, or whether it has a cockpit/engine) would be helpful
 - Convert other List wrappers to use the new ListWrapper generic
 - Rooms aren't combining correctly anymore
@@ -70,7 +70,7 @@
 ## Ideas
 
 - this game loop:
-  - Vehicles (moving buildings) need fuel
+  - Vehicles (moving vehicles) need fuel
   - You need scrap (currency) to buy fuel
   - You get scrap by traveling and looting/farming/gathering
   - You also need residents using the "engine" furniture
@@ -144,7 +144,7 @@
 - Inspect ToolState mode
 - Buttons that show active state
 - Destroy ToolState mode
-- Add click-and-drag room building
+- Add click-and-drag room vehicle
 - Add flexble-sized rooms
 - Remove 'RoomStore' - having just MapStore should be fine
   - Combine RoomTemplate and RoomTemplate

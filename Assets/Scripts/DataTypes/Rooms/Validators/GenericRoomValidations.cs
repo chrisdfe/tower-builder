@@ -34,7 +34,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             RoomList allRooms = appState.Rooms.roomList;
 
             // Check for overlapping cells
-            foreach (Room otherRoom in allRooms.rooms)
+            foreach (Room otherRoom in allRooms.items)
             {
                 if (otherRoom != room && otherRoom.blocks.cells.coordinatesList.Contains(roomCell.coordinates))
                 {

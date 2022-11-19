@@ -103,7 +103,7 @@ namespace TowerBuilder.ApplicationState.Tools
             // Restrict destroy to whichever room destroy started on
             if (roomsToDeleteBlocksFrom.Count > 0 && blocksToDelete.Count > 0)
             {
-                foreach (Room roomToDelete in roomsToDeleteBlocksFrom.rooms)
+                foreach (Room roomToDelete in roomsToDeleteBlocksFrom.items)
                 {
                     RoomBlocks roomBlocksToDelete = new RoomBlocks(blocksToDelete.blocks.FindAll(roomBlock => roomToDelete.blocks.ContainsBlock(roomBlock)));
                     Registry.appState.Rooms.DestroyRoomBlocks(roomToDelete, roomBlocksToDelete);

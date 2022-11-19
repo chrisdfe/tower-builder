@@ -4,10 +4,10 @@ using System.IO;
 using Newtonsoft.Json;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Buildings;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
+using TowerBuilder.DataTypes.Vehicles;
 using TowerBuilder.Systems;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -19,7 +19,7 @@ namespace TowerBuilder.GameWorld.UI
     {
 
         Text currentSelectedCellText;
-        Text buildingCountText;
+        Text vehicleCountText;
         Text roomCountText;
         Text roomConnectionsText;
         Text selectionBoxText;
@@ -29,7 +29,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
             Registry.appState.UI.events.onSelectionBoxUpdated += OnSelectionBoxUpdated;
 
-            Registry.appState.Buildings.events.onBuildingListUpdated += OnBuildingListUpdated;
+            Registry.appState.Vehicles.events.onVehicleListUpdated += OnVehicleListUpdated;
 
             Registry.appState.Rooms.events.onRoomListUpdated += OnRoomListUpdated;
             Registry.appState.Rooms.events.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
@@ -40,8 +40,8 @@ namespace TowerBuilder.GameWorld.UI
             selectionBoxText = TransformUtils.FindDeepChild(transform, "SelectionBoxText").GetComponent<Text>();
             selectionBoxText.text = "";
 
-            buildingCountText = TransformUtils.FindDeepChild(transform, "BuildingCountText").GetComponent<Text>();
-            buildingCountText.text = "";
+            vehicleCountText = TransformUtils.FindDeepChild(transform, "VehicleCountText").GetComponent<Text>();
+            vehicleCountText.text = "";
 
             roomCountText = TransformUtils.FindDeepChild(transform, "RoomCountText").GetComponent<Text>();
             roomCountText.text = "";
@@ -51,7 +51,7 @@ namespace TowerBuilder.GameWorld.UI
 
             SetCurrentSelectedCellText();
             SetSelectionBoxText();
-            SetBuildingCountText();
+            SetVehicleCountText();
             SetRoomCountText();
             SetRoomConnectionsText();
         }
@@ -66,9 +66,9 @@ namespace TowerBuilder.GameWorld.UI
             SetSelectionBoxText();
         }
 
-        void OnBuildingListUpdated(List<Building> buildings)
+        void OnVehicleListUpdated(List<Vehicle> vehicles)
         {
-            SetBuildingCountText();
+            SetVehicleCountText();
         }
 
         void OnRoomListUpdated(RoomList roomList)
@@ -99,10 +99,10 @@ namespace TowerBuilder.GameWorld.UI
             + $"    bottomRight: {selectionBox.cellCoordinatesList.GetBottomRightCoordinates()}");
         }
 
-        void SetBuildingCountText()
+        void SetVehicleCountText()
         {
-            List<Building> allBuildings = Registry.appState.Buildings.buildingList;
-            buildingCountText.text = $"Buildings: {allBuildings.Count}";
+            List<Vehicle> allVehicles = Registry.appState.Vehicles.vehicleList;
+            vehicleCountText.text = $"Vehicles: {allVehicles.Count}";
         }
 
         void SetRoomCountText()
