@@ -6,7 +6,7 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Connections;
+using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.UI
@@ -46,6 +46,7 @@ namespace TowerBuilder.ApplicationState.UI
         public CellCoordinates currentSelectedCell { get; private set; } = null;
         public Room currentSelectedRoom { get; private set; } = null;
         public RoomCells currentSelectedRoomBlock { get; private set; } = null;
+        public Vehicle currentSelectedVehicle { get; private set; } = null;
 
         public SelectionBox selectionBox { get; private set; }
         public bool selectionIsActive { get; private set; } = false;
@@ -104,6 +105,8 @@ namespace TowerBuilder.ApplicationState.UI
             if (currentSelectedRoom != null)
             {
                 currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
+
+                currentSelectedVehicle = Registry.appState.Vehicles.queries.FindVehicleByRoom(currentSelectedRoom);
             }
 
             if (selectionIsActive)

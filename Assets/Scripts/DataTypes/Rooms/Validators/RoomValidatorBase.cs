@@ -8,13 +8,9 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms.Validators
 {
-    public class RoomValidatorBase
+    public abstract class RoomValidatorBase : ValidatorBase<RoomValidationError>
     {
         Room room;
-
-        public List<RoomValidationError> errors { get; private set; } = new List<RoomValidationError>();
-
-        public bool isValid { get { return errors.Count == 0; } }
 
         protected virtual List<GenericRoomValidations.ValidationFunc> RoomValidators { get; } = new List<GenericRoomValidations.ValidationFunc>();
         protected virtual List<GenericRoomCellValidations.ValidationFunc> RoomCellValidators { get; } = new List<GenericRoomCellValidations.ValidationFunc>();
@@ -33,7 +29,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             this.room = room;
         }
 
-        public void Validate(AppState appState)
+        public override void Validate(AppState appState)
         {
             errors = new List<RoomValidationError>();
 

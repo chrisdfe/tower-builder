@@ -77,6 +77,8 @@ namespace TowerBuilder.GameWorld.UI
                     Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.Room);
                     break;
                 case "furniture":
+                    furnitureEntityGroupButton.SetSelected(true);
+                    furnitureEntityGroupButtons.Setup();
                     Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.Furniture);
                     break;
                 case "residents":

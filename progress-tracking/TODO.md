@@ -11,6 +11,9 @@
   - RoomConnection subtype for outside connections
   - Wheels room should allow ladder furniture
   - Residents should be able to walk on the ground and climb up the wheels ladder
+- tick animations
+  - eg resident going from one cell to the other
+- Reconsider how routes are constructed - maybe every segment should be 1 cell?
 - Convert other List wrappers to use the new ListWrapper generic
 - Rooms aren't combining correctly anymore
 - "reset" button to reset state to default

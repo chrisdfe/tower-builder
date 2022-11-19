@@ -7,7 +7,7 @@ using TowerBuilder.ApplicationState.Rooms;
 using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.Definitions;
 using TowerBuilder.GameWorld.UI.Components;
 using UnityEngine;
@@ -21,44 +21,63 @@ namespace TowerBuilder.GameWorld.UI
         {
         }
 
+        public override void Setup()
+        {
+            base.Setup();
+
+            Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.events.onSelectedFurnitureCategoryUpdated += OnSelectedFurnitureCategoryUpdated;
+            Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.events.onSelectedFurnitureTemplateUpdated += OnSelectedFurnitureTemplateUpdated;
+        }
+
+        public override void Teardown()
+        {
+            base.Teardown();
+
+            Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.events.onSelectedFurnitureCategoryUpdated -= OnSelectedFurnitureCategoryUpdated;
+            Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.events.onSelectedFurnitureTemplateUpdated -= OnSelectedFurnitureTemplateUpdated;
+        }
+
         protected override List<UISelectButton.Input> GenerateCategoryButtonInputs()
         {
-            List<string> allFurnitureCategories = new List<string> { "one", "two" };
-            return allFurnitureCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
+            List<UISelectButton> result = new List<UISelectButton>();
+
+            List<string> allCategories = Registry.definitions.furnitures.queries.FindAllCategories();
+            return allCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
         }
 
         protected override List<UISelectButton.Input> GenerateTemplateButtonInputs()
         {
-            List<string> furnitureTemplates = new List<string> { "one", "two" };
-            return furnitureTemplates.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
-        }
+            List<UISelectButton> result = new List<UISelectButton>();
 
+            List<FurnitureTemplate> currentFurnitureDefinitions = GetFurnitureDefinitionsForCurrentCategory();
+            return currentFurnitureDefinitions.Select(furnitureTemplate => new UISelectButton.Input() { label = furnitureTemplate.title, value = furnitureTemplate.key }).ToList();
+        }
 
         protected override void OnCategoryButtonClick(string furnitureCategory)
         {
-            // Registry.appState.Tools.buildToolState.SetSelectedRoomCategory(roomCategory);
+            Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.SetSelectedFurnitureCategory(furnitureCategory);
         }
 
         protected override void OnTemplateButtonClick(string furnitureTemplateKey)
         {
-            // RoomTemplate selectedRoomTemplate = Registry.roomDefinitions.FindByKey(roomTemplateKey);
-            // Registry.appState.Tools.buildToolState.SetSelectedRoomTemplate(selectedRoomTemplate);
+            FurnitureTemplate selectedFurnitureTemplate = Registry.definitions.furnitures.queries.FindByKey(furnitureTemplateKey);
+            Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.SetSelectedFurnitureTemplate(selectedFurnitureTemplate);
         }
 
-        List<RoomTemplate> GetRoomDefinitionsForCurrentCategory()
+        List<FurnitureTemplate> GetFurnitureDefinitionsForCurrentCategory()
         {
-            string currentCategory = Registry.appState.Tools.buildToolState.subStates.roomEntityType.selectedRoomCategory;
-            return Registry.definitions.rooms.queries.FindByCategory(currentCategory);
+            string currentCategory = Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.selectedFurnitureCategory;
+            return Registry.definitions.furnitures.queries.FindByCategory(currentCategory);
         }
 
-        // void OnSelectedRoomCategoryUpdated(string newRoomCategory)
-        // {
-        //     SetSelectedCategory(newRoomCategory);
-        // }
+        void OnSelectedFurnitureCategoryUpdated(string newFurnitureCategory)
+        {
+            SetSelectedCategory(newFurnitureCategory);
+        }
 
-        // void OnSelectedRoomTemplateUpdated(RoomTemplate roomTemplate)
-        // {
-        //     SetSelectedTemplate(roomTemplate.key);
-        // }
+        void OnSelectedFurnitureTemplateUpdated(FurnitureTemplate furnitureTemplate)
+        {
+            SetSelectedTemplate(furnitureTemplate.key);
+        }
     }
 }

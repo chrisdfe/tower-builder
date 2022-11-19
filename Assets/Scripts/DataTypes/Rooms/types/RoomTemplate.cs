@@ -18,8 +18,6 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public string category = "None";
 
-        public List<FurnitureAttributesBase> furnitureAttributes = new List<FurnitureAttributesBase>();
-
         public Dimensions blockDimensions;
 
         public RoomResizability resizability = RoomResizability.Inflexible;

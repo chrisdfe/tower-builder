@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using TowerBuilder.DataTypes.Furnitures;
 using UnityEngine;
 
@@ -7,17 +9,30 @@ namespace TowerBuilder.ApplicationState.Tools
     {
         public class FurnitureEntityTypeSubState : EntityTypeSubState
         {
+            public string selectedFurnitureCategory { get; private set; } = "";
+            public FurnitureTemplate selectedFurnitureTemplate { get; private set; } = null;
             public Furniture blueprintFurniture { get; private set; }
 
             public class Events
             {
+                public delegate void SelectedFurnitureCategoryEvent(string selectedFurnitureCategory);
+                public SelectedFurnitureCategoryEvent onSelectedFurnitureCategoryUpdated;
+
+                public delegate void SelectedFurnitureTemplateEvent(FurnitureTemplate selectedFurnitureTemplate);
+                public SelectedFurnitureTemplateEvent onSelectedFurnitureTemplateUpdated;
+
                 public delegate void blueprintUpdateEvent(Furniture blueprintFurniture);
                 public blueprintUpdateEvent onBlueprintFurnitureUpdated;
             }
 
-            Events events;
+            public Events events;
 
-            public FurnitureEntityTypeSubState(BuildToolState buildToolState) : base(buildToolState) { }
+            public FurnitureEntityTypeSubState(BuildToolState buildToolState) : base(buildToolState)
+            {
+                events = new Events();
+
+                selectedFurnitureTemplate = Registry.definitions.furnitures.definitions[0];
+            }
 
             public override void Setup()
             {
@@ -49,6 +64,39 @@ namespace TowerBuilder.ApplicationState.Tools
                 ResetBlueprintFurniture();
             }
 
+            public void SetSelectedFurnitureCategory(string furnitureCategory)
+            {
+                selectedFurnitureCategory = furnitureCategory;
+                List<FurnitureTemplate> furnitureDefinitions = Registry.definitions.furnitures.queries.FindByCategory(selectedFurnitureCategory);
+
+                FurnitureTemplate furnitureDefinition = furnitureDefinitions[0];
+
+                if (furnitureDefinition != null)
+                {
+                    SelectFurnitureTemplateAndUpdateBlueprint(furnitureDefinition);
+                }
+
+                if (events.onSelectedFurnitureCategoryUpdated != null)
+                {
+                    events.onSelectedFurnitureCategoryUpdated(selectedFurnitureCategory);
+                }
+
+                if (furnitureDefinition != null && events.onSelectedFurnitureTemplateUpdated != null)
+                {
+                    events.onSelectedFurnitureTemplateUpdated(furnitureDefinition);
+                }
+            }
+
+            public void SetSelectedFurnitureTemplate(FurnitureTemplate furnitureTemplate)
+            {
+                SelectFurnitureTemplateAndUpdateBlueprint(furnitureTemplate);
+
+                if (events.onSelectedFurnitureTemplateUpdated != null)
+                {
+                    events.onSelectedFurnitureTemplateUpdated(furnitureTemplate);
+                }
+            }
+
             void CreateBlueprintFurniture()
             {
                 blueprintFurniture = new Furniture();
@@ -73,6 +121,12 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 DestroyBlueprintFurniture();
                 CreateBlueprintFurniture();
+            }
+
+            void SelectFurnitureTemplateAndUpdateBlueprint(FurnitureTemplate furnitureTemplate)
+            {
+                this.selectedFurnitureTemplate = furnitureTemplate;
+                ResetBlueprintFurniture();
             }
         }
     }

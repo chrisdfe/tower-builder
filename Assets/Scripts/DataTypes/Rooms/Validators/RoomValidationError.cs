@@ -4,13 +4,8 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms.Validators
 {
-    public class RoomValidationError
+    public class RoomValidationError : ValidationErrorBase
     {
-        public string message { get; private set; }
-
-        public RoomValidationError(string message)
-        {
-            this.message = message;
-        }
+        public RoomValidationError(string message) : base(message) { }
     }
 }

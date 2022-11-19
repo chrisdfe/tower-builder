@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Furnitures.Behaviors;
+using TowerBuilder.DataTypes.Furnitures.Validators;
 
 namespace TowerBuilder.DataTypes.Furnitures
 {
@@ -9,11 +10,10 @@ namespace TowerBuilder.DataTypes.Furnitures
         public string title = "None";
         public string category = "None";
 
-        // public List<CellCoordinates> cells = new List<CellCoordinates>();
-
-        // public List<FurnitureAttributesBase> attributes = new List<FurnitureAttributesBase>();
-
         public delegate FurnitureBehaviorBase FurnitureBehaviorFactory(Furniture furniture);
         public FurnitureBehaviorFactory furnitureBehaviorFactory = (Furniture furniture) => new DefaultBehavior(furniture);
+
+        public delegate FurnitureValidatorBase FurnitureValidatorFactory(Furniture furniture);
+        public FurnitureValidatorFactory furnitureValidatorFactory = (Furniture furniture) => new DefaultFurnitureValidator(furniture);
     }
 }

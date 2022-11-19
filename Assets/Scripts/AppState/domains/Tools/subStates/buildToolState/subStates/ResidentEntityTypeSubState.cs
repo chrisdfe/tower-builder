@@ -15,7 +15,7 @@ namespace TowerBuilder.ApplicationState.Tools
                 public blueprintUpdateEvent onBlueprintResidentUpdated;
             }
 
-            Events events;
+            public Events events;
 
             public ResidentEntityTypeSubState(BuildToolState buildToolState) : base(buildToolState) { }
 

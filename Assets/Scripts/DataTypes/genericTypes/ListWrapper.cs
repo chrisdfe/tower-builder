@@ -39,9 +39,24 @@ namespace TowerBuilder.DataTypes
             items = items.Concat(items).ToList();
         }
 
+        public void Add(ListWrapper<ItemType> listWrapper)
+        {
+            items = listWrapper.items.Concat(items).ToList();
+        }
+
         public void Remove(ItemType item)
         {
             items.Remove(item);
+        }
+
+        public void Remove(List<ItemType> itemsToRemove)
+        {
+            items.RemoveAll(item => itemsToRemove.Contains(item));
+        }
+
+        public void Remove(ListWrapper<ItemType> listWrapper)
+        {
+            items.RemoveAll(item => listWrapper.items.Contains(item));
         }
 
         public bool Contains(ItemType item)

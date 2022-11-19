@@ -32,23 +32,6 @@ namespace TowerBuilder.Definitions
 
             new RoomTemplate()
             {
-                title = "Lobby",
-                key = "Lobby",
-                category = "Lobby",
-
-                pricePerBlock = 5000,
-
-                blockDimensions = new Dimensions(1, 1),
-                resizability = RoomResizability.Horizontal,
-
-                entranceBuilderFactory = () => new LobbyEntranceBuilder(),
-                validatorFactory = (Room room) => new LobbyRoomValidator(room),
-
-                color = Color.gray,
-            },
-
-            new RoomTemplate()
-            {
                 title = "Wheels",
                 key = "Wheels",
                 category = "Wheels",
@@ -66,18 +49,17 @@ namespace TowerBuilder.Definitions
 
             new RoomTemplate()
             {
-                title = "Large Lobby",
-                key = "LargeLobby",
+                title = "Large Wheels",
+                key = "LargeWheels",
+                category = "Wheels",
 
-                pricePerBlock = 12000,
-                category = "Lobby",
+                pricePerBlock = 5000,
 
                 blockDimensions = new Dimensions(1, 2),
-
                 resizability = RoomResizability.Horizontal,
 
-                entranceBuilderFactory = () => new LobbyEntranceBuilder(),
-                validatorFactory = (Room room) => new LobbyRoomValidator(room),
+                entranceBuilderFactory = () => new EmptyEntranceBuilder(),
+                validatorFactory = (Room room) => new WheelsRoomValidator(room),
 
                 color = Color.gray,
             },
@@ -345,7 +327,7 @@ namespace TowerBuilder.Definitions
                 return definitions.FindAll(template => template.category == category).ToList();
             }
 
-            public List<string> FindAllRoomCategories()
+            public List<string> FindAllCategories()
             {
                 List<string> result = new List<string>();
 
@@ -358,7 +340,6 @@ namespace TowerBuilder.Definitions
                 }
 
                 return result;
-
             }
         }
 

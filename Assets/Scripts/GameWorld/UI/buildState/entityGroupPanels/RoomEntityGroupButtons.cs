@@ -27,7 +27,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             List<UISelectButton> result = new List<UISelectButton>();
 
-            List<string> allRoomCategories = Registry.definitions.rooms.queries.FindAllRoomCategories();
+            List<string> allRoomCategories = Registry.definitions.rooms.queries.FindAllCategories();
             return allRoomCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
         }
 
