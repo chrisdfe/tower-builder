@@ -48,7 +48,7 @@ namespace TowerBuilder.GameWorld.UI
         List<RoomTemplate> GetRoomDefinitionsForCurrentCategory()
         {
             string currentCategory = Registry.appState.Tools.buildToolState.subStates.roomEntityType.selectedRoomCategory;
-            return Registry.roomDefinitions.FindByCategory(currentCategory);
+            return Registry.definitions.rooms.queries.FindByCategory(currentCategory);
         }
 
         // void OnSelectedRoomCategoryUpdated(string newRoomCategory)

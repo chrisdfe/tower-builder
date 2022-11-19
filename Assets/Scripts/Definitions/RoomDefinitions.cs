@@ -10,6 +10,8 @@ namespace TowerBuilder.Definitions
 {
     public class RoomDefinitions
     {
+        public Queries queries;
+
         public List<RoomTemplate> templates { get; } = new List<RoomTemplate>() {
             new RoomTemplate()
             {
@@ -319,36 +321,50 @@ namespace TowerBuilder.Definitions
             }
         };
 
-        // Queries
-        public RoomTemplate FindByTitle(string title)
+        public class Queries
         {
-            return templates.Find(template => template.title == title);
-        }
+            List<RoomTemplate> definitions;
 
-        public RoomTemplate FindByKey(string key)
-        {
-            return templates.Find(template => template.key == key);
-        }
-
-        public List<RoomTemplate> FindByCategory(string category)
-        {
-            return templates.FindAll(template => template.category == category).ToList();
-        }
-
-        public List<string> FindAllRoomCategories()
-        {
-            List<string> result = new List<string>();
-
-            foreach (RoomTemplate roomTemplate in templates)
+            public Queries(List<RoomTemplate> definitions)
             {
-                if (!result.Contains(roomTemplate.category))
-                {
-                    result.Add(roomTemplate.category);
-                }
+                this.definitions = definitions;
             }
 
-            return result;
+            public RoomTemplate FindByTitle(string title)
+            {
+                return definitions.Find(template => template.title == title);
+            }
 
+            public RoomTemplate FindByKey(string key)
+            {
+                return definitions.Find(template => template.key == key);
+            }
+
+            public List<RoomTemplate> FindByCategory(string category)
+            {
+                return definitions.FindAll(template => template.category == category).ToList();
+            }
+
+            public List<string> FindAllRoomCategories()
+            {
+                List<string> result = new List<string>();
+
+                foreach (RoomTemplate roomTemplate in definitions)
+                {
+                    if (!result.Contains(roomTemplate.category))
+                    {
+                        result.Add(roomTemplate.category);
+                    }
+                }
+
+                return result;
+
+            }
+        }
+
+        public RoomDefinitions()
+        {
+            this.queries = new Queries(templates);
         }
     }
 }

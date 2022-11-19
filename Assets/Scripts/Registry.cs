@@ -5,8 +5,7 @@ namespace TowerBuilder
 {
     public static class Registry
     {
-        public static RoomDefinitions roomDefinitions = new RoomDefinitions();
-        public static FurnitureDefinitions furnitureDefinitions = new FurnitureDefinitions();
+        public static AllDefinitions definitions = new AllDefinitions();
 
         public static AppState appState = new AppState();
     }

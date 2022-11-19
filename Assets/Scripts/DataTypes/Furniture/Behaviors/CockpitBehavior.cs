@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 {
-    public class CockpitFurnitureBehavior : FurnitureBehaviorBase
+    public class CockpitBehavior : FurnitureBehaviorBase
     {
         public override FurnitureBehaviorTag[] tags { get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Cockpit }; } }
 
-        public CockpitFurnitureBehavior(Furniture furniture) : base(furniture)
+        public CockpitBehavior(Furniture furniture) : base(furniture)
         {
         }
     }

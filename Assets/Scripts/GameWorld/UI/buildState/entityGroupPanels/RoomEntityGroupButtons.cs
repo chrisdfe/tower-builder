@@ -27,7 +27,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             List<UISelectButton> result = new List<UISelectButton>();
 
-            List<string> allRoomCategories = Registry.roomDefinitions.FindAllRoomCategories();
+            List<string> allRoomCategories = Registry.definitions.rooms.queries.FindAllRoomCategories();
             return allRoomCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
         }
 
@@ -46,14 +46,14 @@ namespace TowerBuilder.GameWorld.UI
 
         protected override void OnTemplateButtonClick(string roomTemplateKey)
         {
-            RoomTemplate selectedRoomTemplate = Registry.roomDefinitions.FindByKey(roomTemplateKey);
+            RoomTemplate selectedRoomTemplate = Registry.definitions.rooms.queries.FindByKey(roomTemplateKey);
             Registry.appState.Tools.buildToolState.subStates.roomEntityType.SetSelectedRoomTemplate(selectedRoomTemplate);
         }
 
         List<RoomTemplate> GetRoomDefinitionsForCurrentCategory()
         {
             string currentCategory = Registry.appState.Tools.buildToolState.subStates.roomEntityType.selectedRoomCategory;
-            return Registry.roomDefinitions.FindByCategory(currentCategory);
+            return Registry.definitions.rooms.queries.FindByCategory(currentCategory);
         }
 
         void OnSelectedRoomCategoryUpdated(string newRoomCategory)

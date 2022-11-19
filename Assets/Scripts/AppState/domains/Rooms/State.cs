@@ -87,7 +87,7 @@ namespace TowerBuilder.ApplicationState.Rooms
                 foreach (Room otherRoom in roomsToCombineWith)
                 {
                     room.blocks.Add(otherRoom.blocks);
-                    DestroyRoom(otherRoom, false);
+                    DestroyRoom(otherRoom);
                 }
 
                 room.Reset();
@@ -124,7 +124,7 @@ namespace TowerBuilder.ApplicationState.Rooms
             BuildRoom(room);
         }
 
-        public void DestroyRoom(Room room, bool checkForBuildingDestroy = true)
+        public void DestroyRoom(Room room)
         {
             roomList.Remove(room);
 
@@ -142,18 +142,15 @@ namespace TowerBuilder.ApplicationState.Rooms
 
             RemoveConnectionsForRoom(room);
 
-            if (checkForBuildingDestroy)
+            Building buildingContainingRoom = queries.FindBuildingByRoom(room);
+
+            if (buildingContainingRoom == null) return;
+
+            RoomList roomsInBuilding = queries.FindRoomsInBuilding(buildingContainingRoom);
+
+            if (roomsInBuilding.Count == 0)
             {
-                Building buildingContainingRoom = queries.FindBuildingByRoom(room);
-
-                if (buildingContainingRoom == null) return;
-
-                RoomList roomsInBuilding = queries.FindRoomsInBuilding(buildingContainingRoom);
-
-                if (roomsInBuilding.Count == 0)
-                {
-                    appState.Buildings.RemoveBuilding(buildingContainingRoom);
-                }
+                appState.Buildings.RemoveBuilding(buildingContainingRoom);
             }
         }
 

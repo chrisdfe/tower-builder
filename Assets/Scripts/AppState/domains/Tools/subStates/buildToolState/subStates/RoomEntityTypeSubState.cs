@@ -33,7 +33,7 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 events = new Events();
 
-                selectedRoomTemplate = Registry.roomDefinitions.templates[0];
+                selectedRoomTemplate = Registry.definitions.rooms.templates[0];
             }
 
             public override void Setup()
@@ -123,7 +123,7 @@ namespace TowerBuilder.ApplicationState.Tools
             public void SetSelectedRoomCategory(string roomCategory)
             {
                 selectedRoomCategory = roomCategory;
-                List<RoomTemplate> roomDefinitions = Registry.roomDefinitions.FindByCategory(selectedRoomCategory);
+                List<RoomTemplate> roomDefinitions = Registry.definitions.rooms.queries.FindByCategory(selectedRoomCategory);
 
                 RoomTemplate roomTemplate = roomDefinitions[0];
 

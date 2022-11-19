@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 {
-    public class FurnitureBehaviorBase
+    public abstract class FurnitureBehaviorBase
     {
         public Furniture furniture { get; private set; }
 
