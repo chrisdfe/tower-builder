@@ -4,8 +4,13 @@
 
 ## Tasks
 
-- consider putting vehicles state further down in the heirarchy - having vehicles be able to query their contents in various ways
-  (e.g how many residents are currently inside of it, or whether it has a cockpit/engine) would be helpful
+- Resident validation
+- Furniture validation
+- Connections to outside
+  - RouteSegmentNode subtype for outside connections
+  - RoomConnection subtype for outside connections
+  - Wheels room should allow ladder furniture
+  - Residents should be able to walk on the ground and climb up the wheels ladder
 - Convert other List wrappers to use the new ListWrapper generic
 - Rooms aren't combining correctly anymore
 - "reset" button to reset state to default
@@ -78,6 +83,8 @@
 
 # Done
 
+- consider putting vehicles state further down in the heirarchy - having vehicles be able to query their contents in various ways
+  (e.g how many residents are currently inside of it, or whether it has a cockpit/engine) would be helpful
 - Delete room entrances when a block gets deleted as well
 - Move current route traversal Resident code out into separate "motor" class
 - Ability to destroy a single block in a flexible room
