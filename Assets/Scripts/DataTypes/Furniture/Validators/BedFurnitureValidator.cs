@@ -7,9 +7,16 @@ namespace TowerBuilder.DataTypes.Furnitures.Validators
 {
     public class BedFurnitureValidator : FurnitureValidatorBase
     {
-        public BedFurnitureValidator(Furniture furniture) : base(furniture)
+        public override List<FurnitureValidationFunc> validations
         {
-            Debug.Log("New Bed furniture validator");
+            get
+            {
+                return new List<FurnitureValidationFunc>() {
+                    GenericFurnitureValidations.CreateValidateFurnitureIsNotOnFloor(0)
+                };
+            }
         }
+
+        public BedFurnitureValidator(Furniture furniture) : base(furniture) { }
     }
 }

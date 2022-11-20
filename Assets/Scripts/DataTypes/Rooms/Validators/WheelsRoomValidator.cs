@@ -12,13 +12,13 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
     {
         public WheelsRoomValidator(Room room) : base(room) { }
 
-        protected override List<RoomCellValidationFunc> RoomCellValidators
+        protected override List<RoomCellValidationFunc> roomCellValidators
         {
             get
             {
                 return new List<RoomCellValidationFunc>() {
-                    ValidateWheelsAreOnCorrectFloor
-                };
+                    GenericRoomCellValidations.CreateValidateRoomCellIsOnFloor(0)
+            };
             }
         }
 

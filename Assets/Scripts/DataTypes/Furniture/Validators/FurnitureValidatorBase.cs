@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Furnitures.Validators
 {
-    public class FurnitureValidationError : ValidationErrorBase
-    {
-        public FurnitureValidationError(string message) : base(message) { }
-    }
-
     public abstract class FurnitureValidatorBase : ValidatorBase<FurnitureValidationError>
     {
         protected Furniture furniture;
+
+        public List<FurnitureValidationFunc> baseValidations { get; } = new List<FurnitureValidationFunc>() {
+            GenericFurnitureValidations.ValidateWalletHasEnoughMoney,
+            // All furniture must be inside of rooms for now
+            GenericFurnitureValidations.ValidateIsInsideRoom
+        };
+
+        public virtual List<FurnitureValidationFunc> validations { get; } = new List<FurnitureValidationFunc>();
 
         public FurnitureValidatorBase(Furniture furniture)
         {
@@ -24,27 +28,12 @@ namespace TowerBuilder.DataTypes.Furnitures.Validators
         {
             List<FurnitureValidationError> errors = new List<FurnitureValidationError>();
 
-            // For now furniture is not allowed outside
-            Room furnitureRoom = appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinates);
-            if (furnitureRoom == null)
+            foreach (FurnitureValidationFunc validation in baseValidations.Concat(validations).ToList())
             {
-                errors.Add(new FurnitureValidationError("furniture must be placed inside."));
+                errors = errors.Concat(validation(appState, furniture)).ToList();
             }
 
             this.errors = errors;
-        }
-    }
-
-    public class DefaultFurnitureValidator : FurnitureValidatorBase
-    {
-        public DefaultFurnitureValidator(Furniture furniture) : base(furniture)
-        {
-            Debug.Log("New default furniture validator");
-        }
-
-        public override void Validate(AppState appState)
-        {
-            base.Validate(appState);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
     {
         public ElevatorRoomValidator(Room room) : base(room) { }
 
-        protected override List<RoomCellValidationFunc> RoomCellValidators
+        protected override List<RoomCellValidationFunc> roomCellValidators
         {
             get
             {

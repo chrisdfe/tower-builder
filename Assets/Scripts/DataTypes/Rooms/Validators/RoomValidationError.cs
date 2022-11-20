@@ -6,6 +6,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 {
     public class RoomValidationError : ValidationErrorBase
     {
+        public RoomValidationError() : base() { }
         public RoomValidationError(string message) : base(message) { }
     }
 }

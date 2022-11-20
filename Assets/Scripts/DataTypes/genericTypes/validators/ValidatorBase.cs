@@ -8,6 +8,8 @@ namespace TowerBuilder.DataTypes
     {
         public string message;
 
+        public ValidationErrorBase() { }
+
         public ValidationErrorBase(string message)
         {
             this.message = message;

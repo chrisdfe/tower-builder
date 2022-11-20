@@ -11,7 +11,7 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class NotificationsPanelManager : MonoBehaviour
     {
-        static int NOTIFICATIONS_LIMIT = 3;
+        static int NOTIFICATIONS_LIMIT = 10;
 
         Text text;
 
@@ -33,8 +33,9 @@ namespace TowerBuilder.GameWorld.UI
             string newText = "";
             foreach (Notification notification in displayNotifications)
             {
-                newText += notification.message + "\n";
+                newText += notification.message + "\n\n";
             }
+
             text.text = newText;
         }
     }
