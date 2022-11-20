@@ -38,7 +38,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             floorPlane = transform.Find("FloorPlane").GetComponent<GameWorldFloorPlane>();
             floorPlaneCollider = floorPlane.GetComponent<Collider>();
 
-            InitializeToolStateHandlers();
+            SetupToolStateHandlers();
 
             roomList = transform.Find("RoomList");
 
@@ -153,7 +153,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             );
         }
 
-        void InitializeToolStateHandlers()
+        void SetupToolStateHandlers()
         {
             toolStateHandlerMap = new Dictionary<ToolState, ToolStateInputHandlersBase>()
             {

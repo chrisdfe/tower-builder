@@ -7,7 +7,11 @@ namespace TowerBuilder.DataTypes.Furnitures.Validators
 {
     public class EngineFurnitureValidator : FurnitureValidatorBase
     {
-        public EngineFurnitureValidator(Furniture furniture) : base(furniture) { }
+        public EngineFurnitureValidator(Furniture furniture) : base(furniture)
+        {
+            Debug.Log("New engine furniture validator");
+        }
+
         public override void Validate(AppState appState) { }
     }
 }

@@ -83,7 +83,7 @@ namespace TowerBuilder.GameWorld.Rooms
                 gameWorldRoomCell.gameWorldRoom = this;
                 gameWorldRoomCell.baseColor = room.color;
 
-                gameWorldRoomCell.Initialize();
+                gameWorldRoomCell.Setup();
                 SetRoomCellColor(gameWorldRoomCell);
                 gameWorldRoomCells.Add(gameWorldRoomCell);
             }
@@ -203,7 +203,7 @@ namespace TowerBuilder.GameWorld.Rooms
             {
                 GameWorldRoomEntrance gameWorldRoomEntrance = GameWorldRoomEntrance.Create(transform);
                 gameWorldRoomEntrance.roomEntrance = roomEntrance;
-                gameWorldRoomEntrance.Initialize();
+                gameWorldRoomEntrance.Setup();
                 SetRoomEntranceColor(gameWorldRoomEntrance);
                 gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
             }

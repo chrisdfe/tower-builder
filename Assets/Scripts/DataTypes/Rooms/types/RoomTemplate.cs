@@ -13,7 +13,6 @@ namespace TowerBuilder.DataTypes.Rooms
         public string title;
         public string key;
 
-        // TODO - rename to "pricePerTile"
         public int pricePerBlock;
 
         public string category = "None";

@@ -26,7 +26,15 @@ namespace TowerBuilder.Definitions
             new FurnitureTemplate() {
                 key = "engine",
                 title = "engine",
-                category = "engine",
+                category = "engines",
+                furnitureBehaviorFactory = (Furniture furniture) => new EngineBehavior(furniture),
+                furnitureValidatorFactory = (Furniture furniture) => new EngineFurnitureValidator(furniture)
+            },
+
+            new FurnitureTemplate() {
+                key = "bed",
+                title = "bed",
+                category = "beds",
                 furnitureBehaviorFactory = (Furniture furniture) => new EngineBehavior(furniture),
                 furnitureValidatorFactory = (Furniture furniture) => new EngineFurnitureValidator(furniture)
             },

@@ -1,8 +1,13 @@
+using TowerBuilder.DataTypes.Residents;
+
 namespace TowerBuilder.DataTypes.Furnitures
 {
-    public enum FurnitureOwnability
+    public class FurnitureOwnabilityBase { }
+
+    public class FurnitureOwnabilityUnownable : FurnitureOwnabilityBase { }
+
+    public class FurnitureOwnabilityOwnable : FurnitureOwnabilityBase
     {
-        Ownable,
-        NotOwnable,
+        public Resident resident;
     }
 }

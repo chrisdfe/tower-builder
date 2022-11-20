@@ -22,7 +22,10 @@ namespace TowerBuilder.DataTypes.Furnitures.Validators
 
     public class DefaultFurnitureValidator : FurnitureValidatorBase
     {
-        public DefaultFurnitureValidator(Furniture furniture) : base(furniture) { }
+        public DefaultFurnitureValidator(Furniture furniture) : base(furniture)
+        {
+            Debug.Log("New default furniture validator");
+        }
         public override void Validate(AppState appState) { }
     }
 }

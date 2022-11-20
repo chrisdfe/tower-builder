@@ -22,11 +22,13 @@ namespace TowerBuilder.GameWorld.Rooms
         Material cubeMaterial;
         Color baseColor;
 
-        public void Initialize()
+        public void Setup()
         {
             gameObject.name = roomEntrance.ToString();
             SetPosition();
         }
+
+        public void Teardown() { }
 
         public void SetInspectedColor()
         {

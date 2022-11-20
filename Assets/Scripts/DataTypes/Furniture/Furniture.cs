@@ -17,6 +17,7 @@ namespace TowerBuilder.DataTypes.Furnitures
         public string key { get; private set; } = "None";
         public string title { get; private set; } = "None";
         public string category { get; private set; } = "None";
+        public int price { get; private set; } = 0;
 
         public FurnitureValidatorBase validator { get; private set; }
 
@@ -35,6 +36,7 @@ namespace TowerBuilder.DataTypes.Furnitures
             this.key = furnitureTemplate.key;
             this.title = furnitureTemplate.title;
             this.category = furnitureTemplate.title;
+            this.price = furnitureTemplate.price;
             this.validator = furnitureTemplate.furnitureValidatorFactory(this);
         }
 

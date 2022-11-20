@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Furnitures.Validators
 {
-    public class CockpitFurnitureValidator : FurnitureValidatorBase
+    public class BedFurnitureValidator : FurnitureValidatorBase
     {
-        public CockpitFurnitureValidator(Furniture furniture) : base(furniture)
+        public BedFurnitureValidator(Furniture furniture) : base(furniture)
         {
-            Debug.Log("New cockpit furniture validator");
+            Debug.Log("New Bed furniture validator");
         }
         public override void Validate(AppState appState) { }
     }

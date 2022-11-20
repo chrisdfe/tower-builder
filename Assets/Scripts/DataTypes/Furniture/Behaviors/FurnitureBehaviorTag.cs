@@ -9,6 +9,7 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
     public enum FurnitureBehaviorTag
     {
         Cockpit,
-        Engine
+        Engine,
+        Sleeping
     }
 }

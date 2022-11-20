@@ -13,6 +13,13 @@
   - Residents should be able to walk on the ground and climb up the wheels ladder
 - tick animations
   - eg resident going from one cell to the other
+  - this probably means reorganizing things to calculate the next tick every tick (for the animation to know where to lerp from/to)
+- Make residents 2 tiles tall 1 tile wide
+- Debug resident path/goal gameworld display things
+- Placeable windows
+- Improved lighting
+  - global sun light that rotates/changes color as the day progresses
+  - room lights that come on at night
 - Reconsider how routes are constructed - maybe every segment should be 1 cell?
 - Convert other List wrappers to use the new ListWrapper generic
 - Rooms aren't combining correctly anymore
@@ -30,8 +37,6 @@
 - Wallet transation history
   - Wallet "batch" transactions so the transactions don't get flooded with lots of tiny transactions (e.g. desk income)
     - transactions will get added to queue, grouped by string id/message, then OnTick() they get applied
-- Resident furniture behaviors
-  - furniture "controls" resident while they're using it
 - Room furniture
   - beds
   - desks
@@ -67,7 +72,6 @@
 
 ## Cleanup
 
-- Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - RouteFinder creates too many branches
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor
@@ -86,6 +90,9 @@
 
 # Done
 
+- Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
+- Resident furniture behaviors
+  - furniture "controls" resident while they're using it
 - consider putting vehicles state further down in the heirarchy - having vehicles be able to query their contents in various ways
   (e.g how many residents are currently inside of it, or whether it has a cockpit/engine) would be helpful
 - Delete room entrances when a block gets deleted as well

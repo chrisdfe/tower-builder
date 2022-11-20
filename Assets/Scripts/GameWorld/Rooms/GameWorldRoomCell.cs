@@ -70,14 +70,19 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnDestroy()
         {
-            GameObject.Destroy(roomCellMesh.gameObject);
+            Teardown();
         }
 
-        public void Initialize()
+        public void Setup()
         {
             SetPosition();
             UpdateRoomCellMeshSegments();
             SetBaseColor();
+        }
+
+        public void Teardown()
+        {
+            GameObject.Destroy(roomCellMesh.gameObject);
         }
 
         /* 
