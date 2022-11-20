@@ -8,19 +8,23 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms.Validators
 {
+    public delegate List<RoomValidationError> RoomValidationFunc(AppState appState, Room room);
+
+    public delegate List<RoomValidationError> RoomCellValidationFunc(AppState appState, Room room, RoomCell roomCell);
+
     public abstract class RoomValidatorBase : ValidatorBase<RoomValidationError>
     {
         Room room;
 
-        protected virtual List<GenericRoomValidations.ValidationFunc> RoomValidators { get; } = new List<GenericRoomValidations.ValidationFunc>();
-        protected virtual List<GenericRoomCellValidations.ValidationFunc> RoomCellValidators { get; } = new List<GenericRoomCellValidations.ValidationFunc>();
+        protected virtual List<RoomValidationFunc> RoomValidators { get; } = new List<RoomValidationFunc>();
+        protected virtual List<RoomCellValidationFunc> RoomCellValidators { get; } = new List<RoomCellValidationFunc>();
 
         // Room Validators that get run on every room
-        List<GenericRoomValidations.ValidationFunc> BaseRoomValidators { get; } = new List<GenericRoomValidations.ValidationFunc>() {
+        List<RoomValidationFunc> BaseRoomValidators { get; } = new List<RoomValidationFunc>() {
           GenericRoomValidations.ValidateWallet
         };
 
-        List<GenericRoomCellValidations.ValidationFunc> BaseRoomCellValidators { get; } = new List<GenericRoomCellValidations.ValidationFunc>() {
+        List<RoomCellValidationFunc> BaseRoomCellValidators { get; } = new List<RoomCellValidationFunc>() {
           GenericRoomCellValidations.ValidateOverlap
         };
 
@@ -33,17 +37,17 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
         {
             errors = new List<RoomValidationError>();
 
-            List<GenericRoomValidations.ValidationFunc> AllRoomValidators = RoomValidators.Concat(BaseRoomValidators).ToList();
-            List<GenericRoomCellValidations.ValidationFunc> AllRoomCellValidators = RoomCellValidators.Concat(BaseRoomCellValidators).ToList();
+            List<RoomValidationFunc> AllRoomValidators = RoomValidators.Concat(BaseRoomValidators).ToList();
+            List<RoomCellValidationFunc> AllRoomCellValidators = RoomCellValidators.Concat(BaseRoomCellValidators).ToList();
 
-            foreach (GenericRoomValidations.ValidationFunc RoomValidationFunc in AllRoomValidators)
+            foreach (RoomValidationFunc RoomValidationFunc in AllRoomValidators)
             {
                 errors = errors.Concat(RoomValidationFunc(appState, room)).ToList();
             }
 
             foreach (RoomCell roomCell in room.blocks.cells.cells)
             {
-                foreach (GenericRoomCellValidations.ValidationFunc RoomCellValidationFunc in AllRoomCellValidators)
+                foreach (RoomCellValidationFunc RoomCellValidationFunc in AllRoomCellValidators)
                 {
                     errors = errors.Concat(RoomCellValidationFunc(appState, room, roomCell)).ToList();
                 }

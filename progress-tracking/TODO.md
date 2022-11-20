@@ -4,7 +4,6 @@
 
 ## Tasks
 
-- Resident validation
 - Furniture validation
 - Connections to outside
   - RouteSegmentNode subtype for outside connections
@@ -18,6 +17,7 @@
   - eg resident going from one cell to the other
   - this probably means reorganizing things to calculate the next tick every tick (for the animation to know where to lerp from/to)
 - Make residents 2 tiles tall 1 tile wide
+- Building colletions
 - Debug resident path/goal gameworld display things
 - furniture interaction slots
   - direction (left, center, right)
@@ -95,6 +95,7 @@
 
 # Done
 
+- Resident validation
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - Resident furniture behaviors
   - furniture "controls" resident while they're using it

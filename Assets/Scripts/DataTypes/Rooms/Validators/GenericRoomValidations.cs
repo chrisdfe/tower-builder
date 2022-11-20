@@ -7,8 +7,6 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 {
     public static class GenericRoomValidations
     {
-        public delegate List<RoomValidationError> ValidationFunc(AppState appState, Room room);
-
         public static List<RoomValidationError> ValidateWallet(AppState appState, Room room)
         {
             List<RoomValidationError> errors = new List<RoomValidationError>();
@@ -25,8 +23,6 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 
     public static class GenericRoomCellValidations
     {
-        public delegate List<RoomValidationError> ValidationFunc(AppState appState, Room room, RoomCell roomCell);
-
         public static List<RoomValidationError> ValidateOverlap(AppState appState, Room room, RoomCell roomCell)
         {
             List<RoomValidationError> errors = new List<RoomValidationError>();
