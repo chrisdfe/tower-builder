@@ -107,7 +107,7 @@ namespace TowerBuilder.GameWorld.Rooms
         }
 
         /*
-         * Rooms 
+         * Rooms - Internals
          */
         void CreateRoom(Room room)
         {
@@ -130,9 +130,8 @@ namespace TowerBuilder.GameWorld.Rooms
         }
 
         /*
-         * Room Cells 
+         * Room Cells - Internals
          */
-
         void SetRoomCellColors()
         {
             gameWorldRooms.ForEach(gameWorldRoom => gameWorldRoom.SetRoomCellColors());

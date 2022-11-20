@@ -20,10 +20,18 @@ namespace TowerBuilder.GameWorld.Rooms
         public List<GameWorldRoomCell> gameWorldRoomCells = new List<GameWorldRoomCell>();
         public List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
 
-        public void SetRoom(Room room)
+        /*
+            Lifecycle Methods
+        */
+        void Awake()
         {
-            this.room = room;
-            gameObject.name = $"Room {room.id}";
+            transform.localPosition = Vector3.zero;
+        }
+
+        void OnDestroy()
+        {
+            DestroyRoomCells();
+            DestroyRoomEntrances();
         }
 
         public void Setup()
@@ -51,15 +59,13 @@ namespace TowerBuilder.GameWorld.Rooms
             ResetRoomEntrances();
         }
 
-        void Awake()
+        /* 
+            Public Interface
+        */
+        public void SetRoom(Room room)
         {
-            transform.localPosition = Vector3.zero;
-        }
-
-        void OnDestroy()
-        {
-            DestroyRoomCells();
-            DestroyRoomEntrances();
+            this.room = room;
+            gameObject.name = $"Room {room.id}";
         }
 
         /* 

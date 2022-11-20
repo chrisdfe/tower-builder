@@ -69,7 +69,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
         }
 
         /* 
-            Public API
+            Public Interface
          */
         public void AddBehaviorForResident(Resident resident)
         {

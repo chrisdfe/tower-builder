@@ -86,16 +86,13 @@ namespace TowerBuilder.GameWorld.Rooms
         }
 
         /* 
-            Position
+            Public Interface
         */
         public void SetPosition()
         {
             transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
         }
 
-        /* 
-            Color
-        */
         public void SetBaseColor()
         {
             SetColor(baseColor, 1f);
@@ -131,29 +128,6 @@ namespace TowerBuilder.GameWorld.Rooms
             SetColor(Color.white, 0.7f);
         }
 
-        void SetColor(Color color, float alpha = 1f)
-        {
-            foreach (Transform segment in wallSegments)
-            {
-                Material material = segment.GetComponent<MeshRenderer>().material;
-                Color currentColor = material.color;
-                material.color = new Color(color.r, color.g, color.b, alpha);
-            }
-        }
-
-        void SetColorAlpha(float alpha)
-        {
-            foreach (Transform segment in segments)
-            {
-                Material material = segment.GetComponent<MeshRenderer>().material;
-                Color currentColor = material.color;
-                material.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
-            }
-        }
-
-        /* 
-            Mesh Segments
-         */
         public void UpdateRoomCellMeshSegments()
         {
             foreach (Transform segment in wallSegments)
@@ -183,6 +157,29 @@ namespace TowerBuilder.GameWorld.Rooms
             void SetEnabled(Transform segment, bool enabled)
             {
                 segment.GetComponent<MeshRenderer>().enabled = enabled;
+            }
+        }
+
+        /* 
+            Internals
+        */
+        void SetColor(Color color, float alpha = 1f)
+        {
+            foreach (Transform segment in wallSegments)
+            {
+                Material material = segment.GetComponent<MeshRenderer>().material;
+                Color currentColor = material.color;
+                material.color = new Color(color.r, color.g, color.b, alpha);
+            }
+        }
+
+        void SetColorAlpha(float alpha)
+        {
+            foreach (Transform segment in segments)
+            {
+                Material material = segment.GetComponent<MeshRenderer>().material;
+                Color currentColor = material.color;
+                material.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
             }
         }
 

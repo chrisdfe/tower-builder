@@ -54,7 +54,7 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
         }
 
         /* 
-            Public API
+            Public Interface
         */
         public void AddFurnitureBehavior(FurnitureBehaviorBase furnitureBehavior)
         {

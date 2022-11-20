@@ -8,10 +8,11 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 {
     public class BedBehavior : FurnitureBehaviorBase
     {
-        public override FurnitureBehaviorTag[] tags { get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Sleping }; } }
+        public override FurnitureBehaviorTag[] tags { get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Sleeping }; } }
 
         public BedBehavior(Furniture furniture) : base(furniture)
         {
+            Debug.Log("new bed behavior");
         }
     }
 }

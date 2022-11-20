@@ -33,6 +33,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         int uiLayer;
         UIManager uiManager;
 
+        /* 
+            Lifecycle Methods
+        */
         void Awake()
         {
             floorPlane = transform.Find("FloorPlane").GetComponent<GameWorldFloorPlane>();
@@ -123,6 +126,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         }
         */
 
+        /* 
+            Internals
+        */
         void UpdateCurrentSelectedCell()
         {
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);

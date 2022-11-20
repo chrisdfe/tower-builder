@@ -22,6 +22,9 @@ namespace TowerBuilder.GameWorld.Rooms
         Material cubeMaterial;
         Color baseColor;
 
+        /*
+            Lifecycle Methods
+        */
         public void Setup()
         {
             gameObject.name = roomEntrance.ToString();
@@ -30,6 +33,9 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Teardown() { }
 
+        /*
+            Public Interface
+        */
         public void SetInspectedColor()
         {
             cubeMaterial.color = INSPECTED_COLOR;
@@ -45,6 +51,9 @@ namespace TowerBuilder.GameWorld.Rooms
             cubeMaterial.color = baseColor;
         }
 
+        /* 
+            Internals
+        */
         void Awake()
         {
             cube = transform.Find("RoomEntranceCube");
@@ -78,6 +87,9 @@ namespace TowerBuilder.GameWorld.Rooms
             }
         }
 
+        /* 
+            Static API
+        */
         public static GameWorldRoomEntrance Create(Transform parent)
         {
             GameObject prefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomEntrance");

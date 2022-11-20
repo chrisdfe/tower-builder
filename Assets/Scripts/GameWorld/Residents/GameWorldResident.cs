@@ -37,7 +37,7 @@ namespace TowerBuilder.GameWorld.Residents
         public void Teardown() { }
 
         /* 
-            Public API
+            Public Interface
         */
         public void UpdatePosition()
         {
@@ -49,7 +49,17 @@ namespace TowerBuilder.GameWorld.Residents
             SetColor(defaultColor);
         }
 
+        public void SetBlueprintColor()
+        {
+            SetColor(Color.blue);
+        }
+
         public void SetInspectedColor()
+        {
+            SetColor(Color.cyan);
+        }
+
+        public void SetInvalidColor()
         {
             SetColor(Color.cyan);
         }

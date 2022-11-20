@@ -14,6 +14,9 @@ namespace TowerBuilder.GameWorld.Furnitures
     {
         List<GameWorldFurniture> gameWorldFurnitureList = new List<GameWorldFurniture>();
 
+        /* 
+            Lifecycle Methods
+        */
         void Awake()
         {
             Setup();
@@ -40,6 +43,9 @@ namespace TowerBuilder.GameWorld.Furnitures
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
+        /*
+            Event Handlers
+        */
         void OnFurnituresAdded(FurnitureList furnitureList)
         {
             foreach (Furniture furniture in furnitureList.items)
@@ -71,6 +77,9 @@ namespace TowerBuilder.GameWorld.Furnitures
             }
         }
 
+        /*
+            Internals
+        */
         void AddFurniture(Furniture furniture)
         {
             GameWorldFurniture gameWorldFurniture = CreateGameWorldFurniture(furniture);

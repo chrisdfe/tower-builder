@@ -27,14 +27,16 @@ namespace TowerBuilder.GameWorld.Furnitures
             UpdatePosition();
         }
 
-        public void Teardown()
-        {
-
-        }
+        public void Teardown() { }
 
         public void SetDefaultColor()
         {
             SetColor(defaultColor);
+        }
+
+        public void SetBlueprintColor()
+        {
+            SetColor(Color.blue);
         }
 
         public void SetInspectedColor()

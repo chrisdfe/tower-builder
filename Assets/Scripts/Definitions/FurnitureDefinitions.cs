@@ -35,8 +35,8 @@ namespace TowerBuilder.Definitions
                 key = "bed",
                 title = "bed",
                 category = "beds",
-                furnitureBehaviorFactory = (Furniture furniture) => new EngineBehavior(furniture),
-                furnitureValidatorFactory = (Furniture furniture) => new EngineFurnitureValidator(furniture)
+                furnitureBehaviorFactory = (Furniture furniture) => new BedBehavior(furniture),
+                furnitureValidatorFactory = (Furniture furniture) => new BedFurnitureValidator(furniture)
             },
         };
 

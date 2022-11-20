@@ -68,7 +68,7 @@ namespace TowerBuilder.ApplicationState.ResidentMotors
         }
 
         /* 
-            Public API
+            Public Interface
          */
         public void AddMotorForResident(Resident resident)
         {

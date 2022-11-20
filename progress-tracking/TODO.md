@@ -11,18 +11,22 @@
   - RoomConnection subtype for outside connections
   - Wheels room should allow ladder furniture
   - Residents should be able to walk on the ground and climb up the wheels ladder
+- "floors" - not all room cells should have floors by default
+- furniture that requires floor/does not require floor
 - tick animations
   - eg resident going from one cell to the other
   - this probably means reorganizing things to calculate the next tick every tick (for the animation to know where to lerp from/to)
 - Make residents 2 tiles tall 1 tile wide
 - Debug resident path/goal gameworld display things
+- furniture interaction slots
+  - direction (left, center, right)
+- furniture z indexes - in front, behind
 - Placeable windows
 - Improved lighting
   - global sun light that rotates/changes color as the day progresses
   - room lights that come on at night
 - Reconsider how routes are constructed - maybe every segment should be 1 cell?
 - Convert other List wrappers to use the new ListWrapper generic
-- Rooms aren't combining correctly anymore
 - "reset" button to reset state to default
 - Replace ground cells with a simpler ground for now
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc

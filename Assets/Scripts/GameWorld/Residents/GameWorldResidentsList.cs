@@ -71,10 +71,15 @@ namespace TowerBuilder.GameWorld.Residents
             }
         }
 
+        /* 
+            Internals
+        */
         void AddResident(Resident resident)
         {
             GameWorldResident gameWorldResident = CreateGameWorldResident(resident);
             gameWorldResidentsList.Add(gameWorldResident);
+            gameWorldResident.Setup();
+            SetResidentColor(gameWorldResident);
         }
 
         void RemoveResident(Resident resident)
@@ -85,6 +90,18 @@ namespace TowerBuilder.GameWorld.Residents
             {
                 GameObject.Destroy(gameWorldResidentToRemove.gameObject);
                 gameWorldResidentsList.Remove(gameWorldResidentToRemove);
+            }
+        }
+
+        void SetResidentColor(GameWorldResident gameWorldResident)
+        {
+            if (gameWorldResident.resident.isInBlueprintMode)
+            {
+                gameWorldResident.SetBlueprintColor();
+            }
+            else
+            {
+                gameWorldResident.SetBlueprintColor();
             }
         }
 

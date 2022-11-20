@@ -16,6 +16,9 @@ namespace TowerBuilder.GameWorld.Rooms
             return (int)rounded;
         }
 
+        /* 
+            Static API
+        */
         public static Vector3 CellCoordinatesToPosition(CellCoordinates cellCoordinates)
         {
             return new Vector3(

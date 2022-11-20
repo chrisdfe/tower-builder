@@ -11,6 +11,7 @@ namespace TowerBuilder.DataTypes.Furnitures.Validators
         {
             Debug.Log("New Bed furniture validator");
         }
+
         public override void Validate(AppState appState) { }
     }
 }

@@ -47,6 +47,9 @@ namespace TowerBuilder.GameWorld.CameraManager
 
         Dictionary<string, (KeyHandler, KeyHandler)> inputHandlers;
 
+        /* 
+            Lifecycle Methods
+        */
         void Awake()
         {
             cameraTransform = transform.Find("Main Camera");
@@ -78,6 +81,9 @@ namespace TowerBuilder.GameWorld.CameraManager
             PanCamera();
         }
 
+        /*
+            Internals
+        */
         void HandleInput()
         {
             foreach (KeyValuePair<string, (KeyHandler, KeyHandler)> entry in inputHandlers)
