@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.ApplicationState;
+using TowerBuilder.ApplicationState.Tools;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.GameWorld;
@@ -32,6 +34,8 @@ namespace TowerBuilder.GameWorld.Furnitures
             Registry.appState.Furnitures.events.onFurnituresAdded += OnFurnituresAdded;
             Registry.appState.Furnitures.events.onFurnituresRemoved += OnFurnituresRemoved;
 
+            Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
@@ -39,6 +43,8 @@ namespace TowerBuilder.GameWorld.Furnitures
         {
             Registry.appState.Furnitures.events.onFurnituresAdded -= OnFurnituresAdded;
             Registry.appState.Furnitures.events.onFurnituresRemoved -= OnFurnituresRemoved;
+
+            Registry.appState.UI.events.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
 
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
@@ -50,7 +56,7 @@ namespace TowerBuilder.GameWorld.Furnitures
         {
             foreach (Furniture furniture in furnitureList.items)
             {
-                AddFurniture(furniture);
+                CreateFurniture(furniture);
             }
         }
 
@@ -64,25 +70,22 @@ namespace TowerBuilder.GameWorld.Furnitures
 
         void OnCurrentSelectedEntityUpdated(EntityBase entity)
         {
-            foreach (GameWorldFurniture gameWorldFurniture in gameWorldFurnitureList)
-            {
-                if ((entity is FurnitureEntity) && ((FurnitureEntity)entity).furniture == gameWorldFurniture.furniture)
-                {
-                    gameWorldFurniture.SetInspectedColor();
-                }
-                else
-                {
-                    gameWorldFurniture.SetDefaultColor();
-                }
-            }
+            UpdateFurnituresColors();
+        }
+
+        void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)
+        {
+            UpdateFurnituresColors();
         }
 
         /*
             Internals
         */
-        void AddFurniture(Furniture furniture)
+        void CreateFurniture(Furniture furniture)
         {
             GameWorldFurniture gameWorldFurniture = CreateGameWorldFurniture(furniture);
+            gameWorldFurniture.Setup();
+            UpdateFurnitureColor(gameWorldFurniture);
             gameWorldFurnitureList.Add(gameWorldFurniture);
         }
 
@@ -94,6 +97,77 @@ namespace TowerBuilder.GameWorld.Furnitures
             {
                 GameObject.Destroy(gameWorldFurnitureToRemove.gameObject);
                 gameWorldFurnitureList.Remove(gameWorldFurnitureToRemove);
+            }
+        }
+
+        void UpdateFurnituresColors()
+        {
+            foreach (GameWorldFurniture gameWorldFurniture in gameWorldFurnitureList)
+            {
+                UpdateFurnitureColor(gameWorldFurniture);
+            }
+        }
+
+        void UpdateFurnitureColor(GameWorldFurniture gameWorldFurniture)
+        {
+            EntityBase inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+            Debug.Log("updating furniture color");
+            Debug.Log("gameWorldFurniture.furniture.isInBlueprintMode");
+            Debug.Log(gameWorldFurniture.furniture.isInBlueprintMode);
+
+            Furniture furniture = gameWorldFurniture.furniture;
+            ToolState toolState = Registry.appState.Tools.toolState;
+
+            bool hasUpdated = false;
+
+            switch (toolState)
+            {
+                case (ToolState.Build):
+                    SetBuildStateColor();
+                    break;
+                case (ToolState.Destroy):
+                    SetDestroyStateColor();
+                    break;
+                default:
+                    SetInspectStateColor();
+                    break;
+            }
+
+            if (!hasUpdated)
+            {
+                gameWorldFurniture.SetDefaultColor();
+            }
+
+            void SetBuildStateColor()
+            {
+
+                if (furniture.isInBlueprintMode)
+                {
+                    if (furniture.validator.isValid)
+                    {
+                        gameWorldFurniture.SetValidBlueprintColor();
+                    }
+                    else
+                    {
+                        gameWorldFurniture.SetInvalidBlueprintColor();
+                    }
+
+                    hasUpdated = true;
+                }
+            }
+
+            void SetDestroyStateColor()
+            {
+                // not supported yet
+            }
+
+            void SetInspectStateColor()
+            {
+                if ((inspectedEntity is FurnitureEntity) && ((FurnitureEntity)inspectedEntity).furniture == furniture)
+                {
+                    gameWorldFurniture.SetInspectedColor();
+                    hasUpdated = true;
+                }
             }
         }
 

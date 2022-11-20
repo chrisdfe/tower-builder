@@ -11,7 +11,5 @@ namespace TowerBuilder.DataTypes.Furnitures.Validators
         {
             Debug.Log("New engine furniture validator");
         }
-
-        public override void Validate(AppState appState) { }
     }
 }

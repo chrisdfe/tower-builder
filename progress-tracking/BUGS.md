@@ -4,6 +4,7 @@
 
 ## TODO
 
+- Entity doesn't update when an entity is built
 - Rooms aren't combining correctly anymore
 - Individual roomCells should know if they are valid again (right now it's just the room)
 - Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again

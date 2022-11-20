@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Furnitures.Validators;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
@@ -97,6 +98,11 @@ namespace TowerBuilder.ApplicationState.Furnitures
         {
             this.furnitureList.Add(furnitureList);
 
+            foreach (Furniture furniture in furnitureList.items)
+            {
+                furniture.validator.Validate(appState);
+            }
+
             if (events.onFurnituresAdded != null)
             {
                 events.onFurnituresAdded(furnitureList);
@@ -110,6 +116,18 @@ namespace TowerBuilder.ApplicationState.Furnitures
 
         public void BuildFurniture(Furniture furniture)
         {
+            furniture.validator.Validate(appState);
+
+            if (!furniture.validator.isValid)
+            {
+                // TODO - these should be unique messages - right now they are not
+                foreach (FurnitureValidationError validationError in furniture.validator.errors)
+                {
+                    appState.Notifications.AddNotification(validationError.message);
+                }
+                return;
+            }
+
             furniture.isInBlueprintMode = false;
             furniture.OnBuild();
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.DataTypes.Furnitures;
 using UnityEngine;
 
@@ -52,9 +53,22 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 base.EndBuild();
 
-                // TODO - validate
-                BuildBlueprintFurniture();
-                CreateBlueprintFurniture();
+                blueprintFurniture.validator.Validate(Registry.appState);
+
+                Debug.Log("blueprintFurniture.validator.isValid: " + blueprintFurniture.validator.isValid);
+                if (blueprintFurniture.validator.isValid)
+                {
+                    BuildBlueprintFurniture();
+                    CreateBlueprintFurniture();
+                }
+                else
+                {
+                    Registry.appState.Notifications.AddNotifications(
+                        blueprintFurniture.validator.errors.Select(error => error.message).ToArray()
+                    );
+
+                    ResetBlueprintFurniture();
+                }
             }
 
             public override void OnSelectionBoxUpdated()
@@ -99,7 +113,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
             void CreateBlueprintFurniture()
             {
-                blueprintFurniture = new Furniture();
+                blueprintFurniture = new Furniture(selectedFurnitureTemplate);
                 blueprintFurniture.isInBlueprintMode = true;
                 blueprintFurniture.cellCoordinates = Registry.appState.UI.currentSelectedCell;
                 Registry.appState.Furnitures.AddFurniture(blueprintFurniture);

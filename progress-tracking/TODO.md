@@ -13,6 +13,7 @@
   - Residents should be able to walk on the ground and climb up the wheels ladder
 - "floors" - not all room cells should have floors by default
 - furniture that requires floor/does not require floor
+- consider putting RoomConnections in seperate state slice
 - tick animations
   - eg resident going from one cell to the other
   - this probably means reorganizing things to calculate the next tick every tick (for the animation to know where to lerp from/to)

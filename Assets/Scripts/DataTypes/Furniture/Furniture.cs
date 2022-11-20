@@ -10,8 +10,6 @@ namespace TowerBuilder.DataTypes.Furnitures
     {
         public int id { get; private set; }
 
-        public Room room { get; private set; }
-
         public int condition { get; private set; } = 100;
 
         public string key { get; private set; } = "None";
@@ -22,21 +20,18 @@ namespace TowerBuilder.DataTypes.Furnitures
         public FurnitureValidatorBase validator { get; private set; }
 
         public bool isInBlueprintMode = false;
+        public Room room;
         public CellCoordinates cellCoordinates = CellCoordinates.zero;
 
-        public Furniture()
+        public Furniture(FurnitureTemplate furnitureTemplate)
         {
             this.id = UIDGenerator.Generate("furniture");
-        }
-
-        public Furniture(FurnitureTemplate furnitureTemplate, Room room) : this()
-        {
-            this.room = room;
 
             this.key = furnitureTemplate.key;
             this.title = furnitureTemplate.title;
             this.category = furnitureTemplate.title;
             this.price = furnitureTemplate.price;
+
             this.validator = furnitureTemplate.furnitureValidatorFactory(this);
         }
 
