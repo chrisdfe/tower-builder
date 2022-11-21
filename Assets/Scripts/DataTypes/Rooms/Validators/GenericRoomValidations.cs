@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
 using UnityEngine;
@@ -26,13 +27,44 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             {
                 if (otherRoom != room && otherRoom.blocks.cells.coordinatesList.Contains(roomCell.coordinates))
                 {
-                    errors.Add(
-                        new RoomValidationError("You cannot build rooms on top of each other.")
-                    );
+                    return Helpers.CreateErrorList("You cannot build rooms on top of each other.");
                 }
             }
 
-            return errors;
+            return Helpers.CreateEmptyErrorList();
+        }
+
+        public static List<RoomValidationError> ValidateAcceptableOverhang(AppState appState, Room room, RoomCell roomCell)
+        {
+            bool isOnBottom = room.blocks.cells.GetRelativeRoomCellCoordinates(roomCell).floor == 0;
+
+            // TODO - account for room width being less than MAX_OVERHANG
+            int roomWidth = room.blocks.cells.coordinatesList.GetWidth();
+
+            if (isOnBottom && roomCell.coordinates.floor > 0)
+            {
+                Room roomUnderneath = appState.Rooms.queries.FindRoomAtCell(new CellCoordinates(roomCell.coordinates.x, roomCell.coordinates.floor - 1));
+
+                if (roomUnderneath == null)
+                {
+                    // cell is overhanging - look for rooms underneath within acceptable overhange range
+                    CellCoordinates cellUnderneathToTheLeft = new CellCoordinates(roomCell.coordinates.x - 1, roomCell.coordinates.floor - 1);
+                    Room roomUnderneathToTheLeft = appState.Rooms.queries.FindRoomAtCell(cellUnderneathToTheLeft);
+
+                    CellCoordinates cellUnderneathToTheRight = new CellCoordinates(roomCell.coordinates.x + 1, roomCell.coordinates.floor - 1);
+                    Room roomUnderneathToTheRight = appState.Rooms.queries.FindRoomAtCell(cellUnderneathToTheRight);
+
+                    if (
+                        roomUnderneathToTheLeft == null && roomUnderneathToTheRight == null
+                    )
+                    {
+                        return Helpers.CreateErrorList($"Rooms must have a maximum overhang of 1 cell.");
+                    }
+                }
+
+            }
+
+            return Helpers.CreateEmptyErrorList();
         }
 
         public static RoomCellValidationFunc CreateValidateRoomCellIsOnFloor(int floor)
