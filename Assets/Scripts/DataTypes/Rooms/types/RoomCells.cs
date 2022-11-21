@@ -47,7 +47,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public CellCoordinates GetRelativeRoomCellCoordinates(RoomCell roomCell)
         {
-            return CellCoordinates.Subtract(roomCell.coordinates, coordinatesList.GetBottomLeftCoordinates());
+            return CellCoordinates.Subtract(roomCell.coordinates, coordinatesList.bottomLeftCoordinates);
         }
 
         public RoomCell FindCellByCoordinates(CellCoordinates cellCoordinates)
@@ -106,11 +106,11 @@ namespace TowerBuilder.DataTypes.Rooms
         public static RoomCells ToRelativeCoordinates(RoomCells roomCells)
         {
             List<RoomCell> result = new List<RoomCell>();
-            CellCoordinates bottomLeftCoordinates = roomCells.coordinatesList.GetBottomLeftCoordinates();
+            CellCoordinates bottomLeftCoordinates = roomCells.coordinatesList.bottomLeftCoordinates;
 
             foreach (RoomCell roomCell in roomCells.cells)
             {
-                result.Add(new RoomCell(CellCoordinates.Subtract(roomCell.coordinates, bottomLeftCoordinates)));
+                result.Add(new RoomCell(CellCoordinates.Subtract(roomCell.coordinates, roomCells.coordinatesList.bottomLeftCoordinates)));
             }
 
             return new RoomCells(result);

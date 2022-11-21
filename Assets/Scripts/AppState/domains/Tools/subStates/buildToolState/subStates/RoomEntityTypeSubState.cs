@@ -184,7 +184,7 @@ namespace TowerBuilder.ApplicationState.Tools
                     void CalculateHorizontalBlocks()
                     {
                         blueprintRoom.bottomLeftCoordinates = new CellCoordinates(
-                            selectionBox.cellCoordinatesList.GetBottomLeftCoordinates().x,
+                            selectionBox.cellCoordinatesList.bottomLeftCoordinates.x,
                             selectionBox.start.floor
                         );
                         blockCount.x = MathUtils.RoundUpToNearest(selectionBox.dimensions.width, blueprintRoom.blockDimensions.width);
@@ -194,7 +194,7 @@ namespace TowerBuilder.ApplicationState.Tools
                     {
                         blueprintRoom.bottomLeftCoordinates = new CellCoordinates(
                             selectionBox.start.x,
-                            selectionBox.cellCoordinatesList.GetBottomLeftCoordinates().floor
+                            selectionBox.cellCoordinatesList.bottomLeftCoordinates.floor
                         );
                         blockCount.floor = MathUtils.RoundUpToNearest(selectionBox.dimensions.height, blueprintRoom.blockDimensions.height);
                     }

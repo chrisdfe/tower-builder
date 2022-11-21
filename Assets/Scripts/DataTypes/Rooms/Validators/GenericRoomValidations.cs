@@ -39,7 +39,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             bool isOnBottom = room.blocks.cells.GetRelativeRoomCellCoordinates(roomCell).floor == 0;
 
             // TODO - account for room width being less than MAX_OVERHANG
-            int roomWidth = room.blocks.cells.coordinatesList.GetWidth();
+            int roomWidth = room.blocks.cells.coordinatesList.width;
 
             if (isOnBottom && roomCell.coordinates.floor > 0)
             {

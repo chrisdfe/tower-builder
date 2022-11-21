@@ -9,30 +9,30 @@ namespace TowerBuilder.DataTypes.Rooms.Entrances
         public override List<RoomEntrance> BuildRoomEntrances(RoomCells roomCells)
         {
             List<RoomEntrance> result = new List<RoomEntrance>();
-            int width = roomCells.coordinatesList.GetWidth() - 1;
+            int width = roomCells.coordinatesList.width - 1;
 
             result.Add(new RoomEntrance()
             {
-                cellCoordinates = roomCells.coordinatesList.GetBottomLeftCoordinates().Clone(),
+                cellCoordinates = roomCells.coordinatesList.bottomLeftCoordinates.Clone(),
                 position = RoomEntrancePosition.Left
             });
             result.Add(new RoomEntrance()
             {
-                cellCoordinates = roomCells.coordinatesList.GetBottomRightCoordinates().Clone(),
+                cellCoordinates = roomCells.coordinatesList.bottomRightCoordinates.Clone(),
                 position = RoomEntrancePosition.Right
             });
 
-            int floorSpan = roomCells.coordinatesList.GetFloorSpan();
+            int floorSpan = roomCells.coordinatesList.floorSpan;
             if (floorSpan > 1)
             {
                 result.Add(new RoomEntrance()
                 {
-                    cellCoordinates = roomCells.coordinatesList.GetTopLeftCoordinates(),
+                    cellCoordinates = roomCells.coordinatesList.topLeftCoordinates,
                     position = RoomEntrancePosition.Left
                 });
                 result.Add(new RoomEntrance()
                 {
-                    cellCoordinates = roomCells.coordinatesList.GetTopRightCoordinates(),
+                    cellCoordinates = roomCells.coordinatesList.topRightCoordinates,
                     position = RoomEntrancePosition.Right
                 });
             }

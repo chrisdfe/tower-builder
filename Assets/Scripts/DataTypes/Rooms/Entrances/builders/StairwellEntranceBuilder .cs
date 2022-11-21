@@ -9,11 +9,11 @@ namespace TowerBuilder.DataTypes.Rooms.Entrances
         public override List<RoomEntrance> BuildRoomEntrances(RoomCells roomCells)
         {
             List<RoomEntrance> result = new List<RoomEntrance>();
-            int width = roomCells.coordinatesList.GetWidth() - 1;
-            int lowestX = roomCells.coordinatesList.GetLowestX();
-            int highestX = roomCells.coordinatesList.GetHighestX();
+            int width = roomCells.coordinatesList.width - 1;
+            int lowestX = roomCells.coordinatesList.lowestX;
+            int highestX = roomCells.coordinatesList.highestX;
 
-            for (int floor = roomCells.coordinatesList.GetLowestFloor(); floor <= roomCells.coordinatesList.GetHighestFloor(); floor++)
+            for (int floor = roomCells.coordinatesList.lowestFloor; floor <= roomCells.coordinatesList.highestFloor; floor++)
             {
                 result.Add(new RoomEntrance()
                 {

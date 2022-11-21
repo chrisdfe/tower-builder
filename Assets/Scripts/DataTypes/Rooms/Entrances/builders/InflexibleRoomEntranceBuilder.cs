@@ -20,7 +20,7 @@ namespace TowerBuilder.DataTypes.Rooms.Entrances
             {
                 // Convert cellCoordinates from relative to absolute
                 RoomEntrance clonedRoomEntrance = roomEntrance.Clone();
-                clonedRoomEntrance.cellCoordinates = roomEntrance.cellCoordinates.Add(roomCells.coordinatesList.GetBottomLeftCoordinates());
+                clonedRoomEntrance.cellCoordinates = roomEntrance.cellCoordinates.Add(roomCells.coordinatesList.bottomLeftCoordinates);
                 return clonedRoomEntrance;
             }).ToList();
         }

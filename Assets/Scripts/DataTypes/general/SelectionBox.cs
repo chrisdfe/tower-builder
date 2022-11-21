@@ -11,12 +11,6 @@ namespace TowerBuilder.DataTypes
         public CellCoordinates start { get; private set; }
         public CellCoordinates end { get; private set; }
 
-        /*         public CellCoordinates bottomLeft { get; private set; }
-                public CellCoordinates topRight { get; private set; }
-
-                public CellCoordinates topLeft { get { return new CellCoordinates(topRight.floor, bottomLeft.x); } }
-                public CellCoordinates bottomRight { get { return new CellCoordinates(bottomLeft.floor, topRight.x); } } */
-
         public CellCoordinatesList cellCoordinatesList
         {
             get
@@ -30,8 +24,8 @@ namespace TowerBuilder.DataTypes
             get
             {
                 return new Dimensions(
-                    (cellCoordinatesList.GetTopRightCoordinates().x - cellCoordinatesList.GetBottomLeftCoordinates().x) + 1,
-                    (cellCoordinatesList.GetTopRightCoordinates().floor - cellCoordinatesList.GetBottomLeftCoordinates().floor) + 1
+                    (cellCoordinatesList.topRightCoordinates.x - cellCoordinatesList.bottomLeftCoordinates.x) + 1,
+                    (cellCoordinatesList.topRightCoordinates.floor - cellCoordinatesList.bottomLeftCoordinates.floor) + 1
                 );
             }
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes
@@ -12,6 +13,143 @@ namespace TowerBuilder.DataTypes
         public List<CellCoordinates> items { get; private set; } = new List<CellCoordinates>();
 
         public int Count { get { return items.Count; } }
+
+        public int lowestX
+        {
+            get
+            {
+                return items.Aggregate(int.MaxValue, (lowestX, coordinates) =>
+                    (coordinates.x < lowestX) ? coordinates.x : lowestX
+                );
+            }
+        }
+
+        public int highestX
+        {
+            get
+            {
+                return items.Aggregate(int.MinValue, (highestX, coordinates) =>
+                    (coordinates.x > highestX) ? coordinates.x : lowestX
+                );
+            }
+        }
+
+        public int lowestFloor
+        {
+            get
+            {
+                return items.Aggregate(int.MaxValue, (lowestFloor, coordinates) =>
+                    (coordinates.floor < lowestFloor) ? coordinates.floor : lowestFloor
+                );
+            }
+        }
+
+
+        public int highestFloor
+        {
+            get
+            {
+                return items.Aggregate(int.MinValue, (highestFloor, coordinates) =>
+                    (coordinates.floor > highestFloor) ? coordinates.floor : highestFloor
+                );
+            }
+        }
+
+        public int width
+        {
+            get
+            {
+                return (highestX - lowestX) + 1;
+            }
+        }
+
+        public int floorSpan
+        {
+            get
+            {
+                return (highestFloor - lowestFloor) + 1;
+            }
+        }
+
+        public CellCoordinates bottomLeftCoordinates
+        {
+            get
+            {
+                return new CellCoordinates(
+                    lowestX,
+                    lowestFloor
+                );
+            }
+        }
+
+        public CellCoordinates bottomRightCoordinates
+        {
+            get
+            {
+                return new CellCoordinates(
+                    highestX,
+                    lowestFloor
+                );
+            }
+        }
+
+        public CellCoordinates topLeftCoordinates
+        {
+            get
+            {
+                return new CellCoordinates(
+                    lowestX,
+                    highestFloor
+                );
+            }
+        }
+
+        public CellCoordinates topRightCoordinates
+        {
+            get
+            {
+                return new CellCoordinates(
+                    highestX,
+                    highestFloor
+                );
+            }
+        }
+
+        public List<int> xValues
+        {
+            get
+            {
+                List<int> result = new List<int>();
+
+                foreach (CellCoordinates cellCoordinates in items)
+                {
+                    if (!result.Contains(cellCoordinates.x))
+                    {
+                        result.Add(cellCoordinates.x);
+                    }
+                }
+
+                return result;
+            }
+        }
+
+        public List<int> floorValues
+        {
+            get
+            {
+                List<int> result = new List<int>();
+
+                foreach (CellCoordinates cellCoordinates in items)
+                {
+                    if (!result.Contains(cellCoordinates.x))
+                    {
+                        result.Add(cellCoordinates.x);
+                    }
+                }
+
+                return result;
+            }
+        }
 
         public CellCoordinatesList() { }
 
@@ -77,101 +215,9 @@ namespace TowerBuilder.DataTypes
             return new CellCoordinatesList(result);
         }
 
-        public int GetLowestX()
-        {
-            int lowestX = int.MaxValue;
-
-            foreach (CellCoordinates cellCoordinates in items)
-            {
-                if (cellCoordinates.x < lowestX)
-                {
-                    lowestX = cellCoordinates.x;
-                }
-            }
-
-            return lowestX;
-        }
-
-        public int GetHighestX()
-        {
-            int highestX = int.MinValue;
-
-            foreach (CellCoordinates cellCoordinates in items)
-            {
-                if (cellCoordinates.x > highestX)
-                {
-                    highestX = cellCoordinates.x;
-                }
-            }
-
-            return highestX;
-        }
-
-
-        public int GetLowestFloor()
-        {
-            int lowestFloor = int.MaxValue;
-
-            foreach (CellCoordinates cellCoordinates in items)
-            {
-                if (cellCoordinates.floor < lowestFloor)
-                {
-                    lowestFloor = cellCoordinates.floor;
-                }
-            }
-
-            return lowestFloor;
-        }
-
-        public int GetHighestFloor()
-        {
-            int highestFloor = int.MinValue;
-
-            foreach (CellCoordinates cellCoordinates in items)
-            {
-                if (cellCoordinates.floor > highestFloor)
-                {
-                    highestFloor = cellCoordinates.floor;
-                }
-            }
-
-            return highestFloor;
-        }
-
-        public List<int> GetXValues()
-        {
-            List<int> result = new List<int>();
-
-            foreach (CellCoordinates cellCoordinates in items)
-            {
-                if (!result.Contains(cellCoordinates.x))
-                {
-                    result.Add(cellCoordinates.x);
-                }
-            }
-
-            return result;
-        }
-
-        public List<int> GetFloorValues()
-        {
-            List<int> result = new List<int>();
-
-            foreach (CellCoordinates cellCoordinates in items)
-            {
-                if (!result.Contains(cellCoordinates.x))
-                {
-                    result.Add(cellCoordinates.x);
-                }
-            }
-
-            return result;
-        }
-
         public CellCoordinatesList ToRelativeCoordinates()
         {
             List<CellCoordinates> list = new List<CellCoordinates>();
-            CellCoordinates bottomLeftCoordinates = GetBottomLeftCoordinates();
 
             foreach (CellCoordinates cellCoordinates in items)
             {
@@ -179,52 +225,6 @@ namespace TowerBuilder.DataTypes
             }
 
             return new CellCoordinatesList(list);
-        }
-
-        public CellCoordinates GetBottomLeftCoordinates()
-        {
-            return new CellCoordinates(
-                GetLowestX(),
-                GetLowestFloor()
-            );
-        }
-
-        public CellCoordinates GetBottomRightCoordinates()
-        {
-            return new CellCoordinates(
-                GetHighestX(),
-                GetLowestFloor()
-            );
-        }
-
-        public CellCoordinates GetTopLeftCoordinates()
-        {
-            return new CellCoordinates(
-                GetLowestX(),
-                GetHighestFloor()
-            );
-        }
-
-        public CellCoordinates GetTopRightCoordinates()
-        {
-            return new CellCoordinates(
-                GetHighestX(),
-                GetHighestFloor()
-            );
-        }
-
-        public int GetWidth()
-        {
-            int highestX = GetHighestX();
-            int lowestX = GetLowestX();
-            return (highestX - lowestX) + 1;
-        }
-
-        public int GetFloorSpan()
-        {
-            int highestFloor = GetHighestFloor();
-            int lowestFloor = GetLowestFloor();
-            return (highestFloor - lowestFloor) + 1;
         }
 
         public List<CellCoordinates> GetPerimeterCellCoordinates()

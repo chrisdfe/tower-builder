@@ -4,7 +4,11 @@
 
 ## Tasks
 
-- Furniture validation
+- furniture that occupy different # of tiles
+- "watchers" that sit at the bottom of appstate and don't hold any state but react to/mutate other parts of appState?
+  - e.g residents moving in watcher
+- dynamically rendered "Outer walls" of vehicle
+- cellCoordinates.bottom row function - use in room cell overhang validator
 - Connections to outside
   - RouteSegmentNode subtype for outside connections
   - RoomConnection subtype for outside connections
@@ -95,6 +99,7 @@
 
 # Done
 
+- Furniture validation
 - Resident validation
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
 - Resident furniture behaviors

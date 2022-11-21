@@ -95,8 +95,8 @@ namespace TowerBuilder.GameWorld.UI
             selectionBoxText.text = ($"selectionBox\n"
             + $"    start: {selectionBox.start}\n"
             + $"    end: {selectionBox.end}\n"
-            + $"    topLeft: {selectionBox.cellCoordinatesList.GetTopLeftCoordinates()}\n"
-            + $"    bottomRight: {selectionBox.cellCoordinatesList.GetBottomRightCoordinates()}");
+            + $"    topLeft: {selectionBox.cellCoordinatesList.topLeftCoordinates}\n"
+            + $"    bottomRight: {selectionBox.cellCoordinatesList.bottomRightCoordinates}");
         }
 
         void SetVehicleCountText()

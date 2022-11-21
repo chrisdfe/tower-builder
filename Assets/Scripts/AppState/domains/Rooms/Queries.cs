@@ -82,15 +82,15 @@ namespace TowerBuilder.ApplicationState.Rooms
                 void SearchHorizontallyForRooms()
                 {
                     //  Check on either side
-                    foreach (int floor in room.blocks.cells.coordinatesList.GetFloorValues())
+                    foreach (int floor in room.blocks.cells.coordinatesList.floorValues)
                     {
                         Room leftRoom = FindRoomAtCell(new CellCoordinates(
-                            room.blocks.cells.coordinatesList.GetLowestX() - 1,
+                            room.blocks.cells.coordinatesList.lowestX - 1,
                             floor
                         ));
 
                         Room rightRoom = FindRoomAtCell(new CellCoordinates(
-                            room.blocks.cells.coordinatesList.GetHighestX() + 1,
+                            room.blocks.cells.coordinatesList.highestX + 1,
                             floor
                         ));
 
@@ -111,16 +111,16 @@ namespace TowerBuilder.ApplicationState.Rooms
                 void SearchVerticallyForRooms()
                 {
                     //  Check on floors above and below
-                    foreach (int x in room.blocks.cells.coordinatesList.GetXValues())
+                    foreach (int x in room.blocks.cells.coordinatesList.xValues)
                     {
                         Room aboveRoom = FindRoomAtCell(new CellCoordinates(
                             x,
-                            room.blocks.cells.coordinatesList.GetHighestFloor() + 1
+                            room.blocks.cells.coordinatesList.highestFloor + 1
                         ));
 
                         Room belowRoom = FindRoomAtCell(new CellCoordinates(
                             x,
-                            room.blocks.cells.coordinatesList.GetLowestFloor() - 1
+                            room.blocks.cells.coordinatesList.lowestFloor - 1
                         ));
 
                         foreach (Room otherRoom in new Room[] { aboveRoom, belowRoom })
