@@ -109,7 +109,7 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             foreach (GameWorldRoomCell gameWorldRoomCell in gameWorldRoomCells)
             {
-                gameWorldRoomCell.UpdateRoomCellMeshSegments();
+                gameWorldRoomCell.UpdateMesh();
             }
         }
 
@@ -145,7 +145,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
             if (!hasUpdated)
             {
-                gameWorldRoomCell.SetBaseColor();
+                gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.Base);
             }
 
             void SetBuildStateColor()
@@ -154,11 +154,11 @@ namespace TowerBuilder.GameWorld.Rooms
                 {
                     if (room.validator.isValid)
                     {
-                        gameWorldRoomCell.SetValidBlueprintColor();
+                        gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.ValidBlueprint);
                     }
                     else
                     {
-                        gameWorldRoomCell.SetInvalidBlueprintColor();
+                        gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.InvalidBlueprint);
                     }
 
                     hasUpdated = true;
@@ -170,7 +170,7 @@ namespace TowerBuilder.GameWorld.Rooms
                 CellCoordinatesList cellsToDestroy = Registry.appState.Tools.destroyToolState.cellsToDelete;
                 if (cellsToDestroy.items.Contains(gameWorldRoomCell.roomCell.coordinates))
                 {
-                    gameWorldRoomCell.SetDestroyHoverColor();
+                    gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.Destroy);
                     hasUpdated = true;
                 }
             }
@@ -194,7 +194,7 @@ namespace TowerBuilder.GameWorld.Rooms
                     ((inspectedEntity is RoomBlockEntity) && ((RoomBlockEntity)inspectedEntity).roomBlock.cells.Contains(gameWorldRoomCell.roomCell))
                 )
                 {
-                    gameWorldRoomCell.SetInspectedColor();
+                    gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.Inspected);
                     hasUpdated = true;
                 }
             }

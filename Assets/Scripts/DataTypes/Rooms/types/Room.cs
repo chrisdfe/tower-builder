@@ -45,6 +45,8 @@ namespace TowerBuilder.DataTypes.Rooms
         public RoomEntranceBuilderBase entranceBuilder { get; private set; }
         public RoomFurnitureBuilder furnitureBuilder { get; private set; }
 
+        public RoomSkinKey skinKey;
+
         [JsonIgnore]
         public int price { get { return pricePerBlock * this.blocks.blocks.Count; } }
 
@@ -63,6 +65,8 @@ namespace TowerBuilder.DataTypes.Rooms
             this.furnitureBuilder = roomTemplate.furnitureBuilderFactory(this);
 
             this.color = roomTemplate.color;
+
+            this.skinKey = roomTemplate.skinKey;
 
             blocks = new RoomBlocks();
         }

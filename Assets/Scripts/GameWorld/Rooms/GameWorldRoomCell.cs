@@ -8,32 +8,37 @@ using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.GameWorld;
+using TowerBuilder.Utils;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
 {
     public class GameWorldRoomCell : MonoBehaviour
     {
-        static Color HOVER_COLOR = new Color(1, 0, 0, 0.4f);
+        public enum ColorKey
+        {
+            Base,
+            Hover,
+            Inspected,
+            Destroy,
+            ValidBlueprint,
+            InvalidBlueprint
+        }
+
+        public static Dictionary<ColorKey, Color> ColorMap = new Dictionary<ColorKey, Color>() {
+            { ColorKey.Base, Color.grey },
+            { ColorKey.Hover, Color.green },
+            { ColorKey.Inspected, Color.cyan },
+            { ColorKey.Destroy, Color.red },
+            { ColorKey.ValidBlueprint, Color.blue },
+            { ColorKey.InvalidBlueprint, Color.red },
+        };
+
         public RoomCell roomCell;
-
         public GameWorldRoom gameWorldRoom;
-
         public Color baseColor;
 
-        public List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
-
-        Transform roomCellMesh;
-
-        Transform wrapperSegment;
-        Transform leftWallSegment;
-        Transform rightWallSegment;
-        Transform ceilingSegment;
-        Transform floorSegment;
-        Transform backWallSegment;
-
-        Transform[] segments;
-        Transform[] wallSegments;
+        RoomCellMeshWrapperBase roomCellMeshWrapper;
 
         /* 
             Lifecycle methods
@@ -41,31 +46,6 @@ namespace TowerBuilder.GameWorld.Rooms
         void Awake()
         {
             transform.localPosition = Vector3.zero;
-
-            roomCellMesh = transform.Find("RoomCellMesh");
-
-            wrapperSegment = roomCellMesh.Find("Wrapper");
-
-            leftWallSegment = wrapperSegment.Find("LeftWall").Find("LeftWallFull");
-            rightWallSegment = wrapperSegment.Find("RightWall").Find("RightWallFull");
-            backWallSegment = wrapperSegment.Find("BackWall").Find("BackWallFull");
-            ceilingSegment = wrapperSegment.Find("Ceiling").Find("CeilingFull");
-            floorSegment = wrapperSegment.Find("Floor").Find("FloorFull");
-
-            wallSegments = new Transform[] {
-                leftWallSegment,
-                rightWallSegment,
-                ceilingSegment,
-                floorSegment
-            };
-
-            segments = new Transform[] {
-                leftWallSegment,
-                rightWallSegment,
-                backWallSegment,
-                ceilingSegment,
-                floorSegment
-            };
         }
 
         void OnDestroy()
@@ -75,112 +55,54 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Setup()
         {
-            SetPosition();
-            UpdateRoomCellMeshSegments();
-            SetBaseColor();
+            TransformUtils.DestroyChildren(transform);
+
+            switch (gameWorldRoom.room.skinKey)
+            {
+                case RoomSkinKey.Wheels:
+                    roomCellMeshWrapper = new RoomCellWheelsMeshWrapper(this);
+                    break;
+                case RoomSkinKey.Default:
+                    roomCellMeshWrapper = new RoomCellDefaultMeshWrapper(this);
+                    break;
+            }
+            roomCellMeshWrapper.Setup();
+
+            UpdatePosition();
+            UpdateMesh();
         }
 
         public void Teardown()
         {
-            GameObject.Destroy(roomCellMesh.gameObject);
+            roomCellMeshWrapper.Teardown();
         }
 
         /* 
             Public Interface
         */
-        public void SetPosition()
+        public void UpdatePosition()
         {
             transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
+            // roomCellMeshWrapper.UpdatePosition();
         }
 
-        public void SetBaseColor()
+        public void UpdateMesh()
         {
-            SetColor(baseColor, 1f);
+            roomCellMeshWrapper.UpdateMesh();
         }
 
-        public void SetHoverColor()
+        public void SetColor(ColorKey key)
         {
-            SetColor(Color.green, 0.4f);
-        }
-
-        public void SetInspectedColor()
-        {
-            SetColor(Color.cyan, 0.4f);
-        }
-
-        public void SetDestroyHoverColor()
-        {
-            SetColor(Color.red, 0.7f);
-        }
-
-        public void SetValidBlueprintColor()
-        {
-            SetColor(Color.blue, 1.0f);
-        }
-
-        public void SetInvalidBlueprintColor()
-        {
-            SetColor(Color.red, 1.0f);
-        }
-
-        public void SetInspectColor()
-        {
-            SetColor(Color.white, 0.7f);
-        }
-
-        public void UpdateRoomCellMeshSegments()
-        {
-            foreach (Transform segment in wallSegments)
+            Color color;
+            if (key == ColorKey.Base)
             {
-                SetEnabled(segment, false);
+                color = baseColor;
             }
-
-            foreach (RoomCellOrientation cellPosition in roomCell.orientation)
+            else
             {
-                switch (cellPosition)
-                {
-                    case RoomCellOrientation.Top:
-                        SetEnabled(ceilingSegment, true);
-                        break;
-                    case RoomCellOrientation.Right:
-                        SetEnabled(rightWallSegment, true);
-                        break;
-                    case RoomCellOrientation.Bottom:
-                        SetEnabled(floorSegment, true);
-                        break;
-                    case RoomCellOrientation.Left:
-                        SetEnabled(leftWallSegment, true);
-                        break;
-                }
+                color = ColorMap[key];
             }
-
-            void SetEnabled(Transform segment, bool enabled)
-            {
-                segment.GetComponent<MeshRenderer>().enabled = enabled;
-            }
-        }
-
-        /* 
-            Internals
-        */
-        void SetColor(Color color, float alpha = 1f)
-        {
-            foreach (Transform segment in wallSegments)
-            {
-                Material material = segment.GetComponent<MeshRenderer>().material;
-                Color currentColor = material.color;
-                material.color = new Color(color.r, color.g, color.b, alpha);
-            }
-        }
-
-        void SetColorAlpha(float alpha)
-        {
-            foreach (Transform segment in segments)
-            {
-                Material material = segment.GetComponent<MeshRenderer>().material;
-                Color currentColor = material.color;
-                material.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
-            }
+            roomCellMeshWrapper.SetColor(color);
         }
 
         /*
@@ -195,6 +117,149 @@ namespace TowerBuilder.GameWorld.Rooms
 
             GameWorldRoomCell gameWorldRoomCell = roomCellGameObject.GetComponent<GameWorldRoomCell>();
             return gameWorldRoomCell;
+        }
+
+        /*
+            Internal classes
+        */
+        abstract class RoomCellMeshWrapperBase
+        {
+            public virtual string meshName { get; }
+            protected Transform meshTransform;
+            protected GameWorldRoomCell gameWorldRoomCell;
+
+            protected Transform wrapper;
+
+            protected Dictionary<string, Transform> segments = new Dictionary<string, Transform>();
+
+            public RoomCellMeshWrapperBase(GameWorldRoomCell gameWorldRoomCell)
+            {
+                this.gameWorldRoomCell = gameWorldRoomCell;
+            }
+
+            public virtual void Setup()
+            {
+                LoadModel();
+
+                wrapper = meshTransform.Find("Wrapper");
+
+                SetSegments();
+            }
+
+            public virtual void Teardown()
+            {
+                GameObject.Destroy(meshTransform.gameObject);
+            }
+
+            public virtual void UpdateMesh() { }
+
+            public abstract void SetSegments();
+            public abstract void SetColor(Color color);
+
+            protected void LoadModel()
+            {
+                GameObject mesh = AssetsManager.Find().FindByName(meshName);
+                Transform meshTransform = Instantiate(mesh).GetComponent<Transform>();
+                meshTransform.SetParent(gameWorldRoomCell.transform);
+                this.meshTransform = meshTransform;
+            }
+
+            protected void SetSegmentEnabled(Transform segment, bool enabled)
+            {
+                segment.GetComponent<MeshRenderer>().enabled = enabled;
+            }
+
+            protected void SetSegmentColor(Transform segment, Color color)
+            {
+                Material material = segment.GetComponent<MeshRenderer>().material;
+                material.color = color;
+            }
+        }
+
+        class RoomCellDefaultMeshWrapper : RoomCellMeshWrapperBase
+        {
+            public override string meshName { get { return "RoomCellMesh_Default"; } }
+
+            public RoomCellDefaultMeshWrapper(GameWorldRoomCell gameWorldRoomCell) : base(gameWorldRoomCell) { }
+
+            public override void SetColor(Color color)
+            {
+                foreach (Transform segment in wallSegments)
+                {
+                    SetSegmentColor(segment, color);
+                }
+            }
+
+            Transform[] wallSegments;
+
+            public override void SetSegments()
+            {
+                segments = new Dictionary<string, Transform>() {
+                    { "leftWall",           wrapper.Find("LeftWall").Find("LeftWallFull") },
+                    { "rightWall",          wrapper.Find("RightWall").Find("RightWallFull") },
+                    { "backWallFull",       wrapper.Find("BackWall").Find("BackWallFull") },
+                    { "backWallWithWindow", wrapper.Find("BackWall").Find("BackWall__Window") },
+                    { "ceiling",            wrapper.Find("Ceiling").Find("CeilingFull") },
+                    { "floor",              wrapper.Find("Floor").Find("FloorFull") },
+                };
+
+                wallSegments = new Transform[] {
+                    segments["ceiling"],
+                    segments["leftWall"],
+                    segments["rightWall"],
+                    segments["floor"],
+                };
+            }
+
+            public override void UpdateMesh()
+            {
+                SetSegmentEnabled(segments["backWallFull"], false);
+                SetSegmentEnabled(segments["backWallWithWindow"], true);
+
+                foreach (Transform segment in wallSegments)
+                {
+                    SetSegmentEnabled(segment, false);
+                }
+
+                foreach (RoomCellOrientation cellPosition in gameWorldRoomCell.roomCell.orientation)
+                {
+                    switch (cellPosition)
+                    {
+                        case RoomCellOrientation.Top:
+                            SetSegmentEnabled(segments["ceiling"], true);
+                            break;
+                        case RoomCellOrientation.Right:
+                            SetSegmentEnabled(segments["rightWall"], true);
+                            break;
+                        case RoomCellOrientation.Bottom:
+                            SetSegmentEnabled(segments["floor"], true);
+                            break;
+                        case RoomCellOrientation.Left:
+                            SetSegmentEnabled(segments["leftWall"], true);
+                            break;
+                    }
+                }
+            }
+        }
+
+        class RoomCellWheelsMeshWrapper : RoomCellMeshWrapperBase
+        {
+            public override string meshName { get { return "RoomCellMesh_Wheel"; } }
+
+            public RoomCellWheelsMeshWrapper(GameWorldRoomCell gameWorldRoomCell) : base(gameWorldRoomCell) { }
+
+            public override void SetSegments()
+            {
+                segments = new Dictionary<string, Transform>() {
+                    { "tire", wrapper.Find("Tire") },
+                    { "hubcap", wrapper.Find("Hubcap") },
+                };
+            }
+
+            public override void SetColor(Color color)
+            {
+                SetSegmentColor(segments["tire"], color);
+            }
         }
     }
 }

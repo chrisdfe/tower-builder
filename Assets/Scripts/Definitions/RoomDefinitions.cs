@@ -45,24 +45,26 @@ namespace TowerBuilder.Definitions
                 validatorFactory = (Room room) => new WheelsRoomValidator(room),
 
                 color = Color.gray,
+
+                skinKey = RoomSkinKey.Wheels
             },
 
-            new RoomTemplate()
-            {
-                title = "Large Wheels",
-                key = "LargeWheels",
-                category = "Wheels",
+            // new RoomTemplate()
+            // {
+            //     title = "Large Wheels",
+            //     key = "LargeWheels",
+            //     category = "Wheels",
 
-                pricePerBlock = 5000,
+            //     pricePerBlock = 5000,
 
-                blockDimensions = new Dimensions(1, 2),
-                resizability = RoomResizability.Horizontal,
+            //     blockDimensions = new Dimensions(1, 2),
+            //     resizability = RoomResizability.Horizontal,
 
-                entranceBuilderFactory = () => new EmptyEntranceBuilder(),
-                validatorFactory = (Room room) => new WheelsRoomValidator(room),
+            //     entranceBuilderFactory = () => new EmptyEntranceBuilder(),
+            //     validatorFactory = (Room room) => new WheelsRoomValidator(room),
 
-                color = Color.gray,
-            },
+            //     color = Color.gray,
+            // },
 
             new RoomTemplate()
             {
