@@ -81,7 +81,7 @@ namespace TowerBuilder.GameWorld
         {
             while (true)
             {
-                float interval = Registry.appState.Time.GetCurrentTickInterval();
+                float interval = Registry.appState.Time.queries.currentTickInterval;
                 yield return new WaitForSeconds(interval);
                 Registry.appState.Time.Tick();
             }

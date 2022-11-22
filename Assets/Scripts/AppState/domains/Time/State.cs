@@ -31,6 +31,7 @@ namespace TowerBuilder.ApplicationState.Time
         public TimeSpeed speed { get; private set; } = TimeSpeed.Normal;
 
         public Events events { get; private set; }
+        public Queries queries { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
         {
@@ -40,6 +41,7 @@ namespace TowerBuilder.ApplicationState.Time
             speed = input.speed ?? TimeSpeed.Normal;
 
             events = new Events();
+            queries = new Queries(this);
         }
 
         public void UpdateTime(TimeValue newTime)
@@ -94,9 +96,79 @@ namespace TowerBuilder.ApplicationState.Time
             speed = newTimeSpeed;
         }
 
-        public float GetCurrentTickInterval()
+        public class Queries
         {
-            return Constants.TICK_INTERVAL * Constants.TIME_SPEED_TICK_INTERVALS[speed];
+            State state;
+
+            public Queries(State state)
+            {
+                this.state = state;
+            }
+
+            public float currentTickInterval
+            {
+                get
+                {
+                    return Constants.TIME_SPEED_TICK_INTERVALS[state.speed];
+                }
+            }
+
+            // "Relative" refers to a relative to the start of the current day
+            public TimeValue currentRelativeTimeValue
+            {
+                get
+                {
+                    return new TimeValue(new TimeValue.Input()
+                    {
+                        hour = state.time.hour,
+                        minute = state.time.minute
+                    });
+                }
+            }
+
+            public int currentTickRelativeTimeValueAsMinutes
+            {
+                get
+                {
+                    return currentRelativeTimeValue.AsMinutes();
+                }
+            }
+
+            public TimeValue nextTickTimeValue
+            {
+                get
+                {
+                    return TimeValue.Add(
+                        state.time,
+                        new TimeValue.Input()
+                        {
+                            minute = Constants.MINUTES_ELAPSED_PER_TICK
+                        }
+                    );
+                }
+            }
+
+            public TimeValue nextTickRelativeTimeValue
+            {
+                get
+                {
+                    return TimeValue.Add(
+                        currentRelativeTimeValue,
+                        new TimeValue.Input()
+                        {
+                            minute = Constants.MINUTES_ELAPSED_PER_TICK
+                        }
+                    );
+                }
+            }
+
+            public int nextTickRelativeTimeValueAsMinutes
+            {
+                get
+                {
+                    return nextTickRelativeTimeValue.AsMinutes();
+                }
+            }
         }
     }
 }

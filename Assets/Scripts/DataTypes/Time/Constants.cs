@@ -18,9 +18,12 @@ namespace TowerBuilder.DataTypes.Time
         public static Dictionary<TimeSpeed, float> TIME_SPEED_TICK_INTERVALS = new Dictionary<TimeSpeed, float>()
         {
             [TimeSpeed.Pause] = float.PositiveInfinity,
-            [TimeSpeed.Normal] = 1.0f,
-            [TimeSpeed.Fast] = 0.7f,
-            [TimeSpeed.Fastest] = 0.1f,
+            // [TimeSpeed.Normal] = 1.0f,
+            [TimeSpeed.Normal] = 2.0f,
+            // [TimeSpeed.Fast] = 0.7f,
+            [TimeSpeed.Fast] = 1f,
+            [TimeSpeed.Fastest] = 0.2f,
+            // [TimeSpeed.Fastest] = 0.5f,
         };
 
         public const int MINUTES_PER_HOUR = 60;
@@ -28,6 +31,8 @@ namespace TowerBuilder.DataTypes.Time
         public const int HOURS_PER_DAY = 24;
 
         public const int MINUTES_PER_DAY = HOURS_PER_DAY * MINUTES_PER_HOUR;
+
+        public const int TICKS_PER_DAY = MINUTES_PER_DAY * MINUTES_ELAPSED_PER_TICK;
 
         public static DayType[] WEEKDAY_SEQUENCE = new DayType[]
         {

@@ -159,6 +159,14 @@ namespace TowerBuilder.DataTypes.Time
             return Constants.TIMES_OF_DAY[GetNextTimeOfDayIndex()];
         }
 
+        public TimeValue ToRelative()
+        {
+            return TimeValue.ToRelative(this);
+        }
+
+        /* 
+            Static API
+        */
         public static TimeValue Add(TimeValue timeValue, Input timeInput)
         {
             int timeAsMinutes = timeValue.AsMinutes();
@@ -178,6 +186,15 @@ namespace TowerBuilder.DataTypes.Time
             int newMinutes = timeAsMinutes - timeInputAsMinutes;
 
             return new TimeValue(newMinutes);
+        }
+
+        public static TimeValue ToRelative(TimeValue timeValue)
+        {
+            return new TimeValue(new TimeValue.Input()
+            {
+                minute = timeValue.minute,
+                hour = timeValue.hour,
+            });
         }
     }
 }

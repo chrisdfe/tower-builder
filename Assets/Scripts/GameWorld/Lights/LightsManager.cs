@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using TowerBuilder.DataTypes.Time;
+using TowerBuilder.Utils;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Lights
@@ -7,9 +9,11 @@ namespace TowerBuilder.GameWorld.Lights
     {
         Light sunLight;
 
-        class TimeOfDayLightingSetting
+        public class AtmosphereSetting
         {
+            public TimeValue timeOfDay;
             public Color skyColor;
+            public float fogDensity;
         }
 
         // public static Dictionary<TimeOfDay, TimeOfDayLightingSetting> timeOfDayLightingSettingMap = new Dictionary<TimeOfDay, TimeOfDayLightingSetting>()
@@ -17,21 +21,31 @@ namespace TowerBuilder.GameWorld.Lights
         // { TimeOfDay. }
         // };
 
+        public List<AtmosphereSetting> atmosphereSettings { get; } = new List<AtmosphereSetting>()
+        {
+
+        };
+
         float elapsedSinceLastTimeOfDay = 0f;
         float elapsedSinceLastTick = 0f;
+        float normalizedTickProgress = 0f;
 
         // when sunlight is at -90
-        int sunlightStartTime = new TimeValue(new TimeValue.Input() { hour = 5 }).AsMinutes();
+        static int sunlightStartTime = new TimeValue(new TimeValue.Input() { hour = 5 }).AsMinutes();
         // when sunlight is at +90
-        int sunlightEndTime = new TimeValue(new TimeValue.Input() { hour = 20 }).AsMinutes();
+        static int sunlightEndTime = new TimeValue(new TimeValue.Input() { hour = 20 }).AsMinutes();
+
+        static Vector3 dayStartRotation { get; } = new Vector3(20f, -90f, 0);
+        static Vector3 dayEndRotation { get; } = new Vector3(20f, +90f, 0);
 
         void Awake()
         {
             sunLight = transform.Find("SunLight").GetComponent<Light>();
 
-            UpdateSkyColor();
-
             Setup();
+
+            UpdateSkyColor();
+            UpdateSunRotation();
         }
 
         void Setup()
@@ -48,7 +62,10 @@ namespace TowerBuilder.GameWorld.Lights
 
         void Update()
         {
-            elapsedSinceLastTick += Time.deltaTime;
+            UpdateTickProgress();
+
+            UpdateSkyColor();
+            UpdateSunRotation();
         }
 
         void OnTimeOfDayUpdated(TimeValue timeValue)
@@ -59,116 +76,97 @@ namespace TowerBuilder.GameWorld.Lights
         void OnTick(TimeValue timeValue)
         {
             elapsedSinceLastTick = 0f;
-            UpdateSkyColor();
-            SetSunRotation();
+        }
+
+        void UpdateTickProgress()
+        {
+            float currentTickInterval = Registry.appState.Time.queries.currentTickInterval;
+            float tickIncrement = Time.deltaTime / currentTickInterval;
+
+            elapsedSinceLastTick += tickIncrement;
+            normalizedTickProgress = Mathf.Clamp(elapsedSinceLastTick, 0f, 1f);
         }
 
         void UpdateSkyColor()
         {
-            Color currentColor = GetUpdateColorLerpProgressColor();
+            TimeOfDay currentTimeOfDay = Registry.appState.Time.time.GetCurrentTimeOfDay();
+            TimeOfDay nextTimeOfDay = Registry.appState.Time.time.GetNextTimeOfDay();
+
+            int currentTimeOfDayStartHourAsMinutes = new TimeValue(new TimeValue.Input() { hour = currentTimeOfDay.startsOnHour }).AsMinutes();
+            int nextTimeOfDayStartHourAsMinutes = new TimeValue(new TimeValue.Input() { hour = nextTimeOfDay.startsOnHour }).AsMinutes();
+
+            float normalizedCurrentTickTime = MathUtils.NormalizeFloat(
+                Registry.appState.Time.time.ToRelative().AsMinutes(),
+                currentTimeOfDayStartHourAsMinutes,
+                nextTimeOfDayStartHourAsMinutes
+            );
+
+            float normalizedNextTickTime = MathUtils.NormalizeFloat(
+                Registry.appState.Time.queries.nextTickTimeValue.ToRelative().AsMinutes(),
+                currentTimeOfDayStartHourAsMinutes,
+                nextTimeOfDayStartHourAsMinutes
+            );
+
+            Color currentTickColor = Color.Lerp(
+                currentTimeOfDay.skyColor,
+                nextTimeOfDay.skyColor,
+                normalizedCurrentTickTime
+            );
+
+            Color nextTickColor = Color.Lerp(
+                currentTimeOfDay.skyColor,
+                nextTimeOfDay.skyColor,
+                normalizedNextTickTime
+            );
+
+            Color currentColor = Color.Lerp(
+                currentTickColor,
+                nextTickColor,
+                normalizedTickProgress
+            );
+
             Camera.main.backgroundColor = currentColor;
             RenderSettings.fogColor = currentColor;
         }
 
-        void SetSunRotation()
+        void UpdateSunRotation()
         {
-            TimeValue currentTime = Registry.appState.Time.time;
+            int currentTimeAsMinutes = Registry.appState.Time.time.AsMinutes();
 
-            TimeValue currentTimeFromStartOfDay = new TimeValue(new TimeValue.Input()
-            {
-                hour = currentTime.hour,
-                minute = currentTime.minute
-            });
+            int currentRelativeTimeAsMinutes = Registry.appState.Time.queries.currentRelativeTimeValue.AsMinutes();
+            int nextTickTimeAsMinutes = TimeValue.Add(Registry.appState.Time.time, new TimeValue.Input() { minute = Constants.MINUTES_ELAPSED_PER_TICK }).AsMinutes();
 
-            int currentTimeAsMinutes = currentTime.AsMinutes();
-            int totalMinutesInTimeSunIsUp = sunlightEndTime - sunlightStartTime;
-            int currentAbsoluteTimeAsMinutes = currentTimeFromStartOfDay.AsMinutes();
-            float normalizedValue = normalize(currentAbsoluteTimeAsMinutes, (float)sunlightStartTime, (float)sunlightEndTime);
+            float normalizedCurrentTickTime = MathUtils.NormalizeFloat(
+                Registry.appState.Time.time.ToRelative().AsMinutes(),
+                (float)sunlightStartTime,
+                (float)sunlightEndTime
+            );
+
+            float normalizedNextTickTime = MathUtils.NormalizeFloat(
+                Registry.appState.Time.queries.nextTickTimeValue.ToRelative().AsMinutes(),
+                (float)sunlightStartTime,
+                (float)sunlightEndTime
+            );
+
+            Vector3 fromRotation = Vector3.Lerp(
+                dayStartRotation,
+                dayEndRotation,
+                normalizedCurrentTickTime
+            );
+
+            Vector3 toRotation = Vector3.Lerp(
+                dayStartRotation,
+                dayEndRotation,
+                normalizedNextTickTime
+            );
 
             Vector3 currentRotation = Vector3.Lerp(
-                new Vector3(20f, -90f, 0),
-                new Vector3(20f, 90f, 0),
-                normalizedValue
+                fromRotation,
+                toRotation,
+                normalizedTickProgress
             );
 
             sunLight.transform.rotation = Quaternion.Euler(currentRotation);
-
-            float normalize(float val, float min, float max)
-            {
-                return Mathf.Clamp((val - min) / (max - min), 0f, 1f);
-            }
-        }
-
-        Color GetUpdateColorLerpProgressColor()
-        {
-            TimeValue currentTime = Registry.appState.Time.time;
-            TimeSpeed currentSpeed = Registry.appState.Time.speed;
-            TimeValue absoluteCurrentTime = new TimeValue(new TimeValue.Input()
-            {
-                minute = currentTime.minute,
-                hour = currentTime.hour
-            });
-
-            TimeOfDay currentTimeOfDay = currentTime.GetCurrentTimeOfDay();
-            TimeOfDay nextTimeOfDay = currentTime.GetNextTimeOfDay();
-
-            int currentTimeOfDayStartHourAsMinutes = new TimeValue(new TimeValue.Input()
-            {
-                hour = currentTimeOfDay.startsOnHour
-            }).AsMinutes();
-
-            int currentTimeAsMinutes = absoluteCurrentTime.AsMinutes();
-
-            int nextTimeOfDayStartHourAsMinutes = new TimeValue(new TimeValue.Input()
-            {
-                hour = nextTimeOfDay.startsOnHour
-            }).AsMinutes();
-
-            int totalDifferenceAsMinutes = nextTimeOfDayStartHourAsMinutes - currentTimeOfDayStartHourAsMinutes;
-            int currentProgressAsMinutes = currentTimeAsMinutes - currentTimeOfDayStartHourAsMinutes;
-
-            float minutesProgress = (float)currentProgressAsMinutes / (float)totalDifferenceAsMinutes;
-
-            int currentProgressAsTicks = currentProgressAsMinutes * Constants.MINUTES_ELAPSED_PER_TICK;
-            int totalDifferenceAsTicks = totalDifferenceAsMinutes * Constants.MINUTES_ELAPSED_PER_TICK;
-
-            float ticksProgress = (float)currentProgressAsTicks / (float)totalDifferenceAsTicks;
-
-            // Work out frame-level progress
-            float currentProgressAsRealSeconds = InGameMinutesToRealSeconds(currentProgressAsMinutes);
-            float totalDifferenceAsRealSeconds = InGameMinutesToRealSeconds(totalDifferenceAsMinutes);
-
-            float minutesProgressInSeconds = currentProgressAsRealSeconds / currentProgressAsRealSeconds;
-
-            float currentTickInterval = Registry.appState.Time.GetCurrentTickInterval();
-
-            float currentTickProgress = elapsedSinceLastTick / currentTickInterval;
-
-            float progress = (
-                // (elapsedSinceLastTimeOfDay / totalDifferenceAsRealSeconds) / currentTickInterval
-                (ticksProgress)
-            // + (currentTickProgress / totalDifferenceAsRealSeconds)
-            );
-
-            // Debug.Log("---");
-
-            return Color.Lerp(
-                currentTimeOfDay.skyColor,
-                nextTimeOfDay.skyColor,
-                progress
-            );
-        }
-
-        float InGameMinutesToRealSeconds(int minutes)
-        {
-            // float currentSpeed = Constants.TIME_SPEED_TICK_INTERVALS[Registry.appState.Time.speed];
-            // float framerate = 1 / Time.unscaledDeltaTime;
-            // Debug.Log("framerate: " + framerate);
-
-            return (
-                minutes *
-                (Constants.TICK_INTERVAL / Constants.MINUTES_ELAPSED_PER_TICK)
-            );
         }
     }
 }

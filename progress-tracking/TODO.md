@@ -4,6 +4,8 @@
 
 ## Tasks
 
+- function to calculate normalized progress between 2 times of day
+- furniture z indexes
 - destroy validation (cannot delete room with another room above it)
 - tank treads room type
 - don't default to weird "none" room type
