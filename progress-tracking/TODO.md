@@ -4,6 +4,8 @@
 
 ## Tasks
 
+- destroy validation (cannot delete room with another room above it)
+- tank treads room type
 - don't default to weird "none" room type
 - blank rooms, proper room 'templates' prepopulated with furniture
   - bedroom
@@ -33,6 +35,9 @@
   - direction (left, center, right)
 - furniture z indexes - in front, behind
 - Placeable windows
+  - either:
+    - "decorations" (like furniture without behaviors)
+    - or a field on roomcell
 - Improved lighting
   - global sun light that rotates/changes color as the day progresses
   - room lights that come on at night
