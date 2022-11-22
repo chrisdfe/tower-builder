@@ -7,11 +7,23 @@ namespace TowerBuilder.GameWorld.Lights
     {
         Light sunLight;
 
-        // public static SunLight
+        class TimeOfDayLightingSetting
+        {
+            public Color skyColor;
+        }
+
+        // public static Dictionary<TimeOfDay, TimeOfDayLightingSetting> timeOfDayLightingSettingMap = new Dictionary<TimeOfDay, TimeOfDayLightingSetting>()
+        // {
+        // { TimeOfDay. }
+        // };
 
         float elapsedSinceLastTimeOfDay = 0f;
         float elapsedSinceLastTick = 0f;
 
+        // when sunlight is at -90
+        int sunlightStartTime = new TimeValue(new TimeValue.Input() { hour = 5 }).AsMinutes();
+        // when sunlight is at +90
+        int sunlightEndTime = new TimeValue(new TimeValue.Input() { hour = 20 }).AsMinutes();
 
         void Awake()
         {
@@ -44,10 +56,11 @@ namespace TowerBuilder.GameWorld.Lights
             elapsedSinceLastTimeOfDay = 0;
         }
 
-
         void OnTick(TimeValue timeValue)
         {
             elapsedSinceLastTick = 0f;
+            UpdateSkyColor();
+            SetSunRotation();
         }
 
         void UpdateSkyColor()
@@ -55,6 +68,35 @@ namespace TowerBuilder.GameWorld.Lights
             Color currentColor = GetUpdateColorLerpProgressColor();
             Camera.main.backgroundColor = currentColor;
             RenderSettings.fogColor = currentColor;
+        }
+
+        void SetSunRotation()
+        {
+            TimeValue currentTime = Registry.appState.Time.time;
+
+            TimeValue currentTimeFromStartOfDay = new TimeValue(new TimeValue.Input()
+            {
+                hour = currentTime.hour,
+                minute = currentTime.minute
+            });
+
+            int currentTimeAsMinutes = currentTime.AsMinutes();
+            int totalMinutesInTimeSunIsUp = sunlightEndTime - sunlightStartTime;
+            int currentAbsoluteTimeAsMinutes = currentTimeFromStartOfDay.AsMinutes();
+            float normalizedValue = normalize(currentAbsoluteTimeAsMinutes, (float)sunlightStartTime, (float)sunlightEndTime);
+
+            Vector3 currentRotation = Vector3.Lerp(
+                new Vector3(20f, -90f, 0),
+                new Vector3(20f, 90f, 0),
+                normalizedValue
+            );
+
+            sunLight.transform.rotation = Quaternion.Euler(currentRotation);
+
+            float normalize(float val, float min, float max)
+            {
+                return Mathf.Clamp((val - min) / (max - min), 0f, 1f);
+            }
         }
 
         Color GetUpdateColorLerpProgressColor()
