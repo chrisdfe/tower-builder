@@ -4,7 +4,13 @@
 
 ## Tasks
 
-- furniture that occupy different # of tiles
+- don't default to weird "none" room type
+- blank rooms, proper room 'templates' prepopulated with furniture
+  - bedroom
+  - cockpit
+- building "stats" or "attributes" - fuel, power level, current speed, etc.
+  - uses queries from furniture/furniturebheviors/residents/residentbehaviors
+- furniture that occupys different # of tiles
 - "watchers" that sit at the bottom of appstate and don't hold any state but react to/mutate other parts of appState?
   - e.g residents moving in watcher
 - dynamically rendered "Outer walls" of vehicle
@@ -21,7 +27,7 @@
   - eg resident going from one cell to the other
   - this probably means reorganizing things to calculate the next tick every tick (for the animation to know where to lerp from/to)
 - Make residents 2 tiles tall 1 tile wide
-- Building colletions
+- Vehicle connections
 - Debug resident path/goal gameworld display things
 - furniture interaction slots
   - direction (left, center, right)
