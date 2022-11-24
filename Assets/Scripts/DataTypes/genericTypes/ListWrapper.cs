@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -62,6 +63,11 @@ namespace TowerBuilder.DataTypes
         public bool Contains(ItemType item)
         {
             return items.Contains(item);
+        }
+
+        public void ForEach(Action<ItemType> action)
+        {
+            items.ForEach(action);
         }
     }
 }

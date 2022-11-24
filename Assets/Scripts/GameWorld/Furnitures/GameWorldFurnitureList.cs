@@ -111,10 +111,6 @@ namespace TowerBuilder.GameWorld.Furnitures
         void UpdateFurnitureColor(GameWorldFurniture gameWorldFurniture)
         {
             EntityBase inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
-            Debug.Log("updating furniture color");
-            Debug.Log("gameWorldFurniture.furniture.isInBlueprintMode");
-            Debug.Log(gameWorldFurniture.furniture.isInBlueprintMode);
-
             Furniture furniture = gameWorldFurniture.furniture;
             ToolState toolState = Registry.appState.Tools.toolState;
 

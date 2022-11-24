@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Furnitures.Validators;
@@ -17,8 +18,8 @@ namespace TowerBuilder.ApplicationState.Furnitures
         {
             public delegate void FurnitureEvent(FurnitureList furnitures);
             public FurnitureEvent onFurnituresAdded;
-            public FurnitureEvent onFurnituresRemoved;
             public FurnitureEvent onFurnituresBuilt;
+            public FurnitureEvent onFurnituresRemoved;
 
             public delegate void FurnitureListEvent(FurnitureList furnitureList);
             public FurnitureListEvent onFurnitureListUpdated;
@@ -81,7 +82,9 @@ namespace TowerBuilder.ApplicationState.Furnitures
         public void Setup()
         {
             appState.Rooms.events.onRoomAdded += OnRoomAdded;
+            appState.Rooms.events.onRoomBuilt += OnRoomBuilt;
             appState.Rooms.events.onRoomRemoved += OnRoomRemoved;
+
             appState.Rooms.events.onRoomBlocksAdded += OnRoomBlocksAdded;
             appState.Rooms.events.onRoomBlocksRemoved += OnRoomBlocksRemoved;
         }
@@ -89,7 +92,9 @@ namespace TowerBuilder.ApplicationState.Furnitures
         public void Teardown()
         {
             appState.Rooms.events.onRoomAdded -= OnRoomAdded;
+            appState.Rooms.events.onRoomBuilt -= OnRoomBuilt;
             appState.Rooms.events.onRoomRemoved -= OnRoomRemoved;
+
             appState.Rooms.events.onRoomBlocksAdded -= OnRoomBlocksAdded;
             appState.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
         }
@@ -154,8 +159,36 @@ namespace TowerBuilder.ApplicationState.Furnitures
 
         void OnRoomAdded(Room room)
         {
-            FurnitureList roomFurnitures = room.furnitureBuilder.BuildFurniture();
+            FurnitureList roomFurnitures = room.furnitureBuilder.BuildFurniture(room.isInBlueprintMode);
             AddFurniture(roomFurnitures);
+        }
+
+        void OnRoomBuilt(Room room)
+        {
+            FurnitureList roomFurnitures = queries.FindFurnitureByRoom(room);
+            Debug.Log("roomFurnitures");
+            Debug.Log(roomFurnitures.Count);
+
+            FurnitureList blueprintFurnitures = new FurnitureList(
+                roomFurnitures.items.FindAll(roomFurniture => roomFurniture.isInBlueprintMode == true).ToList()
+            );
+
+            Debug.Log("blueprintFurnitures");
+            Debug.Log(blueprintFurnitures.Count);
+
+            if (blueprintFurnitures.Count > 0)
+            {
+                blueprintFurnitures.ForEach(furniture =>
+                {
+                    BuildFurniture(furniture);
+                });
+
+                if (events.onFurnituresBuilt != null)
+                {
+                    events.onFurnituresBuilt(blueprintFurnitures);
+                }
+            }
+
         }
 
         void OnRoomRemoved(Room room)

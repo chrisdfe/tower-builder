@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Rooms.Entrances;
+using TowerBuilder.DataTypes.Rooms.FurnitureBuilders;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
 
@@ -24,8 +25,8 @@ namespace TowerBuilder.DataTypes.Rooms
         public delegate RoomEntranceBuilderBase EntranceBuilderFactory();
         public EntranceBuilderFactory entranceBuilderFactory = () => new DefaultEntranceBuilder();
 
-        public delegate RoomFurnitureBuilder FurnitureBuilderFactory(Room room);
-        public FurnitureBuilderFactory furnitureBuilderFactory = (Room room) => new RoomFurnitureBuilder(room);
+        public delegate RoomFurnitureBuilderBase FurnitureBuilderFactory(Room room);
+        public FurnitureBuilderFactory furnitureBuilderFactory = (Room room) => new RoomFurnitureBuilderBase(room);
 
         public delegate RoomValidatorBase RoomValidatorFactory(Room room);
         public RoomValidatorFactory validatorFactory = (Room room) => new DefaultRoomValidator(room);

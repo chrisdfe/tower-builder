@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 using UnityEngine;
@@ -6,6 +8,8 @@ namespace TowerBuilder.ApplicationState
 {
     public class BedCreationWatcher : WatcherBase
     {
+        // Queue<Furniture> furnitureToMoveResidentsInFor = new Queue<Furniture>();
+
         public BedCreationWatcher(AppState appState) : base(appState) { }
 
         public override void Setup()
@@ -38,21 +42,16 @@ namespace TowerBuilder.ApplicationState
         void MoveNewResidentInIfThereIsRoom(Furniture furniture)
         {
             Debug.Log("MoveNewResidentInIfThereIsRoom");
-
-            if (furniture.isInBlueprintMode) return;
+            Debug.Log("furniture.isInBlueprintMode");
+            Debug.Log(furniture.isInBlueprintMode);
+            Debug.Log("furniture.homeSlotCount");
+            Debug.Log(furniture.homeSlotCount);
+            if (furniture.isInBlueprintMode || furniture.homeSlotCount == 0) return;
 
             // TODO -
             // 1) check that the bedroom is accessible from the front door
-            // 2) 
-            Debug.Log("furniture.homeSlotCount");
-            Debug.Log(furniture.homeSlotCount);
-
-            if (furniture.homeSlotCount == 0) return;
 
             ResidentsList residentsLivingAtSlotList = appState.FurnitureHomeSlotOccupations.queries.GetResidentsLivingAt(furniture);
-
-            Debug.Log("residentsLivingAtSlotList");
-            Debug.Log(residentsLivingAtSlotList.Count);
 
             if (residentsLivingAtSlotList.Count >= furniture.homeSlotCount) return;
 

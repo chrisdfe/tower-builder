@@ -3,6 +3,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Entrances;
+using TowerBuilder.DataTypes.Rooms.FurnitureBuilders;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
 
@@ -148,6 +149,8 @@ namespace TowerBuilder.Definitions
                 ),
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
+
+                furnitureBuilderFactory = (Room room) => new BedroomRoomFurnitureBuilder(room),
 
                 color = Color.yellow,
             },

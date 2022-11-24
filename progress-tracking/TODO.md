@@ -4,6 +4,8 @@
 
 ## Tasks
 
+- TODO - room should run furniture validations before being built as well?
+- Work through the room/furniture 'isInBlueprintMode' issue. They're not in sync right now
 - Room color should be based off of furniture (containing a bed = bedroom etc)
 - Some kind of way of making BedCreationWatcher not immediately add new residents - perhaps on a interval longer than every tick
 - Moonlight/inside lights
@@ -96,6 +98,7 @@
 
 ## Cleanup
 
+- All state slices should add lists of items instead of singular - e.g AddRooms instead of AddRoom
 - RouteFinder creates too many branches
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor

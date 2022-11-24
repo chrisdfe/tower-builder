@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
 using TowerBuilder.DataTypes.Rooms.Entrances;
+using TowerBuilder.DataTypes.Rooms.FurnitureBuilders;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
@@ -43,7 +44,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public RoomValidatorBase validator { get; private set; }
         public RoomEntranceBuilderBase entranceBuilder { get; private set; }
-        public RoomFurnitureBuilder furnitureBuilder { get; private set; }
+        public RoomFurnitureBuilderBase furnitureBuilder { get; private set; }
 
         public RoomSkinKey skinKey;
 
