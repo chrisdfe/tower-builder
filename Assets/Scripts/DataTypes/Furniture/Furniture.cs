@@ -20,8 +20,12 @@ namespace TowerBuilder.DataTypes.Furnitures
         public FurnitureValidatorBase validator { get; private set; }
 
         public bool isInBlueprintMode = false;
+        public int homeSlotCount = 0;
+
         public Room room;
         public CellCoordinates cellCoordinates = CellCoordinates.zero;
+
+        public FurnitureTemplate furnitureTemplate;
 
         public Furniture(FurnitureTemplate furnitureTemplate)
         {
@@ -31,6 +35,9 @@ namespace TowerBuilder.DataTypes.Furnitures
             this.title = furnitureTemplate.title;
             this.category = furnitureTemplate.title;
             this.price = furnitureTemplate.price;
+            this.homeSlotCount = furnitureTemplate.homeSlotCount;
+
+            this.furnitureTemplate = furnitureTemplate;
 
             this.validator = furnitureTemplate.furnitureValidatorFactory(this);
         }

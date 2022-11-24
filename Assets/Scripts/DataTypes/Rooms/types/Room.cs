@@ -47,6 +47,8 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public RoomSkinKey skinKey;
 
+        public RoomTemplate roomTemplate;
+
         [JsonIgnore]
         public int price { get { return pricePerBlock * this.blocks.blocks.Count; } }
 
@@ -59,6 +61,8 @@ namespace TowerBuilder.DataTypes.Rooms
             this.pricePerBlock = roomTemplate.pricePerBlock;
             this.resizability = roomTemplate.resizability;
             this.blockDimensions = roomTemplate.blockDimensions;
+
+            this.roomTemplate = roomTemplate;
 
             this.validator = roomTemplate.validatorFactory(this);
             this.entranceBuilder = roomTemplate.entranceBuilderFactory();

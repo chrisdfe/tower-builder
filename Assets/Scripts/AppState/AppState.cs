@@ -12,6 +12,8 @@ namespace TowerBuilder.ApplicationState
             public Furnitures.State.Input furnitures;
             public Residents.State.Input residents;
 
+            public FurnitureHomeSlotOccupations.State.Input furnitureHomeSlotOccupations;
+
             public Routes.State.Input routes;
 
             public Vehicles.State.Input vehicles;
@@ -34,6 +36,8 @@ namespace TowerBuilder.ApplicationState
                 furnitures = new Furnitures.State.Input();
                 residents = new Residents.State.Input();
 
+                furnitureHomeSlotOccupations = new FurnitureHomeSlotOccupations.State.Input();
+
                 routes = new Routes.State.Input();
 
                 vehicles = new Vehicles.State.Input();
@@ -52,12 +56,15 @@ namespace TowerBuilder.ApplicationState
         public Time.State Time;
         public Wallet.State Wallet;
 
-        public Vehicles.State Vehicles;
-        public Furnitures.State Furnitures;
         public Rooms.State Rooms;
+        public Furnitures.State Furnitures;
+        public Residents.State Residents;
+
+        public FurnitureHomeSlotOccupations.State FurnitureHomeSlotOccupations;
+
+        public Vehicles.State Vehicles;
 
         public Routes.State Routes;
-        public Residents.State Residents;
 
         public ResidentMotors.State ResidentMotors;
 
@@ -66,6 +73,28 @@ namespace TowerBuilder.ApplicationState
 
         public UI.State UI;
         public Tools.State Tools;
+
+        class Watchers
+        {
+            AppState appState;
+            BedCreationWatcher bedCreationWatcher;
+
+            public Watchers(AppState appState)
+            {
+                this.appState = appState;
+
+                bedCreationWatcher = new BedCreationWatcher(appState);
+
+                Setup();
+            }
+
+            public void Setup()
+            {
+                bedCreationWatcher.Setup();
+            }
+        }
+
+        Watchers watchers;
 
         public AppState(Input input)
         {
@@ -76,6 +105,8 @@ namespace TowerBuilder.ApplicationState
             Rooms = new Rooms.State(this, input.rooms);
             Furnitures = new Furnitures.State(this, input.furnitures);
             Residents = new Residents.State(this, input.residents);
+
+            FurnitureHomeSlotOccupations = new FurnitureHomeSlotOccupations.State(this, input.furnitureHomeSlotOccupations);
 
             Routes = new Routes.State(this, input.routes);
 
@@ -88,6 +119,8 @@ namespace TowerBuilder.ApplicationState
 
             UI = new UI.State(this, input.ui);
             Tools = new Tools.State(this, input.tools);
+
+            watchers = new Watchers(this);
         }
 
         public AppState() : this(new Input()) { }

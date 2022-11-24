@@ -22,7 +22,7 @@ namespace TowerBuilder.DataTypes.Time
             [TimeSpeed.Normal] = 2.0f,
             // [TimeSpeed.Fast] = 0.7f,
             [TimeSpeed.Fast] = 1f,
-            [TimeSpeed.Fastest] = 0.2f,
+            [TimeSpeed.Fastest] = 0.1f,
             // [TimeSpeed.Fastest] = 0.5f,
         };
 

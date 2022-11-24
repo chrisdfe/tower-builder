@@ -11,5 +11,3 @@ namespace TowerBuilder.DataTypes.Rooms
         Wheels
     }
 }
-
-

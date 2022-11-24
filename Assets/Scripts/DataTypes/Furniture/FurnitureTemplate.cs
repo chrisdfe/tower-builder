@@ -11,6 +11,7 @@ namespace TowerBuilder.DataTypes.Furnitures
         public string category = "None";
 
         public int price = 0;
+        public int homeSlotCount = 0;
 
         public delegate FurnitureBehaviorBase FurnitureBehaviorFactory(Furniture furniture);
         public FurnitureBehaviorFactory furnitureBehaviorFactory = (Furniture furniture) => new DefaultBehavior(furniture);
