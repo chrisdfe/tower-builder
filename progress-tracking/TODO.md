@@ -4,7 +4,9 @@
 
 ## Tasks
 
-- function to calculate normalized progress between 2 times of day
+- Room color should be based off of furniture (containing a bed = bedroom etc)
+- Some kind of way of making BedCreationWatcher not immediately add new residents - perhaps on a interval longer than every tick
+- Moonlight/inside lights
 - furniture z indexes
 - destroy validation (cannot delete room with another room above it)
 - tank treads room type
@@ -112,6 +114,7 @@
 
 # Done
 
+- function to calculate normalized progress between 2 times of day
 - Furniture validation
 - Resident validation
 - Standardize around "Initialize/Deinitialize" or "Setup/Teardown"
