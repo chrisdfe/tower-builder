@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -28,20 +29,51 @@ namespace TowerBuilder.DataTypes.Time
         // 1 +
         public int year;
 
-        public static TimeValue zero
+        public int timeOfDayIndex
         {
             get
             {
-                return new TimeValue()
+                for (int i = Constants.TIMES_OF_DAY.Length - 1; i >= 0; i--)
                 {
+                    TimeOfDay timeOfDay = Constants.TIMES_OF_DAY[i];
 
-                    minute = 0,
-                    hour = 0,
-                    day = 0,
-                    week = 0,
-                    season = 0,
-                    year = 0,
-                };
+                    if (hour >= timeOfDay.startsOnHour)
+                    {
+                        return i;
+                    }
+                }
+
+                return 0;
+            }
+        }
+
+        public TimeOfDay timeOfDay
+        {
+            get
+            {
+                return Constants.TIMES_OF_DAY[timeOfDayIndex];
+            }
+        }
+
+        public int nextTimeOfDayIndex
+        {
+            get
+            {
+                int index = timeOfDayIndex;
+                index++;
+                if (index >= Constants.TIMES_OF_DAY.Length - 1)
+                {
+                    index = 0;
+                }
+                return index;
+            }
+        }
+
+        public TimeOfDay nextTimeOfDay
+        {
+            get
+            {
+                return Constants.TIMES_OF_DAY[nextTimeOfDayIndex];
             }
         }
 
@@ -123,42 +155,6 @@ namespace TowerBuilder.DataTypes.Time
             minute = leftover;
         }
 
-        public int GetCurrentTimeOfDayIndex()
-        {
-            for (int i = Constants.TIMES_OF_DAY.Length - 1; i >= 0; i--)
-            {
-                TimeOfDay timeOfDay = Constants.TIMES_OF_DAY[i];
-
-                if (hour >= timeOfDay.startsOnHour)
-                {
-                    return i;
-                }
-            }
-
-            return 0;
-        }
-
-        public TimeOfDay GetCurrentTimeOfDay()
-        {
-            return Constants.TIMES_OF_DAY[GetCurrentTimeOfDayIndex()];
-        }
-
-        public int GetNextTimeOfDayIndex()
-        {
-            int index = GetCurrentTimeOfDayIndex();
-            index++;
-            if (index >= Constants.TIMES_OF_DAY.Length - 1)
-            {
-                index = 0;
-            }
-            return index;
-        }
-
-        public TimeOfDay GetNextTimeOfDay()
-        {
-            return Constants.TIMES_OF_DAY[GetNextTimeOfDayIndex()];
-        }
-
         public TimeValue ToRelative()
         {
             return TimeValue.ToRelative(this);
@@ -167,6 +163,23 @@ namespace TowerBuilder.DataTypes.Time
         /* 
             Static API
         */
+        public static TimeValue zero
+        {
+            get
+            {
+                return new TimeValue()
+                {
+
+                    minute = 0,
+                    hour = 0,
+                    day = 0,
+                    week = 0,
+                    season = 0,
+                    year = 0,
+                };
+            }
+        }
+
         public static TimeValue Add(TimeValue timeValue, Input timeInput)
         {
             int timeAsMinutes = timeValue.AsMinutes();

@@ -50,7 +50,7 @@ namespace TowerBuilder.ApplicationState.Time
 
             time = newTime;
 
-            if (previousTime.GetCurrentTimeOfDay() != time.GetCurrentTimeOfDay())
+            if (previousTime.timeOfDay != time.timeOfDay)
             {
                 if (events.onTimeOfDayUpdated != null)
                 {

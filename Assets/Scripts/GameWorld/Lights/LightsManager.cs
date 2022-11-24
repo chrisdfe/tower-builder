@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Time;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -11,19 +12,59 @@ namespace TowerBuilder.GameWorld.Lights
 
         public class AtmosphereSetting
         {
-            public TimeValue timeOfDay;
             public Color skyColor;
+
+            // public float sunRotation;
+            public float sunColor;
+            public float sunIntensity;
+
             public float fogDensity;
         }
 
-        // public static Dictionary<TimeOfDay, TimeOfDayLightingSetting> timeOfDayLightingSettingMap = new Dictionary<TimeOfDay, TimeOfDayLightingSetting>()
-        // {
-        // { TimeOfDay. }
-        // };
-
-        public List<AtmosphereSetting> atmosphereSettings { get; } = new List<AtmosphereSetting>()
+        public Dictionary<TimeOfDay.Key, AtmosphereSetting> TimeOfDayAtmosphereSettingMap = new Dictionary<TimeOfDay.Key, AtmosphereSetting>()
         {
-
+            {
+                TimeOfDay.Key.MorningNight,
+                new AtmosphereSetting() {
+                    skyColor = ColorUtils.ColorFromHex("#111E1E")
+                }
+            },
+            {
+                TimeOfDay.Key.Dawn,
+                new AtmosphereSetting() {
+                    skyColor = ColorUtils.ColorFromHex("#E37768")
+                }
+            },
+            {
+                TimeOfDay.Key.Morning,
+                new AtmosphereSetting() {
+                    skyColor = ColorUtils.ColorFromHex("#C7E6D5")
+                }
+            },
+            {
+                TimeOfDay.Key.Afternoon,
+                new AtmosphereSetting() {
+                    skyColor = ColorUtils.ColorFromHex("#ECE4D5")
+                }
+            },
+            {
+                TimeOfDay.Key.Evening,
+                new AtmosphereSetting() {
+                    skyColor = ColorUtils.ColorFromHex("#C8E6D6")
+                }
+            },
+            {
+                TimeOfDay.Key.Dusk,
+                new AtmosphereSetting() {
+                    skyColor = ColorUtils.ColorFromHex("#FFA885")
+                }
+            },
+            {
+                TimeOfDay.Key.DuskNight,
+                new AtmosphereSetting() {
+                    skyColor = ColorUtils.ColorFromHex("#111E1E")
+                }
+            }
         };
 
         float elapsedSinceLastTimeOfDay = 0f;
@@ -31,9 +72,9 @@ namespace TowerBuilder.GameWorld.Lights
         float normalizedTickProgress = 0f;
 
         // when sunlight is at -90
-        static int sunlightStartTime = new TimeValue(new TimeValue.Input() { hour = 5 }).AsMinutes();
+        TimeValue sunlightStartTime = new TimeValue(new TimeValue.Input() { hour = 5 });
         // when sunlight is at +90
-        static int sunlightEndTime = new TimeValue(new TimeValue.Input() { hour = 20 }).AsMinutes();
+        TimeValue sunlightEndTime = new TimeValue(new TimeValue.Input() { hour = 20 });
 
         static Vector3 dayStartRotation { get; } = new Vector3(20f, -90f, 0);
         static Vector3 dayEndRotation { get; } = new Vector3(20f, +90f, 0);
@@ -89,33 +130,22 @@ namespace TowerBuilder.GameWorld.Lights
 
         void UpdateSkyColor()
         {
-            TimeOfDay currentTimeOfDay = Registry.appState.Time.time.GetCurrentTimeOfDay();
-            TimeOfDay nextTimeOfDay = Registry.appState.Time.time.GetNextTimeOfDay();
+            TimeValue currentTime = Registry.appState.Time.time;
+            TimeValue currentTimeOfDayStartHour = new TimeValue(new TimeValue.Input() { hour = currentTime.timeOfDay.startsOnHour });
+            TimeValue nextTimeOfDayStartHour = new TimeValue(new TimeValue.Input() { hour = currentTime.nextTimeOfDay.startsOnHour });
 
-            int currentTimeOfDayStartHourAsMinutes = new TimeValue(new TimeValue.Input() { hour = currentTimeOfDay.startsOnHour }).AsMinutes();
-            int nextTimeOfDayStartHourAsMinutes = new TimeValue(new TimeValue.Input() { hour = nextTimeOfDay.startsOnHour }).AsMinutes();
-
-            float normalizedCurrentTickTime = MathUtils.NormalizeFloat(
-                Registry.appState.Time.time.ToRelative().AsMinutes(),
-                currentTimeOfDayStartHourAsMinutes,
-                nextTimeOfDayStartHourAsMinutes
-            );
-
-            float normalizedNextTickTime = MathUtils.NormalizeFloat(
-                Registry.appState.Time.queries.nextTickTimeValue.ToRelative().AsMinutes(),
-                currentTimeOfDayStartHourAsMinutes,
-                nextTimeOfDayStartHourAsMinutes
-            );
+            (float normalizedCurrentTickTime, float normalizedNextTickTime) = GetNormalizedCurrentAndNextTickTimes(currentTimeOfDayStartHour, nextTimeOfDayStartHour);
+            (AtmosphereSetting currentAtmosphereSetting, AtmosphereSetting nextAtmosphereSetting) = GetCurrentAndNextAtmosphereSettings();
 
             Color currentTickColor = Color.Lerp(
-                currentTimeOfDay.skyColor,
-                nextTimeOfDay.skyColor,
+                currentAtmosphereSetting.skyColor,
+                nextAtmosphereSetting.skyColor,
                 normalizedCurrentTickTime
             );
 
             Color nextTickColor = Color.Lerp(
-                currentTimeOfDay.skyColor,
-                nextTimeOfDay.skyColor,
+                currentAtmosphereSetting.skyColor,
+                nextAtmosphereSetting.skyColor,
                 normalizedNextTickTime
             );
 
@@ -131,22 +161,7 @@ namespace TowerBuilder.GameWorld.Lights
 
         void UpdateSunRotation()
         {
-            int currentTimeAsMinutes = Registry.appState.Time.time.AsMinutes();
-
-            int currentRelativeTimeAsMinutes = Registry.appState.Time.queries.currentRelativeTimeValue.AsMinutes();
-            int nextTickTimeAsMinutes = TimeValue.Add(Registry.appState.Time.time, new TimeValue.Input() { minute = Constants.MINUTES_ELAPSED_PER_TICK }).AsMinutes();
-
-            float normalizedCurrentTickTime = MathUtils.NormalizeFloat(
-                Registry.appState.Time.time.ToRelative().AsMinutes(),
-                (float)sunlightStartTime,
-                (float)sunlightEndTime
-            );
-
-            float normalizedNextTickTime = MathUtils.NormalizeFloat(
-                Registry.appState.Time.queries.nextTickTimeValue.ToRelative().AsMinutes(),
-                (float)sunlightStartTime,
-                (float)sunlightEndTime
-            );
+            (float normalizedCurrentTickTime, float normalizedNextTickTime) = GetNormalizedCurrentAndNextTickTimes(sunlightStartTime, sunlightEndTime);
 
             Vector3 fromRotation = Vector3.Lerp(
                 dayStartRotation,
@@ -167,6 +182,39 @@ namespace TowerBuilder.GameWorld.Lights
             );
 
             sunLight.transform.rotation = Quaternion.Euler(currentRotation);
+        }
+
+        CurrentAndNext<AtmosphereSetting> GetCurrentAndNextAtmosphereSettings()
+        {
+            TimeOfDay currentTimeOfDay = Registry.appState.Time.time.timeOfDay;
+            TimeOfDay nextTimeOfDay = Registry.appState.Time.time.nextTimeOfDay;
+
+            return new CurrentAndNext<AtmosphereSetting>()
+            {
+                current = TimeOfDayAtmosphereSettingMap[currentTimeOfDay.key],
+                next = TimeOfDayAtmosphereSettingMap[nextTimeOfDay.key]
+            };
+        }
+
+        CurrentAndNext<float> GetNormalizedCurrentAndNextTickTimes(TimeValue fromTime, TimeValue toTime)
+        {
+            float normalizedCurrentTickTime = MathUtils.NormalizeFloat(
+                Registry.appState.Time.time.ToRelative().AsMinutes(),
+                fromTime.AsMinutes(),
+                toTime.AsMinutes()
+            );
+
+            float normalizedNextTickTime = MathUtils.NormalizeFloat(
+                Registry.appState.Time.queries.nextTickTimeValue.ToRelative().AsMinutes(),
+                fromTime.AsMinutes(),
+                toTime.AsMinutes()
+            );
+
+            return new CurrentAndNext<float>()
+            {
+                current = normalizedCurrentTickTime,
+                next = normalizedNextTickTime
+            };
         }
     }
 }

@@ -96,7 +96,7 @@ namespace TowerBuilder.GameWorld.UI
         void UpdateTimeOfDayText()
         {
             TimeValue currentTime = Registry.appState.Time.time;
-            TimeOfDay currentTimeOfDay = currentTime.GetCurrentTimeOfDay();
+            TimeOfDay currentTimeOfDay = currentTime.timeOfDay;
             timeOfDayText.text = currentTimeOfDay.name;
         }
     }

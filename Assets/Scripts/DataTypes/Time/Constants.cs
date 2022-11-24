@@ -77,43 +77,80 @@ namespace TowerBuilder.DataTypes.Time
 
         public static int MINUTES_PER_YEAR = SEASONS_PER_YEAR * MINUTES_PER_SEASON;
 
-        public static TimeOfDay[] TIMES_OF_DAY = new TimeOfDay[]
-        {
+        public static TimeOfDay[] TIMES_OF_DAY = new TimeOfDay[] {
             new TimeOfDay() {
+                key = TimeOfDay.Key.MorningNight,
                 startsOnHour = 0,
-                name = "night",
-                skyColor = ColorUtils.ColorFromHex("#111E1E")
+                name = "Night",
             },
             new TimeOfDay() {
+                key = TimeOfDay.Key.Dawn,
                 startsOnHour = 5,
-                name = "dawn",
-                skyColor = ColorUtils.ColorFromHex("#E37768")
+                name = "Dawn",
             },
             new TimeOfDay() {
+                key = TimeOfDay.Key.Morning,
                 startsOnHour = 7,
-                name = "morning",
-                skyColor = ColorUtils.ColorFromHex("#C7E6D5")
+                name = "Morning",
             },
             new TimeOfDay() {
+                key = TimeOfDay.Key.Afternoon,
                 startsOnHour = 12,
-                name = "afternoon",
-                skyColor = ColorUtils.ColorFromHex("#ECE4D5")
+                name = "Afternoon",
             },
             new TimeOfDay() {
+                key = TimeOfDay.Key.Evening,
                 startsOnHour = 17,
-                name = "evening",
-                skyColor = ColorUtils.ColorFromHex("#C8E6D6")
+                name = "Evening",
             },
             new TimeOfDay() {
+                key = TimeOfDay.Key.Dusk,
                 startsOnHour = 19,
-                name = "dusk",
-                skyColor = ColorUtils.ColorFromHex("#FFA885")
+                name = "Dusk",
             },
             new TimeOfDay() {
+                key = TimeOfDay.Key.DuskNight,
                 startsOnHour = 21,
-                name = "night",
-                skyColor = ColorUtils.ColorFromHex("#111E1E")
+                name = "Night",
             },
         };
-    }
+
+        // public static TimeOfDay[] TIMES_OF_DAY = new TimeOfDay[]
+        // {
+        //     new TimeOfDay() {
+        //         startsOnHour = 0,
+        //         name = "night",
+        //         skyColor = ColorUtils.ColorFromHex("#111E1E")
+        //     },
+        //     new TimeOfDay() {
+        //         startsOnHour = 5,
+        //         name = "dawn",
+        //         skyColor = ColorUtils.ColorFromHex("#E37768")
+        //     },
+        //     new TimeOfDay() {
+        //         startsOnHour = 7,
+        //         name = "morning",
+        //         skyColor = ColorUtils.ColorFromHex("#C7E6D5")
+        //     },
+        //     new TimeOfDay() {
+        //         startsOnHour = 12,
+        //         name = "afternoon",
+        //         skyColor = ColorUtils.ColorFromHex("#ECE4D5")
+        //     },
+        //     new TimeOfDay() {
+        //         startsOnHour = 17,
+        //         name = "evening",
+        //         skyColor = ColorUtils.ColorFromHex("#C8E6D6")
+        //     },
+        //     new TimeOfDay() {
+        //         startsOnHour = 19,
+        //         name = "dusk",
+        //         skyColor = ColorUtils.ColorFromHex("#FFA885")
+        //     },
+        //     new TimeOfDay() {
+        //         startsOnHour = 21,
+        //         name = "night",
+        //         skyColor = ColorUtils.ColorFromHex("#111E1E")
+        //     },
+    };
 }
