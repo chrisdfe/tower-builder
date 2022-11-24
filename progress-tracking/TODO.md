@@ -4,7 +4,8 @@
 
 ## Tasks
 
-- TODO - room should run furniture validations before being built as well?
+- Fix the mesh scaling (everything is either 0.1 or 10 or 100 not 1)
+- room should run furniture validations before being built as well?
 - Work through the room/furniture 'isInBlueprintMode' issue. They're not in sync right now
 - Room color should be based off of furniture (containing a bed = bedroom etc)
 - Some kind of way of making BedCreationWatcher not immediately add new residents - perhaps on a interval longer than every tick

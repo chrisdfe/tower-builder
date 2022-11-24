@@ -16,25 +16,25 @@ namespace TowerBuilder.Definitions
         public List<FurnitureTemplate> definitions { get; private set; } = new List<FurnitureTemplate>()
         {
             new FurnitureTemplate() {
-                key = "cockpit",
-                title = "cockpit",
-                category = "cockpits",
+                key = "PilotSeat",
+                title = "Pilot Seat",
+                category = "PilotSeats",
                 furnitureBehaviorFactory = (Furniture furniture) => new CockpitBehavior(furniture),
                 furnitureValidatorFactory = (Furniture furniture) => new CockpitFurnitureValidator(furniture)
             },
 
             new FurnitureTemplate() {
-                key = "engine",
-                title = "engine",
-                category = "engines",
+                key = "Engine",
+                title = "Engine",
+                category = "Engines",
                 furnitureBehaviorFactory = (Furniture furniture) => new EngineBehavior(furniture),
                 furnitureValidatorFactory = (Furniture furniture) => new EngineFurnitureValidator(furniture)
             },
 
             new FurnitureTemplate() {
-                key = "bed",
-                title = "bed",
-                category = "beds",
+                key = "Bed",
+                title = "Bed",
+                category = "Beds",
                 homeSlotCount = 1,
                 furnitureBehaviorFactory = (Furniture furniture) => new BedBehavior(furniture),
                 furnitureValidatorFactory = (Furniture furniture) => new BedFurnitureValidator(furniture)
