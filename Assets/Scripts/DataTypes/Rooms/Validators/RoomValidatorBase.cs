@@ -12,6 +12,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 
     public delegate List<RoomValidationError> RoomCellValidationFunc(AppState appState, Room room, RoomCell roomCell);
 
+
     public abstract class RoomValidatorBase : ValidatorBase<RoomValidationError>
     {
         Room room;
@@ -24,14 +25,23 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
           GenericRoomValidations.ValidateWallet
         };
 
-        List<RoomCellValidationFunc> baseRoomCellValidators { get; } = new List<RoomCellValidationFunc>() {
-          GenericRoomCellValidations.ValidateRoomCellIsNotOverlappingAnotherRoom,
-          GenericRoomCellValidations.ValidateAcceptableOverhang
-        };
+        List<RoomCellValidationFunc> baseRoomCellValidators { get; } = new List<RoomCellValidationFunc>();
+
+        public virtual bool isAllowedOnGroundFloor { get { return false; } }
 
         public RoomValidatorBase(Room room)
         {
             this.room = room;
+
+            baseRoomCellValidators = new List<RoomCellValidationFunc>() {
+                GenericRoomCellValidations.ValidateRoomCellIsNotOverlappingAnotherRoom,
+                GenericRoomCellValidations.ValidateAcceptableOverhang
+            };
+
+            if (!isAllowedOnGroundFloor)
+            {
+                baseRoomCellValidators.Add(GenericRoomCellValidations.CreateValidateRoomCellIsNotOnFloor(1));
+            }
         }
 
         public override void Validate(AppState appState)

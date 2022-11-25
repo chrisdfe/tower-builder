@@ -79,9 +79,10 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
         public FurnitureBehaviorBase AddFurnitureBehaviorForFurniture(Furniture furniture)
         {
             if (furniture.isInBlueprintMode) return null;
-            // TODO - use "behavior builder" pattern like with validators
-            FurnitureBehaviorBase furnitureBehavior = new DefaultBehavior(furniture);
+
+            FurnitureBehaviorBase furnitureBehavior = furniture.template.furnitureBehaviorFactory(furniture);
             AddFurnitureBehavior(furnitureBehavior);
+
             return furnitureBehavior;
         }
 

@@ -37,7 +37,8 @@ namespace TowerBuilder.ApplicationState.Time
         {
             isActive = input.isActive ?? false;
             tick = input.tick ?? 0;
-            time = input.time ?? TimeValue.zero;
+            // time = input.time ?? TimeValue.zero;
+            time = input.time ?? new TimeValue(new TimeValue.Input() { hour = 10 });
             speed = input.speed ?? TimeSpeed.Normal;
 
             events = new Events();

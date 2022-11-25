@@ -39,6 +39,14 @@ namespace TowerBuilder.Definitions
                 furnitureBehaviorFactory = (Furniture furniture) => new BedBehavior(furniture),
                 furnitureValidatorFactory = (Furniture furniture) => new BedFurnitureValidator(furniture)
             },
+
+            new FurnitureTemplate() {
+                key = "MoneyMachine",
+                title = "Money Machine",
+                category = "Industry",
+                furnitureBehaviorFactory = (Furniture furniture) => new MoneyMachineBehavior(furniture),
+                // furnitureValidatorFactory = (Furniture furniture) => new BedFurnitureValidator(furniture)
+            },
         };
 
         public class Queries

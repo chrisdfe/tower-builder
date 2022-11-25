@@ -10,6 +10,7 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
     {
         Cockpit,
         Engine,
-        Sleeping
+        Sleeping,
+        Industry
     }
 }

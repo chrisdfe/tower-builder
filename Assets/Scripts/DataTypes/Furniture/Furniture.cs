@@ -25,7 +25,7 @@ namespace TowerBuilder.DataTypes.Furnitures
         public Room room;
         public CellCoordinates cellCoordinates = CellCoordinates.zero;
 
-        public FurnitureTemplate furnitureTemplate;
+        public FurnitureTemplate template;
 
         public Furniture(FurnitureTemplate furnitureTemplate)
         {
@@ -37,7 +37,7 @@ namespace TowerBuilder.DataTypes.Furnitures
             this.price = furnitureTemplate.price;
             this.homeSlotCount = furnitureTemplate.homeSlotCount;
 
-            this.furnitureTemplate = furnitureTemplate;
+            this.template = furnitureTemplate;
 
             this.validator = furnitureTemplate.furnitureValidatorFactory(this);
         }

@@ -50,8 +50,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public override void ProcessTick()
         {
-            Debug.Log("Interacting with furniture");
-
+            furnitureBehavior.InteractTick(appState);
         }
     }
 }

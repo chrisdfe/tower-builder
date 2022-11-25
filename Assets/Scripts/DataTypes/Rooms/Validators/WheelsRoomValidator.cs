@@ -22,6 +22,8 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             }
         }
 
+        public override bool isAllowedOnGroundFloor { get { return true; } }
+
         List<RoomValidationError> ValidateWheelsAreOnCorrectFloor(AppState appState, Room room, RoomCell roomCell)
         {
             List<RoomValidationError> errors = new List<RoomValidationError>();

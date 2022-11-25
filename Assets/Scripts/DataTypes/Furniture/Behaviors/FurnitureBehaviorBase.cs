@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
@@ -35,6 +36,6 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
             interactingResidentsList.Remove(resident);
         }
 
-        public virtual void InteractTick() { }
+        public virtual void InteractTick(AppState appState) { }
     }
 }
