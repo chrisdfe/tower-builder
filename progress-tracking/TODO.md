@@ -4,6 +4,11 @@
 
 ## Tasks
 
+- "TransportationItem" + entities - escalators, stairs
+  - I think I've determined these are functionally different from furniture enough that they are a whole different thing.
+- Furniture should validate that there's not somethinge else at the same coordinates
+  - same with transportation items
+- TransportationItem/Furniture that takes up multiple cells
 - Fix the mesh scaling (everything is either 0.1 or 10 or 100 not 1)
 - room should run furniture validations before being built as well?
 - Work through the room/furniture 'isInBlueprintMode' issue. They're not in sync right now
