@@ -41,12 +41,14 @@ namespace TowerBuilder.ApplicationState.Tools
             public RoomEntityTypeSubState roomEntityType;
             public FurnitureEntityTypeSubState furnitureEntityType;
             public ResidentEntityTypeSubState residentEntityType;
+            public TransportationItemEntityTypeSubState transportationItemEntityType;
 
             public SubStates(BuildToolState buildToolState)
             {
                 roomEntityType = new RoomEntityTypeSubState(buildToolState);
                 furnitureEntityType = new FurnitureEntityTypeSubState(buildToolState);
                 residentEntityType = new ResidentEntityTypeSubState(buildToolState);
+                transportationItemEntityType = new TransportationItemEntityTypeSubState(buildToolState);
             }
         }
 

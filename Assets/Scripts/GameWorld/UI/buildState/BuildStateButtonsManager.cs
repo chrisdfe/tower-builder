@@ -25,10 +25,12 @@ namespace TowerBuilder.GameWorld.UI
         RoomEntityGroupButtons roomEntityGroupButtons;
         FurnitureEntityGroupButtons furnitureEntityGroupButtons;
         ResidentEntityGroupButtons residentEntityGroupButtons;
+        TransportationItemEntityGroupButtons transportationItemEntityGroupButtons;
 
         UISelectButton roomEntityGroupButton;
         UISelectButton furnitureEntityGroupButton;
         UISelectButton residentEntityGroupButton;
+        UISelectButton transportationItemEntityGroupButton;
 
         string currentCategory = "";
 
@@ -39,10 +41,12 @@ namespace TowerBuilder.GameWorld.UI
             Transform roomEntityGroupButtonsWrapper = transform.Find("RoomEntityGroupButtons");
             Transform furnitureEntityGroupButtonsWrapper = transform.Find("FurnitureEntityGroupButtons");
             Transform residentEntityGroupButtonsWrapper = transform.Find("ResidentEntityGroupButtons");
+            Transform transportationitemEntityGroupButtonsWrapper = transform.Find("TransportationItemEntityGroupButtons");
 
             roomEntityGroupButtons = new RoomEntityGroupButtons(roomEntityGroupButtonsWrapper);
             furnitureEntityGroupButtons = new FurnitureEntityGroupButtons(furnitureEntityGroupButtonsWrapper);
             residentEntityGroupButtons = new ResidentEntityGroupButtons(residentEntityGroupButtonsWrapper);
+            transportationItemEntityGroupButtons = new TransportationItemEntityGroupButtons(transportationitemEntityGroupButtonsWrapper);
 
             CreateEntityGroupButtons();
         }

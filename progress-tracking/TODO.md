@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- maybe UI should be a sibling namespace to GameWorld instead of child
 - "TransportationItem" + entities - escalators, stairs
   - I think I've determined these are functionally different from furniture enough that they are a whole different thing.
 - Furniture should validate that there's not somethinge else at the same coordinates

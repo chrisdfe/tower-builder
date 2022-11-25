@@ -5,6 +5,7 @@ namespace TowerBuilder.DataTypes.Entities
     {
         Room,
         Resident,
-        Furniture
+        Furniture,
+        TransportationItem
     }
 }

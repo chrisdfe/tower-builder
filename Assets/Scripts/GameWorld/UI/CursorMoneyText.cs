@@ -42,12 +42,6 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnToolStateUpdated(ToolState newToolState, ToolState previousToolState)
         {
-            // if (newToolState == ToolState.Build)
-            // {
-            //     Show();
-            //     SetText();
-            // }
-            // else if (previousToolState == ToolState.Build)
             if (previousToolState == ToolState.Build)
             {
                 Hide();
