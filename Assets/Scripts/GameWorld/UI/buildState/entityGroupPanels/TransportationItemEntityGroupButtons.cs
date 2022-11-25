@@ -20,16 +20,16 @@ namespace TowerBuilder.GameWorld.UI
         {
             base.Setup();
 
-            // Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.events.onSelectedFurnitureCategoryUpdated += OnSelectedFurnitureCategoryUpdated;
-            // Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.events.onSelectedFurnitureTemplateUpdated += OnSelectedFurnitureTemplateUpdated;
+            Registry.appState.Tools.buildToolState.subStates.transportationItemEntityType.events.onSelectedCategoryUpdated += OnSelectedCategoryUpdated;
+            Registry.appState.Tools.buildToolState.subStates.transportationItemEntityType.events.onSelectedTemplateUpdated += OnSelectedTemplateUpdated;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            // Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.events.onSelectedFurnitureCategoryUpdated -= OnSelectedFurnitureCategoryUpdated;
-            // Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.events.onSelectedFurnitureTemplateUpdated -= OnSelectedFurnitureTemplateUpdated;
+            Registry.appState.Tools.buildToolState.subStates.transportationItemEntityType.events.onSelectedCategoryUpdated -= OnSelectedCategoryUpdated;
+            Registry.appState.Tools.buildToolState.subStates.transportationItemEntityType.events.onSelectedTemplateUpdated -= OnSelectedTemplateUpdated;
         }
 
         protected override List<UISelectButton.Input> GenerateCategoryButtonInputs()
@@ -50,7 +50,7 @@ namespace TowerBuilder.GameWorld.UI
 
         protected override void OnCategoryButtonClick(string category)
         {
-            Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.SetSelectedFurnitureCategory(category);
+            Registry.appState.Tools.buildToolState.subStates.transportationItemEntityType.SetSelectedCategory(category);
         }
 
         protected override void OnTemplateButtonClick(string templateKey)
@@ -61,21 +61,21 @@ namespace TowerBuilder.GameWorld.UI
 
         List<TransportationItemTemplate> GetDefinitionsForCurrentCategory()
         {
-            string currentCategory = Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.selectedFurnitureCategory;
+            string currentCategory = Registry.appState.Tools.buildToolState.subStates.transportationItemEntityType.selectedCategory;
             return Registry.definitions.transportationItems.queries.FindByCategory(currentCategory);
         }
 
         /*
             Event Handlers
         */
-        void OnSelectedFurnitureCategoryUpdated(string newFurnitureCategory)
+        void OnSelectedCategoryUpdated(string newCategory)
         {
-            SetSelectedCategory(newFurnitureCategory);
+            SetSelectedCategory(newCategory);
         }
 
-        void OnSelectedFurnitureTemplateUpdated(TransportationItemTemplate furnitureTemplate)
+        void OnSelectedTemplateUpdated(TransportationItemTemplate template)
         {
-            SetSelectedTemplate(furnitureTemplate.key);
+            SetSelectedTemplate(template.key);
         }
     }
 }

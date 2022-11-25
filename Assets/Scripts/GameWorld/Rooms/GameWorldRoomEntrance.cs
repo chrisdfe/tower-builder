@@ -67,7 +67,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
             transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomEntrance.cellCoordinates);
 
-            if (roomEntrance.position == RoomEntrancePosition.Left)
+            if (roomEntrance.position == RoomEntrance.Position.Left)
             {
                 // RoomEntrancePosition.Left
                 transform.localPosition += new Vector3(

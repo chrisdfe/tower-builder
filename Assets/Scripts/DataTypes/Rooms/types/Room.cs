@@ -55,7 +55,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public Room(RoomTemplate roomTemplate)
         {
-            this.id = UIDGenerator.Generate("room");
+
             this.title = roomTemplate.title;
             this.key = roomTemplate.key;
             this.category = roomTemplate.category;

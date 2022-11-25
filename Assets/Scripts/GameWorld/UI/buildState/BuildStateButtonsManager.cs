@@ -1,13 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Rooms;
-using TowerBuilder.ApplicationState.UI;
-using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.Definitions;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -58,6 +49,7 @@ namespace TowerBuilder.GameWorld.UI
             roomEntityGroupButton = CreateEntityGroupButton("rooms");
             furnitureEntityGroupButton = CreateEntityGroupButton("furniture");
             residentEntityGroupButton = CreateEntityGroupButton("residents");
+            transportationItemEntityGroupButton = CreateEntityGroupButton("transportation");
 
             UISelectButton CreateEntityGroupButton(string value)
             {
@@ -88,8 +80,12 @@ namespace TowerBuilder.GameWorld.UI
                 case "residents":
                     Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.Resident);
                     break;
+                case "transportation":
+                    Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.TransportationItem);
+                    transportationItemEntityGroupButton.SetSelected(true);
+                    transportationItemEntityGroupButtons.Setup();
+                    break;
             }
-
         }
 
         void TeardownCurrentCategory()
@@ -107,6 +103,10 @@ namespace TowerBuilder.GameWorld.UI
                 case "residents":
                     residentEntityGroupButtons.Teardown();
                     residentEntityGroupButton.SetSelected(false);
+                    break;
+                case "transportation":
+                    transportationItemEntityGroupButtons.Teardown();
+                    transportationItemEntityGroupButton.SetSelected(false);
                     break;
             }
 

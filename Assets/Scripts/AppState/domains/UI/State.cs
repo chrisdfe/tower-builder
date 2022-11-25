@@ -177,8 +177,6 @@ namespace TowerBuilder.ApplicationState.UI
 
         void PerformSecondaryAction()
         {
-            Debug.Log("secondary action");
-
             if (events.onSecondaryActionPerformed != null)
             {
                 events.onSecondaryActionPerformed();
@@ -196,12 +194,6 @@ namespace TowerBuilder.ApplicationState.UI
                     RoomEntity roomEntity = new RoomEntity(currentSelectedRoom);
                     entityList.Add(roomEntity);
                 }
-
-                // if (currentSelectedRoomBlock != null)
-                // {
-                //     RoomBlockEntity roomBlockEntity = new RoomBlockEntity(currentSelectedRoomBlock);
-                //     entityList.Add(roomBlockEntity);
-                // }
 
                 Furniture furnitureAtCell = appState.Furnitures.queries.FindFurnitureAtCell(currentSelectedCell);
 

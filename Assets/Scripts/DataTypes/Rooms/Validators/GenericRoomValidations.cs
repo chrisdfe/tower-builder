@@ -67,6 +67,16 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             return Helpers.CreateEmptyErrorList();
         }
 
+        public static List<RoomValidationError> ValidateRoomCellIsNotUnderground(AppState appState, Room room, RoomCell roomCell)
+        {
+            if (roomCell.coordinates.floor < 0)
+            {
+                return Helpers.CreateErrorList("You cannot build rooms underground.");
+            }
+
+            return Helpers.CreateEmptyErrorList();
+        }
+
         public static RoomCellValidationFunc CreateValidateRoomCellIsOnFloor(int floor)
         {
             return (AppState appState, Room room, RoomCell roomCell) =>

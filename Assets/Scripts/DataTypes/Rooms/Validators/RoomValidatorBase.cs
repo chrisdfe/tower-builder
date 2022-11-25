@@ -35,7 +35,8 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
 
             baseRoomCellValidators = new List<RoomCellValidationFunc>() {
                 GenericRoomCellValidations.ValidateRoomCellIsNotOverlappingAnotherRoom,
-                GenericRoomCellValidations.ValidateAcceptableOverhang
+                GenericRoomCellValidations.ValidateAcceptableOverhang,
+                GenericRoomCellValidations.ValidateRoomCellIsNotUnderground,
             };
 
             if (!isAllowedOnGroundFloor)

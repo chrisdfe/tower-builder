@@ -150,8 +150,10 @@ namespace TowerBuilder.ApplicationState.Tools
                     return subStates.furnitureEntityType;
                 case EntityType.Resident:
                     return subStates.residentEntityType;
+                case EntityType.TransportationItem:
+                    return subStates.transportationItemEntityType;
                 default:
-                    throw new NotImplementedException("invalid room entity type: " + entityType);
+                    throw new NotImplementedException("invalid entity type: " + entityType);
             }
         }
     }

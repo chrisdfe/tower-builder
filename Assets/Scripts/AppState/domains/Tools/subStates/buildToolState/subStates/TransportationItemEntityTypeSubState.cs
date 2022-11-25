@@ -114,7 +114,7 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 blueprint = new TransportationItem(selectedTemplate);
                 blueprint.isInBlueprintMode = true;
-                blueprint.cellCoordinates = Registry.appState.UI.currentSelectedCell;
+                blueprint.PositionAtCoordinates(Registry.appState.UI.currentSelectedCell);
                 Registry.appState.TransportationItems.AddTransportationItem(blueprint);
             }
 

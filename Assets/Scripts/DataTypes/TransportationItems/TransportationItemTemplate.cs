@@ -4,10 +4,12 @@ namespace TowerBuilder.DataTypes.TransportationItems
 {
     public class TransportationItemTemplate
     {
-        public string key;
-        public string title;
-        public string category;
+        public string key = "None";
+        public string title = "None";
+        public string category = "None";
 
-        public CellCoordinatesList cellCoordinatesList;
+        public int pricePerCell = 0;
+
+        public CellCoordinatesList cellCoordinatesList = new CellCoordinatesList(CellCoordinates.zero);
     }
 }

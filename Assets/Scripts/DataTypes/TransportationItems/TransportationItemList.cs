@@ -2,8 +2,5 @@ using TowerBuilder.DataTypes;
 
 namespace TowerBuilder.DataTypes.TransportationItems
 {
-    public class TransportationItemsList : ListWrapper<TransportationItem>
-    {
-
-    }
+    public class TransportationItemsList : ListWrapper<TransportationItem> { }
 }

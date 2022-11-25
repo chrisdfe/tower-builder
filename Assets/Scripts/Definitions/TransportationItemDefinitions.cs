@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.TransportationItems;
 using UnityEngine;
 
@@ -15,6 +16,24 @@ namespace TowerBuilder.Definitions
                 key = "Escalator",
                 title = "Escalator",
                 category = "Escalators",
+                cellCoordinatesList = new CellCoordinatesList(
+                    new List<CellCoordinates>() {
+                        new CellCoordinates(0, 0),
+                        new CellCoordinates(1, 1)
+                    }
+                )
+            },
+
+            new TransportationItemTemplate() {
+                key = "Ladder",
+                title = "Ladder",
+                category = "Ladders",
+                cellCoordinatesList = new CellCoordinatesList(
+                    new List<CellCoordinates>() {
+                        new CellCoordinates(0, 0),
+                        new CellCoordinates(0, 1)
+                    }
+                )
             }
         };
 

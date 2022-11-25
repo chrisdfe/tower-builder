@@ -18,12 +18,12 @@ namespace TowerBuilder.DataTypes.Rooms.Entrances
                 result.Add(new RoomEntrance()
                 {
                     cellCoordinates = new CellCoordinates(lowestX, floor),
-                    position = RoomEntrancePosition.Left
+                    position = RoomEntrance.Position.Left
                 });
                 result.Add(new RoomEntrance()
                 {
                     cellCoordinates = new CellCoordinates(highestX, floor),
-                    position = RoomEntrancePosition.Right
+                    position = RoomEntrance.Position.Right
                 });
             }
 

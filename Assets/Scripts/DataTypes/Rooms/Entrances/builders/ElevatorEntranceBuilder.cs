@@ -14,12 +14,12 @@ namespace TowerBuilder.DataTypes.Rooms.Entrances
             result.Add(new RoomEntrance()
             {
                 cellCoordinates = roomCells.coordinatesList.bottomLeftCoordinates.Clone(),
-                position = RoomEntrancePosition.Left
+                position = RoomEntrance.Position.Left
             });
             result.Add(new RoomEntrance()
             {
                 cellCoordinates = roomCells.coordinatesList.bottomRightCoordinates.Clone(),
-                position = RoomEntrancePosition.Right
+                position = RoomEntrance.Position.Right
             });
 
             int floorSpan = roomCells.coordinatesList.floorSpan;
@@ -28,12 +28,12 @@ namespace TowerBuilder.DataTypes.Rooms.Entrances
                 result.Add(new RoomEntrance()
                 {
                     cellCoordinates = roomCells.coordinatesList.topLeftCoordinates,
-                    position = RoomEntrancePosition.Left
+                    position = RoomEntrance.Position.Left
                 });
                 result.Add(new RoomEntrance()
                 {
                     cellCoordinates = roomCells.coordinatesList.topRightCoordinates,
-                    position = RoomEntrancePosition.Right
+                    position = RoomEntrance.Position.Right
                 });
             }
 

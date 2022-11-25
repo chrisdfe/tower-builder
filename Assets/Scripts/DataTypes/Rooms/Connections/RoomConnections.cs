@@ -51,13 +51,13 @@ namespace TowerBuilder.DataTypes.Rooms.Connections
             foreach (RoomEntrance targetRoomEntrance in targetRoom.entrances)
             {
                 CellCoordinates targetCell;
-                if (targetRoomEntrance.position == RoomEntrancePosition.Left)
+                if (targetRoomEntrance.position == RoomEntrance.Position.Left)
                 {
                     targetCell = targetRoomEntrance.cellCoordinates.Add(new CellCoordinates(-1, 0));
                 }
                 else
                 {
-                    // RoomEntrancePosition.Right
+                    // RoomEntrance.Position.Right
                     targetCell = targetRoomEntrance.cellCoordinates.Add(new CellCoordinates(1, 0));
                 }
 
@@ -71,11 +71,11 @@ namespace TowerBuilder.DataTypes.Rooms.Connections
                             roomAtCellEntrance.cellCoordinates.Matches(targetCell) &&
                             (
                                 (
-                                    targetRoomEntrance.position == RoomEntrancePosition.Left &&
-                                    roomAtCellEntrance.position == RoomEntrancePosition.Right
+                                    targetRoomEntrance.position == RoomEntrance.Position.Left &&
+                                    roomAtCellEntrance.position == RoomEntrance.Position.Right
                                 ) || (
-                                    targetRoomEntrance.position == RoomEntrancePosition.Right &&
-                                    roomAtCellEntrance.position == RoomEntrancePosition.Left
+                                    targetRoomEntrance.position == RoomEntrance.Position.Right &&
+                                    roomAtCellEntrance.position == RoomEntrance.Position.Left
                                 )
                             )
                         )

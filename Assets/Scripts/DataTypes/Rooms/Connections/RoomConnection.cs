@@ -72,24 +72,24 @@ namespace TowerBuilder.DataTypes.Rooms.Connections
         {
             RoomConnectionNode node = GetOtherConnectionNodeFor(room);
 
-            if (node == null)
+            if (node != null)
             {
-                return null;
+                return node.room;
             }
 
-            return node.room;
+            return null;
         }
 
         public RoomEntrance GetConnectedRoomEntrance(Room room)
         {
             RoomConnectionNode node = GetOtherConnectionNodeFor(room);
 
-            if (node == null)
+            if (node != null)
             {
-                return null;
+                return node.roomEntrance;
             }
 
-            return node.roomEntrance;
+            return null;
         }
     }
 }

@@ -8,15 +8,20 @@ namespace TowerBuilder.DataTypes.Rooms.Entrances
 {
     public class RoomEntrance
     {
-        private static int autoincrementingId;
+        public enum Position
+        {
+            Left,
+            Right
+        }
+
         public int id { get; private set; }
 
-        public RoomEntrancePosition position;
+        public Position position;
         public CellCoordinates cellCoordinates;
 
         public RoomEntrance()
         {
-            GenerateId();
+            this.id = UIDGenerator.Generate("TransportationItem");
         }
 
         public override string ToString()
@@ -31,11 +36,6 @@ namespace TowerBuilder.DataTypes.Rooms.Entrances
                 position = this.position,
                 cellCoordinates = this.cellCoordinates
             };
-        }
-
-        private void GenerateId()
-        {
-            id = Interlocked.Increment(ref autoincrementingId);
         }
     }
 }

@@ -80,11 +80,11 @@ namespace TowerBuilder.Definitions
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
                         new RoomEntrance() {
-                            position = RoomEntrancePosition.Left,
+                            position = RoomEntrance.Position.Left,
                             cellCoordinates = new CellCoordinates(0, 0)
                         },
                         new RoomEntrance() {
-                            position = RoomEntrancePosition.Right,
+                            position = RoomEntrance.Position.Right,
                             cellCoordinates = new CellCoordinates(2, 0)
                         },
                     }
@@ -109,12 +109,12 @@ namespace TowerBuilder.Definitions
                     {
                         new RoomEntrance()
                         {
-                            position = RoomEntrancePosition.Left,
+                            position = RoomEntrance.Position.Left,
                             cellCoordinates = new CellCoordinates(0, 0)
                         },
                         new RoomEntrance()
                         {
-                            position = RoomEntrancePosition.Right,
+                            position = RoomEntrance.Position.Right,
                             cellCoordinates = new CellCoordinates(1, 0)
                         },
                     }
@@ -138,11 +138,11 @@ namespace TowerBuilder.Definitions
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
                         new RoomEntrance() {
-                            position = RoomEntrancePosition.Left,
+                            position = RoomEntrance.Position.Left,
                             cellCoordinates = new CellCoordinates(0, 0)
                         },
                         new RoomEntrance() {
-                            position = RoomEntrancePosition.Right,
+                            position = RoomEntrance.Position.Right,
                             cellCoordinates = new CellCoordinates(1, 0)
                         },
                     }
@@ -168,11 +168,11 @@ namespace TowerBuilder.Definitions
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                     {
                         new RoomEntrance() {
-                            position = RoomEntrancePosition.Left,
+                            position = RoomEntrance.Position.Left,
                             cellCoordinates = new CellCoordinates(0, 0)
                         },
                         new RoomEntrance() {
-                            position = RoomEntrancePosition.Right,
+                            position = RoomEntrance.Position.Right,
                             cellCoordinates = new CellCoordinates(4, 0)
                         },
                     }
@@ -293,11 +293,11 @@ namespace TowerBuilder.Definitions
                 entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
                 {
                     new RoomEntrance() {
-                        position = RoomEntrancePosition.Left,
+                        position = RoomEntrance.Position.Left,
                         cellCoordinates = new CellCoordinates(0, 0)
                     },
                     new RoomEntrance() {
-                        position = RoomEntrancePosition.Right,
+                        position = RoomEntrance.Position.Right,
                         cellCoordinates = new CellCoordinates(0, 0)
                     },
                 }),

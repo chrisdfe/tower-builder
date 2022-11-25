@@ -14,14 +14,14 @@ namespace TowerBuilder.DataTypes.Rooms.Entrances
             result.Add(new RoomEntrance()
             {
                 cellCoordinates = roomCells.coordinatesList.bottomLeftCoordinates,
-                position = RoomEntrancePosition.Left
+                position = RoomEntrance.Position.Left
             });
 
 
             result.Add(new RoomEntrance()
             {
                 cellCoordinates = roomCells.coordinatesList.bottomRightCoordinates,
-                position = RoomEntrancePosition.Right
+                position = RoomEntrance.Position.Right
             });
 
 

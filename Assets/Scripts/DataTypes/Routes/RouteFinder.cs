@@ -52,16 +52,10 @@ namespace TowerBuilder.DataTypes.Routes
             this.startCoordinates = startCoordinates;
             this.endCoordinates = endCoordinates;
 
-            startRoom = FindRoomAtCoordinates(startCoordinates);
-            endRoom = FindRoomAtCoordinates(endCoordinates);
+            startRoom = Registry.appState.Rooms.queries.FindRoomAtCell(startCoordinates);
+            endRoom = Registry.appState.Rooms.queries.FindRoomAtCell(endCoordinates);
 
-            routeAttempts = new List<RouteAttempt>();
-
-            RouteAttempt firstRouteAttempt = new RouteAttempt(new List<Room>(), new List<RouteSegment>());
-
-            firstRouteAttempt.AddVisitedRoom(startRoom);
-
-            ContinueRouteAttempt(firstRouteAttempt);
+            BeginFirstRouteAttempt();
 
             if (bestRouteAttempt != null)
             {
@@ -69,7 +63,19 @@ namespace TowerBuilder.DataTypes.Routes
             }
 
             return null;
+
+            void BeginFirstRouteAttempt()
+            {
+                routeAttempts = new List<RouteAttempt>();
+
+                RouteAttempt firstRouteAttempt = new RouteAttempt(new List<Room>(), new List<RouteSegment>());
+
+                firstRouteAttempt.AddVisitedRoom(startRoom);
+
+                ContinueRouteAttempt(firstRouteAttempt);
+            }
         }
+
 
         void ContinueRouteAttempt(RouteAttempt currentRouteAttempt)
         {
@@ -87,6 +93,65 @@ namespace TowerBuilder.DataTypes.Routes
 
             if (currentRoom == endRoom)
             {
+                CompleteRoute();
+            }
+            else
+            {
+                // Keep searching for connections
+                RoomConnections roomConnections = Registry.appState.Rooms.roomConnections.FindConnectionsForRoom(currentRoom);
+
+                foreach (RoomConnection roomConnection in roomConnections.connections)
+                {
+                    RouteAttempt routeAttemptBranch = BranchRouteAttempt(currentRouteAttempt);
+                    Room otherRoom = roomConnection.GetConnectedRoom(currentRoom);
+
+                    if (!routeAttemptBranch.visitedRooms.Contains(otherRoom))
+                    // 
+                    {
+                        // The entrance to the other room in the current room
+                        RoomConnectionNode connectionToOtherRoom = roomConnection.GetConnectionFor(currentRoom);
+                        RoomEntrance currentRoomEntranceToOtherRoom = connectionToOtherRoom.roomEntrance;
+
+                        // The entrance to the other room in the other room
+                        RoomEntrance otherRoomEntrance = roomConnection.GetConnectedRoomEntrance(currentRoom);
+
+                        RouteSegmentNode currentRoomEntranceToOtherRoomNode = new RouteSegmentNode(
+                            currentRoomEntranceToOtherRoom.cellCoordinates,
+                            currentRoom
+                        );
+
+                        // Walk from the current location to the otherRoomEntrance
+                        routeAttemptBranch.AddRouteSegment(
+                            new RouteSegment(
+                                latestSegmentNode,
+                                currentRoomEntranceToOtherRoomNode,
+                                RouteSegmentType.WalkingAcrossRoom
+                            )
+                        );
+
+                        // Walk through the RoomConnection into the otherRoom
+                        routeAttemptBranch.AddRouteSegment(
+                            new RouteSegment(
+                                currentRoomEntranceToOtherRoomNode,
+                                new RouteSegmentNode(
+                                    otherRoomEntrance.cellCoordinates,
+                                    otherRoom
+                                ),
+                                RouteSegmentType.UsingRoomConnection
+                            )
+                        );
+
+                        // We are now in the other room, so we have visited it
+                        routeAttemptBranch.AddVisitedRoom(otherRoom);
+
+                        ContinueRouteAttempt(routeAttemptBranch);
+                    }
+                }
+            }
+
+
+            void CompleteRoute()
+            {
                 // Add final segment from entrance to the point in room
                 currentRouteAttempt.AddRouteSegment(
                     new RouteSegment(
@@ -102,59 +167,6 @@ namespace TowerBuilder.DataTypes.Routes
                 // The route is now over
                 currentRouteAttempt.status = RouteAttempt.Status.Complete;
                 routeAttempts.Add(currentRouteAttempt);
-
-                return;
-            }
-
-            // Keep searching for connections
-            RoomConnections roomConnections = GetRoomConnections(currentRoom);
-
-            foreach (RoomConnection roomConnection in roomConnections.connections)
-            {
-                RouteAttempt routeAttemptBranch = BranchRouteAttempt(currentRouteAttempt);
-                // RouteAttempt routeAttemptBranch = BranchRouteAttempt(currentRouteAttempt);
-                Room otherRoom = roomConnection.GetConnectedRoom(currentRoom);
-
-                if (!routeAttemptBranch.visitedRooms.Contains(otherRoom))
-                {
-                    // The entrance to the other room in the current room
-                    RoomConnectionNode connectionToOtherRoom = roomConnection.GetConnectionFor(currentRoom);
-                    RoomEntrance currentRoomEntranceToOtherRoom = connectionToOtherRoom.roomEntrance;
-
-                    // The entrance to the other room in the other room
-                    RoomEntrance otherRoomEntrance = roomConnection.GetConnectedRoomEntrance(currentRoom);
-
-                    RouteSegmentNode currentRoomEntranceToOtherRoomNode = new RouteSegmentNode(
-                        currentRoomEntranceToOtherRoom.cellCoordinates,
-                        currentRoom
-                    );
-
-                    // Walk from the current location to the otherRoomEntrance
-                    routeAttemptBranch.AddRouteSegment(
-                        new RouteSegment(
-                            latestSegmentNode,
-                            currentRoomEntranceToOtherRoomNode,
-                            RouteSegmentType.WalkingAcrossRoom
-                        )
-                    );
-
-                    // Walk through the RoomConnection into the otherRoom
-                    routeAttemptBranch.AddRouteSegment(
-                        new RouteSegment(
-                            currentRoomEntranceToOtherRoomNode,
-                            new RouteSegmentNode(
-                                otherRoomEntrance.cellCoordinates,
-                                otherRoom
-                            ),
-                            RouteSegmentType.UsingRoomConnection
-                        )
-                    );
-
-                    // We are now in the other room, so we have visited it
-                    routeAttemptBranch.AddVisitedRoom(otherRoom);
-
-                    ContinueRouteAttempt(routeAttemptBranch);
-                }
             }
         }
 
@@ -175,16 +187,6 @@ namespace TowerBuilder.DataTypes.Routes
             {
                 errors.Add(new RouteFinderError($"Invalid coordinates: {cellCoordinates}"));
             }
-        }
-
-        Room FindRoomAtCoordinates(CellCoordinates cellCoordinates)
-        {
-            return Registry.appState.Rooms.queries.FindRoomAtCell(cellCoordinates);
-        }
-
-        RoomConnections GetRoomConnections(Room room)
-        {
-            return Registry.appState.Rooms.roomConnections.FindConnectionsForRoom(room);
         }
     }
 }

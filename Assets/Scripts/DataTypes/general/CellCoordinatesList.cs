@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes
@@ -153,6 +152,11 @@ namespace TowerBuilder.DataTypes
 
         public CellCoordinatesList() { }
 
+        public CellCoordinatesList(CellCoordinates cellCoordinates)
+        {
+            this.items = new List<CellCoordinates>() { cellCoordinates };
+        }
+
         public CellCoordinatesList(List<CellCoordinates> items)
         {
             this.items = items;
@@ -250,6 +254,13 @@ namespace TowerBuilder.DataTypes
             }
 
             return result;
+        }
+
+        public CellCoordinatesList Clone()
+        {
+            return new CellCoordinatesList(
+                items.Select(cellCoordinates => cellCoordinates.Clone()).ToList()
+            );
         }
 
         /*
