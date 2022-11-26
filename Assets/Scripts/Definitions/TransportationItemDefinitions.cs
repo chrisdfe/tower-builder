@@ -34,6 +34,18 @@ namespace TowerBuilder.Definitions
                         new CellCoordinates(0, 1)
                     }
                 )
+            },
+
+            new TransportationItemTemplate() {
+                key = "Doorway",
+                title = "Doorway",
+                category = "Doorways",
+                cellCoordinatesList = new CellCoordinatesList(
+                    new List<CellCoordinates>() {
+                        new CellCoordinates(0, 0),
+                        new CellCoordinates(1, 0)
+                    }
+                )
             }
         };
 

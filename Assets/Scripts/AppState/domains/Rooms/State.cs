@@ -18,22 +18,22 @@ namespace TowerBuilder.ApplicationState.Rooms
         public struct Input
         {
             public RoomList roomList;
-            public RoomConnections roomConnections;
+            public RoomConnectionList roomConnectionList;
         }
 
         public RoomList roomList { get; private set; } = new RoomList();
-        public RoomConnections roomConnections { get; private set; } = new RoomConnections();
+        public RoomConnectionList roomConnectionList { get; private set; } = new RoomConnectionList();
 
-        public State.Events events;
-        public State.Queries queries;
+        public Events events;
+        public Queries queries;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            roomConnections = input.roomConnections ?? new RoomConnections();
+            roomConnectionList = input.roomConnectionList ?? new RoomConnectionList();
             roomList = input.roomList ?? new RoomList();
 
-            events = new State.Events();
-            queries = new State.Queries(this);
+            events = new Events();
+            queries = new Queries(this);
         }
 
         /* 
@@ -99,12 +99,6 @@ namespace TowerBuilder.ApplicationState.Rooms
             {
                 events.onRoomBuilt(room);
             }
-        }
-
-        public void AddAndBuildRoom(Room room)
-        {
-            AddRoom(room);
-            BuildRoom(room);
         }
 
         public void DestroyRoom(Room room)
@@ -185,7 +179,7 @@ namespace TowerBuilder.ApplicationState.Rooms
         */
         public void FindAndAddConnectionsForRoom(Room room)
         {
-            RoomConnections connections = roomConnections.SearchForNewConnectionsToRoom(roomList, room);
+            RoomConnectionList connections = roomConnectionList.SearchForNewConnectionsToRoom(roomList, room);
 
             if (connections.Count > 0)
             {
@@ -193,67 +187,67 @@ namespace TowerBuilder.ApplicationState.Rooms
             }
         }
 
-        public void AddRoomConnections(RoomConnections newRoomConnections)
+        public void AddRoomConnections(RoomConnectionList newRoomConnections)
         {
-            this.roomConnections.Add(newRoomConnections);
+            this.roomConnectionList.Add(newRoomConnections);
 
             if (events.onRoomConnectionsAdded != null)
             {
-                events.onRoomConnectionsAdded(this.roomConnections, newRoomConnections);
+                events.onRoomConnectionsAdded(this.roomConnectionList, newRoomConnections);
             }
 
-            if (events.onRoomConnectionsUpdated != null)
+            if (events.onRoomConnectionListUpdated != null)
             {
-                events.onRoomConnectionsUpdated(this.roomConnections);
+                events.onRoomConnectionListUpdated(this.roomConnectionList);
             }
         }
 
         public void RemoveRoomConnection(RoomConnection roomConnection)
         {
-            roomConnections.Remove(roomConnection);
+            roomConnectionList.Remove(roomConnection);
 
             if (events.onRoomConnectionsRemoved != null)
             {
-                events.onRoomConnectionsRemoved(this.roomConnections, new RoomConnections(new List<RoomConnection>() { roomConnection }));
+                events.onRoomConnectionsRemoved(this.roomConnectionList, new RoomConnectionList(new List<RoomConnection>() { roomConnection }));
             }
 
-            if (events.onRoomConnectionsUpdated != null)
+            if (events.onRoomConnectionListUpdated != null)
             {
-                events.onRoomConnectionsUpdated(this.roomConnections);
+                events.onRoomConnectionListUpdated(this.roomConnectionList);
             }
         }
 
         public void RemoveConnectionsForRoom(Room room)
         {
-            RoomConnections roomConnectionsForRoom = this.roomConnections.FindConnectionsForRoom(room);
+            RoomConnectionList roomConnectionsForRoom = this.roomConnectionList.FindConnectionsForRoom(room);
 
             if (roomConnectionsForRoom.Count == 0) return;
 
-            roomConnections.Remove(roomConnectionsForRoom);
+            roomConnectionList.Remove(roomConnectionsForRoom);
 
             if (events.onRoomConnectionsRemoved != null)
             {
-                events.onRoomConnectionsRemoved(this.roomConnections, roomConnectionsForRoom);
+                events.onRoomConnectionsRemoved(this.roomConnectionList, roomConnectionsForRoom);
             }
 
-            if (events.onRoomConnectionsUpdated != null)
+            if (events.onRoomConnectionListUpdated != null)
             {
-                events.onRoomConnectionsUpdated(this.roomConnections);
+                events.onRoomConnectionListUpdated(this.roomConnectionList);
             }
         }
 
-        public void RemoveRoomConnections(RoomConnections roomConnections)
+        public void RemoveRoomConnections(RoomConnectionList roomConnections)
         {
-            this.roomConnections.Remove(roomConnections);
+            this.roomConnectionList.Remove(roomConnections);
 
             if (events.onRoomConnectionsRemoved != null)
             {
-                events.onRoomConnectionsRemoved(this.roomConnections, roomConnections);
+                events.onRoomConnectionsRemoved(this.roomConnectionList, roomConnections);
             }
 
-            if (events.onRoomConnectionsUpdated != null)
+            if (events.onRoomConnectionListUpdated != null)
             {
-                events.onRoomConnectionsUpdated(this.roomConnections);
+                events.onRoomConnectionListUpdated(this.roomConnectionList);
             }
         }
     }

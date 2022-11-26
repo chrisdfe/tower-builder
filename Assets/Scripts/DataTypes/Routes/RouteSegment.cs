@@ -4,20 +4,46 @@ using TowerBuilder;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Rooms;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Routes
 {
     public class RouteSegment
     {
-        public RouteSegmentNode startNode;
-        public RouteSegmentNode endNode;
-        public RouteSegmentType type;
+        public enum Type
+        {
+            WalkingAcrossRoom,
+            UsingRoomConnection,
+            UsingStairs,
+            UsingElevator,
+        }
+
+        public class Node
+        {
+            public CellCoordinates cellCoordinates { get; private set; }
+            public Room room { get; private set; }
+
+            public Node(CellCoordinates cellCoordinates, Room room)
+            {
+                this.cellCoordinates = cellCoordinates;
+                this.room = room;
+            }
+
+            public Node Clone()
+            {
+                return new Node(cellCoordinates.Clone(), room);
+            }
+        }
+
+        public Node startNode;
+        public Node endNode;
+        public Type type;
 
         public List<CellCoordinates> cellSteps { get; private set; } = new List<CellCoordinates>();
         public int distance { get { return cellSteps.Count; } }
 
-        public RouteSegment(RouteSegmentNode startNode, RouteSegmentNode endNode, RouteSegmentType type)
+        public RouteSegment(Node startNode, Node endNode, Type type)
         {
             this.startNode = startNode;
             this.endNode = endNode;

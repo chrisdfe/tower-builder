@@ -234,7 +234,7 @@ namespace TowerBuilder.GameWorld.Rooms
         void SetRoomEntranceColor(GameWorldRoomEntrance gameWorldRoomEntrance)
         {
             RoomConnection roomEntranceConnection =
-                               Registry.appState.Rooms.roomConnections.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
+                Registry.appState.Rooms.roomConnectionList.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
 
             if (roomEntranceConnection != null)
             {

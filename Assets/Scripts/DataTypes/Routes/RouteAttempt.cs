@@ -48,7 +48,7 @@ namespace TowerBuilder.DataTypes.Routes
             routeSegments.Add(routeSegment);
         }
 
-        public RouteSegmentNode GetLatestSegmentNode()
+        public RouteSegment.Node GetLatestSegmentNode()
         {
             if (routeSegments.Count == 0)
             {

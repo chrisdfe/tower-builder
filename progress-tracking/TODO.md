@@ -4,15 +4,17 @@
 
 ## Tasks
 
+- Placeable windows - new state slice/entity type
+- Template button should be visible when selecting a new entity type - right now it's just the category button
+- replace room entrances with TransportationItems
+  - Remove room entrances
+- Move RoomConnections into its own
 - maybe UI should be a sibling namespace to GameWorld instead of child
-- "TransportationItem" + entities - escalators, stairs
-  - I think I've determined these are functionally different from furniture enough that they are a whole different thing.
-- Furniture should validate that there's not somethinge else at the same coordinates
+- Furniture should validate that there's not other furniture at the same coordinates
   - same with transportation items
 - TransportationItem/Furniture that takes up multiple cells
 - Fix the mesh scaling (everything is either 0.1 or 10 or 100 not 1)
 - room should run furniture validations before being built as well?
-- Work through the room/furniture 'isInBlueprintMode' issue. They're not in sync right now
 - Room color should be based off of furniture (containing a bed = bedroom etc)
 - Some kind of way of making BedCreationWatcher not immediately add new residents - perhaps on a interval longer than every tick
 - Moonlight/inside lights
@@ -47,10 +49,6 @@
 - furniture interaction slots
   - direction (left, center, right)
 - furniture z indexes - in front, behind
-- Placeable windows
-  - either:
-    - "decorations" (like furniture without behaviors)
-    - or a field on roomcell
 - Improved lighting
   - global sun light that rotates/changes color as the day progresses
   - room lights that come on at night
@@ -124,6 +122,9 @@
 
 # Done
 
+- Work through the room/furniture 'isInBlueprintMode' issue. They're not in sync right now
+- "TransportationItem" + entities - escalators, stairs
+  - I think I've determined these are functionally different from furniture enough that they are a whole different thing.
 - function to calculate normalized progress between 2 times of day
 - Furniture validation
 - Resident validation

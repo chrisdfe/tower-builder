@@ -110,7 +110,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectedRoomEntityText(Room room)
         {
-            RoomConnections roomConnections = Registry.appState.Rooms.roomConnections.FindConnectionsForRoom(room);
+            RoomConnectionList roomConnections = Registry.appState.Rooms.roomConnectionList.FindConnectionsForRoom(room);
 
             string text = "Room\n"
             + $"    name: {room}\n"
@@ -118,12 +118,12 @@ namespace TowerBuilder.GameWorld.UI
             + $"    price: {room.price}\n";
 
             text += "\n";
-            text += $"{roomConnections.connections.Count} Connection{(roomConnections.connections.Count == 1 ? "" : "s")}\n";
+            text += $"{roomConnections.Count} Connection{(roomConnections.Count == 1 ? "" : "s")}\n";
 
-            foreach (RoomConnection connection in roomConnections.connections)
+            roomConnections.ForEach(roomConnection =>
             {
-                text += $"    {connection.nodeA.room} - {connection.nodeB.room}\n";
-            }
+                text += $"    {roomConnection.nodeA.room} - {roomConnection.nodeB.room}\n";
+            });
 
             inspectText.text = text;
         }

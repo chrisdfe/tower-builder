@@ -13,7 +13,7 @@ namespace TowerBuilder.DataTypes.Routes
 
         public List<RouteSegment> segments { get; private set; }
 
-        public RouteSegmentNode firstSegmentNode
+        public RouteSegment.Node firstSegmentNode
         {
             get
             {
@@ -21,7 +21,7 @@ namespace TowerBuilder.DataTypes.Routes
             }
         }
 
-        public RouteSegmentNode lastSegmentNode
+        public RouteSegment.Node lastSegmentNode
         {
             get
             {

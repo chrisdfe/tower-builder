@@ -74,15 +74,28 @@ namespace TowerBuilder.DataTypes.Routes
 
                 ContinueRouteAttempt(firstRouteAttempt);
             }
+
+            void ValidateRouteMarker(CellCoordinates cellCoordinates)
+            {
+                Room room = Registry.appState.Rooms.queries.FindRoomAtCell(cellCoordinates);
+
+                // The 0th floor is a special case, since it connects to the outside world
+                // if (room == null && cellCoordinates.floor != 0)
+                // For now both ends have to be in a room
+                if (room == null)
+                {
+                    errors.Add(new RouteFinderError($"Invalid coordinates: {cellCoordinates}"));
+                }
+            }
         }
 
 
         void ContinueRouteAttempt(RouteAttempt currentRouteAttempt)
         {
-            RouteSegmentNode latestSegmentNode;
+            RouteSegment.Node latestSegmentNode;
             if (currentRouteAttempt.routeSegments.Count == 0)
             {
-                latestSegmentNode = new RouteSegmentNode(startCoordinates, startRoom);
+                latestSegmentNode = new RouteSegment.Node(startCoordinates, startRoom);
             }
             else
             {
@@ -97,10 +110,15 @@ namespace TowerBuilder.DataTypes.Routes
             }
             else
             {
-                // Keep searching for connections
-                RoomConnections roomConnections = Registry.appState.Rooms.roomConnections.FindConnectionsForRoom(currentRoom);
+                ContinueRouteSearch();
+            }
 
-                foreach (RoomConnection roomConnection in roomConnections.connections)
+            void ContinueRouteSearch()
+            {
+                // Keep searching for connections
+                RoomConnectionList roomConnectionsList = Registry.appState.Rooms.roomConnectionList.FindConnectionsForRoom(currentRoom);
+
+                foreach (RoomConnection roomConnection in roomConnectionsList.items)
                 {
                     RouteAttempt routeAttemptBranch = BranchRouteAttempt(currentRouteAttempt);
                     Room otherRoom = roomConnection.GetConnectedRoom(currentRoom);
@@ -109,13 +127,13 @@ namespace TowerBuilder.DataTypes.Routes
                     // 
                     {
                         // The entrance to the other room in the current room
-                        RoomConnectionNode connectionToOtherRoom = roomConnection.GetConnectionFor(currentRoom);
+                        RoomConnection.Node connectionToOtherRoom = roomConnection.GetConnectionFor(currentRoom);
                         RoomEntrance currentRoomEntranceToOtherRoom = connectionToOtherRoom.roomEntrance;
 
                         // The entrance to the other room in the other room
                         RoomEntrance otherRoomEntrance = roomConnection.GetConnectedRoomEntrance(currentRoom);
 
-                        RouteSegmentNode currentRoomEntranceToOtherRoomNode = new RouteSegmentNode(
+                        RouteSegment.Node currentRoomEntranceToOtherRoomNode = new RouteSegment.Node(
                             currentRoomEntranceToOtherRoom.cellCoordinates,
                             currentRoom
                         );
@@ -125,7 +143,7 @@ namespace TowerBuilder.DataTypes.Routes
                             new RouteSegment(
                                 latestSegmentNode,
                                 currentRoomEntranceToOtherRoomNode,
-                                RouteSegmentType.WalkingAcrossRoom
+                                RouteSegment.Type.WalkingAcrossRoom
                             )
                         );
 
@@ -133,11 +151,11 @@ namespace TowerBuilder.DataTypes.Routes
                         routeAttemptBranch.AddRouteSegment(
                             new RouteSegment(
                                 currentRoomEntranceToOtherRoomNode,
-                                new RouteSegmentNode(
+                                new RouteSegment.Node(
                                     otherRoomEntrance.cellCoordinates,
                                     otherRoom
                                 ),
-                                RouteSegmentType.UsingRoomConnection
+                                RouteSegment.Type.UsingRoomConnection
                             )
                         );
 
@@ -149,18 +167,17 @@ namespace TowerBuilder.DataTypes.Routes
                 }
             }
 
-
             void CompleteRoute()
             {
                 // Add final segment from entrance to the point in room
                 currentRouteAttempt.AddRouteSegment(
                     new RouteSegment(
                         latestSegmentNode,
-                        new RouteSegmentNode(
+                        new RouteSegment.Node(
                             endCoordinates,
                             endRoom
                         ),
-                        RouteSegmentType.WalkingAcrossRoom
+                        RouteSegment.Type.WalkingAcrossRoom
                     )
                 );
 
@@ -174,19 +191,6 @@ namespace TowerBuilder.DataTypes.Routes
         {
             routeAttempts.Add(routeAttempt);
             return routeAttempt.Clone();
-        }
-
-        void ValidateRouteMarker(CellCoordinates cellCoordinates)
-        {
-            Room room = Registry.appState.Rooms.queries.FindRoomAtCell(cellCoordinates);
-
-            // The 0th floor is a special case, since it connects to the outside world
-            // if (room == null && cellCoordinates.floor != 0)
-            // For now both ends have to be in a room
-            if (room == null)
-            {
-                errors.Add(new RouteFinderError($"Invalid coordinates: {cellCoordinates}"));
-            }
         }
     }
 }

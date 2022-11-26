@@ -32,7 +32,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Vehicles.events.onVehicleListUpdated += OnVehicleListUpdated;
 
             Registry.appState.Rooms.events.onRoomListUpdated += OnRoomListUpdated;
-            Registry.appState.Rooms.events.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
+            Registry.appState.Rooms.events.onRoomConnectionListUpdated += OnRoomConnectionListUpdated;
 
             currentSelectedCellText = TransformUtils.FindDeepChild(transform, "CurrentSelectedCellText").GetComponent<Text>();
             currentSelectedCellText.text = "";
@@ -76,7 +76,7 @@ namespace TowerBuilder.GameWorld.UI
             SetRoomCountText();
         }
 
-        void OnRoomConnectionsUpdated(RoomConnections roomConnection)
+        void OnRoomConnectionListUpdated(RoomConnectionList roomConnectionList)
         {
             SetRoomConnectionsText();
         }
@@ -113,8 +113,8 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetRoomConnectionsText()
         {
-            RoomConnections roomConnections = Registry.appState.Rooms.roomConnections;
-            roomConnectionsText.text = $"Room Connections: {roomConnections.Count}";
+            RoomConnectionList roomConnectionList = Registry.appState.Rooms.roomConnectionList;
+            roomConnectionsText.text = $"Room Connections: {roomConnectionList.Count}";
         }
     }
 }

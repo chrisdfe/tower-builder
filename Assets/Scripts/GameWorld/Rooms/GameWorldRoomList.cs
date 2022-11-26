@@ -31,7 +31,7 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.Rooms.events.onRoomBuilt += OnRoomBuilt;
             Registry.appState.Rooms.events.onRoomRemoved += OnRoomDestroyed;
             Registry.appState.Rooms.events.onRoomBlocksUpdated += OnRoomBlocksUpdated;
-            Registry.appState.Rooms.events.onRoomConnectionsUpdated += OnRoomConnectionsUpdated;
+            Registry.appState.Rooms.events.onRoomConnectionListUpdated += OnRoomConnectionListUpdated;
 
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
@@ -46,7 +46,7 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.Rooms.events.onRoomBuilt -= OnRoomBuilt;
             Registry.appState.Rooms.events.onRoomRemoved -= OnRoomDestroyed;
             Registry.appState.Rooms.events.onRoomBlocksUpdated -= OnRoomBlocksUpdated;
-            Registry.appState.Rooms.events.onRoomConnectionsUpdated -= OnRoomConnectionsUpdated;
+            Registry.appState.Rooms.events.onRoomConnectionListUpdated -= OnRoomConnectionListUpdated;
 
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
@@ -82,7 +82,7 @@ namespace TowerBuilder.GameWorld.Rooms
             gameWorldRoom.Reset();
         }
 
-        void OnRoomConnectionsUpdated(RoomConnections roomConnections)
+        void OnRoomConnectionListUpdated(RoomConnectionList roomConnectionList)
         {
             SetRoomCellColors();
         }

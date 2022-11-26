@@ -1,21 +1,49 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime;
 using TowerBuilder.DataTypes.Rooms.Entrances;
-using UnityEngine;
+using TowerBuilder.DataTypes.TransportationItems;
 
 namespace TowerBuilder.DataTypes.Rooms.Connections
 {
     public class RoomConnection
     {
-        public RoomConnectionNode nodeA;
-        public RoomConnectionNode nodeB;
-
-        public RoomConnection(Room roomA, RoomEntrance roomAEntrance, Room roomB, RoomEntrance roomBEntrance)
+        public class Node
         {
-            this.nodeA = new RoomConnectionNode(roomA, roomAEntrance);
-            this.nodeB = new RoomConnectionNode(roomB, roomBEntrance);
+            public Room room;
+            public TransportationItem transportationItem;
+            public TransportationItem.Node transportationItemNode;
+            public CellCoordinates cellCoordinates;
+
+            public override string ToString()
+            {
+                // return $"room: {room.id}, roomEntrance: {roomEntrance}, {roomEntrance.cellCoordinates}";
+                return $"room: {room.id}, cellCoordinates: {cellCoordinates}";
+            }
+
+            // public Node(Room room, RoomEntrance roomEntrance)
+            public Node()
+            {
+                // this.room = room;
+                // this.roomEntrance = roomEntrance;
+            }
+
+            public bool Matches(Node otherNode)
+            {
+                // return room == otherNode.room && roomEntrance == otherNode.roomEntrance;
+                return (
+                    otherNode.room == room &&
+                    otherNode.transportationItem == transportationItem &&
+                    otherNode.transportationItemNode == transportationItemNode &&
+                    otherNode.cellCoordinates == cellCoordinates
+                );
+            }
+        }
+
+        public Node nodeA;
+        public Node nodeB;
+
+        public RoomConnection(Node nodeA, Node nodeB)
+        {
+            this.nodeA = nodeA;
+            this.nodeB = nodeB;
         }
 
         public override string ToString()
@@ -33,12 +61,12 @@ namespace TowerBuilder.DataTypes.Rooms.Connections
             return room == nodeA.room || room == nodeB.room;
         }
 
-        public bool ContainsRoomEntrance(RoomEntrance roomEntrance)
-        {
-            return roomEntrance == nodeA.roomEntrance || roomEntrance == nodeB.roomEntrance;
-        }
+        // public bool ContainsRoomEntrance(RoomEntrance roomEntrance)
+        // {
+        //     return roomEntrance == nodeA.roomEntrance || roomEntrance == nodeB.roomEntrance;
+        // }
 
-        public RoomConnectionNode GetConnectionFor(Room room)
+        public Node GetConnectionFor(Room room)
         {
             if (nodeA.room == room)
             {
@@ -53,7 +81,7 @@ namespace TowerBuilder.DataTypes.Rooms.Connections
             return null;
         }
 
-        public RoomConnectionNode GetOtherConnectionNodeFor(Room room)
+        public Node GetOtherConnectionNodeFor(Room room)
         {
             if (nodeA.room == room)
             {
@@ -70,23 +98,11 @@ namespace TowerBuilder.DataTypes.Rooms.Connections
 
         public Room GetConnectedRoom(Room room)
         {
-            RoomConnectionNode node = GetOtherConnectionNodeFor(room);
+            Node node = GetOtherConnectionNodeFor(room);
 
             if (node != null)
             {
                 return node.room;
-            }
-
-            return null;
-        }
-
-        public RoomEntrance GetConnectedRoomEntrance(Room room)
-        {
-            RoomConnectionNode node = GetOtherConnectionNodeFor(room);
-
-            if (node != null)
-            {
-                return node.roomEntrance;
             }
 
             return null;

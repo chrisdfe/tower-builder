@@ -31,12 +31,12 @@ namespace TowerBuilder.ApplicationState.Rooms
             public delegate void RoomBlockUpdatedEvent(Room room);
             public RoomBlockUpdatedEvent onRoomBlocksUpdated;
 
-            public delegate void RoomConnectionsEvent(RoomConnections allRoomConnections, RoomConnections roomConnections);
+            public delegate void RoomConnectionsEvent(RoomConnectionList allRoomConnections, RoomConnectionList roomConnections);
             public RoomConnectionsEvent onRoomConnectionsAdded;
             public RoomConnectionsEvent onRoomConnectionsRemoved;
 
-            public delegate void RoomConnectionsUpdatedEvent(RoomConnections allRoomConnections);
-            public RoomConnectionsUpdatedEvent onRoomConnectionsUpdated;
+            public delegate void RoomConnectionsUpdatedEvent(RoomConnectionList allRoomConnections);
+            public RoomConnectionsUpdatedEvent onRoomConnectionListUpdated;
         }
     }
 }

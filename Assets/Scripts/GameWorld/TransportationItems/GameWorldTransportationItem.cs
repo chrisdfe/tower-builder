@@ -7,6 +7,7 @@ using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.TransportationItems;
+using TowerBuilder.Utils;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -15,12 +16,18 @@ namespace TowerBuilder.GameWorld.Rooms
     {
         public TransportationItem transportationItem;
 
+        Transform meshWrapper;
+        Transform cube;
+
         /*
             Lifecycle Methods
         */
         void Awake()
         {
             transform.localPosition = Vector3.zero;
+
+            meshWrapper = transform.Find("MeshWrapper");
+            cube = meshWrapper.Find("Cube");
         }
 
         void OnDestroy()
@@ -30,6 +37,7 @@ namespace TowerBuilder.GameWorld.Rooms
         public void Setup()
         {
             UpdatePosition();
+            CreateMesh();
         }
 
         public void Teardown()
@@ -54,6 +62,20 @@ namespace TowerBuilder.GameWorld.Rooms
             transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(transportationItem.cellCoordinatesList.items[0]);
         }
 
+        /* 
+            Internals
+        */
+        void CreateMesh()
+        {
+            TransformUtils.DestroyChildren(meshWrapper);
+
+            // for now just copy the cube into every other cell
+            foreach (CellCoordinates cellCoordinates in transportationItem.cellCoordinatesList.items)
+            {
+                Transform cubeClone = Instantiate(cube, GameWorldMapCellHelpers.CellCoordinatesToPosition(cellCoordinates), Quaternion.identity);
+                cubeClone.SetParent(transform);
+            }
+        }
 
         /* 
             Static API

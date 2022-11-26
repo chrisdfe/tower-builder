@@ -5,46 +5,26 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms.Connections
 {
-    public class RoomConnections
+    public class RoomConnectionList : ListWrapper<RoomConnection>
     {
-        public List<RoomConnection> connections = new List<RoomConnection>();
+        public RoomConnectionList() : base() { }
+        public RoomConnectionList(RoomConnection item) : base(item) { }
+        public RoomConnectionList(List<RoomConnection> items) : base(items) { }
+        public RoomConnectionList(RoomConnectionList roomConnectionList) : base(roomConnectionList) { }
 
-        public int Count { get { return connections.Count; } }
-
-        public RoomConnections() { }
-        public RoomConnections(List<RoomConnection> connections)
+        public RoomConnectionList FindConnectionsForRoom(Room room)
         {
-            this.connections = connections;
-        }
-
-        public void Add(RoomConnections roomConnections)
-        {
-            connections = connections.Concat(roomConnections.connections).ToList();
-        }
-
-        public void Remove(RoomConnection roomConnection)
-        {
-            connections.Remove(roomConnection);
-        }
-
-        public void Remove(RoomConnections roomConnections)
-        {
-            connections.RemoveAll(roomConnection => roomConnections.connections.Contains(roomConnection));
-        }
-
-        public RoomConnections FindConnectionsForRoom(Room room)
-        {
-            return new RoomConnections(
-                connections.FindAll(roomConnection => roomConnection.ContainsRoom(room))
+            return new RoomConnectionList(
+                items.FindAll(roomConnection => roomConnection.ContainsRoom(room))
             );
         }
 
         public RoomConnection FindConnectionForRoomEntrance(RoomEntrance roomEntrance)
         {
-            return connections.Find(roomConnection => roomConnection.ContainsRoomEntrance(roomEntrance));
+            return items.Find(roomConnection => roomConnection.ContainsRoomEntrance(roomEntrance));
         }
 
-        public RoomConnections SearchForNewConnectionsToRoom(RoomList roomList, Room targetRoom)
+        public RoomConnectionList SearchForNewConnectionsToRoom(RoomList roomList, Room targetRoom)
         {
             List<RoomConnection> result = new List<RoomConnection>();
 
@@ -87,7 +67,7 @@ namespace TowerBuilder.DataTypes.Rooms.Connections
                 }
             }
 
-            return new RoomConnections(result);
+            return new RoomConnectionList(result);
         }
     }
 }

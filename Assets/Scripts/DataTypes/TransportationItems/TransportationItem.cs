@@ -24,8 +24,8 @@ namespace TowerBuilder.DataTypes.TransportationItems
 
         public bool isInBlueprintMode = false;
 
-        public Node nodeA;
-        public Node nodeb;
+        public Node fromNode;
+        public Node toNode;
 
         public TransportationItemTemplate template;
 
