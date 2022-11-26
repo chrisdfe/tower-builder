@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Furnitures;
-using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.DataTypes.Rooms.FurnitureBuilders;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
@@ -21,9 +20,6 @@ namespace TowerBuilder.DataTypes.Rooms
         public Dimensions blockDimensions;
 
         public RoomResizability resizability = RoomResizability.Inflexible;
-
-        public delegate RoomEntranceBuilderBase EntranceBuilderFactory();
-        public EntranceBuilderFactory entranceBuilderFactory = () => new DefaultEntranceBuilder();
 
         public delegate RoomFurnitureBuilderBase FurnitureBuilderFactory(Room room);
         public FurnitureBuilderFactory furnitureBuilderFactory = (Room room) => new RoomFurnitureBuilderBase(room);

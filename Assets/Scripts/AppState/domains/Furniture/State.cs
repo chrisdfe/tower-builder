@@ -166,15 +166,10 @@ namespace TowerBuilder.ApplicationState.Furnitures
         void OnRoomBuilt(Room room)
         {
             FurnitureList roomFurnitures = queries.FindFurnitureByRoom(room);
-            Debug.Log("roomFurnitures");
-            Debug.Log(roomFurnitures.Count);
 
             FurnitureList blueprintFurnitures = new FurnitureList(
                 roomFurnitures.items.FindAll(roomFurniture => roomFurniture.isInBlueprintMode == true).ToList()
             );
-
-            Debug.Log("blueprintFurnitures");
-            Debug.Log(blueprintFurnitures.Count);
 
             if (blueprintFurnitures.Count > 0)
             {

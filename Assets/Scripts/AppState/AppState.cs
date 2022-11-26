@@ -16,8 +16,6 @@ namespace TowerBuilder.ApplicationState
 
             public TransportationItems.State.Input transportationItems;
 
-            public Routes.State.Input routes;
-
             public Vehicles.State.Input vehicles;
 
             public ResidentMotors.State.Input residentMotors;
@@ -41,8 +39,6 @@ namespace TowerBuilder.ApplicationState
                 furnitureHomeSlotOccupations = new FurnitureHomeSlotOccupations.State.Input();
 
                 transportationItems = new TransportationItems.State.Input();
-
-                routes = new Routes.State.Input();
 
                 vehicles = new Vehicles.State.Input();
 
@@ -69,8 +65,6 @@ namespace TowerBuilder.ApplicationState
         public TransportationItems.State TransportationItems;
 
         public Vehicles.State Vehicles;
-
-        public Routes.State Routes;
 
         public ResidentMotors.State ResidentMotors;
 
@@ -115,8 +109,6 @@ namespace TowerBuilder.ApplicationState
             FurnitureHomeSlotOccupations = new FurnitureHomeSlotOccupations.State(this, input.furnitureHomeSlotOccupations);
 
             TransportationItems = new TransportationItems.State(this, input.transportationItems);
-
-            Routes = new Routes.State(this, input.routes);
 
             Vehicles = new Vehicles.State(this, input.vehicles);
 

@@ -57,9 +57,7 @@ namespace TowerBuilder.GameWorld.Rooms
         */
         public void UpdatePosition()
         {
-            float TILE_SIZE = DataTypes.Rooms.Constants.TILE_SIZE;
-
-            transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(transportationItem.cellCoordinatesList.items[0]);
+            transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(transportationItem.cellCoordinatesList.items[0], 1f);
         }
 
         /* 

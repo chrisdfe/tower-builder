@@ -14,9 +14,7 @@ namespace TowerBuilder.DataTypes.Routes
         public enum Type
         {
             WalkingAcrossRoom,
-            UsingRoomConnection,
-            UsingStairs,
-            UsingElevator,
+            UsingTransportationItem,
         }
 
         public class Node

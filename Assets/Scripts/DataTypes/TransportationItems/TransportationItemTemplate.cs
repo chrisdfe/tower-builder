@@ -11,5 +11,7 @@ namespace TowerBuilder.DataTypes.TransportationItems
         public int pricePerCell = 0;
 
         public CellCoordinatesList cellCoordinatesList = new CellCoordinatesList(CellCoordinates.zero);
+        public CellCoordinates entranceCellCoordinates = CellCoordinates.zero;
+        public CellCoordinates exitCellCoordinates = CellCoordinates.zero;
     }
 }

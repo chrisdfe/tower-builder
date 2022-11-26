@@ -5,8 +5,6 @@ using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Connections;
-using TowerBuilder.DataTypes.Rooms.Entrances;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -31,7 +29,6 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.Rooms.events.onRoomBuilt += OnRoomBuilt;
             Registry.appState.Rooms.events.onRoomRemoved += OnRoomDestroyed;
             Registry.appState.Rooms.events.onRoomBlocksUpdated += OnRoomBlocksUpdated;
-            Registry.appState.Rooms.events.onRoomConnectionListUpdated += OnRoomConnectionListUpdated;
 
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
@@ -46,7 +43,6 @@ namespace TowerBuilder.GameWorld.Rooms
             Registry.appState.Rooms.events.onRoomBuilt -= OnRoomBuilt;
             Registry.appState.Rooms.events.onRoomRemoved -= OnRoomDestroyed;
             Registry.appState.Rooms.events.onRoomBlocksUpdated -= OnRoomBlocksUpdated;
-            Registry.appState.Rooms.events.onRoomConnectionListUpdated -= OnRoomConnectionListUpdated;
 
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
@@ -80,11 +76,6 @@ namespace TowerBuilder.GameWorld.Rooms
             GameWorldRoom gameWorldRoom = FindGameWorldRoomByRoom(room);
             if (gameWorldRoom == null) return;
             gameWorldRoom.Reset();
-        }
-
-        void OnRoomConnectionListUpdated(RoomConnectionList roomConnectionList)
-        {
-            SetRoomCellColors();
         }
 
         void OnCurrentSelectedRoomUpdated(Room selectedRoom)

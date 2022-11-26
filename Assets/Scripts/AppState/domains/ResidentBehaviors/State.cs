@@ -120,7 +120,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         public void SendResidentTo(Resident resident, Furniture furniture)
         {
-            Route route = new RouteFinder().FindRouteBetween(resident.cellCoordinates, furniture.cellCoordinates);
+            Route route = new RouteFinder(appState).FindRouteBetween(resident.cellCoordinates, furniture.cellCoordinates);
 
             if (route != null)
             {
@@ -133,7 +133,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         public void SendResidentTo(Resident resident, CellCoordinates cellCoordinates)
         {
-            Route route = new RouteFinder().FindRouteBetween(resident.cellCoordinates, cellCoordinates);
+            Route route = new RouteFinder(appState).FindRouteBetween(resident.cellCoordinates, cellCoordinates);
 
             if (route != null)
             {

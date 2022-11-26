@@ -1,13 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using Newtonsoft.Json;
-using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.DataTypes.Rooms.FurnitureBuilders;
 using TowerBuilder.DataTypes.Rooms.Validators;
-using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms
@@ -40,10 +33,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public RoomBlocks blocks;
 
-        public List<RoomEntrance> entrances { get; private set; } = new List<RoomEntrance>();
-
         public RoomValidatorBase validator { get; private set; }
-        public RoomEntranceBuilderBase entranceBuilder { get; private set; }
         public RoomFurnitureBuilderBase furnitureBuilder { get; private set; }
 
         public RoomSkinKey skinKey;
@@ -55,6 +45,7 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public Room(RoomTemplate roomTemplate)
         {
+            this.id = UIDGenerator.Generate("Room");
 
             this.title = roomTemplate.title;
             this.key = roomTemplate.key;
@@ -66,7 +57,6 @@ namespace TowerBuilder.DataTypes.Rooms
             this.roomTemplate = roomTemplate;
 
             this.validator = roomTemplate.validatorFactory(this);
-            this.entranceBuilder = roomTemplate.entranceBuilderFactory();
             this.furnitureBuilder = roomTemplate.furnitureBuilderFactory(this);
 
             this.color = roomTemplate.color;
@@ -91,7 +81,6 @@ namespace TowerBuilder.DataTypes.Rooms
         public void Reset()
         {
             // blocks.cells.Refresh();
-            ResetRoomEntrances();
         }
 
         public RoomCells FindBlockByCellCoordinates(CellCoordinates cellCoordinates)
@@ -142,25 +131,6 @@ namespace TowerBuilder.DataTypes.Rooms
             this.blocks = newBlocks;
 
             Reset();
-        }
-
-        /* 
-            RoomEntrances
-        */
-        public void ResetRoomEntrances()
-        {
-            DestroyRoomEntrances();
-            CreateRoomEntrances();
-        }
-
-        void CreateRoomEntrances()
-        {
-            entrances = entranceBuilder.BuildRoomEntrances(blocks.cells);
-        }
-
-        void DestroyRoomEntrances()
-        {
-            entrances = null;
         }
     }
 }

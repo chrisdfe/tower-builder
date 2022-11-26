@@ -4,7 +4,6 @@ using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Connections;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools
@@ -18,7 +17,6 @@ namespace TowerBuilder.ApplicationState.Tools
             public ToolState? toolState;
             public CellCoordinates currentSelectedCell;
 
-            // public NoneToolState.Input noneToolState;
             public BuildToolState.Input buildToolState;
             public DestroyToolState.Input destroyToolState;
             public InspectToolState.Input inspectToolState;

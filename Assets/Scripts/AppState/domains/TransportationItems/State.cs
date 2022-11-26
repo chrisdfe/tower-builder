@@ -1,3 +1,5 @@
+using System.Linq;
+using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.TransportationItems;
 using UnityEngine;
 
@@ -26,6 +28,13 @@ namespace TowerBuilder.ApplicationState.TransportationItems
             {
                 this.state = state;
             }
+
+            public TransportationItemsList FindTransportationItemsConnectingToRoom(Room room)
+            {
+                return new TransportationItemsList(
+                    state.transportationItemsList.items.FindAll(transportationItem => transportationItem.ConnectsToRoom(room)).ToList()
+                );
+            }
         }
 
         public Events events { get; private set; }
@@ -46,6 +55,9 @@ namespace TowerBuilder.ApplicationState.TransportationItems
         public void AddTransportationItem(TransportationItem transportationItem)
         {
             transportationItemsList.Add(transportationItem);
+
+            transportationItem.entranceNode.room = appState.Rooms.queries.FindRoomAtCell(transportationItem.entranceNode.cellCoordinates);
+            transportationItem.exitNode.room = appState.Rooms.queries.FindRoomAtCell(transportationItem.exitNode.cellCoordinates);
 
             if (events.onTransportationItemAdded != null)
             {

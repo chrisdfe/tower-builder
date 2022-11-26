@@ -166,7 +166,6 @@ namespace TowerBuilder.GameWorld.Map.MapManager
                 [ToolState.Inspect] = new InspectToolStateInputHandlers(this),
                 [ToolState.Build] = new BuildToolStateInputHandlers(this),
                 [ToolState.Destroy] = new DestroyToolStateInputHandlers(this),
-                [ToolState.Routes] = new RoutesToolStateInputHandlers(this),
             };
 
             SetCurrentToolStateHandlers();

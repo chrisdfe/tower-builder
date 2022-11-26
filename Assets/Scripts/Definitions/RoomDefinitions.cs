@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Entrances;
 using TowerBuilder.DataTypes.Rooms.FurnitureBuilders;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
@@ -25,7 +24,6 @@ namespace TowerBuilder.Definitions
                 blockDimensions = new Dimensions(1, 1),
                 resizability = RoomResizability.Horizontal,
 
-                entranceBuilderFactory = () => new HallwayEntranceBuilder(),
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
                 color = Color.gray
@@ -42,7 +40,6 @@ namespace TowerBuilder.Definitions
                 blockDimensions = new Dimensions(1, 1),
                 resizability = RoomResizability.Horizontal,
 
-                entranceBuilderFactory = () => new EmptyEntranceBuilder(),
                 validatorFactory = (Room room) => new WheelsRoomValidator(room),
 
                 color = Color.gray,
@@ -61,7 +58,6 @@ namespace TowerBuilder.Definitions
             //     blockDimensions = new Dimensions(1, 2),
             //     resizability = RoomResizability.Horizontal,
 
-            //     entranceBuilderFactory = () => new EmptyEntranceBuilder(),
             //     validatorFactory = (Room room) => new WheelsRoomValidator(room),
 
             //     color = Color.gray,
@@ -76,19 +72,6 @@ namespace TowerBuilder.Definitions
                 category = "Office",
 
                 blockDimensions = new Dimensions(3, 1),
-
-                entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
-                    {
-                        new RoomEntrance() {
-                            position = RoomEntrance.Position.Left,
-                            cellCoordinates = new CellCoordinates(0, 0)
-                        },
-                        new RoomEntrance() {
-                            position = RoomEntrance.Position.Right,
-                            cellCoordinates = new CellCoordinates(2, 0)
-                        },
-                    }
-                ),
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
@@ -105,20 +88,6 @@ namespace TowerBuilder.Definitions
 
                 blockDimensions = new Dimensions(2, 1),
 
-                entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
-                    {
-                        new RoomEntrance()
-                        {
-                            position = RoomEntrance.Position.Left,
-                            cellCoordinates = new CellCoordinates(0, 0)
-                        },
-                        new RoomEntrance()
-                        {
-                            position = RoomEntrance.Position.Right,
-                            cellCoordinates = new CellCoordinates(1, 0)
-                        },
-                    }
-                ),
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
@@ -134,19 +103,6 @@ namespace TowerBuilder.Definitions
                 category = "Residence",
 
                 blockDimensions = new Dimensions(2, 1),
-
-                entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
-                    {
-                        new RoomEntrance() {
-                            position = RoomEntrance.Position.Left,
-                            cellCoordinates = new CellCoordinates(0, 0)
-                        },
-                        new RoomEntrance() {
-                            position = RoomEntrance.Position.Right,
-                            cellCoordinates = new CellCoordinates(1, 0)
-                        },
-                    }
-                ),
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
@@ -165,19 +121,6 @@ namespace TowerBuilder.Definitions
 
                 blockDimensions = new Dimensions(5, 1),
 
-                entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
-                    {
-                        new RoomEntrance() {
-                            position = RoomEntrance.Position.Left,
-                            cellCoordinates = new CellCoordinates(0, 0)
-                        },
-                        new RoomEntrance() {
-                            position = RoomEntrance.Position.Right,
-                            cellCoordinates = new CellCoordinates(4, 0)
-                        },
-                    }
-                ),
-
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
                 color = Color.yellow,
@@ -195,7 +138,6 @@ namespace TowerBuilder.Definitions
 
                 resizability = RoomResizability.Vertical,
 
-                entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
 
                 validatorFactory = (Room room) => new ElevatorRoomValidator(room),
 
@@ -214,7 +156,6 @@ namespace TowerBuilder.Definitions
 
                 resizability = RoomResizability.Vertical,
 
-                entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
 
                 validatorFactory = (Room room) => new ElevatorRoomValidator(room),
 
@@ -233,7 +174,6 @@ namespace TowerBuilder.Definitions
 
                 resizability = RoomResizability.Vertical,
 
-                entranceBuilderFactory = () => new ElevatorEntranceBuilder(),
                 validatorFactory = (Room room) => new ElevatorRoomValidator(room),
 
                 color = Color.magenta,
@@ -253,7 +193,6 @@ namespace TowerBuilder.Definitions
                 resizability = RoomResizability.Vertical,
                 color = Color.yellow,
 
-                entranceBuilderFactory = () => new StairwellEntranceBuilder(),
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
             },
@@ -272,7 +211,6 @@ namespace TowerBuilder.Definitions
                 resizability = RoomResizability.Vertical,
                 color = Color.yellow,
 
-                entranceBuilderFactory = () => new StairwellEntranceBuilder(),
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
             },
@@ -290,17 +228,6 @@ namespace TowerBuilder.Definitions
 
                 resizability = RoomResizability.Flexible,
 
-                entranceBuilderFactory = () => new InflexibleRoomEntranceBuilder(new List<RoomEntrance>()
-                {
-                    new RoomEntrance() {
-                        position = RoomEntrance.Position.Left,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                    new RoomEntrance() {
-                        position = RoomEntrance.Position.Right,
-                        cellCoordinates = new CellCoordinates(0, 0)
-                    },
-                }),
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
 

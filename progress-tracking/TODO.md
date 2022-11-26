@@ -8,7 +8,7 @@
 - Template button should be visible when selecting a new entity type - right now it's just the category button
 - replace room entrances with TransportationItems
   - Remove room entrances
-- Move RoomConnections into its own
+- Move RoomConnections into its own state slice
 - maybe UI should be a sibling namespace to GameWorld instead of child
 - Furniture should validate that there's not other furniture at the same coordinates
   - same with transportation items

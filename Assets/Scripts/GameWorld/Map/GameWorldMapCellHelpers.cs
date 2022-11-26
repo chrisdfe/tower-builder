@@ -19,12 +19,12 @@ namespace TowerBuilder.GameWorld.Rooms
         /* 
             Static API
         */
-        public static Vector3 CellCoordinatesToPosition(CellCoordinates cellCoordinates)
+        public static Vector3 CellCoordinatesToPosition(CellCoordinates cellCoordinates, float zIndex = 0f)
         {
             return new Vector3(
                 RoundToNearestTile(cellCoordinates.x),
                 RoundToNearestTile(cellCoordinates.floor),
-                0
+                zIndex
             );
         }
     }

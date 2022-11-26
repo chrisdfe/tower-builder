@@ -22,6 +22,9 @@ namespace TowerBuilder.DataTypes.Routes
         public List<Room> visitedRooms { get; private set; } = new List<Room>();
         public List<RouteSegment> routeSegments { get; private set; } = new List<RouteSegment>();
 
+        public Room currentRoom;
+        public CellCoordinates currentCellCoordinates;
+
         public int distance
         {
             get
@@ -30,6 +33,26 @@ namespace TowerBuilder.DataTypes.Routes
                     .Select(routeSegment => routeSegment.distance)
                     .Aggregate(0, (acc, segmentDistance) => acc + segmentDistance);
             }
+        }
+
+        public RouteSegment.Node latestSegmentNode
+        {
+            get
+            {
+                if (routeSegments.Count == 0)
+                {
+                    return new RouteSegment.Node(currentCellCoordinates, currentRoom);
+                }
+
+                RouteSegment latestSegment = routeSegments.Last();
+                return latestSegment.endNode;
+            }
+        }
+
+        public RouteAttempt()
+        {
+            visitedRooms = new List<Room>();
+            routeSegments = new List<RouteSegment>();
         }
 
         public RouteAttempt(List<Room> vistedRooms, List<RouteSegment> routeSegments)
@@ -43,20 +66,19 @@ namespace TowerBuilder.DataTypes.Routes
             visitedRooms.Add(room);
         }
 
+        public void GoTo(RouteSegment.Node node, RouteSegment.Type travelingType)
+        {
+            Debug.Log($"Going to {node.room}");
+            Debug.Log("latestSegmentNode");
+            Debug.Log(latestSegmentNode);
+            routeSegments.Add(new RouteSegment(latestSegmentNode, node, travelingType));
+            currentCellCoordinates = node.cellCoordinates;
+            currentRoom = node.room;
+        }
+
         public void AddRouteSegment(RouteSegment routeSegment)
         {
             routeSegments.Add(routeSegment);
-        }
-
-        public RouteSegment.Node GetLatestSegmentNode()
-        {
-            if (routeSegments.Count == 0)
-            {
-                return null;
-            }
-
-            RouteSegment latestSegment = routeSegments.Last();
-            return latestSegment.endNode;
         }
 
         public RouteAttempt Clone()
@@ -64,7 +86,11 @@ namespace TowerBuilder.DataTypes.Routes
             return new RouteAttempt(
                 new List<Room>(visitedRooms),
                 new List<RouteSegment>(routeSegments)
-            );
+            )
+            {
+                currentRoom = currentRoom,
+                currentCellCoordinates = currentCellCoordinates
+            };
         }
     }
 }

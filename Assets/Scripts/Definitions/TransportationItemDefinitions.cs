@@ -21,7 +21,9 @@ namespace TowerBuilder.Definitions
                         new CellCoordinates(0, 0),
                         new CellCoordinates(1, 1)
                     }
-                )
+                ),
+                entranceCellCoordinates = new CellCoordinates(0, 0),
+                exitCellCoordinates = new CellCoordinates(1, 1),
             },
 
             new TransportationItemTemplate() {
@@ -33,7 +35,9 @@ namespace TowerBuilder.Definitions
                         new CellCoordinates(0, 0),
                         new CellCoordinates(0, 1)
                     }
-                )
+                ),
+                entranceCellCoordinates = new CellCoordinates(0, 0),
+                exitCellCoordinates = new CellCoordinates(0, 1),
             },
 
             new TransportationItemTemplate() {
@@ -45,7 +49,9 @@ namespace TowerBuilder.Definitions
                         new CellCoordinates(0, 0),
                         new CellCoordinates(1, 0)
                     }
-                )
+                ),
+                entranceCellCoordinates = new CellCoordinates(0, 0),
+                exitCellCoordinates = new CellCoordinates(1, 0),
             }
         };
 

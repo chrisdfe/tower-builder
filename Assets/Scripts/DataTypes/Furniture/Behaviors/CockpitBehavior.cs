@@ -10,8 +10,6 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
     {
         public override FurnitureBehaviorTag[] tags { get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Cockpit }; } }
 
-        public CockpitBehavior(Furniture furniture) : base(furniture)
-        {
-        }
+        public CockpitBehavior(Furniture furniture) : base(furniture) { }
     }
 }

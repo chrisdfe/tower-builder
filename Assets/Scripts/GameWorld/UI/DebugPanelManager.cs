@@ -6,7 +6,6 @@ using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.DataTypes.Vehicles;
 using TowerBuilder.Systems;
 using TowerBuilder.Utils;
@@ -32,7 +31,6 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Vehicles.events.onVehicleListUpdated += OnVehicleListUpdated;
 
             Registry.appState.Rooms.events.onRoomListUpdated += OnRoomListUpdated;
-            Registry.appState.Rooms.events.onRoomConnectionListUpdated += OnRoomConnectionListUpdated;
 
             currentSelectedCellText = TransformUtils.FindDeepChild(transform, "CurrentSelectedCellText").GetComponent<Text>();
             currentSelectedCellText.text = "";
@@ -53,7 +51,6 @@ namespace TowerBuilder.GameWorld.UI
             SetSelectionBoxText();
             SetVehicleCountText();
             SetRoomCountText();
-            SetRoomConnectionsText();
         }
 
         void OnCurrentSelectedCellUpdated(CellCoordinates cellCoordinates)
@@ -74,11 +71,6 @@ namespace TowerBuilder.GameWorld.UI
         void OnRoomListUpdated(RoomList roomList)
         {
             SetRoomCountText();
-        }
-
-        void OnRoomConnectionListUpdated(RoomConnectionList roomConnectionList)
-        {
-            SetRoomConnectionsText();
         }
 
         void SetCurrentSelectedCellText()
@@ -109,12 +101,6 @@ namespace TowerBuilder.GameWorld.UI
         {
             RoomList roomsList = Registry.appState.Rooms.roomList;
             roomCountText.text = $"Rooms: {roomsList.Count}";
-        }
-
-        void SetRoomConnectionsText()
-        {
-            RoomConnectionList roomConnectionList = Registry.appState.Rooms.roomConnectionList;
-            roomConnectionsText.text = $"Room Connections: {roomConnectionList.Count}";
         }
     }
 }

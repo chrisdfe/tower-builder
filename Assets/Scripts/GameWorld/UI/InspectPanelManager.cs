@@ -7,7 +7,6 @@ using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Residents.Behaviors;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -72,9 +71,6 @@ namespace TowerBuilder.GameWorld.UI
                 case RoomEntity roomEntity:
                     SetInspectedRoomEntityText(roomEntity.room);
                     break;
-                case RoomBlockEntity roomBlockEntity:
-                    SetInspectedRoomBlockText(roomBlockEntity.roomBlock);
-                    break;
                 case FurnitureEntity furnitureEntity:
                     SetInspectedFurnitureText(furnitureEntity.furniture);
                     break;
@@ -101,29 +97,12 @@ namespace TowerBuilder.GameWorld.UI
             inspectText.text = text;
         }
 
-        void SetInspectedRoomBlockText(RoomCells roomBlock)
-        {
-            string text = "RoomBlock";
-
-            inspectText.text = text;
-        }
-
         void SetInspectedRoomEntityText(Room room)
         {
-            RoomConnectionList roomConnections = Registry.appState.Rooms.roomConnectionList.FindConnectionsForRoom(room);
-
             string text = "Room\n"
             + $"    name: {room}\n"
             + $"    title: {room.title}\n"
             + $"    price: {room.price}\n";
-
-            text += "\n";
-            text += $"{roomConnections.Count} Connection{(roomConnections.Count == 1 ? "" : "s")}\n";
-
-            roomConnections.ForEach(roomConnection =>
-            {
-                text += $"    {roomConnection.nodeA.room} - {roomConnection.nodeB.room}\n";
-            });
 
             inspectText.text = text;
         }
@@ -148,8 +127,6 @@ namespace TowerBuilder.GameWorld.UI
             switch (inspectedEntity)
             {
                 case RoomEntity roomEntity:
-                    break;
-                case RoomBlockEntity roomBlockEntity:
                     break;
                 case FurnitureEntity furnitureEntity:
                     CreateFurnitureActionButtons(furnitureEntity.furniture);

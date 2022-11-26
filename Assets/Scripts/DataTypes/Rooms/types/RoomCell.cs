@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime;
 using Newtonsoft.Json;
-using TowerBuilder.DataTypes.Rooms.Entrances;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms

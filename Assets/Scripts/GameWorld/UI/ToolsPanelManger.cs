@@ -13,7 +13,6 @@ namespace TowerBuilder.GameWorld.UI
     {
         ToolStateButtonsManager toolStateButtonsManager;
         BuildStateButtonsManager buildStateButtonsManager;
-        RoutesStateButtonsManager routesStateButtonsManager;
 
         Text descriptionText;
 
@@ -21,12 +20,10 @@ namespace TowerBuilder.GameWorld.UI
         {
             toolStateButtonsManager = transform.Find("ToolStateButtons").GetComponent<ToolStateButtonsManager>();
             buildStateButtonsManager = transform.Find("BuildStateButtons").GetComponent<BuildStateButtonsManager>();
-            routesStateButtonsManager = transform.Find("RoutesStateButtons").GetComponent<RoutesStateButtonsManager>();
 
             descriptionText = transform.Find("DescriptionText").GetComponent<Text>();
 
             ToggleBuildStateButtonsPanel(false);
-            ToggleRoutesStateButtonsPanel(false);
             UpdateDescriptionText();
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
@@ -40,15 +37,9 @@ namespace TowerBuilder.GameWorld.UI
             switch (toolState)
             {
                 case ToolState.Build:
-                    ToggleRoutesStateButtonsPanel(false);
                     ToggleBuildStateButtonsPanel(true);
                     break;
-                case ToolState.Routes:
-                    ToggleRoutesStateButtonsPanel(true);
-                    ToggleBuildStateButtonsPanel(false);
-                    break;
                 default:
-                    ToggleRoutesStateButtonsPanel(false);
                     ToggleBuildStateButtonsPanel(false);
                     break;
             }
@@ -93,11 +84,6 @@ namespace TowerBuilder.GameWorld.UI
         void ToggleBuildStateButtonsPanel(bool show)
         {
             buildStateButtonsManager.gameObject.SetActive(show);
-        }
-
-        void ToggleRoutesStateButtonsPanel(bool show)
-        {
-            routesStateButtonsManager.gameObject.SetActive(show);
         }
     }
 }

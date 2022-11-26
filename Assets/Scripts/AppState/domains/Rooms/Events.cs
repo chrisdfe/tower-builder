@@ -5,7 +5,6 @@ using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Connections;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
@@ -30,13 +29,6 @@ namespace TowerBuilder.ApplicationState.Rooms
 
             public delegate void RoomBlockUpdatedEvent(Room room);
             public RoomBlockUpdatedEvent onRoomBlocksUpdated;
-
-            public delegate void RoomConnectionsEvent(RoomConnectionList allRoomConnections, RoomConnectionList roomConnections);
-            public RoomConnectionsEvent onRoomConnectionsAdded;
-            public RoomConnectionsEvent onRoomConnectionsRemoved;
-
-            public delegate void RoomConnectionsUpdatedEvent(RoomConnectionList allRoomConnections);
-            public RoomConnectionsUpdatedEvent onRoomConnectionListUpdated;
         }
     }
 }

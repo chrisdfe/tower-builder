@@ -7,8 +7,6 @@ using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Connections;
-using TowerBuilder.DataTypes.Rooms.Entrances;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -18,7 +16,6 @@ namespace TowerBuilder.GameWorld.Rooms
         public Room room { get; private set; }
 
         public List<GameWorldRoomCell> gameWorldRoomCells = new List<GameWorldRoomCell>();
-        public List<GameWorldRoomEntrance> gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
 
         /*
             Lifecycle Methods
@@ -31,32 +28,27 @@ namespace TowerBuilder.GameWorld.Rooms
         void OnDestroy()
         {
             DestroyRoomCells();
-            DestroyRoomEntrances();
         }
 
         public void Setup()
         {
             CreateRoomCells();
-            CreateRoomEntrances();
         }
 
         public void Teardown()
         {
             DestroyRoomCells();
-            DestroyRoomEntrances();
         }
 
         public void Reset()
         {
             ResetRoomCells();
-            ResetRoomEntrances();
         }
 
         // When this has been converted from a blueprint room to a actual room
         public void OnBuild()
         {
             ResetRoomCells();
-            ResetRoomEntrances();
         }
 
         /* 
@@ -189,10 +181,7 @@ namespace TowerBuilder.GameWorld.Rooms
                 //     hasUpdated = true;
                 // }
 
-                if (
-                    ((inspectedEntity is RoomEntity) && ((RoomEntity)inspectedEntity).room == room) ||
-                    ((inspectedEntity is RoomBlockEntity) && ((RoomBlockEntity)inspectedEntity).roomBlock.cells.Contains(gameWorldRoomCell.roomCell))
-                )
+                if ((inspectedEntity is RoomEntity) && ((RoomEntity)inspectedEntity).room == room)
                 {
                     gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.Inspected);
                     hasUpdated = true;
@@ -200,51 +189,6 @@ namespace TowerBuilder.GameWorld.Rooms
             }
         }
 
-        /* 
-            Room Entrances
-         */
-        void CreateRoomEntrances()
-        {
-            foreach (RoomEntrance roomEntrance in room.entrances)
-            {
-                GameWorldRoomEntrance gameWorldRoomEntrance = GameWorldRoomEntrance.Create(transform);
-                gameWorldRoomEntrance.roomEntrance = roomEntrance;
-                gameWorldRoomEntrance.Setup();
-                SetRoomEntranceColor(gameWorldRoomEntrance);
-                gameWorldRoomEntrances.Add(gameWorldRoomEntrance);
-            }
-        }
-
-        void DestroyRoomEntrances()
-        {
-            foreach (GameWorldRoomEntrance gameWorldRoomEntrance in gameWorldRoomEntrances)
-            {
-                GameObject.Destroy(gameWorldRoomEntrance.gameObject);
-            }
-
-            gameWorldRoomEntrances = new List<GameWorldRoomEntrance>();
-        }
-
-        void ResetRoomEntrances()
-        {
-            DestroyRoomEntrances();
-            CreateRoomEntrances();
-        }
-
-        void SetRoomEntranceColor(GameWorldRoomEntrance gameWorldRoomEntrance)
-        {
-            RoomConnection roomEntranceConnection =
-                Registry.appState.Rooms.roomConnectionList.FindConnectionForRoomEntrance(gameWorldRoomEntrance.roomEntrance);
-
-            if (roomEntranceConnection != null)
-            {
-                gameWorldRoomEntrance.SetConnectedColor();
-            }
-            else
-            {
-                gameWorldRoomEntrance.ResetColor();
-            }
-        }
 
         /* 
             Static API
