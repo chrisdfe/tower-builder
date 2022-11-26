@@ -6,9 +6,21 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 {
     public abstract class StateHandlerBase
     {
-        protected AppState appState;
+        public enum StateKey
+        {
+            None,
+            Idle,
+            Traveling,
+            InteractingWithFurniture,
+        }
 
-        public abstract class TransitionPayloadBase { }
+        protected AppState appState;
+        public virtual StateKey key { get; } = StateKey.None;
+
+        public abstract class TransitionPayloadBase
+        {
+            public virtual StateKey key { get; } = StateKey.None;
+        }
 
         public ResidentBehavior residentBehavior { get; private set; }
 

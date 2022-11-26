@@ -22,17 +22,27 @@ namespace TowerBuilder.ApplicationState.TransportationItems
 
         public class Queries
         {
+            AppState appState;
             State state;
 
-            public Queries(State state)
+            public Queries(AppState appState, State state)
             {
+                this.appState = appState;
                 this.state = state;
             }
 
             public TransportationItemsList FindTransportationItemsConnectingToRoom(Room room)
             {
+                Debug.Log("FindTransportationItemsConnectingToRoom");
+                Debug.Log($"Finding connections to {room}");
+
                 return new TransportationItemsList(
-                    state.transportationItemsList.items.FindAll(transportationItem => transportationItem.ConnectsToRoom(room)).ToList()
+                    state.transportationItemsList.items.FindAll(transportationItem =>
+                    {
+                        Room entranceCellRoom = appState.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
+                        Room exitCellRoom = appState.Rooms.queries.FindRoomAtCell(transportationItem.exitCellCoordinates);
+                        return (entranceCellRoom == room || exitCellRoom == room);
+                    }).ToList()
                 );
             }
         }
@@ -47,7 +57,7 @@ namespace TowerBuilder.ApplicationState.TransportationItems
             transportationItemsList = input.transportationItemsList ?? new TransportationItemsList();
 
             events = new Events();
-            queries = new Queries(this);
+            queries = new Queries(appState, this);
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
@@ -56,8 +66,8 @@ namespace TowerBuilder.ApplicationState.TransportationItems
         {
             transportationItemsList.Add(transportationItem);
 
-            transportationItem.entranceNode.room = appState.Rooms.queries.FindRoomAtCell(transportationItem.entranceNode.cellCoordinates);
-            transportationItem.exitNode.room = appState.Rooms.queries.FindRoomAtCell(transportationItem.exitNode.cellCoordinates);
+            // transportationItem.entranceNode.room = appState.Rooms.queries.FindRoomAtCell(transportationItem.entranceNode.cellCoordinates);
+            // transportationItem.exitNode.room = appState.Rooms.queries.FindRoomAtCell(transportationItem.exitNode.cellCoordinates);
 
             if (events.onTransportationItemAdded != null)
             {

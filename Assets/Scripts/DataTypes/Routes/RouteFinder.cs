@@ -30,8 +30,6 @@ namespace TowerBuilder.DataTypes.Routes
         Room startRoom;
         Room endRoom;
 
-        RouteAttempt currentRouteAttempt;
-
         public List<RouteError> errors = new List<RouteError>();
 
         public List<RouteAttempt> sucessfulRouteAttempts
@@ -69,16 +67,14 @@ namespace TowerBuilder.DataTypes.Routes
 
             startRoom = appState.Rooms.queries.FindRoomAtCell(startCoordinates);
             endRoom = appState.Rooms.queries.FindRoomAtCell(endCoordinates);
+            routeAttempts = new List<RouteAttempt>();
 
-            BeginFirstRouteAttempt();
+            RouteAttempt firstRouteAttempt = new RouteAttempt();
+            firstRouteAttempt.currentCellCoordinates = startCoordinates;
+            firstRouteAttempt.currentRoom = startRoom;
+            firstRouteAttempt.AddVisitedRoom(startRoom);
 
-            Debug.Log("done.");
-            Debug.Log("routeAttempts: ");
-            Debug.Log(routeAttempts.Count);
-            Debug.Log("sucessfulRouteAttempts: ");
-            Debug.Log(sucessfulRouteAttempts.Count);
-            Debug.Log("bestRouteAttempt");
-            Debug.Log(bestRouteAttempt);
+            ContinueRouteAttempt(firstRouteAttempt);
 
             if (bestRouteAttempt != null)
             {
@@ -86,18 +82,6 @@ namespace TowerBuilder.DataTypes.Routes
             }
 
             return null;
-
-            void BeginFirstRouteAttempt()
-            {
-                routeAttempts = new List<RouteAttempt>();
-
-                RouteAttempt firstRouteAttempt = new RouteAttempt(new List<Room>(), new List<RouteSegment>());
-                firstRouteAttempt.currentCellCoordinates = startCoordinates;
-                firstRouteAttempt.currentRoom = startRoom;
-                firstRouteAttempt.AddVisitedRoom(startRoom);
-
-                ContinueRouteAttempt(firstRouteAttempt);
-            }
 
             void ValidateRouteMarker(CellCoordinates cellCoordinates)
             {
@@ -115,44 +99,56 @@ namespace TowerBuilder.DataTypes.Routes
 
         void ContinueRouteAttempt(RouteAttempt currentRouteAttempt)
         {
-            this.currentRouteAttempt = currentRouteAttempt;
-
             if (currentRouteAttempt.latestSegmentNode.room == endRoom)
             {
-                CompleteRoute();
+                CompleteRoute(currentRouteAttempt);
             }
             else
             {
                 TransportationItemsList transportationItemsList = appState.TransportationItems.queries.FindTransportationItemsConnectingToRoom(currentRouteAttempt.currentRoom);
 
-                Debug.Log($"Found {transportationItemsList.Count} transportation items to use");
-
                 transportationItemsList.ForEach(transportationItem =>
                 {
-                    UseTransportationItemIfUnvisited(transportationItem);
+                    UseTransportationItemIfUnvisited(currentRouteAttempt, transportationItem);
                 });
             }
         }
 
-        void UseTransportationItemIfUnvisited(TransportationItem transportationItem)
+        void UseTransportationItemIfUnvisited(RouteAttempt currentRouteAttempt, TransportationItem transportationItem)
         {
             routeAttempts.Add(currentRouteAttempt);
 
-            RouteAttempt routeAttemptBranch = currentRouteAttempt.Clone(); ;
-            TransportationItem.Node currentRoomNode = transportationItem.FindNodeByRoom(currentRouteAttempt.latestSegmentNode.room);
-            TransportationItem.Node otherRoomNode = transportationItem.GetOtherNode(currentRoomNode);
+            RouteAttempt routeAttemptBranch = currentRouteAttempt.Clone();
 
-            Debug.Log($"currentRoom: {currentRouteAttempt.latestSegmentNode.room}");
-            Debug.Log($"otherRoom: {otherRoomNode.room}");
+            // Determine which way we're traveling through this transportation item, entrance->exit or exit->entrance
+            Room entranceRoom = Registry.appState.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
+            Room exitRoom = Registry.appState.Rooms.queries.FindRoomAtCell(transportationItem.exitCellCoordinates);
+            // TODO - check if transportation item is one way
 
-            if (!routeAttemptBranch.visitedRooms.Contains(otherRoomNode.room))
-            // 
+            CellCoordinates transportationStartCoordinates;
+            CellCoordinates transportationEndCoordinates;
+            Room nextRoom;
+
+            if (routeAttemptBranch.currentRoom == entranceRoom)
+            {
+                nextRoom = exitRoom;
+                transportationStartCoordinates = transportationItem.entranceCellCoordinates;
+                transportationEndCoordinates = transportationItem.exitCellCoordinates;
+            }
+            else
+            {
+                nextRoom = entranceRoom;
+                transportationStartCoordinates = transportationItem.exitCellCoordinates;
+                transportationEndCoordinates = transportationItem.entranceCellCoordinates;
+            }
+
+            if (!routeAttemptBranch.visitedRooms.Contains(nextRoom))
             {
                 // Walk from the current location to the otherRoomEntrance
                 routeAttemptBranch.GoTo(
                     new RouteSegment.Node(
-                        currentRoomNode.cellCoordinates,
-                        currentRoomNode.room
+                        transportationStartCoordinates,
+                        routeAttemptBranch.currentRoom
                     ),
                     RouteSegment.Type.WalkingAcrossRoom
                 );
@@ -160,20 +156,17 @@ namespace TowerBuilder.DataTypes.Routes
                 // Use transportationItem and end up at the other Node
                 routeAttemptBranch.GoTo(
                     new RouteSegment.Node(
-                        otherRoomNode.cellCoordinates,
-                        otherRoomNode.room
+                        transportationEndCoordinates,
+                        nextRoom
                     ),
                     RouteSegment.Type.UsingTransportationItem
                 );
-
-                // We are now in the other room, so we have visited it
-                routeAttemptBranch.AddVisitedRoom(otherRoomNode.room);
 
                 ContinueRouteAttempt(routeAttemptBranch);
             }
         }
 
-        void CompleteRoute()
+        void CompleteRoute(RouteAttempt currentRouteAttempt)
         {
             // Add final segment from entrance to the point in room
             currentRouteAttempt.GoTo(
@@ -185,8 +178,8 @@ namespace TowerBuilder.DataTypes.Routes
             );
 
             // The route is now over
-            currentRouteAttempt.status = RouteAttempt.Status.Complete;
             routeAttempts.Add(currentRouteAttempt);
+            currentRouteAttempt.status = RouteAttempt.Status.Complete;
         }
     }
 }

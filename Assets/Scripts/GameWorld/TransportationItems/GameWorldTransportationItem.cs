@@ -72,6 +72,7 @@ namespace TowerBuilder.GameWorld.Rooms
             {
                 Transform cubeClone = Instantiate(cube, GameWorldMapCellHelpers.CellCoordinatesToPosition(cellCoordinates), Quaternion.identity);
                 cubeClone.SetParent(transform);
+                cubeClone.Translate(new Vector3(0, 0, 0.5f));
             }
         }
 

@@ -48,7 +48,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
             StateHandlerBase.TransitionPayloadBase nextStatePayload = currentStateHandler.GetNextState();
 
-            if (nextStatePayload != null)
+            if (nextStatePayload != null && nextStatePayload.key != currentStateHandler.key)
             {
                 TransitionTo(nextStatePayload);
             }
@@ -75,7 +75,6 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
         {
             // search for goals
             GoalBase nextGoal = GetNextGoal();
-            Debug.Log("next goal: " + nextGoal);
 
             if (nextGoal != null)
             {

@@ -69,20 +69,16 @@ namespace TowerBuilder.GameWorld.Rooms
         */
         void OnTransportationItemAdded(TransportationItem transportationItem)
         {
-            Debug.Log("Added");
             CreateTransportationItem(transportationItem);
         }
 
         void OnTransportationItemRemoved(TransportationItem transportationItem)
         {
-            Debug.Log("Removed");
             RemoveTransportationtItem(transportationItem);
         }
 
         void OnTransportationItemBuilt(TransportationItem transportationItem)
         {
-            Debug.Log("Built");
         }
-
     }
 }

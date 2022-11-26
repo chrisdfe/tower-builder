@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- Move entities when placing them instead of continually adding/removing them
 - Placeable windows - new state slice/entity type
 - Template button should be visible when selecting a new entity type - right now it's just the category button
 - replace room entrances with TransportationItems

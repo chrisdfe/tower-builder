@@ -9,6 +9,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
     {
         public class TransitionPayload : TransitionPayloadBase
         {
+            public override StateKey key { get; } = StateKey.Traveling;
             public Route route;
             // For now assume that residents always travel between pieces of furniture
             // public Furniture furniture;

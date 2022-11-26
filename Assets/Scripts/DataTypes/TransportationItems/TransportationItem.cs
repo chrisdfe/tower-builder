@@ -6,19 +6,19 @@ namespace TowerBuilder.DataTypes.TransportationItems
 {
     public class TransportationItem
     {
-        public class Node
-        {
-            public Room room;
-            public CellCoordinates cellCoordinates;
+        // public class Node
+        // {
+        //     public Room room;
+        //     public CellCoordinates cellCoordinates;
 
-            public bool Matches(Node otherNode)
-            {
-                return (
-                    otherNode.room == room &&
-                    otherNode.cellCoordinates == cellCoordinates
-                );
-            }
-        }
+        //     public bool Matches(Node otherNode)
+        //     {
+        //         return (
+        //             otherNode.room == room &&
+        //             otherNode.cellCoordinates == cellCoordinates
+        //         );
+        //     }
+        // }
 
         public int id { get; private set; }
 
@@ -35,8 +35,8 @@ namespace TowerBuilder.DataTypes.TransportationItems
 
         public bool isInBlueprintMode = false;
 
-        public Node entranceNode;
-        public Node exitNode;
+        // public Node entranceNode;
+        // public Node exitNode;
 
         public bool isOneWay = false;
 
@@ -56,8 +56,7 @@ namespace TowerBuilder.DataTypes.TransportationItems
             this.entranceCellCoordinates = template.entranceCellCoordinates;
             this.exitCellCoordinates = template.exitCellCoordinates;
 
-            this.entranceNode = new Node() { cellCoordinates = template.entranceCellCoordinates };
-            this.exitNode = new Node() { cellCoordinates = template.exitCellCoordinates };
+            this.template = template;
         }
 
         public void OnBuild()
@@ -71,54 +70,69 @@ namespace TowerBuilder.DataTypes.TransportationItems
         public void PositionAtCoordinates(CellCoordinates cellCoordinates)
         {
             cellCoordinatesList.PositionAtCoordinates(cellCoordinates);
-            entranceNode.cellCoordinates = CellCoordinates.Add(cellCoordinates, entranceCellCoordinates);
-            exitNode.cellCoordinates = CellCoordinates.Add(cellCoordinates, exitCellCoordinates);
+            entranceCellCoordinates = CellCoordinates.Add(cellCoordinates, template.entranceCellCoordinates);
+            exitCellCoordinates = CellCoordinates.Add(cellCoordinates, template.exitCellCoordinates);
         }
 
-        public bool ConnectsToRoom(Room room)
-        {
-            return (
-                entranceNode.room == room ||
-                exitNode.room == room
-            );
-        }
+        // public bool ConnectsToRoom(Room room)
+        // {
+        //     return (
+        //         entranceNode.room == room ||
+        //         exitNode.room == room
+        //     );
+        // }
 
-        public bool ContainsNode(Node node)
-        {
-            return node != null && (entranceNode.Matches(node) || exitNode.Matches(node));
-        }
+        // public bool ContainsNode(Node node)
+        // {
+        //     return node != null && (entranceNode.Matches(node) || exitNode.Matches(node));
+        // }
 
-        public Node GetOtherNode(Node node)
+        public CellCoordinates GetEntranceOrExit(CellCoordinates cellCoordinates)
         {
-            if (ContainsNode(node))
+            if (cellCoordinates.Matches(entranceCellCoordinates))
             {
-                if (node.Matches(entranceNode))
-                {
-                    return exitNode;
-                }
+                return exitCellCoordinates;
+            }
 
-                if (node.Matches(exitNode))
-                {
-                    return entranceNode;
-                }
+            if (cellCoordinates.Matches(exitCellCoordinates))
+            {
+
             }
 
             return null;
         }
 
-        public Node FindNodeByRoom(Room room)
-        {
-            if (entranceNode.room == room)
-            {
-                return entranceNode;
-            }
+        // public Node GetOtherNode(Node node)
+        // {
+        //     if (ContainsNode(node))
+        //     {
+        //         if (node.Matches(entranceNode))
+        //         {
+        //             return exitNode;
+        //         }
 
-            if (exitNode.room == room)
-            {
-                return exitNode;
-            }
+        //         if (node.Matches(exitNode))
+        //         {
+        //             return entranceNode;
+        //         }
+        //     }
 
-            return null;
-        }
+        //     return null;
+        // }
+
+        // public Node FindNodeByRoom(Room room)
+        // {
+        //     if (entranceNode.room == room)
+        //     {
+        //         return entranceNode;
+        //     }
+
+        //     if (exitNode.room == room)
+        //     {
+        //         return exitNode;
+        //     }
+
+        //     return null;
+        // }
     }
 }

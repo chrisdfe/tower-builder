@@ -6,8 +6,11 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 {
     public class IdleStateHandler : StateHandlerBase
     {
+        public override StateKey key { get; } = StateKey.Idle;
+
         public class TransitionPayload : TransitionPayloadBase
         {
+            public override StateKey key { get; } = StateKey.Idle;
         }
 
         public IdleStateHandler(ResidentBehavior residentBehavior) : base(residentBehavior)
@@ -26,7 +29,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public override void ProcessTick()
         {
-            Debug.Log("Idle");
+            // Debug.Log("Idle");
         }
 
         public override TransitionPayloadBase GetNextState()

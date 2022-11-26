@@ -8,8 +8,11 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 {
     public class InteractingWithFurnitureStateHandler : StateHandlerBase
     {
+        public override StateKey key { get; } = StateKey.InteractingWithFurniture;
+
         public class TransitionPayload : TransitionPayloadBase
         {
+            public override StateKey key { get; } = StateKey.InteractingWithFurniture;
             public Furniture furniture;
         }
 

@@ -73,6 +73,7 @@ namespace TowerBuilder.DataTypes.Routes
             Debug.Log(latestSegmentNode);
             routeSegments.Add(new RouteSegment(latestSegmentNode, node, travelingType));
             currentCellCoordinates = node.cellCoordinates;
+            visitedRooms.Add(node.room);
             currentRoom = node.room;
         }
 
