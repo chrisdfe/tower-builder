@@ -11,18 +11,9 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
         {
             public override StateKey key { get; } = StateKey.Traveling;
             public Route route;
-            // For now assume that residents always travel between pieces of furniture
-            // public Furniture furniture;
-        }
-
-        public enum StateType
-        {
-            Walking,
-            UsingStairs
         }
 
         public Route route { get; private set; }
-        public StateType currentState { get; private set; } = StateType.Walking;
 
         int currentSegmentIndex = 0;
         bool isAtFinalSegmentIndex { get { return currentSegmentIndex >= route.segments.Count - 1; } }

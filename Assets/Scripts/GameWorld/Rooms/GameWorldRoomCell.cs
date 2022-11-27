@@ -13,6 +13,8 @@ namespace TowerBuilder.GameWorld.Rooms
 {
     public class GameWorldRoomCell : MonoBehaviour
     {
+        public AssetList assetList = new AssetList();
+
         public enum ColorKey
         {
             Base,

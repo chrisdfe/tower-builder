@@ -174,3 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44a4630a292bda48a59728508d42143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  assetList:
+    assetList:
+    - key: Ladder
+      gameObject: {fileID: 1415673999713459903, guid: 38517811e24a60841b19b30b0ce6940a, type: 3}

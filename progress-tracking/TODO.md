@@ -4,6 +4,19 @@
 
 ## Tasks
 
+- starting a room selection inside another room should expand that room
+- system for items that can connect horizontally/vertically
+  - a way of organizing/naming nodes in the mesh tree to do this automatically without configuration
+- "Journey" datatype - driving vehicle gets you closer to your destination
+- Things you can do/specialize in with your vehicle:
+  - be a bus (have passengers)
+  - be an overnight bus (hotel rooms)
+  - deliver things (freight room)
+- Camera that bypasses fog for build/destroy/inspection modes
+- helpers for finding a cell off of the side of the left or right side of the screen, for spawning new residents, npc vehicles etc
+- Replace AssetManager with putting more unity-centric AssetList field on prefabs
+- TransportationItem meshes
+- TransportationItem selectable entity
 - Move entities when placing them instead of continually adding/removing them
 - Placeable windows - new state slice/entity type
 - Template button should be visible when selecting a new entity type - right now it's just the category button

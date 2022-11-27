@@ -123,8 +123,8 @@ namespace TowerBuilder.DataTypes.Routes
             // Determine which way we're traveling through this transportation item, entrance->exit or exit->entrance
             Room entranceRoom = Registry.appState.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
             Room exitRoom = Registry.appState.Rooms.queries.FindRoomAtCell(transportationItem.exitCellCoordinates);
-            // TODO - check if transportation item is one way
 
+            // TODO - check if transportation item is one way
             CellCoordinates transportationStartCoordinates;
             CellCoordinates transportationEndCoordinates;
             Room nextRoom;

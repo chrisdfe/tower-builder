@@ -14,10 +14,17 @@ namespace TowerBuilder.GameWorld.Rooms
 {
     public class GameWorldTransportationItem : MonoBehaviour
     {
+        public AssetList assetList = new AssetList();
+
+        [HideInInspector]
         public TransportationItem transportationItem;
 
-        Transform meshWrapper;
-        Transform cube;
+        LadderMeshWrapper ladderMeshWrapper;
+
+        public delegate TransportationItemMeshWrapperBase MeshWrapperFactory(GameWorldTransportationItem gameWorldTransportationItem, Transform meshTransform);
+        static Dictionary<string, MeshWrapperFactory> MeshWrapperKeyMap = new Dictionary<string, MeshWrapperFactory>() {
+            { "Ladder", (gameWorldTransportationItem, meshTransform) => new LadderMeshWrapper(gameWorldTransportationItem, meshTransform) }
+        };
 
         /*
             Lifecycle Methods
@@ -26,13 +33,10 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             transform.localPosition = Vector3.zero;
 
-            meshWrapper = transform.Find("MeshWrapper");
-            cube = meshWrapper.Find("Cube");
+            ladderMeshWrapper = new LadderMeshWrapper(this, assetList.FindByKey("Ladder").transform);
         }
 
-        void OnDestroy()
-        {
-        }
+        void OnDestroy() { }
 
         public void Setup()
         {
@@ -65,15 +69,16 @@ namespace TowerBuilder.GameWorld.Rooms
         */
         void CreateMesh()
         {
-            TransformUtils.DestroyChildren(meshWrapper);
+            TransformUtils.DestroyChildren(transform);
+            ladderMeshWrapper.CreateMesh();
 
             // for now just copy the cube into every other cell
-            foreach (CellCoordinates cellCoordinates in transportationItem.cellCoordinatesList.items)
-            {
-                Transform cubeClone = Instantiate(cube, GameWorldMapCellHelpers.CellCoordinatesToPosition(cellCoordinates), Quaternion.identity);
-                cubeClone.SetParent(transform);
-                cubeClone.Translate(new Vector3(0, 0, 0.5f));
-            }
+            // foreach (CellCoordinates cellCoordinates in transportationItem.cellCoordinatesList.items)
+            // {
+            //     Transform cubeClone = Instantiate(cube, GameWorldMapCellHelpers.CellCoordinatesToPosition(cellCoordinates), Quaternion.identity);
+            //     cubeClone.SetParent(transform);
+            //     cubeClone.Translate(new Vector3(0, 0, 0.5f));
+            // }
         }
 
         /* 
@@ -88,6 +93,41 @@ namespace TowerBuilder.GameWorld.Rooms
 
             GameWorldTransportationItem gameWorldTransportationItem = roomGameObject.GetComponent<GameWorldTransportationItem>();
             return gameWorldTransportationItem;
+        }
+
+        /*
+            Internal classes
+        */
+        public abstract class TransportationItemMeshWrapperBase
+        {
+            public Transform meshTransform;
+            public GameWorldTransportationItem gameWorldTransportationItem { get; private set; }
+
+            public TransportationItemMeshWrapperBase(GameWorldTransportationItem gameWorldTransportationItem, Transform meshTransform)
+            {
+                this.gameWorldTransportationItem = gameWorldTransportationItem;
+                this.meshTransform = meshTransform;
+            }
+
+            public virtual void Setup() { }
+
+            public virtual void Teardown() { }
+
+            public void CreateMesh()
+            {
+                Transform cubeClone = Instantiate(
+                    meshTransform,
+                    GameWorldMapCellHelpers.CellCoordinatesToPosition(gameWorldTransportationItem.transportationItem.cellCoordinatesList.items[0]),
+                    Quaternion.identity
+                );
+                cubeClone.SetParent(gameWorldTransportationItem.transform);
+                // cubeClone.Translate(new Vector3(0, 0, 0.5f));
+            }
+        }
+
+        public class LadderMeshWrapper : TransportationItemMeshWrapperBase
+        {
+            public LadderMeshWrapper(GameWorldTransportationItem gameWorldTransportationItem, Transform meshTransform) : base(gameWorldTransportationItem, meshTransform) { }
         }
     }
 }

@@ -18,6 +18,9 @@ namespace TowerBuilder.GameWorld
         [SerializeField]
         public List<GameObject> assets = new List<GameObject>();
 
+        [SerializeField]
+        public List<GameObject> transportationItemModels = new List<GameObject>();
+
         public GameObject FindByName(string key)
         {
             return assets.Find(asset => asset.name == key);
