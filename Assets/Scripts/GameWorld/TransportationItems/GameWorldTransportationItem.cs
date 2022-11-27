@@ -14,7 +14,12 @@ namespace TowerBuilder.GameWorld.Rooms
 {
     public class GameWorldTransportationItem : MonoBehaviour
     {
-        public AssetList assetList = new AssetList();
+        public enum ModelKey
+        {
+            Ladder
+        }
+
+        public AssetList<ModelKey> assetList = new AssetList<ModelKey>();
 
         [HideInInspector]
         public TransportationItem transportationItem;
@@ -22,8 +27,8 @@ namespace TowerBuilder.GameWorld.Rooms
         LadderMeshWrapper ladderMeshWrapper;
 
         public delegate TransportationItemMeshWrapperBase MeshWrapperFactory(GameWorldTransportationItem gameWorldTransportationItem, Transform meshTransform);
-        static Dictionary<string, MeshWrapperFactory> MeshWrapperKeyMap = new Dictionary<string, MeshWrapperFactory>() {
-            { "Ladder", (gameWorldTransportationItem, meshTransform) => new LadderMeshWrapper(gameWorldTransportationItem, meshTransform) }
+        static Dictionary<ModelKey, MeshWrapperFactory> MeshWrapperKeyMap = new Dictionary<ModelKey, MeshWrapperFactory>() {
+            { ModelKey.Ladder, (gameWorldTransportationItem, meshTransform) => new LadderMeshWrapper(gameWorldTransportationItem, meshTransform) }
         };
 
         /*
@@ -33,7 +38,7 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             transform.localPosition = Vector3.zero;
 
-            ladderMeshWrapper = new LadderMeshWrapper(this, assetList.FindByKey("Ladder").transform);
+            ladderMeshWrapper = new LadderMeshWrapper(this, assetList.FindByKey(ModelKey.Ladder).transform);
         }
 
         void OnDestroy() { }

@@ -14,21 +14,22 @@ using UnityEngine.UI;
 namespace TowerBuilder.GameWorld
 {
     [Serializable]
-    public class AssetList
+    public class AssetList<KeyType>
+        where KeyType : struct
     {
         [Serializable]
-        public class AssetWrapper
+        public class AssetWrapper<AssetKeyType>
         {
-            public string key;
+            public AssetKeyType key;
             public GameObject gameObject;
         }
 
         [SerializeField]
-        public List<AssetWrapper> assetList = new List<AssetWrapper>();
+        public List<AssetWrapper<KeyType>> assetList = new List<AssetWrapper<KeyType>>();
 
-        public GameObject FindByKey(string key)
+        public GameObject FindByKey(KeyType key)
         {
-            AssetWrapper assetWrapper = assetList.Find(wrapper => wrapper.key == key);
+            AssetWrapper<KeyType> assetWrapper = assetList.Find(wrapper => wrapper.key.Equals(key));
 
             if (assetWrapper != null)
             {

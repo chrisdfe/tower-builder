@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- Modular way of applying materials to specific meshes
 - starting a room selection inside another room should expand that room
 - system for items that can connect horizontally/vertically
   - a way of organizing/naming nodes in the mesh tree to do this automatically without configuration
@@ -14,7 +15,6 @@
   - deliver things (freight room)
 - Camera that bypasses fog for build/destroy/inspection modes
 - helpers for finding a cell off of the side of the left or right side of the screen, for spawning new residents, npc vehicles etc
-- Replace AssetManager with putting more unity-centric AssetList field on prefabs
 - TransportationItem meshes
 - TransportationItem selectable entity
 - Move entities when placing them instead of continually adding/removing them
@@ -136,6 +136,7 @@
 
 # Done
 
+- Replace AssetManager with putting more unity-centric AssetList field on prefabs
 - Work through the room/furniture 'isInBlueprintMode' issue. They're not in sync right now
 - "TransportationItem" + entities - escalators, stairs
   - I think I've determined these are functionally different from furniture enough that they are a whole different thing.

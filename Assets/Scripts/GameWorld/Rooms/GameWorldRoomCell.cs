@@ -13,7 +13,13 @@ namespace TowerBuilder.GameWorld.Rooms
 {
     public class GameWorldRoomCell : MonoBehaviour
     {
-        public AssetList assetList = new AssetList();
+        public enum ModelKey
+        {
+            Default,
+            Wheels
+        }
+
+        public AssetList<ModelKey> assetList = new AssetList<ModelKey>();
 
         public enum ColorKey
         {
@@ -34,8 +40,13 @@ namespace TowerBuilder.GameWorld.Rooms
             { ColorKey.InvalidBlueprint, Color.red },
         };
 
+        [HideInInspector]
         public RoomCell roomCell;
+
+        [HideInInspector]
         public GameWorldRoom gameWorldRoom;
+
+        [HideInInspector]
         public Color baseColor;
 
         RoomCellMeshWrapperBase roomCellMeshWrapper;
@@ -124,7 +135,7 @@ namespace TowerBuilder.GameWorld.Rooms
         */
         abstract class RoomCellMeshWrapperBase
         {
-            public virtual string meshName { get; }
+            public virtual ModelKey modelKey { get; }
             protected Transform meshTransform;
             protected GameWorldRoomCell gameWorldRoomCell;
 
@@ -158,7 +169,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
             protected void LoadModel()
             {
-                GameObject mesh = AssetsManager.Find().FindByName(meshName);
+                GameObject mesh = gameWorldRoomCell.assetList.FindByKey(modelKey);
                 Transform meshTransform = Instantiate(mesh).GetComponent<Transform>();
                 meshTransform.SetParent(gameWorldRoomCell.transform);
                 this.meshTransform = meshTransform;
@@ -178,7 +189,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         class RoomCellDefaultMeshWrapper : RoomCellMeshWrapperBase
         {
-            public override string meshName { get { return "RoomCellMesh_Default"; } }
+            public override ModelKey modelKey { get { return ModelKey.Default; } }
 
             public RoomCellDefaultMeshWrapper(GameWorldRoomCell gameWorldRoomCell) : base(gameWorldRoomCell) { }
 
@@ -244,7 +255,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         class RoomCellWheelsMeshWrapper : RoomCellMeshWrapperBase
         {
-            public override string meshName { get { return "RoomCellMesh_Wheel"; } }
+            public override ModelKey modelKey { get { return ModelKey.Wheels; } }
 
             public RoomCellWheelsMeshWrapper(GameWorldRoomCell gameWorldRoomCell) : base(gameWorldRoomCell) { }
 
