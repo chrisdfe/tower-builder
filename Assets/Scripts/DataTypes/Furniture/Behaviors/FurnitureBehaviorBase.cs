@@ -9,6 +9,16 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 {
     public abstract class FurnitureBehaviorBase
     {
+        public enum Key
+        {
+            None,
+            Default,
+            Cockpit,
+            Bed,
+            Engine,
+            MoneyMachine
+        };
+
         public Furniture furniture { get; private set; }
 
         public ResidentsList interactingResidentsList { get; private set; } = new ResidentsList();
@@ -16,6 +26,8 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
         public virtual string title { get; }
 
         public virtual FurnitureBehaviorTag[] tags { get; }
+
+        public abstract Key key { get; }
 
         public bool isActive { get { return interactingResidentsList.Count > 0; } }
 

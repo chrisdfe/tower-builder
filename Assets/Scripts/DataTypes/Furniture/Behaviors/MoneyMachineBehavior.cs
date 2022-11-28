@@ -9,6 +9,8 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 {
     public class MoneyMachineBehavior : FurnitureBehaviorBase
     {
+        public override Key key { get; } = FurnitureBehaviorBase.Key.MoneyMachine;
+
         public override FurnitureBehaviorTag[] tags
         {
             get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Industry }; }

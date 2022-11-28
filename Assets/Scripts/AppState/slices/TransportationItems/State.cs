@@ -33,9 +33,6 @@ namespace TowerBuilder.ApplicationState.TransportationItems
 
             public TransportationItemsList FindTransportationItemsConnectingToRoom(Room room)
             {
-                Debug.Log("FindTransportationItemsConnectingToRoom");
-                Debug.Log($"Finding connections to {room}");
-
                 return new TransportationItemsList(
                     state.transportationItemsList.items.FindAll(transportationItem =>
                     {

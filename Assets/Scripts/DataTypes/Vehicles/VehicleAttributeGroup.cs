@@ -1,0 +1,76 @@
+using System.Linq;
+using System.Threading;
+using TowerBuilder.ApplicationState;
+using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Furnitures.Behaviors;
+using TowerBuilder.DataTypes.Rooms;
+using UnityEngine;
+
+namespace TowerBuilder.DataTypes.Vehicles
+{
+    public class VehicleAttributeGroup
+    {
+        public Vehicle vehicle { get; private set; }
+
+        public int weight { get; private set; } = 0;
+        public int maxSpeed { get; private set; } = 0;
+
+        public int fuel { get; private set; } = 0;
+        public int enginePower { get; private set; } = 0;
+
+        public bool isMoving { get; set; }
+
+        AppState appState;
+
+        public VehicleAttributeGroup(AppState appState, Vehicle vehicle)
+        {
+            this.appState = appState;
+            this.vehicle = vehicle;
+        }
+
+        public void Setup()
+        {
+            RecalculateAll();
+        }
+
+        public void RecalculateAll()
+        {
+            RecalculateWeight();
+            RecalculateEnginePower();
+        }
+
+        public void RecalculateWeight()
+        {
+            // TODO use room type to calculate room cell weight
+            this.weight = this.vehicle.roomList.items.Aggregate(0, (acc, room) =>
+            {
+                return acc + room.blocks.cells.Count;
+            });
+        }
+
+        public void RecalculateEnginePower()
+        {
+            int result = 0;
+
+            foreach (Room room in vehicle.roomList.items)
+            {
+                FurnitureBehaviorList furnitureBehaviorList =
+                    appState.FurnitureBehaviors.furnitureBehaviorList
+                        .FindByRoom(room);
+                FurnitureBehaviorList engineBehaviorList =
+                    furnitureBehaviorList
+                        .FilterByType(FurnitureBehaviorBase.Key.Engine);
+
+                Debug.Log("room furnitureBehaviorList");
+                Debug.Log(furnitureBehaviorList.Count);
+
+                Debug.Log("engineBehaviorList");
+                Debug.Log(engineBehaviorList.Count);
+                // TODO - some engines produce more engine power than others
+                result += engineBehaviorList.Count;
+            }
+
+            enginePower = result;
+        }
+    }
+}

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
@@ -20,9 +21,9 @@ namespace TowerBuilder.ApplicationState.Vehicles
             public delegate void VehicleListEvent(List<Vehicle> vehicleList);
             public VehicleListEvent onVehicleListUpdated;
 
-            public delegate void VehicleListChangeEvent(Vehicle vehicle);
-            public VehicleListChangeEvent onVehicleAdded;
-            public VehicleListChangeEvent onVehicleRemoved;
+            public delegate void VehicleEvent(Vehicle vehicle);
+            public VehicleEvent onVehicleAdded;
+            public VehicleEvent onVehicleRemoved;
 
             public delegate void VehicleRoomEvent(Vehicle vehicle, Room room);
             public VehicleRoomEvent onVehicleRoomAdded;
@@ -31,10 +32,12 @@ namespace TowerBuilder.ApplicationState.Vehicles
 
         public class Queries
         {
+            AppState appState;
             State state;
 
-            public Queries(State state)
+            public Queries(AppState appState, State state)
             {
+                this.appState = appState;
                 this.state = state;
             }
 
@@ -51,6 +54,20 @@ namespace TowerBuilder.ApplicationState.Vehicles
                 return null;
             }
 
+            public Vehicle FindVehicleByFurniture(Furniture furniture)
+            {
+                Room furnitureRoom = appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinates);
+
+                foreach (Vehicle vehicle in state.vehicleList)
+                {
+                    if (vehicle.roomList.Contains(furnitureRoom))
+                    {
+                        return vehicle;
+                    }
+                }
+
+                return null;
+            }
         }
 
         public List<Vehicle> vehicleList = new List<Vehicle>();
@@ -63,7 +80,7 @@ namespace TowerBuilder.ApplicationState.Vehicles
             vehicleList = input.vehicleList ?? new List<Vehicle>();
 
             events = new Events();
-            queries = new Queries(this);
+            queries = new Queries(appState, this);
 
             Setup();
         }
@@ -132,26 +149,6 @@ namespace TowerBuilder.ApplicationState.Vehicles
             }
         }
 
-        Vehicle FindOrCreateVehicleForRoom(Room room)
-        {
-            Vehicle vehicle;
-
-            List<Room> perimeterRooms = appState.Rooms.queries.FindPerimeterRooms(room);
-
-            if (perimeterRooms.Count > 0)
-            {
-                // TODO here - if perimeterRooms has more than 1 then combine them
-                vehicle = queries.FindVehicleByRoom(perimeterRooms[0]);
-            }
-            else
-            {
-                vehicle = new Vehicle();
-                AddVehicle(vehicle);
-            }
-
-            return vehicle;
-        }
-
         /* 
             Event Handlers
         */
@@ -159,14 +156,38 @@ namespace TowerBuilder.ApplicationState.Vehicles
         {
             if (room.isInBlueprintMode) return;
 
-            Vehicle vehicle = FindOrCreateVehicleForRoom(room);
-            AddRoomToVehicle(vehicle, room);
+            List<Room> perimeterRooms = appState.Rooms.queries.FindPerimeterRooms(room);
+
+            if (perimeterRooms.Count > 0)
+            {
+                // TODO here - if perimeterRooms has more than 1 then combine them
+                Vehicle vehicle = queries.FindVehicleByRoom(perimeterRooms[0]);
+                AddRoomToVehicle(vehicle, room);
+            }
+            else
+            {
+                Vehicle vehicle = new Vehicle();
+                vehicle.roomList.Add(room);
+                AddVehicle(vehicle);
+            }
         }
 
         void OnRoomBuilt(Room room)
         {
-            Vehicle vehicle = FindOrCreateVehicleForRoom(room);
-            AddRoomToVehicle(vehicle, room);
+            List<Room> perimeterRooms = appState.Rooms.queries.FindPerimeterRooms(room);
+
+            if (perimeterRooms.Count > 0)
+            {
+                // TODO here - if perimeterRooms has more than 1 then combine them
+                Vehicle vehicle = queries.FindVehicleByRoom(perimeterRooms[0]);
+                AddRoomToVehicle(vehicle, room);
+            }
+            else
+            {
+                Vehicle vehicle = new Vehicle();
+                vehicle.roomList.Add(room);
+                AddVehicle(vehicle);
+            }
         }
 
         void OnRoomRemoved(Room room)

@@ -135,6 +135,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
 
             furniture.isInBlueprintMode = false;
             furniture.OnBuild();
+            furniture.room = appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinates);
 
             if (events.onFurnituresBuilt != null)
             {

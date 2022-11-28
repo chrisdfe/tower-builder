@@ -8,6 +8,7 @@ namespace TowerBuilder.DataTypes.Rooms
         public RoomList() : base() { }
         public RoomList(Room room) : base(room) { }
         public RoomList(List<Room> rooms) : base(rooms) { }
+        public RoomList(RoomList roomList) : base(roomList) { }
 
         public Room FindRoomAtCell(CellCoordinates targetCellCoordinates)
         {

@@ -2,6 +2,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Furnitures.Behaviors;
 using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.FurnitureBehaviors
@@ -15,15 +16,25 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
             public delegate void FurnitureBehaviorEvent(FurnitureBehaviorBase furnitureBehavior);
             public FurnitureBehaviorEvent onFurnitureBehaviorAdded;
             public FurnitureBehaviorEvent onFurnitureBehaviorRemoved;
+            public FurnitureBehaviorEvent onFurnitureBehaviorInteractStart;
+            public FurnitureBehaviorEvent onFurnitureBehaviorInteractEnd;
         }
 
         public class Queries
         {
             State state;
+
             public Queries(State state)
             {
                 this.state = state;
             }
+
+            // public FurnitureBehaviorList FindFurnitureByRoom(Room room)
+            // {
+            //     return new FurnitureBehaviorList(
+            //         state.furnitureBehaviorList.items.FindAll(furnitureBehavior => furnitureBehavior.furniture.room == room)
+            //     );
+            // }
         }
 
         public FurnitureBehaviorList furnitureBehaviorList { get; private set; } = new FurnitureBehaviorList();
@@ -103,6 +114,11 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
             if (furnitureBehavior != null)
             {
                 furnitureBehavior.InteractStart(resident);
+
+                if (events.onFurnitureBehaviorInteractStart != null)
+                {
+                    events.onFurnitureBehaviorInteractStart(furnitureBehavior);
+                }
             }
 
             return furnitureBehavior;
@@ -115,6 +131,11 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
             if (furnitureBehavior != null)
             {
                 furnitureBehavior.InteractEnd(resident);
+
+                if (events.onFurnitureBehaviorInteractEnd != null)
+                {
+                    events.onFurnitureBehaviorInteractEnd(furnitureBehavior);
+                }
             }
         }
 

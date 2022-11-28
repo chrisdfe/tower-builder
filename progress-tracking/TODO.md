@@ -4,6 +4,13 @@
 
 ## Tasks
 
+- Make transportation item meshes show on every cell that they occupy.
+- Make sure furniture isn't being used when a resident starts walking over there to use it
+- I think validators will need to be state slices near trhe bottom of the tree now. Validators need to have access to a lot more than just the thing they're validating
+  - same with Tempaltes/Definitions - they might need to be in their own namespace
+- 'current selected vehicle' in UI state
+- "VehicleAttributes" or "VehicleStats" - a slice lower down in the state tree to capture things like fuel level, total cells, current speed etc
+- More cells - heavier; wheels can only manage a certain amount of weight (better wheels = can handle more weight)
 - Modular way of applying materials to specific meshes
 - starting a room selection inside another room should expand that room
 - system for items that can connect horizontally/vertically

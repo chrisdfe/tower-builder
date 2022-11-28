@@ -16,12 +16,16 @@ namespace TowerBuilder.ApplicationState
 
             public TransportationItems.State.Input transportationItems;
 
+            public Journeys.State.Input journeys;
+
             public Vehicles.State.Input vehicles;
 
             public ResidentMotors.State.Input residentMotors;
 
             public ResidentBehaviors.State.Input residentBehaviors;
             public FurnitureBehaviors.State.Input furnitureBehaviors;
+
+            public VehicleAttributeGroups.State.Input vehicleAttributeGroups;
 
             public UI.State.Input ui;
             public Tools.State.Input tools;
@@ -40,12 +44,16 @@ namespace TowerBuilder.ApplicationState
 
                 transportationItems = new TransportationItems.State.Input();
 
+                journeys = new Journeys.State.Input();
+
                 vehicles = new Vehicles.State.Input();
 
                 residentMotors = new ResidentMotors.State.Input();
 
                 residentBehaviors = new ResidentBehaviors.State.Input();
                 furnitureBehaviors = new FurnitureBehaviors.State.Input();
+
+                vehicleAttributeGroups = new VehicleAttributeGroups.State.Input();
 
                 ui = new UI.State.Input();
                 tools = new Tools.State.Input();
@@ -64,12 +72,16 @@ namespace TowerBuilder.ApplicationState
 
         public TransportationItems.State TransportationItems;
 
+        public Journeys.State Journeys;
+
         public Vehicles.State Vehicles;
 
         public ResidentMotors.State ResidentMotors;
 
         public FurnitureBehaviors.State FurnitureBehaviors;
         public ResidentBehaviors.State ResidentBehaviors;
+
+        public VehicleAttributeGroups.State VehicleAttributeGroups;
 
         public UI.State UI;
         public Tools.State Tools;
@@ -112,10 +124,14 @@ namespace TowerBuilder.ApplicationState
 
             Vehicles = new Vehicles.State(this, input.vehicles);
 
+            Journeys = new Journeys.State(this, input.journeys);
+
             ResidentMotors = new ResidentMotors.State(this, input.residentMotors);
 
             FurnitureBehaviors = new FurnitureBehaviors.State(this, input.furnitureBehaviors);
             ResidentBehaviors = new ResidentBehaviors.State(this, input.residentBehaviors);
+
+            VehicleAttributeGroups = new VehicleAttributeGroups.State(this, input.vehicleAttributeGroups);
 
             UI = new UI.State(this, input.ui);
             Tools = new Tools.State(this, input.tools);

@@ -8,6 +8,8 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 {
     public class CockpitBehavior : FurnitureBehaviorBase
     {
+        public override Key key { get; } = FurnitureBehaviorBase.Key.Cockpit;
+
         public override FurnitureBehaviorTag[] tags { get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Cockpit }; } }
 
         public CockpitBehavior(Furniture furniture) : base(furniture) { }

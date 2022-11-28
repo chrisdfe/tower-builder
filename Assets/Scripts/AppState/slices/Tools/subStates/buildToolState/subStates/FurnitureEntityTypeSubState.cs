@@ -55,7 +55,6 @@ namespace TowerBuilder.ApplicationState.Tools
 
                 blueprintFurniture.validator.Validate(Registry.appState);
 
-                Debug.Log("blueprintFurniture.validator.isValid: " + blueprintFurniture.validator.isValid);
                 if (blueprintFurniture.validator.isValid)
                 {
                     BuildBlueprintFurniture();

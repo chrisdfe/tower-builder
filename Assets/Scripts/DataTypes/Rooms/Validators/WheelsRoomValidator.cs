@@ -18,7 +18,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
             {
                 return new List<RoomCellValidationFunc>() {
                     GenericRoomCellValidations.CreateValidateRoomCellIsOnFloor(0)
-            };
+                };
             }
         }
 

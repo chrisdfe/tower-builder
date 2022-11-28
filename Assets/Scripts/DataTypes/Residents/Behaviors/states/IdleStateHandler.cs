@@ -29,7 +29,6 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public override void ProcessTick()
         {
-            // Debug.Log("Idle");
         }
 
         public override TransitionPayloadBase GetNextState()

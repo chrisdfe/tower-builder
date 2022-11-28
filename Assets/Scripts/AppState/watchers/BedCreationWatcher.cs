@@ -41,11 +41,6 @@ namespace TowerBuilder.ApplicationState
 
         void MoveNewResidentInIfThereIsRoom(Furniture furniture)
         {
-            Debug.Log("MoveNewResidentInIfThereIsRoom");
-            Debug.Log("furniture.isInBlueprintMode");
-            Debug.Log(furniture.isInBlueprintMode);
-            Debug.Log("furniture.homeSlotCount");
-            Debug.Log(furniture.homeSlotCount);
             if (furniture.isInBlueprintMode || furniture.homeSlotCount == 0) return;
 
             // TODO -

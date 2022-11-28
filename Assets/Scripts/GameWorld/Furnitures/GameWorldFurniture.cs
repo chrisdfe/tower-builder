@@ -19,12 +19,7 @@ namespace TowerBuilder.GameWorld.Furnitures
         void Awake()
         {
             cube = transform.Find("Cube");
-            Debug.Log("cube");
-            Debug.Log(cube);
-
             defaultColor = cube.GetComponent<MeshRenderer>().material.color;
-            Debug.Log("defaultColor");
-            Debug.Log(defaultColor);
         }
 
         public void Setup()

@@ -14,7 +14,6 @@ namespace TowerBuilder.Systems
             string[] lines = { jsonifiedObject };
 
             File.WriteAllLines(filePath, lines);
-            Debug.Log("done.");
         }
     }
 }

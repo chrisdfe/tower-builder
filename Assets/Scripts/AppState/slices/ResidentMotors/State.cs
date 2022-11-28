@@ -91,8 +91,6 @@ namespace TowerBuilder.ApplicationState.ResidentMotors
         {
             residentMotorsList.Add(residentMotor);
 
-            Debug.Log("resident motor added");
-
             if (events.onResidentMotorAdded != null)
             {
                 events.onResidentMotorAdded(residentMotor);
@@ -102,8 +100,6 @@ namespace TowerBuilder.ApplicationState.ResidentMotors
         public void RemoveResidentMotor(ResidentMotor residentMotor)
         {
             residentMotorsList.Remove(residentMotor);
-
-            Debug.Log("resident motor removed");
 
             if (events.onResidentMotorRemoved != null)
             {
@@ -121,8 +117,6 @@ namespace TowerBuilder.ApplicationState.ResidentMotors
             {
                 throw new NotSupportedException("Residents must be in a room to find a route");
             }
-
-            Debug.Log("time to find a route");
 
             return null;
         }

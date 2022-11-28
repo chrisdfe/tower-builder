@@ -41,7 +41,6 @@ namespace TowerBuilder.DataTypes.Residents.Motors
                 if (IsAtFinalSegment())
                 {
                     // Route is complete
-                    Debug.Log("route is complete");
                 }
                 else
                 {
@@ -52,10 +51,6 @@ namespace TowerBuilder.DataTypes.Residents.Motors
             {
                 ProgressToNextSegmentCellStep();
             }
-
-            Debug.Log($"currentRouteSegmentIndex: {currentRouteSegmentIndex}");
-            Debug.Log($"currentRouteSegmentType: {currentRouteSegment.type}");
-            Debug.Log($"currentRouteSegmentCellStepIndex: {currentRouteSegmentCellStepIndex}");
         }
 
         public bool IsAtFinalSegment()
@@ -86,7 +81,6 @@ namespace TowerBuilder.DataTypes.Residents.Motors
             currentRouteSegmentIndex = index;
             currentRouteSegment = currentRoute.segments[currentRouteSegmentIndex];
 
-            Debug.Log($"going to segment {index}");
             // Since the 1st cellStep is going to always have the same coordinates as
             // the last step of the previous segment, and that segments will always have
             // at least 2 nodes, we can safely go to the 2nd cellStep instead of the 1st
@@ -104,7 +98,6 @@ namespace TowerBuilder.DataTypes.Residents.Motors
 
         void GoToSegmentCellStep(int index)
         {
-            Debug.Log($"going to segment cell step {index}");
             currentRouteSegmentCellStepIndex = index;
             currentRouteSegmentCellStep = currentRouteSegment.cellSteps[index];
             resident.cellCoordinates = currentRouteSegmentCellStep;
