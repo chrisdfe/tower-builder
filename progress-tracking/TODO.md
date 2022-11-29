@@ -4,12 +4,19 @@
 
 ## Tasks
 
+- show a notification or something if no route is found for a residnet
+- Animate resident traveling
+- Remove residentmotor state
+- Different room "chassis" - tradeoff between structural integrety and light
+  - more light = good for plants
+  - more structural integrity = can build larger vehicles (good for freight? passengers?)
+- Engines should yield less power as their condition goes down
 - Make transportation item meshes show on every cell that they occupy.
+- If a vehicle doesn't have any engines it shouldn't be able to move
 - Make sure furniture isn't being used when a resident starts walking over there to use it
 - I think validators will need to be state slices near trhe bottom of the tree now. Validators need to have access to a lot more than just the thing they're validating
   - same with Tempaltes/Definitions - they might need to be in their own namespace
 - 'current selected vehicle' in UI state
-- "VehicleAttributes" or "VehicleStats" - a slice lower down in the state tree to capture things like fuel level, total cells, current speed etc
 - More cells - heavier; wheels can only manage a certain amount of weight (better wheels = can handle more weight)
 - Modular way of applying materials to specific meshes
 - starting a room selection inside another room should expand that room
@@ -46,11 +53,7 @@
 - blank rooms, proper room 'templates' prepopulated with furniture
   - bedroom
   - cockpit
-- building "stats" or "attributes" - fuel, power level, current speed, etc.
-  - uses queries from furniture/furniturebheviors/residents/residentbehaviors
 - furniture that occupys different # of tiles
-- "watchers" that sit at the bottom of appstate and don't hold any state but react to/mutate other parts of appState?
-  - e.g residents moving in watcher
 - dynamically rendered "Outer walls" of vehicle
 - cellCoordinates.bottom row function - use in room cell overhang validator
 - Connections to outside
@@ -71,7 +74,6 @@
   - direction (left, center, right)
 - furniture z indexes - in front, behind
 - Improved lighting
-  - global sun light that rotates/changes color as the day progresses
   - room lights that come on at night
 - Reconsider how routes are constructed - maybe every segment should be 1 cell?
 - Convert other List wrappers to use the new ListWrapper generic
@@ -115,7 +117,6 @@
 
 ## Projects
 
-- turn this into a car game
 - Kitchen/restaurant room
 - Top-level "KeyBindingsManager" that listens for user input + dispatches actions
 - UI overlays
@@ -124,6 +125,8 @@
 
 ## Cleanup
 
+- Improved lighting
+  - global sun light that rotates/changes color as the day progresses
 - All state slices should add lists of items instead of singular - e.g AddRooms instead of AddRoom
 - RouteFinder creates too many branches
 - RoomCells -> RoomCellList OR RoomList -> Rooms
@@ -143,6 +146,12 @@
 
 # Done
 
+- turn this into a car game
+- "watchers" that sit at the bottom of appstate and don't hold any state but react to/mutate other parts of appState?
+  - e.g residents moving in watcher
+- "VehicleAttributes" or "VehicleStats" - a slice lower down in the state tree to capture things like fuel level, total cells, current speed etc
+- building "stats" or "attributes" - fuel, power level, current speed, etc.
+  - uses queries from furniture/furniturebheviors/residents/residentbehaviors
 - Replace AssetManager with putting more unity-centric AssetList field on prefabs
 - Work through the room/furniture 'isInBlueprintMode' issue. They're not in sync right now
 - "TransportationItem" + entities - escalators, stairs

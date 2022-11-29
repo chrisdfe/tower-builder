@@ -54,7 +54,6 @@ namespace TowerBuilder.GameWorld.UI
             //Raycast using the Graphics Raycaster and mouse click position
             graphicRaycaster.Raycast(pointerEventData, results);
 
-            // Debug.Log("results.Count: " + results.Count);
             mouseIsOverUI = results.Count > 0;
         }
     }

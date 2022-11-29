@@ -4,6 +4,7 @@
 
 ## TODO
 
+- Figure out why residents stay in one spot for a while when traveling
 - Entity doesn't update when an entity is built
 - Rooms aren't combining correctly anymore
 - Individual roomCells should know if they are valid again (right now it's just the room)

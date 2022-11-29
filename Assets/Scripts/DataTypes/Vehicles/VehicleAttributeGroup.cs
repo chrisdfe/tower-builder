@@ -13,12 +13,13 @@ namespace TowerBuilder.DataTypes.Vehicles
         public Vehicle vehicle { get; private set; }
 
         public int weight { get; private set; } = 0;
-        public int maxSpeed { get; private set; } = 0;
 
         public int fuel { get; private set; } = 0;
         public int enginePower { get; private set; } = 0;
 
-        public bool isMoving { get; set; }
+        public bool isMoving { get; private set; }
+        public float maxSpeed { get; private set; } = 10;
+        public float currentSpeed { get; private set; } = 0;
 
         AppState appState;
 
@@ -31,6 +32,22 @@ namespace TowerBuilder.DataTypes.Vehicles
         public void Setup()
         {
             RecalculateAll();
+        }
+
+        public void Teardown() { }
+
+        public void StartMoving()
+        {
+            isMoving = true;
+            // No accelleration for now, just go straight to max speed;
+            currentSpeed = maxSpeed;
+        }
+
+        public void StopMoving()
+        {
+            isMoving = false;
+
+            currentSpeed = 0;
         }
 
         public void RecalculateAll()
@@ -61,11 +78,6 @@ namespace TowerBuilder.DataTypes.Vehicles
                     furnitureBehaviorList
                         .FilterByType(FurnitureBehaviorBase.Key.Engine);
 
-                Debug.Log("room furnitureBehaviorList");
-                Debug.Log(furnitureBehaviorList.Count);
-
-                Debug.Log("engineBehaviorList");
-                Debug.Log(engineBehaviorList.Count);
                 // TODO - some engines produce more engine power than others
                 result += engineBehaviorList.Count;
             }

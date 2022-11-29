@@ -61,7 +61,6 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public void CompleteCurrentGoal()
         {
-            Debug.Log("completing current goal");
             goalQueue.Dequeue();
         }
 

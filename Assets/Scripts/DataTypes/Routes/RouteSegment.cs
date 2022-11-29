@@ -46,53 +46,11 @@ namespace TowerBuilder.DataTypes.Routes
             this.startNode = startNode;
             this.endNode = endNode;
             this.type = type;
-
-            CalculateCellSteps();
         }
 
         public RouteSegment Clone()
         {
             return new RouteSegment(startNode, endNode, type);
-        }
-
-        void CalculateCellSteps()
-        {
-            List<CellCoordinates> result = new List<CellCoordinates>();
-
-            // First up/down
-            if (endNode.cellCoordinates.floor > startNode.cellCoordinates.floor)
-            {
-                for (int floor = startNode.cellCoordinates.floor; floor <= endNode.cellCoordinates.floor; floor++)
-                {
-                    result.Add(new CellCoordinates(startNode.cellCoordinates.x, floor));
-                }
-            }
-            else
-            {
-                for (int floor = startNode.cellCoordinates.floor; floor >= endNode.cellCoordinates.floor; floor--)
-                {
-                    result.Add(new CellCoordinates(startNode.cellCoordinates.x, floor));
-                }
-            }
-
-
-            // then over
-            if (endNode.cellCoordinates.x > startNode.cellCoordinates.x)
-            {
-                for (int x = startNode.cellCoordinates.x; x <= endNode.cellCoordinates.x; x++)
-                {
-                    result.Add(new CellCoordinates(x, endNode.cellCoordinates.floor));
-                }
-            }
-            else
-            {
-                for (int x = startNode.cellCoordinates.x; x >= endNode.cellCoordinates.x; x--)
-                {
-                    result.Add(new CellCoordinates(x, endNode.cellCoordinates.floor));
-                }
-            }
-
-            cellSteps = result;
         }
     }
 }

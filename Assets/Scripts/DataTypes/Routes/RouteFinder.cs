@@ -76,9 +76,14 @@ namespace TowerBuilder.DataTypes.Routes
 
             ContinueRouteAttempt(firstRouteAttempt);
 
+            Debug.Log("bestRouteAttempt");
+            Debug.Log(bestRouteAttempt);
+
             if (bestRouteAttempt != null)
             {
-                return new Route(bestRouteAttempt);
+                Route newRoute = new Route(bestRouteAttempt);
+                newRoute.CalculateCellSegments(appState);
+                return newRoute;
             }
 
             return null;

@@ -68,18 +68,10 @@ namespace TowerBuilder.DataTypes.Routes
 
         public void GoTo(RouteSegment.Node node, RouteSegment.Type travelingType)
         {
-            Debug.Log($"Going to {node.room}");
-            Debug.Log("latestSegmentNode");
-            Debug.Log(latestSegmentNode);
             routeSegments.Add(new RouteSegment(latestSegmentNode, node, travelingType));
             currentCellCoordinates = node.cellCoordinates;
             visitedRooms.Add(node.room);
             currentRoom = node.room;
-        }
-
-        public void AddRouteSegment(RouteSegment routeSegment)
-        {
-            routeSegments.Add(routeSegment);
         }
 
         public RouteAttempt Clone()

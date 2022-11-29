@@ -141,6 +141,10 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
                 AddResidentBehaviorGoals(resident, new GoalBase[] { travelGoal });
             }
+            else
+            {
+                appState.Notifications.AddNotification("No route found");
+            }
         }
 
         /* 

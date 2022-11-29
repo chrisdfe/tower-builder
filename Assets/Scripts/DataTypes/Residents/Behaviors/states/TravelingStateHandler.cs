@@ -14,24 +14,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
         }
 
         public Route route { get; private set; }
-
-        int currentSegmentIndex = 0;
-        bool isAtFinalSegmentIndex { get { return currentSegmentIndex >= route.segments.Count - 1; } }
-        RouteSegment currentSegment { get { return route.segments[currentSegmentIndex]; } }
-
-        int currentCellStepIndex = 0;
-        bool isAtFinalCellStepIndex { get { return currentCellStepIndex >= currentSegment.cellSteps.Count - 1; } }
-        CellCoordinates currentCellStep { get { return currentSegment.cellSteps[currentCellStepIndex]; } }
-
-        bool isAtEndOfRoute
-        {
-            get
-            {
-                return (
-                    isAtFinalSegmentIndex && isAtFinalCellStepIndex
-                );
-            }
-        }
+        public RouteProgress routeProgress { get; private set; }
 
         public TravelingStateHandler(ResidentBehavior residentBehavior) : base(residentBehavior) { }
 
@@ -39,7 +22,9 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
         {
             base.Setup(appState);
 
-            this.route = payload.route;
+            this.routeProgress = new RouteProgress(payload.route);
+
+            appState.Residents.SetResidentPosition(residentBehavior.resident, routeProgress.currentCell);
         }
 
         public override void Teardown()
@@ -49,7 +34,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public override TransitionPayloadBase GetNextState()
         {
-            if (isAtEndOfRoute)
+            if (routeProgress.isAtEndOfRoute)
             {
                 return residentBehavior.GetNextGoalTransitionPayload();
             }
@@ -59,19 +44,11 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public override void ProcessTick()
         {
-            if (isAtFinalCellStepIndex)
-            {
-                currentSegmentIndex++;
-                currentCellStepIndex = 0;
-            }
-            else
-            {
-                currentCellStepIndex++;
-            }
+            routeProgress.IncrementProgress();
 
-            appState.Residents.SetResidentPosition(residentBehavior.resident, currentCellStep);
+            appState.Residents.SetResidentPosition(residentBehavior.resident, routeProgress.currentCell);
 
-            if (isAtEndOfRoute)
+            if (routeProgress.isAtEndOfRoute)
             {
                 residentBehavior.CompleteCurrentGoal();
             }

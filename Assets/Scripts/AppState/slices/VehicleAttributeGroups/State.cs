@@ -25,6 +25,7 @@ namespace TowerBuilder.ApplicationState.VehicleAttributeGroups
             public VehicleAttributeGroupEvent onVehicleAttributeGroupUpdated;
 
             public VehicleAttributeGroupEvent onVehicleAttributeWeightUpdated;
+            public VehicleAttributeGroupEvent onVehicleAttributeCurrentSpeedUpdated;
             public VehicleAttributeGroupEvent onVehicleAttributeEnginePowerUpdated;
 
             public VehicleAttributeGroupEvent onVehicleAttributeGroupStartedMoving;
@@ -124,11 +125,16 @@ namespace TowerBuilder.ApplicationState.VehicleAttributeGroups
 
         public void StartVehicleAttributesMoving(VehicleAttributeGroup vehicleAttributeGroup)
         {
-            vehicleAttributeGroup.isMoving = true;
+            vehicleAttributeGroup.StartMoving();
 
             if (events.onVehicleAttributeGroupStartedMoving != null)
             {
                 events.onVehicleAttributeGroupStartedMoving(vehicleAttributeGroup);
+            }
+
+            if (events.onVehicleAttributeCurrentSpeedUpdated != null)
+            {
+                events.onVehicleAttributeCurrentSpeedUpdated(vehicleAttributeGroup);
             }
 
             if (events.onVehicleAttributeGroupUpdated != null)
@@ -139,11 +145,16 @@ namespace TowerBuilder.ApplicationState.VehicleAttributeGroups
 
         public void StopVehicleAttributesMoving(VehicleAttributeGroup vehicleAttributeGroup)
         {
-            vehicleAttributeGroup.isMoving = false;
+            vehicleAttributeGroup.StopMoving();
 
             if (events.onVehicleAttributeGroupStoppedMoving != null)
             {
                 events.onVehicleAttributeGroupStoppedMoving(vehicleAttributeGroup);
+            }
+
+            if (events.onVehicleAttributeCurrentSpeedUpdated != null)
+            {
+                events.onVehicleAttributeCurrentSpeedUpdated(vehicleAttributeGroup);
             }
 
             if (events.onVehicleAttributeGroupUpdated != null)
