@@ -45,13 +45,6 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
         public void ProcessTick(AppState appState)
         {
             currentStateHandler.ProcessTick();
-
-            StateHandlerBase.TransitionPayloadBase nextStatePayload = currentStateHandler.GetNextState();
-
-            if (nextStatePayload != null && nextStatePayload.key != currentStateHandler.key)
-            {
-                TransitionTo(nextStatePayload);
-            }
         }
 
         public void EnqueueGoal(GoalBase goal)
@@ -90,7 +83,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
             return new IdleStateHandler.TransitionPayload();
         }
 
-        void TransitionTo(StateHandlerBase.TransitionPayloadBase nextStatePayload)
+        public void TransitionTo(StateHandlerBase.TransitionPayloadBase nextStatePayload)
         {
             StateType previousState = currentState;
             currentStateHandler.Teardown();

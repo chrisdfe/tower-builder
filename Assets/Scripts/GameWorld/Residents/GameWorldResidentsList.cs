@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Residents.Behaviors;
+using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Residents
@@ -18,6 +20,10 @@ namespace TowerBuilder.GameWorld.Residents
 
             Registry.appState.Residents.events.onResidentPositionUpdated += OnResidentPositionUpdated;
 
+            Registry.appState.ResidentBehaviors.events.onResidentBehaviorAdded += OnResidentBehaviorAdded;
+            Registry.appState.ResidentBehaviors.events.onResidentBehaviorRemoved += OnResidentBehaviorRemoved;
+            Registry.appState.ResidentBehaviors.events.onResidentBehaviorTraveled += OnResidentBehaviorTraveled;
+
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
@@ -28,7 +34,50 @@ namespace TowerBuilder.GameWorld.Residents
 
             Registry.appState.Residents.events.onResidentPositionUpdated -= OnResidentPositionUpdated;
 
+            Registry.appState.ResidentBehaviors.events.onResidentBehaviorAdded -= OnResidentBehaviorAdded;
+            Registry.appState.ResidentBehaviors.events.onResidentBehaviorRemoved -= OnResidentBehaviorRemoved;
+            Registry.appState.ResidentBehaviors.events.onResidentBehaviorTraveled -= OnResidentBehaviorTraveled;
+
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
+        }
+
+        /* 
+            Internals
+        */
+        void AddResident(Resident resident)
+        {
+            GameWorldResident gameWorldResident = CreateGameWorldResident(resident);
+            gameWorldResidentsList.Add(gameWorldResident);
+            gameWorldResident.Setup();
+            SetResidentColor(gameWorldResident);
+        }
+
+        void RemoveResident(Resident resident)
+        {
+            GameWorldResident gameWorldResidentToRemove = gameWorldResidentsList.Find(gameWorldResident => gameWorldResident.resident == resident);
+
+            if (gameWorldResidentToRemove != null)
+            {
+                GameObject.Destroy(gameWorldResidentToRemove.gameObject);
+                gameWorldResidentsList.Remove(gameWorldResidentToRemove);
+            }
+        }
+
+        void SetResidentColor(GameWorldResident gameWorldResident)
+        {
+            if (gameWorldResident.resident.isInBlueprintMode)
+            {
+                gameWorldResident.SetColor(GameWorldResident.ColorKey.ValidBlueprint);
+            }
+            else
+            {
+                gameWorldResident.SetColor(GameWorldResident.ColorKey.Default);
+            }
+        }
+
+        GameWorldResident FindGameWorldResidentByResident(Resident resident)
+        {
+            return gameWorldResidentsList.Find(gameWorldResident => gameWorldResident.resident == resident);
         }
 
         /*
@@ -62,47 +111,46 @@ namespace TowerBuilder.GameWorld.Residents
             {
                 if ((entity is ResidentEntity) && ((ResidentEntity)entity).resident == gameWorldResident.resident)
                 {
-                    gameWorldResident.SetInspectedColor();
+                    gameWorldResident.SetColor(GameWorldResident.ColorKey.Inspected);
                 }
                 else
                 {
-                    gameWorldResident.SetDefaultColor();
+                    gameWorldResident.SetColor(GameWorldResident.ColorKey.Default);
                 }
             }
         }
 
-        /* 
-            Internals
-        */
-        void AddResident(Resident resident)
+        void OnResidentBehaviorAdded(ResidentBehavior residentBehavior)
         {
-            GameWorldResident gameWorldResident = CreateGameWorldResident(resident);
-            gameWorldResidentsList.Add(gameWorldResident);
-            gameWorldResident.Setup();
-            SetResidentColor(gameWorldResident);
-        }
-
-        void RemoveResident(Resident resident)
-        {
-            GameWorldResident gameWorldResidentToRemove = gameWorldResidentsList.Find(gameWorldResident => gameWorldResident.resident == resident);
-
-            if (gameWorldResidentToRemove != null)
+            GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);
+            if (gameWorldResident != null)
             {
-                GameObject.Destroy(gameWorldResidentToRemove.gameObject);
-                gameWorldResidentsList.Remove(gameWorldResidentToRemove);
+                gameWorldResident.residentBehavior = residentBehavior;
             }
         }
 
-        void SetResidentColor(GameWorldResident gameWorldResident)
+        void OnResidentBehaviorRemoved(ResidentBehavior residentBehavior)
         {
-            if (gameWorldResident.resident.isInBlueprintMode)
+            GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);
+            if (gameWorldResident != null)
             {
-                gameWorldResident.SetBlueprintColor();
+                gameWorldResident.residentBehavior = null;
             }
-            else
-            {
-                gameWorldResident.SetBlueprintColor();
-            }
+        }
+
+        void OnResidentBehaviorTraveled(ResidentBehavior residentBehavior, TravelingStateHandler travelingStateHandler)
+        {
+            GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);
+            if (gameWorldResident == null) return;
+
+            // TODO - do this on state change and also other times, not just travel state.
+            TimeValue currentTick = Registry.appState.Time.time;
+            TimeValue nextTick = TimeValue.Add(currentTick, new TimeValue.Input() { minute = Constants.MINUTES_ELAPSED_PER_TICK });
+
+            gameWorldResident.currentAndNextPosition = new CurrentAndNext<(TimeValue, CellCoordinates)>(
+                (currentTick, travelingStateHandler.routeProgress.currentCell),
+                (nextTick, travelingStateHandler.routeProgress.nextCell)
+            );
         }
 
         /*

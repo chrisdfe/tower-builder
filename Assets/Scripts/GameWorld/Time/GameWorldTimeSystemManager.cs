@@ -8,6 +8,8 @@ namespace TowerBuilder.GameWorld
     public class GameWorldTimeSystemManager : MonoBehaviour
     {
         // Camera camera;
+        public float elapsedSinceLastTick { get; private set; } = 0f;
+        public float normalizedTickProgress { get; private set; } = 0f;
 
         IEnumerator timeCoroutine;
 
@@ -16,7 +18,22 @@ namespace TowerBuilder.GameWorld
         void Awake()
         {
             // camera = Camera.main;
-            // Registry.appState.Time.events.onTimeUpdated += OnTimeUpdated
+            Setup();
+        }
+
+        void OnDestroy()
+        {
+            Teardown();
+        }
+
+        void Setup()
+        {
+            Registry.appState.Time.events.onTick += OnTick;
+        }
+
+        void Teardown()
+        {
+            Registry.appState.Time.events.onTick -= OnTick;
         }
 
         void Start()
@@ -26,8 +43,27 @@ namespace TowerBuilder.GameWorld
 
         void Update()
         {
-            TimeSpeed currentSpeed = Registry.appState.Time.speed;
+            UpdateTickProgress();
+            HandleInput();
+        }
 
+        void OnTick(TimeValue time)
+        {
+            elapsedSinceLastTick = 0f;
+        }
+
+        void UpdateTickProgress()
+        {
+            float currentTickInterval = Registry.appState.Time.queries.currentTickInterval;
+            float tickIncrement = Time.deltaTime / currentTickInterval;
+
+            elapsedSinceLastTick += tickIncrement;
+            normalizedTickProgress = Mathf.Clamp(elapsedSinceLastTick, 0f, 1f);
+        }
+
+        void HandleInput()
+        {
+            TimeSpeed currentSpeed = Registry.appState.Time.speed;
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (currentSpeed == TimeSpeed.Pause)
@@ -99,6 +135,11 @@ namespace TowerBuilder.GameWorld
             {
                 ResetTick();
             }
+        }
+
+        public static GameWorldTimeSystemManager Find()
+        {
+            return GameObject.Find("TimeManager").GetComponent<GameWorldTimeSystemManager>();
         }
     }
 }

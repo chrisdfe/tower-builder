@@ -19,10 +19,10 @@ namespace TowerBuilder.DataTypes.Time
         {
             [TimeSpeed.Pause] = float.PositiveInfinity,
             // [TimeSpeed.Normal] = 1.0f,
-            [TimeSpeed.Normal] = 2.0f,
+            [TimeSpeed.Normal] = 1.0f,
             // [TimeSpeed.Fast] = 0.7f,
-            [TimeSpeed.Fast] = 1f,
-            [TimeSpeed.Fastest] = 0.1f,
+            [TimeSpeed.Fast] = 0.5f,
+            [TimeSpeed.Fastest] = 0.05f,
             // [TimeSpeed.Fastest] = 0.5f,
         };
 

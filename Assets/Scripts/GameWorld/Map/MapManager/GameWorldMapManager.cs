@@ -43,8 +43,6 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             SetupToolStateHandlers();
 
-            roomList = transform.Find("RoomList");
-
             // make a bit mask
             selectableEntityLayerMask = 1 << LayerMask.NameToLayer("Selectable Entities");
             uiLayer = LayerMask.NameToLayer("UI");
@@ -92,39 +90,6 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             currentToolStateHandler.Update();
         }
-
-        // TODO - this probably belongs in UIManager
-        /*
-        void UpdateSelectableEntityStack()
-        {
-            Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            RaycastHit[] hits = Physics.RaycastAll(ray, 1000, selectableEntityLayerMask);
-
-            SelectableEntityStack stack = new SelectableEntityStack();
-
-            if (hits.Length > 0)
-            {
-                for (int i = 0; i < hits.Length; i++)
-                {
-                    RaycastHit otherHit = hits[i];
-
-                    // TODO - this should be called GameWorldSelectableEntity
-                    SelectableEntity selectableEntity = otherHit.transform.GetComponent<SelectableEntity>();
-
-                    // TODO - I think this is the wrong way around
-                    if (selectableEntity)
-                    {
-                        EntityBase entity = selectableEntity.entity;
-                        stack.Push(entity);
-                    }
-                }
-            }
-
-            // TODO - perhaps avoid doing this ever frame
-            // Registry.appState.UI.SetEntityStack(stack);
-        }
-        */
 
         /* 
             Internals

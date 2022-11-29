@@ -27,49 +27,64 @@ namespace TowerBuilder.DataTypes
         BottomLeft, BottomRight
     }
 
-    public enum OccupiedCell
+    public class OccupiedCellMap
     {
-        TopLeft,
-        Top,
-        TopRight,
+        public bool topLeft = false;
+        public bool top = false;
+        public bool topRight = false;
 
-        Left,
-        Right,
+        public bool left = false;
+        public bool right = false;
 
-        BottomLeft,
-        Bottom,
-        BottomRight
+        public bool bottomLeft = false;
+        public bool bottom = false;
+        public bool bottomRight = false;
+    }
+
+    public class Tilabile
+    {
+        public static TileableBase FromTileability(Tileability tileability)
+        {
+            return tileability switch
+            {
+                Tileability.Single => new SingleTileable(),
+                Tileability.Horizontal => new HorizontalTileable(),
+                Tileability.Vertical => new VerticalTileable(),
+                Tileability.Full => new FullyTilable(),
+                _ => null
+            };
+        }
     }
 
     public abstract class TileableBase
     {
         public abstract Tileability tileability { get; }
-        public abstract TileablePosition GetOrientation(List<OccupiedCell> occupied);
+        public abstract TileablePosition GetOrientation(OccupiedCellMap occupied);
     }
 
     public class SingleTileable : TileableBase
     {
         public override Tileability tileability { get; } = Tileability.Single;
-        public override TileablePosition GetOrientation(List<OccupiedCell> occupied) { return TileablePosition.Single; }
+        public override TileablePosition GetOrientation(OccupiedCellMap occupied) { return TileablePosition.Single; }
     }
 
     public class HorizontalTileable : TileableBase
     {
         public override Tileability tileability { get; } = Tileability.Single;
 
-        public override TileablePosition GetOrientation(List<OccupiedCell> occupied)
+        public override TileablePosition GetOrientation(OccupiedCellMap occupied)
         {
-            if (occupied.Contains(OccupiedCell.Left) && occupied.Contains(OccupiedCell.Right))
+            if (occupied.left && occupied.right)
             {
                 return TileablePosition.HorizontalCenter;
             }
 
-            if (occupied.Contains(OccupiedCell.Left))
+            if (occupied.left)
             {
                 return TileablePosition.Right;
             }
 
-            if (occupied.Contains(OccupiedCell.Right))
+            if (occupied.right)
             {
                 return TileablePosition.Left;
             }
@@ -82,19 +97,19 @@ namespace TowerBuilder.DataTypes
     {
         public override Tileability tileability { get; } = Tileability.Single;
 
-        public override TileablePosition GetOrientation(List<OccupiedCell> occupied)
+        public override TileablePosition GetOrientation(OccupiedCellMap occupied)
         {
-            if (occupied.Contains(OccupiedCell.Top) && occupied.Contains(OccupiedCell.Bottom))
+            if (occupied.top && occupied.bottom)
             {
                 return TileablePosition.VerticalCenter;
             }
 
-            if (occupied.Contains(OccupiedCell.Top))
+            if (occupied.top)
             {
                 return TileablePosition.Bottom;
             }
 
-            if (occupied.Contains(OccupiedCell.Bottom))
+            if (occupied.bottom)
             {
                 return TileablePosition.Top;
             }
@@ -107,24 +122,24 @@ namespace TowerBuilder.DataTypes
     {
         public override Tileability tileability { get; } = Tileability.Full;
 
-        public override TileablePosition GetOrientation(List<OccupiedCell> occupied)
+        public override TileablePosition GetOrientation(OccupiedCellMap occupied)
         {
             if (
-                occupied.Contains(OccupiedCell.Top) &&
-                occupied.Contains(OccupiedCell.Right) &&
-                occupied.Contains(OccupiedCell.Bottom) &&
-                occupied.Contains(OccupiedCell.Left)
+                occupied.top &&
+                occupied.right &&
+                occupied.bottom &&
+                occupied.left
             )
             {
                 return TileablePosition.Center;
             }
 
-            if (occupied.Contains(OccupiedCell.Top) && occupied.Contains(OccupiedCell.Bottom))
+            if (occupied.top && occupied.bottom)
             {
                 return TileablePosition.VerticalCenter;
             }
 
-            if (occupied.Contains(OccupiedCell.Left) && occupied.Contains(OccupiedCell.Right))
+            if (occupied.left && occupied.right)
             {
                 return TileablePosition.HorizontalCenter;
             }
@@ -132,22 +147,22 @@ namespace TowerBuilder.DataTypes
             // TODO - walls
             // TODO - corners
 
-            if (occupied.Contains(OccupiedCell.Left))
+            if (occupied.left)
             {
                 return TileablePosition.Right;
             }
 
-            if (occupied.Contains(OccupiedCell.Right))
+            if (occupied.right)
             {
                 return TileablePosition.Left;
             }
 
-            if (occupied.Contains(OccupiedCell.Top))
+            if (occupied.top)
             {
                 return TileablePosition.Bottom;
             }
 
-            if (occupied.Contains(OccupiedCell.Bottom))
+            if (occupied.bottom)
             {
                 return TileablePosition.Top;
             }

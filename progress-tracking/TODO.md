@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- Delete map cell helpers
 - show a notification or something if no route is found for a residnet
 - Animate resident traveling
 - Remove residentmotor state

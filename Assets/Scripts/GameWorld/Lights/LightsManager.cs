@@ -68,8 +68,6 @@ namespace TowerBuilder.GameWorld.Lights
         };
 
         float elapsedSinceLastTimeOfDay = 0f;
-        float elapsedSinceLastTick = 0f;
-        float normalizedTickProgress = 0f;
 
         // when sunlight is at -90
         TimeValue sunlightStartTime = new TimeValue(new TimeValue.Input() { hour = 5 });
@@ -79,9 +77,13 @@ namespace TowerBuilder.GameWorld.Lights
         static Vector3 dayStartRotation { get; } = new Vector3(20f, -90f, 0);
         static Vector3 dayEndRotation { get; } = new Vector3(20f, +90f, 0);
 
+        GameWorldTimeSystemManager timeSystemManager;
+
         void Awake()
         {
             sunLight = transform.Find("SunLight").GetComponent<Light>();
+
+            timeSystemManager = GameWorldTimeSystemManager.Find();
 
             Setup();
 
@@ -91,20 +93,16 @@ namespace TowerBuilder.GameWorld.Lights
 
         void Setup()
         {
-            Registry.appState.Time.events.onTick += OnTick;
             Registry.appState.Time.events.onTimeOfDayUpdated += OnTimeOfDayUpdated;
         }
 
         void Teardown()
         {
-            Registry.appState.Time.events.onTick -= OnTick;
             Registry.appState.Time.events.onTimeOfDayUpdated -= OnTimeOfDayUpdated;
         }
 
         void Update()
         {
-            UpdateTickProgress();
-
             UpdateSkyColor();
             UpdateSunRotation();
         }
@@ -114,27 +112,14 @@ namespace TowerBuilder.GameWorld.Lights
             elapsedSinceLastTimeOfDay = 0;
         }
 
-        void OnTick(TimeValue timeValue)
-        {
-            elapsedSinceLastTick = 0f;
-        }
-
-        void UpdateTickProgress()
-        {
-            float currentTickInterval = Registry.appState.Time.queries.currentTickInterval;
-            float tickIncrement = Time.deltaTime / currentTickInterval;
-
-            elapsedSinceLastTick += tickIncrement;
-            normalizedTickProgress = Mathf.Clamp(elapsedSinceLastTick, 0f, 1f);
-        }
-
         void UpdateSkyColor()
         {
             TimeValue currentTime = Registry.appState.Time.time;
             TimeValue currentTimeOfDayStartHour = new TimeValue(new TimeValue.Input() { hour = currentTime.timeOfDay.startsOnHour });
             TimeValue nextTimeOfDayStartHour = new TimeValue(new TimeValue.Input() { hour = currentTime.nextTimeOfDay.startsOnHour });
+            float normalizedTickProgress = timeSystemManager.normalizedTickProgress;
 
-            (float normalizedCurrentTickTime, float normalizedNextTickTime) = GetNormalizedCurrentAndNextTickTimes(currentTimeOfDayStartHour, nextTimeOfDayStartHour);
+            (float normalizedCurrentTickTime, float normalizedNextTickTime) = GameWorldUtils.GetNormalizedCurrentAndNextTickTimesBetween(currentTimeOfDayStartHour, nextTimeOfDayStartHour);
             (AtmosphereSetting currentAtmosphereSetting, AtmosphereSetting nextAtmosphereSetting) = GetCurrentAndNextAtmosphereSettings();
 
             Color currentTickColor = Color.Lerp(
@@ -161,7 +146,8 @@ namespace TowerBuilder.GameWorld.Lights
 
         void UpdateSunRotation()
         {
-            (float normalizedCurrentTickTime, float normalizedNextTickTime) = GetNormalizedCurrentAndNextTickTimes(sunlightStartTime, sunlightEndTime);
+            (float normalizedCurrentTickTime, float normalizedNextTickTime) = GameWorldUtils.GetNormalizedCurrentAndNextTickTimesBetween(sunlightStartTime, sunlightEndTime);
+            float normalizedTickProgress = timeSystemManager.normalizedTickProgress;
 
             Vector3 fromRotation = Vector3.Lerp(
                 dayStartRotation,
@@ -193,27 +179,6 @@ namespace TowerBuilder.GameWorld.Lights
             {
                 current = TimeOfDayAtmosphereSettingMap[currentTimeOfDay.key],
                 next = TimeOfDayAtmosphereSettingMap[nextTimeOfDay.key]
-            };
-        }
-
-        CurrentAndNext<float> GetNormalizedCurrentAndNextTickTimes(TimeValue fromTime, TimeValue toTime)
-        {
-            float normalizedCurrentTickTime = MathUtils.NormalizeFloat(
-                Registry.appState.Time.time.ToRelative().AsMinutes(),
-                fromTime.AsMinutes(),
-                toTime.AsMinutes()
-            );
-
-            float normalizedNextTickTime = MathUtils.NormalizeFloat(
-                Registry.appState.Time.queries.nextTickTimeValue.ToRelative().AsMinutes(),
-                fromTime.AsMinutes(),
-                toTime.AsMinutes()
-            );
-
-            return new CurrentAndNext<float>()
-            {
-                current = normalizedCurrentTickTime,
-                next = normalizedNextTickTime
             };
         }
     }

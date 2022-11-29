@@ -8,6 +8,14 @@ namespace TowerBuilder.DataTypes
         public T current;
         public T next;
 
+        public CurrentAndNext() { }
+
+        public CurrentAndNext(T current, T next)
+        {
+            this.current = current;
+            this.next = next;
+        }
+
         public void Deconstruct(out T current, out T next)
         {
             current = this.current;

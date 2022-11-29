@@ -13,6 +13,8 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
             public Route route;
         }
 
+        public override StateKey key { get; } = StateKey.Traveling;
+
         public Route route { get; private set; }
         public RouteProgress routeProgress { get; private set; }
 

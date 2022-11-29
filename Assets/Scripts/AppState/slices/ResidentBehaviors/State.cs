@@ -20,6 +20,14 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             public delegate void ResidentBehaviorEvent(ResidentBehavior residentBehavior);
             public ResidentBehaviorEvent onResidentBehaviorAdded;
             public ResidentBehaviorEvent onResidentBehaviorRemoved;
+            public ResidentBehaviorEvent onResidentBehaviorGoalsAdded;
+            public ResidentBehaviorEvent onResidentBehaviorGoalCompleted;
+
+            public delegate void ResidentBehaviorTravelingStateHandlerEvent(ResidentBehavior residentBehavior, TravelingStateHandler travelingStateHandler);
+            public ResidentBehaviorTravelingStateHandlerEvent onResidentBehaviorTraveled;
+
+            public delegate void ResidentBehaviorStateChangeEvent(ResidentBehavior residentBehavior, StateHandlerBase.StateKey previousStateKey, StateHandlerBase.StateKey newStateKey);
+            public ResidentBehaviorStateChangeEvent onResidentBehaviorStateChanged;
         }
 
         public class Queries
@@ -116,19 +124,16 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             {
                 residentBehavior.EnqueueGoal(goal);
             }
+
+            if (events.onResidentBehaviorGoalsAdded != null)
+            {
+                events.onResidentBehaviorGoalsAdded(residentBehavior);
+            }
         }
 
         public void SendResidentTo(Resident resident, Furniture furniture)
         {
-            Route route = new RouteFinder(appState).FindRouteBetween(resident.cellCoordinates, furniture.cellCoordinates);
-
-            if (route != null)
-            {
-                TravelGoal travelGoal = new TravelGoal() { route = route };
-                InteractingWithFurnitureGoal furnitureGoal = new InteractingWithFurnitureGoal() { targetFurniture = furniture };
-
-                AddResidentBehaviorGoals(resident, new GoalBase[] { travelGoal, furnitureGoal });
-            }
+            SendResidentTo(resident, furniture.cellCoordinates);
         }
 
         public void SendResidentTo(Resident resident, CellCoordinates cellCoordinates)
@@ -148,14 +153,54 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
         }
 
         /* 
+            Internals
+        */
+        void ProcessResidentBehaviorTick(ResidentBehavior residentBehavior)
+        {
+            residentBehavior.ProcessTick(appState);
+
+            Debug.Log("residentBehavior.currentStateHandler.key");
+            Debug.Log(residentBehavior.currentStateHandler.key);
+            switch (residentBehavior.currentStateHandler.key)
+            {
+                case StateHandlerBase.StateKey.Idle:
+                    break;
+                case StateHandlerBase.StateKey.InteractingWithFurniture:
+                    break;
+                case StateHandlerBase.StateKey.Traveling:
+                    if (events.onResidentBehaviorTraveled != null)
+                    {
+                        TravelingStateHandler handler = (residentBehavior.currentStateHandler as TravelingStateHandler);
+                        events.onResidentBehaviorTraveled(residentBehavior, handler);
+                    }
+                    break;
+            }
+
+            // TODO - on resident behavior tick instead?
+
+            // TODO - check if goal has completed?
+
+            StateHandlerBase.TransitionPayloadBase nextStatePayload = residentBehavior.currentStateHandler.GetNextState();
+
+            if (nextStatePayload != null && nextStatePayload.key != residentBehavior.currentStateHandler.key)
+            {
+                StateHandlerBase.StateKey previousStateKey = residentBehavior.currentStateHandler.key;
+                residentBehavior.TransitionTo(nextStatePayload);
+                StateHandlerBase.StateKey currentStateKey = residentBehavior.currentStateHandler.key;
+
+                if (events.onResidentBehaviorStateChanged != null)
+                {
+                    events.onResidentBehaviorStateChanged(residentBehavior, previousStateKey, currentStateKey);
+                }
+            }
+        }
+
+        /* 
             Event handlers
          */
         void OnTick(TimeValue time)
         {
-            foreach (ResidentBehavior residentBehavior in residentBehaviorsList.items)
-            {
-                residentBehavior.ProcessTick(appState);
-            }
+            residentBehaviorsList.ForEach(residentBehavior => ProcessResidentBehaviorTick(residentBehavior));
         }
 
         void OnResidentsAdded(ResidentsList residentsList)

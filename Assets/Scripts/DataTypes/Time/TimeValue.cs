@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.DataTypes.Time
 {
-    public struct TimeValue
+    public class TimeValue
     {
         public struct Input
         {
@@ -96,6 +96,8 @@ namespace TowerBuilder.DataTypes.Time
             season = input.season ?? 0;
             year = input.year ?? 0;
         }
+
+        public TimeValue() : this(new Input()) { }
 
         public TimeValue(int minutes) : this(new Input())
         {
