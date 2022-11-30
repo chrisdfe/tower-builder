@@ -4,8 +4,8 @@ namespace TowerBuilder.DataTypes.TransportationItems
 {
     public class TransportationItemTemplate
     {
-        public string key = "None";
         public string title = "None";
+        public TransportationItem.Key key = TransportationItem.Key.None;
         public string category = "None";
 
         public int pricePerCell = 0;

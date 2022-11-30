@@ -131,6 +131,10 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
             // TODO - the other way around - if current goal is complete and there's not another thing to do
             // transition to idle
+            if (currentState != StateKey.Idle && goals.Count == 0)
+            {
+                nextState = StateKey.Idle;
+            }
         }
 
         public void TransitionToNextState()
@@ -183,7 +187,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
                     if (routeProgress.isAtEndOfRoute)
                     {
                         goals.current.isComplete = true;
-                        nextState = StateKey.Idle;
+                        // nextState = StateKey.Idle;
                     }
 
                     break;
@@ -192,7 +196,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
                     if (goals.Count > 1)
                     {
                         goals.current.isComplete = true;
-                        nextState = StateKey.Idle;
+                        // nextState = StateKey.Idle;
                     }
                     break;
             }

@@ -175,7 +175,6 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         void ProcessResidentBehaviorTick(ResidentBehavior residentBehavior)
         {
-            Debug.Log("tick " + residentBehavior.goals.Count);
             residentBehavior.ProcessTick();
 
             if (events.onResidentBehaviorTickProcessed != null)
@@ -197,8 +196,6 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             }
 
             // Begin next goal
-            Debug.Log("Begin next goal?");
-            Debug.Log(residentBehavior.goals.current);
             if (residentBehavior.goals.current != null && !residentBehavior.goals.current.hasBegun)
             {
                 residentBehavior.BeginNextGoal();
@@ -216,7 +213,6 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             // Search for next state
             if (residentBehavior.nextState != residentBehavior.currentState)
             {
-                Debug.Log("transitioning to new state");
                 ResidentBehavior.StateKey previousState = residentBehavior.currentState;
                 residentBehavior.TransitionToNextState();
 

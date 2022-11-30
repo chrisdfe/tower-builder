@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- Move a lot of the attributes in VehicleAttributesGroup into vehcile and rename VehcileAttributesGroup VehcileBehavior
 - Resident goal priorities
 - Resident -> ResidentAttributes -> ResidentBehaviors?
   - also for Furniture, Room, and Building
@@ -13,14 +14,11 @@
   - large take up a whole cell?
   - larger = more $ obvs but more space/investment
 - Delete map cell helpers
-- show a notification or something if no route is found for a residnet
-- Animate resident traveling
 - Remove residentmotor state
 - Different room "chassis" - tradeoff between structural integrety and light
   - more light = good for plants
   - more structural integrity = can build larger vehicles (good for freight? passengers?)
 - Engines should yield less power as their condition goes down
-- Make transportation item meshes show on every cell that they occupy.
 - If a vehicle doesn't have any engines it shouldn't be able to move
 - Make sure furniture isn't being used when a resident starts walking over there to use it
 - I think validators will need to be state slices near trhe bottom of the tree now. Validators need to have access to a lot more than just the thing they're validating
@@ -36,15 +34,13 @@
   - be a bus (have passengers)
   - be an overnight bus (hotel rooms)
   - deliver things (freight room)
+  - make food for your residents (farms)
 - Camera that bypasses fog for build/destroy/inspection modes
 - helpers for finding a cell off of the side of the left or right side of the screen, for spawning new residents, npc vehicles etc
-- TransportationItem meshes
 - TransportationItem selectable entity
 - Move entities when placing them instead of continually adding/removing them
 - Placeable windows - new state slice/entity type
 - Template button should be visible when selecting a new entity type - right now it's just the category button
-- replace room entrances with TransportationItems
-  - Remove room entrances
 - Move RoomConnections into its own state slice
 - maybe UI should be a sibling namespace to GameWorld instead of child
 - Furniture should validate that there's not other furniture at the same coordinates
@@ -155,6 +151,12 @@
 
 # Done
 
+- TransportationItem meshes
+- Make transportation item meshes show on every cell that they occupy.
+- show a notification or something if no route is found for a residnet
+- Animate resident traveling
+- replace room entrances with TransportationItems
+  - Remove room entrances
 - Maybe get rid of the 3 different resident behavior state handlers - I'm not sure there are going to be more than 3 and they complicate interaction with the appstate
 - turn this into a car game
 - "watchers" that sit at the bottom of appstate and don't hold any state but react to/mutate other parts of appState?

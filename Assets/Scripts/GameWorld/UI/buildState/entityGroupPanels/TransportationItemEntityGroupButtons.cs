@@ -44,8 +44,12 @@ namespace TowerBuilder.GameWorld.UI
         {
             List<UISelectButton> result = new List<UISelectButton>();
 
-            List<TransportationItemTemplate> currentFurnitureDefinitions = GetDefinitionsForCurrentCategory();
-            return currentFurnitureDefinitions.Select(furnitureTemplate => new UISelectButton.Input() { label = furnitureTemplate.title, value = furnitureTemplate.key }).ToList();
+            List<TransportationItemTemplate> transportationItemDefinitions = GetDefinitionsForCurrentCategory();
+            return transportationItemDefinitions.Select(template =>
+            {
+                string label = TransportationItem.GetLabelByKey(template.key);
+                return new UISelectButton.Input() { label = template.title, value = label };
+            }).ToList();
         }
 
         protected override void OnCategoryButtonClick(string category)
@@ -53,9 +57,10 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Tools.buildToolState.subStates.transportationItemEntityType.SetSelectedCategory(category);
         }
 
-        protected override void OnTemplateButtonClick(string templateKey)
+        protected override void OnTemplateButtonClick(string templateLabel)
         {
-            TransportationItemTemplate selectedTemplate = Registry.definitions.transportationItems.queries.FindByKey(templateKey);
+            TransportationItem.Key key = TransportationItem.GetKeyByLabel(templateLabel);
+            TransportationItemTemplate selectedTemplate = Registry.definitions.transportationItems.queries.FindByKey(key);
             Registry.appState.Tools.buildToolState.subStates.transportationItemEntityType.SetSelectedTemplate(selectedTemplate);
         }
 
@@ -75,7 +80,8 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnSelectedTemplateUpdated(TransportationItemTemplate template)
         {
-            SetSelectedTemplate(template.key);
+            string label = TransportationItem.GetLabelByKey(template.key);
+            SetSelectedTemplate(label);
         }
     }
 }

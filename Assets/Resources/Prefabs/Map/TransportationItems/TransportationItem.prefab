@@ -176,5 +176,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assetList:
     assetList:
-    - key: Ladder
-      gameObject: {fileID: 1415673999713459903, guid: 38517811e24a60841b19b30b0ce6940a, type: 3}
+    - key: 1
+      gameObject: {fileID: 1484675088658636722, guid: 38517811e24a60841b19b30b0ce6940a, type: 3}
+    - key: 2
+      gameObject: {fileID: 8293843714164059564, guid: b7a751dd88520244b83d7edd8a667fb2, type: 3}
+    - key: 3
+      gameObject: {fileID: 4047200669874967013, guid: 2bf47bad987115541890fef29dea2805, type: 3}

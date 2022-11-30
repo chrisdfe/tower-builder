@@ -13,7 +13,7 @@ namespace TowerBuilder.Definitions
         public List<TransportationItemTemplate> definitions { get; private set; } = new List<TransportationItemTemplate>()
         {
             new TransportationItemTemplate() {
-                key = "Escalator",
+                key = TransportationItem.Key.Escalator,
                 title = "Escalator",
                 category = "Escalators",
                 cellCoordinatesList = new CellCoordinatesList(
@@ -27,7 +27,7 @@ namespace TowerBuilder.Definitions
             },
 
             new TransportationItemTemplate() {
-                key = "Ladder",
+                key = TransportationItem.Key.Ladder,
                 title = "Ladder",
                 category = "Ladders",
                 cellCoordinatesList = new CellCoordinatesList(
@@ -41,7 +41,7 @@ namespace TowerBuilder.Definitions
             },
 
             new TransportationItemTemplate() {
-                key = "Doorway",
+                key = TransportationItem.Key.Doorway,
                 title = "Doorway",
                 category = "Doorways",
                 cellCoordinatesList = new CellCoordinatesList(
@@ -69,7 +69,7 @@ namespace TowerBuilder.Definitions
                 return definitions.Find(template => template.title == title);
             }
 
-            public TransportationItemTemplate FindByKey(string key)
+            public TransportationItemTemplate FindByKey(TransportationItem.Key key)
             {
                 return definitions.Find(template => template.key == key);
             }
