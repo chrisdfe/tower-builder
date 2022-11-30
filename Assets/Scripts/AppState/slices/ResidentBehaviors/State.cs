@@ -21,12 +21,13 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             public ResidentBehaviorEvent onResidentBehaviorAdded;
             public ResidentBehaviorEvent onResidentBehaviorRemoved;
             public ResidentBehaviorEvent onResidentBehaviorGoalsAdded;
+            public ResidentBehaviorEvent onResidentBehaviorGoalBegun;
             public ResidentBehaviorEvent onResidentBehaviorGoalCompleted;
 
-            public delegate void ResidentBehaviorTravelingStateHandlerEvent(ResidentBehavior residentBehavior, TravelingStateHandler travelingStateHandler);
-            public ResidentBehaviorTravelingStateHandlerEvent onResidentBehaviorTraveled;
+            public ResidentBehaviorEvent onResidentBehaviorTickProcessed;
+            public ResidentBehaviorEvent onCurrentGoalCompleted;
 
-            public delegate void ResidentBehaviorStateChangeEvent(ResidentBehavior residentBehavior, StateHandlerBase.StateKey previousStateKey, StateHandlerBase.StateKey newStateKey);
+            public delegate void ResidentBehaviorStateChangeEvent(ResidentBehavior residentBehavior, ResidentBehavior.StateKey previousStateKey, ResidentBehavior.StateKey newStateKey);
             public ResidentBehaviorStateChangeEvent onResidentBehaviorStateChanged;
         }
 
@@ -116,13 +117,13 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             }
         }
 
-        public void AddResidentBehaviorGoals(Resident resident, GoalBase[] goals)
+        public void AddResidentBehaviorGoals(Resident resident, ResidentBehavior.GoalBase[] goals)
         {
             ResidentBehavior residentBehavior = queries.FindByResident(resident);
 
-            foreach (GoalBase goal in goals)
+            foreach (ResidentBehavior.GoalBase goal in goals)
             {
-                residentBehavior.EnqueueGoal(goal);
+                residentBehavior.goals.Enqueue(goal);
             }
 
             if (events.onResidentBehaviorGoalsAdded != null)
@@ -133,64 +134,95 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         public void SendResidentTo(Resident resident, Furniture furniture)
         {
-            SendResidentTo(resident, furniture.cellCoordinates);
+            Route route = FindRouteTo(resident.cellCoordinates, furniture.cellCoordinates);
+
+            if (route != null)
+            {
+                ResidentBehavior.TravelGoal travelGoal = new ResidentBehavior.TravelGoal() { route = route };
+                ResidentBehavior.InteractingWithFurnitureGoal furnitureGoal = new ResidentBehavior.InteractingWithFurnitureGoal() { furniture = furniture };
+                AddResidentBehaviorGoals(resident, new ResidentBehavior.GoalBase[] { travelGoal, furnitureGoal });
+            }
         }
 
         public void SendResidentTo(Resident resident, CellCoordinates cellCoordinates)
         {
-            Route route = new RouteFinder(appState).FindRouteBetween(resident.cellCoordinates, cellCoordinates);
+            Route route = FindRouteTo(resident.cellCoordinates, cellCoordinates);
 
             if (route != null)
             {
-                TravelGoal travelGoal = new TravelGoal() { route = route };
-
-                AddResidentBehaviorGoals(resident, new GoalBase[] { travelGoal });
-            }
-            else
-            {
-                appState.Notifications.AddNotification("No route found");
+                ResidentBehavior.TravelGoal travelGoal = new ResidentBehavior.TravelGoal() { route = route };
+                AddResidentBehaviorGoals(resident, new ResidentBehavior.GoalBase[] { travelGoal });
             }
         }
 
         /* 
             Internals
         */
+        Route FindRouteTo(CellCoordinates fromCellCoordinates, CellCoordinates toCellCoordinates)
+        {
+            Route route = new RouteFinder(appState).FindRouteBetween(fromCellCoordinates, toCellCoordinates);
+
+            if (route != null)
+            {
+                return route;
+            }
+            else
+            {
+                appState.Notifications.AddNotification("No route found");
+                return null;
+            }
+        }
+
         void ProcessResidentBehaviorTick(ResidentBehavior residentBehavior)
         {
-            residentBehavior.ProcessTick(appState);
+            Debug.Log("tick " + residentBehavior.goals.Count);
+            residentBehavior.ProcessTick();
 
-            Debug.Log("residentBehavior.currentStateHandler.key");
-            Debug.Log(residentBehavior.currentStateHandler.key);
-            switch (residentBehavior.currentStateHandler.key)
+            if (events.onResidentBehaviorTickProcessed != null)
             {
-                case StateHandlerBase.StateKey.Idle:
-                    break;
-                case StateHandlerBase.StateKey.InteractingWithFurniture:
-                    break;
-                case StateHandlerBase.StateKey.Traveling:
-                    if (events.onResidentBehaviorTraveled != null)
-                    {
-                        TravelingStateHandler handler = (residentBehavior.currentStateHandler as TravelingStateHandler);
-                        events.onResidentBehaviorTraveled(residentBehavior, handler);
-                    }
-                    break;
+                events.onResidentBehaviorTickProcessed(residentBehavior);
             }
 
-            // TODO - on resident behavior tick instead?
+            // Remove current goal if it has been marked as complete
+            residentBehavior.CompleteCurrentGoalIfItIsComplete();
 
-            // TODO - check if goal has completed?
-
-            StateHandlerBase.TransitionPayloadBase nextStatePayload = residentBehavior.currentStateHandler.GetNextState();
-
-            if (nextStatePayload != null && nextStatePayload.key != residentBehavior.currentStateHandler.key)
+            if (residentBehavior.goals.current != null && residentBehavior.goals.current.isComplete)
             {
-                StateHandlerBase.StateKey previousStateKey = residentBehavior.currentStateHandler.key;
-                residentBehavior.TransitionTo(nextStatePayload);
-                StateHandlerBase.StateKey currentStateKey = residentBehavior.currentStateHandler.key;
+                if (events.onCurrentGoalCompleted != null)
+                {
+                    events.onCurrentGoalCompleted(residentBehavior);
+                }
+
+                residentBehavior.goals.Dequeue();
+            }
+
+            // Begin next goal
+            Debug.Log("Begin next goal?");
+            Debug.Log(residentBehavior.goals.current);
+            if (residentBehavior.goals.current != null && !residentBehavior.goals.current.hasBegun)
+            {
+                residentBehavior.BeginNextGoal();
+
+                if (events.onResidentBehaviorGoalBegun != null)
+                {
+                    events.onResidentBehaviorGoalBegun(residentBehavior);
+                }
+            }
+
+            // TODO - if a resident has just completed a goal and doesn't have another one to do they should automatically
+            //        become idle here, instead of having to manually do that
+            residentBehavior.DetermineNextState();
+
+            // Search for next state
+            if (residentBehavior.nextState != residentBehavior.currentState)
+            {
+                Debug.Log("transitioning to new state");
+                ResidentBehavior.StateKey previousState = residentBehavior.currentState;
+                residentBehavior.TransitionToNextState();
 
                 if (events.onResidentBehaviorStateChanged != null)
                 {
-                    events.onResidentBehaviorStateChanged(residentBehavior, previousStateKey, currentStateKey);
+                    events.onResidentBehaviorStateChanged(residentBehavior, previousState, residentBehavior.nextState);
                 }
             }
         }

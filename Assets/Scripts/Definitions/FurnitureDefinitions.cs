@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Furnitures.Behaviors;
@@ -19,7 +20,7 @@ namespace TowerBuilder.Definitions
                 key = "PilotSeat",
                 title = "Pilot Seat",
                 category = "PilotSeats",
-                furnitureBehaviorFactory = (Furniture furniture) => new CockpitBehavior(furniture),
+                furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new CockpitBehavior(appState, furniture),
                 furnitureValidatorFactory = (Furniture furniture) => new CockpitFurnitureValidator(furniture)
             },
 
@@ -27,7 +28,7 @@ namespace TowerBuilder.Definitions
                 key = "Engine",
                 title = "Engine",
                 category = "Engines",
-                furnitureBehaviorFactory = (Furniture furniture) => new EngineBehavior(furniture),
+                furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new EngineBehavior(appState, furniture),
                 furnitureValidatorFactory = (Furniture furniture) => new EngineFurnitureValidator(furniture)
             },
 
@@ -36,7 +37,7 @@ namespace TowerBuilder.Definitions
                 title = "Bed",
                 category = "Beds",
                 homeSlotCount = 1,
-                furnitureBehaviorFactory = (Furniture furniture) => new BedBehavior(furniture),
+                furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new BedBehavior(appState, furniture),
                 furnitureValidatorFactory = (Furniture furniture) => new BedFurnitureValidator(furniture)
             },
 
@@ -44,7 +45,7 @@ namespace TowerBuilder.Definitions
                 key = "MoneyMachine",
                 title = "Money Machine",
                 category = "Industry",
-                furnitureBehaviorFactory = (Furniture furniture) => new MoneyMachineBehavior(furniture),
+                furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new MoneyMachineBehavior(appState, furniture),
                 // furnitureValidatorFactory = (Furniture furniture) => new BedFurnitureValidator(furniture)
             },
         };

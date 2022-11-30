@@ -14,10 +14,17 @@ namespace TowerBuilder.DataTypes.Routes
 
         public bool isAtEndOfRoute { get { return currentSegmentIndex >= route.segments.Count - 1; } }
 
-
         int currentSegmentIndex = 0;
         // This will only be true at the very beginning of the route, since one segment's endNode is the next's startNode
         bool isAtFirstCell = true;
+
+        public CurrentAndNext<CellCoordinates> currentAndNextCell
+        {
+            get
+            {
+                return new CurrentAndNext<CellCoordinates>(currentCell, nextCell);
+            }
+        }
 
         public RouteSegment currentSegment
         {
@@ -70,6 +77,7 @@ namespace TowerBuilder.DataTypes.Routes
 
         public void IncrementProgress()
         {
+            Debug.Log($"b4 - isAtFirstCell: {isAtFirstCell}; currentSegmentIndex: {currentSegmentIndex}");
             if (isAtFirstCell)
             {
                 isAtFirstCell = false;
@@ -78,6 +86,7 @@ namespace TowerBuilder.DataTypes.Routes
             {
                 currentSegmentIndex++;
             }
+            Debug.Log($"after - isAtFirstCell: {isAtFirstCell}; currentSegmentIndex: {currentSegmentIndex}");
         }
     }
 }

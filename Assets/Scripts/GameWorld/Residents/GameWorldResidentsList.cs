@@ -22,7 +22,8 @@ namespace TowerBuilder.GameWorld.Residents
 
             Registry.appState.ResidentBehaviors.events.onResidentBehaviorAdded += OnResidentBehaviorAdded;
             Registry.appState.ResidentBehaviors.events.onResidentBehaviorRemoved += OnResidentBehaviorRemoved;
-            Registry.appState.ResidentBehaviors.events.onResidentBehaviorTraveled += OnResidentBehaviorTraveled;
+            Registry.appState.ResidentBehaviors.events.onResidentBehaviorTickProcessed += OnResidentBehaviorTickProcessed;
+            Registry.appState.ResidentBehaviors.events.onResidentBehaviorStateChanged += OnResidentBehaviorStateChanged;
 
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
@@ -36,7 +37,8 @@ namespace TowerBuilder.GameWorld.Residents
 
             Registry.appState.ResidentBehaviors.events.onResidentBehaviorAdded -= OnResidentBehaviorAdded;
             Registry.appState.ResidentBehaviors.events.onResidentBehaviorRemoved -= OnResidentBehaviorRemoved;
-            Registry.appState.ResidentBehaviors.events.onResidentBehaviorTraveled -= OnResidentBehaviorTraveled;
+            Registry.appState.ResidentBehaviors.events.onResidentBehaviorTickProcessed -= OnResidentBehaviorTickProcessed;
+            Registry.appState.ResidentBehaviors.events.onResidentBehaviorStateChanged -= OnResidentBehaviorStateChanged;
 
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
@@ -138,19 +140,42 @@ namespace TowerBuilder.GameWorld.Residents
             }
         }
 
-        void OnResidentBehaviorTraveled(ResidentBehavior residentBehavior, TravelingStateHandler travelingStateHandler)
+        void OnResidentBehaviorTickProcessed(ResidentBehavior residentBehavior)
         {
-            GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);
-            if (gameWorldResident == null) return;
+            Debug.Log("tick prosessed");
+            if (residentBehavior.currentState == ResidentBehavior.StateKey.Traveling)
+            {
+                GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);
+                if (gameWorldResident == null) return;
 
-            // TODO - do this on state change and also other times, not just travel state.
-            TimeValue currentTick = Registry.appState.Time.time;
-            TimeValue nextTick = TimeValue.Add(currentTick, new TimeValue.Input() { minute = Constants.MINUTES_ELAPSED_PER_TICK });
+                // TODO - do this on state change and also other times, not just travel state.
+                TimeValue currentTick = Registry.appState.Time.time;
+                TimeValue nextTick = TimeValue.Add(currentTick, new TimeValue.Input() { minute = Constants.MINUTES_ELAPSED_PER_TICK });
 
-            gameWorldResident.currentAndNextPosition = new CurrentAndNext<(TimeValue, CellCoordinates)>(
-                (currentTick, travelingStateHandler.routeProgress.currentCell),
-                (nextTick, travelingStateHandler.routeProgress.nextCell)
-            );
+                gameWorldResident.currentAndNextPosition = new CurrentAndNext<(TimeValue, CellCoordinates)>(
+                    (currentTick, residentBehavior.routeProgress.currentCell),
+                    (nextTick, residentBehavior.routeProgress.nextCell)
+                );
+            }
+        }
+
+        void OnResidentBehaviorStateChanged(ResidentBehavior residentBehavior, ResidentBehavior.StateKey previousState, ResidentBehavior.StateKey currentState)
+        {
+            Debug.Log("state changed");
+            if (currentState == ResidentBehavior.StateKey.Traveling)
+            {
+                GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);
+                if (gameWorldResident == null) return;
+
+                // TODO - do this on state change and also other times, not just travel state.
+                TimeValue currentTick = Registry.appState.Time.time;
+                TimeValue nextTick = TimeValue.Add(currentTick, new TimeValue.Input() { minute = Constants.MINUTES_ELAPSED_PER_TICK });
+
+                gameWorldResident.currentAndNextPosition = new CurrentAndNext<(TimeValue, CellCoordinates)>(
+                    (currentTick, residentBehavior.routeProgress.currentCell),
+                    (nextTick, residentBehavior.routeProgress.nextCell)
+                );
+            }
         }
 
         /*

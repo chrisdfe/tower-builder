@@ -91,7 +91,7 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
         {
             if (furniture.isInBlueprintMode) return null;
 
-            FurnitureBehaviorBase furnitureBehavior = furniture.template.furnitureBehaviorFactory(furniture);
+            FurnitureBehaviorBase furnitureBehavior = furniture.template.furnitureBehaviorFactory(appState, furniture);
             AddFurnitureBehavior(furnitureBehavior);
 
             return furnitureBehavior;
@@ -135,6 +135,23 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
                 if (events.onFurnitureBehaviorInteractEnd != null)
                 {
                     events.onFurnitureBehaviorInteractEnd(furnitureBehavior);
+                }
+            }
+        }
+
+        public void InteractwithFurniture(Resident resident, Furniture furniture)
+        {
+            FurnitureBehaviorBase furnitureBehavior = furnitureBehaviorList.FindByFurniture(furniture);
+
+            if (furnitureBehavior != null)
+            {
+                if (furnitureBehavior.interactingResidentsList.Contains(resident))
+                {
+                    furnitureBehavior.InteractTick(resident);
+                }
+                else
+                {
+                    Debug.Log("this resident is not currently interacting with this furniture");
                 }
             }
         }

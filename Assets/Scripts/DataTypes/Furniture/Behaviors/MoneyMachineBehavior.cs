@@ -16,11 +16,11 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
             get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Industry }; }
         }
 
-        public MoneyMachineBehavior(Furniture furniture) : base(furniture) { }
+        public MoneyMachineBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
 
-        public override void InteractTick(AppState appState)
+        public override void InteractTick(Resident resident)
         {
-            base.InteractTick(appState);
+            base.InteractTick(resident);
 
             appState.Wallet.AddBalance(1000);
         }

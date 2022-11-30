@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
@@ -15,6 +16,6 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
             get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Engine }; }
         }
 
-        public EngineBehavior(Furniture furniture) : base(furniture) { }
+        public EngineBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
     }
 }

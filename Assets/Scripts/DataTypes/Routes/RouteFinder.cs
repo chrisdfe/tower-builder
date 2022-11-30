@@ -76,9 +76,6 @@ namespace TowerBuilder.DataTypes.Routes
 
             ContinueRouteAttempt(firstRouteAttempt);
 
-            Debug.Log("bestRouteAttempt");
-            Debug.Log(bestRouteAttempt);
-
             if (bestRouteAttempt != null)
             {
                 Route newRoute = new Route(bestRouteAttempt);

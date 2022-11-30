@@ -4,6 +4,14 @@
 
 ## Tasks
 
+- Resident goal priorities
+- Resident -> ResidentAttributes -> ResidentBehaviors?
+  - also for Furniture, Room, and Building
+- Freight of different sizes - small, medium, large
+  - small go on shelves
+  - medium can stack on top of each other
+  - large take up a whole cell?
+  - larger = more $ obvs but more space/investment
 - Delete map cell helpers
 - show a notification or something if no route is found for a residnet
 - Animate resident traveling
@@ -147,6 +155,7 @@
 
 # Done
 
+- Maybe get rid of the 3 different resident behavior state handlers - I'm not sure there are going to be more than 3 and they complicate interaction with the appstate
 - turn this into a car game
 - "watchers" that sit at the bottom of appstate and don't hold any state but react to/mutate other parts of appState?
   - e.g residents moving in watcher

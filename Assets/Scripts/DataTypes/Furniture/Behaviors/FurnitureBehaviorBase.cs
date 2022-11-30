@@ -31,23 +31,24 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 
         public bool isActive { get { return interactingResidentsList.Count > 0; } }
 
-        public FurnitureBehaviorBase(Furniture furniture)
+        protected AppState appState;
+
+        public FurnitureBehaviorBase(AppState appState, Furniture furniture)
         {
+            this.appState = appState;
             this.furniture = furniture;
         }
 
         public virtual void InteractStart(Resident resident)
         {
-            Debug.Log("Interact start");
             interactingResidentsList.Add(resident);
         }
 
         public virtual void InteractEnd(Resident resident)
         {
-            Debug.Log("Interact end");
             interactingResidentsList.Remove(resident);
         }
 
-        public virtual void InteractTick(AppState appState) { }
+        public virtual void InteractTick(Resident resident) { }
     }
 }
