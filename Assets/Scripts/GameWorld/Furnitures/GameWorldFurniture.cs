@@ -57,7 +57,7 @@ namespace TowerBuilder.GameWorld.Furnitures
 
         void UpdatePosition()
         {
-            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(furniture.cellCoordinates);
+            transform.position = GameWorldUtils.CellCoordinatesToPosition(furniture.cellCoordinates);
         }
 
         /* 

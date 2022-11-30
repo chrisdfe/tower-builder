@@ -76,7 +76,7 @@ namespace TowerBuilder.GameWorld.Rooms
         */
         public void UpdatePosition()
         {
-            // transform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(transportationItem.cellCoordinatesList.items[0], 1f);
+            // transform.localPosition = GameWorldUtils.CellCoordinatesToPosition(transportationItem.cellCoordinatesList.items[0], 1f);
         }
 
         /* 
@@ -94,7 +94,7 @@ namespace TowerBuilder.GameWorld.Rooms
             {
                 Transform meshTransform = meshWrapper.CreateMesh();
                 meshTransform.SetParent(transform);
-                meshTransform.localPosition = GameWorldMapCellHelpers.CellCoordinatesToPosition(cellCoordinates, 1f);
+                meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
 
                 meshWrapperList.Add(meshWrapper);
                 meshList.Add(meshTransform);
@@ -147,7 +147,7 @@ namespace TowerBuilder.GameWorld.Rooms
             {
                 return Instantiate(
                     prefabMeshTransform,
-                    GameWorldMapCellHelpers.CellCoordinatesToPosition(gameWorldTransportationItem.transportationItem.cellCoordinatesList.items[0]),
+                    GameWorldUtils.CellCoordinatesToPosition(gameWorldTransportationItem.transportationItem.cellCoordinatesList.items[0]),
                     Quaternion.identity
                 );
             }

@@ -2,11 +2,6 @@ using System;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Residents;
-using TowerBuilder.DataTypes.Residents.Behaviors;
-using TowerBuilder.DataTypes.Residents.Motors;
-using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Routes;
-using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations

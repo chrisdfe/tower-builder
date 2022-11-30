@@ -93,7 +93,7 @@ namespace TowerBuilder.GameWorld.Rooms
         */
         public void UpdatePosition()
         {
-            transform.position = GameWorldMapCellHelpers.CellCoordinatesToPosition(roomCell.coordinates);
+            transform.position = GameWorldUtils.CellCoordinatesToPosition(roomCell.coordinates);
             // roomCellMeshWrapper.UpdatePosition();
         }
 

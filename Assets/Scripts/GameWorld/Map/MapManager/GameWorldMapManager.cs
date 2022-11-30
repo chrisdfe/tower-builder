@@ -102,8 +102,8 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             if (floorPlaneCollider.Raycast(ray, out hit, 1000))
             {
                 CellCoordinates hoveredCell = new CellCoordinates(
-                    GameWorldMapCellHelpers.RoundToNearestTile(hit.point.x),
-                    GameWorldMapCellHelpers.RoundToNearestTile(hit.point.y)
+                    GameWorldUtils.RoundToNearestTile(hit.point.x),
+                    GameWorldUtils.RoundToNearestTile(hit.point.y)
                 );
 
                 if (!hoveredCell.Matches(Registry.appState.UI.currentSelectedCell))

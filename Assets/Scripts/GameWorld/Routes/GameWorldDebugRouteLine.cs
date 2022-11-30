@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Routes;
+using TowerBuilder.GameWorld;
 using TowerBuilder.GameWorld.Map;
 using TowerBuilder.GameWorld.Rooms;
 using UnityEngine;
@@ -28,7 +29,7 @@ public class GameWorldDebugRouteLine : MonoBehaviour
         {
             Vector3 lineOffset = new Vector3(0, 0, -1 - (float)(attemptIndex) * 0.1f);
             Vector3 linePosition = (
-                GameWorldMapCellHelpers.CellCoordinatesToPosition(segment.endNode.cellCoordinates) + lineOffset
+                GameWorldUtils.CellCoordinatesToPosition(segment.endNode.cellCoordinates) + lineOffset
             );
 
             lineRenderer.SetPosition(i, linePosition);

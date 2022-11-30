@@ -4,17 +4,27 @@
 
 ## Tasks
 
+- Resident "energy" attribute
+  - Replenished by sleeping in a bed
+- "TickTimer" utility class
+- new Route normalization algorithm should treat "UsingTransportationItem" segments differently
+  - just go straight to the other side for now
+  - maybe in the future some transportation items can be faster or slower than others
+- bits of roomcell walls that light up when the room is highlighted
+  - same thing with other entities
+- Integrate tileable into TransportationItem
+- Placeholder models for furniture items
+- Animations when residents are traveling
+  - Custom animations for when residents use specific furniture/transportation items
 - Move a lot of the attributes in VehicleAttributesGroup into vehcile and rename VehcileAttributesGroup VehcileBehavior
 - Resident goal priorities
-- Resident -> ResidentAttributes -> ResidentBehaviors?
+- Resident -> ResidentAttributes -> ResidentBehaviors? or Resident -> ResidentBehaviors?
   - also for Furniture, Room, and Building
 - Freight of different sizes - small, medium, large
   - small go on shelves
   - medium can stack on top of each other
   - large take up a whole cell?
   - larger = more $ obvs but more space/investment
-- Delete map cell helpers
-- Remove residentmotor state
 - Different room "chassis" - tradeoff between structural integrety and light
   - more light = good for plants
   - more structural integrity = can build larger vehicles (good for freight? passengers?)
@@ -130,6 +140,7 @@
 
 ## Cleanup
 
+- Remove residentmotor state
 - Improved lighting
   - global sun light that rotates/changes color as the day progresses
 - All state slices should add lists of items instead of singular - e.g AddRooms instead of AddRoom
@@ -151,6 +162,7 @@
 
 # Done
 
+- Delete map cell helpers
 - TransportationItem meshes
 - Make transportation item meshes show on every cell that they occupy.
 - show a notification or something if no route is found for a residnet
@@ -177,7 +189,6 @@
 - consider putting vehicles state further down in the heirarchy - having vehicles be able to query their contents in various ways
   (e.g how many residents are currently inside of it, or whether it has a cockpit/engine) would be helpful
 - Delete room entrances when a block gets deleted as well
-- Move current route traversal Resident code out into separate "motor" class
 - Ability to destroy a single block in a flexible room
 - Move Rooms dictionary in Rooms state somewhere else & make it more extensible
 - blueprint price indicator for flexible rooms
