@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Residents.Attributes
 {
-    public class ResidentAttributesWrapper
+    public class ResidentAttributesWrapper : AttributesWrapper<ResidentAttribute, ResidentAttribute.Key>
     {
         public Resident resident { get; private set; }
 
-        public List<ResidentAttribute> attributes { get; } = new List<ResidentAttribute>() {
-            new ResidentAttribute(ResidentAttribute.Key.Energy, 0, 100, 100,
+        public override List<ResidentAttribute> attributes { get; } = new List<ResidentAttribute>() {
+            new ResidentAttribute(ResidentAttribute.Key.Energy,
                 new List<ResidentAttribute.Modifier>(),
                 new List<ResidentAttribute.Modifier>() {
                     new ResidentAttribute.Modifier("Natural degredation", -0.8f)
@@ -20,15 +20,9 @@ namespace TowerBuilder.DataTypes.Residents.Attributes
             )
         };
 
-        public ResidentAttributesWrapper(Resident resident)
+        public ResidentAttributesWrapper(AppState appState, Resident resident) : base(appState)
         {
             this.resident = resident;
         }
-
-        public void Setup() { }
-
-        public void Teardown() { }
-
-        public ResidentAttribute FindByKey(ResidentAttribute.Key key) => attributes.Find(attribute => attribute.key == key);
     }
 }

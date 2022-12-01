@@ -126,6 +126,7 @@ namespace TowerBuilder.ApplicationState
 
             // Attributes
             ResidentAttributesWrappers = new ResidentAttributesWrappers.State(this, input.residentAttributesWrappers);
+            VehicleAttributesWrappers = new VehicleAttributesWrappers.State(this, input.vehicleAttributesWrappers);
 
             // Relations
             FurnitureHomeSlotOccupations = new FurnitureHomeSlotOccupations.State(this, input.furnitureHomeSlotOccupations);
@@ -133,8 +134,6 @@ namespace TowerBuilder.ApplicationState
             // Behaviors
             FurnitureBehaviors = new FurnitureBehaviors.State(this, input.furnitureBehaviors);
             ResidentBehaviors = new ResidentBehaviors.State(this, input.residentBehaviors);
-
-            VehicleAttributesWrappers = new VehicleAttributesWrappers.State(this, input.vehicleAttributesWrappers);
 
             // UI
             UI = new UI.State(this, input.ui);

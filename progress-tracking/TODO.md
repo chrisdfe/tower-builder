@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- Use Invoke? syntax for delegates everywhere in appState
 - UI element that displays current resident's goals
 - Resident "energy" attribute
   - Replenished by sleeping in a bed

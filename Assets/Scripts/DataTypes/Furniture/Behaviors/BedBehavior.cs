@@ -23,13 +23,14 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
             base.InteractStart(resident);
             ResidentAttributesWrapper residentAttributesWrapper = appState.ResidentAttributesWrappers.queries.FindByResident(resident);
             modifier = new ResidentAttribute.Modifier("sleeping", 1.6f);
-            appState.ResidentAttributesWrappers.AddTickAttributeModifier(resident, ResidentAttribute.Key.Energy, modifier);
+            appState.ResidentAttributesWrappers.AddTickAttributeModifier(residentAttributesWrapper, ResidentAttribute.Key.Energy, modifier);
         }
 
         public override void InteractEnd(Resident resident)
         {
             base.InteractEnd(resident);
-            appState.ResidentAttributesWrappers.RemoveTickAttributeModifier(resident, ResidentAttribute.Key.Energy, modifier);
+            ResidentAttributesWrapper residentAttributesWrapper = appState.ResidentAttributesWrappers.queries.FindByResident(resident);
+            appState.ResidentAttributesWrappers.RemoveTickAttributeModifier(residentAttributesWrapper, ResidentAttribute.Key.Energy, modifier);
             modifier = null;
         }
     }

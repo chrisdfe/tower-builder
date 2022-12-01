@@ -1,17 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Tools;
-using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Time;
 using TowerBuilder.DataTypes.Vehicles;
-using TowerBuilder.GameWorld.Rooms;
-using TowerBuilder.GameWorld.UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace TowerBuilder.GameWorld.Map.MapManager
 {
@@ -47,20 +36,16 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public void Setup()
         {
-            Registry.appState.Time.events.onTick += OnTick;
-
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperAdded += OnVehicleAttributesWrapperAdded;
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperRemoved += OnVehicleAttributesWrapperRemoved;
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributeCurrentSpeedUpdated += onVehicleAttributeCurrentSpeedUpdated;
+            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperAdded += OnVehicleAttributesWrapperAdded;
+            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperRemoved += OnVehicleAttributesWrapperRemoved;
+            Registry.appState.VehicleAttributesWrappers.events.onAttributeValueUpdated += OnVehicleAttributeValueUpdated;
         }
 
         public void Teardown()
         {
-            Registry.appState.Time.events.onTick -= OnTick;
-
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperAdded -= OnVehicleAttributesWrapperAdded;
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperRemoved -= OnVehicleAttributesWrapperRemoved;
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributeCurrentSpeedUpdated -= onVehicleAttributeCurrentSpeedUpdated;
+            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperAdded -= OnVehicleAttributesWrapperAdded;
+            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperRemoved -= OnVehicleAttributesWrapperRemoved;
+            Registry.appState.VehicleAttributesWrappers.events.onAttributeValueUpdated -= OnVehicleAttributeValueUpdated;
         }
 
         void Update()
@@ -76,7 +61,8 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             if (vehicleAttributesWrapper.isMoving)
             {
-                float xMovement = -((vehicleAttributesWrapper.currentSpeed * (Time.deltaTime * parallaxLevel)) / currentTickInterval);
+                float currentSpeed = vehicleAttributesWrapper.FindByKey(VehicleAttribute.Key.CurrentSpeed).value;
+                float xMovement = -((currentSpeed * (Time.deltaTime * parallaxLevel)) / currentTickInterval);
                 wrapper.Translate(new Vector3(xMovement, 0, 0));
             }
         }
@@ -84,9 +70,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         /* 
             Event Handlers
         */
-        public void OnTick(TimeValue timeValue) { }
-
-        public void OnVehicleAttributesWrapperAdded(VehicleAttributesWrapper vehicleAttributesWrapper)
+        void OnVehicleAttributesWrapperAdded(VehicleAttributesWrapper vehicleAttributesWrapper)
         {
             if (this.vehicleAttributesWrapper == null)
             {
@@ -94,7 +78,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             }
         }
 
-        public void OnVehicleAttributesWrapperRemoved(VehicleAttributesWrapper vehicleAttributesWrapper)
+        void OnVehicleAttributesWrapperRemoved(VehicleAttributesWrapper vehicleAttributesWrapper)
         {
             if (vehicleAttributesWrapper == this.vehicleAttributesWrapper)
             {
@@ -102,9 +86,8 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             }
         }
 
-        public void onVehicleAttributeCurrentSpeedUpdated(VehicleAttributesWrapper vehicleAttributesWrapper)
+        void OnVehicleAttributeValueUpdated(VehicleAttributesWrapper vehicleAttributesWrapper, VehicleAttribute attribute)
         {
-            if (vehicleAttributesWrapper == null) return;
         }
     }
 }

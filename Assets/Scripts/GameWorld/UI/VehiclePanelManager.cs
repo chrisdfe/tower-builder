@@ -14,13 +14,12 @@ namespace TowerBuilder.GameWorld.UI
         Transform contentWrapper;
         Text text;
 
-        VehicleAttributesWrapper vehicleAttributesWrapper;
+        Vehicle vehicle;
 
         void Awake()
         {
             contentWrapper = transform.Find("Content");
             text = contentWrapper.Find("Text").GetComponent<Text>();
-
 
             Setup();
         }
@@ -32,31 +31,39 @@ namespace TowerBuilder.GameWorld.UI
 
         void Setup()
         {
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperAdded += OnVehicleAttributesWrapperAdded;
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperRemoved += OnVehicleAttributesWrapperRemoved;
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperUpdated += OnVehicleAttributesWrapperUpdated;
+            Registry.appState.Vehicles.events.onVehicleAdded += OnVehicleAdded;
+            Registry.appState.Vehicles.events.onVehicleRemoved += OnVehicleRemoved;
+
+            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperUpdated += OnVehicleAttributesWrapperUpdated;
         }
 
         void Teardown()
         {
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperAdded -= OnVehicleAttributesWrapperAdded;
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperRemoved += OnVehicleAttributesWrapperRemoved;
-            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperUpdated -= OnVehicleAttributesWrapperUpdated;
+            Registry.appState.Vehicles.events.onVehicleAdded -= OnVehicleAdded;
+            Registry.appState.Vehicles.events.onVehicleRemoved -= OnVehicleRemoved;
+
+            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperUpdated += OnVehicleAttributesWrapperUpdated;
         }
 
         void UpdateText()
         {
-            if (vehicleAttributesWrapper == null)
+            if (vehicle == null)
             {
                 text.text = "nothing.";
                 return;
             }
 
-            string result = "";
+            string result = $"{vehicle}";
 
-            result += $"is moving: {vehicleAttributesWrapper.isMoving}\n";
-            result += $"weight: {vehicleAttributesWrapper.weight}\n";
-            result += $"engine power: {vehicleAttributesWrapper.enginePower}\n";
+            VehicleAttributesWrapper vehicleAttributesWrapper = Registry.appState.VehicleAttributesWrappers.queries.FindByVehicle(vehicle);
+
+            if (vehicleAttributesWrapper != null)
+            {
+                vehicleAttributesWrapper.attributes.ForEach(attribute =>
+                {
+                    result += $"{attribute.key}: {attribute.value}\n";
+                });
+            }
 
             text.text = result;
         }
@@ -64,28 +71,22 @@ namespace TowerBuilder.GameWorld.UI
         /*
             Event Handlers
         */
-        void OnVehicleAttributesWrapperAdded(VehicleAttributesWrapper vehicleAttributesWrapper)
-        {
-            // TODO - not this forever
-            this.vehicleAttributesWrapper = vehicleAttributesWrapper;
-            UpdateText();
-        }
-
-        void OnVehicleAttributesWrapperRemoved(VehicleAttributesWrapper vehicleAttributesWrapper)
-        {
-            if (vehicleAttributesWrapper == this.vehicleAttributesWrapper)
-            {
-                this.vehicleAttributesWrapper = null;
-                UpdateText();
-            }
-        }
-
         void OnVehicleAttributesWrapperUpdated(VehicleAttributesWrapper vehicleAttributesWrapper)
         {
-            if (vehicleAttributesWrapper == this.vehicleAttributesWrapper)
+            if (vehicleAttributesWrapper.vehicle == this.vehicle)
             {
                 UpdateText();
             }
+        }
+
+        void OnVehicleAdded(Vehicle vehicle)
+        {
+            this.vehicle = vehicle;
+        }
+
+        void OnVehicleRemoved(Vehicle vehicle)
+        {
+            this.vehicle = vehicle;
         }
     }
 }
