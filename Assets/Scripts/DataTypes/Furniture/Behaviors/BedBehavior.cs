@@ -20,7 +20,6 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 
         public override void InteractStart(Resident resident)
         {
-            Debug.Log("Bed behavior start");
             base.InteractStart(resident);
             ResidentAttributesWrapper residentAttributesWrapper = appState.ResidentAttributesWrappers.queries.FindByResident(resident);
             modifier = new ResidentAttribute.Modifier("sleeping", 1.6f);
@@ -29,7 +28,6 @@ namespace TowerBuilder.DataTypes.Furnitures.Behaviors
 
         public override void InteractEnd(Resident resident)
         {
-            Debug.Log("Bed behavior end");
             base.InteractEnd(resident);
             appState.ResidentAttributesWrappers.RemoveTickAttributeModifier(resident, ResidentAttribute.Key.Energy, modifier);
             modifier = null;
