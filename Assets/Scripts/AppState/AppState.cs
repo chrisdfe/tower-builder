@@ -8,6 +8,7 @@ namespace TowerBuilder.ApplicationState
             public Time.State.Input time;
             public Wallet.State.Input wallet;
 
+            // Models
             public Rooms.State.Input rooms;
             public Furnitures.State.Input furnitures;
             public Residents.State.Input residents;
@@ -15,12 +16,17 @@ namespace TowerBuilder.ApplicationState
             public Vehicles.State.Input vehicles;
             public Journeys.State.Input journeys;
 
+            // Attributes
+            public ResidentAttributesWrappers.State.Input residentAttributesWrappers;
+            public VehicleAttributesWrappers.State.Input vehicleAttributesWrappers;
+
+            // Relations
             public FurnitureHomeSlotOccupations.State.Input furnitureHomeSlotOccupations;
 
+            // Behaviors
             public ResidentBehaviors.State.Input residentBehaviors;
             public FurnitureBehaviors.State.Input furnitureBehaviors;
 
-            public VehicleAttributeGroups.State.Input vehicleAttributeGroups;
 
             public UI.State.Input ui;
             public Tools.State.Input tools;
@@ -40,9 +46,10 @@ namespace TowerBuilder.ApplicationState
                 journeys = new Journeys.State.Input();
 
                 // Attributes
-                vehicleAttributeGroups = new VehicleAttributeGroups.State.Input();
+                residentAttributesWrappers = new ResidentAttributesWrappers.State.Input();
+                vehicleAttributesWrappers = new VehicleAttributesWrappers.State.Input();
 
-                // Associations
+                // Relations
                 furnitureHomeSlotOccupations = new FurnitureHomeSlotOccupations.State.Input();
 
                 // Behaviors
@@ -68,9 +75,10 @@ namespace TowerBuilder.ApplicationState
         public Journeys.State Journeys;
 
         // Attributes
-        public VehicleAttributeGroups.State VehicleAttributeGroups;
+        public ResidentAttributesWrappers.State ResidentAttributesWrappers;
+        public VehicleAttributesWrappers.State VehicleAttributesWrappers;
 
-        // Associations
+        // Relations
         public FurnitureHomeSlotOccupations.State FurnitureHomeSlotOccupations;
 
         // Behaviors
@@ -117,15 +125,16 @@ namespace TowerBuilder.ApplicationState
             Journeys = new Journeys.State(this, input.journeys);
 
             // Attributes
-            VehicleAttributeGroups = new VehicleAttributeGroups.State(this, input.vehicleAttributeGroups);
+            ResidentAttributesWrappers = new ResidentAttributesWrappers.State(this, input.residentAttributesWrappers);
 
-            // Associations
+            // Relations
             FurnitureHomeSlotOccupations = new FurnitureHomeSlotOccupations.State(this, input.furnitureHomeSlotOccupations);
 
             // Behaviors
             FurnitureBehaviors = new FurnitureBehaviors.State(this, input.furnitureBehaviors);
             ResidentBehaviors = new ResidentBehaviors.State(this, input.residentBehaviors);
 
+            VehicleAttributesWrappers = new VehicleAttributesWrappers.State(this, input.vehicleAttributesWrappers);
 
             // UI
             UI = new UI.State(this, input.ui);

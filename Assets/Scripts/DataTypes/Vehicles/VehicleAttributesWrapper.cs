@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Vehicles
 {
-    public class VehicleAttributeGroup
+    public class VehicleAttributesWrapper
     {
         public Vehicle vehicle { get; private set; }
 
@@ -23,7 +23,7 @@ namespace TowerBuilder.DataTypes.Vehicles
 
         AppState appState;
 
-        public VehicleAttributeGroup(AppState appState, Vehicle vehicle)
+        public VehicleAttributesWrapper(AppState appState, Vehicle vehicle)
         {
             this.appState = appState;
             this.vehicle = vehicle;

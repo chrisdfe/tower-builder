@@ -14,7 +14,7 @@ namespace TowerBuilder.GameWorld.UI
         Transform contentWrapper;
         Text text;
 
-        VehicleAttributeGroup vehicleAttributeGroup;
+        VehicleAttributesWrapper vehicleAttributesWrapper;
 
         void Awake()
         {
@@ -32,21 +32,21 @@ namespace TowerBuilder.GameWorld.UI
 
         void Setup()
         {
-            Registry.appState.VehicleAttributeGroups.events.onVehicleAttributeGroupAdded += OnVehicleAttributeGroupAdded;
-            Registry.appState.VehicleAttributeGroups.events.onVehicleAttributeGroupRemoved += OnVehicleAttributeGroupRemoved;
-            Registry.appState.VehicleAttributeGroups.events.onVehicleAttributeGroupUpdated += OnVehicleAttributeGroupUpdated;
+            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperAdded += OnVehicleAttributesWrapperAdded;
+            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperRemoved += OnVehicleAttributesWrapperRemoved;
+            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperUpdated += OnVehicleAttributesWrapperUpdated;
         }
 
         void Teardown()
         {
-            Registry.appState.VehicleAttributeGroups.events.onVehicleAttributeGroupAdded -= OnVehicleAttributeGroupAdded;
-            Registry.appState.VehicleAttributeGroups.events.onVehicleAttributeGroupRemoved += OnVehicleAttributeGroupRemoved;
-            Registry.appState.VehicleAttributeGroups.events.onVehicleAttributeGroupUpdated -= OnVehicleAttributeGroupUpdated;
+            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperAdded -= OnVehicleAttributesWrapperAdded;
+            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperRemoved += OnVehicleAttributesWrapperRemoved;
+            Registry.appState.VehicleAttributesWrappers.events.onVehicleAttributesWrapperUpdated -= OnVehicleAttributesWrapperUpdated;
         }
 
         void UpdateText()
         {
-            if (vehicleAttributeGroup == null)
+            if (vehicleAttributesWrapper == null)
             {
                 text.text = "nothing.";
                 return;
@@ -54,9 +54,9 @@ namespace TowerBuilder.GameWorld.UI
 
             string result = "";
 
-            result += $"is moving: {vehicleAttributeGroup.isMoving}\n";
-            result += $"weight: {vehicleAttributeGroup.weight}\n";
-            result += $"engine power: {vehicleAttributeGroup.enginePower}\n";
+            result += $"is moving: {vehicleAttributesWrapper.isMoving}\n";
+            result += $"weight: {vehicleAttributesWrapper.weight}\n";
+            result += $"engine power: {vehicleAttributesWrapper.enginePower}\n";
 
             text.text = result;
         }
@@ -64,25 +64,25 @@ namespace TowerBuilder.GameWorld.UI
         /*
             Event Handlers
         */
-        void OnVehicleAttributeGroupAdded(VehicleAttributeGroup vehicleAttributeGroup)
+        void OnVehicleAttributesWrapperAdded(VehicleAttributesWrapper vehicleAttributesWrapper)
         {
             // TODO - not this forever
-            this.vehicleAttributeGroup = vehicleAttributeGroup;
+            this.vehicleAttributesWrapper = vehicleAttributesWrapper;
             UpdateText();
         }
 
-        void OnVehicleAttributeGroupRemoved(VehicleAttributeGroup vehicleAttributeGroup)
+        void OnVehicleAttributesWrapperRemoved(VehicleAttributesWrapper vehicleAttributesWrapper)
         {
-            if (vehicleAttributeGroup == this.vehicleAttributeGroup)
+            if (vehicleAttributesWrapper == this.vehicleAttributesWrapper)
             {
-                this.vehicleAttributeGroup = null;
+                this.vehicleAttributesWrapper = null;
                 UpdateText();
             }
         }
 
-        void OnVehicleAttributeGroupUpdated(VehicleAttributeGroup vehicleAttributeGroup)
+        void OnVehicleAttributesWrapperUpdated(VehicleAttributesWrapper vehicleAttributesWrapper)
         {
-            if (vehicleAttributeGroup == this.vehicleAttributeGroup)
+            if (vehicleAttributesWrapper == this.vehicleAttributesWrapper)
             {
                 UpdateText();
             }

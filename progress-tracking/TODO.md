@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- UI element that displays current resident's goals
 - Resident "energy" attribute
   - Replenished by sleeping in a bed
 - "TickTimer" utility class
@@ -18,7 +19,7 @@
   - Custom animations for when residents use specific furniture/transportation items
 - Move a lot of the attributes in VehicleAttributesGroup into vehcile and rename VehcileAttributesGroup VehcileBehavior
 - Resident goal priorities
-- Resident -> ResidentAttributes -> ResidentBehaviors? or Resident -> ResidentBehaviors?
+- Resident -> ResidentAttributesWrapper -> ResidentBehaviors? or Resident -> ResidentBehaviors?
   - also for Furniture, Room, and Building
 - Freight of different sizes - small, medium, large
   - small go on shelves

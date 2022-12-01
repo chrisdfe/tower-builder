@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Residents.Attributes;
 using TowerBuilder.DataTypes.Routes;
 using UnityEngine;
 
@@ -8,29 +9,32 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 {
     public class ResidentBehavior
     {
-        public abstract class GoalBase
+        public abstract class Goal
         {
+            public virtual string title { get; } = "Goal";
             public bool isComplete = false;
             public bool hasBegun = false;
         }
 
-        public class TravelGoal : GoalBase
+        public class TravelGoal : Goal
         {
+            public override string title { get => "Walk"; }
             public Route route;
         }
 
-        public class InteractingWithFurnitureGoal : GoalBase
+        public class InteractingWithFurnitureGoal : Goal
         {
+            public override string title { get => $"Use {furniture}"; }
             public Furniture furniture;
         }
 
         public class Goals
         {
-            public Queue<GoalBase> queue { get; private set; } = new Queue<GoalBase>();
+            public Queue<Goal> queue { get; private set; } = new Queue<Goal>();
 
             public int Count { get { return queue.Count; } }
 
-            public GoalBase current
+            public Goal current
             {
                 get
                 {
@@ -39,7 +43,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
                 }
             }
 
-            public void Enqueue(GoalBase goal)
+            public void Enqueue(Goal goal)
             {
                 queue.Enqueue(goal);
             }
@@ -60,8 +64,8 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public Resident resident { get; private set; }
 
-        public StateKey currentState { get; set; } = StateKey.Idle;
-        public StateKey nextState { get; set; } = StateKey.Idle;
+        public StateKey currentState { get; private set; } = StateKey.Idle;
+        public StateKey nextState { get; private set; } = StateKey.Idle;
 
         public Goals goals { get; private set; } = new Goals();
 
@@ -100,10 +104,8 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
 
         public void BeginNextGoal()
         {
-            Debug.Log("goals.count: " + goals.Count);
             if (goals.Count == 0) return;
 
-            Debug.Log("goals.current.hasBegun: " + goals.current.hasBegun);
             if (!goals.current.hasBegun)
             {
                 goals.current.hasBegun = true;
@@ -122,13 +124,8 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
             }
         }
 
-        public void DetermineNextState()
+        public void DefaultToIdle()
         {
-            if (currentState == StateKey.Idle && goals.Count > 0)
-            {
-                // Switch to next goal
-            }
-
             // TODO - the other way around - if current goal is complete and there's not another thing to do
             // transition to idle
             if (currentState != StateKey.Idle && goals.Count == 0)

@@ -2,6 +2,7 @@ using System;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Residents.Attributes;
 using TowerBuilder.DataTypes.Residents.Behaviors;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Routes;
@@ -79,23 +80,6 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
         /* 
             Public Interface
          */
-        public void AddBehaviorForResident(Resident resident)
-        {
-            ResidentBehavior residentBehavior = new ResidentBehavior(appState, resident);
-            residentBehavior.Setup();
-            AddResidentBehavior(residentBehavior);
-        }
-
-        public void RemoveBehaviorForResident(Resident resident)
-        {
-            ResidentBehavior residentBehavior = residentBehaviorsList.FindByResident(resident);
-
-            if (residentBehavior != null)
-            {
-                RemoveResidentBehavior(residentBehavior);
-            }
-        }
-
         public void AddResidentBehavior(ResidentBehavior residentBehavior)
         {
             residentBehaviorsList.Add(residentBehavior);
@@ -116,11 +100,28 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             }
         }
 
-        public void AddResidentBehaviorGoals(Resident resident, ResidentBehavior.GoalBase[] goals)
+        public void AddBehaviorForResident(Resident resident)
+        {
+            ResidentBehavior residentBehavior = new ResidentBehavior(appState, resident);
+            AddResidentBehavior(residentBehavior);
+        }
+
+        public void RemoveBehaviorForResident(Resident resident)
+        {
+            ResidentBehavior residentBehavior = residentBehaviorsList.FindByResident(resident);
+
+            if (residentBehavior != null)
+            {
+                RemoveResidentBehavior(residentBehavior);
+            }
+        }
+
+
+        public void AddResidentBehaviorGoals(Resident resident, ResidentBehavior.Goal[] goals)
         {
             ResidentBehavior residentBehavior = queries.FindByResident(resident);
 
-            foreach (ResidentBehavior.GoalBase goal in goals)
+            foreach (ResidentBehavior.Goal goal in goals)
             {
                 residentBehavior.goals.Enqueue(goal);
             }
@@ -139,7 +140,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             {
                 ResidentBehavior.TravelGoal travelGoal = new ResidentBehavior.TravelGoal() { route = route };
                 ResidentBehavior.InteractingWithFurnitureGoal furnitureGoal = new ResidentBehavior.InteractingWithFurnitureGoal() { furniture = furniture };
-                AddResidentBehaviorGoals(resident, new ResidentBehavior.GoalBase[] { travelGoal, furnitureGoal });
+                AddResidentBehaviorGoals(resident, new ResidentBehavior.Goal[] { travelGoal, furnitureGoal });
             }
         }
 
@@ -150,7 +151,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             if (route != null)
             {
                 ResidentBehavior.TravelGoal travelGoal = new ResidentBehavior.TravelGoal() { route = route };
-                AddResidentBehaviorGoals(resident, new ResidentBehavior.GoalBase[] { travelGoal });
+                AddResidentBehaviorGoals(resident, new ResidentBehavior.Goal[] { travelGoal });
             }
         }
 
@@ -174,6 +175,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         void ProcessResidentBehaviorTick(ResidentBehavior residentBehavior)
         {
+            // 
             residentBehavior.ProcessTick();
 
             if (events.onResidentBehaviorTickProcessed != null)
@@ -205,9 +207,8 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
                 }
             }
 
-            // TODO - if a resident has just completed a goal and doesn't have another one to do they should automatically
-            //        become idle here, instead of having to manually do that
-            residentBehavior.DetermineNextState();
+            // Default to idle if the resident has nothing else to do 
+            residentBehavior.DefaultToIdle();
 
             // Search for next state
             if (residentBehavior.nextState != residentBehavior.currentState)
@@ -227,7 +228,8 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
          */
         void OnTick(TimeValue time)
         {
-            residentBehaviorsList.ForEach(residentBehavior => ProcessResidentBehaviorTick(residentBehavior));
+            residentBehaviorsList
+                .ForEach(residentBehavior => ProcessResidentBehaviorTick(residentBehavior));
         }
 
         void OnResidentsAdded(ResidentsList residentsList)

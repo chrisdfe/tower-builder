@@ -5,6 +5,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Residents.Attributes;
 using TowerBuilder.DataTypes.Residents.Behaviors;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.GameWorld.UI.Components;
@@ -30,20 +31,28 @@ namespace TowerBuilder.GameWorld.UI
 
             SetText();
 
+            Setup();
+        }
+
+        public void Setup()
+        {
+            Registry.appState.ResidentAttributesWrappers.events.onResidentAttributeValueUpdated += OnResidentAttributeValueUpdated;
+
             Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
-        void OnInspectedEntityListUpdated(EntityList entityList)
+        public void Teardown()
         {
-            SetText();
+            Registry.appState.ResidentAttributesWrappers.events.onResidentAttributeValueUpdated -= OnResidentAttributeValueUpdated;
+
+            Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
-        void OnCurrentSelectedEntityUpdated(EntityBase entity)
-        {
-            SetText();
-        }
-
+        /* 
+            Internals
+        */
         void SetText()
         {
             SetInspectIndexText();
@@ -109,11 +118,33 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectedResidentText(Resident resident)
         {
+            Debug.Log("resident");
+            Debug.Log(resident);
+
+            if (resident == null) return;
+
             ResidentBehavior residentBehavior = Registry.appState.ResidentBehaviors.queries.FindByResident(resident);
+            Debug.Log("residentBehavior");
+            Debug.Log(residentBehavior);
+
+            ResidentAttributesWrapper residentAttributesWrapper = Registry.appState.ResidentAttributesWrappers.queries.FindByResident(resident);
+            Debug.Log("residentAttributesWrapper");
+            Debug.Log(residentAttributesWrapper);
+
 
             string text = "Resident"
             + $"   name: {resident}\n"
             + $"   state: {residentBehavior.currentState}\n";
+
+            if (residentAttributesWrapper != null)
+            {
+                text += "    attributes:";
+                residentAttributesWrapper.attributes.ForEach((attribute) =>
+                {
+                    text += $"        {attribute.key}: {attribute.value}";
+                });
+            }
+
 
             inspectText.text = text;
         }
@@ -171,6 +202,30 @@ namespace TowerBuilder.GameWorld.UI
                 removeButtonRectTransform.rect.width,
                 wrapperHeight
             );
+        }
+
+        /* 
+            Event Handlers
+        */
+        void OnInspectedEntityListUpdated(EntityList entityList)
+        {
+            SetText();
+        }
+
+        void OnCurrentSelectedEntityUpdated(EntityBase entity)
+        {
+            SetText();
+        }
+
+        void OnResidentAttributeValueUpdated(Resident resident, ResidentAttribute attribute)
+        {
+            if (
+                (Registry.appState.Tools.inspectToolState.inspectedEntity is ResidentEntity) &&
+                resident == (Registry.appState.Tools.inspectToolState.inspectedEntity as ResidentEntity).resident
+            )
+            {
+                SetText();
+            }
         }
     }
 }
