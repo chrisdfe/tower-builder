@@ -11,6 +11,46 @@ namespace TowerBuilder.DataTypes
         public int x;
         public int floor;
 
+        public CellCoordinates coordinatesAbove
+        {
+            get => new CellCoordinates(x, floor + 1);
+        }
+
+        public CellCoordinates coordinatesAboveRight
+        {
+            get => new CellCoordinates(x + 1, floor + 1);
+        }
+
+        public CellCoordinates coordinatesRight
+        {
+            get => new CellCoordinates(x + 1, floor);
+        }
+
+        public CellCoordinates coordinatesBelowRight
+        {
+            get => new CellCoordinates(x + 1, floor - 1);
+        }
+
+        public CellCoordinates coordinatesBelow
+        {
+            get => new CellCoordinates(x, floor - 1);
+        }
+
+        public CellCoordinates coordinatesBelowLeft
+        {
+            get => new CellCoordinates(x - 1, floor - 1);
+        }
+
+        public CellCoordinates coordinatesLeft
+        {
+            get => new CellCoordinates(x - 1, floor);
+        }
+
+        public CellCoordinates coordinatesAboveLeft
+        {
+            get => new CellCoordinates(x - 1, floor + 1);
+        }
+
         public CellCoordinates(int x, int floor)
         {
             this.x = x;
@@ -40,26 +80,6 @@ namespace TowerBuilder.DataTypes
         public CellCoordinates Clone()
         {
             return new CellCoordinates(x, floor);
-        }
-
-        public CellCoordinates GetCoordinatesAbove()
-        {
-            return new CellCoordinates(x, floor + 1);
-        }
-
-        public CellCoordinates GetCoordinatesBelow()
-        {
-            return new CellCoordinates(x, floor - 1);
-        }
-
-        public CellCoordinates GetCoordinatesLeft()
-        {
-            return new CellCoordinates(x - 1, floor);
-        }
-
-        public CellCoordinates GetCoordinatesRight()
-        {
-            return new CellCoordinates(x + 1, floor);
         }
 
         /* 

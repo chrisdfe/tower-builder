@@ -15,9 +15,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 {
     public class GameWorldMapManager : MonoBehaviour
     {
-        public Transform roomList;
-
         public GameWorldFloorPlane floorPlane;
+
+        [HideInInspector]
         public Collider floorPlaneCollider;
 
         ToolStateInputHandlersBase currentToolStateHandler;

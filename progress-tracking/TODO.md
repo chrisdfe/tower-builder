@@ -4,10 +4,10 @@
 
 ## Tasks
 
-- Use Invoke? syntax for delegates everywhere in appState
+- Reorganize prefabs to be embedded in other prefabs/managers and get rid of the reliance on the Resources/ folder
+- "List" state slice
+- New tool for merging/splitting up rooms
 - UI element that displays current resident's goals
-- Resident "energy" attribute
-  - Replenished by sleeping in a bed
 - "TickTimer" utility class
 - new Route normalization algorithm should treat "UsingTransportationItem" segments differently
   - just go straight to the other side for now
@@ -142,9 +142,6 @@
 
 ## Cleanup
 
-- Remove residentmotor state
-- Improved lighting
-  - global sun light that rotates/changes color as the day progresses
 - All state slices should add lists of items instead of singular - e.g AddRooms instead of AddRoom
 - RouteFinder creates too many branches
 - RoomCells -> RoomCellList OR RoomList -> Rooms
@@ -164,6 +161,12 @@
 
 # Done
 
+- Remove residentmotor state
+- Improved lighting
+  - global sun light that rotates/changes color as the day progresses
+- Use Invoke? syntax for delegates everywhere in state
+- Resident "energy" attribute
+  - Replenished by sleeping in a bed
 - Delete map cell helpers
 - TransportationItem meshes
 - Make transportation item meshes show on every cell that they occupy.

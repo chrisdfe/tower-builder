@@ -177,7 +177,8 @@ namespace TowerBuilder.GameWorld.Rooms
 
             protected void SetSegmentEnabled(Transform segment, bool enabled)
             {
-                segment.GetComponent<MeshRenderer>().enabled = enabled;
+                // segment.GetComponent<MeshRenderer>().enabled = enabled;
+                segment.gameObject.SetActive(enabled);
             }
 
             protected void SetSegmentColor(Transform segment, Color color)

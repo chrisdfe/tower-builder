@@ -1,11 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder;
-using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Tools;
+using System.Linq;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.TransportationItems;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -19,23 +14,23 @@ namespace TowerBuilder.GameWorld.Rooms
         [HideInInspector]
         public TransportationItem transportationItem;
 
-        List<MeshWrapperBase> meshWrapperList = new List<MeshWrapperBase>();
+        List<MeshWrapper> meshWrapperList = new List<MeshWrapper>();
         List<Transform> meshList = new List<Transform>();
 
-        public delegate MeshWrapperBase MeshWrapperFactory(GameWorldTransportationItem gameWorldTransportationItem, Transform meshTransform);
+        public delegate MeshWrapper MeshWrapperFactory(Transform meshTransform);
 
         static Dictionary<TransportationItem.Key, MeshWrapperFactory> MeshWrapperKeyMap = new Dictionary<TransportationItem.Key, MeshWrapperFactory>() {
             {
                 TransportationItem.Key.Ladder,
-                (gameWorldTransportationItem, meshTransform) => new LadderMeshWrapper(gameWorldTransportationItem, meshTransform)
+                (meshTransform) => new LadderMeshWrapper(meshTransform)
             },
             {
                 TransportationItem.Key.Escalator,
-                (gameWorldTransportationItem, meshTransform) => new EscalatorMeshWrapper(gameWorldTransportationItem, meshTransform)
+                (meshTransform) => new EscalatorMeshWrapper(meshTransform)
             },
             {
                 TransportationItem.Key.Doorway,
-                (gameWorldTransportationItem, meshTransform) => new DoorwayMeshWrapper(gameWorldTransportationItem, meshTransform)
+                (meshTransform) => new DoorwayMeshWrapper(meshTransform)
             }
         };
 
@@ -45,7 +40,6 @@ namespace TowerBuilder.GameWorld.Rooms
         void Awake()
         {
             transform.localPosition = Vector3.zero;
-
         }
 
         void OnDestroy()
@@ -59,25 +53,16 @@ namespace TowerBuilder.GameWorld.Rooms
             CreateMesh();
         }
 
-        public void Teardown()
-        {
-        }
+        public void Teardown() { }
 
-        public void Reset()
-        {
-        }
+        public void Reset() { }
 
-        public void OnBuild()
-        {
-        }
+        public void OnBuild() { }
 
         /* 
             Public Interface
         */
-        public void UpdatePosition()
-        {
-            // transform.localPosition = GameWorldUtils.CellCoordinatesToPosition(transportationItem.cellCoordinatesList.items[0], 1f);
-        }
+        public void UpdatePosition() { }
 
         /* 
             Internals
@@ -87,19 +72,22 @@ namespace TowerBuilder.GameWorld.Rooms
             TransformUtils.DestroyChildren(transform);
 
             MeshWrapperFactory meshWrapperFactory = MeshWrapperKeyMap[transportationItem.key];
-            MeshWrapperBase meshWrapper = meshWrapperFactory(this, assetList.FindByKey(transportationItem.key).transform);
 
-            // for now just copy the prefab into every cell
             foreach (CellCoordinates cellCoordinates in transportationItem.cellCoordinatesList.items)
-            {
-                Transform meshTransform = meshWrapper.CreateMesh();
-                meshTransform.SetParent(transform);
-                meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
+                meshWrapperList = transportationItem.cellCoordinatesList.items.Select((cellCoordinates) =>
+                {
+                    MeshWrapper meshWrapper = meshWrapperFactory(assetList.FindByKey(transportationItem.key).transform);
+                    Transform meshTransform = meshWrapper.CreateMesh();
+                    meshTransform.SetParent(transform);
+                    meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
 
-                meshWrapperList.Add(meshWrapper);
-                meshList.Add(meshTransform);
-                // meshWrapper.meshTransform.Translate(new Vector3(0, 0, 0.5f));
-            }
+                    Tileable.OccupiedCellMap occupiedCellMap =
+                        Tileable.OccupiedCellMap.FromCellCoordinatesList(cellCoordinates, transportationItem.cellCoordinatesList);
+
+                    meshWrapper.SetTileability(occupiedCellMap);
+
+                    return meshWrapper;
+                }).ToList();
         }
 
         void DestroyMesh()
@@ -109,7 +97,6 @@ namespace TowerBuilder.GameWorld.Rooms
                 GameObject.Destroy(transform);
             }
         }
-
         /* 
             Static API
          */
@@ -127,15 +114,17 @@ namespace TowerBuilder.GameWorld.Rooms
         /*
             Internal classes
         */
-        public abstract class MeshWrapperBase
+        public abstract class MeshWrapper
         {
-            public GameWorldTransportationItem gameWorldTransportationItem { get; private set; }
-
             Transform prefabMeshTransform;
+            Transform mesh;
+            Tileable tileable;
 
-            public MeshWrapperBase(GameWorldTransportationItem gameWorldTransportationItem, Transform prefabMeshTransform)
+            Transform tileabilityWrapper;
+            Transform tileabilityCellVariantsWrapper;
+
+            public MeshWrapper(Transform prefabMeshTransform)
             {
-                this.gameWorldTransportationItem = gameWorldTransportationItem;
                 this.prefabMeshTransform = prefabMeshTransform;
             }
 
@@ -145,27 +134,39 @@ namespace TowerBuilder.GameWorld.Rooms
 
             public Transform CreateMesh()
             {
-                return Instantiate(
+                mesh = Instantiate(
                     prefabMeshTransform,
-                    GameWorldUtils.CellCoordinatesToPosition(gameWorldTransportationItem.transportationItem.cellCoordinatesList.items[0]),
+                    Vector3.zero,
                     Quaternion.identity
                 );
+
+                return mesh;
+            }
+
+            public void SetTileability(Tileable.OccupiedCellMap occupiedCellMap)
+            {
+                tileable = Tileable.FromModel(mesh);
+
+                if (tileable != null)
+                {
+                    tileable.ProcessModel(mesh, occupiedCellMap);
+                }
             }
         }
 
-        public class LadderMeshWrapper : MeshWrapperBase
+        public class LadderMeshWrapper : MeshWrapper
         {
-            public LadderMeshWrapper(GameWorldTransportationItem gameWorldTransportationItem, Transform meshTransform) : base(gameWorldTransportationItem, meshTransform) { }
+            public LadderMeshWrapper(Transform meshTransform) : base(meshTransform) { }
         }
 
-        public class EscalatorMeshWrapper : MeshWrapperBase
+        public class EscalatorMeshWrapper : MeshWrapper
         {
-            public EscalatorMeshWrapper(GameWorldTransportationItem gameWorldTransportationItem, Transform meshTransform) : base(gameWorldTransportationItem, meshTransform) { }
+            public EscalatorMeshWrapper(Transform meshTransform) : base(meshTransform) { }
         }
 
-        public class DoorwayMeshWrapper : MeshWrapperBase
+        public class DoorwayMeshWrapper : MeshWrapper
         {
-            public DoorwayMeshWrapper(GameWorldTransportationItem gameWorldTransportationItem, Transform meshTransform) : base(gameWorldTransportationItem, meshTransform) { }
+            public DoorwayMeshWrapper(Transform meshTransform) : base(meshTransform) { }
         }
     }
 }

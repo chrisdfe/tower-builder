@@ -99,22 +99,6 @@ namespace TowerBuilder.DataTypes.Rooms
 
             roomCell.orientation = result;
         }
-
-        /* 
-            Static API
-         */
-        public static RoomCells ToRelativeCoordinates(RoomCells roomCells)
-        {
-            List<RoomCell> result = new List<RoomCell>();
-            CellCoordinates bottomLeftCoordinates = roomCells.coordinatesList.bottomLeftCoordinates;
-
-            foreach (RoomCell roomCell in roomCells.cells)
-            {
-                result.Add(new RoomCell(CellCoordinates.Subtract(roomCell.coordinates, roomCells.coordinatesList.bottomLeftCoordinates)));
-            }
-
-            return new RoomCells(result);
-        }
     }
 }
 

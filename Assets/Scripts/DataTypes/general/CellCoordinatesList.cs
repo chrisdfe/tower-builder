@@ -150,6 +150,15 @@ namespace TowerBuilder.DataTypes
             }
         }
 
+        public CellCoordinatesList asRelativeCoordinates
+        {
+            get =>
+                new CellCoordinatesList(
+                    items.Select(cellCoordinates => Subtract(cellCoordinates, bottomLeftCoordinates)).ToList()
+                );
+        }
+
+
         public CellCoordinatesList() { }
 
         public CellCoordinatesList(CellCoordinates cellCoordinates)
@@ -219,18 +228,6 @@ namespace TowerBuilder.DataTypes
             return new CellCoordinatesList(result);
         }
 
-        public CellCoordinatesList ToRelativeCoordinates()
-        {
-            List<CellCoordinates> list = new List<CellCoordinates>();
-
-            foreach (CellCoordinates cellCoordinates in items)
-            {
-                list.Add(Subtract(cellCoordinates, bottomLeftCoordinates));
-            }
-
-            return new CellCoordinatesList(list);
-        }
-
         public List<CellCoordinates> GetPerimeterCellCoordinates()
         {
             List<CellCoordinates> result = new List<CellCoordinates>();
@@ -238,10 +235,10 @@ namespace TowerBuilder.DataTypes
             foreach (CellCoordinates cellCoordinates in items)
             {
                 CellCoordinates[] adjacentCellCoordinatesList = new CellCoordinates[] {
-                    cellCoordinates.GetCoordinatesAbove(),
-                    cellCoordinates.GetCoordinatesRight(),
-                    cellCoordinates.GetCoordinatesBelow(),
-                    cellCoordinates.GetCoordinatesLeft()
+                    cellCoordinates.coordinatesAbove,
+                    cellCoordinates.coordinatesRight,
+                    cellCoordinates.coordinatesBelow,
+                    cellCoordinates.coordinatesLeft
                 };
 
                 foreach (CellCoordinates adjacentCellCoordinates in adjacentCellCoordinatesList)
