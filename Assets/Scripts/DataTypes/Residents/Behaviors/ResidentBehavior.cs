@@ -211,21 +211,13 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
         void InteractingWithFurnitureTick()
         {
             // TODO - check if there is anything higher priority to do
-            Debug.Log("interacting with furniture");
             appState.FurnitureBehaviors.InteractwithFurniture(resident, interactionFurniture);
         }
 
         void TravelingTick()
         {
-            Debug.Log("traveling tick");
             routeProgress.IncrementProgress();
-            Debug.Log(routeProgress.currentCell);
             appState.Residents.SetResidentPosition(resident, routeProgress.currentCell);
-
-            // if (routeProgress.isAtEndOfRoute)
-            // {
-            //     goals.CompleteCurrent();
-            // }
         }
     }
 }

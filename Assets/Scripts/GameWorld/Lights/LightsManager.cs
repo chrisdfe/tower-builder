@@ -168,8 +168,6 @@ namespace TowerBuilder.GameWorld.Lights
                 normalizedTickProgress
             );
 
-            Debug.Log("interiorLights.Count");
-            Debug.Log(interiorLights.Count);
             foreach (Light interiorLight in interiorLights)
             {
                 interiorLight.intensity = currentIntensity;
@@ -231,11 +229,6 @@ namespace TowerBuilder.GameWorld.Lights
                 float normalizedCurrentTickTime,
                 float normalizedNextTickTime
             ) = GameWorldUtils.GetNormalizedCurrentAndNextTickTimesBetween(sunlightStartTime.relativeStartTime, sunlightEndTime.relativeStartTime);
-
-            Debug.Log("previous sun rotation");
-            Debug.Log(startAtmosphereSetting.sunRotation.GetValueOrDefault());
-            Debug.Log("next sun rotation");
-            Debug.Log(endAtmosphereSetting.sunRotation.GetValueOrDefault());
 
             float normalizedTickProgress = timeSystemManager.normalizedTickProgress;
 

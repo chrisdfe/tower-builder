@@ -97,16 +97,9 @@ namespace TowerBuilder.GameWorld.Residents
         */
         void UpdateMovement()
         {
-            // Debug.Log("currentAndNextPosition");
-            // Debug.Log(currentAndNextPosition);
             if (currentAndNextPosition == null) return;
             var ((startTick, startCoordinates), (endTick, endCoordinates)) = currentAndNextPosition;
             float normalizedTickProgress = GameWorldTimeSystemManager.Find().normalizedTickProgress;
-
-            // Debug.Log("startCoordinates");
-            // Debug.Log(startCoordinates);
-            // Debug.Log("endCoordinates");
-            // Debug.Log(endCoordinates);
 
             transform.position = Vector3.Lerp(
                 GameWorldUtils.CellCoordinatesToPosition(startCoordinates),

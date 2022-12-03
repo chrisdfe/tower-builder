@@ -142,7 +142,6 @@ namespace TowerBuilder.GameWorld.Residents
 
         void OnResidentBehaviorTickProcessed(ResidentBehavior residentBehavior)
         {
-            Debug.Log("tick prosessed");
             if (residentBehavior.currentState == ResidentBehavior.StateKey.Traveling)
             {
                 GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);

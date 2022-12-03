@@ -4,11 +4,14 @@
 
 ## Tasks
 
+- "front door" transportation items - connection to the outside world
+- Ability for residents to walk around on the ground
+- When new resident slots open up (beds built) residents should arrive via ground, not just appear
 - "Material replacer" that uses a lookup map to replace materials in fbx files with unity materials of the same name
 - Stronger chassis should be able to have longer overhangs
 - "Hunger" resident attribute
 - SelectionBox should span the default size of transportation items instead of just the current cell
-- Reorganize models/prefabs to create less of a delineation between the 2
+- Draggable/resizable transportation items
 - Pull out a lot of the logic in these static Create() method
 - "List" state slice
 - New tool for merging/splitting up rooms
@@ -169,6 +172,7 @@
 
 # Done
 
+- Reorganize models/prefabs to create less of a delineation between the 2
 - Sun quickly resets to beginning position at the start of every day
 - Integrate tileable into TransportationItem
 - Reorganize prefabs to be embedded in other prefabs/managers and get rid of the reliance on the Resources/ folder

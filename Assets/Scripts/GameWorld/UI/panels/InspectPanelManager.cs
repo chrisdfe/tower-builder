@@ -118,18 +118,11 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectedResidentText(Resident resident)
         {
-            Debug.Log("resident");
-            Debug.Log(resident);
-
             if (resident == null) return;
 
             ResidentBehavior residentBehavior = Registry.appState.ResidentBehaviors.queries.FindByResident(resident);
-            Debug.Log("residentBehavior");
-            Debug.Log(residentBehavior);
 
             ResidentAttributesWrapper residentAttributesWrapper = Registry.appState.ResidentAttributesWrappers.queries.FindByResident(resident);
-            Debug.Log("residentAttributesWrapper");
-            Debug.Log(residentAttributesWrapper);
 
             string text = "Resident"
             + $"   name: {resident}\n"
