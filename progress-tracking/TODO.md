@@ -4,6 +4,9 @@
 
 ## Tasks
 
+- Stronger chassis should be able to have longer overhangs
+- "Hunger" resident attribute
+- SelectionBox should span the default size of transportation items instead of just the current cell
 - Reorganize models/prefabs to create less of a delineation between the 2
 - Pull out a lot of the logic in these static Create() method
 - "List" state slice
@@ -15,7 +18,6 @@
   - maybe in the future some transportation items can be faster or slower than others
 - bits of roomcell walls that light up when the room is highlighted
   - same thing with other entities
-- Integrate tileable into TransportationItem
 - Placeholder models for furniture items
 - Animations when residents are traveling
   - Custom animations for when residents use specific furniture/transportation items
@@ -153,6 +155,10 @@
 
 ## Ideas
 
+- New state slices:
+  - weather
+  - temperature
+  - freight/cargo
 - this game loop:
   - Vehicles (moving vehicles) need fuel
   - You need scrap (currency) to buy fuel
@@ -162,6 +168,7 @@
 
 # Done
 
+- Integrate tileable into TransportationItem
 - Reorganize prefabs to be embedded in other prefabs/managers and get rid of the reliance on the Resources/ folder
 - Remove residentmotor state
 - Improved lighting
