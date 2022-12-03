@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- "Material replacer" that uses a lookup map to replace materials in fbx files with unity materials of the same name
 - Stronger chassis should be able to have longer overhangs
 - "Hunger" resident attribute
 - SelectionBox should span the default size of transportation items instead of just the current cell

@@ -120,6 +120,9 @@ namespace TowerBuilder.DataTypes.Time
             SetFromMinutes(minutes);
         }
 
+        public override string ToString() =>
+            $"{hour}:{minute}, day: {day}, week: {week}, season: {season}, year: {year}";
+
         public TimeValue Clone()
         {
             return new TimeValue()

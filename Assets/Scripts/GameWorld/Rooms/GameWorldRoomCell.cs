@@ -122,6 +122,7 @@ namespace TowerBuilder.GameWorld.Rooms
             {
                 Light light = lightTransform.GetComponent<Light>();
                 roomCellLight = new GameWorldRoomCellLight(light);
+                roomCellLight.Setup();
             }
             else
             {
