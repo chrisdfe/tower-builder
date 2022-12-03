@@ -1,11 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder;
-using TowerBuilder.ApplicationState.UI;
-using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.GameWorld;
 using TowerBuilder.Utils;
 using UnityEngine;
 
@@ -40,6 +34,26 @@ namespace TowerBuilder.GameWorld.Rooms
             { ColorKey.InvalidBlueprint, Color.red },
         };
 
+        public class SkinConfig
+        {
+            public bool hasInteriorLights = false;
+        }
+
+        public static Dictionary<RoomSkinKey, SkinConfig> SkinConfigMap = new Dictionary<RoomSkinKey, SkinConfig>() {
+            {
+                RoomSkinKey.Default,
+                new SkinConfig() {
+                    hasInteriorLights = true,
+                }
+            },
+            {
+                RoomSkinKey.Wheels,
+                new SkinConfig() {
+                    hasInteriorLights = false,
+                }
+            }
+        };
+
         [HideInInspector]
         public RoomCell roomCell;
 
@@ -50,6 +64,7 @@ namespace TowerBuilder.GameWorld.Rooms
         public Color baseColor;
 
         RoomCellMeshWrapperBase roomCellMeshWrapper;
+        GameWorldRoomCellLight roomCellLight;
 
         /* 
             Lifecycle methods
@@ -66,7 +81,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Setup()
         {
-            TransformUtils.DestroyChildren(transform);
+            TransformUtils.DestroyChildren(transform.Find("RoomCellMesh_Default"));
 
             switch (gameWorldRoom.room.skinKey)
             {
@@ -77,8 +92,10 @@ namespace TowerBuilder.GameWorld.Rooms
                     roomCellMeshWrapper = new RoomCellDefaultMeshWrapper(this);
                     break;
             }
+
             roomCellMeshWrapper.Setup();
 
+            UpdateLights();
             UpdatePosition();
             UpdateMesh();
         }
@@ -86,11 +103,32 @@ namespace TowerBuilder.GameWorld.Rooms
         public void Teardown()
         {
             roomCellMeshWrapper.Teardown();
+
+            if (roomCellLight != null)
+            {
+                roomCellLight.Teardown();
+            }
         }
 
         /* 
             Public Interface
         */
+        public void UpdateLights()
+        {
+            SkinConfig config = SkinConfigMap[gameWorldRoom.room.skinKey];
+            Transform lightTransform = transform.Find("Light");
+
+            if (config.hasInteriorLights)
+            {
+                Light light = lightTransform.GetComponent<Light>();
+                roomCellLight = new GameWorldRoomCellLight(light);
+            }
+            else
+            {
+                Destroy(lightTransform.gameObject);
+            }
+        }
+
         public void UpdatePosition()
         {
             transform.position = GameWorldUtils.CellCoordinatesToPosition(roomCell.coordinates);

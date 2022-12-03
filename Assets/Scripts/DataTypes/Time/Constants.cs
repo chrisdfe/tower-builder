@@ -114,43 +114,5 @@ namespace TowerBuilder.DataTypes.Time
                 name = "Night",
             },
         };
-
-        // public static TimeOfDay[] TIMES_OF_DAY = new TimeOfDay[]
-        // {
-        //     new TimeOfDay() {
-        //         startsOnHour = 0,
-        //         name = "night",
-        //         skyColor = ColorUtils.ColorFromHex("#111E1E")
-        //     },
-        //     new TimeOfDay() {
-        //         startsOnHour = 5,
-        //         name = "dawn",
-        //         skyColor = ColorUtils.ColorFromHex("#E37768")
-        //     },
-        //     new TimeOfDay() {
-        //         startsOnHour = 7,
-        //         name = "morning",
-        //         skyColor = ColorUtils.ColorFromHex("#C7E6D5")
-        //     },
-        //     new TimeOfDay() {
-        //         startsOnHour = 12,
-        //         name = "afternoon",
-        //         skyColor = ColorUtils.ColorFromHex("#ECE4D5")
-        //     },
-        //     new TimeOfDay() {
-        //         startsOnHour = 17,
-        //         name = "evening",
-        //         skyColor = ColorUtils.ColorFromHex("#C8E6D6")
-        //     },
-        //     new TimeOfDay() {
-        //         startsOnHour = 19,
-        //         name = "dusk",
-        //         skyColor = ColorUtils.ColorFromHex("#FFA885")
-        //     },
-        //     new TimeOfDay() {
-        //         startsOnHour = 21,
-        //         name = "night",
-        //         skyColor = ColorUtils.ColorFromHex("#111E1E")
-        //     },
     };
 }

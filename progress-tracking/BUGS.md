@@ -4,6 +4,7 @@
 
 ## TODO
 
+- Sometimes when sending a resident back and forth between cells there's an out of bounds exception with RouteProgress
 - Figure out why residents stay in one spot for a while when traveling
 - Entity doesn't update when an entity is built
 - Rooms aren't combining correctly anymore

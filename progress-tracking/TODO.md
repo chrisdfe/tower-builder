@@ -168,6 +168,7 @@
 
 # Done
 
+- Sun quickly resets to beginning position at the start of every day
 - Integrate tileable into TransportationItem
 - Reorganize prefabs to be embedded in other prefabs/managers and get rid of the reliance on the Resources/ folder
 - Remove residentmotor state

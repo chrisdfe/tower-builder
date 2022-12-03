@@ -55,6 +55,20 @@ namespace TowerBuilder.DataTypes.Time
             }
         }
 
+        public int previousTimeOfDayIndex
+        {
+            get
+            {
+                int index = timeOfDayIndex;
+                index--;
+                if (index < 0)
+                {
+                    index = Constants.TIMES_OF_DAY.Length - 1;
+                }
+                return index;
+            }
+        }
+
         public int nextTimeOfDayIndex
         {
             get
@@ -69,12 +83,14 @@ namespace TowerBuilder.DataTypes.Time
             }
         }
 
+        public TimeOfDay previousTimeOfDay
+        {
+            get => Constants.TIMES_OF_DAY[previousTimeOfDayIndex];
+        }
+
         public TimeOfDay nextTimeOfDay
         {
-            get
-            {
-                return Constants.TIMES_OF_DAY[nextTimeOfDayIndex];
-            }
+            get => Constants.TIMES_OF_DAY[nextTimeOfDayIndex];
         }
 
         public TimeValue(TimeValue timeValue)
