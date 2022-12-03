@@ -86,7 +86,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void CreateCategoryButtons()
         {
-            categoryButtons = UISelectButton.CreateButtonListFromInputList(GenerateCategoryButtonInputs());
+            categoryButtons = UISelectButton.CreateButtonListFromInputList(categoryButtonsWrapper, GenerateCategoryButtonInputs());
 
             foreach (UISelectButton selectButton in categoryButtons)
             {
@@ -124,11 +124,10 @@ namespace TowerBuilder.GameWorld.UI
 
         void CreateTemplateButtons()
         {
-            templateButtons = UISelectButton.CreateButtonListFromInputList(GenerateTemplateButtonInputs());
+            templateButtons = UISelectButton.CreateButtonListFromInputList(templateButtonsWrapper, GenerateTemplateButtonInputs());
 
             foreach (UISelectButton templateButton in templateButtons)
             {
-                templateButton.transform.SetParent(this.templateButtonsWrapper, false);
                 templateButton.onClick += OnTemplateButtonClick;
             }
         }

@@ -175,9 +175,11 @@ namespace TowerBuilder.GameWorld.UI
 
         void CreateFurnitureActionButtons(Furniture furniture)
         {
-            UISelectButton removeButton = UISelectButton.Create(new UISelectButton.Input() { label = "delete", value = "delete" });
+            UISelectButton removeButton = UISelectButton.Create(
+                actionButtonsWrapper,
+                new UISelectButton.Input() { label = "delete", value = "delete" }
+            );
             removeButton.onClick += (value) => { Registry.appState.Furnitures.RemoveFurniture(furniture); };
-            removeButton.transform.SetParent(actionButtonsWrapper);
             removeButton.transform.localScale = Vector3.one;
 
             float wrapperHeight = actionButtonsWrapper.GetComponent<RectTransform>().rect.height;
@@ -190,9 +192,11 @@ namespace TowerBuilder.GameWorld.UI
 
         void CreateResidentActionButtons(Resident resident)
         {
-            UISelectButton removeButton = UISelectButton.Create(new UISelectButton.Input() { label = "delete", value = "delete" });
+            UISelectButton removeButton = UISelectButton.Create(
+                actionButtonsWrapper,
+                new UISelectButton.Input() { label = "delete", value = "delete" }
+            );
             removeButton.onClick += (value) => { Registry.appState.Residents.RemoveResident(resident); };
-            removeButton.transform.SetParent(actionButtonsWrapper);
             removeButton.transform.localScale = Vector3.one;
 
             float wrapperHeight = actionButtonsWrapper.GetComponent<RectTransform>().rect.height;

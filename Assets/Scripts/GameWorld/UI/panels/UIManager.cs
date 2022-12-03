@@ -10,8 +10,16 @@ using UnityEngine.UI;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class UIManager : MonoBehaviour
+    public class UIManager : MonoBehaviour, IFindable
     {
+        public enum AssetKey
+        {
+            SelectButton,
+            SelectButtonRow,
+        }
+
+        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
+
         public bool mouseIsOverUI { get; private set; }
 
         Canvas canvas;
@@ -36,10 +44,8 @@ namespace TowerBuilder.GameWorld.UI
             SetMouseIsOverUI();
         }
 
-        public static UIManager Find()
-        {
-            return GameObject.Find("UIManager").GetComponent<UIManager>();
-        }
+        public static UIManager Find() =>
+            GameObject.Find("UIManager").GetComponent<UIManager>();
 
         void SetMouseIsOverUI()
         {

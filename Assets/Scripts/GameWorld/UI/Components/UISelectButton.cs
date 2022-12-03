@@ -71,30 +71,33 @@ namespace TowerBuilder.GameWorld.UI.Components
         /* 
             Static API
         */
-        public static UISelectButton Create(Input input)
+        public static UISelectButton Create(Transform parent, Input input)
         {
-            UISelectButton button = Instantiate<GameObject>(UISelectButton.GetPrefab()).GetComponent<UISelectButton>();
-            button.ConsumeInput(input);
-            button.RenderText();
-            return button;
+            UIManager uiManager = GameWorldFindableCache.Find<UIManager>("UIManager");
+
+            GameObject prefab = uiManager.assetList.FindByKey(UIManager.AssetKey.SelectButton);
+            GameObject selectButtonGameObject = Instantiate<GameObject>(prefab);
+
+            selectButtonGameObject.transform.SetParent(parent, false);
+
+            UISelectButton selectButton = selectButtonGameObject.GetComponent<UISelectButton>();
+
+            selectButton.ConsumeInput(input);
+            selectButton.RenderText();
+            return selectButton;
         }
 
-        public static List<UISelectButton> CreateButtonListFromInputList(List<Input> inputList)
+        public static List<UISelectButton> CreateButtonListFromInputList(Transform parent, List<Input> inputList)
         {
             List<UISelectButton> result = new List<UISelectButton>();
 
             foreach (UISelectButton.Input input in inputList)
             {
-                UISelectButton selectButton = UISelectButton.Create(new UISelectButton.Input() { label = input.label, value = input.value });
+                UISelectButton selectButton = UISelectButton.Create(parent, new UISelectButton.Input() { label = input.label, value = input.value });
                 result.Add(selectButton);
             }
 
             return result;
-        }
-
-        static GameObject GetPrefab()
-        {
-            return Resources.Load<GameObject>("Prefabs/UI/UISelectButton");
         }
     }
 }

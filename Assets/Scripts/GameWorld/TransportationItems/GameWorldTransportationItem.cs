@@ -80,6 +80,7 @@ namespace TowerBuilder.GameWorld.Rooms
                     Transform meshTransform = meshWrapper.CreateMesh();
                     meshTransform.SetParent(transform);
                     meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
+                    meshTransform.Translate(new Vector3(0, 0, -2f));
 
                     Tileable.OccupiedCellMap occupiedCellMap =
                         Tileable.OccupiedCellMap.FromCellCoordinatesList(cellCoordinates, transportationItem.cellCoordinatesList);
@@ -102,12 +103,13 @@ namespace TowerBuilder.GameWorld.Rooms
          */
         public static GameWorldTransportationItem Create(Transform parent)
         {
-            GameObject prefab = Resources.Load<GameObject>("Prefabs/Map/TransportationItems/TransportationItem");
-            GameObject roomGameObject = Instantiate<GameObject>(prefab);
+            GameWorldTransportationManager transportationManager = GameWorldTransportationManager.Find();
+            GameObject prefab = transportationManager.assetList.FindByKey(GameWorldTransportationManager.AssetKey.TransportationItem);
+            GameObject transportationItemGameObject = Instantiate<GameObject>(prefab);
 
-            roomGameObject.transform.parent = parent;
+            transportationItemGameObject.transform.parent = parent;
 
-            GameWorldTransportationItem gameWorldTransportationItem = roomGameObject.GetComponent<GameWorldTransportationItem>();
+            GameWorldTransportationItem gameWorldTransportationItem = transportationItemGameObject.GetComponent<GameWorldTransportationItem>();
             return gameWorldTransportationItem;
         }
 

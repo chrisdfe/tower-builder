@@ -121,7 +121,8 @@ namespace TowerBuilder.GameWorld.Rooms
         */
         public static GameWorldRoomCell Create(Transform parent)
         {
-            GameObject prefab = Resources.Load<GameObject>("Prefabs/Map/Rooms/RoomCell");
+            GameWorldRoomsManager roomsManager = GameWorldRoomsManager.Find();
+            GameObject prefab = roomsManager.assetList.FindByKey(GameWorldRoomsManager.AssetKey.RoomCell);
             GameObject roomCellGameObject = Instantiate<GameObject>(prefab);
 
             roomCellGameObject.transform.parent = parent;

@@ -11,6 +11,7 @@ namespace TowerBuilder.GameWorld.Rooms
 {
     public class GameWorldRoomList : MonoBehaviour
     {
+        [HideInInspector]
         public List<GameWorldRoom> gameWorldRooms = new List<GameWorldRoom>();
 
         void Awake()

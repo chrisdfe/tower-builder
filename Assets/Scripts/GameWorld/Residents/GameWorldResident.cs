@@ -126,7 +126,8 @@ namespace TowerBuilder.GameWorld.Residents
          */
         public static GameWorldResident Create(Transform parent)
         {
-            GameObject prefab = Resources.Load<GameObject>("Prefabs/Residents/Resident");
+            GameWorldResidentsManager residentsManager = GameWorldResidentsManager.Find();
+            GameObject prefab = residentsManager.assetList.FindByKey(GameWorldResidentsManager.AssetKey.Resident);
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;

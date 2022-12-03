@@ -1,11 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder;
-using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Tools;
-using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.TransportationItems;
 using UnityEngine;
 

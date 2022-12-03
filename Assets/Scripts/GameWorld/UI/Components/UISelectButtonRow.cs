@@ -64,23 +64,28 @@ namespace TowerBuilder.GameWorld.UI.Components
             buttons = new List<UISelectButton>();
             foreach (UISelectButton.Input buttonInput in input.buttons)
             {
-                UISelectButton button = UISelectButton.Create(buttonInput);
+                UISelectButton button = UISelectButton.Create(transform, buttonInput);
                 button.onClick += OnSelectButtonClick;
-                button.transform.SetParent(transform, false);
                 buttons.Add(button);
             }
         }
 
-        public static UISelectButtonRow Create(Input input)
+        /* 
+            Static API
+        */
+        public static UISelectButtonRow Create(Transform parent, Input input)
         {
-            UISelectButtonRow selectButtonRow = GameObject.Instantiate(GetPrefab()).GetComponent<UISelectButtonRow>();
+            UIManager uiManager = GameWorldFindableCache.Find<UIManager>("UIManager");
+
+            GameObject prefab = uiManager.assetList.FindByKey(UIManager.AssetKey.SelectButton);
+            GameObject selectButtonRowGameObject = Instantiate<GameObject>(prefab);
+
+            selectButtonRowGameObject.transform.SetParent(parent, false);
+
+            UISelectButtonRow selectButtonRow = selectButtonRowGameObject.GetComponent<UISelectButtonRow>();
+
             selectButtonRow.ConsumeInput(input);
             return selectButtonRow;
-        }
-
-        static GameObject GetPrefab()
-        {
-            return Resources.Load<GameObject>("Prefabs/UI/UISelectButtonRow");
         }
     }
 }

@@ -65,7 +65,8 @@ namespace TowerBuilder.GameWorld.Furnitures
          */
         public static GameWorldFurniture Create(Transform parent)
         {
-            GameObject prefab = Resources.Load<GameObject>("Prefabs/Furnitures/Furniture");
+            GameWorldFurnitureManager furnitureManager = GameWorldFurnitureManager.Find();
+            GameObject prefab = furnitureManager.assetList.FindByKey(GameWorldFurnitureManager.AssetKey.Furniture);
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;

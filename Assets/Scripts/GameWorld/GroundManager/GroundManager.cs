@@ -15,11 +15,6 @@ namespace TowerBuilder.GameWorld.Map
     {
         GameObject groundPlaceholder;
 
-        // TODO - put these somewhere else
-        const int MAP_CELLS_WIDTH = 50;
-        const int MAP_CELLS_HEIGHT = 50;
-        const int GROUND_STARTING_FLOOR = -1;
-
         void Awake() { }
 
         void Start() { }

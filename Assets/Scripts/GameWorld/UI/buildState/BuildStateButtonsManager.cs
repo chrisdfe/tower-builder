@@ -53,8 +53,7 @@ namespace TowerBuilder.GameWorld.UI
 
             UISelectButton CreateEntityGroupButton(string value)
             {
-                UISelectButton entityButton = UISelectButton.Create(new UISelectButton.Input() { label = value, value = value });
-                entityButton.transform.SetParent(entityGroupButtonsWrapper, false);
+                UISelectButton entityButton = UISelectButton.Create(entityGroupButtonsWrapper, new UISelectButton.Input() { label = value, value = value });
                 entityButton.onClick += OnEntityGroupButtonClick;
                 return entityButton;
             }

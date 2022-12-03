@@ -4,7 +4,8 @@
 
 ## Tasks
 
-- Reorganize prefabs to be embedded in other prefabs/managers and get rid of the reliance on the Resources/ folder
+- Reorganize models/prefabs to create less of a delineation between the 2
+- Pull out a lot of the logic in these static Create() method
 - "List" state slice
 - New tool for merging/splitting up rooms
 - UI element that displays current resident's goals
@@ -161,6 +162,7 @@
 
 # Done
 
+- Reorganize prefabs to be embedded in other prefabs/managers and get rid of the reliance on the Resources/ folder
 - Remove residentmotor state
 - Improved lighting
   - global sun light that rotates/changes color as the day progresses
