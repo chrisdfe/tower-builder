@@ -8,22 +8,18 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Residents
 {
-    public class State : StateSlice
+    using ResidentsListStateSlice = ListStateSlice<ResidentsList, Resident, State.Events>;
+
+    public class State : ResidentsListStateSlice
     {
         public class Input
         {
             public ResidentsList allResidents = new ResidentsList();
         }
 
-        public class Events
+        public new class Events : ResidentsListStateSlice.Events
         {
-            public delegate void ResidentsEvent(ResidentsList residents);
-            public ResidentsEvent onResidentsAdded;
-            public ResidentsEvent onResidentsRemoved;
-            public ResidentsEvent onResidentsBuilt;
-
-            public delegate void ResidentEvent(Resident resident);
-            public ResidentEvent onResidentPositionUpdated;
+            public ResidentsListStateSlice.Events.ItemEvent onItemPositionUpdated;
         }
 
         public class Queries
@@ -43,7 +39,6 @@ namespace TowerBuilder.ApplicationState.Residents
 
         public ResidentsList allResidents { get; private set; } = new ResidentsList();
 
-        public Events events { get; private set; }
         public Queries queries { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
@@ -55,48 +50,21 @@ namespace TowerBuilder.ApplicationState.Residents
 
             this.allResidents = input.allResidents ?? new ResidentsList();
 
-            events = new Events();
             queries = new Queries(this);
-        }
-
-        public void AddResident(Resident resident)
-        {
-            allResidents.Add(resident);
-
-            if (events.onResidentsAdded != null)
-            {
-                events.onResidentsAdded(new ResidentsList(resident));
-            }
         }
 
         public void BuildResident(Resident resident)
         {
             resident.OnBuild();
 
-            if (events.onResidentsBuilt != null)
-            {
-                events.onResidentsBuilt(new ResidentsList(resident));
-            }
-        }
-
-        public void RemoveResident(Resident resident)
-        {
-            allResidents.Remove(resident);
-
-            if (events.onResidentsRemoved != null)
-            {
-                events.onResidentsRemoved(new ResidentsList(resident));
-            }
+            events.onItemsBuilt?.Invoke(new ResidentsList(resident));
         }
 
         public void SetResidentPosition(Resident resident, CellCoordinates cellCoordinates)
         {
             resident.cellCoordinates = cellCoordinates;
 
-            if (events.onResidentPositionUpdated != null)
-            {
-                events.onResidentPositionUpdated(resident);
-            }
+            events.onItemPositionUpdated?.Invoke(resident);
         }
     }
 }

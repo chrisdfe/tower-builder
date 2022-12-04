@@ -15,10 +15,10 @@ namespace TowerBuilder.GameWorld.Residents
 
         public void Awake()
         {
-            Registry.appState.Residents.events.onResidentsAdded += OnResidentsAdded;
-            Registry.appState.Residents.events.onResidentsRemoved += OnResidentsRemoved;
+            Registry.appState.Residents.events.onItemsAdded += OnResidentsAdded;
+            Registry.appState.Residents.events.onItemsRemoved += OnResidentsRemoved;
 
-            Registry.appState.Residents.events.onResidentPositionUpdated += OnResidentPositionUpdated;
+            Registry.appState.Residents.events.onItemPositionUpdated += OnResidentPositionUpdated;
 
             Registry.appState.ResidentBehaviors.events.onResidentBehaviorAdded += OnResidentBehaviorAdded;
             Registry.appState.ResidentBehaviors.events.onResidentBehaviorRemoved += OnResidentBehaviorRemoved;
@@ -30,10 +30,10 @@ namespace TowerBuilder.GameWorld.Residents
 
         public void OnDestroy()
         {
-            Registry.appState.Residents.events.onResidentsAdded -= OnResidentsAdded;
-            Registry.appState.Residents.events.onResidentsRemoved -= OnResidentsRemoved;
+            Registry.appState.Residents.events.onItemsAdded -= OnResidentsAdded;
+            Registry.appState.Residents.events.onItemsRemoved -= OnResidentsRemoved;
 
-            Registry.appState.Residents.events.onResidentPositionUpdated -= OnResidentPositionUpdated;
+            Registry.appState.Residents.events.onItemPositionUpdated -= OnResidentPositionUpdated;
 
             Registry.appState.ResidentBehaviors.events.onResidentBehaviorAdded -= OnResidentBehaviorAdded;
             Registry.appState.ResidentBehaviors.events.onResidentBehaviorRemoved -= OnResidentBehaviorRemoved;

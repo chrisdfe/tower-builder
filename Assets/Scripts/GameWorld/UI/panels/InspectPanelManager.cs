@@ -189,7 +189,7 @@ namespace TowerBuilder.GameWorld.UI
                 actionButtonsWrapper,
                 new UISelectButton.Input() { label = "delete", value = "delete" }
             );
-            removeButton.onClick += (value) => { Registry.appState.Residents.RemoveResident(resident); };
+            removeButton.onClick += (value) => { Registry.appState.Residents.Remove(resident); };
             removeButton.transform.localScale = Vector3.one;
 
             float wrapperHeight = actionButtonsWrapper.GetComponent<RectTransform>().rect.height;

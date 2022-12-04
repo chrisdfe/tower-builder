@@ -6,16 +6,13 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations
 {
-    public class State : StateSlice
+    using FurnitureHomeSlotOccupiationStateSlice = ListStateSlice<FurnitureHomeSlotOccupationList, FurnitureHomeSlotOccupation, State.Events>;
+
+    public class State : FurnitureHomeSlotOccupiationStateSlice
     {
         public class Input { }
 
-        public class Events
-        {
-            public delegate void FurnitureHomeSlotOccupationEvent(FurnitureHomeSlotOccupation furnitureHomeSlotOccupation);
-            public FurnitureHomeSlotOccupationEvent onFurnitureHomeSlotOccupationAdded;
-            public FurnitureHomeSlotOccupationEvent onFurnitureHomeSlotOccupationRemoved;
-        }
+        public new class Events : FurnitureHomeSlotOccupiationStateSlice.Events { }
 
         public class Queries
         {
@@ -39,12 +36,10 @@ namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations
 
         public FurnitureHomeSlotOccupationList furnitureHomeSlotOccupationList { get; private set; } = new FurnitureHomeSlotOccupationList();
 
-        public Events events { get; private set; }
         public Queries queries { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
         {
-            events = new Events();
             queries = new Queries(this);
 
             Setup();
@@ -53,28 +48,5 @@ namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations
         public void Setup() { }
 
         public void Teardown() { }
-
-        /* 
-            Public Interface
-         */
-        public void AddFurnitureHomeSlotOccupation(FurnitureHomeSlotOccupation FurnitureHomeSlotOccupation)
-        {
-            furnitureHomeSlotOccupationList.Add(FurnitureHomeSlotOccupation);
-
-            if (events.onFurnitureHomeSlotOccupationAdded != null)
-            {
-                events.onFurnitureHomeSlotOccupationAdded(FurnitureHomeSlotOccupation);
-            }
-        }
-
-        public void RemoveFurnitureHomeSlotOccupation(FurnitureHomeSlotOccupation FurnitureHomeSlotOccupation)
-        {
-            furnitureHomeSlotOccupationList.Remove(FurnitureHomeSlotOccupation);
-
-            if (events.onFurnitureHomeSlotOccupationRemoved != null)
-            {
-                events.onFurnitureHomeSlotOccupationRemoved(FurnitureHomeSlotOccupation);
-            }
-        }
     }
 }

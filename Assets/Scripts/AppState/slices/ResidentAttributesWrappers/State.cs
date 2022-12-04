@@ -58,18 +58,18 @@ namespace TowerBuilder.ApplicationState.ResidentAttributesWrappers
         {
             base.Setup();
 
-            appState.Residents.events.onResidentsAdded += OnResidentsAdded;
-            appState.Residents.events.onResidentsRemoved += OnResidentsRemoved;
-            appState.Residents.events.onResidentsBuilt += OnResidentsBuilt;
+            appState.Residents.events.onItemsAdded += OnResidentsAdded;
+            appState.Residents.events.onItemsRemoved += OnResidentsRemoved;
+            appState.Residents.events.onItemsBuilt += OnResidentsBuilt;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            appState.Residents.events.onResidentsAdded -= OnResidentsAdded;
-            appState.Residents.events.onResidentsRemoved -= OnResidentsRemoved;
-            appState.Residents.events.onResidentsBuilt -= OnResidentsBuilt;
+            appState.Residents.events.onItemsAdded -= OnResidentsAdded;
+            appState.Residents.events.onItemsRemoved -= OnResidentsRemoved;
+            appState.Residents.events.onItemsBuilt -= OnResidentsBuilt;
         }
 
         /* 

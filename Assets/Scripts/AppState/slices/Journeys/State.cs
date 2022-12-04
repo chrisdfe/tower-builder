@@ -2,11 +2,13 @@ using TowerBuilder.DataTypes.Journeys;
 
 namespace TowerBuilder.ApplicationState.Journeys
 {
-    public class State : StateSlice
+    using JourneyListStateSlice = ListStateSlice<JourneyList, Journey, State.Events>;
+
+    public class State : JourneyListStateSlice
     {
         public class Input { }
 
-        public class Events { }
+        public new class Events : JourneyListStateSlice.Events { }
 
         public class Queries
         {
@@ -20,12 +22,10 @@ namespace TowerBuilder.ApplicationState.Journeys
 
         public Journey currentJourney;
 
-        public Events events { get; private set; }
         public Queries queries { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
         {
-            events = new Events();
             queries = new Queries(this);
         }
 

@@ -55,7 +55,7 @@ namespace TowerBuilder.ApplicationState
 
             // place it where the resident is for now
             resident.cellCoordinates = furniture.cellCoordinates;
-            appState.Residents.AddResident(resident);
+            appState.Residents.Add(resident);
 
             // add ownership
             FurnitureHomeSlotOccupation homeSlotOccupation = new FurnitureHomeSlotOccupation()
@@ -63,7 +63,7 @@ namespace TowerBuilder.ApplicationState
                 resident = resident,
                 furniture = furniture
             };
-            appState.FurnitureHomeSlotOccupations.AddFurnitureHomeSlotOccupation(homeSlotOccupation);
+            appState.FurnitureHomeSlotOccupations.Add(homeSlotOccupation);
         }
     }
 }
