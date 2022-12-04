@@ -32,7 +32,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
         {
             public Queue<Goal> queue { get; private set; } = new Queue<Goal>();
 
-            public int Count { get { return queue.Count; } }
+            public int Count { get => queue.Count; }
 
             public Goal current
             {
@@ -153,7 +153,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
                 case StateKey.Traveling:
                     break;
                 case StateKey.InteractingWithFurniture:
-                    appState.FurnitureBehaviors.StartFurnitureBehaviorInteraction(resident, interactionFurniture);
+                    appState.FurnitureBehaviors.StartInteraction(resident, interactionFurniture);
                     break;
             }
         }
@@ -168,7 +168,7 @@ namespace TowerBuilder.DataTypes.Residents.Behaviors
                     routeProgress = null;
                     break;
                 case StateKey.InteractingWithFurniture:
-                    appState.FurnitureBehaviors.EndFurnitureBehaviorInteraction(resident, interactionFurniture);
+                    appState.FurnitureBehaviors.EndInteraction(resident, interactionFurniture);
                     interactionFurniture = null;
                     break;
             }

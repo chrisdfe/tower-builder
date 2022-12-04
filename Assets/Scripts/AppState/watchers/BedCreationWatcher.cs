@@ -14,14 +14,14 @@ namespace TowerBuilder.ApplicationState
 
         public override void Setup()
         {
-            appState.Furnitures.events.onFurnituresAdded += OnFurnituresAdded;
-            appState.Furnitures.events.onFurnituresBuilt += OnFurnituresBuilt;
+            appState.Furnitures.events.onItemsAdded += OnFurnituresAdded;
+            appState.Furnitures.events.onItemsBuilt += OnFurnituresBuilt;
         }
 
         public override void Teardown()
         {
-            appState.Furnitures.events.onFurnituresAdded -= OnFurnituresAdded;
-            appState.Furnitures.events.onFurnituresBuilt -= OnFurnituresBuilt;
+            appState.Furnitures.events.onItemsAdded -= OnFurnituresAdded;
+            appState.Furnitures.events.onItemsBuilt -= OnFurnituresBuilt;
         }
 
         void OnFurnituresAdded(FurnitureList furnitureList)

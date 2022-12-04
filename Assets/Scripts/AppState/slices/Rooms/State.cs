@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
@@ -16,6 +17,24 @@ namespace TowerBuilder.ApplicationState.Rooms
         public struct Input
         {
             public RoomList roomList;
+        }
+
+        public class Events
+        {
+            public delegate void RoomEvent(Room room);
+            public RoomEvent onRoomAdded;
+            public RoomEvent onRoomRemoved;
+            public RoomEvent onRoomBuilt;
+
+            public delegate void RoomListEvent(RoomList roomList);
+            public RoomListEvent onRoomListUpdated;
+
+            public delegate void RoomBlocksEvent(Room room, RoomBlocks roomBlocks);
+            public RoomBlocksEvent onRoomBlocksAdded;
+            public RoomBlocksEvent onRoomBlocksRemoved;
+
+            public delegate void RoomBlockUpdatedEvent(Room room);
+            public RoomBlockUpdatedEvent onRoomBlocksUpdated;
         }
 
         public RoomList roomList { get; private set; } = new RoomList();
@@ -59,7 +78,7 @@ namespace TowerBuilder.ApplicationState.Rooms
                 // TODO - these should be unique messages - right now they are not
                 foreach (RoomValidationError validationError in room.validator.errors)
                 {
-                    appState.Notifications.AddNotification(validationError.message);
+                    appState.Notifications.Add(new Notification(validationError.message));
                 }
                 return;
             }

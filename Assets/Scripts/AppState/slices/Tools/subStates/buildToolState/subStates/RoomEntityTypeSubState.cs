@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.Utils;
 
@@ -64,8 +65,12 @@ namespace TowerBuilder.ApplicationState.Tools
                 }
                 else
                 {
-                    Registry.appState.Notifications.AddNotifications(
-                        blueprintRoom.validator.errors.Select(error => error.message).ToArray()
+                    Registry.appState.Notifications.Add(
+                        new NotificationsList(
+                            blueprintRoom.validator.errors
+                                .Select(error => new Notification(error.message))
+                                .ToList()
+                        )
                     );
 
                     // ResetBuildCoordinates();

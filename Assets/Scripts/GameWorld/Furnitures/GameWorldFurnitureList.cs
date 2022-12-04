@@ -31,8 +31,8 @@ namespace TowerBuilder.GameWorld.Furnitures
 
         void Setup()
         {
-            Registry.appState.Furnitures.events.onFurnituresAdded += OnFurnituresAdded;
-            Registry.appState.Furnitures.events.onFurnituresRemoved += OnFurnituresRemoved;
+            Registry.appState.Furnitures.events.onItemsAdded += OnFurnituresAdded;
+            Registry.appState.Furnitures.events.onItemsRemoved += OnFurnituresRemoved;
 
             Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
 
@@ -41,8 +41,8 @@ namespace TowerBuilder.GameWorld.Furnitures
 
         void Teardown()
         {
-            Registry.appState.Furnitures.events.onFurnituresAdded -= OnFurnituresAdded;
-            Registry.appState.Furnitures.events.onFurnituresRemoved -= OnFurnituresRemoved;
+            Registry.appState.Furnitures.events.onItemsAdded -= OnFurnituresAdded;
+            Registry.appState.Furnitures.events.onItemsRemoved -= OnFurnituresRemoved;
 
             Registry.appState.UI.events.onCurrentSelectedCellUpdated -= OnCurrentSelectedCellUpdated;
 

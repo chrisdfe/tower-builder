@@ -1,6 +1,7 @@
 using System;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Residents.Attributes;
 using TowerBuilder.DataTypes.Residents.Behaviors;
@@ -168,7 +169,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             }
             else
             {
-                appState.Notifications.AddNotification("No route found");
+                appState.Notifications.Add(new Notification("No route found"));
                 return null;
             }
         }

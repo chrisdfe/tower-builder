@@ -7,17 +7,16 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.FurnitureBehaviors
 {
-    public class State : StateSlice
+    using FurnitureBehaviorsListStateSlice = ListStateSlice<FurnitureBehaviorList, FurnitureBehaviorBase, State.Events>;
+
+    public class State : FurnitureBehaviorsListStateSlice
     {
         public class Input { }
 
-        public class Events
+        public new class Events : FurnitureBehaviorsListStateSlice.Events
         {
-            public delegate void FurnitureBehaviorEvent(FurnitureBehaviorBase furnitureBehavior);
-            public FurnitureBehaviorEvent onFurnitureBehaviorAdded;
-            public FurnitureBehaviorEvent onFurnitureBehaviorRemoved;
-            public FurnitureBehaviorEvent onFurnitureBehaviorInteractStart;
-            public FurnitureBehaviorEvent onFurnitureBehaviorInteractEnd;
+            public FurnitureBehaviorsListStateSlice.Events.ItemEvent onInteractStart;
+            public FurnitureBehaviorsListStateSlice.Events.ItemEvent onInteractEnd;
         }
 
         public class Queries
@@ -28,23 +27,14 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
             {
                 this.state = state;
             }
-
-            // public FurnitureBehaviorList FindFurnitureByRoom(Room room)
-            // {
-            //     return new FurnitureBehaviorList(
-            //         state.furnitureBehaviorList.items.FindAll(furnitureBehavior => furnitureBehavior.furniture.room == room)
-            //     );
-            // }
         }
 
         public FurnitureBehaviorList furnitureBehaviorList { get; private set; } = new FurnitureBehaviorList();
 
-        public Events events { get; private set; }
         public Queries queries { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
         {
-            events = new Events();
             queries = new Queries(this);
 
             Setup();
@@ -52,47 +42,27 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
 
         public void Setup()
         {
-            appState.Furnitures.events.onFurnituresAdded += OnFurnituresAdded;
-            appState.Furnitures.events.onFurnituresRemoved += OnFurnituresRemoved;
-            appState.Furnitures.events.onFurnituresBuilt += OnFurnituresBuilt;
+            appState.Furnitures.events.onItemsAdded += OnFurnituresAdded;
+            appState.Furnitures.events.onItemsRemoved += OnFurnituresRemoved;
+            appState.Furnitures.events.onItemBuilt += OnFurnituresBuilt;
         }
 
         public void Teardown()
         {
-            appState.Furnitures.events.onFurnituresAdded -= OnFurnituresAdded;
-            appState.Furnitures.events.onFurnituresRemoved -= OnFurnituresRemoved;
-            appState.Furnitures.events.onFurnituresBuilt -= OnFurnituresBuilt;
+            appState.Furnitures.events.onItemsAdded -= OnFurnituresAdded;
+            appState.Furnitures.events.onItemsRemoved -= OnFurnituresRemoved;
+            appState.Furnitures.events.onItemBuilt -= OnFurnituresBuilt;
         }
 
         /* 
             Public Interface
         */
-        public void AddFurnitureBehavior(FurnitureBehaviorBase furnitureBehavior)
-        {
-            furnitureBehaviorList.Add(furnitureBehavior);
-
-            if (events.onFurnitureBehaviorAdded != null)
-            {
-                events.onFurnitureBehaviorAdded(furnitureBehavior);
-            }
-        }
-
-        public void RemoveFurnitureBehavior(FurnitureBehaviorBase furnitureBehavior)
-        {
-            furnitureBehaviorList.Remove(furnitureBehavior);
-
-            if (events.onFurnitureBehaviorRemoved != null)
-            {
-                events.onFurnitureBehaviorRemoved(furnitureBehavior);
-            }
-        }
-
         public FurnitureBehaviorBase AddFurnitureBehaviorForFurniture(Furniture furniture)
         {
             if (furniture.isInBlueprintMode) return null;
 
             FurnitureBehaviorBase furnitureBehavior = furniture.template.furnitureBehaviorFactory(appState, furniture);
-            AddFurnitureBehavior(furnitureBehavior);
+            Add(furnitureBehavior);
 
             return furnitureBehavior;
         }
@@ -103,39 +73,31 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
 
             if (furnitureBehavior != null)
             {
-                RemoveFurnitureBehavior(furnitureBehavior);
+                Remove(furnitureBehavior);
             }
         }
 
-        public FurnitureBehaviorBase StartFurnitureBehaviorInteraction(Resident resident, Furniture furniture)
+        public FurnitureBehaviorBase StartInteraction(Resident resident, Furniture furniture)
         {
             FurnitureBehaviorBase furnitureBehavior = furnitureBehaviorList.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
                 furnitureBehavior.InteractStart(resident);
-
-                if (events.onFurnitureBehaviorInteractStart != null)
-                {
-                    events.onFurnitureBehaviorInteractStart(furnitureBehavior);
-                }
+                events.onInteractStart?.Invoke(furnitureBehavior);
             }
 
             return furnitureBehavior;
         }
 
-        public void EndFurnitureBehaviorInteraction(Resident resident, Furniture furniture)
+        public void EndInteraction(Resident resident, Furniture furniture)
         {
             FurnitureBehaviorBase furnitureBehavior = furnitureBehaviorList.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
                 furnitureBehavior.InteractEnd(resident);
-
-                if (events.onFurnitureBehaviorInteractEnd != null)
-                {
-                    events.onFurnitureBehaviorInteractEnd(furnitureBehavior);
-                }
+                events.onInteractEnd?.Invoke(furnitureBehavior);
             }
         }
 

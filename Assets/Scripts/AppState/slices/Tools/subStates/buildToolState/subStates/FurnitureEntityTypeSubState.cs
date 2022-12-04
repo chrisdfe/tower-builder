@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools
@@ -62,8 +63,12 @@ namespace TowerBuilder.ApplicationState.Tools
                 }
                 else
                 {
-                    Registry.appState.Notifications.AddNotifications(
-                        blueprintFurniture.validator.errors.Select(error => error.message).ToArray()
+                    Registry.appState.Notifications.Add(
+                        new NotificationsList(
+                            blueprintFurniture.validator.errors
+                                .Select(error => new Notification(error.message))
+                                .ToList()
+                        )
                     );
 
                     ResetBlueprintFurniture();
@@ -115,12 +120,12 @@ namespace TowerBuilder.ApplicationState.Tools
                 blueprintFurniture = new Furniture(selectedFurnitureTemplate);
                 blueprintFurniture.isInBlueprintMode = true;
                 blueprintFurniture.cellCoordinates = Registry.appState.UI.currentSelectedCell;
-                Registry.appState.Furnitures.AddFurniture(blueprintFurniture);
+                Registry.appState.Furnitures.Add(blueprintFurniture);
             }
 
             void DestroyBlueprintFurniture()
             {
-                Registry.appState.Furnitures.RemoveFurniture(blueprintFurniture);
+                Registry.appState.Furnitures.Remove(blueprintFurniture);
                 blueprintFurniture = null;
             }
 

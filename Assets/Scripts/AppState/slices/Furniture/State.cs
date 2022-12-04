@@ -4,25 +4,22 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Furnitures;
 using TowerBuilder.DataTypes.Furnitures.Validators;
+using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Furnitures
 {
+    using FurnitureStateSlice = ListStateSlice<FurnitureList, Furniture, State.Events>;
+
     [Serializable]
-    public class State : StateSlice
+    public class State : FurnitureStateSlice
     {
         public class Input { }
 
-        public class Events
+        public new class Events : FurnitureStateSlice.Events
         {
-            public delegate void FurnitureEvent(FurnitureList furnitures);
-            public FurnitureEvent onFurnituresAdded;
-            public FurnitureEvent onFurnituresBuilt;
-            public FurnitureEvent onFurnituresRemoved;
-
-            public delegate void FurnitureListEvent(FurnitureList furnitureList);
-            public FurnitureListEvent onFurnitureListUpdated;
+            public FurnitureStateSlice.Events.ListEvent onItemBuilt;
         }
 
         public class Queries
@@ -37,13 +34,13 @@ namespace TowerBuilder.ApplicationState.Furnitures
             public FurnitureList FindFurnitureByRoom(Room room)
             {
                 return new FurnitureList(
-                    state.furnitureList.items.FindAll(furniture => furniture.room == room)
+                    state.list.items.FindAll(furniture => furniture.room == room)
                 );
             }
 
             public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates)
             {
-                return state.furnitureList.FindFurnitureAtCell(cellCoordinates);
+                return state.list.FindFurnitureAtCell(cellCoordinates);
             }
 
             public FurnitureList FindFurnitureInBlocks(RoomBlocks roomBlocks)
@@ -66,16 +63,11 @@ namespace TowerBuilder.ApplicationState.Furnitures
             }
         }
 
-        public FurnitureList furnitureList { get; private set; } = new FurnitureList();
-
-        public Events events;
         public Queries queries;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            events = new Events();
             queries = new Queries(this);
-
             Setup();
         }
 
@@ -99,26 +91,6 @@ namespace TowerBuilder.ApplicationState.Furnitures
             appState.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
         }
 
-        public void AddFurniture(FurnitureList furnitureList)
-        {
-            this.furnitureList.Add(furnitureList);
-
-            foreach (Furniture furniture in furnitureList.items)
-            {
-                furniture.validator.Validate(appState);
-            }
-
-            if (events.onFurnituresAdded != null)
-            {
-                events.onFurnituresAdded(furnitureList);
-            }
-        }
-
-        public void AddFurniture(Furniture furniture)
-        {
-            AddFurniture(new FurnitureList(furniture));
-        }
-
         public void BuildFurniture(Furniture furniture)
         {
             furniture.validator.Validate(appState);
@@ -128,40 +100,21 @@ namespace TowerBuilder.ApplicationState.Furnitures
                 // TODO - these should be unique messages - right now they are not
                 foreach (FurnitureValidationError validationError in furniture.validator.errors)
                 {
-                    appState.Notifications.AddNotification(validationError.message);
+                    appState.Notifications.Add(new Notification(validationError.message));
                 }
                 return;
             }
 
-            furniture.isInBlueprintMode = false;
             furniture.OnBuild();
             furniture.room = appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinates);
 
-            if (events.onFurnituresBuilt != null)
-            {
-                events.onFurnituresBuilt(new FurnitureList(furniture));
-            }
-        }
-
-        public void RemoveFurniture(FurnitureList furnitureList)
-        {
-            this.furnitureList.Remove(furnitureList);
-
-            if (events.onFurnituresRemoved != null)
-            {
-                events.onFurnituresRemoved(furnitureList);
-            }
-        }
-
-        public void RemoveFurniture(Furniture furniture)
-        {
-            RemoveFurniture(new FurnitureList(furniture));
+            events.onItemBuilt?.Invoke(new FurnitureList(furniture));
         }
 
         void OnRoomAdded(Room room)
         {
             FurnitureList roomFurnitures = room.furnitureBuilder.BuildFurniture(room.isInBlueprintMode);
-            AddFurniture(roomFurnitures);
+            Add(roomFurnitures);
         }
 
         void OnRoomBuilt(Room room)
@@ -179,10 +132,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
                     BuildFurniture(furniture);
                 });
 
-                if (events.onFurnituresBuilt != null)
-                {
-                    events.onFurnituresBuilt(blueprintFurnitures);
-                }
+                events.onItemBuilt?.Invoke(blueprintFurnitures);
             }
 
         }
@@ -190,7 +140,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
         void OnRoomRemoved(Room room)
         {
             FurnitureList furnituresToRemove = queries.FindFurnitureByRoom(room);
-            RemoveFurniture(furnituresToRemove);
+            Remove(furnituresToRemove);
         }
 
         void OnRoomBlocksAdded(Room room, RoomBlocks roomBlocks)
@@ -201,7 +151,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
         void OnRoomBlocksRemoved(Room room, RoomBlocks roomBlocks)
         {
             FurnitureList furnituresInBlock = queries.FindFurnitureInBlocks(roomBlocks);
-            RemoveFurniture(furnituresInBlock);
+            Remove(furnituresInBlock);
         }
     }
 }

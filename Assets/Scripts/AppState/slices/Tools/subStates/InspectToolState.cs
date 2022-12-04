@@ -53,7 +53,7 @@ namespace TowerBuilder.ApplicationState.Tools
         {
             base.Setup();
 
-            appState.Furnitures.events.onFurnituresRemoved += OnFurnituresRemoved;
+            appState.Furnitures.events.onItemsRemoved += OnFurnituresRemoved;
             appState.Residents.events.onResidentsRemoved += OnResidentsRemoved;
 
             appState.UI.events.onSecondaryActionPerformed += OnSecondaryActionPerformed;
@@ -63,7 +63,7 @@ namespace TowerBuilder.ApplicationState.Tools
         {
             base.Teardown();
 
-            appState.Furnitures.events.onFurnituresRemoved -= OnFurnituresRemoved;
+            appState.Furnitures.events.onItemsRemoved -= OnFurnituresRemoved;
             appState.Residents.events.onResidentsRemoved -= OnResidentsRemoved;
 
             appState.UI.events.onSecondaryActionPerformed -= OnSecondaryActionPerformed;
