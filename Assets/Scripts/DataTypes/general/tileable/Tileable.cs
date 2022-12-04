@@ -37,6 +37,7 @@ namespace TowerBuilder.DataTypes
             Single,
             Horizontal,
             Vertical,
+            Diagonal,
             Full
         }
 
@@ -47,6 +48,7 @@ namespace TowerBuilder.DataTypes
                 { Type.Single, "Single" },
                 { Type.Horizontal, "Horizontal" },
                 { Type.Vertical, "Vertical" },
+                { Type.Diagonal, "Diagonal" },
                 { Type.Full, "Full" },
             }
         );
@@ -64,6 +66,9 @@ namespace TowerBuilder.DataTypes
 
             // Vertical
             Top, VerticalCenter, Bottom,
+
+            // Diagonal
+            DiagonalCenter,
 
             // Full
             TopLeft, TopRight,
@@ -114,15 +119,15 @@ namespace TowerBuilder.DataTypes
 
         public void ProcessModel(Transform model, OccupiedCellMap occupiedCellMap)
         {
-            Transform tileabilityWrapper = TransformUtils.FindDeepChild(model, TILEABLE_WRAPPER_NODE_NAME);
+            Transform tileabileWrapper = TransformUtils.FindDeepChild(model, TILEABLE_WRAPPER_NODE_NAME);
 
-            if (tileabilityWrapper == null)
+            if (tileabileWrapper == null)
             {
-                Debug.Log("No TileabilityWrapper found");
+                Debug.Log("No TileableWrapper found");
                 return;
             }
 
-            Transform child = tileabilityWrapper.GetChild(0);
+            Transform child = tileabileWrapper.GetChild(0);
 
             if (child == null)
             {
@@ -134,6 +139,7 @@ namespace TowerBuilder.DataTypes
             foreach (Transform node in child)
             {
                 CellPosition nodeCellPosition = CellPositionLabelMap.KeyFromValue(node.name);
+                node.localPosition = Vector3.zero;
                 node.gameObject.SetActive(nodeCellPosition == cellPosition);
             }
         }
@@ -143,15 +149,15 @@ namespace TowerBuilder.DataTypes
         */
         public static Type TypeFromModel(Transform model)
         {
-            Transform tileabilityWrapper = TransformUtils.FindDeepChild(model, TILEABLE_WRAPPER_NODE_NAME);
+            Transform tileabileWrapper = TransformUtils.FindDeepChild(model, TILEABLE_WRAPPER_NODE_NAME);
 
-            if (tileabilityWrapper == null)
+            if (tileabileWrapper == null)
             {
-                Debug.Log("No TileabilityWrapper found");
+                Debug.Log("No TileableWrapper found");
                 return Type.None;
             }
 
-            Transform child = tileabilityWrapper.GetChild(0);
+            Transform child = tileabileWrapper.GetChild(0);
 
             if (child != null)
             {
@@ -169,6 +175,7 @@ namespace TowerBuilder.DataTypes
                 Type.Single => new SingleTileable(),
                 Type.Horizontal => new HorizontalTileable(),
                 Type.Vertical => new VerticalTileable(),
+                Type.Diagonal => new DiagonalTileable(),
                 Type.Full => new FullyTileable(),
                 _ => null
             };
@@ -306,6 +313,41 @@ namespace TowerBuilder.DataTypes
             if (occupied.Has(CellOrientation.Below))
             {
                 return Tileable.CellPosition.Top;
+            }
+
+            return Tileable.CellPosition.Single;
+        }
+    }
+
+    public class DiagonalTileable : Tileable
+    {
+        public override Type type { get; } = Type.Diagonal;
+
+        public override CellPosition[] allPossibleCellPositions
+        {
+            get =>
+                new CellPosition[] {
+                    CellPosition.BottomLeft,
+                    CellPosition.DiagonalCenter,
+                    CellPosition.TopRight
+                };
+        }
+
+        public override Tileable.CellPosition GetCellPosition(OccupiedCellMap occupied)
+        {
+            if (occupied.HasAll(new CellOrientation[] { CellOrientation.BelowLeft, CellOrientation.AboveRight }))
+            {
+                return Tileable.CellPosition.DiagonalCenter;
+            }
+
+            if (occupied.Has(CellOrientation.AboveRight))
+            {
+                return Tileable.CellPosition.BottomLeft;
+            }
+
+            if (occupied.Has(CellOrientation.BelowLeft))
+            {
+                return Tileable.CellPosition.TopRight;
             }
 
             return Tileable.CellPosition.Single;

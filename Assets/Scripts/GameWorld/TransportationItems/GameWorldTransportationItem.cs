@@ -73,22 +73,23 @@ namespace TowerBuilder.GameWorld.Rooms
 
             MeshWrapperFactory meshWrapperFactory = MeshWrapperKeyMap[transportationItem.key];
 
-            foreach (CellCoordinates cellCoordinates in transportationItem.cellCoordinatesList.items)
-                meshWrapperList = transportationItem.cellCoordinatesList.items.Select((cellCoordinates) =>
-                {
-                    MeshWrapper meshWrapper = meshWrapperFactory(assetList.FindByKey(transportationItem.key).transform);
-                    Transform meshTransform = meshWrapper.CreateMesh();
-                    meshTransform.SetParent(transform);
-                    meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
-                    meshTransform.Translate(new Vector3(0, 0, -2f));
+            meshWrapperList = transportationItem.cellCoordinatesList.items.Select((cellCoordinates) =>
+            {
+                MeshWrapper meshWrapper = meshWrapperFactory(assetList.FindByKey(transportationItem.key).transform);
+                meshWrapper.CreateMesh();
+                meshWrapper.mesh.SetParent(transform, false);
+                meshWrapper.mesh.position = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
+                meshWrapper.mesh.Translate(new Vector3(0, 0, -2f));
 
-                    Tileable.OccupiedCellMap occupiedCellMap =
-                        Tileable.OccupiedCellMap.FromCellCoordinatesList(cellCoordinates, transportationItem.cellCoordinatesList);
+                // TODO - change the api of this to only need a cell coordinates list
+                // i.e SetTileability(transportationItem.cellCoordinatesList)
+                Tileable.OccupiedCellMap occupiedCellMap =
+                    Tileable.OccupiedCellMap.FromCellCoordinatesList(cellCoordinates, transportationItem.cellCoordinatesList);
 
-                    meshWrapper.SetTileability(occupiedCellMap);
+                meshWrapper.SetTileability(occupiedCellMap);
 
-                    return meshWrapper;
-                }).ToList();
+                return meshWrapper;
+            }).ToList();
         }
 
         void DestroyMesh()
@@ -118,8 +119,9 @@ namespace TowerBuilder.GameWorld.Rooms
         */
         public abstract class MeshWrapper
         {
+            public Transform mesh { get; private set; }
+
             Transform prefabMeshTransform;
-            Transform mesh;
             Tileable tileable;
 
             Transform tileabilityWrapper;
@@ -134,15 +136,13 @@ namespace TowerBuilder.GameWorld.Rooms
 
             public virtual void Teardown() { }
 
-            public Transform CreateMesh()
+            public void CreateMesh()
             {
                 mesh = Instantiate(
                     prefabMeshTransform,
                     Vector3.zero,
                     Quaternion.identity
                 );
-
-                return mesh;
             }
 
             public void SetTileability(Tileable.OccupiedCellMap occupiedCellMap)

@@ -174,6 +174,7 @@
 
 # Done
 
+- Figure out why 2 game world transportation items (1 cell for each cell in a transportation so 4 in total) are being created instead of 1
 - "List" state slice
 - Reorganize models/prefabs to create less of a delineation between the 2
 - Sun quickly resets to beginning position at the start of every day
