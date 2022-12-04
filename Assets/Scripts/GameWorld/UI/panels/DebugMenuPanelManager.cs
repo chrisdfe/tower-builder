@@ -91,9 +91,9 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnTestSaveButtonClick()
         {
-            if (Registry.appState.Rooms.roomList.Count > 0)
+            if (Registry.appState.Rooms.list.Count > 0)
             {
-                Room room = Registry.appState.Rooms.roomList.items[0];
+                Room room = Registry.appState.Rooms.list.items[0];
                 SaveLoadSystem.SaveToFile<Room>(room);
             }
         }

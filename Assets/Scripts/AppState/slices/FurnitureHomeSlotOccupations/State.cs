@@ -23,18 +23,12 @@ namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations
                 this.state = state;
             }
 
-            public Furniture GetHomeFurnitureFor(Resident resident)
-            {
-                return state.furnitureHomeSlotOccupationList.GetHomeFurnitureFor(resident);
-            }
+            public Furniture GetHomeFurnitureFor(Resident resident) =>
+                state.list.GetHomeFurnitureFor(resident);
 
-            public ResidentsList GetResidentsLivingAt(Furniture furniture)
-            {
-                return state.furnitureHomeSlotOccupationList.GetResidentsLivingAt(furniture);
-            }
+            public ResidentsList GetResidentsLivingAt(Furniture furniture) =>
+                state.list.GetResidentsLivingAt(furniture);
         }
-
-        public FurnitureHomeSlotOccupationList furnitureHomeSlotOccupationList { get; private set; } = new FurnitureHomeSlotOccupationList();
 
         public Queries queries { get; private set; }
 

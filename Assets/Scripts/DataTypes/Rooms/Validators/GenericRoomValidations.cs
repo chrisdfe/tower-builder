@@ -20,7 +20,7 @@ namespace TowerBuilder.DataTypes.Rooms.Validators
         {
             List<RoomValidationError> errors = new List<RoomValidationError>();
 
-            RoomList allRooms = appState.Rooms.roomList;
+            RoomList allRooms = appState.Rooms.list;
 
             // Check for overlapping cells
             foreach (Room otherRoom in allRooms.items)

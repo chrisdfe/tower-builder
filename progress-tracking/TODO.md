@@ -4,6 +4,9 @@
 
 ## Tasks
 
+- Rooms shouldn't be able to be x number of cells wider than wheel base
+- Create "IEntity" interface to abstract some of this OnBuild/OnDestroy stuff
+  - Same for things that are Setup/Teardown-able?
 - "front door" transportation items - connection to the outside world
 - Ability for residents to walk around on the ground
 - When new resident slots open up (beds built) residents should arrive via ground, not just appear
@@ -13,7 +16,6 @@
 - SelectionBox should span the default size of transportation items instead of just the current cell
 - Draggable/resizable transportation items
 - Pull out a lot of the logic in these static Create() method
-- "List" state slice
 - New tool for merging/splitting up rooms
 - UI element that displays current resident's goals
 - "TickTimer" utility class
@@ -172,6 +174,7 @@
 
 # Done
 
+- "List" state slice
 - Reorganize models/prefabs to create less of a delineation between the 2
 - Sun quickly resets to beginning position at the start of every day
 - Integrate tileable into TransportationItem

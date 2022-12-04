@@ -41,7 +41,7 @@ namespace TowerBuilder.ApplicationState.VehicleAttributesWrappers
 
             public VehicleAttributesWrapper FindByVehicle(Vehicle vehicle)
             {
-                return state.attributesWrapperList.FindByVehicle(vehicle);
+                return state.list.FindByVehicle(vehicle);
             }
         }
 
@@ -58,41 +58,47 @@ namespace TowerBuilder.ApplicationState.VehicleAttributesWrappers
         {
             base.Setup();
 
-            appState.Vehicles.events.onVehicleAdded += OnVehicleAdded;
-            appState.Vehicles.events.onVehicleRemoved += OnVehicleRemoved;
+            appState.Vehicles.events.onItemsAdded += OnVehiclesAdded;
+            appState.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            appState.Vehicles.events.onVehicleAdded -= OnVehicleAdded;
-            appState.Vehicles.events.onVehicleRemoved -= OnVehicleRemoved;
+            appState.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
+            appState.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
         }
 
         public void AddAttributesWrapperForVehicle(Vehicle vehicle)
         {
             VehicleAttributesWrapper vehicleAttributesWrapper = new VehicleAttributesWrapper(appState, vehicle);
-            AddAttributesWrapper(vehicleAttributesWrapper);
+            Add(vehicleAttributesWrapper);
         }
 
         public void RemoveAttributesWrapperForVehicle(Vehicle vehicle)
         {
             VehicleAttributesWrapper vehicleAttributesWrapper = queries.FindByVehicle(vehicle);
-            RemoveAttributesWrapper(vehicleAttributesWrapper);
+            Remove(vehicleAttributesWrapper);
         }
 
         /* 
             Event Handlers
         */
-        void OnVehicleAdded(Vehicle vehicle)
+        void OnVehiclesAdded(VehicleList vehicleList)
         {
-            AddAttributesWrapperForVehicle(vehicle);
+            vehicleList.ForEach(vehicle =>
+            {
+                AddAttributesWrapperForVehicle(vehicle);
+            });
         }
 
-        void OnVehicleRemoved(Vehicle vehicle)
+        void OnVehiclesRemoved(VehicleList vehicleList)
         {
-            RemoveAttributesWrapperForVehicle(vehicle);
+            vehicleList.ForEach(vehicle =>
+            {
+                RemoveAttributesWrapperForVehicle(vehicle);
+            });
         }
     }
 }

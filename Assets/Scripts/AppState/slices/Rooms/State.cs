@@ -11,65 +11,47 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Rooms
 {
+    using RoomsListStateSlice = ListStateSlice<RoomList, Room, State.Events>;
+
     [Serializable]
-    public partial class State : StateSlice
+    public partial class State : RoomsListStateSlice
     {
         public struct Input
         {
             public RoomList roomList;
         }
 
-        public class Events
+        public new class Events : RoomsListStateSlice.Events
         {
-            public delegate void RoomEvent(Room room);
-            public RoomEvent onRoomAdded;
-            public RoomEvent onRoomRemoved;
-            public RoomEvent onRoomBuilt;
-
-            public delegate void RoomListEvent(RoomList roomList);
-            public RoomListEvent onRoomListUpdated;
+            public RoomsListStateSlice.Events.ItemEvent onItemBuilt;
 
             public delegate void RoomBlocksEvent(Room room, RoomBlocks roomBlocks);
             public RoomBlocksEvent onRoomBlocksAdded;
             public RoomBlocksEvent onRoomBlocksRemoved;
 
             public delegate void RoomBlockUpdatedEvent(Room room);
-            public RoomBlockUpdatedEvent onRoomBlocksUpdated;
+            public RoomBlocksEvent onRoomBlocksUpdated;
         }
 
-        public RoomList roomList { get; private set; } = new RoomList();
-        public Events events;
         public Queries queries;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            roomList = input.roomList ?? new RoomList();
+            list = input.roomList ?? new RoomList();
 
-            events = new Events();
             queries = new Queries(this);
         }
 
         /* 
             Rooms
         */
-        public void AddRoom(Room room)
+        public override void Add(Room room)
         {
-            roomList.Add(room);
-
-            if (events.onRoomAdded != null)
-            {
-                events.onRoomAdded(room);
-            }
-
-            if (events.onRoomListUpdated != null)
-            {
-                events.onRoomListUpdated(roomList);
-            }
-
+            base.Add(room);
             room.validator.Validate(appState);
         }
 
-        public void BuildRoom(Room room)
+        public void Build(Room room)
         {
             room.validator.Validate(appState);
 
@@ -94,7 +76,7 @@ namespace TowerBuilder.ApplicationState.Rooms
                 foreach (Room otherRoom in roomsToCombineWith)
                 {
                     room.blocks.Add(otherRoom.blocks);
-                    DestroyRoom(otherRoom);
+                    Remove(otherRoom);
                 }
 
                 room.Reset();
@@ -103,27 +85,13 @@ namespace TowerBuilder.ApplicationState.Rooms
             room.isInBlueprintMode = false;
             room.OnBuild();
 
-            if (events.onRoomBuilt != null)
-            {
-                events.onRoomBuilt(room);
-            }
+            events.onItemBuilt?.Invoke(room);
         }
 
-        public void DestroyRoom(Room room)
+        public override void Remove(Room room)
         {
-            roomList.Remove(room);
-
-            if (events.onRoomRemoved != null)
-            {
-                events.onRoomRemoved(room);
-            }
-
-            if (events.onRoomListUpdated != null)
-            {
-                events.onRoomListUpdated(roomList);
-            }
-
             room.OnDestroy();
+            base.Remove(room);
         }
 
         /* 
@@ -134,15 +102,8 @@ namespace TowerBuilder.ApplicationState.Rooms
             room.blocks.Add(roomBlock);
             room.Reset();
 
-            if (events.onRoomBlocksAdded != null)
-            {
-                events.onRoomBlocksAdded(room, new RoomBlocks(roomBlock));
-            }
-
-            if (events.onRoomBlocksUpdated != null)
-            {
-                events.onRoomBlocksUpdated(room);
-            }
+            events.onRoomBlocksAdded?.Invoke(room, new RoomBlocks(roomBlock));
+            events.onRoomBlocksUpdated?.Invoke(room, room.blocks);
         }
 
         public void DestroyRoomBlocks(Room room, RoomBlocks roomBlocks)
@@ -157,21 +118,14 @@ namespace TowerBuilder.ApplicationState.Rooms
 
             if (room.blocks.Count == 0)
             {
-                DestroyRoom(room);
+                Remove(room);
             }
             else
             {
                 room.Reset();
 
-                if (events.onRoomBlocksRemoved != null)
-                {
-                    events.onRoomBlocksRemoved(room, roomBlocks);
-                }
-
-                if (events.onRoomBlocksUpdated != null)
-                {
-                    events.onRoomBlocksUpdated(room);
-                }
+                events.onRoomBlocksRemoved?.Invoke(room, roomBlocks);
+                events.onRoomBlocksUpdated?.Invoke(room, room.blocks);
             }
         }
     }

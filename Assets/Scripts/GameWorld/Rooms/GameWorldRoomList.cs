@@ -26,9 +26,9 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Setup()
         {
-            Registry.appState.Rooms.events.onRoomAdded += OnRoomAdded;
-            Registry.appState.Rooms.events.onRoomBuilt += OnRoomBuilt;
-            Registry.appState.Rooms.events.onRoomRemoved += OnRoomDestroyed;
+            Registry.appState.Rooms.events.onItemsAdded += OnRoomsAdded;
+            Registry.appState.Rooms.events.onItemsBuilt += OnRoomsBuilt;
+            Registry.appState.Rooms.events.onItemsRemoved += OnRoomsRemoved;
             Registry.appState.Rooms.events.onRoomBlocksUpdated += OnRoomBlocksUpdated;
 
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
@@ -40,9 +40,9 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Teardown()
         {
-            Registry.appState.Rooms.events.onRoomAdded -= OnRoomAdded;
-            Registry.appState.Rooms.events.onRoomBuilt -= OnRoomBuilt;
-            Registry.appState.Rooms.events.onRoomRemoved -= OnRoomDestroyed;
+            Registry.appState.Rooms.events.onItemsAdded -= OnRoomsAdded;
+            Registry.appState.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
+            Registry.appState.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
             Registry.appState.Rooms.events.onRoomBlocksUpdated -= OnRoomBlocksUpdated;
 
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
@@ -50,52 +50,6 @@ namespace TowerBuilder.GameWorld.Rooms
 
             Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
-        }
-
-        /* 
-         * Event Handlers
-         */
-        void OnRoomAdded(Room room)
-        {
-            CreateRoom(room);
-        }
-
-        void OnRoomBuilt(Room room)
-        {
-            GameWorldRoom gameWorldRoom = FindGameWorldRoomByRoom(room);
-            if (gameWorldRoom == null) return;
-            gameWorldRoom.OnBuild();
-        }
-
-        void OnRoomDestroyed(Room room)
-        {
-            RemoveRoom(room);
-        }
-
-        void OnRoomBlocksUpdated(Room room)
-        {
-            GameWorldRoom gameWorldRoom = FindGameWorldRoomByRoom(room);
-            if (gameWorldRoom == null) return;
-            gameWorldRoom.Reset();
-        }
-
-        void OnCurrentSelectedRoomUpdated(Room selectedRoom)
-        {
-            SetRoomCellColors();
-        }
-
-        void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock) { }
-
-        void OnInspectRoomUpdated(Room currentInspectedRoom) { }
-
-        void OnDestroySelectionUpdated()
-        {
-            SetRoomCellColors();
-        }
-
-        void OnCurrentSelectedEntityUpdated(EntityBase entity)
-        {
-            SetRoomCellColors();
         }
 
         /*
@@ -127,6 +81,61 @@ namespace TowerBuilder.GameWorld.Rooms
         void SetRoomCellColors()
         {
             gameWorldRooms.ForEach(gameWorldRoom => gameWorldRoom.SetRoomCellColors());
+        }
+
+        /* 
+         * Event Handlers
+         */
+        void OnRoomsAdded(RoomList roomList)
+        {
+            roomList.ForEach(room =>
+            {
+                CreateRoom(room);
+            });
+        }
+
+        void OnRoomsBuilt(RoomList roomList)
+        {
+            roomList.ForEach(room =>
+            {
+                GameWorldRoom gameWorldRoom = FindGameWorldRoomByRoom(room);
+                if (gameWorldRoom == null) return;
+                gameWorldRoom.OnBuild();
+            });
+        }
+
+        void OnRoomsRemoved(RoomList roomList)
+        {
+            roomList.ForEach(room =>
+            {
+                RemoveRoom(room);
+            });
+        }
+
+        void OnRoomBlocksUpdated(Room room, RoomBlocks blocks)
+        {
+            GameWorldRoom gameWorldRoom = FindGameWorldRoomByRoom(room);
+            if (gameWorldRoom == null) return;
+            gameWorldRoom.Reset();
+        }
+
+        void OnCurrentSelectedRoomUpdated(Room selectedRoom)
+        {
+            SetRoomCellColors();
+        }
+
+        void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock) { }
+
+        void OnInspectRoomUpdated(Room currentInspectedRoom) { }
+
+        void OnDestroySelectionUpdated()
+        {
+            SetRoomCellColors();
+        }
+
+        void OnCurrentSelectedEntityUpdated(EntityBase entity)
+        {
+            SetRoomCellColors();
         }
     }
 }

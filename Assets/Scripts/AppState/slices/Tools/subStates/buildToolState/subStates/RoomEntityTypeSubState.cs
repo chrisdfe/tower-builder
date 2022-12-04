@@ -48,7 +48,7 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 base.Teardown();
 
-                DestroyBlueprintRoom();
+                RemoveBlueprintRoom();
             }
 
             public override void EndBuild()
@@ -104,24 +104,24 @@ namespace TowerBuilder.ApplicationState.Tools
                 SetBlueprintRoomCells();
                 blueprintRoom.validator.Validate(Registry.appState);
 
-                Registry.appState.Rooms.AddRoom(blueprintRoom);
+                Registry.appState.Rooms.Add(blueprintRoom);
             }
 
             void BuildBlueprintRoom()
             {
-                Registry.appState.Rooms.BuildRoom(blueprintRoom);
+                Registry.appState.Rooms.Build(blueprintRoom);
                 blueprintRoom = null;
             }
 
-            void DestroyBlueprintRoom()
+            void RemoveBlueprintRoom()
             {
-                Registry.appState.Rooms.DestroyRoom(blueprintRoom);
+                Registry.appState.Rooms.Remove(blueprintRoom);
                 blueprintRoom = null;
             }
 
             void ResetBlueprintRoom()
             {
-                DestroyBlueprintRoom();
+                RemoveBlueprintRoom();
                 CreateBlueprintRoom();
             }
 

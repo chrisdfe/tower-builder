@@ -14,7 +14,7 @@ namespace TowerBuilder.ApplicationState.Residents
     {
         public class Input
         {
-            public ResidentsList allResidents = new ResidentsList();
+            public ResidentsList residentsList = new ResidentsList();
         }
 
         public new class Events : ResidentsListStateSlice.Events
@@ -33,11 +33,9 @@ namespace TowerBuilder.ApplicationState.Residents
 
             public Resident FindResidentAtCell(CellCoordinates cellCoordinates)
             {
-                return state.allResidents.FindResidentAtCell(cellCoordinates);
+                return state.list.FindResidentAtCell(cellCoordinates);
             }
         }
-
-        public ResidentsList allResidents { get; private set; } = new ResidentsList();
 
         public Queries queries { get; private set; }
 
@@ -48,7 +46,7 @@ namespace TowerBuilder.ApplicationState.Residents
                 input = new Input();
             }
 
-            this.allResidents = input.allResidents ?? new ResidentsList();
+            this.list = input.residentsList ?? new ResidentsList();
 
             queries = new Queries(this);
         }

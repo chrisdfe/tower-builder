@@ -73,9 +73,9 @@ namespace TowerBuilder.ApplicationState.Furnitures
 
         public void Setup()
         {
-            appState.Rooms.events.onRoomAdded += OnRoomAdded;
-            appState.Rooms.events.onRoomBuilt += OnRoomBuilt;
-            appState.Rooms.events.onRoomRemoved += OnRoomRemoved;
+            appState.Rooms.events.onItemsAdded += OnRoomsAdded;
+            appState.Rooms.events.onItemsBuilt += OnRoomsBuilt;
+            appState.Rooms.events.onItemsRemoved += OnRoomsRemoved;
 
             appState.Rooms.events.onRoomBlocksAdded += OnRoomBlocksAdded;
             appState.Rooms.events.onRoomBlocksRemoved += OnRoomBlocksRemoved;
@@ -83,15 +83,15 @@ namespace TowerBuilder.ApplicationState.Furnitures
 
         public void Teardown()
         {
-            appState.Rooms.events.onRoomAdded -= OnRoomAdded;
-            appState.Rooms.events.onRoomBuilt -= OnRoomBuilt;
-            appState.Rooms.events.onRoomRemoved -= OnRoomRemoved;
+            appState.Rooms.events.onItemsAdded -= OnRoomsAdded;
+            appState.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
+            appState.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
 
             appState.Rooms.events.onRoomBlocksAdded -= OnRoomBlocksAdded;
             appState.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
         }
 
-        public void BuildFurniture(Furniture furniture)
+        public void Build(Furniture furniture)
         {
             furniture.validator.Validate(appState);
 
@@ -111,36 +111,53 @@ namespace TowerBuilder.ApplicationState.Furnitures
             events.onItemBuilt?.Invoke(new FurnitureList(furniture));
         }
 
-        void OnRoomAdded(Room room)
+        public override void Remove(Furniture furniture)
         {
-            FurnitureList roomFurnitures = room.furnitureBuilder.BuildFurniture(room.isInBlueprintMode);
-            Add(roomFurnitures);
+            base.Remove(furniture);
+            furniture.OnDestroy();
         }
 
-        void OnRoomBuilt(Room room)
+        /* 
+            Event Handlers
+        */
+        void OnRoomsAdded(RoomList roomList)
         {
-            FurnitureList roomFurnitures = queries.FindFurnitureByRoom(room);
-
-            FurnitureList blueprintFurnitures = new FurnitureList(
-                roomFurnitures.items.FindAll(roomFurniture => roomFurniture.isInBlueprintMode == true).ToList()
-            );
-
-            if (blueprintFurnitures.Count > 0)
+            roomList.ForEach(room =>
             {
-                blueprintFurnitures.ForEach(furniture =>
-                {
-                    BuildFurniture(furniture);
-                });
-
-                events.onItemBuilt?.Invoke(blueprintFurnitures);
-            }
-
+                FurnitureList roomFurnitures = room.furnitureBuilder.BuildFurniture(room.isInBlueprintMode);
+                Add(roomFurnitures);
+            });
         }
 
-        void OnRoomRemoved(Room room)
+        void OnRoomsBuilt(RoomList roomList)
         {
-            FurnitureList furnituresToRemove = queries.FindFurnitureByRoom(room);
-            Remove(furnituresToRemove);
+            roomList.ForEach(room =>
+            {
+                FurnitureList roomFurnitures = queries.FindFurnitureByRoom(room);
+
+                FurnitureList blueprintFurnitures = new FurnitureList(
+                    roomFurnitures.items.FindAll(roomFurniture => roomFurniture.isInBlueprintMode == true).ToList()
+                );
+
+                if (blueprintFurnitures.Count > 0)
+                {
+                    blueprintFurnitures.ForEach(furniture =>
+                    {
+                        Build(furniture);
+                    });
+
+                    events.onItemBuilt?.Invoke(blueprintFurnitures);
+                }
+            });
+        }
+
+        void OnRoomsRemoved(RoomList roomList)
+        {
+            roomList.ForEach(room =>
+            {
+                FurnitureList furnituresToRemove = queries.FindFurnitureByRoom(room);
+                Remove(furnituresToRemove);
+            });
         }
 
         void OnRoomBlocksAdded(Room room, RoomBlocks roomBlocks)

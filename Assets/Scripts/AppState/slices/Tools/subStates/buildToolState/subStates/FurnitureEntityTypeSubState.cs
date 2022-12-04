@@ -131,7 +131,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
             void BuildBlueprintFurniture()
             {
-                Registry.appState.Furnitures.BuildFurniture(blueprintFurniture);
+                Registry.appState.Furnitures.Build(blueprintFurniture);
                 blueprintFurniture = null;
             }
 

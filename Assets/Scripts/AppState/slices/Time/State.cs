@@ -10,7 +10,7 @@ namespace TowerBuilder.ApplicationState.Time
         {
             public bool? isActive;
             public int? tick;
-            public TimeValue? time;
+            public TimeValue time;
             public TimeSpeed? speed;
         }
 

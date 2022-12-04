@@ -23,16 +23,16 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void Setup()
         {
-            Registry.appState.TransportationItems.events.onTransportationItemAdded += OnTransportationItemAdded;
-            Registry.appState.TransportationItems.events.onTransportationItemRemoved += OnTransportationItemRemoved;
-            Registry.appState.TransportationItems.events.onTransportationItemBuilt += OnTransportationItemBuilt;
+            Registry.appState.TransportationItems.events.onItemsAdded += OnTransportationItemsAdded;
+            Registry.appState.TransportationItems.events.onItemsRemoved += OnTransportationItemsRemoved;
+            Registry.appState.TransportationItems.events.onItemBuilt += OnTransportationItemBuilt;
         }
 
         void Teardown()
         {
-            Registry.appState.TransportationItems.events.onTransportationItemAdded -= OnTransportationItemAdded;
-            Registry.appState.TransportationItems.events.onTransportationItemRemoved -= OnTransportationItemRemoved;
-            Registry.appState.TransportationItems.events.onTransportationItemBuilt -= OnTransportationItemBuilt;
+            Registry.appState.TransportationItems.events.onItemsAdded -= OnTransportationItemsAdded;
+            Registry.appState.TransportationItems.events.onItemsRemoved -= OnTransportationItemsRemoved;
+            Registry.appState.TransportationItems.events.onItemBuilt -= OnTransportationItemBuilt;
         }
 
         /* 
@@ -60,14 +60,20 @@ namespace TowerBuilder.GameWorld.Rooms
         /* 
             Event Handlers
         */
-        void OnTransportationItemAdded(TransportationItem transportationItem)
+        void OnTransportationItemsAdded(TransportationItemsList transportationItemList)
         {
-            CreateTransportationItem(transportationItem);
+            transportationItemList.ForEach(transportationItem =>
+            {
+                CreateTransportationItem(transportationItem);
+            });
         }
 
-        void OnTransportationItemRemoved(TransportationItem transportationItem)
+        void OnTransportationItemsRemoved(TransportationItemsList transportationItemList)
         {
-            RemoveTransportationtItem(transportationItem);
+            transportationItemList.ForEach(transportationItem =>
+            {
+                RemoveTransportationtItem(transportationItem);
+            });
         }
 
         void OnTransportationItemBuilt(TransportationItem transportationItem)

@@ -28,28 +28,28 @@ namespace TowerBuilder.ApplicationState
 
         public ListStateSlice(AppState appState) : base(appState) { }
 
-        public void Add(ListWrapperType newItemsList)
+        public virtual void Add(ListWrapperType newItemsList)
         {
             list.Add(newItemsList);
             events.onItemsAdded?.Invoke(newItemsList);
             events.onListUpdated?.Invoke(list);
         }
 
-        public void Add(ItemType item)
+        public virtual void Add(ItemType item)
         {
             ListWrapperType newItemsList = new ListWrapperType();
             newItemsList.Add(item);
             Add(newItemsList);
         }
 
-        public void Remove(ListWrapperType removedItemsList)
+        public virtual void Remove(ListWrapperType removedItemsList)
         {
             list.Remove(removedItemsList);
             events.onItemsRemoved?.Invoke(removedItemsList);
             events.onListUpdated?.Invoke(list);
         }
 
-        public void Remove(ItemType item)
+        public virtual void Remove(ItemType item)
         {
             ListWrapperType removedItemsList = new ListWrapperType();
             removedItemsList.Add(item);

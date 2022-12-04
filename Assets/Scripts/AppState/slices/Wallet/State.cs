@@ -9,7 +9,6 @@ namespace TowerBuilder.ApplicationState.Wallet
     public class State : StateSlice
     {
         static int DEFAULT_STARTING_BALANCE = 1000000;
-        // static int DEFAULT_STARTING_BALANCE = 10000;
 
         public struct Input
         {

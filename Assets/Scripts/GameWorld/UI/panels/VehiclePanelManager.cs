@@ -31,16 +31,16 @@ namespace TowerBuilder.GameWorld.UI
 
         void Setup()
         {
-            Registry.appState.Vehicles.events.onVehicleAdded += OnVehicleAdded;
-            Registry.appState.Vehicles.events.onVehicleRemoved += OnVehicleRemoved;
+            Registry.appState.Vehicles.events.onItemsAdded += OnVehiclesAdded;
+            Registry.appState.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
 
             Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperUpdated += OnVehicleAttributesWrapperUpdated;
         }
 
         void Teardown()
         {
-            Registry.appState.Vehicles.events.onVehicleAdded -= OnVehicleAdded;
-            Registry.appState.Vehicles.events.onVehicleRemoved -= OnVehicleRemoved;
+            Registry.appState.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
+            Registry.appState.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
 
             Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperUpdated += OnVehicleAttributesWrapperUpdated;
         }
@@ -71,22 +71,22 @@ namespace TowerBuilder.GameWorld.UI
         /*
             Event Handlers
         */
+        void OnVehiclesAdded(VehicleList vehicleList)
+        {
+            this.vehicle = vehicleList.items[0];
+        }
+
+        void OnVehiclesRemoved(VehicleList vehicleList)
+        {
+            this.vehicle = null;
+        }
+
         void OnVehicleAttributesWrapperUpdated(VehicleAttributesWrapper vehicleAttributesWrapper)
         {
             if (vehicleAttributesWrapper.vehicle == this.vehicle)
             {
                 UpdateText();
             }
-        }
-
-        void OnVehicleAdded(Vehicle vehicle)
-        {
-            this.vehicle = vehicle;
-        }
-
-        void OnVehicleRemoved(Vehicle vehicle)
-        {
-            this.vehicle = vehicle;
         }
     }
 }

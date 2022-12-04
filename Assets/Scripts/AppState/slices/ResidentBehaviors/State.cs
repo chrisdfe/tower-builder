@@ -12,21 +12,18 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.ResidentBehaviors
 {
-    public class State : StateSlice
+    using ResidentBehaviorsListStateSlice = ListStateSlice<ResidentBehaviorsList, ResidentBehavior, State.Events>;
+
+    public class State : ResidentBehaviorsListStateSlice
     {
         public class Input { }
 
-        public class Events
+        public new class Events : ResidentBehaviorsListStateSlice.Events
         {
-            public delegate void ResidentBehaviorEvent(ResidentBehavior residentBehavior);
-            public ResidentBehaviorEvent onResidentBehaviorAdded;
-            public ResidentBehaviorEvent onResidentBehaviorRemoved;
-            public ResidentBehaviorEvent onResidentBehaviorGoalsAdded;
-            public ResidentBehaviorEvent onResidentBehaviorGoalBegun;
-            public ResidentBehaviorEvent onResidentBehaviorGoalCompleted;
-
-            public ResidentBehaviorEvent onResidentBehaviorTickProcessed;
-            public ResidentBehaviorEvent onCurrentGoalCompleted;
+            public ResidentBehaviorsListStateSlice.Events.ItemEvent onGoalsAdded;
+            public ResidentBehaviorsListStateSlice.Events.ItemEvent onGoalBegun;
+            public ResidentBehaviorsListStateSlice.Events.ItemEvent onTickProcessed;
+            public ResidentBehaviorsListStateSlice.Events.ItemEvent onCurrentGoalCompleted;
 
             public delegate void ResidentBehaviorStateChangeEvent(ResidentBehavior residentBehavior, ResidentBehavior.StateKey previousStateKey, ResidentBehavior.StateKey newStateKey);
             public ResidentBehaviorStateChangeEvent onResidentBehaviorStateChanged;
@@ -43,18 +40,14 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
             public ResidentBehavior FindByResident(Resident resident)
             {
-                return state.residentBehaviorsList.FindByResident(resident);
+                return state.list.FindByResident(resident);
             }
         }
 
-        public ResidentBehaviorsList residentBehaviorsList { get; private set; } = new ResidentBehaviorsList();
-
-        public Events events { get; private set; }
         public Queries queries { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
         {
-            events = new Events();
             queries = new Queries(this);
 
             Setup();
@@ -81,39 +74,18 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
         /* 
             Public Interface
          */
-        public void AddResidentBehavior(ResidentBehavior residentBehavior)
-        {
-            residentBehaviorsList.Add(residentBehavior);
-
-            if (events.onResidentBehaviorAdded != null)
-            {
-                events.onResidentBehaviorAdded(residentBehavior);
-            }
-        }
-
-        public void RemoveResidentBehavior(ResidentBehavior residentBehavior)
-        {
-            residentBehaviorsList.Remove(residentBehavior);
-
-            if (events.onResidentBehaviorRemoved != null)
-            {
-                events.onResidentBehaviorRemoved(residentBehavior);
-            }
-        }
-
         public void AddBehaviorForResident(Resident resident)
         {
             ResidentBehavior residentBehavior = new ResidentBehavior(appState, resident);
-            AddResidentBehavior(residentBehavior);
+            Add(residentBehavior);
         }
 
         public void RemoveBehaviorForResident(Resident resident)
         {
-            ResidentBehavior residentBehavior = residentBehaviorsList.FindByResident(resident);
-
+            ResidentBehavior residentBehavior = list.FindByResident(resident);
             if (residentBehavior != null)
             {
-                RemoveResidentBehavior(residentBehavior);
+                Remove(residentBehavior);
             }
         }
 
@@ -127,10 +99,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
                 residentBehavior.goals.Enqueue(goal);
             }
 
-            if (events.onResidentBehaviorGoalsAdded != null)
-            {
-                events.onResidentBehaviorGoalsAdded(residentBehavior);
-            }
+            events.onGoalsAdded?.Invoke(residentBehavior);
         }
 
         public void SendResidentTo(Resident resident, Furniture furniture)
@@ -179,9 +148,9 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             // 
             residentBehavior.ProcessTick();
 
-            if (events.onResidentBehaviorTickProcessed != null)
+            if (events.onTickProcessed != null)
             {
-                events.onResidentBehaviorTickProcessed(residentBehavior);
+                events.onTickProcessed(residentBehavior);
             }
 
             // Remove current goal if it has been marked as complete
@@ -202,9 +171,9 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             {
                 residentBehavior.BeginNextGoal();
 
-                if (events.onResidentBehaviorGoalBegun != null)
+                if (events.onGoalBegun != null)
                 {
-                    events.onResidentBehaviorGoalBegun(residentBehavior);
+                    events.onGoalBegun(residentBehavior);
                 }
             }
 
@@ -229,8 +198,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
          */
         void OnTick(TimeValue time)
         {
-            residentBehaviorsList
-                .ForEach(residentBehavior => ProcessResidentBehaviorTick(residentBehavior));
+            list.ForEach(residentBehavior => ProcessResidentBehaviorTick(residentBehavior));
         }
 
         void OnResidentsAdded(ResidentsList residentsList)

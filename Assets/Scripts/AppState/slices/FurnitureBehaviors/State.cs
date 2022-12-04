@@ -29,8 +29,6 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
             }
         }
 
-        public FurnitureBehaviorList furnitureBehaviorList { get; private set; } = new FurnitureBehaviorList();
-
         public Queries queries { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
@@ -69,7 +67,7 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
 
         public void RemoveFurnitureBehaviorForFurniture(Furniture furniture)
         {
-            FurnitureBehaviorBase furnitureBehavior = furnitureBehaviorList.FindByFurniture(furniture);
+            FurnitureBehaviorBase furnitureBehavior = list.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
@@ -79,7 +77,7 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
 
         public FurnitureBehaviorBase StartInteraction(Resident resident, Furniture furniture)
         {
-            FurnitureBehaviorBase furnitureBehavior = furnitureBehaviorList.FindByFurniture(furniture);
+            FurnitureBehaviorBase furnitureBehavior = list.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
@@ -92,7 +90,7 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
 
         public void EndInteraction(Resident resident, Furniture furniture)
         {
-            FurnitureBehaviorBase furnitureBehavior = furnitureBehaviorList.FindByFurniture(furniture);
+            FurnitureBehaviorBase furnitureBehavior = list.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
@@ -103,7 +101,7 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
 
         public void InteractwithFurniture(Resident resident, Furniture furniture)
         {
-            FurnitureBehaviorBase furnitureBehavior = furnitureBehaviorList.FindByFurniture(furniture);
+            FurnitureBehaviorBase furnitureBehavior = list.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {

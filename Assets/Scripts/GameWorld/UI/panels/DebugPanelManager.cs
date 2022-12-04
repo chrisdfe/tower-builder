@@ -28,9 +28,9 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
             Registry.appState.UI.events.onSelectionBoxUpdated += OnSelectionBoxUpdated;
 
-            Registry.appState.Vehicles.events.onVehicleListUpdated += OnVehicleListUpdated;
+            Registry.appState.Vehicles.events.onListUpdated += OnVehicleListUpdated;
 
-            Registry.appState.Rooms.events.onRoomListUpdated += OnRoomListUpdated;
+            Registry.appState.Rooms.events.onListUpdated += OnRoomListUpdated;
 
             currentSelectedCellText = TransformUtils.FindDeepChild(transform, "CurrentSelectedCellText").GetComponent<Text>();
             currentSelectedCellText.text = "";
@@ -63,7 +63,7 @@ namespace TowerBuilder.GameWorld.UI
             SetSelectionBoxText();
         }
 
-        void OnVehicleListUpdated(List<Vehicle> vehicles)
+        void OnVehicleListUpdated(VehicleList vehicles)
         {
             SetVehicleCountText();
         }
@@ -93,13 +93,13 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetVehicleCountText()
         {
-            List<Vehicle> allVehicles = Registry.appState.Vehicles.vehicleList;
+            VehicleList allVehicles = Registry.appState.Vehicles.list;
             vehicleCountText.text = $"Vehicles: {allVehicles.Count}";
         }
 
         void SetRoomCountText()
         {
-            RoomList roomsList = Registry.appState.Rooms.roomList;
+            RoomList roomsList = Registry.appState.Rooms.list;
             roomCountText.text = $"Rooms: {roomsList.Count}";
         }
     }

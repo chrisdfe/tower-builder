@@ -20,9 +20,10 @@ namespace TowerBuilder.GameWorld.Residents
 
             Registry.appState.Residents.events.onItemPositionUpdated += OnResidentPositionUpdated;
 
-            Registry.appState.ResidentBehaviors.events.onResidentBehaviorAdded += OnResidentBehaviorAdded;
-            Registry.appState.ResidentBehaviors.events.onResidentBehaviorRemoved += OnResidentBehaviorRemoved;
-            Registry.appState.ResidentBehaviors.events.onResidentBehaviorTickProcessed += OnResidentBehaviorTickProcessed;
+            Registry.appState.ResidentBehaviors.events.onItemsAdded += OnResidentBehaviorsAdded;
+            Registry.appState.ResidentBehaviors.events.onItemsRemoved += OnResidentBehaviorsRemoved;
+
+            Registry.appState.ResidentBehaviors.events.onTickProcessed += OnResidentBehaviorTickProcessed;
             Registry.appState.ResidentBehaviors.events.onResidentBehaviorStateChanged += OnResidentBehaviorStateChanged;
 
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
@@ -35,9 +36,9 @@ namespace TowerBuilder.GameWorld.Residents
 
             Registry.appState.Residents.events.onItemPositionUpdated -= OnResidentPositionUpdated;
 
-            Registry.appState.ResidentBehaviors.events.onResidentBehaviorAdded -= OnResidentBehaviorAdded;
-            Registry.appState.ResidentBehaviors.events.onResidentBehaviorRemoved -= OnResidentBehaviorRemoved;
-            Registry.appState.ResidentBehaviors.events.onResidentBehaviorTickProcessed -= OnResidentBehaviorTickProcessed;
+            Registry.appState.ResidentBehaviors.events.onItemsAdded -= OnResidentBehaviorsAdded;
+            Registry.appState.ResidentBehaviors.events.onItemsRemoved -= OnResidentBehaviorsRemoved;
+            Registry.appState.ResidentBehaviors.events.onTickProcessed -= OnResidentBehaviorTickProcessed;
             Registry.appState.ResidentBehaviors.events.onResidentBehaviorStateChanged -= OnResidentBehaviorStateChanged;
 
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
@@ -122,22 +123,28 @@ namespace TowerBuilder.GameWorld.Residents
             }
         }
 
-        void OnResidentBehaviorAdded(ResidentBehavior residentBehavior)
+        void OnResidentBehaviorsAdded(ResidentBehaviorsList newResidentBehaviors)
         {
-            GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);
-            if (gameWorldResident != null)
+            newResidentBehaviors.ForEach(residentBehavior =>
             {
-                gameWorldResident.residentBehavior = residentBehavior;
-            }
+                GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);
+                if (gameWorldResident != null)
+                {
+                    gameWorldResident.residentBehavior = residentBehavior;
+                }
+            });
         }
 
-        void OnResidentBehaviorRemoved(ResidentBehavior residentBehavior)
+        void OnResidentBehaviorsRemoved(ResidentBehaviorsList removedResidentBehaviors)
         {
-            GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);
-            if (gameWorldResident != null)
+            removedResidentBehaviors.ForEach(residentBehavior =>
             {
-                gameWorldResident.residentBehavior = null;
-            }
+                GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);
+                if (gameWorldResident != null)
+                {
+                    gameWorldResident.residentBehavior = null;
+                }
+            });
         }
 
         void OnResidentBehaviorTickProcessed(ResidentBehavior residentBehavior)
@@ -160,7 +167,6 @@ namespace TowerBuilder.GameWorld.Residents
 
         void OnResidentBehaviorStateChanged(ResidentBehavior residentBehavior, ResidentBehavior.StateKey previousState, ResidentBehavior.StateKey currentState)
         {
-            Debug.Log("state changed");
             if (currentState == ResidentBehavior.StateKey.Traveling)
             {
                 GameWorldResident gameWorldResident = FindGameWorldResidentByResident(residentBehavior.resident);

@@ -115,18 +115,18 @@ namespace TowerBuilder.ApplicationState.Tools
                 blueprint = new TransportationItem(selectedTemplate);
                 blueprint.isInBlueprintMode = true;
                 blueprint.PositionAtCoordinates(Registry.appState.UI.currentSelectedCell);
-                Registry.appState.TransportationItems.AddTransportationItem(blueprint);
+                Registry.appState.TransportationItems.Add(blueprint);
             }
 
             void DestroyBlueprint()
             {
-                Registry.appState.TransportationItems.RemoveTransportationItem(blueprint);
+                Registry.appState.TransportationItems.Remove(blueprint);
                 blueprint = null;
             }
 
             void BuildBlueprint()
             {
-                Registry.appState.TransportationItems.BuildTransportationItem(blueprint);
+                Registry.appState.TransportationItems.Build(blueprint);
                 blueprint = null;
             }
 

@@ -39,7 +39,7 @@ namespace TowerBuilder.ApplicationState.ResidentAttributesWrappers
 
             public ResidentAttributesWrapper FindByResident(Resident resident)
             {
-                return state.attributesWrapperList.FindByResident(resident);
+                return state.list.FindByResident(resident);
             }
         }
 
@@ -78,16 +78,16 @@ namespace TowerBuilder.ApplicationState.ResidentAttributesWrappers
         public void AddAttributesForResident(Resident resident)
         {
             ResidentAttributesWrapper residentAttributesWrapper = new ResidentAttributesWrapper(appState, resident);
-            AddAttributesWrapper(residentAttributesWrapper);
+            Add(residentAttributesWrapper);
         }
 
         public void RemoveAttributesForResident(Resident resident)
         {
-            ResidentAttributesWrapper residentAttributesWrapper = attributesWrapperList.FindByResident(resident);
+            ResidentAttributesWrapper residentAttributesWrapper = list.FindByResident(resident);
 
             if (residentAttributesWrapper != null)
             {
-                RemoveAttributesWrapper(residentAttributesWrapper);
+                Remove(residentAttributesWrapper);
             }
         }
 

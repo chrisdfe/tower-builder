@@ -20,7 +20,7 @@ namespace TowerBuilder.ApplicationState.Rooms
 
             public Room FindRoomAtCell(CellCoordinates cellCoordinates)
             {
-                return state.roomList.FindRoomAtCell(cellCoordinates);
+                return state.list.FindRoomAtCell(cellCoordinates);
             }
 
             public (Room, RoomCells) FindRoomBlockAtCell(CellCoordinates cellCoordinates)

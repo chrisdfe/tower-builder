@@ -13,7 +13,7 @@ namespace TowerBuilder.ApplicationState
         AttributeType,
         AttributeModifierType,
         EventsType
-    > : StateSlice
+    > : ListStateSlice<AttributesWrapperListType, AttributesWrapperType, EventsType>
         where AttributeType : Attribute<KeyType>
         where AttributeModifierType : Attribute<KeyType>.Modifier
         where AttributesWrapperType : AttributesWrapper<AttributeType, KeyType>
@@ -27,7 +27,7 @@ namespace TowerBuilder.ApplicationState
             EventsType
         >.Events, new()
     {
-        public class Events
+        public new class Events : ListStateSlice<AttributesWrapperListType, AttributesWrapperType, EventsType>.Events
         {
             public delegate void AttributesWrapperEvent(AttributesWrapperType attributesWrapper);
             public AttributesWrapperEvent onAttributesWrapperAdded;
@@ -44,14 +44,8 @@ namespace TowerBuilder.ApplicationState
             public AttributeModifierEvent onTickAttributeModifierRemoved;
         }
 
-        public AttributesWrapperListType attributesWrapperList { get; private set; } = new AttributesWrapperListType();
-
-        public EventsType events { get; private set; }
-
         public AttributesStateSlice(AppState appState) : base(appState)
         {
-            events = new EventsType();
-
             Setup();
         }
 
@@ -65,18 +59,16 @@ namespace TowerBuilder.ApplicationState
             appState.Time.events.onTick -= OnTick;
         }
 
-        public void AddAttributesWrapper(AttributesWrapperType attributesWrapper)
+        public override void Add(AttributesWrapperType attributesWrapper)
         {
-            attributesWrapperList.Add(attributesWrapper);
             attributesWrapper.Setup();
-            events.onAttributesWrapperAdded?.Invoke(attributesWrapper);
+            base.Add(attributesWrapper);
         }
 
-        public void RemoveAttributesWrapper(AttributesWrapperType attributesWrapper)
+        public override void Remove(AttributesWrapperType attributesWrapper)
         {
-            attributesWrapperList.Remove(attributesWrapper);
             attributesWrapper.Teardown();
-            events.onAttributesWrapperRemoved?.Invoke(attributesWrapper);
+            base.Remove(attributesWrapper);
         }
 
         public void AddStaticAttributeModifier(AttributesWrapperType attributesWrapper, KeyType key, AttributeModifierType modifier)
@@ -112,7 +104,7 @@ namespace TowerBuilder.ApplicationState
         */
         protected void OnTick(TimeValue time)
         {
-            attributesWrapperList.ForEach((attributesWrapper) =>
+            list.ForEach((attributesWrapper) =>
             {
                 attributesWrapper.attributes.ForEach(attribute =>
                 {
