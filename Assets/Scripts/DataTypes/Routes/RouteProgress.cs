@@ -77,7 +77,6 @@ namespace TowerBuilder.DataTypes.Routes
 
         public void IncrementProgress()
         {
-            Debug.Log($"b4 - isAtFirstCell: {isAtFirstCell}; currentSegmentIndex: {currentSegmentIndex}");
             if (isAtFirstCell)
             {
                 isAtFirstCell = false;
@@ -86,7 +85,6 @@ namespace TowerBuilder.DataTypes.Routes
             {
                 currentSegmentIndex++;
             }
-            Debug.Log($"after - isAtFirstCell: {isAtFirstCell}; currentSegmentIndex: {currentSegmentIndex}");
         }
     }
 }
