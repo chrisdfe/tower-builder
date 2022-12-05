@@ -1,17 +1,17 @@
 using TowerBuilder.DataTypes.Freights;
 
-namespace TowerBuilder.ApplicationState.Freight.FreightItems
+namespace TowerBuilder.ApplicationState.Freight.FreightItemStacks
 {
-    using FreightItemListStateSlice = ListStateSlice<FreightItemList, FreightItem, State.Events>;
+    using FreightItemStackListStateSlice = ListStateSlice<FreightItemStackList, FreightItemStack, State.Events>;
 
-    public class State : FreightItemListStateSlice
+    public class State : FreightItemStackListStateSlice
     {
         public class Input
         {
-            public FreightItemList freightItemList;
+            public FreightItemStackList freightItemStackList;
         }
 
-        public new class Events : FreightItemListStateSlice.Events { }
+        public new class Events : FreightItemStackListStateSlice.Events { }
 
         public class Queries
         {
@@ -29,7 +29,7 @@ namespace TowerBuilder.ApplicationState.Freight.FreightItems
 
         public State(AppState appState, Input input) : base(appState)
         {
-            list = input.freightItemList ?? new FreightItemList();
+            list = input.freightItemStackList ?? new FreightItemStackList();
 
             queries = new Queries(appState, this);
 

@@ -15,6 +15,7 @@ namespace TowerBuilder.ApplicationState
             public TransportationItems.State.Input transportationItems;
             public Vehicles.State.Input vehicles;
             public Journeys.State.Input journeys;
+            public Freight.State.Input freight;
 
             // Attributes
             public ResidentAttributesWrappers.State.Input residentAttributesWrappers;
@@ -44,6 +45,7 @@ namespace TowerBuilder.ApplicationState
                 transportationItems = new TransportationItems.State.Input();
                 vehicles = new Vehicles.State.Input();
                 journeys = new Journeys.State.Input();
+                freight = new Freight.State.Input();
 
                 // Attributes
                 residentAttributesWrappers = new ResidentAttributesWrappers.State.Input();
@@ -73,6 +75,7 @@ namespace TowerBuilder.ApplicationState
         public TransportationItems.State TransportationItems;
         public Vehicles.State Vehicles;
         public Journeys.State Journeys;
+        public Freight.State Freight;
 
         // Attributes
         public ResidentAttributesWrappers.State ResidentAttributesWrappers;
@@ -123,6 +126,7 @@ namespace TowerBuilder.ApplicationState
             TransportationItems = new TransportationItems.State(this, input.transportationItems);
             Vehicles = new Vehicles.State(this, input.vehicles);
             Journeys = new Journeys.State(this, input.journeys);
+            Freight = new Freight.State(this, input.freight);
 
             // Attributes
             ResidentAttributesWrappers = new ResidentAttributesWrappers.State(this, input.residentAttributesWrappers);
