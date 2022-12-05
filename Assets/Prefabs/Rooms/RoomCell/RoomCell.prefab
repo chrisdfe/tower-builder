@@ -49,9 +49,9 @@ MonoBehaviour:
   assetList:
     assetList:
     - key: 0
-      gameObject: {fileID: 919132149155446097, guid: e89f7fcb91c70cb4fbc4000dfab6523c, type: 3}
+      value: {fileID: 919132149155446097, guid: e89f7fcb91c70cb4fbc4000dfab6523c, type: 3}
     - key: 1
-      gameObject: {fileID: 919132149155446097, guid: 535f046140e95a04992cca9748c5c440, type: 3}
+      value: {fileID: 919132149155446097, guid: 535f046140e95a04992cca9748c5c440, type: 3}
   gameWorldRoom: {fileID: 0}
   baseColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &8133224781020705301

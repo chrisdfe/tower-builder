@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld
 {
-    public class MaterialsManager : MonoBehaviour
+    public class MaterialsManager : MonoBehaviour, IFindable
     {
         public enum MaterialKey
         {
@@ -11,6 +11,10 @@ namespace TowerBuilder.GameWorld
             Glass,
         }
 
-        public AssetList<MaterialKey> materialList = new AssetList<MaterialKey>();
+        public MaterialsList<MaterialKey> materialList = new MaterialsList<MaterialKey>();
+
+        public static MaterialsManager Find() =>
+            GameWorldFindableCache.Find<MaterialsManager>("MaterialsManager");
+
     }
 }

@@ -7,7 +7,10 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld
 {
-    public interface IFindable { }
+    public interface IFindable
+    {
+        public GameObject gameObject { get; }
+    }
 
     public static class GameWorldFindableCache
     {

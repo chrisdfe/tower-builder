@@ -51,6 +51,9 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             UpdatePosition();
             CreateMesh();
+
+            MaterialsReplacer replacer = GetComponent<MaterialsReplacer>();
+            replacer.ReplaceMaterials();
         }
 
         public void Teardown() { }
