@@ -71,7 +71,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
             Setup();
         }
 
-        public void Setup()
+        public override void Setup()
         {
             appState.Rooms.events.onItemsAdded += OnRoomsAdded;
             appState.Rooms.events.onItemsBuilt += OnRoomsBuilt;
@@ -81,7 +81,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
             appState.Rooms.events.onRoomBlocksRemoved += OnRoomBlocksRemoved;
         }
 
-        public void Teardown()
+        public override void Teardown()
         {
             appState.Rooms.events.onItemsAdded -= OnRoomsAdded;
             appState.Rooms.events.onItemsBuilt -= OnRoomsBuilt;

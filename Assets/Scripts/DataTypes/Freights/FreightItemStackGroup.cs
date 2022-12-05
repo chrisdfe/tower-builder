@@ -17,12 +17,4 @@ namespace TowerBuilder.DataTypes.Freights
         public List<FreightItemStack> freightItemStacks { get; private set; } = new List<FreightItemStack>();
         public CellCoordinates cellCoordinates;
     }
-
-    public class FreightItemStackGroupList : ListWrapper<FreightItemStackGroup>
-    {
-        public FreightItemStackGroupList() { }
-        public FreightItemStackGroupList(FreightItemStackGroup freightItemStackGroup) : base(freightItemStackGroup) { }
-        public FreightItemStackGroupList(List<FreightItemStackGroup> freightItemStackGroupList) : base(freightItemStackGroupList) { }
-        public FreightItemStackGroupList(FreightItemStackGroupList freightItemStackGroupList) : base(freightItemStackGroupList) { }
-    }
 }

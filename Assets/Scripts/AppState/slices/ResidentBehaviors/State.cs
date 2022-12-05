@@ -53,7 +53,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             Setup();
         }
 
-        public void Setup()
+        public override void Setup()
         {
             appState.Time.events.onTick += OnTick;
 
@@ -62,7 +62,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             appState.Residents.events.onItemsBuilt += OnResidentsBuilt;
         }
 
-        public void Teardown()
+        public override void Teardown()
         {
             appState.Time.events.onTick -= OnTick;
 

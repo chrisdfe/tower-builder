@@ -54,14 +54,14 @@ namespace TowerBuilder.ApplicationState.Vehicles
             Setup();
         }
 
-        public void Setup()
+        public override void Setup()
         {
             appState.Rooms.events.onItemsAdded += OnRoomsAdded;
             appState.Rooms.events.onItemsBuilt += OnRoomsBuilt;
             appState.Rooms.events.onItemsRemoved += OnRoomsRemoved;
         }
 
-        public void Teardown()
+        public override void Teardown()
         {
             appState.Rooms.events.onItemsAdded -= OnRoomsAdded;
             appState.Rooms.events.onItemsBuilt -= OnRoomsBuilt;

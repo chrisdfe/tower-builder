@@ -39,8 +39,8 @@ namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations
             Setup();
         }
 
-        public void Setup() { }
+        public override void Setup() { }
 
-        public void Teardown() { }
+        public override void Teardown() { }
     }
 }

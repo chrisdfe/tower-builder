@@ -44,8 +44,10 @@ namespace TowerBuilder.ApplicationState.Freight.FreightItems
             Setup();
         }
 
-        public void Setup() { }
+        public State(AppState appState) : this(appState, new Input()) { }
 
-        public void Teardown() { }
+        public override void Setup() { }
+
+        public override void Teardown() { }
     }
 }

@@ -16,14 +16,42 @@ namespace TowerBuilder.DataTypes.Freights
 
         public List<FreightItem> freightItems { get; private set; } = new List<FreightItem>();
 
-        public FreightItem.Size size
+        public int count
         {
-            get => freightItems[0].size;
+            get => freightItems.Count;
         }
 
-        public FreightItemStack(FreightItem freight)
+        public FreightItem first
         {
-            freightItems.Add(freight);
+            get => freightItems[0];
+        }
+
+        public FreightItem.Size size
+        {
+            get => first.size;
+        }
+
+        public int maxCount
+        {
+            get => MaxFreightCountMap.FindBySize(first.size);
+        }
+
+        public FreightItemStack(FreightItem freightItem)
+        {
+            freightItems.Add(freightItem);
+        }
+
+        public void Add(FreightItem freightItem)
+        {
+            if (count < maxCount)
+            {
+                freightItems.Add(freightItem);
+            }
+        }
+
+        public void Remove(FreightItem freightItem)
+        {
+            freightItems.Remove(freightItem);
         }
     }
 }

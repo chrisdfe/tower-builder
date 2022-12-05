@@ -38,14 +38,14 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
             Setup();
         }
 
-        public void Setup()
+        public override void Setup()
         {
             appState.Furnitures.events.onItemsAdded += OnFurnituresAdded;
             appState.Furnitures.events.onItemsRemoved += OnFurnituresRemoved;
             appState.Furnitures.events.onItemBuilt += OnFurnituresBuilt;
         }
 
-        public void Teardown()
+        public override void Teardown()
         {
             appState.Furnitures.events.onItemsAdded -= OnFurnituresAdded;
             appState.Furnitures.events.onItemsRemoved -= OnFurnituresRemoved;
