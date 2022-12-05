@@ -163,6 +163,11 @@
 
 ## Ideas
 
+- Lots of non-player vehicles:
+  - merchants
+  - random passers-by
+  - mercenaries
+  - all of these you can attack if you want
 - New state slices:
   - weather
   - temperature
