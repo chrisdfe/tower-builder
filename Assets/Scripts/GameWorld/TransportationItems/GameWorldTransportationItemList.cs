@@ -46,7 +46,7 @@ namespace TowerBuilder.GameWorld.Rooms
             gameWorldTransportationItemList.Add(gameWorldTransportationItem);
         }
 
-        void RemoveTransportationtItem(TransportationItem transportationItem)
+        void RemoveTransportationItem(TransportationItem transportationItem)
         {
             GameWorldTransportationItem gameWorldTransportationItem =
                 gameWorldTransportationItemList.Find(gameWorldTransportationItem =>
@@ -72,7 +72,7 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             transportationItemList.ForEach(transportationItem =>
             {
-                RemoveTransportationtItem(transportationItem);
+                RemoveTransportationItem(transportationItem);
             });
         }
 

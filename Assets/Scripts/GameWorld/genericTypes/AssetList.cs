@@ -19,6 +19,8 @@ namespace TowerBuilder.GameWorld
         [SerializeField]
         public List<ValueTypeWrapper> assetList = new List<ValueTypeWrapper>();
 
+        public int Count { get => assetList.Count; }
+
         public ValueType FindByKey(KeyType key) =>
             assetList.Find(wrapper => wrapper.key.Equals(key))?.value;
     }

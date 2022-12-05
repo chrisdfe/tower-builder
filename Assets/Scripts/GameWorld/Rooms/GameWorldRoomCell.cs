@@ -7,14 +7,6 @@ namespace TowerBuilder.GameWorld.Rooms
 {
     public class GameWorldRoomCell : MonoBehaviour
     {
-        public enum ModelKey
-        {
-            Default,
-            Wheels
-        }
-
-        public AssetList<ModelKey> assetList = new AssetList<ModelKey>();
-
         public enum ColorKey
         {
             Base,
@@ -175,7 +167,7 @@ namespace TowerBuilder.GameWorld.Rooms
         */
         abstract class RoomCellMeshWrapperBase
         {
-            public virtual ModelKey modelKey { get; }
+            public virtual GameWorldRoomsManager.MeshAssetKey modelKey { get; }
             protected Transform meshTransform;
             protected GameWorldRoomCell gameWorldRoomCell;
 
@@ -209,9 +201,11 @@ namespace TowerBuilder.GameWorld.Rooms
 
             protected void LoadModel()
             {
-                GameObject mesh = gameWorldRoomCell.assetList.FindByKey(modelKey);
+                GameWorldRoomsManager roomsManager = GameWorldRoomsManager.Find();
+                GameObject mesh = roomsManager.meshAssetList.FindByKey(modelKey);
                 Transform meshTransform = Instantiate(mesh).GetComponent<Transform>();
                 meshTransform.SetParent(gameWorldRoomCell.transform);
+                meshTransform.localPosition = Vector3.zero;
                 this.meshTransform = meshTransform;
             }
 
@@ -230,7 +224,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         class RoomCellDefaultMeshWrapper : RoomCellMeshWrapperBase
         {
-            public override ModelKey modelKey { get { return ModelKey.Default; } }
+            public override GameWorldRoomsManager.MeshAssetKey modelKey { get { return GameWorldRoomsManager.MeshAssetKey.Default; } }
 
             public RoomCellDefaultMeshWrapper(GameWorldRoomCell gameWorldRoomCell) : base(gameWorldRoomCell) { }
 
@@ -296,7 +290,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         class RoomCellWheelsMeshWrapper : RoomCellMeshWrapperBase
         {
-            public override ModelKey modelKey { get { return ModelKey.Wheels; } }
+            public override GameWorldRoomsManager.MeshAssetKey modelKey { get { return GameWorldRoomsManager.MeshAssetKey.Wheels; } }
 
             public RoomCellWheelsMeshWrapper(GameWorldRoomCell gameWorldRoomCell) : base(gameWorldRoomCell) { }
 

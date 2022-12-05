@@ -4,21 +4,40 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld
 {
-    public class MaterialsReplacer : MonoBehaviour
+    [ExecuteInEditMode]
+    public class MaterialsReplacer
     {
-        MaterialsManager materialsManager;
 
-        void Awake()
+        public void ReplaceMaterials(Transform parent)
         {
-            materialsManager = MaterialsManager.Find();
+            List<Transform> materialChildren = FindAllChildrenWhereRecursive(parent, (child) =>
+                GetChildMaterial(child) != null
+            );
+
+            Debug.Log("materialChildren");
+            Debug.Log(materialChildren.Count);
+
+            materialChildren.ForEach(child => ReplaceMaterial(child));
         }
 
-        public void ReplaceMaterials()
+        void ReplaceMaterial(Transform child)
         {
-            List<Transform> allChildren = FindAllChildrenWhereRecursive(transform, (transform) => true);
-            Debug.Log("allChildren");
-            Debug.Log(allChildren);
-            Debug.Log(allChildren.Count);
+            Debug.Log($"replacing material for {child.gameObject.name}");
+            MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
+            Material material = meshRenderer.sharedMaterial;
+            string materialName = material.name;
+            string cleanedName = materialName.Replace(" (Instance)", "");
+            Debug.Log("cleanedName");
+            Debug.Log(cleanedName);
+            MaterialsManager materialsManager = MaterialsManager.Find();
+            Material replacementMaterial = materialsManager.FindByName(cleanedName);
+            Debug.Log("replacementMaterial");
+            Debug.Log(replacementMaterial);
+
+            if (replacementMaterial != null)
+            {
+                meshRenderer.sharedMaterial = replacementMaterial;
+            }
         }
 
         // TODO - put in TransformUtils
@@ -32,14 +51,31 @@ namespace TowerBuilder.GameWorld
                 if (predicate(child))
                 {
                     result.Add(child);
+                }
 
-                    if (child.childCount > 0)
-                    {
-                        result = result.Concat(FindAllChildrenWhereRecursive(child, predicate)).ToList();
-                    }
+                if (child.childCount > 0)
+                {
+                    result = result.Concat(FindAllChildrenWhereRecursive(child, predicate)).ToList();
                 }
             }
             return result;
+        }
+
+        Material GetChildMaterial(Transform child)
+        {
+            MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
+
+            if (meshRenderer != null)
+            {
+                Material material = meshRenderer.sharedMaterial;
+
+                if (material != null)
+                {
+                    return material;
+                }
+            }
+
+            return null;
         }
     }
 }
