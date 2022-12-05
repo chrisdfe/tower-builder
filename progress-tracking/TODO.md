@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- Freight Entity
 - Rooms shouldn't be able to be x number of cells wider than wheel base
 - Create "IEntity" interface to abstract some of this OnBuild/OnDestroy stuff
   - Same for things that are Setup/Teardown-able?
@@ -151,7 +152,7 @@
 
 ## Cleanup
 
-- All state slices should add lists of items instead of singular - e.g AddRooms instead of AddRoom
+- Room datatypes/state is structured in a different way to some of the newer classes (e.g make it Room.SkinKey instead of RoomSkinKey)
 - RouteFinder creates too many branches
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor
@@ -165,6 +166,7 @@
   - weather
   - temperature
   - freight/cargo
+  - passengers/passenger seat
 - this game loop:
   - Vehicles (moving vehicles) need fuel
   - You need scrap (currency) to buy fuel
@@ -174,6 +176,7 @@
 
 # Done
 
+- All state slices should add lists of items instead of singular - e.g AddRooms instead of AddRoom
 - Figure out why 2 game world transportation items (1 cell for each cell in a transportation so 4 in total) are being created instead of 1
 - "List" state slice
 - Reorganize models/prefabs to create less of a delineation between the 2
