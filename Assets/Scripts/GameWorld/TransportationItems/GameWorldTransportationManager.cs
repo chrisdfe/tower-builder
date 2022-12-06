@@ -1,3 +1,4 @@
+using TowerBuilder.DataTypes.TransportationItems;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -10,6 +11,8 @@ namespace TowerBuilder.GameWorld.Rooms
         }
 
         public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
+
+        public AssetList<TransportationItem.Key> meshAssetList = new AssetList<TransportationItem.Key>();
 
         public static GameWorldTransportationManager Find() =>
             GameWorldFindableCache.Find<GameWorldTransportationManager>("TransportationManager");

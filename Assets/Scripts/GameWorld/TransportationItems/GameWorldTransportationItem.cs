@@ -9,30 +9,10 @@ namespace TowerBuilder.GameWorld.Rooms
 {
     public class GameWorldTransportationItem : MonoBehaviour
     {
-        public AssetList<TransportationItem.Key> assetList = new AssetList<TransportationItem.Key>();
-
         [HideInInspector]
         public TransportationItem transportationItem;
 
         List<MeshWrapper> meshWrapperList = new List<MeshWrapper>();
-        List<Transform> meshList = new List<Transform>();
-
-        public delegate MeshWrapper MeshWrapperFactory(Transform meshTransform);
-
-        static Dictionary<TransportationItem.Key, MeshWrapperFactory> MeshWrapperKeyMap = new Dictionary<TransportationItem.Key, MeshWrapperFactory>() {
-            {
-                TransportationItem.Key.Ladder,
-                (meshTransform) => new LadderMeshWrapper(meshTransform)
-            },
-            {
-                TransportationItem.Key.Escalator,
-                (meshTransform) => new EscalatorMeshWrapper(meshTransform)
-            },
-            {
-                TransportationItem.Key.Doorway,
-                (meshTransform) => new DoorwayMeshWrapper(meshTransform)
-            }
-        };
 
         /*
             Lifecycle Methods
@@ -51,9 +31,6 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             UpdatePosition();
             CreateMesh();
-
-            // MaterialsReplacer replacer = GetComponent<MaterialsReplacer>();
-            // replacer.ReplaceMaterials();
         }
 
         public void Teardown() { }
@@ -74,22 +51,23 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             TransformUtils.DestroyChildren(transform);
 
-            MeshWrapperFactory meshWrapperFactory = MeshWrapperKeyMap[transportationItem.key];
+            // MeshWrapperFactory meshWrapperFactory = MeshWrapperKeyMap[transportationItem.key];
+
+            GameWorldTransportationManager transportationManager = GameWorldTransportationManager.Find();
+            AssetList<TransportationItem.Key> meshAssetList = transportationManager.meshAssetList;
 
             meshWrapperList = transportationItem.cellCoordinatesList.items.Select((cellCoordinates) =>
             {
-                MeshWrapper meshWrapper = meshWrapperFactory(assetList.FindByKey(transportationItem.key).transform);
-                meshWrapper.CreateMesh();
-                meshWrapper.mesh.SetParent(transform, false);
-                meshWrapper.mesh.position = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
-                meshWrapper.mesh.Translate(new Vector3(0, 0, -2f));
+                GameObject mesh = meshAssetList.FindByKey(transportationItem.key);
 
-                // TODO - change the api of this to only need a cell coordinates list
-                // i.e SetTileability(transportationItem.cellCoordinatesList)
-                Tileable.OccupiedCellMap occupiedCellMap =
-                    Tileable.OccupiedCellMap.FromCellCoordinatesList(cellCoordinates, transportationItem.cellCoordinatesList);
+                // MeshWrapper meshWrapper = meshWrapperFactory(assetList.FindByKey(transportationItem.key).transform);
+                MeshWrapper meshWrapper = new MeshWrapper(transform, meshAssetList, transportationItem.key);
+                meshWrapper.Setup();
+                meshWrapper.meshTransform.position = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
+                meshWrapper.meshTransform.Translate(new Vector3(0, 0, -2f));
 
-                meshWrapper.SetTileability(occupiedCellMap);
+                meshWrapper.SetTileability(cellCoordinates, transportationItem.cellCoordinatesList);
+                // TODO here - MaterialReplacer
 
                 return meshWrapper;
             }).ToList();
@@ -97,9 +75,9 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void DestroyMesh()
         {
-            foreach (Transform meshTransform in meshList)
+            foreach (MeshWrapper meshWrapper in meshWrapperList)
             {
-                GameObject.Destroy(transform);
+                meshWrapper.Teardown();
             }
         }
         /* 
@@ -120,58 +98,10 @@ namespace TowerBuilder.GameWorld.Rooms
         /*
             Internal classes
         */
-        public abstract class MeshWrapper
+        public class MeshWrapper : MeshWrapper<TransportationItem.Key>
         {
-            public Transform mesh { get; private set; }
-
-            Transform prefabMeshTransform;
-            Tileable tileable;
-
-            Transform tileabilityWrapper;
-            Transform tileabilityCellVariantsWrapper;
-
-            public MeshWrapper(Transform prefabMeshTransform)
-            {
-                this.prefabMeshTransform = prefabMeshTransform;
-            }
-
-            public virtual void Setup() { }
-
-            public virtual void Teardown() { }
-
-            public void CreateMesh()
-            {
-                mesh = Instantiate(
-                    prefabMeshTransform,
-                    Vector3.zero,
-                    Quaternion.identity
-                );
-            }
-
-            public void SetTileability(Tileable.OccupiedCellMap occupiedCellMap)
-            {
-                tileable = Tileable.FromModel(mesh);
-
-                if (tileable != null)
-                {
-                    tileable.ProcessModel(mesh, occupiedCellMap);
-                }
-            }
-        }
-
-        public class LadderMeshWrapper : MeshWrapper
-        {
-            public LadderMeshWrapper(Transform meshTransform) : base(meshTransform) { }
-        }
-
-        public class EscalatorMeshWrapper : MeshWrapper
-        {
-            public EscalatorMeshWrapper(Transform meshTransform) : base(meshTransform) { }
-        }
-
-        public class DoorwayMeshWrapper : MeshWrapper
-        {
-            public DoorwayMeshWrapper(Transform meshTransform) : base(meshTransform) { }
+            public MeshWrapper(Transform parent, AssetList<TransportationItem.Key> assetList, TransportationItem.Key key)
+                : base(parent, assetList, key) { }
         }
     }
 }

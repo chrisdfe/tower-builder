@@ -4,6 +4,7 @@
 
 ## Tasks
 
+- Make rooms a collection of walls/back walls/windows/floors/lights. Some floors are 1 tile? floors vs platforms (like in teraria)
 - Freight Entity
 - Rooms shouldn't be able to be x number of cells wider than wheel base
 - Create "IEntity" interface to abstract some of this OnBuild/OnDestroy stuff
@@ -11,7 +12,6 @@
 - "front door" transportation items - connection to the outside world
 - Ability for residents to walk around on the ground
 - When new resident slots open up (beds built) residents should arrive via ground, not just appear
-- "Material replacer" that uses a lookup map to replace materials in fbx files with unity materials of the same name
 - Stronger chassis should be able to have longer overhangs
 - "Hunger" resident attribute
 - SelectionBox should span the default size of transportation items instead of just the current cell
@@ -182,6 +182,7 @@
 
 # Done
 
+- "Material replacer" that uses a lookup map to replace materials in fbx files with unity materials of the same name
 - All state slices should add lists of items instead of singular - e.g AddRooms instead of AddRoom
 - Figure out why 2 game world transportation items (1 cell for each cell in a transportation so 4 in total) are being created instead of 1
 - "List" state slice

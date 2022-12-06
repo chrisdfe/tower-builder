@@ -55,7 +55,7 @@ namespace TowerBuilder.GameWorld.Rooms
         [HideInInspector]
         public Color baseColor;
 
-        RoomCellMeshWrapperBase roomCellMeshWrapper;
+        RoomCellMeshWrapper roomCellMeshWrapper;
         GameWorldRoomCellLight roomCellLight;
 
         /* 
@@ -74,14 +74,15 @@ namespace TowerBuilder.GameWorld.Rooms
         public void Setup()
         {
             TransformUtils.DestroyChildren(transform.Find("RoomCellMesh_Default"));
+            AssetList<GameWorldRoomsManager.MeshAssetKey> assetList = GameWorldRoomsManager.Find().meshAssetList;
 
             switch (gameWorldRoom.room.skinKey)
             {
                 case RoomSkinKey.Wheels:
-                    roomCellMeshWrapper = new RoomCellWheelsMeshWrapper(this);
+                    roomCellMeshWrapper = new RoomCellWheelsMeshWrapper(transform, assetList, this);
                     break;
                 case RoomSkinKey.Default:
-                    roomCellMeshWrapper = new RoomCellDefaultMeshWrapper(this);
+                    roomCellMeshWrapper = new RoomCellDefaultMeshWrapper(transform, assetList, this);
                     break;
             }
 
@@ -125,7 +126,6 @@ namespace TowerBuilder.GameWorld.Rooms
         public void UpdatePosition()
         {
             transform.position = GameWorldUtils.CellCoordinatesToPosition(roomCell.coordinates);
-            // roomCellMeshWrapper.UpdatePosition();
         }
 
         public void UpdateMesh()
@@ -165,53 +165,38 @@ namespace TowerBuilder.GameWorld.Rooms
         /*
             Internal classes
         */
-        abstract class RoomCellMeshWrapperBase
+        class RoomCellMeshWrapper : MeshWrapper<GameWorldRoomsManager.MeshAssetKey>
         {
-            public virtual GameWorldRoomsManager.MeshAssetKey modelKey { get; }
-            protected Transform meshTransform;
             protected GameWorldRoomCell gameWorldRoomCell;
-
             protected Transform wrapper;
 
             protected Dictionary<string, Transform> segments = new Dictionary<string, Transform>();
 
-            public RoomCellMeshWrapperBase(GameWorldRoomCell gameWorldRoomCell)
+            public RoomCellMeshWrapper(
+                Transform parent,
+                AssetList<GameWorldRoomsManager.MeshAssetKey> assetList,
+                GameWorldRoomsManager.MeshAssetKey key,
+                GameWorldRoomCell gameWorldRoomCell)
+                : base(parent, assetList, key)
             {
                 this.gameWorldRoomCell = gameWorldRoomCell;
             }
 
-            public virtual void Setup()
+            public override void Setup()
             {
-                LoadModel();
+                base.Setup();
 
                 wrapper = meshTransform.Find("Wrapper");
-
                 SetSegments();
-            }
-
-            public virtual void Teardown()
-            {
-                GameObject.Destroy(meshTransform.gameObject);
             }
 
             public virtual void UpdateMesh() { }
 
-            public abstract void SetSegments();
-            public abstract void SetColor(Color color);
-
-            protected void LoadModel()
-            {
-                GameWorldRoomsManager roomsManager = GameWorldRoomsManager.Find();
-                GameObject mesh = roomsManager.meshAssetList.FindByKey(modelKey);
-                Transform meshTransform = Instantiate(mesh).GetComponent<Transform>();
-                meshTransform.SetParent(gameWorldRoomCell.transform);
-                meshTransform.localPosition = Vector3.zero;
-                this.meshTransform = meshTransform;
-            }
+            public virtual void SetSegments() { }
+            public virtual void SetColor(Color color) { }
 
             protected void SetSegmentEnabled(Transform segment, bool enabled)
             {
-                // segment.GetComponent<MeshRenderer>().enabled = enabled;
                 segment.gameObject.SetActive(enabled);
             }
 
@@ -222,11 +207,18 @@ namespace TowerBuilder.GameWorld.Rooms
             }
         }
 
-        class RoomCellDefaultMeshWrapper : RoomCellMeshWrapperBase
+        class RoomCellDefaultMeshWrapper : RoomCellMeshWrapper
         {
-            public override GameWorldRoomsManager.MeshAssetKey modelKey { get { return GameWorldRoomsManager.MeshAssetKey.Default; } }
-
-            public RoomCellDefaultMeshWrapper(GameWorldRoomCell gameWorldRoomCell) : base(gameWorldRoomCell) { }
+            public RoomCellDefaultMeshWrapper(
+                Transform parent,
+                AssetList<GameWorldRoomsManager.MeshAssetKey> assetList,
+                GameWorldRoomCell gameWorldRoomCell
+            ) : base(
+                parent,
+                assetList,
+                GameWorldRoomsManager.MeshAssetKey.Default,
+                gameWorldRoomCell)
+            { }
 
             public override void SetColor(Color color)
             {
@@ -288,11 +280,18 @@ namespace TowerBuilder.GameWorld.Rooms
             }
         }
 
-        class RoomCellWheelsMeshWrapper : RoomCellMeshWrapperBase
+        class RoomCellWheelsMeshWrapper : RoomCellMeshWrapper
         {
-            public override GameWorldRoomsManager.MeshAssetKey modelKey { get { return GameWorldRoomsManager.MeshAssetKey.Wheels; } }
-
-            public RoomCellWheelsMeshWrapper(GameWorldRoomCell gameWorldRoomCell) : base(gameWorldRoomCell) { }
+            public RoomCellWheelsMeshWrapper(
+                Transform parent,
+                AssetList<GameWorldRoomsManager.MeshAssetKey> assetList,
+                GameWorldRoomCell gameWorldRoomCell
+            ) : base(
+                parent,
+                assetList,
+                GameWorldRoomsManager.MeshAssetKey.Wheels,
+                gameWorldRoomCell)
+            { }
 
             public override void SetSegments()
             {
