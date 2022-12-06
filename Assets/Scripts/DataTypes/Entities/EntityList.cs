@@ -1,18 +1,18 @@
 using System.Collections.Generic;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 
 namespace TowerBuilder.DataTypes.Entities
 {
     public class EntityList
     {
-        public List<EntityBase> entities { get; private set; } = new List<EntityBase>();
+        public List<Entity> entities { get; private set; } = new List<Entity>();
 
         public int Count { get { return entities.Count; } }
 
         public EntityList() { }
 
-        public void Add(EntityBase entity)
+        public void Add(Entity entity)
         {
             if (!entities.Contains(entity))
             {
@@ -20,7 +20,7 @@ namespace TowerBuilder.DataTypes.Entities
             }
         }
 
-        public void Remove(EntityBase entity)
+        public void Remove(Entity entity)
         {
             entities.Remove(entity);
         }

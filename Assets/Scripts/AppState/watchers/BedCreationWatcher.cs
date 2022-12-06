@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 using UnityEngine;
 
@@ -54,7 +54,7 @@ namespace TowerBuilder.ApplicationState
             Resident resident = new Resident();
 
             // place it where the resident is for now
-            resident.cellCoordinates = furniture.cellCoordinates;
+            resident.cellCoordinates = furniture.cellCoordinatesList.items[0];
             appState.Residents.Add(resident);
 
             // add ownership

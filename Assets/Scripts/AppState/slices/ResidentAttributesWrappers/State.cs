@@ -1,7 +1,7 @@
 using System;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Residents.Attributes;
 using TowerBuilder.DataTypes.Rooms;

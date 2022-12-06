@@ -260,6 +260,9 @@ namespace TowerBuilder.DataTypes
             );
         }
 
+        public delegate void ForEachPredicate(CellCoordinates cellCoordinates);
+        public void ForEach(ForEachPredicate predicate) => items.ForEach(cellCoordinates => predicate(cellCoordinates));
+
         /*
             Static API
         */

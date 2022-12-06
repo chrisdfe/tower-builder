@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Furnitures.Validators
+namespace TowerBuilder.DataTypes.Entities.Furnitures.Validators
 {
     public class EngineFurnitureValidator : FurnitureValidatorBase
     {

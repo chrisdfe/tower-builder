@@ -6,7 +6,7 @@ using TowerBuilder.DataTypes.Residents.Attributes;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Furnitures.Behaviors
+namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
 {
     public class BedBehavior : FurnitureBehaviorBase
     {

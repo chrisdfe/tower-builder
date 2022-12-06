@@ -62,10 +62,7 @@ namespace TowerBuilder.GameWorld.UI.Components
 
         void OnClick()
         {
-            if (onClick != null)
-            {
-                onClick(value);
-            }
+            onClick?.Invoke(value);
         }
 
         /* 

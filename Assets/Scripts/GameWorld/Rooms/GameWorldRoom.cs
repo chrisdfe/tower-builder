@@ -170,7 +170,7 @@ namespace TowerBuilder.GameWorld.Rooms
             void SetInspectStateColor()
             {
                 EntityList inspectedEntityList = Registry.appState.Tools.inspectToolState.inspectedEntityList;
-                EntityBase inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+                Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
 
                 if (inspectedEntity != null)
                 {

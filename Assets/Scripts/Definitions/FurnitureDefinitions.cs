@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Furnitures;
-using TowerBuilder.DataTypes.Furnitures.Behaviors;
-using TowerBuilder.DataTypes.Furnitures.Validators;
+using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures.Behaviors;
+using TowerBuilder.DataTypes.Entities.Furnitures.Validators;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 

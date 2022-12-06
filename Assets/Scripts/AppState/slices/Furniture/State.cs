@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Furnitures;
-using TowerBuilder.DataTypes.Furnitures.Validators;
+using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures.Validators;
 using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
@@ -106,7 +106,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
             }
 
             furniture.OnBuild();
-            furniture.room = appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinates);
+            furniture.room = appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]);
 
             events.onItemBuilt?.Invoke(new FurnitureList(furniture));
         }

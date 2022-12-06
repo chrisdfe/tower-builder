@@ -1,6 +1,6 @@
 using System;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Residents.Attributes;
@@ -104,7 +104,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         public void SendResidentTo(Resident resident, Furniture furniture)
         {
-            Route route = FindRouteTo(resident.cellCoordinates, furniture.cellCoordinates);
+            Route route = FindRouteTo(resident.cellCoordinates, furniture.cellCoordinatesList.items[0]);
 
             if (route != null)
             {

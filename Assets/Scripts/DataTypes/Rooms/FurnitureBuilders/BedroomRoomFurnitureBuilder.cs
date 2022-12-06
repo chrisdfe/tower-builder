@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Rooms.FurnitureBuilders
@@ -17,7 +17,9 @@ namespace TowerBuilder.DataTypes.Rooms.FurnitureBuilders
 
             Furniture furniture = new Furniture(Registry.definitions.furnitures.queries.FindByKey("Bed"));
             furniture.room = room;
-            furniture.cellCoordinates = room.blocks.cells.coordinatesList.bottomLeftCoordinates;
+            furniture.cellCoordinatesList = new CellCoordinatesList(
+                room.blocks.cells.coordinatesList.bottomLeftCoordinates
+            );
             furniture.isInBlueprintMode = isInBlueprintMode;
             items.Add(furniture);
 

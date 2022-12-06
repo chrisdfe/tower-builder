@@ -2,7 +2,7 @@ using TowerBuilder.DataTypes.Rooms;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public class RoomEntity : EntityBase
+    public class RoomEntity : Entity
     {
         public Room room { get; private set; }
 

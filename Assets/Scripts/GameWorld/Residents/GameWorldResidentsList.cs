@@ -108,7 +108,7 @@ namespace TowerBuilder.GameWorld.Residents
             gameWorldResident.UpdatePosition();
         }
 
-        void OnCurrentSelectedEntityUpdated(EntityBase entity)
+        void OnCurrentSelectedEntityUpdated(Entity entity)
         {
             foreach (GameWorldResident gameWorldResident in gameWorldResidentsList)
             {

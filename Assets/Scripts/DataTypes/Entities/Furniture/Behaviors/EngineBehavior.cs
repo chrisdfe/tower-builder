@@ -6,7 +6,7 @@ using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Furnitures.Behaviors
+namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
 {
     public class EngineBehavior : FurnitureBehaviorBase
     {

@@ -2,7 +2,7 @@ using TowerBuilder.DataTypes.TransportationItems;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public class TransportationItemEntity : EntityBase
+    public class TransportationItemEntity : Entity
     {
         public TransportationItem transportationItem { get; private set; }
 

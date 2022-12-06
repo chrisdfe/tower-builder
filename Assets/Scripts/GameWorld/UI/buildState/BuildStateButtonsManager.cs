@@ -69,18 +69,18 @@ namespace TowerBuilder.GameWorld.UI
                 case "rooms":
                     roomEntityGroupButton.SetSelected(true);
                     roomEntityGroupButtons.Setup();
-                    Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.Room);
+                    Registry.appState.Tools.buildToolState.SetSelectedEntityKey(Entity.Key.Room);
                     break;
                 case "furniture":
                     furnitureEntityGroupButton.SetSelected(true);
                     furnitureEntityGroupButtons.Setup();
-                    Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.Furniture);
+                    Registry.appState.Tools.buildToolState.SetSelectedEntityKey(Entity.Key.Furniture);
                     break;
                 case "residents":
-                    Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.Resident);
+                    Registry.appState.Tools.buildToolState.SetSelectedEntityKey(Entity.Key.Resident);
                     break;
                 case "transportation":
-                    Registry.appState.Tools.buildToolState.SetSelectedEntityType(EntityType.TransportationItem);
+                    Registry.appState.Tools.buildToolState.SetSelectedEntityKey(Entity.Key.TransportationItem);
                     transportationItemEntityGroupButton.SetSelected(true);
                     transportationItemEntityGroupButtons.Setup();
                     break;

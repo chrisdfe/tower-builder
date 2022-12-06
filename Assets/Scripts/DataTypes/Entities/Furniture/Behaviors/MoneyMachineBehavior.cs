@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Furnitures.Behaviors
+namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
 {
     public class MoneyMachineBehavior : FurnitureBehaviorBase
     {

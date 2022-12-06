@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Furnitures.Validators
+namespace TowerBuilder.DataTypes.Entities.Furnitures.Validators
 {
-    public class CockpitFurnitureValidator : FurnitureValidatorBase
+    public class BedFurnitureValidator : FurnitureValidatorBase
     {
         public override List<FurnitureValidationFunc> validations
         {
@@ -17,6 +17,6 @@ namespace TowerBuilder.DataTypes.Furnitures.Validators
             }
         }
 
-        public CockpitFurnitureValidator(Furniture furniture) : base(furniture) { }
+        public BedFurnitureValidator(Furniture furniture) : base(furniture) { }
     }
 }

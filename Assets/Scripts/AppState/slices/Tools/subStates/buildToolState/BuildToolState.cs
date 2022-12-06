@@ -20,15 +20,15 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public class Events
         {
-            public delegate void SelectedEntityTypeEvent(EntityType entityType, EntityType previousEntityType);
-            public SelectedEntityTypeEvent onSelectedEntityTypeUpdated;
+            public delegate void SelectedEntityKeyEvent(Entity.Key entityKey, Entity.Key previousEntityType);
+            public SelectedEntityKeyEvent onSelectedEntityKeyUpdated;
 
             public delegate void buildIsActiveEvent();
             public buildIsActiveEvent onBuildStart;
             public buildIsActiveEvent onBuildEnd;
         }
 
-        public EntityType selectedEntityType { get; private set; } = EntityType.Room;
+        public Entity.Key selectedEntityKey { get; private set; } = Entity.Key.Room;
 
         public BuildToolState.Events events;
 
@@ -53,7 +53,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public SubStates subStates { get; private set; }
 
-        public EntityTypeSubState currentSubState { get { return GetSubState(selectedEntityType); } }
+        public EntityTypeSubState currentSubState { get => GetSubState(selectedEntityKey); }
 
         public BuildToolState(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
@@ -91,24 +91,21 @@ namespace TowerBuilder.ApplicationState.Tools
             currentSubState.OnSelectionBoxUpdated();
         }
 
-        public void SetSelectedEntityType(EntityType entityType)
+        public void SetSelectedEntityKey(Entity.Key entityType)
         {
             isLocked = true;
-            EntityType previousEntityType = this.selectedEntityType;
-            this.selectedEntityType = entityType;
+            Entity.Key previousEntityType = this.selectedEntityKey;
+            this.selectedEntityKey = entityType;
 
             // tear previous state down
             GetSubState(previousEntityType).Teardown();
 
             // set new state up
-            GetSubState(this.selectedEntityType).Setup();
+            GetSubState(this.selectedEntityKey).Setup();
 
             isLocked = false;
 
-            if (events.onSelectedEntityTypeUpdated != null)
-            {
-                events.onSelectedEntityTypeUpdated(this.selectedEntityType, previousEntityType);
-            }
+            events.onSelectedEntityKeyUpdated?.Invoke(this.selectedEntityKey, previousEntityType);
         }
 
         void StartBuild()
@@ -138,22 +135,14 @@ namespace TowerBuilder.ApplicationState.Tools
             }
         }
 
-
-        EntityTypeSubState GetSubState(EntityType entityType)
-        {
-            switch (entityType)
+        EntityTypeSubState GetSubState(Entity.Key entityType) =>
+            entityType switch
             {
-                case EntityType.Room:
-                    return subStates.roomEntityType;
-                case EntityType.Furniture:
-                    return subStates.furnitureEntityType;
-                case EntityType.Resident:
-                    return subStates.residentEntityType;
-                case EntityType.TransportationItem:
-                    return subStates.transportationItemEntityType;
-                default:
-                    throw new NotImplementedException("invalid entity type: " + entityType);
-            }
-        }
+                Entity.Key.Room => subStates.roomEntityType,
+                Entity.Key.Furniture => subStates.furnitureEntityType,
+                Entity.Key.Resident => subStates.residentEntityType,
+                Entity.Key.TransportationItem => subStates.transportationItemEntityType,
+                _ => throw new NotImplementedException("invalid entity type: " + entityType)
+            };
     }
 }

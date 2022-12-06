@@ -3,7 +3,7 @@ using TowerBuilder.ApplicationState.Rooms;
 using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
@@ -22,7 +22,7 @@ namespace TowerBuilder.ApplicationState.Tools
             public delegate void InspectedEntityListEvent(EntityList entityList);
             public InspectedEntityListEvent onInspectedEntityListUpdated;
 
-            public delegate void CurrentSelectedEntityEvent(EntityBase entity);
+            public delegate void CurrentSelectedEntityEvent(Entity entity);
             public CurrentSelectedEntityEvent onCurrentSelectedEntityUpdated;
         }
 
@@ -31,7 +31,7 @@ namespace TowerBuilder.ApplicationState.Tools
         public EntityList inspectedEntityList { get; private set; } = new EntityList();
         public int inspectedEntityIndex { get; private set; } = -1;
 
-        public EntityBase inspectedEntity
+        public Entity inspectedEntity
         {
             get
             {

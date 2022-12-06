@@ -1,8 +1,8 @@
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public class FurnitureEntity : EntityBase
+    public class FurnitureEntity : Entity
     {
         public Furniture furniture { get; private set; }
 

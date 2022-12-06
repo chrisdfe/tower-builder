@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 
@@ -119,7 +119,7 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 blueprintFurniture = new Furniture(selectedFurnitureTemplate);
                 blueprintFurniture.isInBlueprintMode = true;
-                blueprintFurniture.cellCoordinates = Registry.appState.UI.currentSelectedCell;
+                blueprintFurniture.cellCoordinatesList.PositionAtCoordinates(Registry.appState.UI.currentSelectedCell);
                 Registry.appState.Furnitures.Add(blueprintFurniture);
             }
 

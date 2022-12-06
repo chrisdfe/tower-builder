@@ -5,7 +5,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Furnitures.Validators
+namespace TowerBuilder.DataTypes.Entities.Furnitures.Validators
 {
     public class FurnitureValidationError : ValidationErrorBase
     {

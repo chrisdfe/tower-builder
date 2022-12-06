@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
@@ -39,8 +39,9 @@ namespace TowerBuilder.ApplicationState.Vehicles
             public Vehicle FindVehicleByRoom(Room room) =>
                 state.list.items.Find(otherVehicle => otherVehicle.roomList.Contains(room));
 
+            // TODO - don't use items[0] I think?
             public Vehicle FindVehicleByFurniture(Furniture furniture) =>
-                FindVehicleByRoom(appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinates));
+                FindVehicleByRoom(appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]));
         }
 
         public Queries queries;

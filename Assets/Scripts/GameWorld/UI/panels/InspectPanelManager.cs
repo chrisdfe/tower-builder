@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 using TowerBuilder.DataTypes.Residents.Attributes;
 using TowerBuilder.DataTypes.Residents.Behaviors;
@@ -73,7 +73,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectText()
         {
-            EntityBase inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+            Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
 
             switch (inspectedEntity)
             {
@@ -145,7 +145,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             DestroyActionButtons();
 
-            EntityBase inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+            Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
 
             switch (inspectedEntity)
             {
@@ -208,7 +208,7 @@ namespace TowerBuilder.GameWorld.UI
             SetText();
         }
 
-        void OnCurrentSelectedEntityUpdated(EntityBase entity)
+        void OnCurrentSelectedEntityUpdated(Entity entity)
         {
             SetText();
         }

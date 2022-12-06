@@ -5,7 +5,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.GameWorld;
 using TowerBuilder.GameWorld.Furnitures;
 using UnityEngine;
@@ -68,7 +68,7 @@ namespace TowerBuilder.GameWorld.Furnitures
             }
         }
 
-        void OnCurrentSelectedEntityUpdated(EntityBase entity)
+        void OnCurrentSelectedEntityUpdated(Entity entity)
         {
             UpdateFurnituresColors();
         }
@@ -110,7 +110,7 @@ namespace TowerBuilder.GameWorld.Furnitures
 
         void UpdateFurnitureColor(GameWorldFurniture gameWorldFurniture)
         {
-            EntityBase inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+            Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
             Furniture furniture = gameWorldFurniture.furniture;
             ToolState toolState = Registry.appState.Tools.toolState;
 

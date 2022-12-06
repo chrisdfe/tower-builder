@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.GameWorld;
 using TowerBuilder.GameWorld.Furnitures;
 using TowerBuilder.GameWorld.Rooms;
@@ -57,7 +57,7 @@ namespace TowerBuilder.GameWorld.Furnitures
 
         void UpdatePosition()
         {
-            transform.position = GameWorldUtils.CellCoordinatesToPosition(furniture.cellCoordinates);
+            transform.position = GameWorldUtils.CellCoordinatesToPosition(furniture.cellCoordinatesList.bottomLeftCoordinates);
         }
 
         /* 

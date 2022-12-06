@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes.Rooms;
 
-namespace TowerBuilder.DataTypes.Furnitures
+namespace TowerBuilder.DataTypes.Entities.Furnitures
 {
     public class FurnitureList : ListWrapper<Furniture>
     {
@@ -20,7 +20,7 @@ namespace TowerBuilder.DataTypes.Furnitures
 
         public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates)
         {
-            return items.Find(furniture => furniture.cellCoordinates.Matches(cellCoordinates));
+            return items.Find(furniture => furniture.cellCoordinatesList.Contains(cellCoordinates));
         }
     }
 }

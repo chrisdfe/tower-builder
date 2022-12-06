@@ -5,7 +5,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Furnitures.Validators
+namespace TowerBuilder.DataTypes.Entities.Furnitures.Validators
 {
     public delegate List<FurnitureValidationError> FurnitureValidationFunc(AppState appState, Furniture furniture);
 
@@ -18,40 +18,48 @@ namespace TowerBuilder.DataTypes.Furnitures.Validators
 
         public static List<FurnitureValidationError> ValidateIsInsideRoom(AppState appState, Furniture furniture)
         {
-            Room furnitureRoom = appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinates);
-            if (furnitureRoom == null)
+            foreach (CellCoordinates cellCoordinates in furniture.cellCoordinatesList.items)
             {
-                return Helpers.CreateErrorList($"{furniture.title} must be placed inside.");
+                Room furnitureRoom = appState.Rooms.queries.FindRoomAtCell(cellCoordinates);
+
+                if (furnitureRoom == null)
+                {
+                    return Helpers.CreateErrorList($"{furniture.title} must be placed inside.");
+                }
             }
+
 
             return Helpers.CreateEmptyErrorList();
         }
 
-        public static FurnitureValidationFunc CreateValidateFurnitureIsOnFloor(int floor)
-        {
-            return (AppState appState, Furniture furniture) =>
+        public static FurnitureValidationFunc CreateValidateFurnitureIsOnFloor(int floor) =>
+
+            (AppState appState, Furniture furniture) =>
             {
-                if (furniture.cellCoordinates.floor != floor)
+                foreach (CellCoordinates cellCoordinates in furniture.cellCoordinatesList.items)
                 {
-                    return Helpers.CreateErrorList($"{furniture.title} must be placed on floor {floor + 1}");
+                    if (cellCoordinates.floor != floor)
+                    {
+                        return Helpers.CreateErrorList($"{furniture.title} must be placed on floor {floor + 1}");
+                    }
                 }
 
                 return Helpers.CreateEmptyErrorList();
             };
-        }
 
-        public static FurnitureValidationFunc CreateValidateFurnitureIsNotOnFloor(int floor)
-        {
-            return (AppState appState, Furniture furniture) =>
+        public static FurnitureValidationFunc CreateValidateFurnitureIsNotOnFloor(int floor) =>
+            (AppState appState, Furniture furniture) =>
             {
-                if (furniture.cellCoordinates.floor == floor)
+                foreach (CellCoordinates cellCoordinates in furniture.cellCoordinatesList.items)
                 {
-                    return Helpers.CreateErrorList($"{furniture.title} must be not be placed on floor {floor + 1}");
+                    if (cellCoordinates.floor == floor)
+                    {
+                        return Helpers.CreateErrorList($"{furniture.title} must be not be placed on floor {floor + 1}");
+                    }
                 }
 
                 return Helpers.CreateEmptyErrorList();
             };
-        }
 
         static class Helpers
         {

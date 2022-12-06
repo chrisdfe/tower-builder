@@ -1,8 +1,8 @@
 using System.Linq;
-using TowerBuilder.DataTypes.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Residents;
 
-namespace TowerBuilder.DataTypes.Furnitures
+namespace TowerBuilder.DataTypes.Entities.Furnitures
 {
     public class FurnitureHomeSlotOccupationList : ListWrapper<FurnitureHomeSlotOccupation>
     {

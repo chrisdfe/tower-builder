@@ -2,11 +2,16 @@
 
 ## Tasks
 
+- entity layers
+- Furniture usage slots
+- Back walls entity
+- Floor entity
+- Side wall entity
+- "Cell" class that encompasses coordinates, orientation?
 - perhaps game should pause in build/destroy modes; can't switch back to play mode until everything is valid
 - room templates should be a collection of furnitures, transportation items, etc.
   - possibly the user should be able to define room templates?
 - MaterialReplacer:
-  - should be static
   - should be able to replace arbirary materials with another
   - maybe should create a lookup table indexed by material name or something to avoid traversing gameObject tree too much?
 - spiral staircase transportation
@@ -188,6 +193,8 @@
 
 # Done
 
+- MaterialReplacer:
+  - should be static
 - Remove most of the current room templates - right now there should just be a single room type (empty)
 - "Material replacer" that uses a lookup map to replace materials in fbx files with unity materials of the same name
 - All state slices should add lists of items instead of singular - e.g AddRooms instead of AddRoom

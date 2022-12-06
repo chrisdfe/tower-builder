@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Furnitures.Behaviors;
-using TowerBuilder.DataTypes.Furnitures.Validators;
+using TowerBuilder.DataTypes.Entities.Furnitures.Behaviors;
+using TowerBuilder.DataTypes.Entities.Furnitures.Validators;
 
-namespace TowerBuilder.DataTypes.Furnitures
+namespace TowerBuilder.DataTypes.Entities.Furnitures
 {
     public class FurnitureTemplate
     {

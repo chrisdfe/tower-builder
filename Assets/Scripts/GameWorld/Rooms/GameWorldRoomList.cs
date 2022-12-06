@@ -133,7 +133,7 @@ namespace TowerBuilder.GameWorld.Rooms
             SetRoomCellColors();
         }
 
-        void OnCurrentSelectedEntityUpdated(EntityBase entity)
+        void OnCurrentSelectedEntityUpdated(Entity entity)
         {
             SetRoomCellColors();
         }
