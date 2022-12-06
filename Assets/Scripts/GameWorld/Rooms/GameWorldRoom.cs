@@ -79,7 +79,6 @@ namespace TowerBuilder.GameWorld.Rooms
 
                 gameWorldRoomCell.roomCell = roomCell;
                 gameWorldRoomCell.gameWorldRoom = this;
-                gameWorldRoomCell.baseColor = room.color;
 
                 gameWorldRoomCell.Setup();
                 SetRoomCellColor(gameWorldRoomCell);
@@ -188,7 +187,6 @@ namespace TowerBuilder.GameWorld.Rooms
                 }
             }
         }
-
 
         /* 
             Static API

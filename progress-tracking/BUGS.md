@@ -4,6 +4,7 @@
 
 ## TODO
 
+- Ladders aren't tiling properly
 - Residents don't seem to be interacting with furniture properly right now
 - Sometimes when sending a resident back and forth between cells there's an out of bounds exception with RouteProgress
 - Figure out why residents stay in one spot for a while when traveling

@@ -28,9 +28,6 @@ namespace TowerBuilder.DataTypes.Rooms
         public RoomValidatorFactory validatorFactory = (Room room) => new DefaultRoomValidator(room);
 
         public RoomSkinKey skinKey = RoomSkinKey.Default;
-
-        [NonSerialized]
-        public Color color = Color.white;
     }
 }
 

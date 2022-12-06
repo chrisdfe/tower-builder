@@ -52,9 +52,6 @@ namespace TowerBuilder.GameWorld.Rooms
         [HideInInspector]
         public GameWorldRoom gameWorldRoom;
 
-        [HideInInspector]
-        public Color baseColor;
-
         RoomCellMeshWrapper roomCellMeshWrapper;
         GameWorldRoomCellLight roomCellLight;
 
@@ -135,15 +132,8 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void SetColor(ColorKey key)
         {
-            Color color;
-            if (key == ColorKey.Base)
-            {
-                color = baseColor;
-            }
-            else
-            {
-                color = ColorMap[key];
-            }
+            Color color = ColorMap[key];
+
             roomCellMeshWrapper.SetColor(color);
         }
 

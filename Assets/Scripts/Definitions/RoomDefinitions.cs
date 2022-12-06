@@ -25,8 +25,6 @@ namespace TowerBuilder.Definitions
                 resizability = RoomResizability.Horizontal,
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
-
-                color = Color.gray
             },
 
             new RoomTemplate()
@@ -41,8 +39,6 @@ namespace TowerBuilder.Definitions
                 resizability = RoomResizability.Horizontal,
 
                 validatorFactory = (Room room) => new WheelsRoomValidator(room),
-
-                color = Color.gray,
 
                 skinKey = RoomSkinKey.Wheels
             },
@@ -59,8 +55,6 @@ namespace TowerBuilder.Definitions
             //     resizability = RoomResizability.Horizontal,
 
             //     validatorFactory = (Room room) => new WheelsRoomValidator(room),
-
-            //     color = Color.gray,
             // },
 
             new RoomTemplate()
@@ -74,8 +68,6 @@ namespace TowerBuilder.Definitions
                 blockDimensions = new Dimensions(3, 1),
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
-
-                color = Color.green,
             },
 
             new RoomTemplate()
@@ -90,8 +82,6 @@ namespace TowerBuilder.Definitions
 
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
-
-                color = Color.yellow,
             },
 
             new RoomTemplate()
@@ -107,8 +97,6 @@ namespace TowerBuilder.Definitions
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
                 furnitureBuilderFactory = (Room room) => new BedroomRoomFurnitureBuilder(room),
-
-                color = Color.yellow,
             },
 
             new RoomTemplate()
@@ -122,8 +110,6 @@ namespace TowerBuilder.Definitions
                 blockDimensions = new Dimensions(5, 1),
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
-
-                color = Color.yellow,
             },
 
             new RoomTemplate()
@@ -140,8 +126,6 @@ namespace TowerBuilder.Definitions
 
 
                 validatorFactory = (Room room) => new ElevatorRoomValidator(room),
-
-                color = Color.magenta,
             },
 
             new RoomTemplate()
@@ -158,8 +142,6 @@ namespace TowerBuilder.Definitions
 
 
                 validatorFactory = (Room room) => new ElevatorRoomValidator(room),
-
-                color = Color.yellow,
             },
 
             new RoomTemplate()
@@ -175,8 +157,6 @@ namespace TowerBuilder.Definitions
                 resizability = RoomResizability.Vertical,
 
                 validatorFactory = (Room room) => new ElevatorRoomValidator(room),
-
-                color = Color.magenta,
             },
 
             new RoomTemplate()
@@ -191,7 +171,6 @@ namespace TowerBuilder.Definitions
                 blockDimensions = new Dimensions(1, 1),
 
                 resizability = RoomResizability.Vertical,
-                color = Color.yellow,
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
@@ -209,7 +188,6 @@ namespace TowerBuilder.Definitions
                 blockDimensions = new Dimensions(2, 1),
 
                 resizability = RoomResizability.Vertical,
-                color = Color.yellow,
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
@@ -230,8 +208,6 @@ namespace TowerBuilder.Definitions
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
 
-
-                color = Color.green,
             }
         };
 

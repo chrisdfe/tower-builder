@@ -19,12 +19,6 @@ namespace TowerBuilder.DataTypes.Rooms
 
         public Dimensions blockDimensions { get; private set; } = Dimensions.one;
 
-        // TODO - this is only JsonIgnore because it's a recursive type and
-        //        the serializer doesn't like that.
-        //        fix this instead of ignoring it
-        [JsonIgnore]
-        public Color color { get; private set; } = Color.white;
-
         // Saved rooms should never be in blueprint mode
         [JsonIgnore]
         public bool isInBlueprintMode = false;
@@ -58,8 +52,6 @@ namespace TowerBuilder.DataTypes.Rooms
 
             this.validator = roomTemplate.validatorFactory(this);
             this.furnitureBuilder = roomTemplate.furnitureBuilderFactory(this);
-
-            this.color = roomTemplate.color;
 
             this.skinKey = roomTemplate.skinKey;
 

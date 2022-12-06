@@ -4,6 +4,14 @@
 
 ## Tasks
 
+- Remove most of the current room templates - right now there should just be a single room type (empty)
+  - in the room templates should be a collection of furnitures, transportation items, etc.
+  - possibly the user should be able to define room templates?
+- MaterialReplacer:
+  - should be static
+  - should be able to replace arbirary materials with another
+  - maybe should create a lookup table indexed by material name or something to avoid traversing gameObject tree too much?
+- spiral staircase transportation
 - Make rooms a collection of walls/back walls/windows/floors/lights. Some floors are 1 tile? floors vs platforms (like in teraria)
 - Freight Entity
 - Rooms shouldn't be able to be x number of cells wider than wheel base
@@ -70,7 +78,6 @@
 - TransportationItem/Furniture that takes up multiple cells
 - Fix the mesh scaling (everything is either 0.1 or 10 or 100 not 1)
 - room should run furniture validations before being built as well?
-- Room color should be based off of furniture (containing a bed = bedroom etc)
 - Some kind of way of making BedCreationWatcher not immediately add new residents - perhaps on a interval longer than every tick
 - Moonlight/inside lights
 - furniture z indexes
@@ -107,7 +114,6 @@
 - "reset" button to reset state to default
 - Replace ground cells with a simpler ground for now
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
-- colors should be tied to room category + not live on RoomTemplate
 - RouteFinder shouldn't look for every room entrance in the room, just on the current floor - it should also look for furniture on the current floor that could transport the resident elsewhere
 - Transportation room furniture interface - have a "connects to"
   - Room entrances could be "Doorway" furniture instead
@@ -267,7 +273,6 @@
   - This helps rationalize having to build all those hallways and stairs
   - Perhaps "upgrades" that can make them stop at 1 other floor per upgrade?
 - things are feeling kind of messy because roomCells are having to know way too much about their room - I should make things more unidirectional
-- Rooms should stay white until they're not being inspected anymore - right now they return to default color on mouse out
 - Removing rooms should also delete their room connections
 - Add blueprint room connections to main room connections list in MapStore when the room gets built
 - Elevator entrances should only be at the top and bottom - maybe get ElevatorModule to do this?
