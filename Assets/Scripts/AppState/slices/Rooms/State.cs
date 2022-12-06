@@ -68,6 +68,7 @@ namespace TowerBuilder.ApplicationState.Rooms
             // 
             appState.Wallet.SubtractBalance(room.price);
 
+            /*
             // Decide whether to create a new room or to add to an existing one
             List<Room> roomsToCombineWith = queries.FindRoomsToCombineWith(room);
 
@@ -81,6 +82,7 @@ namespace TowerBuilder.ApplicationState.Rooms
 
                 room.Reset();
             }
+            */
 
             room.isInBlueprintMode = false;
             room.OnBuild();

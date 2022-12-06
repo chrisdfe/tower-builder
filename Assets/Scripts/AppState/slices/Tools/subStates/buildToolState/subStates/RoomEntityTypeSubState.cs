@@ -160,29 +160,31 @@ namespace TowerBuilder.ApplicationState.Tools
 
             void SetBlueprintRoomCells()
             {
+                // TODO - pull this up in to Room/State (& ultimately somewhere more generic than that)
                 SelectionBox selectionBox = Registry.appState.UI.selectionBox;
                 CellCoordinates blockCount = new CellCoordinates(1, 1);
 
-                if (blueprintRoom.resizability == RoomResizability.Inflexible)
+                if (blueprintRoom.resizability == Room.Resizability.Inflexible)
                 {
                     blueprintRoom.bottomLeftCoordinates = selectionBox.start;
                 }
                 else
                 {
+
                     // Restrict resizability to X/floor depending on RoomFlexibility
                     switch (blueprintRoom.resizability)
                     {
-                        case RoomResizability.Flexible:
+                        case Room.Resizability.Flexible:
                             CalculateHorizontalBlocks();
                             CalculateVerticalBlocks();
                             break;
-                        case RoomResizability.Horizontal:
+                        case Room.Resizability.Horizontal:
                             CalculateHorizontalBlocks();
                             break;
-                        case RoomResizability.Vertical:
+                        case Room.Resizability.Vertical:
                             CalculateVerticalBlocks();
                             break;
-                        case RoomResizability.Inflexible:
+                        case Room.Resizability.Inflexible:
                             break;
                     }
 

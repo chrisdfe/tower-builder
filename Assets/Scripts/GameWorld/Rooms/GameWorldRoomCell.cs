@@ -31,15 +31,15 @@ namespace TowerBuilder.GameWorld.Rooms
             public bool hasInteriorLights = false;
         }
 
-        public static Dictionary<RoomSkinKey, SkinConfig> SkinConfigMap = new Dictionary<RoomSkinKey, SkinConfig>() {
+        public static Dictionary<Room.SkinKey, SkinConfig> SkinConfigMap = new Dictionary<Room.SkinKey, SkinConfig>() {
             {
-                RoomSkinKey.Default,
+                Room.SkinKey.Default,
                 new SkinConfig() {
                     hasInteriorLights = true,
                 }
             },
             {
-                RoomSkinKey.Wheels,
+                Room.SkinKey.Wheels,
                 new SkinConfig() {
                     hasInteriorLights = false,
                 }
@@ -70,15 +70,16 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Setup()
         {
+            // TODO - not this
             TransformUtils.DestroyChildren(transform.Find("RoomCellMesh_Default"));
             AssetList<GameWorldRoomsManager.MeshAssetKey> assetList = GameWorldRoomsManager.Find().meshAssetList;
 
             switch (gameWorldRoom.room.skinKey)
             {
-                case RoomSkinKey.Wheels:
+                case Room.SkinKey.Wheels:
                     roomCellMeshWrapper = new RoomCellWheelsMeshWrapper(transform, assetList, this);
                     break;
-                case RoomSkinKey.Default:
+                case Room.SkinKey.Default:
                     roomCellMeshWrapper = new RoomCellDefaultMeshWrapper(transform, assetList, this);
                     break;
             }

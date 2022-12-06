@@ -4,6 +4,9 @@
 
 ## TODO
 
+- I'm already running into performance issues when making large rooms
+  - investigate the number of nested objects inside of each roomcell mesh
+  - also investigate how every roomcell/entity gets removed/created instead of moved
 - Ladders aren't tiling properly
 - Residents don't seem to be interacting with furniture properly right now
 - Sometimes when sending a resident back and forth between cells there's an out of bounds exception with RouteProgress

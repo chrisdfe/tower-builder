@@ -10,16 +10,13 @@ namespace TowerBuilder.DataTypes.Rooms
 {
     public class RoomTemplate
     {
-        public string title;
-        public string key;
-
-        public int pricePerBlock;
-
+        public string title = "None";
+        public string key = "None";
         public string category = "None";
 
         public Dimensions blockDimensions;
 
-        public RoomResizability resizability = RoomResizability.Inflexible;
+        public Room.Resizability resizability = Room.Resizability.Inflexible;
 
         public delegate RoomFurnitureBuilderBase FurnitureBuilderFactory(Room room);
         public FurnitureBuilderFactory furnitureBuilderFactory = (Room room) => new RoomFurnitureBuilderBase(room);
@@ -27,7 +24,7 @@ namespace TowerBuilder.DataTypes.Rooms
         public delegate RoomValidatorBase RoomValidatorFactory(Room room);
         public RoomValidatorFactory validatorFactory = (Room room) => new DefaultRoomValidator(room);
 
-        public RoomSkinKey skinKey = RoomSkinKey.Default;
+        public Room.SkinKey skinKey = Room.SkinKey.Default;
     }
 }
 

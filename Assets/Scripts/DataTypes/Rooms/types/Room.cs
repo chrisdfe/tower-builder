@@ -7,17 +7,33 @@ namespace TowerBuilder.DataTypes.Rooms
 {
     public class Room
     {
+        public const int PRICE_PER_CELL = 500;
+
+        public enum SkinKey
+        {
+            Default,
+            Wheels
+        }
+
+        public enum Resizability
+        {
+            Inflexible,
+            Horizontal,
+            Vertical,
+            Flexible,
+        }
+
         public int id { get; private set; }
 
         public string title { get; private set; } = "None";
         public string key { get; private set; } = "None";
         public string category { get; private set; } = "None";
 
-        public int pricePerBlock { get; private set; } = 10;
-
-        public RoomResizability resizability = RoomResizability.Inflexible;
+        public Resizability resizability = Resizability.Inflexible;
 
         public Dimensions blockDimensions { get; private set; } = Dimensions.one;
+
+        public int cellsInBlock { get => blockDimensions.width * blockDimensions.height; }
 
         // Saved rooms should never be in blueprint mode
         [JsonIgnore]
@@ -30,12 +46,12 @@ namespace TowerBuilder.DataTypes.Rooms
         public RoomValidatorBase validator { get; private set; }
         public RoomFurnitureBuilderBase furnitureBuilder { get; private set; }
 
-        public RoomSkinKey skinKey;
+        public SkinKey skinKey;
 
         public RoomTemplate roomTemplate;
 
         [JsonIgnore]
-        public int price { get { return pricePerBlock * this.blocks.blocks.Count; } }
+        public int price { get => PRICE_PER_CELL * cellsInBlock * this.blocks.blocks.Count; }
 
         public Room(RoomTemplate roomTemplate)
         {
@@ -44,7 +60,6 @@ namespace TowerBuilder.DataTypes.Rooms
             this.title = roomTemplate.title;
             this.key = roomTemplate.key;
             this.category = roomTemplate.category;
-            this.pricePerBlock = roomTemplate.pricePerBlock;
             this.resizability = roomTemplate.resizability;
             this.blockDimensions = roomTemplate.blockDimensions;
 

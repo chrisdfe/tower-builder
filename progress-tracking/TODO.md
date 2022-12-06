@@ -1,11 +1,8 @@
 # TODO
 
-## Current
-
 ## Tasks
 
-- Remove most of the current room templates - right now there should just be a single room type (empty)
-  - in the room templates should be a collection of furnitures, transportation items, etc.
+- room templates should be a collection of furnitures, transportation items, etc.
   - possibly the user should be able to define room templates?
 - MaterialReplacer:
   - should be static
@@ -169,6 +166,8 @@
 
 ## Ideas
 
+- Residents can join your convoy and walk along side of the vehicle if you don't have enough beds.
+  - They sleep outside in tents?
 - Lots of non-player vehicles:
   - merchants
   - random passers-by
@@ -188,6 +187,7 @@
 
 # Done
 
+- Remove most of the current room templates - right now there should just be a single room type (empty)
 - "Material replacer" that uses a lookup map to replace materials in fbx files with unity materials of the same name
 - All state slices should add lists of items instead of singular - e.g AddRooms instead of AddRoom
 - Figure out why 2 game world transportation items (1 cell for each cell in a transportation so 4 in total) are being created instead of 1

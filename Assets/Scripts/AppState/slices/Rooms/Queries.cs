@@ -57,6 +57,7 @@ namespace TowerBuilder.ApplicationState.Rooms
                 return result;
             }
 
+            /*
             public List<Room> FindRoomsToCombineWith(Room room)
             {
                 List<Room> result = new List<Room>();
@@ -137,6 +138,7 @@ namespace TowerBuilder.ApplicationState.Rooms
                     }
                 }
             }
+            */
         }
     }
 
