@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- perhaps game should pause in build/destroy modes; can't switch back to play mode until everything is valid
 - room templates should be a collection of furnitures, transportation items, etc.
   - possibly the user should be able to define room templates?
 - MaterialReplacer:

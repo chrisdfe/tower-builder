@@ -7,11 +7,33 @@ namespace TowerBuilder.GameWorld.Furnitures
         public enum AssetKey
         {
             Furniture,
-            Bed,
-            Engine
         }
 
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
+        public AssetList<AssetKey> prefabAssets = new AssetList<AssetKey>();
+
+        public enum MeshAssetKey
+        {
+            Bed,
+            Engine,
+            PilotSeat,
+            MoneyMachine
+        };
+
+        public MeshAssetList<MeshAssetKey> meshAssets = new MeshAssetList<MeshAssetKey>();
+
+        void Awake()
+        {
+            ReplaceMaterials();
+        }
+
+        void ReplaceMaterials()
+        {
+            foreach (AssetList<MeshAssetKey>.ValueTypeWrapper wrapper in meshAssets.list)
+            {
+                GameObject gameObject = wrapper.value;
+                MaterialsReplacer.ReplaceMaterials(gameObject.transform);
+            }
+        }
 
         public static GameWorldFurnitureManager Find() =>
             GameWorldFindableCache.Find<GameWorldFurnitureManager>("FurnitureManager");

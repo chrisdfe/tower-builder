@@ -19,7 +19,7 @@ namespace TowerBuilder.GameWorld.Rooms
             RoomCell
         };
 
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
+        public AssetList<AssetKey> prefabAssets = new AssetList<AssetKey>();
 
         public enum MeshAssetKey
         {
@@ -27,21 +27,11 @@ namespace TowerBuilder.GameWorld.Rooms
             Wheels
         };
 
-        public AssetList<MeshAssetKey> meshAssetList = new AssetList<MeshAssetKey>();
+        public MeshAssetList<MeshAssetKey> meshAssets = new MeshAssetList<MeshAssetKey>();
 
         void Awake()
         {
-            Debug.Log("hello.");
-            ReplaceMaterials();
-        }
-
-        void ReplaceMaterials()
-        {
-            foreach (AssetList<MeshAssetKey>.ValueTypeWrapper wrapper in meshAssetList.assetList)
-            {
-                GameObject gameObject = wrapper.value;
-                new MaterialsReplacer().ReplaceMaterials(gameObject.transform);
-            }
+            meshAssets.ReplaceMaterials();
         }
 
         /* 

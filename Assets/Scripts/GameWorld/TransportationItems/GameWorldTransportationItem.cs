@@ -54,7 +54,7 @@ namespace TowerBuilder.GameWorld.Rooms
             // MeshWrapperFactory meshWrapperFactory = MeshWrapperKeyMap[transportationItem.key];
 
             GameWorldTransportationManager transportationManager = GameWorldTransportationManager.Find();
-            AssetList<TransportationItem.Key> meshAssetList = transportationManager.meshAssetList;
+            AssetList<TransportationItem.Key> meshAssetList = transportationManager.meshAssets;
 
             meshWrapperList = transportationItem.cellCoordinatesList.items.Select((cellCoordinates) =>
             {
@@ -86,7 +86,7 @@ namespace TowerBuilder.GameWorld.Rooms
         public static GameWorldTransportationItem Create(Transform parent)
         {
             GameWorldTransportationManager transportationManager = GameWorldTransportationManager.Find();
-            GameObject prefab = transportationManager.assetList.FindByKey(GameWorldTransportationManager.AssetKey.TransportationItem);
+            GameObject prefab = transportationManager.prefabAssets.FindByKey(GameWorldTransportationManager.AssetKey.TransportationItem);
             GameObject transportationItemGameObject = Instantiate<GameObject>(prefab);
 
             transportationItemGameObject.transform.parent = parent;

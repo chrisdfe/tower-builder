@@ -7,33 +7,23 @@ namespace TowerBuilder.GameWorld
     [ExecuteInEditMode]
     public class MaterialsReplacer
     {
-
-        public void ReplaceMaterials(Transform parent)
+        public static void ReplaceMaterials(Transform parent)
         {
             List<Transform> materialChildren = FindAllChildrenWhereRecursive(parent, (child) =>
                 GetChildMaterial(child) != null
             );
 
-            Debug.Log("materialChildren");
-            Debug.Log(materialChildren.Count);
-
             materialChildren.ForEach(child => ReplaceMaterial(child));
         }
 
-        void ReplaceMaterial(Transform child)
+        static void ReplaceMaterial(Transform child)
         {
-            Debug.Log($"replacing material for {child.gameObject.name}");
             MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
             Material material = meshRenderer.sharedMaterial;
             string materialName = material.name;
             string cleanedName = materialName.Replace(" (Instance)", "");
-            Debug.Log("cleanedName");
-            Debug.Log(cleanedName);
             MaterialsManager materialsManager = MaterialsManager.Find();
             Material replacementMaterial = materialsManager.FindByName(cleanedName);
-            Debug.Log("replacementMaterial");
-            Debug.Log(replacementMaterial);
-
             if (replacementMaterial != null)
             {
                 meshRenderer.sharedMaterial = replacementMaterial;
@@ -42,7 +32,7 @@ namespace TowerBuilder.GameWorld
 
         // TODO - put in TransformUtils
         public delegate bool Predicate(Transform transform);
-        List<Transform> FindAllChildrenWhereRecursive(Transform parent, Predicate predicate)
+        static List<Transform> FindAllChildrenWhereRecursive(Transform parent, Predicate predicate)
         {
             List<Transform> result = new List<Transform>();
 
@@ -61,7 +51,7 @@ namespace TowerBuilder.GameWorld
             return result;
         }
 
-        Material GetChildMaterial(Transform child)
+        static Material GetChildMaterial(Transform child)
         {
             MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
 

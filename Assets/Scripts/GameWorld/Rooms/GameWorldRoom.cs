@@ -77,6 +77,7 @@ namespace TowerBuilder.GameWorld.Rooms
             {
                 GameWorldRoomCell gameWorldRoomCell = GameWorldRoomCell.Create(transform);
 
+                gameWorldRoomCell.room = room;
                 gameWorldRoomCell.roomCell = roomCell;
                 gameWorldRoomCell.gameWorldRoom = this;
 
@@ -171,19 +172,13 @@ namespace TowerBuilder.GameWorld.Rooms
                 EntityList inspectedEntityList = Registry.appState.Tools.inspectToolState.inspectedEntityList;
                 EntityBase inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
 
-                if (inspectedEntity == null) return;
-
-                // Check for hover
-                // if (room.blocks.ContainsBlock(currentSelectedRoomBlock))
-                // {
-                //     gameWorldRoomCell.SetHoverColor();
-                //     hasUpdated = true;
-                // }
-
-                if ((inspectedEntity is RoomEntity) && ((RoomEntity)inspectedEntity).room == room)
+                if (inspectedEntity != null)
                 {
-                    gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.Inspected);
-                    hasUpdated = true;
+                    if ((inspectedEntity is RoomEntity) && ((RoomEntity)inspectedEntity).room == room)
+                    {
+                        gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.Inspected);
+                        hasUpdated = true;
+                    }
                 }
             }
         }
@@ -194,7 +189,7 @@ namespace TowerBuilder.GameWorld.Rooms
         public static GameWorldRoom Create(Transform parent)
         {
             GameWorldRoomsManager roomsManager = GameWorldRoomsManager.Find();
-            GameObject prefab = roomsManager.assetList.FindByKey(GameWorldRoomsManager.AssetKey.Room);
+            GameObject prefab = roomsManager.prefabAssets.FindByKey(GameWorldRoomsManager.AssetKey.Room);
             GameObject roomGameObject = Instantiate<GameObject>(prefab);
 
             roomGameObject.transform.parent = parent;

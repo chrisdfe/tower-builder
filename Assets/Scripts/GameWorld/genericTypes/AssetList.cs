@@ -17,12 +17,12 @@ namespace TowerBuilder.GameWorld
         }
 
         [SerializeField]
-        public List<ValueTypeWrapper> assetList = new List<ValueTypeWrapper>();
+        public List<ValueTypeWrapper> list = new List<ValueTypeWrapper>();
 
-        public int Count { get => assetList.Count; }
+        public int Count { get => list.Count; }
 
         public ValueType FindByKey(KeyType key) =>
-            assetList.Find(wrapper => wrapper.key.Equals(key))?.value;
+            list.Find(wrapper => wrapper.key.Equals(key))?.value;
     }
 
     [Serializable]
@@ -34,4 +34,18 @@ namespace TowerBuilder.GameWorld
     public class MaterialsList<KeyType> : SerializableKeyValueList<KeyType, Material>
         where KeyType : struct
     { }
+
+    [Serializable]
+    public class MeshAssetList<KeyType> : AssetList<KeyType>
+        where KeyType : struct
+    {
+        public void ReplaceMaterials()
+        {
+            foreach (AssetList<KeyType>.ValueTypeWrapper wrapper in list)
+            {
+                GameObject gameObject = wrapper.value;
+                MaterialsReplacer.ReplaceMaterials(gameObject.transform);
+            }
+        }
+    }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using TowerBuilder.DataTypes.Rooms.FurnitureBuilders;
 using TowerBuilder.DataTypes.Rooms.Validators;
@@ -9,11 +10,6 @@ namespace TowerBuilder.DataTypes.Rooms
     {
         public const int PRICE_PER_CELL = 500;
 
-        public enum SkinKey
-        {
-            Default,
-            Wheels
-        }
 
         public enum Resizability
         {
@@ -23,35 +19,87 @@ namespace TowerBuilder.DataTypes.Rooms
             Flexible,
         }
 
-        public int id { get; private set; }
+        public class Skin
+        {
+            public enum Key
+            {
+                Default,
+                Wheels
+            }
 
-        public string title { get; private set; } = "None";
-        public string key { get; private set; } = "None";
-        public string category { get; private set; } = "None";
+            public class Config
+            {
+                public int pricePerCell;
+                public bool hasInteriorLights;
+            }
 
-        public Resizability resizability = Resizability.Inflexible;
+            public Key key { get; }
+            public Config config { get; }
 
-        public Dimensions blockDimensions { get; private set; } = Dimensions.one;
+            public Skin(Key key)
+            {
+                this.key = key;
+                this.config = ConfigMap.Get(key);
+            }
 
-        public int cellsInBlock { get => blockDimensions.width * blockDimensions.height; }
+            public static class ConfigMap
+            {
+                static Dictionary<Key, Config> map = new Dictionary<Key, Config>() {
+                {
+                    Key.Default,
+                    new Config() {
+                        pricePerCell = 500,
+                        hasInteriorLights = true
+                    }
+                },
+                {
+                    Key.Wheels,
+                    new Config() {
+                        pricePerCell = 1500,
+                        hasInteriorLights = false
+                    }
+                },
+            };
+
+                public static Config Get(Key key) => map.GetValueOrDefault(key);
+            }
+        }
+
+        public int id { get; }
+
+        public string title { get; } = "None";
+        public string key { get; } = "None";
+        public string category { get; } = "None";
+
+        public Resizability resizability { get; } = Resizability.Inflexible;
+
+        public Dimensions blockDimensions { get; } = Dimensions.one;
+
+        public int cellsInBlock
+        {
+            get => blockDimensions.width * blockDimensions.height;
+        }
 
         // Saved rooms should never be in blueprint mode
         [JsonIgnore]
         public bool isInBlueprintMode = false;
 
+        // TODO - get rid of this
         public CellCoordinates bottomLeftCoordinates;
 
         public RoomBlocks blocks;
 
-        public RoomValidatorBase validator { get; private set; }
-        public RoomFurnitureBuilderBase furnitureBuilder { get; private set; }
+        public RoomValidatorBase validator { get; }
+        public RoomFurnitureBuilderBase furnitureBuilder { get; }
 
-        public SkinKey skinKey;
+        public Skin skin;
 
         public RoomTemplate roomTemplate;
 
+        public int pricePerCell { get => skin.config.pricePerCell; }
+
         [JsonIgnore]
-        public int price { get => PRICE_PER_CELL * cellsInBlock * this.blocks.blocks.Count; }
+        public int price { get => pricePerCell * cellsInBlock * this.blocks.blocks.Count; }
 
         public Room(RoomTemplate roomTemplate)
         {
@@ -68,15 +116,12 @@ namespace TowerBuilder.DataTypes.Rooms
             this.validator = roomTemplate.validatorFactory(this);
             this.furnitureBuilder = roomTemplate.furnitureBuilderFactory(this);
 
-            this.skinKey = roomTemplate.skinKey;
+            this.skin = new Skin(roomTemplate.skinKey);
 
             blocks = new RoomBlocks();
         }
 
-        public override string ToString()
-        {
-            return $"room {id}";
-        }
+        public override string ToString() => $"room {id}";
 
         public void OnBuild()
         {

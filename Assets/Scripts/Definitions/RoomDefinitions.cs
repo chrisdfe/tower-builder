@@ -36,7 +36,7 @@ namespace TowerBuilder.Definitions
 
                 validatorFactory = (Room room) => new WheelsRoomValidator(room),
 
-                skinKey = Room.SkinKey.Wheels
+                skinKey = Room.Skin.Key.Wheels
             },
         };
 

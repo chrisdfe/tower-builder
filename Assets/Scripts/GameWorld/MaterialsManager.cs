@@ -16,7 +16,7 @@ namespace TowerBuilder.GameWorld
         public Material FindByName(string name)
         {
             MaterialsList<MaterialKey>.ValueTypeWrapper wrapper =
-                materialList.assetList.Find(wrapper =>
+                materialList.list.Find(wrapper =>
                     wrapper.key.ToString().ToLower() == name.ToLower()
                 );
 

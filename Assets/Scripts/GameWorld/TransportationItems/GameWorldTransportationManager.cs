@@ -10,9 +10,14 @@ namespace TowerBuilder.GameWorld.Rooms
             TransportationItem
         }
 
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
+        public AssetList<AssetKey> prefabAssets = new AssetList<AssetKey>();
 
-        public AssetList<TransportationItem.Key> meshAssetList = new AssetList<TransportationItem.Key>();
+        public MeshAssetList<TransportationItem.Key> meshAssets = new MeshAssetList<TransportationItem.Key>();
+
+        void Awake()
+        {
+            meshAssets.ReplaceMaterials();
+        }
 
         public static GameWorldTransportationManager Find() =>
             GameWorldFindableCache.Find<GameWorldTransportationManager>("TransportationManager");

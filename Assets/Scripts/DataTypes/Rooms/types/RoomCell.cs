@@ -14,7 +14,7 @@ namespace TowerBuilder.DataTypes.Rooms
         [JsonIgnore]
         public List<RoomCellOrientation> orientation = new List<RoomCellOrientation>();
 
-        public RoomCell(int x, int floor)
+        public RoomCell(Room room, int x, int floor)
         {
             this.coordinates = new CellCoordinates(x, floor);
         }

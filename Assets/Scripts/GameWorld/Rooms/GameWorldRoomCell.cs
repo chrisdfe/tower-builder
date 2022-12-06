@@ -26,25 +26,8 @@ namespace TowerBuilder.GameWorld.Rooms
             { ColorKey.InvalidBlueprint, Color.red },
         };
 
-        public class SkinConfig
-        {
-            public bool hasInteriorLights = false;
-        }
-
-        public static Dictionary<Room.SkinKey, SkinConfig> SkinConfigMap = new Dictionary<Room.SkinKey, SkinConfig>() {
-            {
-                Room.SkinKey.Default,
-                new SkinConfig() {
-                    hasInteriorLights = true,
-                }
-            },
-            {
-                Room.SkinKey.Wheels,
-                new SkinConfig() {
-                    hasInteriorLights = false,
-                }
-            }
-        };
+        [HideInInspector]
+        public Room room;
 
         [HideInInspector]
         public RoomCell roomCell;
@@ -70,16 +53,16 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Setup()
         {
-            // TODO - not this
+            // TODO - not this hardcoded string
             TransformUtils.DestroyChildren(transform.Find("RoomCellMesh_Default"));
-            AssetList<GameWorldRoomsManager.MeshAssetKey> assetList = GameWorldRoomsManager.Find().meshAssetList;
+            AssetList<GameWorldRoomsManager.MeshAssetKey> assetList = GameWorldRoomsManager.Find().meshAssets;
 
-            switch (gameWorldRoom.room.skinKey)
+            switch (gameWorldRoom.room.skin.key)
             {
-                case Room.SkinKey.Wheels:
+                case Room.Skin.Key.Wheels:
                     roomCellMeshWrapper = new RoomCellWheelsMeshWrapper(transform, assetList, this);
                     break;
-                case Room.SkinKey.Default:
+                case Room.Skin.Key.Default:
                     roomCellMeshWrapper = new RoomCellDefaultMeshWrapper(transform, assetList, this);
                     break;
             }
@@ -106,10 +89,9 @@ namespace TowerBuilder.GameWorld.Rooms
         */
         public void UpdateLights()
         {
-            SkinConfig config = SkinConfigMap[gameWorldRoom.room.skinKey];
             Transform lightTransform = transform.Find("Light");
 
-            if (config.hasInteriorLights)
+            if (room.skin.config.hasInteriorLights)
             {
                 Light light = lightTransform.GetComponent<Light>();
                 roomCellLight = new GameWorldRoomCellLight(light);
@@ -144,7 +126,7 @@ namespace TowerBuilder.GameWorld.Rooms
         public static GameWorldRoomCell Create(Transform parent)
         {
             GameWorldRoomsManager roomsManager = GameWorldRoomsManager.Find();
-            GameObject prefab = roomsManager.assetList.FindByKey(GameWorldRoomsManager.AssetKey.RoomCell);
+            GameObject prefab = roomsManager.prefabAssets.FindByKey(GameWorldRoomsManager.AssetKey.RoomCell);
             GameObject roomCellGameObject = Instantiate<GameObject>(prefab);
 
             roomCellGameObject.transform.parent = parent;

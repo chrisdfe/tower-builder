@@ -24,7 +24,7 @@ namespace TowerBuilder.DataTypes.Rooms
         public delegate RoomValidatorBase RoomValidatorFactory(Room room);
         public RoomValidatorFactory validatorFactory = (Room room) => new DefaultRoomValidator(room);
 
-        public Room.SkinKey skinKey = Room.SkinKey.Default;
+        public Room.Skin.Key skinKey = Room.Skin.Key.Default;
     }
 }
 
