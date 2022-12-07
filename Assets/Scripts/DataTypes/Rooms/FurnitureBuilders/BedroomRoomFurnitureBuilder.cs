@@ -16,7 +16,7 @@ namespace TowerBuilder.DataTypes.Rooms.FurnitureBuilders
             List<Furniture> items = new List<Furniture>();
 
             Furniture furniture = new Furniture(Registry.definitions.furnitures.queries.FindByKey("Bed"));
-            furniture.room = room;
+            // furniture.room = room;
             furniture.cellCoordinatesList = new CellCoordinatesList(
                 room.blocks.cells.coordinatesList.bottomLeftCoordinates
             );

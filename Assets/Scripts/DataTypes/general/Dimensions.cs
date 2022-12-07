@@ -19,10 +19,7 @@ namespace TowerBuilder.DataTypes
 
         public static Dimensions one
         {
-            get
-            {
-                return new Dimensions(1, 1);
-            }
+            get => new Dimensions(1, 1);
         }
     }
 }

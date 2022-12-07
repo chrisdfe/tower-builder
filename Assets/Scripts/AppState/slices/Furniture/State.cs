@@ -24,19 +24,20 @@ namespace TowerBuilder.ApplicationState.Furnitures
 
         public class Queries
         {
+            AppState appState;
             State state;
 
-            public Queries(State state)
+            public Queries(AppState appState, State state)
             {
                 this.state = state;
             }
 
-            public FurnitureList FindFurnitureByRoom(Room room)
-            {
-                return new FurnitureList(
-                    state.list.items.FindAll(furniture => furniture.room == room)
+            public FurnitureList FindFurnitureByRoom(Room room) =>
+                new FurnitureList(
+                    state.list.items.FindAll(furniture =>
+                        appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]) == room
+                    )
                 );
-            }
 
             public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates)
             {
@@ -67,7 +68,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
 
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(this);
+            queries = new Queries(appState, this);
             Setup();
         }
 
@@ -106,7 +107,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
             }
 
             furniture.OnBuild();
-            furniture.room = appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]);
+            // furniture.room = appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]);
 
             events.onItemBuilt?.Invoke(new FurnitureList(furniture));
         }

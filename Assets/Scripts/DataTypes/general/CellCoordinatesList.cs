@@ -15,103 +15,65 @@ namespace TowerBuilder.DataTypes
 
         public int lowestX
         {
-            get
-            {
-                return items.Aggregate(int.MaxValue, (lowestX, coordinates) =>
+            get =>
+                items.Aggregate(int.MaxValue, (lowestX, coordinates) =>
                     (coordinates.x < lowestX) ? coordinates.x : lowestX
                 );
-            }
         }
 
         public int highestX
         {
-            get
-            {
-                return items.Aggregate(int.MinValue, (highestX, coordinates) =>
+            get =>
+                items.Aggregate(int.MinValue, (highestX, coordinates) =>
                     (coordinates.x > highestX) ? coordinates.x : lowestX
                 );
-            }
         }
 
         public int lowestFloor
         {
-            get
-            {
-                return items.Aggregate(int.MaxValue, (lowestFloor, coordinates) =>
+            get =>
+                items.Aggregate(int.MaxValue, (lowestFloor, coordinates) =>
                     (coordinates.floor < lowestFloor) ? coordinates.floor : lowestFloor
                 );
-            }
         }
 
 
         public int highestFloor
         {
-            get
-            {
-                return items.Aggregate(int.MinValue, (highestFloor, coordinates) =>
+            get =>
+                items.Aggregate(int.MinValue, (highestFloor, coordinates) =>
                     (coordinates.floor > highestFloor) ? coordinates.floor : highestFloor
                 );
-            }
         }
 
         public int width
         {
-            get
-            {
-                return (highestX - lowestX) + 1;
-            }
+            get => (highestX - lowestX) + 1;
         }
 
         public int floorSpan
         {
-            get
-            {
-                return (highestFloor - lowestFloor) + 1;
-            }
+            get => (highestFloor - lowestFloor) + 1;
         }
 
         public CellCoordinates bottomLeftCoordinates
         {
-            get
-            {
-                return new CellCoordinates(
-                    lowestX,
-                    lowestFloor
-                );
-            }
+            get => new CellCoordinates(lowestX, lowestFloor);
         }
 
         public CellCoordinates bottomRightCoordinates
         {
-            get
-            {
-                return new CellCoordinates(
-                    highestX,
-                    lowestFloor
-                );
-            }
+            get => new CellCoordinates(highestX, lowestFloor);
         }
 
         public CellCoordinates topLeftCoordinates
         {
-            get
-            {
-                return new CellCoordinates(
-                    lowestX,
-                    highestFloor
-                );
-            }
+            get => new CellCoordinates(lowestX, highestFloor);
         }
 
         public CellCoordinates topRightCoordinates
         {
-            get
-            {
-                return new CellCoordinates(
-                    highestX,
-                    highestFloor
-                );
-            }
+            get => new CellCoordinates(highestX, highestFloor);
         }
 
         public List<int> xValues
@@ -152,10 +114,9 @@ namespace TowerBuilder.DataTypes
 
         public CellCoordinatesList asRelativeCoordinates
         {
-            get =>
-                new CellCoordinatesList(
-                    items.Select(cellCoordinates => Subtract(cellCoordinates, bottomLeftCoordinates)).ToList()
-                );
+            get => new CellCoordinatesList(
+                items.Select(cellCoordinates => Subtract(cellCoordinates, bottomLeftCoordinates)).ToList()
+            );
         }
 
 

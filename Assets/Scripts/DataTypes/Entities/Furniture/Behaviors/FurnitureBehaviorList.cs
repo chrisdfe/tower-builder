@@ -18,15 +18,6 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
             return items.Find(furnitureBehavior => furnitureBehavior.furniture == furniture);
         }
 
-        public FurnitureBehaviorList FindByRoom(Room room)
-        {
-            FurnitureBehaviorList f = new FurnitureBehaviorList(
-                items.FindAll(furnitureBehavior => furnitureBehavior.furniture.room == room)
-            );
-
-            return f;
-        }
-
         public FurnitureBehaviorList FilterByType(FurnitureBehaviorBase.Key key)
         {
             return new FurnitureBehaviorList(

@@ -57,7 +57,13 @@ namespace TowerBuilder.GameWorld.Furnitures
 
         void UpdatePosition()
         {
+            Debug.Log("position before");
+            Debug.Log(transform.position);
             transform.position = GameWorldUtils.CellCoordinatesToPosition(furniture.cellCoordinatesList.bottomLeftCoordinates);
+            Debug.Log("furniture.cellCoordinatesList.bottomLeftCoordinates");
+            Debug.Log(furniture.cellCoordinatesList.bottomLeftCoordinates);
+            Debug.Log("position after");
+            Debug.Log(transform.position);
         }
 
         /* 
@@ -70,6 +76,7 @@ namespace TowerBuilder.GameWorld.Furnitures
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;
+            gameObject.transform.localPosition = Vector3.zero;
 
             GameWorldFurniture gameWorldFurniture = gameObject.GetComponent<GameWorldFurniture>();
             return gameWorldFurniture;

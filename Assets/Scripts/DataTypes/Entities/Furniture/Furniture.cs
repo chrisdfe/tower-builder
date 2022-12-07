@@ -19,9 +19,6 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
         // TODO - are multiples per cell allowed?
         public int homeSlotCount = 0;
 
-        public Room room;
-        // public CellCoordinates cellCoordinates = CellCoordinates.zero;
-
         public FurnitureTemplate template;
 
         public override int pricePerCell => template.price;
@@ -38,6 +35,8 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
             this.homeSlotCount = furnitureTemplate.homeSlotCount;
 
             this.validator = furnitureTemplate.furnitureValidatorFactory(this);
+
+            this.cellCoordinatesList = CellCoordinatesList.CreateRectangle(template.dimensions.width, template.dimensions.height);
         }
 
         public override string ToString()

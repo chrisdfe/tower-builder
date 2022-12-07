@@ -161,6 +161,7 @@
 
 ## Cleanup
 
+- Tileable.cs probably has classes in there that need to be broken out
 - Switch the order of ListType and ItemType in ListItemStateSlice generic (ItemType should be first)
 - Room datatypes/state is structured in a different way to some of the newer classes (e.g make it Room.SkinKey instead of RoomSkinKey)
 - RouteFinder creates too many branches
