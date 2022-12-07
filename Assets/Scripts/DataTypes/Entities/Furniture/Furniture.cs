@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures.Validators;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Furnitures

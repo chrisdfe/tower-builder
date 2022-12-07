@@ -3,7 +3,7 @@ using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures.Behaviors;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Vehicles

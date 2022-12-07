@@ -1,4 +1,4 @@
-using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Entities.Residents;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools

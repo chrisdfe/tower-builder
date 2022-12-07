@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Residents;
-using TowerBuilder.DataTypes.Residents.Behaviors;
+using TowerBuilder.DataTypes.Entities.Residents;
+using TowerBuilder.DataTypes.Entities.Residents.Behaviors;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
@@ -112,7 +112,7 @@ namespace TowerBuilder.GameWorld.Residents
         {
             foreach (GameWorldResident gameWorldResident in gameWorldResidentsList)
             {
-                if ((entity is ResidentEntity) && ((ResidentEntity)entity).resident == gameWorldResident.resident)
+                if ((entity is Resident) && ((Resident)entity) == gameWorldResident.resident)
                 {
                     gameWorldResident.SetColor(GameWorldResident.ColorKey.Inspected);
                 }

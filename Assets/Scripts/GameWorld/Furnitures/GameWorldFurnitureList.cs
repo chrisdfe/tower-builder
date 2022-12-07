@@ -159,7 +159,7 @@ namespace TowerBuilder.GameWorld.Furnitures
 
             void SetInspectStateColor()
             {
-                if ((inspectedEntity is FurnitureEntity) && ((FurnitureEntity)inspectedEntity).furniture == furniture)
+                if ((inspectedEntity is Furniture) && ((Furniture)inspectedEntity) == furniture)
                 {
                     gameWorldFurniture.SetInspectedColor();
                     hasUpdated = true;

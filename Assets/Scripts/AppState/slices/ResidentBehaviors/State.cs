@@ -1,11 +1,11 @@
 using System;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.Residents;
+using TowerBuilder.DataTypes.Entities.Residents.Attributes;
+using TowerBuilder.DataTypes.Entities.Residents.Behaviors;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Notifications;
-using TowerBuilder.DataTypes.Residents;
-using TowerBuilder.DataTypes.Residents.Attributes;
-using TowerBuilder.DataTypes.Residents.Behaviors;
-using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Routes;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;

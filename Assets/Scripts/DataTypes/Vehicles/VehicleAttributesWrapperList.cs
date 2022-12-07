@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities.Furnitures.Behaviors;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 
 namespace TowerBuilder.DataTypes.Vehicles
 {

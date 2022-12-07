@@ -1,4 +1,4 @@
-using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Entities.Residents;
 
 namespace TowerBuilder.DataTypes.Entities.Furnitures
 {

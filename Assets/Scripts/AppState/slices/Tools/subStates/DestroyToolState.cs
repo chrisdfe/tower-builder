@@ -4,7 +4,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Rooms;
 using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Vehicles;
 using TowerBuilder.Systems;
 using TowerBuilder.Utils;

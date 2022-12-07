@@ -2,6 +2,9 @@
 
 ## Tasks
 
+- Maybe instead of roomCells room could use the entity cellCoordinatesList
+- Definitions/Queries could probably be pulled out into a "EntityTemplateListQueries" class
+- these "if (entity is Resident) && ((Resident)entity) == resident)" statements should be abstracted to an Equals method on Entity
 - in build mode somewhere in the UI it should give you a list of all the validation rules about the current selected entity
 - entity layers
 - Furniture usage slots

@@ -7,7 +7,7 @@ using TowerBuilder.ApplicationState.Rooms;
 using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.Definitions;
 using TowerBuilder.GameWorld.UI.Components;
 using UnityEngine;
@@ -36,7 +36,12 @@ namespace TowerBuilder.GameWorld.UI
             List<UISelectButton> result = new List<UISelectButton>();
 
             List<RoomTemplate> currentRoomDefinitions = GetRoomDefinitionsForCurrentCategory();
-            return currentRoomDefinitions.Select(roomTemplate => new UISelectButton.Input() { label = roomTemplate.title, value = roomTemplate.key }).ToList();
+            return currentRoomDefinitions.Select((roomTemplate) =>
+                new UISelectButton.Input()
+                {
+                    label = roomTemplate.title,
+                    value = Room.KeyLabelMap.ValueFromKey(roomTemplate.key)
+                }).ToList();
         }
 
         protected override void OnCategoryButtonClick(string roomCategory)
@@ -44,9 +49,9 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Tools.buildToolState.subStates.roomEntityType.SetSelectedRoomCategory(roomCategory);
         }
 
-        protected override void OnTemplateButtonClick(string roomTemplateKey)
+        protected override void OnTemplateButtonClick(string roomTemplateLabel)
         {
-            RoomTemplate selectedRoomTemplate = Registry.definitions.rooms.queries.FindByKey(roomTemplateKey);
+            RoomTemplate selectedRoomTemplate = Registry.definitions.rooms.queries.FindByKey(Room.KeyLabelMap.KeyFromValue(roomTemplateLabel));
             Registry.appState.Tools.buildToolState.subStates.roomEntityType.SetSelectedRoomTemplate(selectedRoomTemplate);
         }
 
@@ -63,7 +68,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnSelectedRoomTemplateUpdated(RoomTemplate roomTemplate)
         {
-            SetSelectedTemplate(roomTemplate.key);
+            SetSelectedTemplate(Room.KeyLabelMap.ValueFromKey(roomTemplate.key));
         }
     }
 }

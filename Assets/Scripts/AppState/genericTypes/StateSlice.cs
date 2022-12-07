@@ -1,7 +1,7 @@
 using System;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState

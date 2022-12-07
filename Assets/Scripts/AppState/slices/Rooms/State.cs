@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms.Validators;
 using TowerBuilder.DataTypes.Notifications;
-using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Rooms

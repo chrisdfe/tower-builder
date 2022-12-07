@@ -4,8 +4,8 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures.Validators;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Notifications;
-using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Furnitures

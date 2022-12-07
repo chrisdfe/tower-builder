@@ -4,8 +4,8 @@ using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Residents;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Residents;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
 
@@ -169,18 +169,12 @@ namespace TowerBuilder.ApplicationState.UI
         {
             selectionBox = new SelectionBox(currentSelectedCell);
 
-            if (events.onSelectionBoxUpdated != null)
-            {
-                events.onSelectionBoxUpdated(selectionBox);
-            }
+            events.onSelectionBoxUpdated?.Invoke(selectionBox);
         }
 
         void PerformSecondaryAction()
         {
-            if (events.onSecondaryActionPerformed != null)
-            {
-                events.onSecondaryActionPerformed();
-            }
+            events.onSecondaryActionPerformed?.Invoke();
         }
 
         void SetEntityList()
@@ -191,24 +185,21 @@ namespace TowerBuilder.ApplicationState.UI
             {
                 if (currentSelectedRoom != null)
                 {
-                    RoomEntity roomEntity = new RoomEntity(currentSelectedRoom);
-                    entityList.Add(roomEntity);
+                    entityList.Add<Room>(currentSelectedRoom);
                 }
 
                 Furniture furnitureAtCell = appState.Furnitures.queries.FindFurnitureAtCell(currentSelectedCell);
 
                 if (furnitureAtCell != null)
                 {
-                    FurnitureEntity furnitureEntity = new FurnitureEntity(furnitureAtCell);
-                    entityList.Add(furnitureEntity);
+                    entityList.Add<Furniture>(furnitureAtCell);
                 }
 
                 Resident residentAtCell = appState.Residents.queries.FindResidentAtCell(currentSelectedCell);
 
                 if (residentAtCell != null)
                 {
-                    ResidentEntity residentEntity = new ResidentEntity(residentAtCell);
-                    entityList.Add(residentEntity);
+                    entityList.Add<Resident>(residentAtCell);
                 }
             }
 

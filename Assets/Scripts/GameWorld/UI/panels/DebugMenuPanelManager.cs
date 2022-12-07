@@ -1,5 +1,5 @@
+using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Notifications;
-using TowerBuilder.DataTypes.Rooms;
 using TowerBuilder.DataTypes.Time;
 using TowerBuilder.Systems;
 using TowerBuilder.Utils;

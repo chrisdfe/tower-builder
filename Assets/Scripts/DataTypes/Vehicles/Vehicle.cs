@@ -1,5 +1,5 @@
 using System.Threading;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 
 namespace TowerBuilder.DataTypes.Vehicles
 {

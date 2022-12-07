@@ -31,7 +31,7 @@ namespace TowerBuilder.GameWorld
 
         public static int RoundToNearestTile(float number)
         {
-            float TILE_SIZE = DataTypes.Rooms.Constants.TILE_SIZE;
+            float TILE_SIZE = DataTypes.Entities.Rooms.Constants.TILE_SIZE;
             float rounded = (float)Math.Round(number / TILE_SIZE) * TILE_SIZE;
             return (int)rounded;
         }

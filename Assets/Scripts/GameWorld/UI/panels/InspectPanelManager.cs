@@ -4,10 +4,10 @@ using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Residents;
-using TowerBuilder.DataTypes.Residents.Attributes;
-using TowerBuilder.DataTypes.Residents.Behaviors;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Residents;
+using TowerBuilder.DataTypes.Entities.Residents.Attributes;
+using TowerBuilder.DataTypes.Entities.Residents.Behaviors;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -77,14 +77,14 @@ namespace TowerBuilder.GameWorld.UI
 
             switch (inspectedEntity)
             {
-                case RoomEntity roomEntity:
-                    SetInspectedRoomEntityText(roomEntity.room);
+                case Room roomEntity:
+                    SetInspectedRoomEntityText(roomEntity);
                     break;
-                case FurnitureEntity furnitureEntity:
-                    SetInspectedFurnitureText(furnitureEntity.furniture);
+                case Furniture furnitureEntity:
+                    SetInspectedFurnitureText(furnitureEntity);
                     break;
-                case ResidentEntity residentEntity:
-                    SetInspectedResidentText(residentEntity.resident);
+                case Resident residentEntity:
+                    SetInspectedResidentText(residentEntity);
                     break;
                 default:
                     SetNullInspectedText();
@@ -148,13 +148,13 @@ namespace TowerBuilder.GameWorld.UI
 
             switch (inspectedEntity)
             {
-                case RoomEntity roomEntity:
+                case Room roomEntity:
                     break;
-                case FurnitureEntity furnitureEntity:
-                    CreateFurnitureActionButtons(furnitureEntity.furniture);
+                case Furniture furnitureEntity:
+                    CreateFurnitureActionButtons(furnitureEntity as Furniture);
                     break;
-                case ResidentEntity residentEntity:
-                    CreateResidentActionButtons(residentEntity.resident);
+                case Resident residentEntity:
+                    CreateResidentActionButtons(residentEntity as Resident);
                     break;
             }
         }
@@ -215,8 +215,8 @@ namespace TowerBuilder.GameWorld.UI
         void OnResidentAttributeWrapperUpdated(ResidentAttributesWrapper residentAttributesWrapper)
         {
             if (
-                (Registry.appState.Tools.inspectToolState.inspectedEntity is ResidentEntity) &&
-                residentAttributesWrapper.resident == (Registry.appState.Tools.inspectToolState.inspectedEntity as ResidentEntity).resident
+                (Registry.appState.Tools.inspectToolState.inspectedEntity is Resident) &&
+                residentAttributesWrapper.resident == (Registry.appState.Tools.inspectToolState.inspectedEntity as Resident)
             )
             {
                 SetText();

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Entities.Residents;
 
 namespace TowerBuilder.DataTypes.Entities
 {
@@ -12,9 +12,10 @@ namespace TowerBuilder.DataTypes.Entities
 
         public EntityList() { }
 
-        public void Add(Entity entity)
+        public void Add<EntityType>(EntityType entity)
+            where EntityType : Entity
         {
-            if (!entities.Contains(entity))
+            if (!Contains<EntityType>(entity))
             {
                 entities.Add(entity);
             }
@@ -29,7 +30,7 @@ namespace TowerBuilder.DataTypes.Entities
         {
             entities.RemoveAll(entity =>
             {
-                return (entity is FurnitureEntity) && ((FurnitureEntity)entity).furniture == furniture;
+                return (entity is Furniture) && ((Furniture)entity) == furniture;
             });
         }
 
@@ -37,24 +38,15 @@ namespace TowerBuilder.DataTypes.Entities
         {
             entities.RemoveAll(entity =>
             {
-                return (entity is ResidentEntity) && ((ResidentEntity)entity).resident == resident;
+                return (entity is Resident) && ((Resident)entity) == resident;
             });
         }
 
-        public bool Contains(Furniture furniture)
-        {
-            return entities.Find(entity =>
-            {
-                return (entity is FurnitureEntity) && ((FurnitureEntity)entity).furniture == furniture;
-            }) != null;
-        }
-
-        public bool Contains(Resident resident)
-        {
-            return entities.Find(entity =>
-            {
-                return (entity is ResidentEntity) && ((ResidentEntity)entity).resident == resident;
-            }) != null;
-        }
+        public bool Contains<EntityType>(Entity targetEntity)
+            where EntityType : Entity
+        =>
+            entities.Find(entity =>
+                (entity is EntityType) && ((EntityType)entity) == targetEntity
+            ) != null;
     }
 }

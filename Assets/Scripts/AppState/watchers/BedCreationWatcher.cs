@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Entities.Residents;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState

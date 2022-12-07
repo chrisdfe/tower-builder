@@ -2,7 +2,7 @@ using System;
 using TowerBuilder;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager

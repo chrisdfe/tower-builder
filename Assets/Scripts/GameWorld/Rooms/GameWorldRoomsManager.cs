@@ -6,7 +6,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms

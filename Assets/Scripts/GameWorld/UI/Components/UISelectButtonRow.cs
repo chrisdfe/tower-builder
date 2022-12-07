@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState.Rooms;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.Utils;
 using UnityEngine;
 using UnityEngine.UI;

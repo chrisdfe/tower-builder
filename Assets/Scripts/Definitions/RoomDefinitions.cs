@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.Rooms.FurnitureBuilders;
-using TowerBuilder.DataTypes.Rooms.Validators;
+using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms.FurnitureBuilders;
+using TowerBuilder.DataTypes.Entities.Rooms.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.Definitions
@@ -16,7 +16,7 @@ namespace TowerBuilder.Definitions
             new RoomTemplate()
             {
                 title = "Empty",
-                key = "Empty",
+                key = Room.Key.Default,
                 category = "Empty",
 
                 blockDimensions = new Dimensions(1, 1),
@@ -28,7 +28,7 @@ namespace TowerBuilder.Definitions
             new RoomTemplate()
             {
                 title = "Wheels",
-                key = "Wheels",
+                key = Room.Key.Wheels,
                 category = "Wheels",
 
                 blockDimensions = new Dimensions(1, 1),
@@ -52,7 +52,7 @@ namespace TowerBuilder.Definitions
             public RoomTemplate FindByTitle(string title) =>
                 definitions.Find(template => template.title == title);
 
-            public RoomTemplate FindByKey(string key) =>
+            public RoomTemplate FindByKey(Room.Key key) =>
                 definitions.Find(template => template.key == key);
 
             public List<RoomTemplate> FindByCategory(string category) =>

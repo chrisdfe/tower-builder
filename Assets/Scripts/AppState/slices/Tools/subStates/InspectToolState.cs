@@ -4,8 +4,8 @@ using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Residents;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Residents;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools
@@ -133,7 +133,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
             foreach (Furniture furniture in furnitureList.items)
             {
-                if (inspectedEntityList.Contains(furniture))
+                if (inspectedEntityList.Contains<Furniture>(furniture))
                 {
                     shouldReset = true;
                     inspectedEntityList.Remove(furniture);
@@ -158,7 +158,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
             foreach (Resident resident in residentsList.items)
             {
-                if (inspectedEntityList.Contains(resident))
+                if (inspectedEntityList.Contains<Resident>(resident))
                 {
                     shouldReset = true;
                     inspectedEntityList.Remove(resident);
@@ -181,7 +181,7 @@ namespace TowerBuilder.ApplicationState.Tools
         {
             if (!(inspectedEntity is Resident)) return;
 
-            Resident resident = (inspectedEntity as Resident).resident;
+            Resident resident = (inspectedEntity as Resident);
             CellCoordinates targetCellCoordinates = appState.UI.currentSelectedCell;
             Furniture furnitureAtTarget = appState.Furnitures.queries.FindFurnitureAtCell(targetCellCoordinates);
 

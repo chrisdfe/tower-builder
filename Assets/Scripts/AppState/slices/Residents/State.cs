@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Routes;
 using UnityEngine;
 

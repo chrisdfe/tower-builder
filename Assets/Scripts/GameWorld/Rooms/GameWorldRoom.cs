@@ -6,7 +6,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms
@@ -174,7 +174,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
                 if (inspectedEntity != null)
                 {
-                    if ((inspectedEntity is Room) && ((Room)inspectedEntity).room == room)
+                    if ((inspectedEntity is Room) && ((Room)inspectedEntity) == room)
                     {
                         gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.Inspected);
                         hasUpdated = true;

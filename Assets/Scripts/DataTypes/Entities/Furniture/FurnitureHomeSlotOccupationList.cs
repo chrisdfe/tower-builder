@@ -1,6 +1,6 @@
 using System.Linq;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Residents;
+using TowerBuilder.DataTypes.Entities.Residents;
 
 namespace TowerBuilder.DataTypes.Entities.Furnitures
 {

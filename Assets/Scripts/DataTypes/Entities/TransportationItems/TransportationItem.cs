@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Rooms;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.TransportationItems
@@ -33,8 +33,6 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
         // TODO - replace this with Transportation direction
         public bool isOneWay = false;
 
-        public new TransportationItemTemplate template;
-
         public TransportationItem(TransportationItemTemplate template) : base(template)
         {
             this.entranceCellCoordinates = template.entranceCellCoordinates;
@@ -46,6 +44,11 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
         */
         public void PositionAtCoordinates(CellCoordinates cellCoordinates)
         {
+            TransportationItemTemplate template = this.template as TransportationItemTemplate;
+            Debug.Log("template");
+            Debug.Log(template);
+            Debug.Log(template.entranceCellCoordinates);
+            Debug.Log(template.exitCellCoordinates);
             cellCoordinatesList.PositionAtCoordinates(cellCoordinates);
             entranceCellCoordinates = CellCoordinates.Add(cellCoordinates, template.entranceCellCoordinates);
             exitCellCoordinates = CellCoordinates.Add(cellCoordinates, template.exitCellCoordinates);
