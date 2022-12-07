@@ -1,6 +1,6 @@
 using System.Linq;
+using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.DataTypes.Rooms;
-using TowerBuilder.DataTypes.TransportationItems;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.TransportationItems

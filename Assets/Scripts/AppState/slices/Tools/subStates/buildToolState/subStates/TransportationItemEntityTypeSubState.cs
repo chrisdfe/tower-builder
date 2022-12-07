@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.DataTypes.TransportationItems;
+using TowerBuilder.DataTypes.Entities.TransportationItems;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools

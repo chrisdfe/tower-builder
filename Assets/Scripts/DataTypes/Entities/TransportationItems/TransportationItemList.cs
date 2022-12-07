@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 
-namespace TowerBuilder.DataTypes.TransportationItems
+namespace TowerBuilder.DataTypes.Entities.TransportationItems
 {
     public class TransportationItemsList : ListWrapper<TransportationItem>
     {

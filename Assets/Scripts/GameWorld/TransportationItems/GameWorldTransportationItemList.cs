@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using TowerBuilder.DataTypes.TransportationItems;
+using TowerBuilder.DataTypes.Entities.TransportationItems;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Rooms

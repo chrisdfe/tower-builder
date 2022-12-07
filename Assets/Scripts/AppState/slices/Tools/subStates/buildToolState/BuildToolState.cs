@@ -20,7 +20,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public class Events
         {
-            public delegate void SelectedEntityKeyEvent(Entity.Key entityKey, Entity.Key previousEntityType);
+            public delegate void SelectedEntityKeyEvent(Entity.Type entityKey, Entity.Type previousEntityType);
             public SelectedEntityKeyEvent onSelectedEntityKeyUpdated;
 
             public delegate void buildIsActiveEvent();
@@ -28,7 +28,7 @@ namespace TowerBuilder.ApplicationState.Tools
             public buildIsActiveEvent onBuildEnd;
         }
 
-        public Entity.Key selectedEntityKey { get; private set; } = Entity.Key.Room;
+        public Entity.Type selectedEntityKey { get; private set; } = Entity.Type.Room;
 
         public BuildToolState.Events events;
 
@@ -91,10 +91,10 @@ namespace TowerBuilder.ApplicationState.Tools
             currentSubState.OnSelectionBoxUpdated();
         }
 
-        public void SetSelectedEntityKey(Entity.Key entityType)
+        public void SetSelectedEntityKey(Entity.Type entityType)
         {
             isLocked = true;
-            Entity.Key previousEntityType = this.selectedEntityKey;
+            Entity.Type previousEntityType = this.selectedEntityKey;
             this.selectedEntityKey = entityType;
 
             // tear previous state down
@@ -135,13 +135,13 @@ namespace TowerBuilder.ApplicationState.Tools
             }
         }
 
-        EntityTypeSubState GetSubState(Entity.Key entityType) =>
+        EntityTypeSubState GetSubState(Entity.Type entityType) =>
             entityType switch
             {
-                Entity.Key.Room => subStates.roomEntityType,
-                Entity.Key.Furniture => subStates.furnitureEntityType,
-                Entity.Key.Resident => subStates.residentEntityType,
-                Entity.Key.TransportationItem => subStates.transportationItemEntityType,
+                Entity.Type.Room => subStates.roomEntityType,
+                Entity.Type.Furniture => subStates.furnitureEntityType,
+                Entity.Type.Resident => subStates.residentEntityType,
+                Entity.Type.TransportationItem => subStates.transportationItemEntityType,
                 _ => throw new NotImplementedException("invalid entity type: " + entityType)
             };
     }

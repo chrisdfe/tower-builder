@@ -17,7 +17,7 @@ namespace TowerBuilder.Definitions
         public List<FurnitureTemplate> definitions { get; private set; } = new List<FurnitureTemplate>()
         {
             new FurnitureTemplate() {
-                key = "PilotSeat",
+                key = Furniture.Key.PilotSeat,
                 title = "Pilot Seat",
                 category = "PilotSeats",
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new CockpitBehavior(appState, furniture),
@@ -25,7 +25,7 @@ namespace TowerBuilder.Definitions
             },
 
             new FurnitureTemplate() {
-                key = "Engine",
+                key = Furniture.Key.Engine,
                 title = "Engine",
                 category = "Engines",
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new EngineBehavior(appState, furniture),
@@ -33,7 +33,7 @@ namespace TowerBuilder.Definitions
             },
 
             new FurnitureTemplate() {
-                key = "Bed",
+                key = Furniture.Key.Bed,
                 title = "Bed",
                 category = "Beds",
                 homeSlotCount = 1,
@@ -42,7 +42,7 @@ namespace TowerBuilder.Definitions
             },
 
             new FurnitureTemplate() {
-                key = "MoneyMachine",
+                key = Furniture.Key.MoneyMachine,
                 title = "Money Machine",
                 category = "Industry",
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new MoneyMachineBehavior(appState, furniture),
@@ -59,7 +59,7 @@ namespace TowerBuilder.Definitions
                 this.definitions = definitions;
             }
 
-            public FurnitureTemplate FindByKey(string key)
+            public FurnitureTemplate FindByKey(Furniture.Key key)
             {
                 return definitions.Find(furnitureDefinition => furnitureDefinition.key == key);
             }

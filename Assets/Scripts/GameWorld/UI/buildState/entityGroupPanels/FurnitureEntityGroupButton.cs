@@ -50,7 +50,12 @@ namespace TowerBuilder.GameWorld.UI
             List<UISelectButton> result = new List<UISelectButton>();
 
             List<FurnitureTemplate> currentFurnitureDefinitions = GetFurnitureDefinitionsForCurrentCategory();
-            return currentFurnitureDefinitions.Select(furnitureTemplate => new UISelectButton.Input() { label = furnitureTemplate.title, value = furnitureTemplate.key }).ToList();
+            return currentFurnitureDefinitions.Select((furnitureTemplate) =>
+                new UISelectButton.Input()
+                {
+                    label = furnitureTemplate.title,
+                    value = Furniture.KeyLabelMap.ValueFromKey(furnitureTemplate.key)
+                }).ToList();
         }
 
         protected override void OnCategoryButtonClick(string furnitureCategory)
@@ -58,9 +63,10 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.SetSelectedFurnitureCategory(furnitureCategory);
         }
 
-        protected override void OnTemplateButtonClick(string furnitureTemplateKey)
+        protected override void OnTemplateButtonClick(string furnitureTemplateLabel)
         {
-            FurnitureTemplate selectedFurnitureTemplate = Registry.definitions.furnitures.queries.FindByKey(furnitureTemplateKey);
+            Furniture.Key key = Furniture.KeyLabelMap.KeyFromValue(furnitureTemplateLabel);
+            FurnitureTemplate selectedFurnitureTemplate = Registry.definitions.furnitures.queries.FindByKey(key);
             Registry.appState.Tools.buildToolState.subStates.furnitureEntityType.SetSelectedFurnitureTemplate(selectedFurnitureTemplate);
         }
 
@@ -77,7 +83,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnSelectedFurnitureTemplateUpdated(FurnitureTemplate furnitureTemplate)
         {
-            SetSelectedTemplate(furnitureTemplate.key);
+            SetSelectedTemplate(Furniture.KeyLabelMap.ValueFromKey(furnitureTemplate.key));
         }
     }
 }

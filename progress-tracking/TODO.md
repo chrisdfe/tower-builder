@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- in build mode somewhere in the UI it should give you a list of all the validation rules about the current selected entity
 - entity layers
 - Furniture usage slots
 - Back walls entity

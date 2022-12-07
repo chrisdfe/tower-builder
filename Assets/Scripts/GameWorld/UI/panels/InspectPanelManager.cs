@@ -100,8 +100,7 @@ namespace TowerBuilder.GameWorld.UI
         void SetInspectedFurnitureText(Furniture furniture)
         {
             string text = "Furniture\n"
-                + $"   name: {furniture}\n"
-                + $"   condition: {furniture.condition}";
+                + $"   name: {furniture}\n";
 
             inspectText.text = text;
         }

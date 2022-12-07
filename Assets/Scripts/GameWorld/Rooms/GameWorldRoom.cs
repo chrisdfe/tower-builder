@@ -174,7 +174,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
                 if (inspectedEntity != null)
                 {
-                    if ((inspectedEntity is RoomEntity) && ((RoomEntity)inspectedEntity).room == room)
+                    if ((inspectedEntity is Room) && ((Room)inspectedEntity).room == room)
                     {
                         gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.Inspected);
                         hasUpdated = true;

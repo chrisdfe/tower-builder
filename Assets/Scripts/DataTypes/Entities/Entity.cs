@@ -9,7 +9,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public int id { get; }
 
-        public enum Key
+        public enum Type
         {
             Room,
             Resident,
@@ -17,28 +17,38 @@ namespace TowerBuilder.DataTypes.Entities
             TransportationItem
         }
 
-        static EnumStringMap<Key> TypeLabels = new EnumStringMap<Key>(
-            new Dictionary<Key, string>() {
-                { Key.Room,               "Room" },
-                { Key.Resident,           "Resident" },
-                { Key.Furniture,          "Furniture" },
-                { Key.TransportationItem, "Transportation Item" }
+        static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
+            new Dictionary<Type, string>() {
+                { Type.Room,               "Room" },
+                { Type.Resident,           "Resident" },
+                { Type.Furniture,          "Furniture" },
+                { Type.TransportationItem, "Transportation Item" }
             }
         );
 
-        public string key { get; protected set; } = "None";
-        public string title { get; protected set; } = "None";
-        public string category { get; protected set; } = "None";
+        public string title { get; } = "None";
+        public string category { get; } = "None";
 
-        public virtual int pricePerCell { get => 0; }
+        public virtual int pricePerCell => 0;
+
+        public int price => pricePerCell * cellCoordinatesList.Count;
 
         public bool isInBlueprintMode { get; set; } = false;
 
+        // TODO - remove the set; accessor too
         public CellCoordinatesList cellCoordinatesList { get; set; } = new CellCoordinatesList();
 
-        public Entity()
+        public EntityTemplate template { get; }
+
+        public Entity(EntityTemplate template)
         {
+            this.template = template;
+
             this.id = UIDGenerator.Generate(idKey);
+            this.title = template.title;
+            this.category = template.category;
+
+            this.cellCoordinatesList = template.cellCoordinatesList.Clone();
         }
 
         public void OnBuild()
@@ -49,5 +59,16 @@ namespace TowerBuilder.DataTypes.Entities
         public void OnDestroy() { }
         public virtual void Setup() { }
         public virtual void Teardown() { }
+    }
+
+    public class Entity<KeyType> : Entity
+        where KeyType : struct
+    {
+        public KeyType key { get; protected set; }
+
+        public Entity(EntityTemplate<KeyType> template) : base(template as EntityTemplate)
+        {
+            this.key = template.key;
+        }
     }
 }

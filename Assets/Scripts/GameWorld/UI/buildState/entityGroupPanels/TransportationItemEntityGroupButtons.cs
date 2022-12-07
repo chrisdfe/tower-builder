@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.TransportationItems;
+using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.Definitions;
 using TowerBuilder.GameWorld.UI.Components;
 using UnityEngine;

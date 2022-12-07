@@ -179,9 +179,9 @@ namespace TowerBuilder.ApplicationState.Tools
 
         void OnSecondaryActionPerformed()
         {
-            if (!(inspectedEntity is ResidentEntity)) return;
+            if (!(inspectedEntity is Resident)) return;
 
-            Resident resident = (inspectedEntity as ResidentEntity).resident;
+            Resident resident = (inspectedEntity as Resident).resident;
             CellCoordinates targetCellCoordinates = appState.UI.currentSelectedCell;
             Furniture furnitureAtTarget = appState.Furnitures.queries.FindFurnitureAtCell(targetCellCoordinates);
 

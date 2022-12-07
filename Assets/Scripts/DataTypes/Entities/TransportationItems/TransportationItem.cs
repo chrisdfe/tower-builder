@@ -4,10 +4,12 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.TransportationItems
+namespace TowerBuilder.DataTypes.Entities.TransportationItems
 {
-    public class TransportationItem
+    public class TransportationItem : Entity<TransportationItem.Key>
     {
+        public override string idKey => "TransportationItem";
+
         public enum Key
         {
             None,
@@ -23,45 +25,20 @@ namespace TowerBuilder.DataTypes.TransportationItems
             (Key.Doorway, "Doorway"),
         };
 
-        public int id { get; private set; }
-
-        public string title { get; private set; } = "None";
-        public Key key { get; private set; } = Key.None;
-        public string category { get; private set; } = "None";
-
-        public int pricePerCell { get; private set; } = 0;
-
-        public CellCoordinatesList cellCoordinatesList;
+        public override int pricePerCell => 1000;
 
         public CellCoordinates entranceCellCoordinates = CellCoordinates.zero;
         public CellCoordinates exitCellCoordinates = CellCoordinates.zero;
 
-        public bool isInBlueprintMode = false;
-
+        // TODO - replace this with Transportation direction
         public bool isOneWay = false;
 
-        public TransportationItemTemplate template;
+        public new TransportationItemTemplate template;
 
-        public TransportationItem(TransportationItemTemplate template)
+        public TransportationItem(TransportationItemTemplate template) : base(template)
         {
-            this.id = UIDGenerator.Generate("TransportationItem");
-
-            this.title = template.title;
-            this.key = template.key;
-            this.category = template.category;
-            this.pricePerCell = template.pricePerCell;
-
-            this.cellCoordinatesList = template.cellCoordinatesList.Clone();
-
             this.entranceCellCoordinates = template.entranceCellCoordinates;
             this.exitCellCoordinates = template.exitCellCoordinates;
-
-            this.template = template;
-        }
-
-        public void OnBuild()
-        {
-            isInBlueprintMode = false;
         }
 
         /*
