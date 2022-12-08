@@ -2,6 +2,8 @@
 
 ## Tasks
 
+- Move the rest of the entities states (resident, transportationitems etc) into the entities state
+- "Entities state slice"? is that getting too deep into inheritence
 - abstract room/furniture validators -> entity validators
 - auto generate entity buttons
 - reorganize/simplify buildtool state to be more dynamic
