@@ -2,15 +2,30 @@
 
 ## Tasks
 
+- abstract room/furniture validators -> entity validators
+- auto generate entity buttons
+- reorganize/simplify buildtool state to be more dynamic
+- same as with how I made an entities appState slice:
+  - Attributes appState slice group
+  - Behaviors appState slice group
+  - Validators appState slice group
+- Fix transportationitem tiling
+- Fix room cell tiling
+- Rename "templates" to "definitions" & remove a lot of 'constant' fields from entity, like title, category, etc. A reference to its definition is good enough
+- replace ValidateWheelsAreOnCorrectFloor with generic validator
+- abstract room validators up into EntityValidators
+- ssame with room definitions/queries
 - Maybe instead of roomCells room could use the entity cellCoordinatesList
 - Definitions/Queries could probably be pulled out into a "EntityTemplateListQueries" class
 - these "if (entity is Resident) && ((Resident)entity) == resident)" statements should be abstracted to an Equals method on Entity
 - in build mode somewhere in the UI it should give you a list of all the validation rules about the current selected entity
-- entity layers
+- entity layers (determines the z-index the entity is rendered at)
 - Furniture usage slots
-- Back walls entity
-- Floor entity
-- Side wall entity
+- Break room entity down into:
+  - Back walls entity
+  - Floor entity
+  - Side wall entity
+  - Room would be a "group", making a room would be making a floor, back walls, etc simultaneously
 - "Cell" class that encompasses coordinates, orientation?
 - perhaps game should pause in build/destroy modes; can't switch back to play mode until everything is valid
 - room templates should be a collection of furnitures, transportation items, etc.

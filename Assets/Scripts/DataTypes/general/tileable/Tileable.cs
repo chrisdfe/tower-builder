@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.Utils;
 using UnityEngine;
 
@@ -51,44 +52,31 @@ namespace TowerBuilder.DataTypes
             // Full
             TopLeft, TopRight,
             Center,
-            BottomLeft, BottomRight
+            BottomRight, BottomLeft,
+
+            TopIsolated,
+            BottomIsolated,
+            LeftIsolated,
+            RightIsolated,
         }
 
         // Map of CellPosition enum -> fbx node names
         public static EnumStringMap<Tileable.CellPosition> CellPositionLabelMap = new EnumStringMap<Tileable.CellPosition>(
             new Dictionary<CellPosition, string>() {
-                { CellPosition.Single, "Single" },
-
-                { CellPosition.Left, "Left" },
+                { CellPosition.Single,           "Single" },
+                { CellPosition.Left,             "Left" },
                 { CellPosition.HorizontalCenter, "HorizontalCenter" },
-                { CellPosition.Right, "Right" },
-
-                { CellPosition.Top, "Top" },
-                { CellPosition.VerticalCenter, "VerticalCenter" },
-                { CellPosition.Bottom, "Bottom" },
-
-                { CellPosition.TopLeft, "TopLeft" },
-                { CellPosition.TopRight, "TopRight" },
-                { CellPosition.Center, "Center" },
-                { CellPosition.BottomLeft, "BottomLeft" },
-                { CellPosition.BottomRight, "BottomRight" },
+                { CellPosition.Right,            "Right" },
+                { CellPosition.Top,              "Top" },
+                { CellPosition.VerticalCenter,   "VerticalCenter" },
+                { CellPosition.Bottom,           "Bottom" },
+                { CellPosition.TopLeft,          "TopLeft" },
+                { CellPosition.TopRight,         "TopRight" },
+                { CellPosition.Center,           "Center" },
+                { CellPosition.BottomLeft,       "BottomLeft" },
+                { CellPosition.BottomRight,      "BottomRight" },
             }
         );
-
-        // Cell position in relation to another cell
-        // TODO - put this in CellCoordinates?
-        public enum CellOrientation
-        {
-            None,
-            Above,
-            AboveRight,
-            Right,
-            BelowRight,
-            Below,
-            BelowLeft,
-            Left,
-            AboveLeft
-        }
 
         public abstract Type type { get; }
         public abstract CellPosition GetCellPosition(OccupiedCellMap occupied);
@@ -165,245 +153,24 @@ namespace TowerBuilder.DataTypes
             return FromType(type);
         }
 
-        public static List<(CellCoordinates, Tileable.OccupiedCellMap)> CreateOccupiedCellMaps(CellCoordinatesList cellCoordinatesList) =>
+        public static Tileable FromResizability(Entity.Resizability resizability)
+        {
+            return resizability switch
+            {
+                Entity.Resizability.Flexible => new FullyTileable(),
+                Entity.Resizability.Horizontal => new HorizontalTileable(),
+                Entity.Resizability.Vertical => new VerticalTileable(),
+                Entity.Resizability.Inflexible => new SingleTileable(),
+                _ => new SingleTileable()
+            };
+        }
+
+        public static List<(CellCoordinates, OccupiedCellMap)> CreateOccupiedCellMaps(CellCoordinatesList cellCoordinatesList) =>
             cellCoordinatesList.items.Select((cellCoordinates) =>
                 (
                     cellCoordinates,
-                    Tileable.OccupiedCellMap.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList)
+                    OccupiedCellMap.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList)
                 )
             ).ToList();
-
-        public class OccupiedCellMap
-        {
-            public Dictionary<CellOrientation, bool> map { get; private set; } = new Dictionary<CellOrientation, bool>();
-
-            public OccupiedCellMap(Dictionary<CellOrientation, bool> map)
-            {
-                this.map = map;
-            }
-
-            public bool Has(CellOrientation cellOrientation) => map.ContainsKey(cellOrientation) && map[cellOrientation];
-
-            public bool HasAll(CellOrientation[] cellOrientations) =>
-                GetOccupiedCells(cellOrientations).Count == cellOrientations.Count();
-
-            public bool HasSome(CellOrientation[] cellOrientations) =>
-                GetOccupiedCells(cellOrientations).Count > 0;
-
-            public bool HasNone(CellOrientation[] cellOrientations) =>
-                GetOccupiedCells(cellOrientations).Count == 0;
-
-            List<CellOrientation> GetOccupiedCells(CellOrientation[] cellOrientations) =>
-                cellOrientations.ToList().FindAll(orientation => Has(orientation));
-
-            /*
-                Static API
-            */
-            public static OccupiedCellMap FromCellCoordinatesList(CellCoordinates cellCoordinates, CellCoordinatesList cellCoordinatesList) =>
-                new OccupiedCellMap(
-                    new Dictionary<CellOrientation, bool>() {
-                        { CellOrientation.Above,      cellCoordinatesList.Contains(cellCoordinates.coordinatesAbove) },
-                        { CellOrientation.AboveRight, cellCoordinatesList.Contains(cellCoordinates.coordinatesAboveRight) },
-                        { CellOrientation.Right,      cellCoordinatesList.Contains(cellCoordinates.coordinatesRight) },
-                        { CellOrientation.BelowRight, cellCoordinatesList.Contains(cellCoordinates.coordinatesBelowRight) },
-                        { CellOrientation.Below,      cellCoordinatesList.Contains(cellCoordinates.coordinatesBelow) },
-                        { CellOrientation.BelowLeft,  cellCoordinatesList.Contains(cellCoordinates.coordinatesBelowLeft) },
-                        { CellOrientation.Left,       cellCoordinatesList.Contains(cellCoordinates.coordinatesLeft) },
-                        { CellOrientation.AboveLeft,  cellCoordinatesList.Contains(cellCoordinates.coordinatesAboveLeft) },
-                    }
-                );
-        }
-    }
-
-    public class SingleTileable : Tileable
-    {
-        public override Type type { get; } = Type.Single;
-        public override Tileable.CellPosition GetCellPosition(OccupiedCellMap occupied) => CellPosition.Single;
-
-        public override CellPosition[] allPossibleCellPositions
-        {
-            get => new CellPosition[] { CellPosition.Single };
-        }
-    }
-
-    public class HorizontalTileable : Tileable
-    {
-        public override Type type { get; } = Type.Horizontal;
-
-        public override CellPosition[] allPossibleCellPositions
-        {
-            get =>
-                new CellPosition[] {
-                    CellPosition.Left,
-                    CellPosition.HorizontalCenter,
-                    CellPosition.Right
-                };
-        }
-
-        public override CellPosition GetCellPosition(OccupiedCellMap occupied)
-        {
-            if (occupied.HasAll(new CellOrientation[] { CellOrientation.Left, CellOrientation.Right }))
-            {
-                return CellPosition.HorizontalCenter;
-            }
-
-            if (occupied.Has(CellOrientation.Left))
-            {
-                return CellPosition.Right;
-            }
-
-            if (occupied.Has(CellOrientation.Right))
-            {
-                return CellPosition.Left;
-            }
-
-            return CellPosition.Single;
-        }
-    }
-
-    public class VerticalTileable : Tileable
-    {
-        public override Type type { get; } = Type.Vertical;
-
-
-        public override CellPosition[] allPossibleCellPositions
-        {
-            get =>
-                new CellPosition[] {
-                    CellPosition.Top,
-                    CellPosition.VerticalCenter,
-                    CellPosition.Bottom
-                };
-        }
-
-        public override Tileable.CellPosition GetCellPosition(OccupiedCellMap occupied)
-        {
-            if (occupied.HasAll(new CellOrientation[] { CellOrientation.Above, CellOrientation.Below }))
-            {
-                return Tileable.CellPosition.VerticalCenter;
-            }
-
-            if (occupied.Has(CellOrientation.Above))
-            {
-                return Tileable.CellPosition.Bottom;
-            }
-
-            if (occupied.Has(CellOrientation.Below))
-            {
-                return Tileable.CellPosition.Top;
-            }
-
-            return Tileable.CellPosition.Single;
-        }
-    }
-
-    public class DiagonalTileable : Tileable
-    {
-        public override Type type { get; } = Type.Diagonal;
-
-        public override CellPosition[] allPossibleCellPositions
-        {
-            get =>
-                new CellPosition[] {
-                    CellPosition.BottomLeft,
-                    CellPosition.DiagonalCenter,
-                    CellPosition.TopRight
-                };
-        }
-
-        public override Tileable.CellPosition GetCellPosition(OccupiedCellMap occupied)
-        {
-            if (occupied.HasAll(new CellOrientation[] { CellOrientation.BelowLeft, CellOrientation.AboveRight }))
-            {
-                return Tileable.CellPosition.DiagonalCenter;
-            }
-
-            if (occupied.Has(CellOrientation.AboveRight))
-            {
-                return Tileable.CellPosition.BottomLeft;
-            }
-
-            if (occupied.Has(CellOrientation.BelowLeft))
-            {
-                return Tileable.CellPosition.TopRight;
-            }
-
-            return Tileable.CellPosition.Single;
-        }
-    }
-
-    public class FullyTileable : Tileable
-    {
-        public override Type type { get; } = Type.Full;
-
-        public override CellPosition[] allPossibleCellPositions
-        {
-            get =>
-                new CellPosition[] {
-                    CellPosition.Single,
-                    CellPosition.Left,
-                    CellPosition.HorizontalCenter,
-                    CellPosition.Right,
-                    CellPosition.Top,
-                    CellPosition.VerticalCenter,
-                    CellPosition.Bottom,
-                    CellPosition.TopLeft,
-                    CellPosition.TopRight,
-                    CellPosition.Center,
-                    CellPosition.BottomLeft,
-                    CellPosition.BottomRight
-                };
-        }
-
-        public override Tileable.CellPosition GetCellPosition(OccupiedCellMap occupied)
-        {
-            if (
-                occupied.HasAll(new CellOrientation[] {
-                    CellOrientation.Above,
-                    CellOrientation.Right,
-                    CellOrientation.Below,
-                    CellOrientation.Left
-                })
-            )
-            {
-                return Tileable.CellPosition.Center;
-            }
-
-            if (occupied.HasAll(new CellOrientation[] { CellOrientation.Above, CellOrientation.Below }))
-            {
-                return Tileable.CellPosition.VerticalCenter;
-            }
-
-            if (occupied.HasAll(new CellOrientation[] { CellOrientation.Left, CellOrientation.Right }))
-            {
-                return Tileable.CellPosition.HorizontalCenter;
-            }
-
-            // TODO - walls
-            // TODO - corners
-
-            if (occupied.Has(CellOrientation.Left))
-            {
-                return Tileable.CellPosition.Right;
-            }
-
-            if (occupied.Has(CellOrientation.Right))
-            {
-                return Tileable.CellPosition.Left;
-            }
-
-            if (occupied.Has(CellOrientation.Above))
-            {
-                return Tileable.CellPosition.Bottom;
-            }
-
-            if (occupied.Has(CellOrientation.Below))
-            {
-                return Tileable.CellPosition.Top;
-            }
-
-
-            return Tileable.CellPosition.Single;
-        }
     }
 }

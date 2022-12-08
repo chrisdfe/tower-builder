@@ -36,8 +36,6 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
 
         public new FurnitureTemplate template { get; }
 
-        public override int pricePerCell => template.price;
-
         public Furniture(FurnitureTemplate furnitureTemplate) : base(furnitureTemplate)
         {
             this.template = furnitureTemplate;

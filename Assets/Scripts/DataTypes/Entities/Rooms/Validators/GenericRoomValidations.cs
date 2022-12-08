@@ -16,7 +16,7 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
 
     public static class GenericRoomCellValidations
     {
-        public static List<RoomValidationError> ValidateRoomCellIsNotOverlappingAnotherRoom(AppState appState, Room room, RoomCell roomCell)
+        public static List<RoomValidationError> ValidateRoomCellIsNotOverlappingAnotherRoom(AppState appState, Room room, CellCoordinates cellCoordinates)
         {
             List<RoomValidationError> errors = new List<RoomValidationError>();
 
@@ -25,7 +25,7 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
             // Check for overlapping cells
             foreach (Room otherRoom in allRooms.items)
             {
-                if (otherRoom != room && otherRoom.blocks.cells.coordinatesList.Contains(roomCell.coordinates))
+                if (otherRoom != room && otherRoom.cellCoordinatesList.Contains(cellCoordinates))
                 {
                     return Helpers.CreateErrorList("You cannot build rooms on top of each other.");
                 }
@@ -34,25 +34,22 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
             return Helpers.CreateEmptyErrorList();
         }
 
-        public static List<RoomValidationError> ValidateAcceptableOverhang(AppState appState, Room room, RoomCell roomCell)
+        public static List<RoomValidationError> ValidateAcceptableOverhang(AppState appState, Room room, CellCoordinates cellCoordinates)
         {
-            bool isOnBottom = room.blocks.cells.GetRelativeRoomCellCoordinates(roomCell).floor == 0;
+            bool isOnBottom = room.cellCoordinatesList.lowestFloor == 0;
 
             // TODO - account for room width being less than MAX_OVERHANG
-            int roomWidth = room.blocks.cells.coordinatesList.width;
+            int roomWidth = room.cellCoordinatesList.width;
 
-            if (isOnBottom && roomCell.coordinates.floor > 0)
+            if (isOnBottom && cellCoordinates.floor > 0)
             {
-                Room roomUnderneath = appState.Rooms.queries.FindRoomAtCell(new CellCoordinates(roomCell.coordinates.x, roomCell.coordinates.floor - 1));
+                Room roomUnderneath = appState.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelow);
 
                 if (roomUnderneath == null)
                 {
-                    // cell is overhanging - look for rooms underneath within acceptable overhange range
-                    CellCoordinates cellUnderneathToTheLeft = new CellCoordinates(roomCell.coordinates.x - 1, roomCell.coordinates.floor - 1);
-                    Room roomUnderneathToTheLeft = appState.Rooms.queries.FindRoomAtCell(cellUnderneathToTheLeft);
-
-                    CellCoordinates cellUnderneathToTheRight = new CellCoordinates(roomCell.coordinates.x + 1, roomCell.coordinates.floor - 1);
-                    Room roomUnderneathToTheRight = appState.Rooms.queries.FindRoomAtCell(cellUnderneathToTheRight);
+                    // cell is overhanging - look for rooms underneath within acceptable overhang range
+                    Room roomUnderneathToTheLeft = appState.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelowLeft);
+                    Room roomUnderneathToTheRight = appState.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelowRight);
 
                     if (
                         roomUnderneathToTheLeft == null && roomUnderneathToTheRight == null
@@ -67,9 +64,9 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
             return Helpers.CreateEmptyErrorList();
         }
 
-        public static List<RoomValidationError> ValidateRoomCellIsNotUnderground(AppState appState, Room room, RoomCell roomCell)
+        public static List<RoomValidationError> ValidateRoomCellIsNotUnderground(AppState appState, Room room, CellCoordinates cellCoordinates)
         {
-            if (roomCell.coordinates.floor < 0)
+            if (cellCoordinates.floor < 0)
             {
                 return Helpers.CreateErrorList("You cannot build rooms underground.");
             }
@@ -77,47 +74,39 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
             return Helpers.CreateEmptyErrorList();
         }
 
-        public static RoomCellValidationFunc CreateValidateRoomCellIsOnFloor(int floor)
-        {
-            return (AppState appState, Room room, RoomCell roomCell) =>
+        public static RoomCellValidationFunc CreateValidateRoomCellIsOnFloor(int floor) =>
+            (AppState appState, Room room, CellCoordinates cellCoordinates) =>
             {
                 // Since rooms can be multiple tiles high, make sure the cell we're validating here is the bottom-most cell
-                bool isOnBottom = room.blocks.cells.GetRelativeRoomCellCoordinates(roomCell).floor == 0;
-                if (isOnBottom && roomCell.coordinates.floor != 0)
+                bool isOnBottom = room.cellCoordinatesList.lowestFloor == 0;
+                if (isOnBottom && cellCoordinates.floor != 0)
                 {
-                    return Helpers.CreateErrorList($"{room.title} must be placed on floor {floor + 1}");
+                    return Helpers.CreateErrorList($"{room.template.title} must be placed on floor {floor + 1}");
                 }
 
                 return Helpers.CreateEmptyErrorList();
             };
-        }
 
-        public static RoomCellValidationFunc CreateValidateRoomCellIsNotOnFloor(int floor)
-        {
-            return (AppState appState, Room room, RoomCell roomCell) =>
+        public static RoomCellValidationFunc CreateValidateRoomCellIsNotOnFloor(int floor) =>
+            (AppState appState, Room room, CellCoordinates cellCoordinates) =>
             {
                 // Since rooms can be multiple tiles high, make sure the cell we're validating here is the bottom-most cell
-                bool isOnBottom = room.blocks.cells.GetRelativeRoomCellCoordinates(roomCell).floor == 0;
-                if (isOnBottom && roomCell.coordinates.floor == 0)
+                bool isOnBottom = room.cellCoordinatesList.lowestFloor == 0;
+                if (isOnBottom && cellCoordinates.floor == 0)
                 {
-                    return Helpers.CreateErrorList($"{room.title} must not be placed on floor {floor + 1}");
+                    return Helpers.CreateErrorList($"{room.template.title} must not be placed on floor {floor + 1}");
                 }
 
                 return Helpers.CreateEmptyErrorList();
             };
-        }
 
         static class Helpers
         {
-            public static List<RoomValidationError> CreateErrorList(string message)
-            {
-                return new List<RoomValidationError>() { new RoomValidationError(message) };
-            }
+            public static List<RoomValidationError> CreateErrorList(string message) =>
+                new List<RoomValidationError>() { new RoomValidationError(message) };
 
-            public static List<RoomValidationError> CreateEmptyErrorList()
-            {
-                return new List<RoomValidationError>();
-            }
+            public static List<RoomValidationError> CreateEmptyErrorList() =>
+                new List<RoomValidationError>();
         }
     }
 }

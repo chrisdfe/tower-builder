@@ -11,45 +11,21 @@ namespace TowerBuilder.DataTypes
         public int x;
         public int floor;
 
-        public CellCoordinates coordinatesAbove
-        {
-            get => new CellCoordinates(x, floor + 1);
-        }
+        public CellCoordinates coordinatesAbove => new CellCoordinates(x, floor + 1);
 
-        public CellCoordinates coordinatesAboveRight
-        {
-            get => new CellCoordinates(x + 1, floor + 1);
-        }
+        public CellCoordinates coordinatesAboveRight => new CellCoordinates(x + 1, floor + 1);
 
-        public CellCoordinates coordinatesRight
-        {
-            get => new CellCoordinates(x + 1, floor);
-        }
+        public CellCoordinates coordinatesRight => new CellCoordinates(x + 1, floor);
 
-        public CellCoordinates coordinatesBelowRight
-        {
-            get => new CellCoordinates(x + 1, floor - 1);
-        }
+        public CellCoordinates coordinatesBelowRight => new CellCoordinates(x + 1, floor - 1);
 
-        public CellCoordinates coordinatesBelow
-        {
-            get => new CellCoordinates(x, floor - 1);
-        }
+        public CellCoordinates coordinatesBelow => new CellCoordinates(x, floor - 1);
 
-        public CellCoordinates coordinatesBelowLeft
-        {
-            get => new CellCoordinates(x - 1, floor - 1);
-        }
+        public CellCoordinates coordinatesBelowLeft => new CellCoordinates(x - 1, floor - 1);
 
-        public CellCoordinates coordinatesLeft
-        {
-            get => new CellCoordinates(x - 1, floor);
-        }
+        public CellCoordinates coordinatesLeft => new CellCoordinates(x - 1, floor);
 
-        public CellCoordinates coordinatesAboveLeft
-        {
-            get => new CellCoordinates(x - 1, floor + 1);
-        }
+        public CellCoordinates coordinatesAboveLeft => new CellCoordinates(x - 1, floor + 1);
 
         public CellCoordinates(int x, int floor)
         {
@@ -57,59 +33,33 @@ namespace TowerBuilder.DataTypes
             this.floor = floor;
         }
 
-        public override string ToString()
-        {
-            return $"x: {x}, floor: {floor}";
-        }
+        public override string ToString() => $"x: {x}, floor: {floor}";
 
-        public CellCoordinates Add(CellCoordinates b)
-        {
-            return CellCoordinates.Add(this, b);
-        }
+        public CellCoordinates Add(CellCoordinates b) => CellCoordinates.Add(this, b);
 
-        public CellCoordinates Subtract(CellCoordinates b)
-        {
-            return CellCoordinates.Subtract(this, b);
-        }
+        public CellCoordinates Subtract(CellCoordinates b) => CellCoordinates.Subtract(this, b);
 
-        public bool Matches(CellCoordinates b)
-        {
-            return CellCoordinates.Matches(this, b);
-        }
+        public bool Matches(CellCoordinates b) => CellCoordinates.Matches(this, b);
 
-        public CellCoordinates Clone()
-        {
-            return new CellCoordinates(x, floor);
-        }
+        public CellCoordinates Clone() => new CellCoordinates(x, floor);
 
         /* 
             Static API
         */
-        public static CellCoordinates Add(CellCoordinates a, CellCoordinates b)
-        {
-            return new CellCoordinates(a.x + b.x, a.floor + b.floor);
-        }
+        public static CellCoordinates Add(CellCoordinates a, CellCoordinates b) =>
+            new CellCoordinates(a.x + b.x, a.floor + b.floor);
 
-        public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b)
-        {
-            return new CellCoordinates(a.x - b.x, a.floor - b.floor);
-        }
+        public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b) =>
+            new CellCoordinates(a.x - b.x, a.floor - b.floor);
 
-        public static bool Matches(CellCoordinates a, CellCoordinates b)
-        {
-            return (
+        public static bool Matches(CellCoordinates a, CellCoordinates b) =>
+            (
                 a.x == b.x &&
                 a.floor == b.floor
             );
-        }
 
-        public static CellCoordinates zero
-        {
-            get
-            {
-                return new CellCoordinates(0, 0);
-            }
-        }
+        public static CellCoordinates zero => new CellCoordinates(0, 0);
+        public static CellCoordinates one => new CellCoordinates(1, 1);
     }
 }
 

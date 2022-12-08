@@ -112,7 +112,7 @@ namespace TowerBuilder.GameWorld.Rooms
             });
         }
 
-        void OnRoomBlocksUpdated(Room room, RoomBlocks blocks)
+        void OnRoomBlocksUpdated(Room room, CellCoordinatesBlockList blocks)
         {
             GameWorldRoom gameWorldRoom = FindGameWorldRoomByRoom(room);
             if (gameWorldRoom == null) return;
@@ -124,7 +124,7 @@ namespace TowerBuilder.GameWorld.Rooms
             SetRoomCellColors();
         }
 
-        void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock) { }
+        void OnCurrentSelectedRoomBlockUpdated(CellCoordinatesBlock roomBlock) { }
 
         void OnInspectRoomUpdated(Room currentInspectedRoom) { }
 

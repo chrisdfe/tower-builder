@@ -92,9 +92,9 @@ namespace TowerBuilder.ApplicationState.Tools
             activeToolState.OnCurrentSelectedRoomUpdated(room);
         }
 
-        void OnCurrentSelectedRoomBlockUpdated(RoomCells roomBlock)
+        void OnCurrentSelectedRoomBlockUpdated(CellCoordinatesBlock cellCoordinatesBlock)
         {
-            activeToolState.OnCurrentSelectedRoomBlockUpdated(roomBlock);
+            activeToolState.OnCurrentSelectedRoomBlockUpdated(cellCoordinatesBlock);
         }
 
         void OnSelectionStart(SelectionBox selectionBox)
@@ -112,25 +112,15 @@ namespace TowerBuilder.ApplicationState.Tools
             activeToolState.OnCurrentSelectedEntityListUpdated(entityList);
         }
 
-        ToolStateBase GetToolState(ToolState toolState)
-        {
-            if (toolState == ToolState.Build)
+        ToolStateBase GetToolState(ToolState toolState) =>
+            toolState switch
             {
-                return buildToolState;
-            }
-
-            if (toolState == ToolState.Destroy)
-            {
-                return destroyToolState;
-            }
-
-            if (toolState == ToolState.Routes)
-            {
-                return routesToolState;
-            }
-
-            return inspectToolState;
-        }
+                ToolState.Build => buildToolState,
+                ToolState.Destroy => destroyToolState,
+                ToolState.Routes => routesToolState,
+                _ => inspectToolState
+            };
     }
 }
+
 

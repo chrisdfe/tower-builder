@@ -6,9 +6,9 @@ namespace TowerBuilder.DataTypes
 {
     public class ListWrapper<ItemType>
     {
-        public List<ItemType> items { get; private set; } = new List<ItemType>();
+        public List<ItemType> items { get; protected set; } = new List<ItemType>();
 
-        public int Count { get { return items.Count; } }
+        public int Count => items.Count;
 
         public ListWrapper() { }
 
@@ -60,7 +60,7 @@ namespace TowerBuilder.DataTypes
             items.RemoveAll(item => listWrapper.items.Contains(item));
         }
 
-        public bool Contains(ItemType item)
+        public virtual bool Contains(ItemType item)
         {
             return items.Contains(item);
         }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -30,7 +31,16 @@ namespace TowerBuilder.GameWorld.Rooms
         public Room room;
 
         [HideInInspector]
-        public RoomCell roomCell;
+        public CellCoordinates cellCoordinates;
+
+        [HideInInspector]
+        public OccupiedCellMap occupiedCellMap;
+
+        [HideInInspector]
+        public Tileable tileable;
+
+        [HideInInspector]
+        public Tileable.CellPosition cellPosition;
 
         [HideInInspector]
         public GameWorldRoom gameWorldRoom;
@@ -57,21 +67,18 @@ namespace TowerBuilder.GameWorld.Rooms
             TransformUtils.DestroyChildren(transform.Find("RoomCellMesh_Default"));
             AssetList<GameWorldRoomsManager.MeshAssetKey> assetList = GameWorldRoomsManager.Find().meshAssets;
 
-            switch (gameWorldRoom.room.skin.key)
+            roomCellMeshWrapper = gameWorldRoom.room.skin.key switch
             {
-                case Room.Skin.Key.Wheels:
-                    roomCellMeshWrapper = new RoomCellWheelsMeshWrapper(transform, assetList, this);
-                    break;
-                case Room.Skin.Key.Default:
-                    roomCellMeshWrapper = new RoomCellDefaultMeshWrapper(transform, assetList, this);
-                    break;
-            }
+                Room.Skin.Key.Wheels => new RoomCellWheelsMeshWrapper(transform, assetList, this),
+                Room.Skin.Key.Default => new RoomCellDefaultMeshWrapper(transform, assetList, this),
+                _ => new RoomCellDefaultMeshWrapper(transform, assetList, this)
+            };
 
             roomCellMeshWrapper.Setup();
 
             UpdateLights();
-            UpdatePosition();
             UpdateMesh();
+            UpdatePosition();
         }
 
         public void Teardown()
@@ -105,7 +112,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void UpdatePosition()
         {
-            transform.position = GameWorldUtils.CellCoordinatesToPosition(roomCell.coordinates);
+            transform.position = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates);
         }
 
         public void UpdateMesh()
@@ -164,7 +171,6 @@ namespace TowerBuilder.GameWorld.Rooms
             }
 
             public virtual void UpdateMesh() { }
-
             public virtual void SetSegments() { }
             public virtual void SetColor(Color color) { }
 
@@ -232,23 +238,30 @@ namespace TowerBuilder.GameWorld.Rooms
                     SetSegmentEnabled(segment, false);
                 }
 
-                foreach (RoomCellOrientation cellPosition in gameWorldRoomCell.roomCell.orientation)
+                string[] segmentsToEnable = gameWorldRoomCell.cellPosition switch
                 {
-                    switch (cellPosition)
-                    {
-                        case RoomCellOrientation.Top:
-                            SetSegmentEnabled(segments["ceiling"], true);
-                            break;
-                        case RoomCellOrientation.Right:
-                            SetSegmentEnabled(segments["rightWall"], true);
-                            break;
-                        case RoomCellOrientation.Bottom:
-                            SetSegmentEnabled(segments["floor"], true);
-                            break;
-                        case RoomCellOrientation.Left:
-                            SetSegmentEnabled(segments["leftWall"], true);
-                            break;
-                    }
+                    Tileable.CellPosition.Top => new[] { "ceiling" },
+                    Tileable.CellPosition.TopRight => new[] { "ceiling", "rightWall" },
+                    Tileable.CellPosition.Right => new[] { "rightWall" },
+                    Tileable.CellPosition.BottomRight => new[] { "rightWall", "floor" },
+                    Tileable.CellPosition.Bottom => new[] { "floor" },
+                    Tileable.CellPosition.BottomLeft => new[] { "floor", "leftWall" },
+                    Tileable.CellPosition.Left => new[] { "leftWall" },
+                    Tileable.CellPosition.TopLeft => new[] { "leftWall", "ceiling" },
+                    Tileable.CellPosition.TopIsolated => new[] { "leftWall", "ceiling", "rightWall", },
+                    Tileable.CellPosition.RightIsolated => new[] { "ceiling", "rightWall", "floor" },
+                    Tileable.CellPosition.BottomIsolated => new[] { "leftWall", "rightWall", "floor" },
+                    Tileable.CellPosition.LeftIsolated => new[] { "leftWall", "ceiling", "floor" },
+                    Tileable.CellPosition.Single => new[] { "leftWall", "ceiling", "rightWall", "floor" },
+                    Tileable.CellPosition.Center => new string[0],
+                    Tileable.CellPosition.HorizontalCenter => new[] { "ceiling", "floor" },
+                    Tileable.CellPosition.VerticalCenter => new[] { "leftWall", "rightWall" },
+                    _ => new string[0],
+                };
+
+                foreach (string key in segmentsToEnable)
+                {
+                    SetSegmentEnabled(segments[key], true);
                 }
             }
         }

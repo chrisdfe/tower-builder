@@ -19,8 +19,9 @@ namespace TowerBuilder.Definitions
                 key = Room.Key.Default,
                 category = "Empty",
 
-                blockDimensions = new Dimensions(1, 1),
+                blockSize = new Dimensions(1, 1),
                 resizability = Room.Resizability.Flexible,
+                pricePerCell = 1000,
 
                 validatorFactory = (Room room) => new DefaultRoomValidator(room),
             },
@@ -31,8 +32,9 @@ namespace TowerBuilder.Definitions
                 key = Room.Key.Wheels,
                 category = "Wheels",
 
-                blockDimensions = new Dimensions(1, 1),
+                blockSize = new Dimensions(1, 1),
                 resizability = Room.Resizability.Horizontal,
+                pricePerCell = 5000,
 
                 validatorFactory = (Room room) => new WheelsRoomValidator(room),
 

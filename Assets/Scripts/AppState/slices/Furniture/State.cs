@@ -44,13 +44,13 @@ namespace TowerBuilder.ApplicationState.Furnitures
                 return state.list.FindFurnitureAtCell(cellCoordinates);
             }
 
-            public FurnitureList FindFurnitureInBlocks(RoomBlocks roomBlocks)
+            public FurnitureList FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
             {
                 List<Furniture> furnitureList = new List<Furniture>();
 
-                foreach (RoomCells block in roomBlocks.blocks)
+                foreach (CellCoordinatesBlock block in cellCoordinatesBlockList.items)
                 {
-                    foreach (CellCoordinates cellCoordinates in block.coordinatesList.items)
+                    foreach (CellCoordinates cellCoordinates in block.items)
                     {
                         Furniture furnitureAtCell = FindFurnitureAtCell(cellCoordinates);
                         if (furnitureAtCell != null)
@@ -161,12 +161,12 @@ namespace TowerBuilder.ApplicationState.Furnitures
             });
         }
 
-        void OnRoomBlocksAdded(Room room, RoomBlocks roomBlocks)
+        void OnRoomBlocksAdded(Room room, CellCoordinatesBlockList roomBlocks)
         {
             // Recalculate furniture in room
         }
 
-        void OnRoomBlocksRemoved(Room room, RoomBlocks roomBlocks)
+        void OnRoomBlocksRemoved(Room room, CellCoordinatesBlockList roomBlocks)
         {
             FurnitureList furnituresInBlock = queries.FindFurnitureInBlocks(roomBlocks);
             Remove(furnituresInBlock);

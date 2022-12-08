@@ -25,7 +25,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
         // TODO - List<CellCoordinates> is all a room block is, but maybe it should be its own RoomBlock class
         public RoomList roomsToDeleteBlocksFrom { get; private set; } = new RoomList();
-        public RoomBlocks blocksToDelete { get; private set; } = new RoomBlocks();
+        public CellCoordinatesBlockList blocksToDelete { get; private set; } = new CellCoordinatesBlockList();
 
         bool destroyIsActive = false;
 
@@ -35,9 +35,9 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 List<CellCoordinates> list = new List<CellCoordinates>();
 
-                foreach (RoomCells roomBlock in blocksToDelete.blocks)
+                foreach (CellCoordinatesBlock roomBlock in blocksToDelete.items)
                 {
-                    list = list.Concat(roomBlock.coordinatesList.items).ToList();
+                    list = list.Concat(roomBlock.items).ToList();
                 }
 
                 return new CellCoordinatesList(list);
@@ -53,14 +53,14 @@ namespace TowerBuilder.ApplicationState.Tools
         {
             base.Setup();
             roomsToDeleteBlocksFrom = new RoomList();
-            blocksToDelete = new RoomBlocks();
+            blocksToDelete = new CellCoordinatesBlockList();
         }
 
         public override void Teardown()
         {
             base.Teardown();
             roomsToDeleteBlocksFrom = new RoomList();
-            blocksToDelete = new RoomBlocks();
+            blocksToDelete = new CellCoordinatesBlockList();
         }
 
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
@@ -105,13 +105,16 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 foreach (Room roomToDelete in roomsToDeleteBlocksFrom.items)
                 {
-                    RoomBlocks roomBlocksToDelete = new RoomBlocks(blocksToDelete.blocks.FindAll(roomBlock => roomToDelete.blocks.ContainsBlock(roomBlock)));
+                    CellCoordinatesBlockList roomBlocksToDelete =
+                        new CellCoordinatesBlockList(
+                            blocksToDelete.items.FindAll(roomBlock => roomToDelete.blocksList.Contains(roomBlock))
+                        );
                     Registry.appState.Rooms.DestroyRoomBlocks(roomToDelete, roomBlocksToDelete);
                 }
             }
 
             roomsToDeleteBlocksFrom = new RoomList();
-            blocksToDelete = new RoomBlocks();
+            blocksToDelete = new CellCoordinatesBlockList();
 
             if (events.onDestroyEnd != null)
             {
@@ -124,7 +127,7 @@ namespace TowerBuilder.ApplicationState.Tools
             SelectionBox selectionBox = Registry.appState.UI.selectionBox;
 
             roomsToDeleteBlocksFrom = new RoomList();
-            blocksToDelete = new RoomBlocks();
+            blocksToDelete = new CellCoordinatesBlockList();
 
             foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
             {

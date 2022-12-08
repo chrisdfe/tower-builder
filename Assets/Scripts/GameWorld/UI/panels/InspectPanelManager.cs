@@ -109,7 +109,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             string text = "Room\n"
             + $"    name: {room}\n"
-            + $"    title: {room.title}\n"
+            + $"    title: {room.template.title}\n"
             + $"    price: {room.price}\n";
 
             inspectText.text = text;

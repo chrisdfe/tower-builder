@@ -26,7 +26,7 @@ namespace TowerBuilder.ApplicationState.UI
             public delegate void selectedRoomEvent(Room room);
             public selectedRoomEvent onCurrentSelectedRoomUpdated;
 
-            public delegate void SelectedRoomBlockEvent(RoomCells roomBlock);
+            public delegate void SelectedRoomBlockEvent(CellCoordinatesBlock cellCoordinatesBlock);
             public SelectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
 
             public delegate void SelectionBoxEvent(SelectionBox selectionBox);
@@ -45,7 +45,7 @@ namespace TowerBuilder.ApplicationState.UI
 
         public CellCoordinates currentSelectedCell { get; private set; } = null;
         public Room currentSelectedRoom { get; private set; } = null;
-        public RoomCells currentSelectedRoomBlock { get; private set; } = null;
+        public CellCoordinatesBlock currentSelectedRoomBlock { get; private set; } = null;
         public Vehicle currentSelectedVehicle { get; private set; } = null;
 
         public SelectionBox selectionBox { get; private set; }

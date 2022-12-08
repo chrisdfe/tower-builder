@@ -10,7 +10,7 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
 {
     public delegate List<RoomValidationError> RoomValidationFunc(AppState appState, Room room);
 
-    public delegate List<RoomValidationError> RoomCellValidationFunc(AppState appState, Room room, RoomCell roomCell);
+    public delegate List<RoomValidationError> RoomCellValidationFunc(AppState appState, Room room, CellCoordinates cellCoordinates);
 
 
     public abstract class RoomValidatorBase : ValidatorBase<RoomValidationError>
@@ -57,13 +57,13 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
                 errors = errors.Concat(RoomValidationFunc(appState, room)).ToList();
             }
 
-            foreach (RoomCell roomCell in room.blocks.cells.cells)
+            room.cellCoordinatesList.ForEach((cellCoordinates) =>
             {
                 foreach (RoomCellValidationFunc RoomCellValidationFunc in AllRoomCellValidators)
                 {
-                    errors = errors.Concat(RoomCellValidationFunc(appState, room, roomCell)).ToList();
+                    errors = errors.Concat(RoomCellValidationFunc(appState, room, cellCoordinates)).ToList();
                 }
-            }
+            });
         }
     }
 }

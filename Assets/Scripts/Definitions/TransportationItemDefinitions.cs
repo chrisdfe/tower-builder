@@ -24,6 +24,7 @@ namespace TowerBuilder.Definitions
                 ),
                 entranceCellCoordinates = new CellCoordinates(0, 0),
                 exitCellCoordinates = new CellCoordinates(1, 1),
+                pricePerCell = 800
             },
 
             new TransportationItemTemplate() {
@@ -38,6 +39,7 @@ namespace TowerBuilder.Definitions
                 ),
                 entranceCellCoordinates = new CellCoordinates(0, 0),
                 exitCellCoordinates = new CellCoordinates(0, 1),
+                pricePerCell = 400
             },
 
             new TransportationItemTemplate() {
@@ -52,6 +54,7 @@ namespace TowerBuilder.Definitions
                 ),
                 entranceCellCoordinates = new CellCoordinates(0, 0),
                 exitCellCoordinates = new CellCoordinates(1, 0),
+                pricePerCell = 200
             }
         };
 

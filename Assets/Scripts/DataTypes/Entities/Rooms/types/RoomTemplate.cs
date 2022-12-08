@@ -10,10 +10,6 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
 {
     public class RoomTemplate : EntityTemplate<Room.Key>
     {
-        public Dimensions blockDimensions;
-
-        public Room.Resizability resizability = Room.Resizability.Inflexible;
-
         public delegate RoomFurnitureBuilderBase FurnitureBuilderFactory(Room room);
         public FurnitureBuilderFactory furnitureBuilderFactory = (Room room) => new RoomFurnitureBuilderBase(room);
 

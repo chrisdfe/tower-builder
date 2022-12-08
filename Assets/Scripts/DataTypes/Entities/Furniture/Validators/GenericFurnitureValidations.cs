@@ -24,7 +24,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Validators
 
                 if (furnitureRoom == null)
                 {
-                    return Helpers.CreateErrorList($"{furniture.title} must be placed inside.");
+                    return Helpers.CreateErrorList($"{furniture.template.title} must be placed inside.");
                 }
             }
 
@@ -40,7 +40,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Validators
                 {
                     if (cellCoordinates.floor != floor)
                     {
-                        return Helpers.CreateErrorList($"{furniture.title} must be placed on floor {floor + 1}");
+                        return Helpers.CreateErrorList($"{furniture.template.title} must be placed on floor {floor + 1}");
                     }
                 }
 
@@ -54,7 +54,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Validators
                 {
                     if (cellCoordinates.floor == floor)
                     {
-                        return Helpers.CreateErrorList($"{furniture.title} must be not be placed on floor {floor + 1}");
+                        return Helpers.CreateErrorList($"{furniture.template.title} must be not be placed on floor {floor + 1}");
                     }
                 }
 
@@ -63,15 +63,11 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Validators
 
         static class Helpers
         {
-            public static List<FurnitureValidationError> CreateEmptyErrorList()
-            {
-                return new List<FurnitureValidationError>();
-            }
+            public static List<FurnitureValidationError> CreateEmptyErrorList() =>
+                new List<FurnitureValidationError>();
 
-            public static List<FurnitureValidationError> CreateErrorList(string message)
-            {
-                return new List<FurnitureValidationError>() { new FurnitureValidationError(message) };
-            }
+            public static List<FurnitureValidationError> CreateErrorList(string message) =>
+                new List<FurnitureValidationError>() { new FurnitureValidationError(message) };
         }
     }
 }

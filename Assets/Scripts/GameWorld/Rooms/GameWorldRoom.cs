@@ -73,12 +73,15 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void CreateRoomCells()
         {
-            foreach (RoomCell roomCell in room.blocks.cells.cells)
+            foreach (CellCoordinates cellCoordinates in room.cellCoordinatesList.items)
             {
                 GameWorldRoomCell gameWorldRoomCell = GameWorldRoomCell.Create(transform);
 
                 gameWorldRoomCell.room = room;
-                gameWorldRoomCell.roomCell = roomCell;
+                gameWorldRoomCell.cellCoordinates = cellCoordinates;
+                gameWorldRoomCell.occupiedCellMap = room.occupiedCellMapMap[cellCoordinates];
+                gameWorldRoomCell.tileable = room.tileableMap[cellCoordinates];
+                gameWorldRoomCell.cellPosition = room.cellPositionMap[cellCoordinates];
                 gameWorldRoomCell.gameWorldRoom = this;
 
                 gameWorldRoomCell.Setup();
@@ -115,11 +118,11 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
             Room currentSelectedRoom = Registry.appState.UI.currentSelectedRoom;
-            RoomCells currentSelectedRoomBlock = Registry.appState.UI.currentSelectedRoomBlock;
+            CellCoordinatesBlock currentSelectedRoomBlock = Registry.appState.UI.currentSelectedRoomBlock;
 
             ToolState toolState = Registry.appState.Tools.toolState;
 
-            bool roomContainsCurrentSelectedRoomBlock = room.blocks.ContainsBlock(currentSelectedRoomBlock);
+            bool roomContainsCurrentSelectedRoomBlock = room.blocksList.Contains(currentSelectedRoomBlock);
             bool hasUpdated = false;
 
             switch (toolState)
@@ -160,7 +163,7 @@ namespace TowerBuilder.GameWorld.Rooms
             void SetDestroyStateColor()
             {
                 CellCoordinatesList cellsToDestroy = Registry.appState.Tools.destroyToolState.cellsToDelete;
-                if (cellsToDestroy.items.Contains(gameWorldRoomCell.roomCell.coordinates))
+                if (cellsToDestroy.items.Contains(gameWorldRoomCell.cellCoordinates))
                 {
                     gameWorldRoomCell.SetColor(GameWorldRoomCell.ColorKey.Destroy);
                     hasUpdated = true;

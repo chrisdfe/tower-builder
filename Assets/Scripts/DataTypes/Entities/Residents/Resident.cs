@@ -25,7 +25,11 @@ namespace TowerBuilder.DataTypes.Entities.Residents
         }
 
         // for now allow an empty constructor since resident templates aren't really used
-        public Resident() : this(new ResidentTemplate()) { }
+        public Resident() : this(new ResidentTemplate()
+        {
+            title = "test"
+        })
+        { }
 
         public override string ToString()
         {

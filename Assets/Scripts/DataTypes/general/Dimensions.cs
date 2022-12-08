@@ -17,6 +17,14 @@ namespace TowerBuilder.DataTypes
             this.height = height;
         }
 
+        public override string ToString() => $"width: {width}, height: {height}";
+
+        public bool Matches(Dimensions otherDimensions) =>
+            width == otherDimensions.width && height == otherDimensions.height;
+
+        /*
+            Static API
+        */
         public static Dimensions one
         {
             get => new Dimensions(1, 1);

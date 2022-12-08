@@ -7,150 +7,77 @@ using UnityEngine;
 namespace TowerBuilder.DataTypes
 {
     [System.Serializable]
-    public class CellCoordinatesList
+    public class CellCoordinatesList : ListWrapper<CellCoordinates>
     {
-        public List<CellCoordinates> items { get; private set; } = new List<CellCoordinates>();
+        public int lowestX =>
+            items.Aggregate(int.MaxValue, (lowestX, coordinates) =>
+                (coordinates.x < lowestX) ? coordinates.x : lowestX
+            );
 
-        public int Count { get { return items.Count; } }
+        public int highestX =>
+            items.Aggregate(int.MinValue, (highestX, coordinates) =>
+                (coordinates.x > highestX) ? coordinates.x : lowestX
+            );
 
-        public int lowestX
-        {
-            get =>
-                items.Aggregate(int.MaxValue, (lowestX, coordinates) =>
-                    (coordinates.x < lowestX) ? coordinates.x : lowestX
-                );
-        }
-
-        public int highestX
-        {
-            get =>
-                items.Aggregate(int.MinValue, (highestX, coordinates) =>
-                    (coordinates.x > highestX) ? coordinates.x : lowestX
-                );
-        }
-
-        public int lowestFloor
-        {
-            get =>
-                items.Aggregate(int.MaxValue, (lowestFloor, coordinates) =>
-                    (coordinates.floor < lowestFloor) ? coordinates.floor : lowestFloor
-                );
-        }
+        public int lowestFloor =>
+            items.Aggregate(int.MaxValue, (lowestFloor, coordinates) =>
+                (coordinates.floor < lowestFloor) ? coordinates.floor : lowestFloor
+            );
 
 
-        public int highestFloor
-        {
-            get =>
-                items.Aggregate(int.MinValue, (highestFloor, coordinates) =>
-                    (coordinates.floor > highestFloor) ? coordinates.floor : highestFloor
-                );
-        }
+        public int highestFloor =>
+            items.Aggregate(int.MinValue, (highestFloor, coordinates) =>
+                (coordinates.floor > highestFloor) ? coordinates.floor : highestFloor
+            );
 
-        public int width
-        {
-            get => (highestX - lowestX) + 1;
-        }
+        public int width => (highestX - lowestX) + 1;
 
-        public int floorSpan
-        {
-            get => (highestFloor - lowestFloor) + 1;
-        }
+        public int floorSpan => (highestFloor - lowestFloor) + 1;
 
-        public CellCoordinates bottomLeftCoordinates
-        {
-            get => new CellCoordinates(lowestX, lowestFloor);
-        }
+        public CellCoordinates bottomLeftCoordinates => new CellCoordinates(lowestX, lowestFloor);
 
-        public CellCoordinates bottomRightCoordinates
-        {
-            get => new CellCoordinates(highestX, lowestFloor);
-        }
+        public CellCoordinates bottomRightCoordinates => new CellCoordinates(highestX, lowestFloor);
 
-        public CellCoordinates topLeftCoordinates
-        {
-            get => new CellCoordinates(lowestX, highestFloor);
-        }
+        public CellCoordinates topLeftCoordinates => new CellCoordinates(lowestX, highestFloor);
 
-        public CellCoordinates topRightCoordinates
-        {
-            get => new CellCoordinates(highestX, highestFloor);
-        }
+        public CellCoordinates topRightCoordinates => new CellCoordinates(highestX, highestFloor);
 
-        public List<int> xValues
-        {
-            get
+        public List<int> xValues =>
+            items.Aggregate(new List<int>(), (acc, cellCoordinates) =>
             {
-                List<int> result = new List<int>();
-
-                foreach (CellCoordinates cellCoordinates in items)
+                if (!acc.Contains(cellCoordinates.x))
                 {
-                    if (!result.Contains(cellCoordinates.x))
-                    {
-                        result.Add(cellCoordinates.x);
-                    }
+                    acc.Add(cellCoordinates.x);
                 }
 
-                return result;
-            }
-        }
+                return acc;
+            });
 
-        public List<int> floorValues
-        {
-            get
+        public List<int> floorValues =>
+            items.Aggregate(new List<int>(), (acc, cellCoordinates) =>
             {
-                List<int> result = new List<int>();
-
-                foreach (CellCoordinates cellCoordinates in items)
+                if (!acc.Contains(cellCoordinates.floor))
                 {
-                    if (!result.Contains(cellCoordinates.x))
-                    {
-                        result.Add(cellCoordinates.x);
-                    }
+                    acc.Add(cellCoordinates.floor);
                 }
 
-                return result;
-            }
-        }
+                return acc;
+            });
 
-        public CellCoordinatesList asRelativeCoordinates
-        {
-            get => new CellCoordinatesList(
+        public CellCoordinatesList asRelativeCoordinates =>
+            new CellCoordinatesList(
                 items.Select(cellCoordinates => Subtract(cellCoordinates, bottomLeftCoordinates)).ToList()
             );
-        }
 
 
         public CellCoordinatesList() { }
 
-        public CellCoordinatesList(CellCoordinates cellCoordinates)
-        {
-            this.items = new List<CellCoordinates>() { cellCoordinates };
-        }
+        public CellCoordinatesList(CellCoordinates cellCoordinates) : base(cellCoordinates) { }
+        public CellCoordinatesList(List<CellCoordinates> cellCoordinatesList) : base(cellCoordinatesList) { }
+        public CellCoordinatesList(CellCoordinatesList cellCoordinatesList) : base(cellCoordinatesList) { }
 
-        public CellCoordinatesList(List<CellCoordinates> items)
-        {
-            this.items = items;
-        }
-
-        public void Set(List<CellCoordinates> cellCoordinatesList)
-        {
-            this.items = cellCoordinatesList;
-        }
-
-        public void Add(List<CellCoordinates> cellCoordinatesList)
-        {
-            items = items.Concat(cellCoordinatesList).ToList();
-        }
-
-        public void Add(CellCoordinates cellCoordinates)
-        {
-            items.Add(cellCoordinates);
-        }
-
-        public void Remove(CellCoordinatesList cellCoordinatesListToDelete)
-        {
-            items.RemoveAll(cellCoordinates => cellCoordinatesListToDelete.Contains(cellCoordinates));
-        }
+        public override bool Contains(CellCoordinates cellCoordinates) =>
+            items.Find(otherCellCoordinates => otherCellCoordinates.Matches(cellCoordinates)) != null;
 
         public void PositionAtCoordinates(CellCoordinates newBaseCoordinates)
         {
@@ -164,30 +91,14 @@ namespace TowerBuilder.DataTypes
             items = result;
         }
 
-        public bool Contains(CellCoordinates cellCoordinates)
-        {
-            return items.Find(otherCellCoordinates => otherCellCoordinates.Matches(cellCoordinates)) != null;
-        }
 
-        public bool OverlapsWith(CellCoordinatesList otherCellCoordinatesList)
-        {
-            return GetOverlapBetween(otherCellCoordinatesList).Count != 0;
-        }
+        public bool OverlapsWith(CellCoordinatesList otherCellCoordinatesList) =>
+            GetOverlapBetween(otherCellCoordinatesList).Count != 0;
 
-        public CellCoordinatesList GetOverlapBetween(CellCoordinatesList otherCellCoordinatesList)
-        {
-            List<CellCoordinates> result = new List<CellCoordinates>();
-
-            foreach (CellCoordinates cellCoordinates in otherCellCoordinatesList.items)
-            {
-                if (Contains(cellCoordinates))
-                {
-                    result.Add(cellCoordinates);
-                }
-            }
-
-            return new CellCoordinatesList(result);
-        }
+        public CellCoordinatesList GetOverlapBetween(CellCoordinatesList otherCellCoordinatesList) =>
+            new CellCoordinatesList(
+                otherCellCoordinatesList.items.FindAll((cellCoordinates) => Contains(cellCoordinates)).ToList()
+            );
 
         public List<CellCoordinates> GetPerimeterCellCoordinates()
         {
@@ -227,15 +138,11 @@ namespace TowerBuilder.DataTypes
         /*
             Static API
         */
-        public static CellCoordinates Add(CellCoordinates a, CellCoordinates b)
-        {
-            return new CellCoordinates(a.x + b.x, a.floor + b.floor);
-        }
+        public static CellCoordinates Add(CellCoordinates a, CellCoordinates b) =>
+            new CellCoordinates(a.x + b.x, a.floor + b.floor);
 
-        public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b)
-        {
-            return new CellCoordinates(a.x - b.x, a.floor - b.floor);
-        }
+        public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b) =>
+            new CellCoordinates(a.x - b.x, a.floor - b.floor);
 
         public static CellCoordinatesList CreateRectangle(int xWidth, int floors)
         {

@@ -101,7 +101,7 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 blueprintRoom = new Room(selectedRoomTemplate);
                 blueprintRoom.isInBlueprintMode = true;
-                SetBlueprintRoomCells();
+                blueprintRoom.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
                 blueprintRoom.validator.Validate(Registry.appState);
 
                 Registry.appState.Rooms.Add(blueprintRoom);
@@ -137,77 +137,15 @@ namespace TowerBuilder.ApplicationState.Tools
                     SelectRoomTemplateAndUpdateBlueprint(roomTemplate);
                 }
 
-                if (events.onSelectedRoomCategoryUpdated != null)
-                {
-                    events.onSelectedRoomCategoryUpdated(roomCategory);
-                }
-
-                if (roomTemplate != null && events.onSelectedRoomTemplateUpdated != null)
-                {
-                    events.onSelectedRoomTemplateUpdated(selectedRoomTemplate);
-                }
+                events.onSelectedRoomCategoryUpdated?.Invoke(roomCategory);
+                events.onSelectedRoomTemplateUpdated?.Invoke(selectedRoomTemplate);
             }
 
             public void SetSelectedRoomTemplate(RoomTemplate roomTemplate)
             {
                 SelectRoomTemplateAndUpdateBlueprint(roomTemplate);
 
-                if (events.onSelectedRoomTemplateUpdated != null)
-                {
-                    events.onSelectedRoomTemplateUpdated(selectedRoomTemplate);
-                }
-            }
-
-            void SetBlueprintRoomCells()
-            {
-                // TODO - pull this up in to Room/State (& ultimately somewhere more generic than that)
-                SelectionBox selectionBox = Registry.appState.UI.selectionBox;
-                CellCoordinates blockCount = new CellCoordinates(1, 1);
-
-                if (blueprintRoom.resizability == Room.Resizability.Inflexible)
-                {
-                    blueprintRoom.bottomLeftCoordinates = selectionBox.start;
-                }
-                else
-                {
-
-                    // Restrict resizability to X/floor depending on RoomFlexibility
-                    switch (blueprintRoom.resizability)
-                    {
-                        case Room.Resizability.Flexible:
-                            CalculateHorizontalBlocks();
-                            CalculateVerticalBlocks();
-                            break;
-                        case Room.Resizability.Horizontal:
-                            CalculateHorizontalBlocks();
-                            break;
-                        case Room.Resizability.Vertical:
-                            CalculateVerticalBlocks();
-                            break;
-                        case Room.Resizability.Inflexible:
-                            break;
-                    }
-
-                    void CalculateHorizontalBlocks()
-                    {
-                        blueprintRoom.bottomLeftCoordinates = new CellCoordinates(
-                            selectionBox.cellCoordinatesList.bottomLeftCoordinates.x,
-                            selectionBox.start.floor
-                        );
-                        blockCount.x = MathUtils.RoundUpToNearest(selectionBox.dimensions.width, blueprintRoom.blockDimensions.width);
-                    }
-
-                    void CalculateVerticalBlocks()
-                    {
-                        blueprintRoom.bottomLeftCoordinates = new CellCoordinates(
-                            selectionBox.start.x,
-                            selectionBox.cellCoordinatesList.bottomLeftCoordinates.floor
-                        );
-                        blockCount.floor = MathUtils.RoundUpToNearest(selectionBox.dimensions.height, blueprintRoom.blockDimensions.height);
-                    }
-                }
-
-                blueprintRoom.CalculateRoomCells(blockCount);
+                events.onSelectedRoomTemplateUpdated?.Invoke(selectedRoomTemplate);
             }
         }
     }

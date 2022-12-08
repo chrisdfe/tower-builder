@@ -25,7 +25,7 @@ namespace TowerBuilder.ApplicationState.Rooms
         {
             public RoomsListStateSlice.Events.ItemEvent onItemBuilt;
 
-            public delegate void RoomBlocksEvent(Room room, RoomBlocks roomBlocks);
+            public delegate void RoomBlocksEvent(Room room, CellCoordinatesBlockList roomBlocks);
             public RoomBlocksEvent onRoomBlocksAdded;
             public RoomBlocksEvent onRoomBlocksRemoved;
 
@@ -99,35 +99,36 @@ namespace TowerBuilder.ApplicationState.Rooms
         /* 
             Room Blocks
          */
-        public void AddRoomBlock(Room room, RoomCells roomBlock)
+        public void AddRoomBlocks(Room room, CellCoordinatesBlockList roomBlockList)
         {
-            room.blocks.Add(roomBlock);
-            room.Reset();
+            room.blocksList.Add(roomBlockList);
+            room.cellCoordinatesList.Add(roomBlockList.Flatten());
 
-            events.onRoomBlocksAdded?.Invoke(room, new RoomBlocks(roomBlock));
-            events.onRoomBlocksUpdated?.Invoke(room, room.blocks);
+            // TODO here - recalculate occupied cell maps etc
+
+            events.onRoomBlocksAdded?.Invoke(room, roomBlockList);
+            events.onRoomBlocksUpdated?.Invoke(room, room.blocksList);
         }
 
-        public void DestroyRoomBlocks(Room room, RoomBlocks roomBlocks)
+        public void DestroyRoomBlocks(Room room, CellCoordinatesBlockList roomBlockList)
         {
             // TODO - check if doing this is going to divide the room into 2
             // if so, create another room right here
 
-            foreach (RoomCells block in roomBlocks.blocks)
-            {
-                room.blocks.Remove(block);
-            }
+            room.blocksList.Remove(roomBlockList);
+            room.cellCoordinatesList.Remove(roomBlockList.Flatten());
 
-            if (room.blocks.Count == 0)
+            if (room.blocksList.Count == 0)
             {
                 Remove(room);
             }
             else
             {
-                room.Reset();
+                // room.Reset();
+                // TODO - recalculate here
 
-                events.onRoomBlocksRemoved?.Invoke(room, roomBlocks);
-                events.onRoomBlocksUpdated?.Invoke(room, room.blocks);
+                events.onRoomBlocksRemoved?.Invoke(room, roomBlockList);
+                events.onRoomBlocksUpdated?.Invoke(room, room.blocksList);
             }
         }
     }

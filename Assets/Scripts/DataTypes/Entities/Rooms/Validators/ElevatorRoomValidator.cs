@@ -22,22 +22,20 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
             }
         }
 
-        List<RoomValidationError> ValidateElevatorDistance(AppState appState, Room room, RoomCell roomCell)
+        List<RoomValidationError> ValidateElevatorDistance(AppState appState, Room room, CellCoordinates cellCoordinates)
         {
             List<RoomValidationError> errors = new List<RoomValidationError>();
-
-            CellCoordinates cellCoordinates = roomCell.coordinates;
 
             RoomList allRooms = appState.Rooms.list;
 
             // Elevators can't be too close together
             // TODO - check above + to the left + right and below + to the left and right (not directly above or below, that's ok)
-            Room leftRoom = allRooms.FindRoomAtCell(new CellCoordinates(cellCoordinates.x - 1, cellCoordinates.floor));
-            Room rightRoom = allRooms.FindRoomAtCell(new CellCoordinates(cellCoordinates.x + 1, cellCoordinates.floor));
+            Room leftRoom = allRooms.FindRoomAtCell(cellCoordinates.coordinatesLeft);
+            Room rightRoom = allRooms.FindRoomAtCell(cellCoordinates.coordinatesRight);
 
             if (
-                (leftRoom != null && leftRoom.category == "Elevator") ||
-                (rightRoom != null && rightRoom.category == "Elevator")
+                (leftRoom != null && leftRoom.template.category == "Elevator") ||
+                (rightRoom != null && rightRoom.template.category == "Elevator")
             )
             {
                 errors.Add(

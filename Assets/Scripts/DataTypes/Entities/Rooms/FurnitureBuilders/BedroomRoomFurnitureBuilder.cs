@@ -16,10 +16,7 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.FurnitureBuilders
             List<Furniture> items = new List<Furniture>();
 
             Furniture furniture = new Furniture(Registry.definitions.furnitures.queries.FindByKey(Furniture.Key.Bed));
-            // furniture.room = room;
-            furniture.cellCoordinatesList = new CellCoordinatesList(
-                room.blocks.cells.coordinatesList.bottomLeftCoordinates
-            );
+            furniture.PositionAtCoordinates(room.cellCoordinatesList.bottomLeftCoordinates);
             furniture.isInBlueprintMode = isInBlueprintMode;
             items.Add(furniture);
 

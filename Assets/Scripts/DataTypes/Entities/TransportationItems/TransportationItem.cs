@@ -25,8 +25,6 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
             (Key.Doorway, "Doorway"),
         };
 
-        public override int pricePerCell => 1000;
-
         public CellCoordinates entranceCellCoordinates = CellCoordinates.zero;
         public CellCoordinates exitCellCoordinates = CellCoordinates.zero;
 
@@ -42,14 +40,10 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
         /*
             Public Interface
         */
-        public void PositionAtCoordinates(CellCoordinates cellCoordinates)
+        public override void PositionAtCoordinates(CellCoordinates cellCoordinates)
         {
+            base.PositionAtCoordinates(cellCoordinates);
             TransportationItemTemplate template = this.template as TransportationItemTemplate;
-            Debug.Log("template");
-            Debug.Log(template);
-            Debug.Log(template.entranceCellCoordinates);
-            Debug.Log(template.exitCellCoordinates);
-            cellCoordinatesList.PositionAtCoordinates(cellCoordinates);
             entranceCellCoordinates = CellCoordinates.Add(cellCoordinates, template.entranceCellCoordinates);
             exitCellCoordinates = CellCoordinates.Add(cellCoordinates, template.exitCellCoordinates);
         }

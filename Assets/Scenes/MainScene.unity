@@ -4510,7 +4510,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assetList:
-    list: []
+    list:
+    - key: 0
+      value: {fileID: 5182047930108948829, guid: 35be5af0f11beb740a72280adae49b8c, type: 3}
 --- !u!1 &982874682
 GameObject:
   m_ObjectHideFlags: 0

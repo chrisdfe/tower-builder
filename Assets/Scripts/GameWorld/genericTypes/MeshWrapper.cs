@@ -35,8 +35,7 @@ namespace TowerBuilder.GameWorld
 
         public void SetTileability(CellCoordinates itemCoordinates, CellCoordinatesList cellCoordinatesList)
         {
-            Tileable.OccupiedCellMap occupiedCellMap =
-                Tileable.OccupiedCellMap.FromCellCoordinatesList(itemCoordinates, cellCoordinatesList);
+            OccupiedCellMap occupiedCellMap = OccupiedCellMap.FromCellCoordinatesList(itemCoordinates, cellCoordinatesList);
 
             tileable = Tileable.FromModel(meshTransform);
 
