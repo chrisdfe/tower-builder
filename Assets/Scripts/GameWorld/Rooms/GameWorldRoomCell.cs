@@ -34,10 +34,7 @@ namespace TowerBuilder.GameWorld.Rooms
         public CellCoordinates cellCoordinates;
 
         [HideInInspector]
-        public CellNeighbors cellNeighbors;
-
-        [HideInInspector]
-        public Tileable tileable;
+        public CellCoordinatesList cellCoordinatesList;
 
         [HideInInspector]
         public Tileable.CellPosition cellPosition;
@@ -67,11 +64,21 @@ namespace TowerBuilder.GameWorld.Rooms
             TransformUtils.DestroyChildren(transform.Find("RoomCellMesh_Default"));
             AssetList<GameWorldRoomsManager.MeshAssetKey> assetList = GameWorldRoomsManager.Find().meshAssets;
 
+            // TODO - I should probably just use Skin.Key instead of GameWorldRoomsManager.MeshAssetKey
+            GameWorldRoomsManager.MeshAssetKey key = gameWorldRoom.room.skin.key switch
+            {
+                Room.Skin.Key.Default => GameWorldRoomsManager.MeshAssetKey.Default,
+                Room.Skin.Key.Wheels => GameWorldRoomsManager.MeshAssetKey.Wheels,
+                _ => GameWorldRoomsManager.MeshAssetKey.Default
+            };
+
+            GameObject prefabMesh = assetList.FindByKey(key);
+
             roomCellMeshWrapper = gameWorldRoom.room.skin.key switch
             {
-                Room.Skin.Key.Wheels => new RoomCellWheelsMeshWrapper(transform, assetList, this),
-                Room.Skin.Key.Default => new RoomCellDefaultMeshWrapper(transform, assetList, this),
-                _ => new RoomCellDefaultMeshWrapper(transform, assetList, this)
+                Room.Skin.Key.Wheels => new RoomCellWheelsMeshWrapper(transform, prefabMesh, this),
+                Room.Skin.Key.Default => new RoomCellDefaultMeshWrapper(transform, prefabMesh, this),
+                _ => new RoomCellDefaultMeshWrapper(transform, prefabMesh, this)
             };
 
             roomCellMeshWrapper.Setup();
@@ -154,10 +161,14 @@ namespace TowerBuilder.GameWorld.Rooms
 
             public RoomCellMeshWrapper(
                 Transform parent,
-                AssetList<GameWorldRoomsManager.MeshAssetKey> assetList,
-                GameWorldRoomsManager.MeshAssetKey key,
+                GameObject prefabMesh,
                 GameWorldRoomCell gameWorldRoomCell)
-                : base(parent, assetList, key)
+                : base(
+                    parent,
+                    prefabMesh,
+                    gameWorldRoomCell.cellCoordinates,
+                    gameWorldRoomCell.cellCoordinatesList
+                )
             {
                 this.gameWorldRoomCell = gameWorldRoomCell;
             }
@@ -190,12 +201,11 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             public RoomCellDefaultMeshWrapper(
                 Transform parent,
-                AssetList<GameWorldRoomsManager.MeshAssetKey> assetList,
+                GameObject prefabMesh,
                 GameWorldRoomCell gameWorldRoomCell
             ) : base(
                 parent,
-                assetList,
-                GameWorldRoomsManager.MeshAssetKey.Default,
+                prefabMesh,
                 gameWorldRoomCell)
             { }
 
@@ -270,12 +280,11 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             public RoomCellWheelsMeshWrapper(
                 Transform parent,
-                AssetList<GameWorldRoomsManager.MeshAssetKey> assetList,
+                GameObject prefabMesh,
                 GameWorldRoomCell gameWorldRoomCell
             ) : base(
                 parent,
-                assetList,
-                GameWorldRoomsManager.MeshAssetKey.Wheels,
+                prefabMesh,
                 gameWorldRoomCell)
             { }
 

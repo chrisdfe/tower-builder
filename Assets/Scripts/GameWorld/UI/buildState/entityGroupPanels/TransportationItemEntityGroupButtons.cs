@@ -47,7 +47,7 @@ namespace TowerBuilder.GameWorld.UI
             List<TransportationItemTemplate> transportationItemDefinitions = GetDefinitionsForCurrentCategory();
             return transportationItemDefinitions.Select(template =>
             {
-                string label = TransportationItem.GetLabelByKey(template.key);
+                string label = TransportationItem.KeyLabelMap.ValueFromKey(template.key);
                 return new UISelectButton.Input() { label = template.title, value = label };
             }).ToList();
         }
@@ -59,7 +59,7 @@ namespace TowerBuilder.GameWorld.UI
 
         protected override void OnTemplateButtonClick(string templateLabel)
         {
-            TransportationItem.Key key = TransportationItem.GetKeyByLabel(templateLabel);
+            TransportationItem.Key key = TransportationItem.KeyLabelMap.KeyFromValue(templateLabel);
             TransportationItemTemplate selectedTemplate = Registry.definitions.transportationItems.queries.FindByKey(key);
             Registry.appState.Tools.buildToolState.subStates.transportationItemEntityType.SetSelectedTemplate(selectedTemplate);
         }
@@ -80,7 +80,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnSelectedTemplateUpdated(TransportationItemTemplate template)
         {
-            string label = TransportationItem.GetLabelByKey(template.key);
+            string label = TransportationItem.KeyLabelMap.ValueFromKey(template.key);
             SetSelectedTemplate(label);
         }
     }

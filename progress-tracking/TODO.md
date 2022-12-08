@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Rename "MeshWrapper" to "EntityMeshWrapper"
 - Maybe entity needs to have a couple more generic parameters, like TemplateType and ValidatorType
 - "Entities state slice"? is that getting too deep into inheritence
 - auto generate entity buttons
@@ -11,7 +12,6 @@
   - Behaviors appState slice group
   - Validators appState slice group
 - Fix transportationitem tiling
-- Fix room cell tiling
 - Rename "templates" to "definitions" & remove a lot of 'constant' fields from entity, like title, category, etc. A reference to its definition is good enough
 - replace ValidateWheelsAreOnCorrectFloor with generic validator
 - abstract room validators up into EntityValidators
@@ -214,6 +214,7 @@
 
 # Done
 
+- Fix room cell tiling
 - abstract room/furniture validators -> entity validators
 - Move the rest of the entities states (resident, transportationitems etc) into the entities state
 - MaterialReplacer:

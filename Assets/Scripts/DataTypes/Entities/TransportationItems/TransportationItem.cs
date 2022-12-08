@@ -18,12 +18,14 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
             Doorway,
         }
 
-        public static List<(Key, string)> KeyLabelMap = new List<(Key, string)>() {
-            (Key.None, "None"),
-            (Key.Ladder, "Ladder"),
-            (Key.Escalator, "Escalator"),
-            (Key.Doorway, "Doorway"),
-        };
+        public static EnumStringMap<Key> KeyLabelMap = new EnumStringMap<Key>(
+            new Dictionary<Key, string>() {
+                { Key.None, "None" },
+                { Key.Ladder, "Ladder" },
+                { Key.Escalator, "Escalator" },
+                { Key.Doorway, "Doorway" },
+            }
+        );
 
         public CellCoordinates entranceCellCoordinates = CellCoordinates.zero;
         public CellCoordinates exitCellCoordinates = CellCoordinates.zero;
@@ -61,35 +63,6 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
             }
 
             return null;
-        }
-
-        /* 
-            Static Interface
-        */
-        public static string GetLabelByKey(Key targetKey)
-        {
-            foreach (var (key, label) in KeyLabelMap)
-            {
-                if (key == targetKey)
-                {
-                    return label;
-                }
-            }
-
-            return null;
-        }
-
-        public static Key GetKeyByLabel(string targetLabel)
-        {
-            foreach (var (key, label) in KeyLabelMap)
-            {
-                if (label == targetLabel)
-                {
-                    return key;
-                }
-            }
-
-            return Key.None;
         }
     }
 }

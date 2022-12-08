@@ -57,13 +57,7 @@ namespace TowerBuilder.GameWorld.Furnitures
 
         void UpdatePosition()
         {
-            Debug.Log("position before");
-            Debug.Log(transform.position);
             transform.position = GameWorldUtils.CellCoordinatesToPosition(furniture.cellCoordinatesList.bottomLeftCoordinates);
-            Debug.Log("furniture.cellCoordinatesList.bottomLeftCoordinates");
-            Debug.Log(furniture.cellCoordinatesList.bottomLeftCoordinates);
-            Debug.Log("position after");
-            Debug.Log(transform.position);
         }
 
         /* 

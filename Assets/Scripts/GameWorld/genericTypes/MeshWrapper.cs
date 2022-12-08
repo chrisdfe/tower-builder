@@ -12,22 +12,37 @@ namespace TowerBuilder.GameWorld
         public virtual KeyType key { get; }
         public AssetList<KeyType> assetList;
 
+        public GameObject prefabMesh { get; private set; }
         public Transform meshTransform { get; private set; }
         public Transform parent { get; private set; }
 
-        Tileable tileable;
         Transform tileabilityWrapper;
+        CellCoordinates cellCoordinates;
+        CellNeighbors cellNeighbors;
+        Tileable.CellPosition cellPosition;
 
-        public MeshWrapper(Transform parent, AssetList<KeyType> assetList, KeyType key)
+        public MeshWrapper(Transform parent, GameObject prefabMesh, CellCoordinates cellCoordinates, CellCoordinatesList cellCoordinatesList)
         {
             this.parent = parent;
-            this.assetList = assetList;
             this.key = key;
+
+            this.prefabMesh = prefabMesh;
+
+            this.cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);
+            Debug.Log("cellNeighbors: " + cellNeighbors);
+
+            if (this.cellNeighbors.occupied == CellOrientation.AboveRight)
+            {
+                Debug.Log("yes, Above right");
+            }
+
+            this.cellPosition = Tileable.GetCellPosition(this.cellNeighbors);
         }
 
         public virtual void Setup()
         {
-            LoadModel();
+            InstantiateModel();
+            ProcessModel();
         }
 
         public virtual void Teardown()
@@ -35,26 +50,20 @@ namespace TowerBuilder.GameWorld
             GameObject.Destroy(meshTransform.gameObject);
         }
 
-        public void SetTileability(CellCoordinates itemCoordinates, CellCoordinatesList cellCoordinatesList)
+        protected void InstantiateModel()
         {
-            CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(itemCoordinates, cellCoordinatesList);
-            ProcessModel(meshTransform, cellNeighbors);
-        }
-
-        protected void LoadModel()
-        {
-            GameObject mesh = assetList.FindByKey(key);
-
-            Transform meshTransform = GameObject.Instantiate(mesh).GetComponent<Transform>();
+            Transform meshTransform = GameObject.Instantiate(prefabMesh).GetComponent<Transform>();
             meshTransform.SetParent(parent);
             meshTransform.localPosition = Vector3.zero;
+
+            // TODO here - use this.cellPosition to position meshTransform?
 
             this.meshTransform = meshTransform;
         }
 
-        protected void ProcessModel(Transform model, CellNeighbors cellNeighbors)
+        protected void ProcessModel()
         {
-            Transform tileabileWrapper = TransformUtils.FindDeepChild(model, TILEABLE_WRAPPER_NODE_NAME);
+            Transform tileabileWrapper = TransformUtils.FindDeepChild(meshTransform, TILEABLE_WRAPPER_NODE_NAME);
 
             if (tileabileWrapper == null)
             {
@@ -67,6 +76,7 @@ namespace TowerBuilder.GameWorld
             if (child != null)
             {
                 Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
+                Debug.Log("cellPosition: " + cellPosition);
 
                 foreach (Transform node in child)
                 {

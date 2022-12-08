@@ -12,7 +12,7 @@ namespace TowerBuilder.GameWorld.Rooms
         [HideInInspector]
         public TransportationItem transportationItem;
 
-        List<MeshWrapper> meshWrapperList = new List<MeshWrapper>();
+        List<MeshWrapper<TransportationItem.Key>> meshWrapperList = new List<MeshWrapper<TransportationItem.Key>>();
 
         /*
             Lifecycle Methods
@@ -51,23 +51,20 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             TransformUtils.DestroyChildren(transform);
 
-            // MeshWrapperFactory meshWrapperFactory = MeshWrapperKeyMap[transportationItem.key];
-
             GameWorldTransportationManager transportationManager = GameWorldTransportationManager.Find();
-            AssetList<TransportationItem.Key> meshAssetList = transportationManager.meshAssets;
 
             meshWrapperList = transportationItem.cellCoordinatesList.items.Select((cellCoordinates) =>
             {
-                GameObject mesh = meshAssetList.FindByKey(transportationItem.key);
+                GameObject prefabMesh = transportationManager.meshAssets.FindByKey(transportationItem.key);
 
-                // MeshWrapper meshWrapper = meshWrapperFactory(assetList.FindByKey(transportationItem.key).transform);
-                MeshWrapper meshWrapper = new MeshWrapper(transform, meshAssetList, transportationItem.key);
+                MeshWrapper<TransportationItem.Key> meshWrapper =
+                     new MeshWrapper<TransportationItem.Key>(transform, prefabMesh, cellCoordinates, transportationItem.cellCoordinatesList);
+
                 meshWrapper.Setup();
+
+                // TODO here - use entity layer instead
                 meshWrapper.meshTransform.position = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
                 meshWrapper.meshTransform.Translate(new Vector3(0, 0, -2f));
-
-                meshWrapper.SetTileability(cellCoordinates, transportationItem.cellCoordinatesList);
-                // TODO here - MaterialReplacer
 
                 return meshWrapper;
             }).ToList();
@@ -75,7 +72,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void DestroyMesh()
         {
-            foreach (MeshWrapper meshWrapper in meshWrapperList)
+            foreach (MeshWrapper<TransportationItem.Key> meshWrapper in meshWrapperList)
             {
                 meshWrapper.Teardown();
             }
@@ -93,15 +90,6 @@ namespace TowerBuilder.GameWorld.Rooms
 
             GameWorldTransportationItem gameWorldTransportationItem = transportationItemGameObject.GetComponent<GameWorldTransportationItem>();
             return gameWorldTransportationItem;
-        }
-
-        /*
-            Internal classes
-        */
-        public class MeshWrapper : MeshWrapper<TransportationItem.Key>
-        {
-            public MeshWrapper(Transform parent, AssetList<TransportationItem.Key> assetList, TransportationItem.Key key)
-                : base(parent, assetList, key) { }
         }
     }
 }

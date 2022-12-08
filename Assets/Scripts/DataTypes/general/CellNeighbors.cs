@@ -61,9 +61,6 @@ namespace TowerBuilder.DataTypes
             return $"{occupiedText}\n{notOccupiedText}";
         }
 
-        List<Neighbor> FilterByOrthogonal(List<Neighbor> list) =>
-            list.FindAll(neighbor => neighbor.cellOrientation == (CellOrientation.Above | CellOrientation.Right | CellOrientation.Below | CellOrientation.Left));
-
         CellOrientation NeighborListToCellOrientation(List<Neighbor> neighbors) =>
             neighbors.Aggregate(CellOrientation.None, (acc, neighbor) => (acc | neighbor.cellOrientation));
 
