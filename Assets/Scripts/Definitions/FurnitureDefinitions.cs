@@ -4,7 +4,6 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures.Behaviors;
-using TowerBuilder.DataTypes.Entities.Furnitures.Validators;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
@@ -21,7 +20,6 @@ namespace TowerBuilder.Definitions
                 title = "Pilot Seat",
                 category = "PilotSeats",
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new CockpitBehavior(appState, furniture),
-                furnitureValidatorFactory = (Furniture furniture) => new CockpitFurnitureValidator(furniture)
             },
 
             new FurnitureTemplate() {
@@ -29,7 +27,6 @@ namespace TowerBuilder.Definitions
                 title = "Engine",
                 category = "Engines",
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new EngineBehavior(appState, furniture),
-                furnitureValidatorFactory = (Furniture furniture) => new EngineFurnitureValidator(furniture)
             },
 
             new FurnitureTemplate() {
@@ -38,7 +35,6 @@ namespace TowerBuilder.Definitions
                 category = "Beds",
                 homeSlotCount = 1,
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new BedBehavior(appState, furniture),
-                furnitureValidatorFactory = (Furniture furniture) => new BedFurnitureValidator(furniture)
             },
 
             new FurnitureTemplate() {
@@ -46,7 +42,6 @@ namespace TowerBuilder.Definitions
                 title = "Money Machine",
                 category = "Industry",
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new MoneyMachineBehavior(appState, furniture),
-                // furnitureValidatorFactory = (Furniture furniture) => new BedFurnitureValidator(furniture)
             },
         };
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.Rooms.Validators;
 using TowerBuilder.DataTypes.Notifications;
@@ -58,7 +59,7 @@ namespace TowerBuilder.ApplicationState.Rooms
             if (!room.validator.isValid)
             {
                 // TODO - these should be unique messages - right now they are not
-                foreach (RoomValidationError validationError in room.validator.errors)
+                foreach (EntityValidationError validationError in room.validator.errors.items)
                 {
                     appState.Notifications.Add(new Notification(validationError.message));
                 }

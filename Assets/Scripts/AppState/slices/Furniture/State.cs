@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Entities.Furnitures.Validators;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
@@ -99,7 +99,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
             if (!furniture.validator.isValid)
             {
                 // TODO - these should be unique messages - right now they are not
-                foreach (FurnitureValidationError validationError in furniture.validator.errors)
+                foreach (EntityValidationError validationError in furniture.validator.errors.items)
                 {
                     appState.Notifications.Add(new Notification(validationError.message));
                 }

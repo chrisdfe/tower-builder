@@ -15,6 +15,9 @@ namespace TowerBuilder.DataTypes.Entities
         public CellCoordinatesList cellCoordinatesList = new CellCoordinatesList(CellCoordinates.zero);
 
         public int pricePerCell = 100;
+
+        public delegate EntityValidator ValidatorFactory(Entity entity);
+        public ValidatorFactory validatorFactory = (Entity entity) => new EntityValidator(entity);
     }
 
     public class EntityTemplate<KeyType> : EntityTemplate

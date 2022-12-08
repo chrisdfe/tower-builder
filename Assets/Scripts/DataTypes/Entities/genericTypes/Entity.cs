@@ -51,12 +51,16 @@ namespace TowerBuilder.DataTypes.Entities
 
         public EntityTemplate template { get; }
 
+        // TODO - remove this and put in seperate state - only have list of error messages or isValid
+        public EntityValidator validator { get; }
+
         public Entity(EntityTemplate template)
         {
             this.template = template;
             this.id = UIDGenerator.Generate(idKey);
 
             this.cellCoordinatesList = template.cellCoordinatesList.Clone();
+            this.validator = template.validatorFactory(this);
         }
 
         public void OnBuild()
@@ -115,10 +119,6 @@ namespace TowerBuilder.DataTypes.Entities
 
             void SetTileableMap()
             {
-                Debug.Log("SetTileableMap");
-                Debug.Log("cellCoordinatesList");
-                Debug.Log(cellCoordinatesList.Count);
-
                 cellCoordinatesList.ForEach((cellCoordinates) =>
                 {
                     OccupiedCellMap occupiedCellMap = OccupiedCellMap.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);

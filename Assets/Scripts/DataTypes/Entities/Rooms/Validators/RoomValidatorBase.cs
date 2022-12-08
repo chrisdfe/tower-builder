@@ -8,62 +8,44 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
 {
-    public delegate List<RoomValidationError> RoomValidationFunc(AppState appState, Room room);
-
-    public delegate List<RoomValidationError> RoomCellValidationFunc(AppState appState, Room room, CellCoordinates cellCoordinates);
-
-
-    public abstract class RoomValidatorBase : ValidatorBase<RoomValidationError>
+    public class RoomValidator : EntityValidator
     {
-        Room room;
+        protected override List<EntityCellValidationFunc> cellValidators { get; } =
+            EntityValidator.BaseCellValidators.Concat(new List<EntityCellValidationFunc>()
+            {
+                ValidateAcceptableOverhang,
+            }).ToList();
 
-        protected virtual List<RoomValidationFunc> roomValidators { get; } = new List<RoomValidationFunc>();
-        protected virtual List<RoomCellValidationFunc> roomCellValidators { get; } = new List<RoomCellValidationFunc>();
+        public RoomValidator(Room room) : base(room) { }
 
-        // Room Validators that get run on every room
-        List<RoomValidationFunc> baseRoomValidators { get; } = new List<RoomValidationFunc>() {
-          GenericRoomValidations.ValidateWallet
-        };
-
-        List<RoomCellValidationFunc> baseRoomCellValidators { get; } = new List<RoomCellValidationFunc>();
-
-        public virtual bool isAllowedOnGroundFloor { get { return false; } }
-
-        public RoomValidatorBase(Room room)
+        public static EntityValidationErrorList ValidateAcceptableOverhang(AppState appState, Entity entity, CellCoordinates cellCoordinates)
         {
-            this.room = room;
+            Room room = entity as Room;
+            bool isOnBottom = room.cellCoordinatesList.lowestFloor == 0;
 
-            baseRoomCellValidators = new List<RoomCellValidationFunc>() {
-                GenericRoomCellValidations.ValidateRoomCellIsNotOverlappingAnotherRoom,
-                GenericRoomCellValidations.ValidateAcceptableOverhang,
-                GenericRoomCellValidations.ValidateRoomCellIsNotUnderground,
-            };
+            // TODO - account for room width being less than MAX_OVERHANG
+            int roomWidth = room.cellCoordinatesList.width;
 
-            if (!isAllowedOnGroundFloor)
+            if (isOnBottom && cellCoordinates.floor > 0)
             {
-                baseRoomCellValidators.Add(GenericRoomCellValidations.CreateValidateRoomCellIsNotOnFloor(1));
-            }
-        }
+                Room roomUnderneath = appState.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelow);
 
-        public override void Validate(AppState appState)
-        {
-            errors = new List<RoomValidationError>();
-
-            List<RoomValidationFunc> AllRoomValidators = baseRoomValidators.Concat(roomValidators).ToList();
-            List<RoomCellValidationFunc> AllRoomCellValidators = baseRoomCellValidators.Concat(roomCellValidators).ToList();
-
-            foreach (RoomValidationFunc RoomValidationFunc in AllRoomValidators)
-            {
-                errors = errors.Concat(RoomValidationFunc(appState, room)).ToList();
-            }
-
-            room.cellCoordinatesList.ForEach((cellCoordinates) =>
-            {
-                foreach (RoomCellValidationFunc RoomCellValidationFunc in AllRoomCellValidators)
+                if (roomUnderneath == null)
                 {
-                    errors = errors.Concat(RoomCellValidationFunc(appState, room, cellCoordinates)).ToList();
+                    // cell is overhanging - look for rooms underneath within acceptable overhang range
+                    Room roomUnderneathToTheLeft = appState.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelowLeft);
+                    Room roomUnderneathToTheRight = appState.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelowRight);
+
+                    if (roomUnderneathToTheLeft == null && roomUnderneathToTheRight == null)
+                    {
+                        return new EntityValidationErrorList($"Rooms must have a maximum overhang of 1 cell.");
+                    }
                 }
-            });
+
+            }
+
+            return new EntityValidationErrorList();
         }
+
     }
 }

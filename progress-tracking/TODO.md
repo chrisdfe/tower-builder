@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Maybe entity needs to have a couple more generic parameters, like TemplateType and ValidatorType
 - Move the rest of the entities states (resident, transportationitems etc) into the entities state
 - "Entities state slice"? is that getting too deep into inheritence
 - abstract room/furniture validators -> entity validators

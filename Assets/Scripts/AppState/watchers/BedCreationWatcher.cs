@@ -41,14 +41,14 @@ namespace TowerBuilder.ApplicationState
 
         void MoveNewResidentInIfThereIsRoom(Furniture furniture)
         {
-            if (furniture.isInBlueprintMode || furniture.homeSlotCount == 0) return;
+            if (furniture.isInBlueprintMode || (furniture.template as FurnitureTemplate).homeSlotCount == 0) return;
 
             // TODO -
             // 1) check that the bedroom is accessible from the front door
 
             ResidentsList residentsLivingAtSlotList = appState.FurnitureHomeSlotOccupations.queries.GetResidentsLivingAt(furniture);
 
-            if (residentsLivingAtSlotList.Count >= furniture.homeSlotCount) return;
+            if (residentsLivingAtSlotList.Count >= (furniture.template as FurnitureTemplate).homeSlotCount) return;
 
             // Move a new resident in
             Resident resident = new Resident();

@@ -32,15 +32,13 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
         }
 
         // TODO - get rid of this
-        public CellCoordinates bottomLeftCoordinates;
-        public RoomValidatorBase validator { get; }
         public RoomFurnitureBuilderBase furnitureBuilder { get; }
 
         public Skin skin;
 
         public Room(RoomTemplate roomTemplate) : base(roomTemplate)
         {
-            this.validator = roomTemplate.validatorFactory(this);
+            // TODO - get rid of this
             this.furnitureBuilder = roomTemplate.furnitureBuilderFactory(this);
 
             this.skin = new Skin(roomTemplate.skinKey);

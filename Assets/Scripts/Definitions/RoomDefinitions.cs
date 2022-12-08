@@ -22,8 +22,6 @@ namespace TowerBuilder.Definitions
                 blockSize = new Dimensions(1, 1),
                 resizability = Room.Resizability.Flexible,
                 pricePerCell = 1000,
-
-                validatorFactory = (Room room) => new DefaultRoomValidator(room),
             },
 
             new RoomTemplate()
@@ -35,8 +33,6 @@ namespace TowerBuilder.Definitions
                 blockSize = new Dimensions(1, 1),
                 resizability = Room.Resizability.Horizontal,
                 pricePerCell = 5000,
-
-                validatorFactory = (Room room) => new WheelsRoomValidator(room),
 
                 skinKey = Room.Skin.Key.Wheels
             },

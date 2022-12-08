@@ -13,10 +13,9 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
         public delegate RoomFurnitureBuilderBase FurnitureBuilderFactory(Room room);
         public FurnitureBuilderFactory furnitureBuilderFactory = (Room room) => new RoomFurnitureBuilderBase(room);
 
-        public delegate RoomValidatorBase RoomValidatorFactory(Room room);
-        public RoomValidatorFactory validatorFactory = (Room room) => new DefaultRoomValidator(room);
-
         public Room.Skin.Key skinKey = Room.Skin.Key.Default;
+
+        public new ValidatorFactory validatorFactory = (Entity entity) => new RoomValidator(entity as Room);
     }
 }
 
