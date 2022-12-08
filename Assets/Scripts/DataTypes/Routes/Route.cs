@@ -34,7 +34,7 @@ namespace TowerBuilder.DataTypes.Routes
             RouteSegment.Node CreateSegmentNode(CellCoordinates cellCoordinates) =>
                 new RouteSegment.Node(
                     cellCoordinates,
-                    appState.Rooms.queries.FindRoomAtCell(cellCoordinates)
+                    appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates)
                 );
 
             CellCoordinates currentCellCoordinates;

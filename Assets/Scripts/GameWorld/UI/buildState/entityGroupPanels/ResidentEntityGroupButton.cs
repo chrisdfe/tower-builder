@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Rooms;
+using TowerBuilder.ApplicationState.Entities.Rooms;
 using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;

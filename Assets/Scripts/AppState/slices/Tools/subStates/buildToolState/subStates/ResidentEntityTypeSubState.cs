@@ -54,18 +54,18 @@ namespace TowerBuilder.ApplicationState.Tools
                 blueprintResident = new Resident();
                 blueprintResident.isInBlueprintMode = true;
                 blueprintResident.cellCoordinates = Registry.appState.UI.currentSelectedCell;
-                Registry.appState.Residents.Add(blueprintResident);
+                Registry.appState.Entities.Residents.Add(blueprintResident);
             }
 
             void DestroyBlueprintResident()
             {
-                Registry.appState.Residents.Remove(blueprintResident);
+                Registry.appState.Entities.Residents.Remove(blueprintResident);
                 blueprintResident = null;
             }
 
             void BuildBlueprintResident()
             {
-                Registry.appState.Residents.BuildResident(blueprintResident);
+                Registry.appState.Entities.Residents.BuildResident(blueprintResident);
                 blueprintResident = null;
             }
 

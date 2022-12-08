@@ -104,18 +104,18 @@ namespace TowerBuilder.ApplicationState.Tools
                 blueprintRoom.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
                 blueprintRoom.validator.Validate(Registry.appState);
 
-                Registry.appState.Rooms.Add(blueprintRoom);
+                Registry.appState.Entities.Rooms.Add(blueprintRoom);
             }
 
             void BuildBlueprintRoom()
             {
-                Registry.appState.Rooms.Build(blueprintRoom);
+                Registry.appState.Entities.Rooms.Build(blueprintRoom);
                 blueprintRoom = null;
             }
 
             void RemoveBlueprintRoom()
             {
-                Registry.appState.Rooms.Remove(blueprintRoom);
+                Registry.appState.Entities.Rooms.Remove(blueprintRoom);
                 blueprintRoom = null;
             }
 

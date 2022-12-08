@@ -23,16 +23,16 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void Setup()
         {
-            Registry.appState.TransportationItems.events.onItemsAdded += OnTransportationItemsAdded;
-            Registry.appState.TransportationItems.events.onItemsRemoved += OnTransportationItemsRemoved;
-            Registry.appState.TransportationItems.events.onItemBuilt += OnTransportationItemBuilt;
+            Registry.appState.Entities.TransportationItems.events.onItemsAdded += OnTransportationItemsAdded;
+            Registry.appState.Entities.TransportationItems.events.onItemsRemoved += OnTransportationItemsRemoved;
+            Registry.appState.Entities.TransportationItems.events.onItemBuilt += OnTransportationItemBuilt;
         }
 
         void Teardown()
         {
-            Registry.appState.TransportationItems.events.onItemsAdded -= OnTransportationItemsAdded;
-            Registry.appState.TransportationItems.events.onItemsRemoved -= OnTransportationItemsRemoved;
-            Registry.appState.TransportationItems.events.onItemBuilt -= OnTransportationItemBuilt;
+            Registry.appState.Entities.TransportationItems.events.onItemsAdded -= OnTransportationItemsAdded;
+            Registry.appState.Entities.TransportationItems.events.onItemsRemoved -= OnTransportationItemsRemoved;
+            Registry.appState.Entities.TransportationItems.events.onItemBuilt -= OnTransportationItemBuilt;
         }
 
         /* 

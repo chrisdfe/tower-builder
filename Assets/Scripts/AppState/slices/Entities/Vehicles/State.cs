@@ -7,7 +7,7 @@ using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.Vehicles
+namespace TowerBuilder.ApplicationState.Entities.Vehicles
 {
     using VehicleListStateSlice = ListStateSlice<VehicleList, Vehicle, State.Events>;
 
@@ -41,7 +41,7 @@ namespace TowerBuilder.ApplicationState.Vehicles
 
             // TODO - don't use items[0] I think?
             public Vehicle FindVehicleByFurniture(Furniture furniture) =>
-                FindVehicleByRoom(appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]));
+                FindVehicleByRoom(appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]));
         }
 
         public Queries queries;
@@ -57,16 +57,16 @@ namespace TowerBuilder.ApplicationState.Vehicles
 
         public override void Setup()
         {
-            appState.Rooms.events.onItemsAdded += OnRoomsAdded;
-            appState.Rooms.events.onItemsBuilt += OnRoomsBuilt;
-            appState.Rooms.events.onItemsRemoved += OnRoomsRemoved;
+            appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
+            appState.Entities.Rooms.events.onItemsBuilt += OnRoomsBuilt;
+            appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
         }
 
         public override void Teardown()
         {
-            appState.Rooms.events.onItemsAdded -= OnRoomsAdded;
-            appState.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
-            appState.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
+            appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
+            appState.Entities.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
+            appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
         }
 
         /* 
@@ -101,7 +101,7 @@ namespace TowerBuilder.ApplicationState.Vehicles
             {
                 if (room.isInBlueprintMode) return;
 
-                List<Room> perimeterRooms = appState.Rooms.queries.FindPerimeterRooms(room);
+                List<Room> perimeterRooms = appState.Entities.Rooms.queries.FindPerimeterRooms(room);
 
                 if (perimeterRooms.Count > 0)
                 {
@@ -122,7 +122,7 @@ namespace TowerBuilder.ApplicationState.Vehicles
         {
             roomList.ForEach(room =>
             {
-                List<Room> perimeterRooms = appState.Rooms.queries.FindPerimeterRooms(room);
+                List<Room> perimeterRooms = appState.Entities.Rooms.queries.FindPerimeterRooms(room);
 
                 if (perimeterRooms.Count > 0)
                 {

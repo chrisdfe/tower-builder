@@ -35,8 +35,8 @@ namespace TowerBuilder.ApplicationState.TransportationItems
                 return new TransportationItemsList(
                     state.list.items.FindAll(transportationItem =>
                     {
-                        Room entranceCellRoom = appState.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
-                        Room exitCellRoom = appState.Rooms.queries.FindRoomAtCell(transportationItem.exitCellCoordinates);
+                        Room entranceCellRoom = appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
+                        Room exitCellRoom = appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.exitCellCoordinates);
                         return (entranceCellRoom == room || exitCellRoom == room);
                     }).ToList()
                 );

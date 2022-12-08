@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Rooms;
+using TowerBuilder.ApplicationState.Entities.Rooms;
 using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Rooms;
@@ -109,7 +109,7 @@ namespace TowerBuilder.ApplicationState.Tools
                         new CellCoordinatesBlockList(
                             blocksToDelete.items.FindAll(roomBlock => roomToDelete.blocksList.Contains(roomBlock))
                         );
-                    Registry.appState.Rooms.DestroyRoomBlocks(roomToDelete, roomBlocksToDelete);
+                    Registry.appState.Entities.Rooms.DestroyRoomBlocks(roomToDelete, roomBlocksToDelete);
                 }
             }
 
@@ -131,7 +131,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
             foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
             {
-                var (roomToDelete, roomBlockToDelete) = Registry.appState.Rooms.queries.FindRoomBlockAtCell(cellCoordinates);
+                var (roomToDelete, roomBlockToDelete) = Registry.appState.Entities.Rooms.queries.FindRoomBlockAtCell(cellCoordinates);
 
                 if (roomToDelete != null && roomBlockToDelete != null)
                 {

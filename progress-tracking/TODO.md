@@ -3,9 +3,7 @@
 ## Tasks
 
 - Maybe entity needs to have a couple more generic parameters, like TemplateType and ValidatorType
-- Move the rest of the entities states (resident, transportationitems etc) into the entities state
 - "Entities state slice"? is that getting too deep into inheritence
-- abstract room/furniture validators -> entity validators
 - auto generate entity buttons
 - reorganize/simplify buildtool state to be more dynamic
 - same as with how I made an entities appState slice:
@@ -216,6 +214,8 @@
 
 # Done
 
+- abstract room/furniture validators -> entity validators
+- Move the rest of the entities states (resident, transportationitems etc) into the entities state
 - MaterialReplacer:
   - should be static
 - Remove most of the current room templates - right now there should just be a single room type (empty)

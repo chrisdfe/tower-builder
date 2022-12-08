@@ -10,7 +10,7 @@ using TowerBuilder.DataTypes.Entities.Rooms.Validators;
 using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.Rooms
+namespace TowerBuilder.ApplicationState.Entities.Rooms
 {
     using RoomsListStateSlice = ListStateSlice<RoomList, Room, State.Events>;
 

@@ -40,16 +40,16 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
 
         public override void Setup()
         {
-            appState.Furnitures.events.onItemsAdded += OnFurnituresAdded;
-            appState.Furnitures.events.onItemsRemoved += OnFurnituresRemoved;
-            appState.Furnitures.events.onItemBuilt += OnFurnituresBuilt;
+            appState.Entities.Furnitures.events.onItemsAdded += OnFurnituresAdded;
+            appState.Entities.Furnitures.events.onItemsRemoved += OnFurnituresRemoved;
+            appState.Entities.Furnitures.events.onItemBuilt += OnFurnituresBuilt;
         }
 
         public override void Teardown()
         {
-            appState.Furnitures.events.onItemsAdded -= OnFurnituresAdded;
-            appState.Furnitures.events.onItemsRemoved -= OnFurnituresRemoved;
-            appState.Furnitures.events.onItemBuilt -= OnFurnituresBuilt;
+            appState.Entities.Furnitures.events.onItemsAdded -= OnFurnituresAdded;
+            appState.Entities.Furnitures.events.onItemsRemoved -= OnFurnituresRemoved;
+            appState.Entities.Furnitures.events.onItemBuilt -= OnFurnituresBuilt;
         }
 
         /* 

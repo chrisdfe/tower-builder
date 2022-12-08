@@ -99,14 +99,14 @@ namespace TowerBuilder.ApplicationState.UI
         {
             this.currentSelectedCell = currentSelectedCell;
 
-            currentSelectedRoom = Registry.appState.Rooms.queries.FindRoomAtCell(currentSelectedCell);
+            currentSelectedRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(currentSelectedCell);
 
             currentSelectedRoomBlock = null;
             if (currentSelectedRoom != null)
             {
                 currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
 
-                currentSelectedVehicle = Registry.appState.Vehicles.queries.FindVehicleByRoom(currentSelectedRoom);
+                currentSelectedVehicle = Registry.appState.Entities.Vehicles.queries.FindVehicleByRoom(currentSelectedRoom);
             }
 
             if (selectionIsActive)
@@ -188,14 +188,14 @@ namespace TowerBuilder.ApplicationState.UI
                     entityList.Add<Room>(currentSelectedRoom);
                 }
 
-                Furniture furnitureAtCell = appState.Furnitures.queries.FindFurnitureAtCell(currentSelectedCell);
+                Furniture furnitureAtCell = appState.Entities.Furnitures.queries.FindFurnitureAtCell(currentSelectedCell);
 
                 if (furnitureAtCell != null)
                 {
                     entityList.Add<Furniture>(furnitureAtCell);
                 }
 
-                Resident residentAtCell = appState.Residents.queries.FindResidentAtCell(currentSelectedCell);
+                Resident residentAtCell = appState.Entities.Residents.queries.FindResidentAtCell(currentSelectedCell);
 
                 if (residentAtCell != null)
                 {

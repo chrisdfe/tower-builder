@@ -8,7 +8,7 @@ using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.Furnitures
+namespace TowerBuilder.ApplicationState.Entities.Furnitures
 {
     using FurnitureStateSlice = ListStateSlice<FurnitureList, Furniture, State.Events>;
 
@@ -35,7 +35,7 @@ namespace TowerBuilder.ApplicationState.Furnitures
             public FurnitureList FindFurnitureByRoom(Room room) =>
                 new FurnitureList(
                     state.list.items.FindAll(furniture =>
-                        appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]) == room
+                        appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]) == room
                     )
                 );
 
@@ -74,22 +74,22 @@ namespace TowerBuilder.ApplicationState.Furnitures
 
         public override void Setup()
         {
-            appState.Rooms.events.onItemsAdded += OnRoomsAdded;
-            appState.Rooms.events.onItemsBuilt += OnRoomsBuilt;
-            appState.Rooms.events.onItemsRemoved += OnRoomsRemoved;
+            appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
+            appState.Entities.Rooms.events.onItemsBuilt += OnRoomsBuilt;
+            appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
 
-            appState.Rooms.events.onRoomBlocksAdded += OnRoomBlocksAdded;
-            appState.Rooms.events.onRoomBlocksRemoved += OnRoomBlocksRemoved;
+            appState.Entities.Rooms.events.onRoomBlocksAdded += OnRoomBlocksAdded;
+            appState.Entities.Rooms.events.onRoomBlocksRemoved += OnRoomBlocksRemoved;
         }
 
         public override void Teardown()
         {
-            appState.Rooms.events.onItemsAdded -= OnRoomsAdded;
-            appState.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
-            appState.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
+            appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
+            appState.Entities.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
+            appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
 
-            appState.Rooms.events.onRoomBlocksAdded -= OnRoomBlocksAdded;
-            appState.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
+            appState.Entities.Rooms.events.onRoomBlocksAdded -= OnRoomBlocksAdded;
+            appState.Entities.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
         }
 
         public void Build(Furniture furniture)

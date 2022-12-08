@@ -217,7 +217,7 @@ namespace TowerBuilder.DataTypes.Entities.Residents.Behaviors
         void TravelingTick()
         {
             routeProgress.IncrementProgress();
-            appState.Residents.SetResidentPosition(resident, routeProgress.currentCell);
+            appState.Entities.Residents.SetResidentPosition(resident, routeProgress.currentCell);
         }
     }
 }

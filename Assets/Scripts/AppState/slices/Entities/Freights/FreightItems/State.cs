@@ -1,6 +1,6 @@
 using TowerBuilder.DataTypes.Freights;
 
-namespace TowerBuilder.ApplicationState.Freight.FreightItems
+namespace TowerBuilder.ApplicationState.Entities.Freight.FreightItems
 {
     using FreightItemListStateSlice = ListStateSlice<FreightItemList, FreightItem, State.Events>;
 

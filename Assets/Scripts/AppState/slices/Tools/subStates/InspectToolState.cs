@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using TowerBuilder.ApplicationState.Rooms;
+using TowerBuilder.ApplicationState.Entities.Rooms;
 using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
@@ -53,8 +53,8 @@ namespace TowerBuilder.ApplicationState.Tools
         {
             base.Setup();
 
-            appState.Furnitures.events.onItemsRemoved += OnFurnituresRemoved;
-            appState.Residents.events.onItemsRemoved += OnResidentsRemoved;
+            appState.Entities.Furnitures.events.onItemsRemoved += OnFurnituresRemoved;
+            appState.Entities.Residents.events.onItemsRemoved += OnResidentsRemoved;
 
             appState.UI.events.onSecondaryActionPerformed += OnSecondaryActionPerformed;
         }
@@ -63,8 +63,8 @@ namespace TowerBuilder.ApplicationState.Tools
         {
             base.Teardown();
 
-            appState.Furnitures.events.onItemsRemoved -= OnFurnituresRemoved;
-            appState.Residents.events.onItemsRemoved -= OnResidentsRemoved;
+            appState.Entities.Furnitures.events.onItemsRemoved -= OnFurnituresRemoved;
+            appState.Entities.Residents.events.onItemsRemoved -= OnResidentsRemoved;
 
             appState.UI.events.onSecondaryActionPerformed -= OnSecondaryActionPerformed;
 
@@ -183,7 +183,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
             Resident resident = (inspectedEntity as Resident);
             CellCoordinates targetCellCoordinates = appState.UI.currentSelectedCell;
-            Furniture furnitureAtTarget = appState.Furnitures.queries.FindFurnitureAtCell(targetCellCoordinates);
+            Furniture furnitureAtTarget = appState.Entities.Furnitures.queries.FindFurnitureAtCell(targetCellCoordinates);
 
             if (furnitureAtTarget != null)
             {

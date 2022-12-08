@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Rooms;
+using TowerBuilder.ApplicationState.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
@@ -28,13 +28,13 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
 
             if (isOnBottom && cellCoordinates.floor > 0)
             {
-                Room roomUnderneath = appState.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelow);
+                Room roomUnderneath = appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelow);
 
                 if (roomUnderneath == null)
                 {
                     // cell is overhanging - look for rooms underneath within acceptable overhang range
-                    Room roomUnderneathToTheLeft = appState.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelowLeft);
-                    Room roomUnderneathToTheRight = appState.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelowRight);
+                    Room roomUnderneathToTheLeft = appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelowLeft);
+                    Room roomUnderneathToTheRight = appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates.coordinatesBelowRight);
 
                     if (roomUnderneathToTheLeft == null && roomUnderneathToTheRight == null)
                     {

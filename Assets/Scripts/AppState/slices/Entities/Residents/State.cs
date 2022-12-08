@@ -6,7 +6,7 @@ using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Routes;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.Residents
+namespace TowerBuilder.ApplicationState.Entities.Residents
 {
     using ResidentsListStateSlice = ListStateSlice<ResidentsList, Resident, State.Events>;
 

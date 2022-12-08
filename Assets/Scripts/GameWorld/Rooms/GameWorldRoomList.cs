@@ -26,10 +26,10 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Setup()
         {
-            Registry.appState.Rooms.events.onItemsAdded += OnRoomsAdded;
-            Registry.appState.Rooms.events.onItemsBuilt += OnRoomsBuilt;
-            Registry.appState.Rooms.events.onItemsRemoved += OnRoomsRemoved;
-            Registry.appState.Rooms.events.onRoomBlocksUpdated += OnRoomBlocksUpdated;
+            Registry.appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
+            Registry.appState.Entities.Rooms.events.onItemsBuilt += OnRoomsBuilt;
+            Registry.appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
+            Registry.appState.Entities.Rooms.events.onRoomBlocksUpdated += OnRoomBlocksUpdated;
 
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
@@ -40,10 +40,10 @@ namespace TowerBuilder.GameWorld.Rooms
 
         public void Teardown()
         {
-            Registry.appState.Rooms.events.onItemsAdded -= OnRoomsAdded;
-            Registry.appState.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
-            Registry.appState.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
-            Registry.appState.Rooms.events.onRoomBlocksUpdated -= OnRoomBlocksUpdated;
+            Registry.appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
+            Registry.appState.Entities.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
+            Registry.appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
+            Registry.appState.Entities.Rooms.events.onRoomBlocksUpdated -= OnRoomBlocksUpdated;
 
             Registry.appState.UI.events.onCurrentSelectedRoomUpdated -= OnCurrentSelectedRoomUpdated;
             Registry.appState.UI.events.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;

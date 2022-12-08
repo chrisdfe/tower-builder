@@ -14,14 +14,14 @@ namespace TowerBuilder.ApplicationState
 
         public override void Setup()
         {
-            appState.Furnitures.events.onItemsAdded += OnFurnituresAdded;
-            appState.Furnitures.events.onItemsBuilt += OnFurnituresBuilt;
+            appState.Entities.Furnitures.events.onItemsAdded += OnFurnituresAdded;
+            appState.Entities.Furnitures.events.onItemsBuilt += OnFurnituresBuilt;
         }
 
         public override void Teardown()
         {
-            appState.Furnitures.events.onItemsAdded -= OnFurnituresAdded;
-            appState.Furnitures.events.onItemsBuilt -= OnFurnituresBuilt;
+            appState.Entities.Furnitures.events.onItemsAdded -= OnFurnituresAdded;
+            appState.Entities.Furnitures.events.onItemsBuilt -= OnFurnituresBuilt;
         }
 
         void OnFurnituresAdded(FurnitureList furnitureList)
@@ -55,7 +55,7 @@ namespace TowerBuilder.ApplicationState
 
             // place it where the resident is for now
             resident.cellCoordinates = furniture.cellCoordinatesList.items[0];
-            appState.Residents.Add(resident);
+            appState.Entities.Residents.Add(resident);
 
             // add ownership
             FurnitureHomeSlotOccupation homeSlotOccupation = new FurnitureHomeSlotOccupation()

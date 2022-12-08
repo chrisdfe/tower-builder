@@ -31,16 +31,16 @@ namespace TowerBuilder.GameWorld.UI
 
         void Setup()
         {
-            Registry.appState.Vehicles.events.onItemsAdded += OnVehiclesAdded;
-            Registry.appState.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
+            Registry.appState.Entities.Vehicles.events.onItemsAdded += OnVehiclesAdded;
+            Registry.appState.Entities.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
 
             Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperUpdated += OnVehicleAttributesWrapperUpdated;
         }
 
         void Teardown()
         {
-            Registry.appState.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
-            Registry.appState.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
+            Registry.appState.Entities.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
+            Registry.appState.Entities.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
 
             Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperUpdated += OnVehicleAttributesWrapperUpdated;
         }

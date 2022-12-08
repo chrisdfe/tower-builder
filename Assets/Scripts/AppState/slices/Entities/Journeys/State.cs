@@ -1,6 +1,6 @@
 using TowerBuilder.DataTypes.Journeys;
 
-namespace TowerBuilder.ApplicationState.Journeys
+namespace TowerBuilder.ApplicationState.Entities.Journeys
 {
     using JourneyListStateSlice = ListStateSlice<JourneyList, Journey, State.Events>;
 

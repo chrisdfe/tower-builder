@@ -1,6 +1,6 @@
 using System;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Rooms;
+using TowerBuilder.ApplicationState.Entities.Rooms;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using UnityEngine;

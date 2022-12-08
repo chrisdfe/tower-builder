@@ -19,7 +19,7 @@ namespace TowerBuilder.DataTypes.Entities
         {
             foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.items)
             {
-                Room entityRoom = appState.Rooms.queries.FindRoomAtCell(cellCoordinates);
+                Room entityRoom = appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates);
 
                 if (entityRoom == null)
                 {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Rooms;
+using TowerBuilder.ApplicationState.Entities.Rooms;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
@@ -65,8 +65,8 @@ namespace TowerBuilder.DataTypes.Routes
             this.startCoordinates = startCoordinates;
             this.endCoordinates = endCoordinates;
 
-            startRoom = appState.Rooms.queries.FindRoomAtCell(startCoordinates);
-            endRoom = appState.Rooms.queries.FindRoomAtCell(endCoordinates);
+            startRoom = appState.Entities.Rooms.queries.FindRoomAtCell(startCoordinates);
+            endRoom = appState.Entities.Rooms.queries.FindRoomAtCell(endCoordinates);
             routeAttempts = new List<RouteAttempt>();
 
             RouteAttempt firstRouteAttempt = new RouteAttempt();
@@ -87,7 +87,7 @@ namespace TowerBuilder.DataTypes.Routes
 
             void ValidateRouteMarker(CellCoordinates cellCoordinates)
             {
-                Room room = appState.Rooms.queries.FindRoomAtCell(cellCoordinates);
+                Room room = appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates);
 
                 // The 0th floor is a special case, since it connects to the outside world
                 // if (room == null && cellCoordinates.floor != 0)
@@ -107,7 +107,7 @@ namespace TowerBuilder.DataTypes.Routes
             }
             else
             {
-                TransportationItemsList transportationItemsList = appState.TransportationItems.queries.FindTransportationItemsConnectingToRoom(currentRouteAttempt.currentRoom);
+                TransportationItemsList transportationItemsList = appState.Entities.TransportationItems.queries.FindTransportationItemsConnectingToRoom(currentRouteAttempt.currentRoom);
 
                 transportationItemsList.ForEach(transportationItem =>
                 {
@@ -123,8 +123,8 @@ namespace TowerBuilder.DataTypes.Routes
             RouteAttempt routeAttemptBranch = currentRouteAttempt.Clone();
 
             // Determine which way we're traveling through this transportation item, entrance->exit or exit->entrance
-            Room entranceRoom = Registry.appState.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
-            Room exitRoom = Registry.appState.Rooms.queries.FindRoomAtCell(transportationItem.exitCellCoordinates);
+            Room entranceRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
+            Room exitRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.exitCellCoordinates);
 
             // TODO - check if transportation item is one way
             CellCoordinates transportationStartCoordinates;

@@ -8,14 +8,7 @@ namespace TowerBuilder.ApplicationState
             public Time.State.Input time;
             public Wallet.State.Input wallet;
 
-            // Models
-            public Rooms.State.Input rooms;
-            public Furnitures.State.Input furnitures;
-            public Residents.State.Input residents;
-            public TransportationItems.State.Input transportationItems;
-            public Vehicles.State.Input vehicles;
-            public Journeys.State.Input journeys;
-            public Freight.State.Input freight;
+            public Entities.State.Input Entities;
 
             // Attributes
             public ResidentAttributesWrappers.State.Input residentAttributesWrappers;
@@ -38,14 +31,7 @@ namespace TowerBuilder.ApplicationState
                 time = new Time.State.Input();
                 wallet = new Wallet.State.Input();
 
-                // Base models
-                rooms = new Rooms.State.Input();
-                furnitures = new Furnitures.State.Input();
-                residents = new Residents.State.Input();
-                transportationItems = new TransportationItems.State.Input();
-                vehicles = new Vehicles.State.Input();
-                journeys = new Journeys.State.Input();
-                freight = new Freight.State.Input();
+                Entities = new Entities.State.Input();
 
                 // Attributes
                 residentAttributesWrappers = new ResidentAttributesWrappers.State.Input();
@@ -68,14 +54,7 @@ namespace TowerBuilder.ApplicationState
         public Time.State Time;
         public Wallet.State Wallet;
 
-        // Models
-        public Rooms.State Rooms;
-        public Furnitures.State Furnitures;
-        public Residents.State Residents;
-        public TransportationItems.State TransportationItems;
-        public Vehicles.State Vehicles;
-        public Journeys.State Journeys;
-        public Freight.State Freight;
+        public Entities.State Entities;
 
         // Attributes
         public ResidentAttributesWrappers.State ResidentAttributesWrappers;
@@ -119,14 +98,7 @@ namespace TowerBuilder.ApplicationState
             Time = new Time.State(this, input.time);
             Wallet = new Wallet.State(this, input.wallet);
 
-            // Models
-            Rooms = new Rooms.State(this, input.rooms);
-            Furnitures = new Furnitures.State(this, input.furnitures);
-            Residents = new Residents.State(this, input.residents);
-            TransportationItems = new TransportationItems.State(this, input.transportationItems);
-            Vehicles = new Vehicles.State(this, input.vehicles);
-            Journeys = new Journeys.State(this, input.journeys);
-            Freight = new Freight.State(this, input.freight);
+            Entities = new Entities.State(this, input.Entities);
 
             // Attributes
             ResidentAttributesWrappers = new ResidentAttributesWrappers.State(this, input.residentAttributesWrappers);

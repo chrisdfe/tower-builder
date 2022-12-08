@@ -6,7 +6,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.Rooms
+namespace TowerBuilder.ApplicationState.Entities.Rooms
 {
     public partial class State
     {

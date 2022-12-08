@@ -23,7 +23,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
         {
             base.InteractStart(resident);
 
-            Vehicle vehicle = appState.Vehicles.queries.FindVehicleByFurniture(furniture);
+            Vehicle vehicle = appState.Entities.Vehicles.queries.FindVehicleByFurniture(furniture);
             VehicleAttributesWrapper vehicleAttributesWrapper = appState.VehicleAttributesWrappers.queries.FindByVehicle(vehicle);
 
             VehicleAttribute.Modifier modifier = new VehicleAttribute.Modifier("Engine Power", 1f);

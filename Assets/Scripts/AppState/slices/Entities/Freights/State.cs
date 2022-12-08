@@ -1,6 +1,6 @@
-using TowerBuilder.ApplicationState.Freight.FreightItems;
+using TowerBuilder.ApplicationState.Entities.Freight.FreightItems;
 
-namespace TowerBuilder.ApplicationState.Freight
+namespace TowerBuilder.ApplicationState.Entities.Freight
 {
     public class State : StateSlice
     {

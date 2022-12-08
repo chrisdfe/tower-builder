@@ -120,18 +120,18 @@ namespace TowerBuilder.ApplicationState.Tools
                 blueprintFurniture = new Furniture(selectedFurnitureTemplate);
                 blueprintFurniture.isInBlueprintMode = true;
                 blueprintFurniture.cellCoordinatesList.PositionAtCoordinates(Registry.appState.UI.currentSelectedCell);
-                Registry.appState.Furnitures.Add(blueprintFurniture);
+                Registry.appState.Entities.Furnitures.Add(blueprintFurniture);
             }
 
             void DestroyBlueprintFurniture()
             {
-                Registry.appState.Furnitures.Remove(blueprintFurniture);
+                Registry.appState.Entities.Furnitures.Remove(blueprintFurniture);
                 blueprintFurniture = null;
             }
 
             void BuildBlueprintFurniture()
             {
-                Registry.appState.Furnitures.Build(blueprintFurniture);
+                Registry.appState.Entities.Furnitures.Build(blueprintFurniture);
                 blueprintFurniture = null;
             }
 

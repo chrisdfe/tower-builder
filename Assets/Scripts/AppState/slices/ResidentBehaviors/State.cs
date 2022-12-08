@@ -57,18 +57,18 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
         {
             appState.Time.events.onTick += OnTick;
 
-            appState.Residents.events.onItemsAdded += OnResidentsAdded;
-            appState.Residents.events.onItemsRemoved += OnResidentsRemoved;
-            appState.Residents.events.onItemsBuilt += OnResidentsBuilt;
+            appState.Entities.Residents.events.onItemsAdded += OnResidentsAdded;
+            appState.Entities.Residents.events.onItemsRemoved += OnResidentsRemoved;
+            appState.Entities.Residents.events.onItemsBuilt += OnResidentsBuilt;
         }
 
         public override void Teardown()
         {
             appState.Time.events.onTick -= OnTick;
 
-            appState.Residents.events.onItemsAdded -= OnResidentsAdded;
-            appState.Residents.events.onItemsRemoved -= OnResidentsRemoved;
-            appState.Residents.events.onItemsBuilt -= OnResidentsBuilt;
+            appState.Entities.Residents.events.onItemsAdded -= OnResidentsAdded;
+            appState.Entities.Residents.events.onItemsRemoved -= OnResidentsRemoved;
+            appState.Entities.Residents.events.onItemsBuilt -= OnResidentsBuilt;
         }
 
         /* 

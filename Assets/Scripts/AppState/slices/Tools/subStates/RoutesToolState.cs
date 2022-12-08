@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 
-using TowerBuilder.ApplicationState.Rooms;
+using TowerBuilder.ApplicationState.Entities.Rooms;
 using TowerBuilder.ApplicationState.UI;
 using UnityEngine;
 
