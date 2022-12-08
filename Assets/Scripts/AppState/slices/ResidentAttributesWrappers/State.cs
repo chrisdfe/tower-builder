@@ -48,8 +48,6 @@ namespace TowerBuilder.ApplicationState.ResidentAttributesWrappers
         public State(AppState appState, Input input) : base(appState)
         {
             queries = new Queries(appState, this);
-
-            Setup();
         }
 
         public State(AppState appState) : this(appState, new Input()) { }

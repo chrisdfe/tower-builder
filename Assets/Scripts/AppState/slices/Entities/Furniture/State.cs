@@ -69,7 +69,6 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
         public State(AppState appState, Input input) : base(appState)
         {
             queries = new Queries(appState, this);
-            Setup();
         }
 
         public override void Setup()

@@ -51,6 +51,8 @@ namespace TowerBuilder.ApplicationState.Entities.Residents
             queries = new Queries(this);
         }
 
+        public State(AppState appState) : this(appState, new Input()) { }
+
         public void BuildResident(Resident resident)
         {
             resident.OnBuild();

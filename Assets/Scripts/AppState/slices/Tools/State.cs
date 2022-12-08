@@ -64,14 +64,12 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public void SetToolState(ToolState newToolState)
         {
-            if (newToolState == toolState) return;
-
-            ToolState previousToolState = toolState;
-            TransitionToolState(newToolState, toolState);
-
-            if (events.onToolStateUpdated != null)
+            if (newToolState != toolState)
             {
-                events.onToolStateUpdated(newToolState, previousToolState);
+                ToolState previousToolState = toolState;
+                TransitionToolState(newToolState, toolState);
+
+                events.onToolStateUpdated?.Invoke(newToolState, previousToolState);
             }
         }
 

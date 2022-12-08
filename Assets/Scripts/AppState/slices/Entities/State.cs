@@ -45,5 +45,16 @@ namespace TowerBuilder.ApplicationState.Entities
             Journeys = new Journeys.State(appState, input.Journeys);
             Freight = new Freight.State(appState, input.Freight);
         }
+
+        public override void Setup()
+        {
+            Rooms.Setup();
+            Furnitures.Setup();
+            Residents.Setup();
+            TransportationItems.Setup();
+            Vehicles.Setup();
+            Journeys.Setup();
+            Freight.Setup();
+        }
     }
 }

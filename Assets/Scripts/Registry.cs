@@ -8,5 +8,10 @@ namespace TowerBuilder
     {
         public static AllDefinitions definitions = new AllDefinitions();
         public static AppState appState = new AppState();
+
+        static Registry()
+        {
+            appState.Setup();
+        }
     }
 }

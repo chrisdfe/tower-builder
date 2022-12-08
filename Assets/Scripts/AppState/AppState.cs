@@ -1,6 +1,9 @@
+using TowerBuilder.DataTypes;
+using UnityEngine;
+
 namespace TowerBuilder.ApplicationState
 {
-    public class AppState
+    public class AppState : ISetupable
     {
         public class Input
         {
@@ -119,5 +122,30 @@ namespace TowerBuilder.ApplicationState
         }
 
         public AppState() : this(new Input()) { }
+
+        public void Setup()
+        {
+            Debug.Log("setup");
+            Notifications.Setup();
+            Time.Setup();
+            Wallet.Setup();
+
+            Entities.Setup();
+
+            ResidentAttributesWrappers.Setup();
+            VehicleAttributesWrappers.Setup();
+
+            FurnitureHomeSlotOccupations.Setup();
+
+            FurnitureBehaviors.Setup();
+            ResidentBehaviors.Setup();
+
+            UI.Setup();
+            Tools.Setup();
+
+            watchers.Setup();
+        }
+
+        public void Teardown() { }
     }
 }

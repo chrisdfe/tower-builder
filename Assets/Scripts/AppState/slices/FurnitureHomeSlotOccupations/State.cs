@@ -35,8 +35,6 @@ namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations
         public State(AppState appState, Input input) : base(appState)
         {
             queries = new Queries(this);
-
-            Setup();
         }
 
         public override void Setup() { }

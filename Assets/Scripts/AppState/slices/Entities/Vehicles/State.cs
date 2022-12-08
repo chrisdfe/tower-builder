@@ -51,8 +51,6 @@ namespace TowerBuilder.ApplicationState.Entities.Vehicles
             list = input.vehicleList ?? new VehicleList();
 
             queries = new Queries(appState, this);
-
-            Setup();
         }
 
         public override void Setup()
