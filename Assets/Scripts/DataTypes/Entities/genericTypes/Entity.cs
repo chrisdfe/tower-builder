@@ -41,8 +41,8 @@ namespace TowerBuilder.DataTypes.Entities
         public bool isInBlueprintMode { get; set; } = false;
 
         // TODO - I don't know if I need all of these
-        public Dictionary<CellCoordinates, OccupiedCellMap> occupiedCellMapMap = new Dictionary<CellCoordinates, OccupiedCellMap>() { };
-        public Dictionary<CellCoordinates, Tileable> tileableMap = new Dictionary<CellCoordinates, Tileable>() { };
+        public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>() { };
+        // public Dictionary<CellCoordinates, Tileable> tileableMap = new Dictionary<CellCoordinates, Tileable>() { };
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>() { };
 
         // TODO - remove the set; accessors too
@@ -121,15 +121,10 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 cellCoordinatesList.ForEach((cellCoordinates) =>
                 {
-                    OccupiedCellMap occupiedCellMap = OccupiedCellMap.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);
-                    occupiedCellMapMap.Add(cellCoordinates, occupiedCellMap);
+                    CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);
+                    cellNeighborsMap.Add(cellCoordinates, cellNeighbors);
 
-                    Tileable tileable = Tileable.FromResizability(template.resizability);
-                    tileableMap.Add(cellCoordinates, tileable);
-
-                    Tileable.CellPosition cellPosition = tileable.GetCellPosition(occupiedCellMap);
-                    Debug.Log("cellPosition: " + cellPosition);
-
+                    Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
                     cellPositionMap.Add(cellCoordinates, cellPosition);
                 });
             }

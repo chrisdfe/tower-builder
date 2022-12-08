@@ -6,18 +6,18 @@ using UnityEngine;
 namespace TowerBuilder.DataTypes
 {
     // Cell position in relation to another cell
-    // TODO - put this in CellCoordinates?
+    [Flags]
     public enum CellOrientation
     {
-        None,
-        Above,
-        AboveRight,
-        Right,
-        BelowRight,
-        Below,
-        BelowLeft,
-        Left,
-        AboveLeft
+        None = 0,
+        Above = 1,
+        AboveRight = 2,
+        Right = 4,
+        BelowRight = 8,
+        Below = 16,
+        BelowLeft = 32,
+        Left = 64,
+        AboveLeft = 128
     }
 }
 

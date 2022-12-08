@@ -1,4 +1,5 @@
 using TowerBuilder.DataTypes;
+using TowerBuilder.Utils;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld
@@ -6,11 +7,12 @@ namespace TowerBuilder.GameWorld
     public class MeshWrapper<KeyType>
         where KeyType : struct
     {
+        public const string TILEABLE_WRAPPER_NODE_NAME = "TileableWrapper";
+
         public virtual KeyType key { get; }
         public AssetList<KeyType> assetList;
 
         public Transform meshTransform { get; private set; }
-        // protected Transform wrapper;
         public Transform parent { get; private set; }
 
         Tileable tileable;
@@ -35,14 +37,8 @@ namespace TowerBuilder.GameWorld
 
         public void SetTileability(CellCoordinates itemCoordinates, CellCoordinatesList cellCoordinatesList)
         {
-            OccupiedCellMap occupiedCellMap = OccupiedCellMap.FromCellCoordinatesList(itemCoordinates, cellCoordinatesList);
-
-            tileable = Tileable.FromModel(meshTransform);
-
-            if (tileable != null)
-            {
-                tileable.ProcessModel(meshTransform, occupiedCellMap);
-            }
+            CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(itemCoordinates, cellCoordinatesList);
+            ProcessModel(meshTransform, cellNeighbors);
         }
 
         protected void LoadModel()
@@ -54,6 +50,31 @@ namespace TowerBuilder.GameWorld
             meshTransform.localPosition = Vector3.zero;
 
             this.meshTransform = meshTransform;
+        }
+
+        protected void ProcessModel(Transform model, CellNeighbors cellNeighbors)
+        {
+            Transform tileabileWrapper = TransformUtils.FindDeepChild(model, TILEABLE_WRAPPER_NODE_NAME);
+
+            if (tileabileWrapper == null)
+            {
+                Debug.Log("No TileableWrapper found");
+                return;
+            }
+
+            Transform child = tileabileWrapper.GetChild(0);
+
+            if (child != null)
+            {
+                Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
+
+                foreach (Transform node in child)
+                {
+                    Tileable.CellPosition nodeCellPosition = Tileable.CellPositionLabelMap.KeyFromValue(node.name);
+                    node.localPosition = Vector3.zero;
+                    node.gameObject.SetActive(nodeCellPosition == cellPosition);
+                }
+            }
         }
     }
 }

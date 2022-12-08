@@ -34,7 +34,7 @@ namespace TowerBuilder.GameWorld.Rooms
         public CellCoordinates cellCoordinates;
 
         [HideInInspector]
-        public OccupiedCellMap occupiedCellMap;
+        public CellNeighbors cellNeighbors;
 
         [HideInInspector]
         public Tileable tileable;
