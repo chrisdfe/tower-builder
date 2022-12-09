@@ -12,20 +12,18 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities.Rooms
 {
-    using RoomsListStateSlice = ListStateSlice<RoomList, Room, State.Events>;
+    using RoomEntityStateSlice = EntityStateSlice<RoomList, Room, State.Events>;
 
     [Serializable]
-    public partial class State : RoomsListStateSlice
+    public partial class State : RoomEntityStateSlice
     {
         public struct Input
         {
             public RoomList roomList;
         }
 
-        public new class Events : RoomsListStateSlice.Events
+        public new class Events : RoomEntityStateSlice.Events
         {
-            public RoomsListStateSlice.Events.ItemEvent onItemBuilt;
-
             public delegate void RoomBlocksEvent(Room room, CellCoordinatesBlockList roomBlocks);
             public RoomBlocksEvent onRoomBlocksAdded;
             public RoomBlocksEvent onRoomBlocksRemoved;
@@ -52,22 +50,15 @@ namespace TowerBuilder.ApplicationState.Entities.Rooms
             room.validator.Validate(appState);
         }
 
-        public void Build(Room room)
+        public override void Remove(Room room)
         {
-            room.validator.Validate(appState);
+            room.OnDestroy();
+            base.Remove(room);
+        }
 
-            if (!room.validator.isValid)
-            {
-                // TODO - these should be unique messages - right now they are not
-                foreach (EntityValidationError validationError in room.validator.errors.items)
-                {
-                    appState.Notifications.Add(new Notification(validationError.message));
-                }
-                return;
-            }
-
-            // 
-            appState.Wallet.SubtractBalance(room.price);
+        protected override void OnPreBuild(Room entity)
+        {
+            base.OnPreBuild(entity);
 
             /*
             // Decide whether to create a new room or to add to an existing one
@@ -84,17 +75,6 @@ namespace TowerBuilder.ApplicationState.Entities.Rooms
                 room.Reset();
             }
             */
-
-            room.isInBlueprintMode = false;
-            room.OnBuild();
-
-            events.onItemBuilt?.Invoke(room);
-        }
-
-        public override void Remove(Room room)
-        {
-            room.OnDestroy();
-            base.Remove(room);
         }
 
         /* 

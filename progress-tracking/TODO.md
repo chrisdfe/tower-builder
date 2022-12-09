@@ -2,6 +2,8 @@
 
 ## Tasks
 
+- BuildValidators/DestroyValidators?
+- EntityStateSlice build chould fire onItemsBuilt event as well - currently it's just singular
 - Rename "MeshWrapper" to "EntityMeshWrapper"
 - Maybe entity needs to have a couple more generic parameters, like TemplateType and ValidatorType
 - "Entities state slice"? is that getting too deep into inheritence

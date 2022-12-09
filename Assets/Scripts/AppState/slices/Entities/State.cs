@@ -12,7 +12,6 @@ namespace TowerBuilder.ApplicationState.Entities
             public Rooms.State.Input Rooms;
             public TransportationItems.State.Input TransportationItems;
             public Vehicles.State.Input Vehicles;
-            public Journeys.State.Input Journeys;
             public Freight.State.Input Freight;
 
             public Input()
@@ -22,7 +21,6 @@ namespace TowerBuilder.ApplicationState.Entities
                 Residents = new Residents.State.Input();
                 TransportationItems = new TransportationItems.State.Input();
                 Vehicles = new Vehicles.State.Input();
-                Journeys = new Journeys.State.Input();
                 Freight = new Freight.State.Input();
             }
         }
@@ -32,7 +30,6 @@ namespace TowerBuilder.ApplicationState.Entities
         public Residents.State Residents { get; }
         public TransportationItems.State TransportationItems { get; }
         public Vehicles.State Vehicles { get; }
-        public Journeys.State Journeys { get; }
         public Freight.State Freight { get; }
 
         public State(AppState appState, Input input) : base(appState)
@@ -42,7 +39,6 @@ namespace TowerBuilder.ApplicationState.Entities
             Residents = new Residents.State(appState, input.Residents);
             TransportationItems = new TransportationItems.State(appState, input.TransportationItems);
             Vehicles = new Vehicles.State(appState, input.Vehicles);
-            Journeys = new Journeys.State(appState, input.Journeys);
             Freight = new Freight.State(appState, input.Freight);
         }
 
@@ -53,7 +49,6 @@ namespace TowerBuilder.ApplicationState.Entities
             Residents.Setup();
             TransportationItems.Setup();
             Vehicles.Setup();
-            Journeys.Setup();
             Freight.Setup();
         }
     }

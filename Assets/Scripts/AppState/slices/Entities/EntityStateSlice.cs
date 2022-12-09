@@ -1,0 +1,64 @@
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Notifications;
+using UnityEngine;
+
+namespace TowerBuilder.ApplicationState.Entities
+{
+    public class EntityStateSlice<ListWrapperType, EntityType, EventsType> : ListStateSlice<ListWrapperType, EntityType, EventsType>
+        where ListWrapperType : ListWrapper<EntityType>, new()
+        where EntityType : Entity
+        where EventsType : EntityStateSlice<ListWrapperType, EntityType, EventsType>.Events, new()
+    {
+        public new class Events : ListStateSlice<ListWrapperType, EntityType, EventsType>.Events
+        {
+            public Events.ItemEvent onItemBuilt;
+        }
+
+        public EntityStateSlice(AppState appState) : base(appState) { }
+
+        public void Build(EntityType entity)
+        {
+            Debug.Log("Buildint entity");
+            Debug.Log(entity.GetType());
+            // TODO - don't do this here
+            entity.validator.Validate(appState);
+
+            if (!entity.validator.isValid)
+            {
+                // TODO - these should be unique messages - right now they are not
+                foreach (EntityValidationError validationError in entity.validator.errors.items)
+                {
+                    appState.Notifications.Add(new Notification(validationError.message));
+                }
+                return;
+            }
+
+            // 
+            appState.Wallet.SubtractBalance(entity.price);
+
+            /*
+            // Decide whether to create a new room or to add to an existing one
+            List<Room> roomsToCombineWith = queries.FindRoomsToCombineWith(room);
+
+            if (roomsToCombineWith.Count > 0)
+            {
+                foreach (Room otherRoom in roomsToCombineWith)
+                {
+                    room.blocks.Add(otherRoom.blocks);
+                    Remove(otherRoom);
+                }
+
+                room.Reset();
+            }
+            */
+
+            OnPreBuild(entity);
+            entity.OnBuild();
+
+            events.onItemBuilt?.Invoke(entity);
+        }
+
+        protected virtual void OnPreBuild(EntityType entity) { }
+    }
+}

@@ -121,7 +121,7 @@ namespace TowerBuilder.DataTypes
         }
 
         static CellPosition GetOrthagonalCellPosition(CellNeighbors cellNeighbors) =>
-            cellNeighbors.occupied switch
+            cellNeighbors.occupiedOrthogonal switch
             {
                 // 4 sides
                 (CellOrientation.Above | CellOrientation.Right | CellOrientation.Below | CellOrientation.Left) =>

@@ -8,18 +8,18 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities.Residents
 {
-    using ResidentsListStateSlice = ListStateSlice<ResidentsList, Resident, State.Events>;
+    using ResidentEntityStateSlice = EntityStateSlice<ResidentsList, Resident, State.Events>;
 
-    public class State : ResidentsListStateSlice
+    public class State : ResidentEntityStateSlice
     {
         public class Input
         {
             public ResidentsList residentsList = new ResidentsList();
         }
 
-        public new class Events : ResidentsListStateSlice.Events
+        public new class Events : ResidentEntityStateSlice.Events
         {
-            public ResidentsListStateSlice.Events.ItemEvent onItemPositionUpdated;
+            public ResidentEntityStateSlice.Events.ItemEvent onItemPositionUpdated;
         }
 
         public class Queries

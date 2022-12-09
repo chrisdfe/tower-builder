@@ -1,5 +1,4 @@
 using TowerBuilder.DataTypes;
-using UnityEngine;
 
 namespace TowerBuilder.ApplicationState
 {
@@ -10,6 +9,7 @@ namespace TowerBuilder.ApplicationState
             public Notifications.State.Input notifications;
             public Time.State.Input time;
             public Wallet.State.Input wallet;
+            public Journeys.State.Input Journeys;
 
             public Entities.State.Input Entities;
 
@@ -33,6 +33,7 @@ namespace TowerBuilder.ApplicationState
                 notifications = new Notifications.State.Input();
                 time = new Time.State.Input();
                 wallet = new Wallet.State.Input();
+                Journeys = new Journeys.State.Input();
 
                 Entities = new Entities.State.Input();
 
@@ -56,6 +57,7 @@ namespace TowerBuilder.ApplicationState
         public Notifications.State Notifications;
         public Time.State Time;
         public Wallet.State Wallet;
+        public Journeys.State Journeys;
 
         public Entities.State Entities;
 
@@ -100,6 +102,7 @@ namespace TowerBuilder.ApplicationState
             Notifications = new Notifications.State(this, input.notifications);
             Time = new Time.State(this, input.time);
             Wallet = new Wallet.State(this, input.wallet);
+            Journeys = new Journeys.State(this, input.Journeys);
 
             Entities = new Entities.State(this, input.Entities);
 
@@ -125,10 +128,10 @@ namespace TowerBuilder.ApplicationState
 
         public void Setup()
         {
-            Debug.Log("setup");
             Notifications.Setup();
             Time.Setup();
             Wallet.Setup();
+            Journeys.Setup();
 
             Entities.Setup();
 

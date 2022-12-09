@@ -10,17 +10,14 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities.Furnitures
 {
-    using FurnitureStateSlice = ListStateSlice<FurnitureList, Furniture, State.Events>;
+    using FurnitureEntityStateSlice = EntityStateSlice<FurnitureList, Furniture, State.Events>;
 
     [Serializable]
-    public class State : FurnitureStateSlice
+    public class State : FurnitureEntityStateSlice
     {
         public class Input { }
 
-        public new class Events : FurnitureStateSlice.Events
-        {
-            public FurnitureStateSlice.Events.ListEvent onItemBuilt;
-        }
+        public new class Events : FurnitureEntityStateSlice.Events { }
 
         public class Queries
         {
@@ -91,26 +88,6 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
             appState.Entities.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
         }
 
-        public void Build(Furniture furniture)
-        {
-            furniture.validator.Validate(appState);
-
-            if (!furniture.validator.isValid)
-            {
-                // TODO - these should be unique messages - right now they are not
-                foreach (EntityValidationError validationError in furniture.validator.errors.items)
-                {
-                    appState.Notifications.Add(new Notification(validationError.message));
-                }
-                return;
-            }
-
-            furniture.OnBuild();
-            // furniture.room = appState.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]);
-
-            events.onItemBuilt?.Invoke(new FurnitureList(furniture));
-        }
-
         public override void Remove(Furniture furniture)
         {
             base.Remove(furniture);
@@ -145,8 +122,6 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
                     {
                         Build(furniture);
                     });
-
-                    events.onItemBuilt?.Invoke(blueprintFurnitures);
                 }
             });
         }
