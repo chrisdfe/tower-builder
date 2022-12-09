@@ -49,13 +49,15 @@ namespace TowerBuilder.ApplicationState
             Setup();
         }
 
-        public virtual void Setup()
+        public override void Setup()
         {
+            base.Setup();
             appState.Time.events.onTick += OnTick;
         }
 
-        public virtual void Teardown()
+        public override void Teardown()
         {
+            base.Teardown();
             appState.Time.events.onTick -= OnTick;
         }
 

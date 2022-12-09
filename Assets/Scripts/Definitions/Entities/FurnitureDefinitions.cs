@@ -9,11 +9,9 @@ using UnityEngine;
 
 namespace TowerBuilder.Definitions
 {
-    public class FurnitureDefinitions
+    public class FurnitureDefinitionsList : EntityDefinitionsList<Furniture.Key, Furniture, FurnitureTemplate>
     {
-        public Queries queries;
-
-        public List<FurnitureTemplate> definitions { get; private set; } = new List<FurnitureTemplate>()
+        public override List<FurnitureTemplate> Definitions { get; } = new List<FurnitureTemplate>()
         {
             new FurnitureTemplate() {
                 key = Furniture.Key.PilotSeat,
@@ -45,44 +43,6 @@ namespace TowerBuilder.Definitions
             },
         };
 
-        public class Queries
-        {
-            List<FurnitureTemplate> definitions;
-
-            public Queries(List<FurnitureTemplate> definitions)
-            {
-                this.definitions = definitions;
-            }
-
-            public FurnitureTemplate FindByKey(Furniture.Key key)
-            {
-                return definitions.Find(furnitureDefinition => furnitureDefinition.key == key);
-            }
-
-            public List<FurnitureTemplate> FindByCategory(string category)
-            {
-                return definitions.FindAll(furnitureDefinition => furnitureDefinition.category == category);
-            }
-
-            public List<string> FindAllCategories()
-            {
-                List<string> result = new List<string>();
-
-                foreach (FurnitureTemplate furnitureTemplate in definitions)
-                {
-                    if (!result.Contains(furnitureTemplate.category))
-                    {
-                        result.Add(furnitureTemplate.category);
-                    }
-                }
-
-                return result;
-            }
-        }
-
-        public FurnitureDefinitions()
-        {
-            this.queries = new Queries(definitions);
-        }
+        public FurnitureDefinitionsList() : base() { }
     }
 }

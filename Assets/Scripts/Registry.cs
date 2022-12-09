@@ -6,7 +6,7 @@ namespace TowerBuilder
 {
     public static class Registry
     {
-        public static AllDefinitions definitions = new AllDefinitions();
+        public static AllDefinitions Definitions = new AllDefinitions();
         public static AppState appState = new AppState();
 
         static Registry()
