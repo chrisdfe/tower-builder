@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 
-namespace TowerBuilder.DataTypes.Freights
+namespace TowerBuilder.DataTypes.Entities.Freights
 {
     public class FreightItemStackGroup
     {
         public static FreightSizeMap<int> MaxStackCountMap { get; } = new FreightSizeMap<int>(
-            new Dictionary<FreightItem.Size, int>() {
-                { FreightItem.Size.None,   0 },
-                { FreightItem.Size.Small,  4 },
-                { FreightItem.Size.Medium, 2 },
-                { FreightItem.Size.Large,  1 }
+            new Dictionary<FreightItem.Key, int>() {
+                { FreightItem.Key.None,   0 },
+                { FreightItem.Key.Small,  4 },
+                { FreightItem.Key.Medium, 2 },
+                { FreightItem.Key.Large,  1 }
             }
         );
 

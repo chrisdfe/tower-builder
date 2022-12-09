@@ -1,39 +1,30 @@
 using System;
 using System.Collections.Generic;
 
-namespace TowerBuilder.DataTypes.Freights
+namespace TowerBuilder.DataTypes.Entities.Freights
 {
     public class FreightItemStack
     {
         public static FreightSizeMap<int> MaxFreightCountMap { get; } = new FreightSizeMap<int>(
-            new Dictionary<FreightItem.Size, int>() {
-                { FreightItem.Size.None,   0 },
-                { FreightItem.Size.Small,  4 },
-                { FreightItem.Size.Medium, 2 },
-                { FreightItem.Size.Large,  1 },
+            new Dictionary<FreightItem.Key, int>() {
+                { FreightItem.Key.None,   0 },
+                { FreightItem.Key.Small,  4 },
+                { FreightItem.Key.Medium, 2 },
+                { FreightItem.Key.Large,  1 }
             }
         );
 
         public List<FreightItem> freightItems { get; private set; } = new List<FreightItem>();
 
-        public int count
-        {
-            get => freightItems.Count;
-        }
+        public int count => freightItems.Count;
 
-        public FreightItem first
-        {
-            get => freightItems[0];
-        }
+        public FreightItem first => freightItems[0];
 
-        public FreightItem.Size size
-        {
-            get => first.size;
-        }
+        public FreightItem.Key size => first.key;
 
         public int maxCount
         {
-            get => MaxFreightCountMap.FindBySize(first.size);
+            get => MaxFreightCountMap.FindBySize(first.key);
         }
 
         public FreightItemStack(FreightItem freightItem)

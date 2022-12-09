@@ -1,4 +1,4 @@
-using TowerBuilder.DataTypes.Freights;
+using TowerBuilder.DataTypes.Entities.Freights;
 
 namespace TowerBuilder.ApplicationState.Entities.Freight.FreightItemStackGroups
 {

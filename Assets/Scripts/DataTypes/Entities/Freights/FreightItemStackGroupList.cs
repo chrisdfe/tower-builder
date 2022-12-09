@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TowerBuilder.DataTypes.Freights
+namespace TowerBuilder.DataTypes.Entities.Freights
 {
     public class FreightItemStackGroupList : ListWrapper<FreightItemStackGroup>
     {

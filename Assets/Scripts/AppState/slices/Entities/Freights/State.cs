@@ -1,4 +1,4 @@
-using TowerBuilder.ApplicationState.Entities.Freight.FreightItems;
+using TowerBuilder.DataTypes.Entities.Freights;
 
 namespace TowerBuilder.ApplicationState.Entities.Freight
 {
@@ -17,9 +17,9 @@ namespace TowerBuilder.ApplicationState.Entities.Freight
 
         public State(AppState appState, Input input) : base(appState)
         {
-            FreightItemStackGroups = input.freightItemStackGroups ?? new FreightItemStackGroups.State(appState);
-            FreightItemStacks = input.freightItemStacks ?? new FreightItemStacks.State(appState);
             FreightItems = input.freightItems ?? new FreightItems.State(appState);
+            FreightItemStacks = input.freightItemStacks ?? new FreightItemStacks.State(appState);
+            FreightItemStackGroups = input.freightItemStackGroups ?? new FreightItemStackGroups.State(appState);
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
