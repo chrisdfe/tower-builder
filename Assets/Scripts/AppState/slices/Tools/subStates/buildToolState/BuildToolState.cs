@@ -5,6 +5,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.Definitions;
 using TowerBuilder.Utils;
 using UnityEngine;
 
@@ -38,16 +39,16 @@ namespace TowerBuilder.ApplicationState.Tools
         public class SubStates
         {
             public RoomEntityTypeSubState roomEntityType;
-            public FurnitureEntityTypeSubState furnitureEntityType;
-            public ResidentEntityTypeSubState residentEntityType;
-            public TransportationItemEntityTypeSubState transportationItemEntityType;
+            // public FurnitureEntityTypeSubState furnitureEntityType;
+            // public ResidentEntityTypeSubState residentEntityType;
+            // public TransportationItemEntityTypeSubState transportationItemEntityType;
 
             public SubStates(BuildToolState buildToolState)
             {
                 roomEntityType = new RoomEntityTypeSubState(buildToolState);
-                furnitureEntityType = new FurnitureEntityTypeSubState(buildToolState);
-                residentEntityType = new ResidentEntityTypeSubState(buildToolState);
-                transportationItemEntityType = new TransportationItemEntityTypeSubState(buildToolState);
+                // furnitureEntityType = new FurnitureEntityTypeSubState(buildToolState);
+                // residentEntityType = new ResidentEntityTypeSubState(buildToolState);
+                // transportationItemEntityType = new TransportationItemEntityTypeSubState(buildToolState);
             }
         }
 
@@ -139,9 +140,9 @@ namespace TowerBuilder.ApplicationState.Tools
             entityType switch
             {
                 Entity.Type.Room => subStates.roomEntityType,
-                Entity.Type.Furniture => subStates.furnitureEntityType,
-                Entity.Type.Resident => subStates.residentEntityType,
-                Entity.Type.TransportationItem => subStates.transportationItemEntityType,
+                // Entity.Type.Furniture => subStates.furnitureEntityType,
+                // Entity.Type.Resident => subStates.residentEntityType,
+                // Entity.Type.TransportationItem => subStates.transportationItemEntityType,
                 _ => throw new NotImplementedException("invalid entity type: " + entityType)
             };
     }

@@ -14,9 +14,9 @@ namespace TowerBuilder.GameWorld.UI
         Transform entityGroupButtonsWrapper;
 
         RoomEntityGroupButtons roomEntityGroupButtons;
-        FurnitureEntityGroupButtons furnitureEntityGroupButtons;
-        ResidentEntityGroupButtons residentEntityGroupButtons;
-        TransportationItemEntityGroupButtons transportationItemEntityGroupButtons;
+        // FurnitureEntityGroupButtons furnitureEntityGroupButtons;
+        // ResidentEntityGroupButtons residentEntityGroupButtons;
+        // TransportationItemEntityGroupButtons transportationItemEntityGroupButtons;
 
         UISelectButton roomEntityGroupButton;
         UISelectButton furnitureEntityGroupButton;
@@ -35,9 +35,9 @@ namespace TowerBuilder.GameWorld.UI
             Transform transportationitemEntityGroupButtonsWrapper = transform.Find("TransportationItemEntityGroupButtons");
 
             roomEntityGroupButtons = new RoomEntityGroupButtons(roomEntityGroupButtonsWrapper);
-            furnitureEntityGroupButtons = new FurnitureEntityGroupButtons(furnitureEntityGroupButtonsWrapper);
-            residentEntityGroupButtons = new ResidentEntityGroupButtons(residentEntityGroupButtonsWrapper);
-            transportationItemEntityGroupButtons = new TransportationItemEntityGroupButtons(transportationitemEntityGroupButtonsWrapper);
+            // furnitureEntityGroupButtons = new FurnitureEntityGroupButtons(furnitureEntityGroupButtonsWrapper);
+            // residentEntityGroupButtons = new ResidentEntityGroupButtons(residentEntityGroupButtonsWrapper);
+            // transportationItemEntityGroupButtons = new TransportationItemEntityGroupButtons(transportationitemEntityGroupButtonsWrapper);
 
             CreateEntityGroupButtons();
         }
@@ -73,7 +73,7 @@ namespace TowerBuilder.GameWorld.UI
                     break;
                 case "furniture":
                     furnitureEntityGroupButton.SetSelected(true);
-                    furnitureEntityGroupButtons.Setup();
+                    // furnitureEntityGroupButtons.Setup();
                     Registry.appState.Tools.buildToolState.SetSelectedEntityKey(Entity.Type.Furniture);
                     break;
                 case "residents":
@@ -82,7 +82,7 @@ namespace TowerBuilder.GameWorld.UI
                 case "transportation":
                     Registry.appState.Tools.buildToolState.SetSelectedEntityKey(Entity.Type.TransportationItem);
                     transportationItemEntityGroupButton.SetSelected(true);
-                    transportationItemEntityGroupButtons.Setup();
+                    // transportationItemEntityGroupButtons.Setup();
                     break;
             }
         }
@@ -96,15 +96,15 @@ namespace TowerBuilder.GameWorld.UI
                     roomEntityGroupButton.SetSelected(false);
                     break;
                 case "furniture":
-                    furnitureEntityGroupButtons.Teardown();
+                    // furnitureEntityGroupButtons.Teardown();
                     furnitureEntityGroupButton.SetSelected(false);
                     break;
                 case "residents":
-                    residentEntityGroupButtons.Teardown();
+                    // residentEntityGroupButtons.Teardown();
                     residentEntityGroupButton.SetSelected(false);
                     break;
                 case "transportation":
-                    transportationItemEntityGroupButtons.Teardown();
+                    // transportationItemEntityGroupButtons.Teardown();
                     transportationItemEntityGroupButton.SetSelected(false);
                     break;
             }

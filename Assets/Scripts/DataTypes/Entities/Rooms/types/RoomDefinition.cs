@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Rooms
 {
-    public class RoomTemplate : EntityTemplate<Room.Key>
+    public class RoomDefinition : EntityDefinition<Room.Key>
     {
         public delegate RoomFurnitureBuilderBase FurnitureBuilderFactory(Room room);
         public FurnitureBuilderFactory furnitureBuilderFactory = (Room room) => new RoomFurnitureBuilderBase(room);
