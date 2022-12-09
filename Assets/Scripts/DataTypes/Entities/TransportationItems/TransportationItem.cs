@@ -33,10 +33,10 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
         // TODO - replace this with Transportation direction
         public bool isOneWay = false;
 
-        public TransportationItem(TransportationItemTemplate template) : base(template)
+        public TransportationItem(TransportationItemDefinition definition) : base(definition)
         {
-            this.entranceCellCoordinates = template.entranceCellCoordinates;
-            this.exitCellCoordinates = template.exitCellCoordinates;
+            this.entranceCellCoordinates = definition.entranceCellCoordinates;
+            this.exitCellCoordinates = definition.exitCellCoordinates;
         }
 
         /*
@@ -45,9 +45,9 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
         public override void PositionAtCoordinates(CellCoordinates cellCoordinates)
         {
             base.PositionAtCoordinates(cellCoordinates);
-            TransportationItemTemplate template = this.template as TransportationItemTemplate;
-            entranceCellCoordinates = CellCoordinates.Add(cellCoordinates, template.entranceCellCoordinates);
-            exitCellCoordinates = CellCoordinates.Add(cellCoordinates, template.exitCellCoordinates);
+            TransportationItemDefinition definition = this.definition as TransportationItemDefinition;
+            entranceCellCoordinates = CellCoordinates.Add(cellCoordinates, definition.entranceCellCoordinates);
+            exitCellCoordinates = CellCoordinates.Add(cellCoordinates, definition.exitCellCoordinates);
         }
 
         public CellCoordinates GetEntranceOrExit(CellCoordinates cellCoordinates)

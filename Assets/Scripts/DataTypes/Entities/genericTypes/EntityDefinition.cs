@@ -3,7 +3,7 @@ using TowerBuilder.DataTypes;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public class EntityTemplate
+    public class EntityDefinition
     {
         public string title = "None";
         public string category = "None";
@@ -20,7 +20,7 @@ namespace TowerBuilder.DataTypes.Entities
         public ValidatorFactory validatorFactory = (Entity entity) => new EntityValidator(entity);
     }
 
-    public class EntityTemplate<KeyType> : EntityTemplate
+    public class EntityDefinition<KeyType> : EntityDefinition
         where KeyType : struct
     {
         public KeyType key;

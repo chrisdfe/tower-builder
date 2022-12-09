@@ -15,7 +15,7 @@ namespace TowerBuilder.ApplicationState.Tools
         public struct Input
         {
             public string selectedRoomCategory;
-            public RoomTemplate selectedRoomTemplate;
+            public RoomDefinition selectedRoomDefinition;
         }
 
         public class Events

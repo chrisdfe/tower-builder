@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace TowerBuilder.Definitions
 {
-    public class TransportationItemDefinitionsList : EntityDefinitionsList<TransportationItem.Key, TransportationItem, TransportationItemTemplate>
+    public class TransportationItemDefinitionsList : EntityDefinitionsList<TransportationItem.Key, TransportationItem, TransportationItemDefinition>
     {
-        public override List<TransportationItemTemplate> Definitions { get; } = new List<TransportationItemTemplate>()
+        public override List<TransportationItemDefinition> Definitions { get; } = new List<TransportationItemDefinition>()
         {
-            new TransportationItemTemplate() {
+            new TransportationItemDefinition() {
                 key = TransportationItem.Key.Escalator,
                 title = "Escalator",
                 category = "Escalators",
@@ -25,7 +25,7 @@ namespace TowerBuilder.Definitions
                 pricePerCell = 800
             },
 
-            new TransportationItemTemplate() {
+            new TransportationItemDefinition() {
                 key = TransportationItem.Key.Ladder,
                 title = "Ladder",
                 category = "Ladders",
@@ -40,7 +40,7 @@ namespace TowerBuilder.Definitions
                 pricePerCell = 400
             },
 
-            new TransportationItemTemplate() {
+            new TransportationItemDefinition() {
                 key = TransportationItem.Key.Doorway,
                 title = "Doorway",
                 category = "Doorways",

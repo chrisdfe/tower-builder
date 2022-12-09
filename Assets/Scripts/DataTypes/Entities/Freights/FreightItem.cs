@@ -13,6 +13,6 @@ namespace TowerBuilder.DataTypes.Entities.Freights
             Large
         }
 
-        public FreightItem(EntityTemplate<FreightItem.Key> entityTemplate) : base(entityTemplate) { }
+        public FreightItem(FreightDefinition entityDefinition) : base(entityDefinition) { }
     }
 }

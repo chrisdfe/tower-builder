@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace TowerBuilder.Definitions
 {
-    public class RoomDefinitionsList : EntityDefinitionsList<Room.Key, Room, RoomTemplate>
+    public class RoomDefinitionsList : EntityDefinitionsList<Room.Key, Room, RoomDefinition>
     {
-        public override List<RoomTemplate> Definitions { get; } = new List<RoomTemplate>() {
-            new RoomTemplate()
+        public override List<RoomDefinition> Definitions { get; } = new List<RoomDefinition>() {
+            new RoomDefinition()
             {
                 title = "Empty",
                 key = Room.Key.Default,
@@ -22,7 +22,7 @@ namespace TowerBuilder.Definitions
                 pricePerCell = 1000,
             },
 
-            new RoomTemplate()
+            new RoomDefinition()
             {
                 title = "Wheels",
                 key = Room.Key.Wheels,

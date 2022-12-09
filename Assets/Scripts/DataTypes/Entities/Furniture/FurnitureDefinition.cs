@@ -4,7 +4,7 @@ using TowerBuilder.DataTypes.Entities.Furnitures.Behaviors;
 
 namespace TowerBuilder.DataTypes.Entities.Furnitures
 {
-    public class FurnitureTemplate : EntityTemplate<Furniture.Key>
+    public class FurnitureDefinition : EntityDefinition<Furniture.Key>
     {
         // TODO - this should be a list of cellcoordinates instead
         public int homeSlotCount = 0;

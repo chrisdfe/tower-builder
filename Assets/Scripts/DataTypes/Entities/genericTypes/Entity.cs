@@ -36,7 +36,7 @@ namespace TowerBuilder.DataTypes.Entities
             Flexible,
         }
 
-        public int price => template.pricePerCell * cellCoordinatesList.Count;
+        public int price => definition.pricePerCell * cellCoordinatesList.Count;
 
         public bool isInBlueprintMode { get; set; } = false;
 
@@ -49,18 +49,18 @@ namespace TowerBuilder.DataTypes.Entities
         public CellCoordinatesList cellCoordinatesList { get; set; } = new CellCoordinatesList();
         public CellCoordinatesBlockList blocksList { get; set; } = new CellCoordinatesBlockList();
 
-        public EntityTemplate template { get; }
+        public EntityDefinition definition { get; }
 
         // TODO - remove this and put in seperate state - only have list of error messages or isValid
         public EntityValidator validator { get; }
 
-        public Entity(EntityTemplate template)
+        public Entity(EntityDefinition definition)
         {
-            this.template = template;
+            this.definition = definition;
             this.id = UIDGenerator.Generate(idKey);
 
-            this.cellCoordinatesList = template.cellCoordinatesList.Clone();
-            this.validator = template.validatorFactory(this);
+            this.cellCoordinatesList = definition.cellCoordinatesList.Clone();
+            this.validator = definition.validatorFactory(this);
         }
 
         public void OnBuild()
@@ -95,12 +95,12 @@ namespace TowerBuilder.DataTypes.Entities
                 {
                     for (int floor = 0; floor < blockCount.height; floor++)
                     {
-                        CellCoordinatesList blockCells = CellCoordinatesList.CreateRectangle(template.blockSize.width, template.blockSize.height);
+                        CellCoordinatesList blockCells = CellCoordinatesList.CreateRectangle(definition.blockSize.width, definition.blockSize.height);
                         blockCells.PositionAtCoordinates(new CellCoordinates(x, floor));
 
                         cellCoordinatesList.Add(blockCells);
 
-                        if (template.blockSize.Matches(Dimensions.one))
+                        if (definition.blockSize.Matches(Dimensions.one))
                         {
                             blocksList.Add(
                                 blockCells.items.Select(cellCoordinates => new CellCoordinatesBlock(cellCoordinates)).ToList()
@@ -130,29 +130,29 @@ namespace TowerBuilder.DataTypes.Entities
             }
 
             Dimensions GetBlockCount() =>
-                template.resizability switch
+                definition.resizability switch
                 {
                     Resizability.Flexible =>
                         new Dimensions(
-                            MathUtils.RoundUpToNearest(selectionBox.dimensions.width, template.blockSize.width),
-                            MathUtils.RoundUpToNearest(selectionBox.dimensions.height, template.blockSize.height)
+                            MathUtils.RoundUpToNearest(selectionBox.dimensions.width, definition.blockSize.width),
+                            MathUtils.RoundUpToNearest(selectionBox.dimensions.height, definition.blockSize.height)
                         ),
                     Resizability.Horizontal =>
                         new Dimensions(
-                            MathUtils.RoundUpToNearest(selectionBox.dimensions.width, template.blockSize.width),
+                            MathUtils.RoundUpToNearest(selectionBox.dimensions.width, definition.blockSize.width),
                             1
                         ),
                     Resizability.Vertical =>
                         new Dimensions(
                             1,
-                            MathUtils.RoundUpToNearest(selectionBox.dimensions.height, template.blockSize.height)
+                            MathUtils.RoundUpToNearest(selectionBox.dimensions.height, definition.blockSize.height)
                         ),
                     Resizability.Inflexible => Dimensions.one,
                     _ => Dimensions.one,
                 };
 
             CellCoordinates GetBottomLeftCoordinates() =>
-                template.resizability switch
+                definition.resizability switch
                 {
                     Resizability.Flexible =>
                         new CellCoordinates(
@@ -183,9 +183,9 @@ namespace TowerBuilder.DataTypes.Entities
     {
         public KeyType key { get; protected set; }
 
-        public Entity(EntityTemplate<KeyType> template) : base(template as EntityTemplate)
+        public Entity(EntityDefinition<KeyType> definition) : base(definition as EntityDefinition)
         {
-            this.key = template.key;
+            this.key = definition.key;
         }
     }
 }

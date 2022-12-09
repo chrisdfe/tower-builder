@@ -57,7 +57,7 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
         {
             if (furniture.isInBlueprintMode) return null;
 
-            FurnitureBehaviorBase furnitureBehavior = (furniture.template as FurnitureTemplate).furnitureBehaviorFactory(appState, furniture);
+            FurnitureBehaviorBase furnitureBehavior = (furniture.definition as FurnitureDefinition).furnitureBehaviorFactory(appState, furniture);
             Add(furnitureBehavior);
 
             return furnitureBehavior;

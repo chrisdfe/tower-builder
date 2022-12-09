@@ -13,7 +13,7 @@ namespace TowerBuilder.ApplicationState.Tools
         public class RoomEntityTypeSubState : EntityTypeSubState
         {
             public string selectedRoomCategory { get; private set; } = "";
-            public RoomTemplate selectedRoomTemplate { get; private set; } = null;
+            public RoomDefinition selectedRoomDefinition { get; private set; } = null;
             public Room blueprintRoom { get; private set; } = null;
 
             public class Events
@@ -21,8 +21,8 @@ namespace TowerBuilder.ApplicationState.Tools
                 public delegate void SelectedRoomCategoryEvent(string selectedRoomCategory);
                 public SelectedRoomCategoryEvent onSelectedRoomCategoryUpdated;
 
-                public delegate void SelectedRoomTemplateEvent(RoomTemplate selectedRoomTemplate);
-                public SelectedRoomTemplateEvent onSelectedRoomTemplateUpdated;
+                public delegate void SelectedRoomDefinitionEvent(RoomDefinition selectedRoomDefinition);
+                public SelectedRoomDefinitionEvent onSelectedRoomDefinitionUpdated;
 
                 public delegate void blueprintUpdateEvent(Room blueprintRoom);
                 public blueprintUpdateEvent onBlueprintRoomUpdated;
@@ -34,7 +34,7 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 events = new Events();
 
-                selectedRoomTemplate = Registry.Definitions.Entities.Rooms.Definitions[0];
+                selectedRoomDefinition = Registry.Definitions.Entities.Rooms.Definitions[0];
             }
 
             public override void Setup()
@@ -91,15 +91,15 @@ namespace TowerBuilder.ApplicationState.Tools
                 }
             }
 
-            void SelectRoomTemplateAndUpdateBlueprint(RoomTemplate roomTemplate)
+            void SelectRoomDefinitionAndUpdateBlueprint(RoomDefinition roomDefinition)
             {
-                this.selectedRoomTemplate = roomTemplate;
+                this.selectedRoomDefinition = roomDefinition;
                 ResetBlueprintRoom();
             }
 
             void CreateBlueprintRoom()
             {
-                blueprintRoom = new Room(selectedRoomTemplate);
+                blueprintRoom = new Room(selectedRoomDefinition);
                 blueprintRoom.isInBlueprintMode = true;
                 blueprintRoom.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
                 blueprintRoom.validator.Validate(Registry.appState);
@@ -128,24 +128,24 @@ namespace TowerBuilder.ApplicationState.Tools
             public void SetSelectedRoomCategory(string roomCategory)
             {
                 selectedRoomCategory = roomCategory;
-                List<RoomTemplate> roomDefinitions = Registry.Definitions.Entities.Rooms.Queries.FindByCategory(selectedRoomCategory);
+                List<RoomDefinition> roomDefinitions = Registry.Definitions.Entities.Rooms.Queries.FindByCategory(selectedRoomCategory);
 
-                RoomTemplate roomTemplate = roomDefinitions[0];
+                RoomDefinition roomDefinition = roomDefinitions[0];
 
-                if (roomTemplate != null)
+                if (roomDefinition != null)
                 {
-                    SelectRoomTemplateAndUpdateBlueprint(roomTemplate);
+                    SelectRoomDefinitionAndUpdateBlueprint(roomDefinition);
                 }
 
                 events.onSelectedRoomCategoryUpdated?.Invoke(roomCategory);
-                events.onSelectedRoomTemplateUpdated?.Invoke(selectedRoomTemplate);
+                events.onSelectedRoomDefinitionUpdated?.Invoke(selectedRoomDefinition);
             }
 
-            public void SetSelectedRoomTemplate(RoomTemplate roomTemplate)
+            public void SetSelectedRoomDefinition(RoomDefinition roomDefinition)
             {
-                SelectRoomTemplateAndUpdateBlueprint(roomTemplate);
+                SelectRoomDefinitionAndUpdateBlueprint(roomDefinition);
 
-                events.onSelectedRoomTemplateUpdated?.Invoke(selectedRoomTemplate);
+                events.onSelectedRoomDefinitionUpdated?.Invoke(selectedRoomDefinition);
             }
         }
     }

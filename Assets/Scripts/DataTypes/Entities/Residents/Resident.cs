@@ -20,16 +20,12 @@ namespace TowerBuilder.DataTypes.Entities.Residents
 
         public CellCoordinates cellCoordinates;
 
-        public Resident(ResidentTemplate template) : base(template)
+        public Resident(ResidentDefinition definition) : base(definition)
         {
         }
 
-        // for now allow an empty constructor since resident templates aren't really used
-        public Resident() : this(new ResidentTemplate()
-        {
-            title = "test"
-        })
-        { }
+        // for now allow an empty constructor since resident definitions aren't really used
+        public Resident() : this(new ResidentDefinition()) { }
 
         public override string ToString()
         {

@@ -9,25 +9,25 @@ using UnityEngine;
 
 namespace TowerBuilder.Definitions
 {
-    public class FurnitureDefinitionsList : EntityDefinitionsList<Furniture.Key, Furniture, FurnitureTemplate>
+    public class FurnitureDefinitionsList : EntityDefinitionsList<Furniture.Key, Furniture, FurnitureDefinition>
     {
-        public override List<FurnitureTemplate> Definitions { get; } = new List<FurnitureTemplate>()
+        public override List<FurnitureDefinition> Definitions { get; } = new List<FurnitureDefinition>()
         {
-            new FurnitureTemplate() {
+            new FurnitureDefinition() {
                 key = Furniture.Key.PilotSeat,
                 title = "Pilot Seat",
                 category = "PilotSeats",
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new CockpitBehavior(appState, furniture),
             },
 
-            new FurnitureTemplate() {
+            new FurnitureDefinition() {
                 key = Furniture.Key.Engine,
                 title = "Engine",
                 category = "Engines",
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new EngineBehavior(appState, furniture),
             },
 
-            new FurnitureTemplate() {
+            new FurnitureDefinition() {
                 key = Furniture.Key.Bed,
                 title = "Bed",
                 category = "Beds",
@@ -35,7 +35,7 @@ namespace TowerBuilder.Definitions
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new BedBehavior(appState, furniture),
             },
 
-            new FurnitureTemplate() {
+            new FurnitureDefinition() {
                 key = Furniture.Key.MoneyMachine,
                 title = "Money Machine",
                 category = "Industry",

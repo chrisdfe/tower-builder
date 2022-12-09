@@ -9,34 +9,34 @@ namespace TowerBuilder.GameWorld.UI
     public abstract class EntityGroupButtonsBase
     {
         protected Transform categoryButtonsWrapper;
-        protected Transform templateButtonsWrapper;
+        protected Transform definitionButtonsWrapper;
 
         protected List<UISelectButton> categoryButtons = new List<UISelectButton>();
-        protected List<UISelectButton> templateButtons = new List<UISelectButton>();
+        protected List<UISelectButton> definitionButtons = new List<UISelectButton>();
 
         protected Transform panelWrapper;
 
         protected string selectedCategory = "";
-        protected string selectedTemplate = "";
+        protected string selectedDefinition = "";
 
         protected string categoryButtonsWrapperName { get { return "CategoryButtons"; } }
-        protected string templateButtonsWrapperName { get { return "TemplateButtons"; } }
+        protected string definitionButtonsWrapperName { get { return "DefinitionButtons"; } }
 
         protected abstract void OnCategoryButtonClick(string categoryValue);
-        protected abstract void OnTemplateButtonClick(string templateValue);
+        protected abstract void OnDefinitionButtonClick(string definitionValue);
 
         protected abstract List<UISelectButton.Input> GenerateCategoryButtonInputs();
-        protected abstract List<UISelectButton.Input> GenerateTemplateButtonInputs();
+        protected abstract List<UISelectButton.Input> GenerateDefinitionButtonInputs();
 
         public EntityGroupButtonsBase(Transform panelWrapper)
         {
             this.panelWrapper = panelWrapper;
 
             categoryButtonsWrapper = panelWrapper.Find(categoryButtonsWrapperName);
-            templateButtonsWrapper = panelWrapper.Find(templateButtonsWrapperName);
+            definitionButtonsWrapper = panelWrapper.Find(definitionButtonsWrapperName);
 
             TransformUtils.DestroyChildren(categoryButtonsWrapper);
-            TransformUtils.DestroyChildren(templateButtonsWrapper);
+            TransformUtils.DestroyChildren(definitionButtonsWrapper);
         }
 
         public virtual void Setup()
@@ -46,15 +46,15 @@ namespace TowerBuilder.GameWorld.UI
             selectedCategory = categoryButtons[0].value;
             HighlightSelectedCategoryButton();
 
-            ClearTemplateButtons();
-            CreateTemplateButtons();
-            HighlightSelectedTemplateButton();
+            ClearDefinitionButtons();
+            CreateDefinitionButtons();
+            HighlightSelectedDefinitionButton();
         }
 
         public virtual void Teardown()
         {
             DestroyCategoryButtons();
-            DestroyTemplateButtons();
+            DestroyDefinitionButtons();
         }
 
         protected void SetSelectedCategory(string category)
@@ -62,16 +62,16 @@ namespace TowerBuilder.GameWorld.UI
             selectedCategory = category;
 
             HighlightSelectedCategoryButton();
-            // Build new set of template buttons
-            DestroyTemplateButtons();
-            CreateTemplateButtons();
-            HighlightSelectedTemplateButton();
+            // Build new set of definition buttons
+            DestroyDefinitionButtons();
+            CreateDefinitionButtons();
+            HighlightSelectedDefinitionButton();
         }
 
-        protected void SetSelectedTemplate(string template)
+        protected void SetSelectedDefinition(string definition)
         {
-            selectedTemplate = template;
-            HighlightSelectedTemplateButton();
+            selectedDefinition = definition;
+            HighlightSelectedDefinitionButton();
         }
 
         void CreateCategoryButtons()
@@ -107,35 +107,35 @@ namespace TowerBuilder.GameWorld.UI
             }
         }
 
-        void ClearTemplateButtons()
+        void ClearDefinitionButtons()
         {
-            TransformUtils.DestroyChildren(templateButtonsWrapper);
+            TransformUtils.DestroyChildren(definitionButtonsWrapper);
         }
 
-        void CreateTemplateButtons()
+        void CreateDefinitionButtons()
         {
-            templateButtons = UISelectButton.CreateButtonListFromInputList(templateButtonsWrapper, GenerateTemplateButtonInputs());
+            definitionButtons = UISelectButton.CreateButtonListFromInputList(definitionButtonsWrapper, GenerateDefinitionButtonInputs());
 
-            foreach (UISelectButton templateButton in templateButtons)
+            foreach (UISelectButton definitionButton in definitionButtons)
             {
-                templateButton.onClick += OnTemplateButtonClick;
+                definitionButton.onClick += OnDefinitionButtonClick;
             }
         }
 
-        void HighlightSelectedTemplateButton()
+        void HighlightSelectedDefinitionButton()
         {
-            foreach (UISelectButton button in templateButtons)
+            foreach (UISelectButton button in definitionButtons)
             {
-                button.SetSelected(button.value == selectedTemplate);
+                button.SetSelected(button.value == selectedDefinition);
             }
         }
 
-        void DestroyTemplateButtons()
+        void DestroyDefinitionButtons()
         {
-            foreach (UISelectButton templateButton in templateButtons)
+            foreach (UISelectButton definitionButton in definitionButtons)
             {
-                templateButton.onClick -= OnTemplateButtonClick;
-                GameObject.Destroy(templateButton.gameObject);
+                definitionButton.onClick -= OnDefinitionButtonClick;
+                GameObject.Destroy(definitionButton.gameObject);
             }
         }
     }

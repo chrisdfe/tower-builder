@@ -20,7 +20,7 @@ namespace TowerBuilder.GameWorld.UI
         public RoomEntityGroupButtons(Transform panelWrapper) : base(panelWrapper)
         {
             Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onSelectedRoomCategoryUpdated += OnSelectedRoomCategoryUpdated;
-            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onSelectedRoomTemplateUpdated += OnSelectedRoomTemplateUpdated;
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onSelectedRoomDefinitionUpdated += OnSelectedRoomDefinitionUpdated;
         }
 
         protected override List<UISelectButton.Input> GenerateCategoryButtonInputs()
@@ -31,16 +31,16 @@ namespace TowerBuilder.GameWorld.UI
             return allRoomCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
         }
 
-        protected override List<UISelectButton.Input> GenerateTemplateButtonInputs()
+        protected override List<UISelectButton.Input> GenerateDefinitionButtonInputs()
         {
             List<UISelectButton> result = new List<UISelectButton>();
 
-            List<RoomTemplate> currentRoomDefinitions = GetRoomDefinitionsForCurrentCategory();
-            return currentRoomDefinitions.Select((roomTemplate) =>
+            List<RoomDefinition> currentRoomDefinitions = GetRoomDefinitionsForCurrentCategory();
+            return currentRoomDefinitions.Select((roomDefinition) =>
                 new UISelectButton.Input()
                 {
-                    label = roomTemplate.title,
-                    value = Room.KeyLabelMap.ValueFromKey(roomTemplate.key)
+                    label = roomDefinition.title,
+                    value = Room.KeyLabelMap.ValueFromKey(roomDefinition.key)
                 }).ToList();
         }
 
@@ -49,16 +49,16 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Tools.buildToolState.subStates.roomEntityType.SetSelectedRoomCategory(roomCategory);
         }
 
-        protected override void OnTemplateButtonClick(string roomTemplateLabel)
+        protected override void OnDefinitionButtonClick(string roomDefinitionLabel)
         {
-            RoomTemplate selectedRoomTemplate = Registry.definitions.rooms.queries.FindByKey(Room.KeyLabelMap.KeyFromValue(roomTemplateLabel));
-            Registry.appState.Tools.buildToolState.subStates.roomEntityType.SetSelectedRoomTemplate(selectedRoomTemplate);
+            RoomDefinition selectedRoomDefinition = Registry.Definitions.Entities.Rooms.Queries.FindByKey(Room.KeyLabelMap.KeyFromValue(roomDefinitionLabel));
+            Registry.appState.Tools.buildToolState.subStates.roomEntityType.SetSelectedRoomDefinition(selectedRoomDefinition);
         }
 
-        List<RoomTemplate> GetRoomDefinitionsForCurrentCategory()
+        List<RoomDefinition> GetRoomDefinitionsForCurrentCategory()
         {
             string currentCategory = Registry.appState.Tools.buildToolState.subStates.roomEntityType.selectedRoomCategory;
-            return Registry.definitions.rooms.queries.FindByCategory(currentCategory);
+            return Registry.Definitions.Entities.Rooms.Queries.FindByCategory(currentCategory);
         }
 
         void OnSelectedRoomCategoryUpdated(string newRoomCategory)
@@ -66,9 +66,9 @@ namespace TowerBuilder.GameWorld.UI
             SetSelectedCategory(newRoomCategory);
         }
 
-        void OnSelectedRoomTemplateUpdated(RoomTemplate roomTemplate)
+        void OnSelectedRoomDefinitionUpdated(RoomDefinition roomDefinition)
         {
-            SetSelectedTemplate(Room.KeyLabelMap.ValueFromKey(roomTemplate.key));
+            SetSelectedDefinition(Room.KeyLabelMap.ValueFromKey(roomDefinition.key));
         }
     }
 }

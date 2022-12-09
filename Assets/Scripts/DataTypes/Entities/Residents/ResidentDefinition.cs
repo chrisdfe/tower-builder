@@ -9,5 +9,5 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Residents
 {
-    public class ResidentTemplate : EntityTemplate<Resident.Key> { }
+    public class ResidentDefinition : EntityDefinition<Resident.Key> { }
 }

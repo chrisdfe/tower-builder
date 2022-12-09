@@ -23,7 +23,7 @@ namespace TowerBuilder.DataTypes.Entities
 
                 if (entityRoom == null)
                 {
-                    return new EntityValidationErrorList($"{entity.template.title} must be placed inside.");
+                    return new EntityValidationErrorList($"{entity.definition.title} must be placed inside.");
                 }
             }
 
@@ -39,11 +39,11 @@ namespace TowerBuilder.DataTypes.Entities
             // Room rightRoom = allRooms.FindRoomAtCell(cellCoordinates.coordinatesRight);
 
             // if (
-            //     (leftRoom != null && leftRoom.template.category == entity.template.category) ||
-            //     (rightRoom != null && rightRoom.template.category == entity.template.category)
+            //     (leftRoom != null && leftRoom.definition.category == entity.definition.category) ||
+            //     (rightRoom != null && rightRoom.definition.category == entity.definition.category)
             // )
             // {
-            //     return new EntityValidationErrorList($"{entity.template.title} cannot be placed directly next to each other.");
+            //     return new EntityValidationErrorList($"{entity.definition.title} cannot be placed directly next to each other.");
             // }
 
             return new EntityValidationErrorList();
@@ -87,7 +87,7 @@ namespace TowerBuilder.DataTypes.Entities
                 bool isOnBottom = entity.cellCoordinatesList.asRelativeCoordinates.lowestFloor == 0;
                 if (isOnBottom && cellCoordinates.floor != floor)
                 {
-                    return new EntityValidationErrorList($"{entity.template.title} must be placed on floor {floor + 1}");
+                    return new EntityValidationErrorList($"{entity.definition.title} must be placed on floor {floor + 1}");
                 }
 
                 return new EntityValidationErrorList();
@@ -100,7 +100,7 @@ namespace TowerBuilder.DataTypes.Entities
                 bool isOnBottom = entity.cellCoordinatesList.asRelativeCoordinates.lowestFloor == 0;
                 if (isOnBottom && cellCoordinates.floor == floor)
                 {
-                    return new EntityValidationErrorList($"{entity.template.title} must not be placed on floor {floor + 1}");
+                    return new EntityValidationErrorList($"{entity.definition.title} must not be placed on floor {floor + 1}");
                 }
 
                 return new EntityValidationErrorList();

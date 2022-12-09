@@ -36,12 +36,12 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
 
         public Skin skin;
 
-        public Room(RoomTemplate roomTemplate) : base(roomTemplate)
+        public Room(RoomDefinition roomDefinition) : base(roomDefinition)
         {
             // TODO - get rid of this
-            this.furnitureBuilder = roomTemplate.furnitureBuilderFactory(this);
+            this.furnitureBuilder = roomDefinition.furnitureBuilderFactory(this);
 
-            this.skin = new Skin(roomTemplate.skinKey);
+            this.skin = new Skin(roomDefinition.skinKey);
         }
 
         public override string ToString() => $"room {id}";

@@ -6,7 +6,7 @@ namespace TowerBuilder.Definitions
     public class EntityDefinitionsList<KeyType, EntityType, DefinitionType>
         where KeyType : struct
         where EntityType : Entity<KeyType>
-        where DefinitionType : EntityTemplate<KeyType>
+        where DefinitionType : EntityDefinition<KeyType>
     {
         public DefinitionQueries Queries { get; }
 
