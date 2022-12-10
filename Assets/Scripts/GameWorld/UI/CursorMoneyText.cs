@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.GameWorld;
 using TowerBuilder.GameWorld.Rooms;
 using UnityEngine;
@@ -15,8 +15,6 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class CursorMoneyText : MonoBehaviour
     {
-        static float halfATile = Constants.TILE_SIZE / 2f;
-
         Text text;
 
         void Awake()
@@ -25,7 +23,7 @@ namespace TowerBuilder.GameWorld.UI
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
 
-            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onBlueprintRoomUpdated += OnBlueprintRoomUpdated;
+            Registry.appState.Tools.buildToolState.events.onBlueprintEntityUpdated += OnBlueprintEntityUpdated;
             Registry.appState.Tools.buildToolState.events.onBuildStart += OnBuildStart;
             Registry.appState.Tools.buildToolState.events.onBuildEnd += OnBuildEnd;
 
@@ -35,7 +33,7 @@ namespace TowerBuilder.GameWorld.UI
         void OnDestroy()
         {
             Registry.appState.Tools.events.onToolStateUpdated -= OnToolStateUpdated;
-            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onBlueprintRoomUpdated -= OnBlueprintRoomUpdated;
+            Registry.appState.Tools.buildToolState.events.onBlueprintEntityUpdated -= OnBlueprintEntityUpdated;
             Registry.appState.Tools.buildToolState.events.onBuildStart -= OnBuildStart;
             Registry.appState.Tools.buildToolState.events.onBuildEnd -= OnBuildEnd;
         }
@@ -48,7 +46,7 @@ namespace TowerBuilder.GameWorld.UI
             }
         }
 
-        void OnBlueprintRoomUpdated(Room blueprintRoom)
+        void OnBlueprintEntityUpdated(Entity blueprintEntity)
         {
             if (Registry.appState.Tools.toolState == ToolState.Build)
             {
@@ -84,7 +82,7 @@ namespace TowerBuilder.GameWorld.UI
             Vector3 worldPosition = GameWorldUtils.CellCoordinatesToPosition(currentSelectedCell);
             Vector3 adjustedWorldPosition = new Vector3(
                 worldPosition.x,
-                worldPosition.y + halfATile + 0.2f,
+                worldPosition.y + DataTypes.Entities.Rooms.Constants.TILE_SIZE.y / 4,
                 0
             );
 
@@ -99,11 +97,11 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetText()
         {
-            Room blueprintRoom = Registry.appState.Tools.buildToolState.subStates.roomEntityType.blueprintRoom;
-            int amount = blueprintRoom.price;
+            Entity blueprintEntity = Registry.appState.Tools.buildToolState.blueprintEntity;
+            int amount = blueprintEntity.price;
             text.text = String.Format("${0:n0}", amount);
 
-            if (blueprintRoom.validator.isValid)
+            if (blueprintEntity.validator.isValid)
             {
                 text.color = Color.white;
             }

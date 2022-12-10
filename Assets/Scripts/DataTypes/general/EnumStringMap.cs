@@ -9,6 +9,10 @@ namespace TowerBuilder.DataTypes
 
         public Dictionary<EnumType, string> map { get; }
 
+        public List<EnumType> keys => map.Keys.ToList();
+
+        public List<string> labels => map.Values.ToList();
+
         public EnumStringMap(Dictionary<EnumType, string> map)
         {
             this.map = map;

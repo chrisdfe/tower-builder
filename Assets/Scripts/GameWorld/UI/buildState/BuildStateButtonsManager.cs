@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.Utils;
@@ -11,105 +13,63 @@ namespace TowerBuilder.GameWorld.UI
         Color originalColor;
         Button currentButton;
 
-        Transform entityGroupButtonsWrapper;
+        Transform entityTypeButtonsWrapper;
+        Transform entityTypeBuildButtonsWrapper;
 
-        RoomEntityGroupButtons roomEntityGroupButtons;
-        // FurnitureEntityGroupButtons furnitureEntityGroupButtons;
-        // ResidentEntityGroupButtons residentEntityGroupButtons;
-        // TransportationItemEntityGroupButtons transportationItemEntityGroupButtons;
+        EntityTypeBuildButtons entityTypeBuildButtons;
 
-        UISelectButton roomEntityGroupButton;
-        UISelectButton furnitureEntityGroupButton;
-        UISelectButton residentEntityGroupButton;
-        UISelectButton transportationItemEntityGroupButton;
-
-        string currentCategory = "";
+        List<UISelectButton> entityTypeSelectButtons;
 
         void Awake()
         {
-            entityGroupButtonsWrapper = transform.Find("EntityGroupButtons");
+            entityTypeButtonsWrapper = transform.Find("EntityTypeButtonsWrapper");
+            entityTypeBuildButtonsWrapper = transform.Find("EntityTypeBuildButtonsWrapper");
 
-            Transform roomEntityGroupButtonsWrapper = transform.Find("RoomEntityGroupButtons");
-            Transform furnitureEntityGroupButtonsWrapper = transform.Find("FurnitureEntityGroupButtons");
-            Transform residentEntityGroupButtonsWrapper = transform.Find("ResidentEntityGroupButtons");
-            Transform transportationitemEntityGroupButtonsWrapper = transform.Find("TransportationItemEntityGroupButtons");
-
-            roomEntityGroupButtons = new RoomEntityGroupButtons(roomEntityGroupButtonsWrapper);
-            // furnitureEntityGroupButtons = new FurnitureEntityGroupButtons(furnitureEntityGroupButtonsWrapper);
-            // residentEntityGroupButtons = new ResidentEntityGroupButtons(residentEntityGroupButtonsWrapper);
-            // transportationItemEntityGroupButtons = new TransportationItemEntityGroupButtons(transportationitemEntityGroupButtonsWrapper);
-
-            CreateEntityGroupButtons();
-        }
-
-        void CreateEntityGroupButtons()
-        {
-            TransformUtils.DestroyChildren(entityGroupButtonsWrapper);
-
-            roomEntityGroupButton = CreateEntityGroupButton("rooms");
-            furnitureEntityGroupButton = CreateEntityGroupButton("furniture");
-            residentEntityGroupButton = CreateEntityGroupButton("residents");
-            transportationItemEntityGroupButton = CreateEntityGroupButton("transportation");
-
-            UISelectButton CreateEntityGroupButton(string value)
+            entityTypeSelectButtons = Entity.TypeLabels.labels.Select(label =>
             {
-                UISelectButton entityButton = UISelectButton.Create(entityGroupButtonsWrapper, new UISelectButton.Input() { label = value, value = value });
+                UISelectButton entityButton = UISelectButton.Create(
+                    entityTypeButtonsWrapper,
+                    new UISelectButton.Input()
+                    {
+                        label = label,
+                        value = label
+                    });
                 entityButton.onClick += OnEntityGroupButtonClick;
                 return entityButton;
-            }
+            }).ToList();
+
+
+            entityTypeBuildButtons = new EntityTypeBuildButtons(entityTypeBuildButtonsWrapper);
+            entityTypeBuildButtons.Setup();
+
+            Registry.appState.Tools.buildToolState.events.onSelectedEntityKeyUpdated += OnSelectedEntityKeyUpdated;
         }
 
+        /*
+            Event Handlers
+        */
         void OnEntityGroupButtonClick(string newCategory)
         {
-            TeardownCurrentCategory();
-            currentCategory = newCategory;
-
-            switch (newCategory)
-            {
-                case "rooms":
-                    roomEntityGroupButton.SetSelected(true);
-                    roomEntityGroupButtons.Setup();
-                    Registry.appState.Tools.buildToolState.SetSelectedEntityKey(Entity.Type.Room);
-                    break;
-                case "furniture":
-                    furnitureEntityGroupButton.SetSelected(true);
-                    // furnitureEntityGroupButtons.Setup();
-                    Registry.appState.Tools.buildToolState.SetSelectedEntityKey(Entity.Type.Furniture);
-                    break;
-                case "residents":
-                    Registry.appState.Tools.buildToolState.SetSelectedEntityKey(Entity.Type.Resident);
-                    break;
-                case "transportation":
-                    Registry.appState.Tools.buildToolState.SetSelectedEntityKey(Entity.Type.TransportationItem);
-                    transportationItemEntityGroupButton.SetSelected(true);
-                    // transportationItemEntityGroupButtons.Setup();
-                    break;
-            }
+            Entity.Type newEntityType = Entity.TypeLabels.KeyFromValue(newCategory);
+            Registry.appState.Tools.buildToolState.SetSelectedEntityKey(newEntityType);
         }
 
-        void TeardownCurrentCategory()
+        void OnSelectedEntityKeyUpdated(Entity.Type entityType, Entity.Type previousEntityType)
         {
-            switch (currentCategory)
-            {
-                case "rooms":
-                    roomEntityGroupButtons.Teardown();
-                    roomEntityGroupButton.SetSelected(false);
-                    break;
-                case "furniture":
-                    // furnitureEntityGroupButtons.Teardown();
-                    furnitureEntityGroupButton.SetSelected(false);
-                    break;
-                case "residents":
-                    // residentEntityGroupButtons.Teardown();
-                    residentEntityGroupButton.SetSelected(false);
-                    break;
-                case "transportation":
-                    // transportationItemEntityGroupButtons.Teardown();
-                    transportationItemEntityGroupButton.SetSelected(false);
-                    break;
-            }
+            if (entityType == previousEntityType) return;
 
-            currentCategory = "";
+            entityTypeSelectButtons.ForEach((selectButton) =>
+            {
+                bool isSelected = Entity.TypeLabels.KeyFromValue(selectButton.value) == entityType;
+                selectButton.SetSelected(isSelected);
+            });
+
+            if (entityTypeBuildButtons != null)
+            {
+                entityTypeBuildButtons.Teardown();
+                entityTypeBuildButtons = null;
+                entityTypeBuildButtons = new EntityTypeBuildButtons(entityTypeBuildButtonsWrapper);
+            }
         }
     }
 }

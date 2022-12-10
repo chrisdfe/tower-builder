@@ -17,6 +17,13 @@ namespace TowerBuilder.Definitions
                 key = Furniture.Key.PilotSeat,
                 title = "Pilot Seat",
                 category = "PilotSeats",
+
+                cellCoordinatesList = new CellCoordinatesList(
+                    new List<CellCoordinates>() {
+                        new CellCoordinates(0, 0),
+                    }
+                ),
+
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new CockpitBehavior(appState, furniture),
             },
 
@@ -24,6 +31,13 @@ namespace TowerBuilder.Definitions
                 key = Furniture.Key.Engine,
                 title = "Engine",
                 category = "Engines",
+
+                cellCoordinatesList = new CellCoordinatesList(
+                    new List<CellCoordinates>() {
+                        new CellCoordinates(0, 0),
+                    }
+                ),
+
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new EngineBehavior(appState, furniture),
             },
 
@@ -32,6 +46,13 @@ namespace TowerBuilder.Definitions
                 title = "Bed",
                 category = "Beds",
                 homeSlotCount = 1,
+
+                cellCoordinatesList = new CellCoordinatesList(
+                    new List<CellCoordinates>() {
+                        new CellCoordinates(0, 0),
+                    }
+                ),
+
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new BedBehavior(appState, furniture),
             },
 
@@ -39,6 +60,11 @@ namespace TowerBuilder.Definitions
                 key = Furniture.Key.MoneyMachine,
                 title = "Money Machine",
                 category = "Industry",
+                cellCoordinatesList = new CellCoordinatesList(
+                    new List<CellCoordinates>() {
+                        new CellCoordinates(0, 0),
+                    }
+                ),
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new MoneyMachineBehavior(appState, furniture),
             },
         };

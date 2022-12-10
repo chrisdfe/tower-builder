@@ -13,14 +13,16 @@ namespace TowerBuilder.DataTypes.Entities
 
         public enum Type
         {
+            None,
             Room,
             Resident,
             Furniture,
             TransportationItem
         }
 
-        static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
+        public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
+                { Type.None,               "None" },
                 { Type.Room,               "Room" },
                 { Type.Resident,           "Resident" },
                 { Type.Furniture,          "Furniture" },
@@ -56,6 +58,8 @@ namespace TowerBuilder.DataTypes.Entities
 
         public Entity(EntityDefinition definition)
         {
+            Debug.Log("definition");
+            Debug.Log(definition);
             this.definition = definition;
             this.id = UIDGenerator.Generate(idKey);
 

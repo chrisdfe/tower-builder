@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- GameWorldEntity
 - BuildValidators/DestroyValidators?
 - EntityStateSlice build chould fire onItemsBuilt event as well - currently it's just singular
 - Rename "MeshWrapper" to "EntityMeshWrapper"

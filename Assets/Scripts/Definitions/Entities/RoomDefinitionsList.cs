@@ -17,6 +17,13 @@ namespace TowerBuilder.Definitions
                 key = Room.Key.Default,
                 category = "Empty",
 
+                cellCoordinatesList = new CellCoordinatesList(
+                    new List<CellCoordinates>() {
+                        new CellCoordinates(0, 0),
+                    }
+                ),
+
+
                 blockSize = new Dimensions(1, 1),
                 resizability = Room.Resizability.Flexible,
                 pricePerCell = 1000,
@@ -27,6 +34,12 @@ namespace TowerBuilder.Definitions
                 title = "Wheels",
                 key = Room.Key.Wheels,
                 category = "Wheels",
+
+                cellCoordinatesList = new CellCoordinatesList(
+                    new List<CellCoordinates>() {
+                        new CellCoordinates(0, 0),
+                    }
+                ),
 
                 blockSize = new Dimensions(1, 1),
                 resizability = Room.Resizability.Horizontal,

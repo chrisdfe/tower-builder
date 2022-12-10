@@ -19,7 +19,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Build(EntityType entity)
         {
-            Debug.Log("Buildint entity");
+            Debug.Log("Building entity");
             Debug.Log(entity.GetType());
             // TODO - don't do this here
             entity.validator.Validate(appState);
@@ -57,6 +57,13 @@ namespace TowerBuilder.ApplicationState.Entities
             entity.OnBuild();
 
             events.onItemBuilt?.Invoke(entity);
+        }
+
+        public void Destroy(EntityType entity)
+        {
+            // TODO - validation
+            // TODO - add money back into wallet
+            Remove(entity);
         }
 
         protected virtual void OnPreBuild(EntityType entity) { }

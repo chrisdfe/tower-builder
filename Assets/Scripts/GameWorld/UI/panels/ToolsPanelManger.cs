@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +28,7 @@ namespace TowerBuilder.GameWorld.UI
             UpdateDescriptionText();
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
-            Registry.appState.Tools.buildToolState.subStates.roomEntityType.events.onSelectedRoomDefinitionUpdated += OnSelectedRoomDefinitionUpdated;
+            Registry.appState.Tools.buildToolState.events.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
         }
 
         void OnToolStateUpdated(ToolState toolState, ToolState previousToolState)
@@ -45,7 +46,7 @@ namespace TowerBuilder.GameWorld.UI
             }
         }
 
-        void OnSelectedRoomDefinitionUpdated(RoomDefinition selectedRoomDefinition)
+        void OnSelectedEntityDefinitionUpdated(EntityDefinition selectedEntityDefinition)
         {
             UpdateDescriptionText();
         }
@@ -56,18 +57,21 @@ namespace TowerBuilder.GameWorld.UI
 
             if (toolState == ToolState.Build)
             {
-                RoomDefinition selectedRoomDefinition = Registry.appState.Tools.buildToolState.subStates.roomEntityType.selectedRoomDefinition;
-                if (selectedRoomDefinition == null)
+                EntityDefinition selectedEntityDefinition = Registry.appState.Tools.buildToolState.selectedEntityDefinition;
+
+                if (selectedEntityDefinition == null)
                 {
                     descriptionText.text = $"{toolState}";
                 }
                 else
                 {
-                    Room blueprintRoom = Registry.appState.Tools.buildToolState.subStates.roomEntityType.blueprintRoom;
-                    if (blueprintRoom != null)
+                    Entity.Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
+                    Entity blueprintEntity = Registry.appState.Tools.buildToolState.blueprintEntity;
+
+                    if (blueprintEntity != null)
                     {
-                        int price = blueprintRoom.price;
-                        descriptionText.text = $"{toolState} - {selectedRoomDefinition.title}: ${price}";
+                        int price = blueprintEntity.price;
+                        descriptionText.text = $"{toolState} - {selectedEntityType} -{selectedEntityDefinition.title}: ${price}";
                     }
                     else
                     {

@@ -18,7 +18,7 @@ namespace TowerBuilder.DataTypes.Entities.Residents
 
         public Resident FindResidentAtCell(CellCoordinates cellCoordinates)
         {
-            return items.Find(resident => resident.cellCoordinates.Matches(cellCoordinates));
+            return items.Find(resident => resident.cellCoordinatesList.Contains(cellCoordinates));
         }
     }
 }

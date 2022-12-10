@@ -37,8 +37,8 @@ namespace TowerBuilder.GameWorld.UI
             CellCoordinates bottomLeftCoordinates = selectionBox.cellCoordinatesList.bottomLeftCoordinates;
 
             transform.position = new Vector3(
-                (bottomLeftCoordinates.x * Constants.TILE_SIZE) + (width / 2) - (Constants.TILE_SIZE / 2),
-                (bottomLeftCoordinates.floor * Constants.TILE_SIZE) + (height / 2) - (Constants.TILE_SIZE / 2),
+                (bottomLeftCoordinates.x * Constants.TILE_SIZE.x) + (width / 2) - (Constants.TILE_SIZE.x / 2),
+                (bottomLeftCoordinates.floor * Constants.TILE_SIZE.y) + (height / 2) - (Constants.TILE_SIZE.y / 2),
                 Z_INDEX
             );
 

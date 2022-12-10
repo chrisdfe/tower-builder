@@ -72,7 +72,8 @@ namespace TowerBuilder.GameWorld.Residents
         */
         public void UpdatePosition()
         {
-            transform.position = GameWorldUtils.CellCoordinatesToPosition(resident.cellCoordinates);
+            // TODO- use all all coordinates in cellCoordinatesList
+            transform.position = GameWorldUtils.CellCoordinatesToPosition(resident.cellCoordinatesList.items[0]);
         }
 
         public void SetColor(ColorKey key)

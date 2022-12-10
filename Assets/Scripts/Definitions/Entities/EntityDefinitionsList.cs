@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.DataTypes.Entities;
 
 namespace TowerBuilder.Definitions
 {
-    public class EntityDefinitionsList<KeyType, EntityType, DefinitionType>
+    public class EntityDefinitionsList { }
+
+    public class EntityDefinitionsList<KeyType, EntityType, DefinitionType> : EntityDefinitionsList
         where KeyType : struct
         where EntityType : Entity<KeyType>
         where DefinitionType : EntityDefinition<KeyType>
@@ -26,30 +29,27 @@ namespace TowerBuilder.Definitions
                 this.Definitions = Definitions;
             }
 
-            public DefinitionType FindByKey(KeyType key)
-            {
-                return Definitions.Find(definition => definition.key.Equals(key));
-            }
+            public DefinitionType FindByKey(KeyType key) =>
+                Definitions.Find(definition => definition.key.Equals(key));
 
-            public List<DefinitionType> FindByCategory(string category)
-            {
-                return Definitions.FindAll(definition => definition.category == category);
-            }
+            public DefinitionType FindByTitle(string title) =>
+                Definitions.Find(definition => definition.title == title);
 
-            public List<string> FindAllCategories()
-            {
-                List<string> result = new List<string>();
-
-                foreach (DefinitionType DefinitionType in Definitions)
+            public List<string> FindAllCategories() =>
+                Definitions.Aggregate(new HashSet<string>(), (acc, definition) =>
                 {
-                    if (!result.Contains(DefinitionType.category))
-                    {
-                        result.Add(DefinitionType.category);
-                    }
-                }
+                    acc.Add(definition.category);
+                    return acc;
+                }).ToList();
 
-                return result;
-            }
+            public string FindFirstCategory() => FindAllCategories()[0];
+
+            public List<DefinitionType> FindByCategory(string category) =>
+                Definitions.FindAll(definition => definition.category == category);
+
+            public DefinitionType FindFirstInCategory(string category) =>
+                Definitions.Find(definition => definition.category == category);
+
         }
     }
 }

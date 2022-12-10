@@ -14,18 +14,19 @@ namespace TowerBuilder.DataTypes.Entities.Residents
         public enum Key
         {
             Default,
+            OtherDefault,
         }
+
+        public static EnumStringMap<Key> KeyLabelMap = new EnumStringMap<Key>(
+            new Dictionary<Key, string>() {
+                { Key.Default, "Default" },
+                { Key.OtherDefault,  "OtherDefault" },
+            }
+        );
 
         public override string idKey => "Residents";
 
-        public CellCoordinates cellCoordinates;
-
-        public Resident(ResidentDefinition definition) : base(definition)
-        {
-        }
-
-        // for now allow an empty constructor since resident definitions aren't really used
-        public Resident() : this(new ResidentDefinition()) { }
+        public Resident(ResidentDefinition definition) : base(definition) { }
 
         public override string ToString()
         {

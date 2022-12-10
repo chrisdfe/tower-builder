@@ -41,6 +41,7 @@ namespace TowerBuilder.ApplicationState
 
         void MoveNewResidentInIfThereIsRoom(Furniture furniture)
         {
+            /* 
             if (furniture.isInBlueprintMode || (furniture.definition as FurnitureDefinition).homeSlotCount == 0) return;
 
             // TODO -
@@ -64,6 +65,7 @@ namespace TowerBuilder.ApplicationState
                 furniture = furniture
             };
             appState.FurnitureHomeSlotOccupations.Add(homeSlotOccupation);
+            */
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Time;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -29,20 +30,31 @@ namespace TowerBuilder.GameWorld
             };
         }
 
-        public static int RoundToNearestTile(float number)
+        public static CellCoordinates RoundVector2ToCellCoordinates(Vector2 vector)
         {
-            float TILE_SIZE = DataTypes.Entities.Rooms.Constants.TILE_SIZE;
-            float rounded = (float)Math.Round(number / TILE_SIZE) * TILE_SIZE;
-            return (int)rounded;
+            Vector2 TileSize = DataTypes.Entities.Rooms.Constants.TILE_SIZE;
+
+            return new CellCoordinates(
+                RoundToNearestInt(vector.x, TileSize.x),
+                RoundToNearestInt(vector.y, TileSize.y)
+            );
         }
 
         public static Vector3 CellCoordinatesToPosition(CellCoordinates cellCoordinates, float zIndex = 0f)
         {
+            Vector2 TileSize = DataTypes.Entities.Rooms.Constants.TILE_SIZE;
+
             return new Vector3(
-                RoundToNearestTile(cellCoordinates.x),
-                RoundToNearestTile(cellCoordinates.floor),
+                cellCoordinates.x * TileSize.x,
+                cellCoordinates.floor * TileSize.y,
                 zIndex
             );
+        }
+
+        static int RoundToNearestInt(float number, float nearest)
+        {
+            float rounded = (float)Math.Round(number / nearest) * nearest;
+            return (int)rounded;
         }
     }
 }
