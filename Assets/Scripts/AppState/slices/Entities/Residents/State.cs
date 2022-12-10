@@ -41,24 +41,12 @@ namespace TowerBuilder.ApplicationState.Entities.Residents
 
         public State(AppState appState, Input input) : base(appState)
         {
-            if (input == null)
-            {
-                input = new Input();
-            }
-
             this.list = input.residentsList ?? new ResidentsList();
 
             queries = new Queries(this);
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
-
-        public void BuildResident(Resident resident)
-        {
-            resident.OnBuild();
-
-            events.onItemsBuilt?.Invoke(new ResidentsList(resident));
-        }
 
         public void SetResidentPosition(Resident resident, CellCoordinates cellCoordinates)
         {

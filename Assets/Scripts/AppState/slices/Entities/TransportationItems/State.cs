@@ -3,21 +3,18 @@ using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.TransportationItems
+namespace TowerBuilder.ApplicationState.Entities.TransportationItems
 {
-    using TransportationItemsListStateSlice = ListStateSlice<TransportationItemsList, TransportationItem, State.Events>;
+    using TransportationItemsEntityStateSlice = EntityStateSlice<TransportationItemsList, TransportationItem, State.Events>;
 
-    public class State : TransportationItemsListStateSlice
+    public class State : TransportationItemsEntityStateSlice
     {
         public class Input
         {
             public TransportationItemsList transportationItemsList;
         }
 
-        public new class Events : TransportationItemsListStateSlice.Events
-        {
-            public TransportationItemsListStateSlice.Events.ItemEvent onItemBuilt;
-        }
+        public new class Events : TransportationItemsEntityStateSlice.Events { }
 
         public class Queries
         {
@@ -30,9 +27,8 @@ namespace TowerBuilder.ApplicationState.TransportationItems
                 this.state = state;
             }
 
-            public TransportationItemsList FindTransportationItemsConnectingToRoom(Room room)
-            {
-                return new TransportationItemsList(
+            public TransportationItemsList FindTransportationItemsConnectingToRoom(Room room) =>
+                new TransportationItemsList(
                     state.list.items.FindAll(transportationItem =>
                     {
                         Room entranceCellRoom = appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
@@ -40,7 +36,6 @@ namespace TowerBuilder.ApplicationState.TransportationItems
                         return (entranceCellRoom == room || exitCellRoom == room);
                     }).ToList()
                 );
-            }
         }
 
         public Queries queries { get; private set; }
@@ -53,12 +48,5 @@ namespace TowerBuilder.ApplicationState.TransportationItems
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
-
-        public void Build(TransportationItem transportationItem)
-        {
-            transportationItem.OnBuild();
-
-            events.onItemBuilt?.Invoke(transportationItem);
-        }
     }
 }

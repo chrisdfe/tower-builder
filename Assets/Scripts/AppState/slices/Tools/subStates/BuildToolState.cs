@@ -71,7 +71,7 @@ namespace TowerBuilder.ApplicationState.Tools
         public override void Setup()
         {
             base.Setup();
-            Debug.Log("Setting up build tool state");
+            ResetCategoryAndDefinition();
             CreateBlueprintEntity();
         }
 
@@ -103,6 +103,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public void SetSelectedEntityKey(Entity.Type entityType)
         {
+            this.isLocked = true;
             Entity.Type previousEntityType = this.selectedEntityType;
             this.selectedEntityType = entityType;
 
@@ -110,6 +111,7 @@ namespace TowerBuilder.ApplicationState.Tools
             ResetBlueprintEntity();
 
             events.onSelectedEntityKeyUpdated?.Invoke(this.selectedEntityType, previousEntityType);
+            this.isLocked = false;
         }
 
         public void SetSelectedEntityCategory(string entityCategory)
@@ -279,19 +281,19 @@ namespace TowerBuilder.ApplicationState.Tools
             Debug.Log("blueprintEntity");
             Debug.Log(blueprintEntity);
 
-            switch (selectedEntityType)
+            switch (blueprintEntity)
             {
-                case Entity.Type.Room:
-                    Registry.appState.Entities.Rooms.Remove(blueprintEntity as Room);
+                case Room roomBlueprintEntity:
+                    Registry.appState.Entities.Rooms.Remove(roomBlueprintEntity);
                     break;
-                case Entity.Type.Resident:
-                    Registry.appState.Entities.Residents.Remove(blueprintEntity as Resident);
+                case Resident residentBlueprintEntity:
+                    Registry.appState.Entities.Residents.Remove(residentBlueprintEntity);
                     break;
-                case Entity.Type.Furniture:
-                    Registry.appState.Entities.Furnitures.Remove(blueprintEntity as Furniture);
+                case Furniture furnitureBlueprintEntity:
+                    Registry.appState.Entities.Furnitures.Remove(furnitureBlueprintEntity);
                     break;
-                case Entity.Type.TransportationItem:
-                    Registry.appState.Entities.TransportationItems.Remove(blueprintEntity as TransportationItem);
+                case TransportationItem transportationItemEntity:
+                    Registry.appState.Entities.TransportationItems.Remove(transportationItemEntity);
                     break;
             }
 

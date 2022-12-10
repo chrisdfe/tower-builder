@@ -88,12 +88,6 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
             appState.Entities.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
         }
 
-        public override void Remove(Furniture furniture)
-        {
-            base.Remove(furniture);
-            furniture.OnDestroy();
-        }
-
         /* 
             Event Handlers
         */

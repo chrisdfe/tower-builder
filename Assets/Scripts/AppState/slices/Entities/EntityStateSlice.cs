@@ -59,13 +59,26 @@ namespace TowerBuilder.ApplicationState.Entities
             events.onItemBuilt?.Invoke(entity);
         }
 
-        public void Destroy(EntityType entity)
+        protected virtual void OnPreBuild(EntityType entity) { }
+
+        public override void Add(EntityType entity)
         {
-            // TODO - validation
-            // TODO - add money back into wallet
-            Remove(entity);
+            entity.validator.Validate(appState);
+            base.Add(entity);
         }
 
-        protected virtual void OnPreBuild(EntityType entity) { }
+        // TODO- rename this destroy
+        public override void Remove(EntityType entity)
+        {
+            OnPreDestroy(entity);
+
+            // TODO - validation
+            // TODO - add money back into wallet
+
+            entity.OnDestroy();
+            base.Remove(entity);
+        }
+
+        protected virtual void OnPreDestroy(EntityType entity) { }
     }
 }

@@ -37,24 +37,12 @@ namespace TowerBuilder.ApplicationState.Entities.Rooms
         public State(AppState appState, Input input) : base(appState)
         {
             list = input.roomList ?? new RoomList();
-
             queries = new Queries(this);
         }
 
         /* 
             Rooms
         */
-        public override void Add(Room room)
-        {
-            base.Add(room);
-            room.validator.Validate(appState);
-        }
-
-        public override void Remove(Room room)
-        {
-            room.OnDestroy();
-            base.Remove(room);
-        }
 
         protected override void OnPreBuild(Room entity)
         {

@@ -13,7 +13,6 @@ namespace TowerBuilder.DataTypes.Entities
 
         public enum Type
         {
-            None,
             Room,
             Resident,
             Furniture,
@@ -22,7 +21,6 @@ namespace TowerBuilder.DataTypes.Entities
 
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
-                { Type.None,               "None" },
                 { Type.Room,               "Room" },
                 { Type.Resident,           "Resident" },
                 { Type.Furniture,          "Furniture" },
@@ -67,12 +65,13 @@ namespace TowerBuilder.DataTypes.Entities
             this.validator = definition.validatorFactory(this);
         }
 
-        public void OnBuild()
+        public virtual void OnBuild()
         {
             isInBlueprintMode = false;
         }
 
-        public void OnDestroy() { }
+        public virtual void OnDestroy() { }
+
         public virtual void Setup() { }
         public virtual void Teardown() { }
 
