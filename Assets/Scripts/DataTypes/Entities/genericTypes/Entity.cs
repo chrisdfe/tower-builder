@@ -33,6 +33,7 @@ namespace TowerBuilder.DataTypes.Entities
             Inflexible,
             Horizontal,
             Vertical,
+            Diagonal,
             Flexible,
         }
 
@@ -40,9 +41,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public bool isInBlueprintMode { get; set; } = false;
 
-        // TODO - I don't know if I need all of these
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>() { };
-        // public Dictionary<CellCoordinates, Tileable> tileableMap = new Dictionary<CellCoordinates, Tileable>() { };
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>() { };
 
         // TODO - remove the set; accessors too
@@ -54,16 +53,19 @@ namespace TowerBuilder.DataTypes.Entities
         // TODO - remove this and put in seperate state - only have list of error messages or isValid
         public EntityValidator validator { get; }
 
+
         public Entity(EntityDefinition definition)
         {
-            Debug.Log("definition");
-            Debug.Log(definition);
+
             this.definition = definition;
             this.id = UIDGenerator.Generate(idKey);
 
             this.cellCoordinatesList = definition.cellCoordinatesList.Clone();
+
             this.validator = definition.validatorFactory(this);
         }
+
+        public override string ToString() => $"{definition.title} #{id}";
 
         public virtual void OnBuild()
         {
@@ -83,41 +85,33 @@ namespace TowerBuilder.DataTypes.Entities
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {
             CreateBlockCells();
-            PositionAtCoordinates(GetBottomLeftCoordinates());
+            // PositionAtCoordinates(GetBottomLeftCoordinates());
+            PositionAtCoordinates(selectionBox.cellCoordinatesList.bottomLeftCoordinates.Clone());
             SetTileableMap();
 
             void CreateBlockCells()
             {
-                Dimensions blockCount = GetBlockCount();
-                CellCoordinatesList cellCoordinatesList = new CellCoordinatesList();
-                CellCoordinatesBlockList blocksList = new CellCoordinatesBlockList();
+                List<CellCoordinates> blockStartingCoordinates = GetBlockStartingCoordinates();
+                CellCoordinatesList newCellCoordinatesList = new CellCoordinatesList();
+                CellCoordinatesBlockList newBlocksList = new CellCoordinatesBlockList();
 
-                Debug.Log("blockCount: " + blockCount);
-
-                for (int x = 0; x < blockCount.width; x++)
+                foreach (CellCoordinates startingCoordinates in blockStartingCoordinates)
                 {
-                    for (int floor = 0; floor < blockCount.height; floor++)
-                    {
-                        CellCoordinatesList blockCells = CellCoordinatesList.CreateRectangle(definition.blockSize.width, definition.blockSize.height);
-                        blockCells.PositionAtCoordinates(new CellCoordinates(x, floor));
+                    CellCoordinatesList blockCells = definition.cellCoordinatesList.Clone();
+                    blockCells.PositionAtCoordinates(startingCoordinates);
 
-                        cellCoordinatesList.Add(blockCells);
+                    newCellCoordinatesList.Add(blockCells);
 
-                        if (definition.blockSize.Matches(Dimensions.one))
-                        {
-                            blocksList.Add(
-                                blockCells.items.Select(cellCoordinates => new CellCoordinatesBlock(cellCoordinates)).ToList()
-                            );
-                        }
-                        else
-                        {
-                            blocksList.Add(new CellCoordinatesBlock(blockCells));
-                        }
-                    }
+                    newBlocksList.Add(
+                        blockCells.items.Select(cellCoordinates => new CellCoordinatesBlock(cellCoordinates)).ToList()
+                    );
                 }
 
-                this.cellCoordinatesList = cellCoordinatesList;
-                this.blocksList = blocksList;
+                Debug.Log("newCellCoordinatesList");
+                Debug.Log(newCellCoordinatesList.Count);
+
+                this.cellCoordinatesList = newCellCoordinatesList;
+                this.blocksList = newBlocksList;
             }
 
             void SetTileableMap()
@@ -132,27 +126,71 @@ namespace TowerBuilder.DataTypes.Entities
                 });
             }
 
-            Dimensions GetBlockCount() =>
-                definition.resizability switch
+            List<CellCoordinates> GetBlockStartingCoordinates()
+            {
+                List<CellCoordinates> result = new List<CellCoordinates>();
+
+                switch (definition.resizability)
                 {
-                    Resizability.Flexible =>
-                        new Dimensions(
-                            MathUtils.RoundUpToNearest(selectionBox.dimensions.width, definition.blockSize.width),
-                            MathUtils.RoundUpToNearest(selectionBox.dimensions.height, definition.blockSize.height)
-                        ),
-                    Resizability.Horizontal =>
-                        new Dimensions(
-                            MathUtils.RoundUpToNearest(selectionBox.dimensions.width, definition.blockSize.width),
-                            1
-                        ),
-                    Resizability.Vertical =>
-                        new Dimensions(
-                            1,
-                            MathUtils.RoundUpToNearest(selectionBox.dimensions.height, definition.blockSize.height)
-                        ),
-                    Resizability.Inflexible => Dimensions.one,
-                    _ => Dimensions.one,
-                };
+                    case Resizability.Horizontal:
+                        CalculateHorizontal();
+                        break;
+                    case Resizability.Vertical:
+                        CalculateVertical();
+                        break;
+                    case Resizability.Flexible:
+                        CalculateFlexible();
+                        break;
+                    case Resizability.Diagonal:
+                        CalculateDiagonal();
+                        break;
+                    case Resizability.Inflexible:
+                        result.Add(CellCoordinates.zero);
+                        break;
+                }
+
+                return result;
+
+                void CalculateFlexible()
+                {
+                    for (int x = 0; x < selectionBox.cellCoordinatesList.width; x += definition.cellCoordinatesList.width)
+                    {
+                        for (int floor = 0; floor < selectionBox.cellCoordinatesList.floorSpan; floor += definition.cellCoordinatesList.floorSpan)
+                        {
+                            result.Add(new CellCoordinates(x, floor));
+                        }
+                    }
+                }
+
+                void CalculateHorizontal()
+                {
+                    for (int x = 0; x < selectionBox.cellCoordinatesList.width; x += definition.cellCoordinatesList.width)
+                    {
+                        result.Add(new CellCoordinates(x, 0));
+                    }
+                }
+
+                void CalculateVertical()
+                {
+                    for (int floor = 0; floor < selectionBox.cellCoordinatesList.floorSpan; floor += definition.cellCoordinatesList.floorSpan)
+                    {
+                        result.Add(new CellCoordinates(0, floor));
+                    }
+                }
+
+                void CalculateDiagonal()
+                {
+                    int x = 0;
+                    int floor = 0;
+
+                    while (x < selectionBox.cellCoordinatesList.width && floor < selectionBox.cellCoordinatesList.floorSpan)
+                    {
+                        result.Add(new CellCoordinates(x, floor));
+                        x += definition.cellCoordinatesList.width;
+                        floor += definition.cellCoordinatesList.width;
+                    }
+                }
+            }
 
             CellCoordinates GetBottomLeftCoordinates() =>
                 definition.resizability switch
@@ -162,6 +200,8 @@ namespace TowerBuilder.DataTypes.Entities
                             selectionBox.cellCoordinatesList.bottomLeftCoordinates.x,
                             selectionBox.cellCoordinatesList.bottomLeftCoordinates.floor
                         ),
+                    Resizability.Diagonal =>
+                        selectionBox.cellCoordinatesList.bottomLeftCoordinates,
                     Resizability.Horizontal =>
                         new CellCoordinates(
                             selectionBox.cellCoordinatesList.bottomLeftCoordinates.x,

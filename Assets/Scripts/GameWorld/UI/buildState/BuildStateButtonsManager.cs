@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.Residents;
+using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -15,15 +19,22 @@ namespace TowerBuilder.GameWorld.UI
 
         Transform entityTypeButtonsWrapper;
         Transform entityTypeBuildButtonsWrapper;
+        Transform categoryButtonsWrapper;
+        Transform definitionButtonsWrapper;
 
-        EntityTypeBuildButtons entityTypeBuildButtons;
+        List<UISelectButton> entityTypeSelectButtons = new List<UISelectButton>();
+        List<UISelectButton> categoryButtons = new List<UISelectButton>();
+        List<UISelectButton> definitionButtons = new List<UISelectButton>();
 
-        List<UISelectButton> entityTypeSelectButtons;
+        const string entityTypeButtonsWrapperName = "EntityTypeButtonsWrapper";
+        const string entityTypeBuildButtonsWrapperName = "EntityTypeBuildButtonsWrapper";
+        const string categoryButtonsWrapperName = "CategoryButtons";
+        const string definitionButtonsWrapperName = "DefinitionButtons";
 
         void Awake()
         {
-            entityTypeButtonsWrapper = transform.Find("EntityTypeButtonsWrapper");
-            entityTypeBuildButtonsWrapper = transform.Find("EntityTypeBuildButtonsWrapper");
+            entityTypeButtonsWrapper = transform.Find(entityTypeButtonsWrapperName);
+            entityTypeBuildButtonsWrapper = transform.Find(entityTypeBuildButtonsWrapperName);
 
             entityTypeSelectButtons = Entity.TypeLabels.labels.Select(label =>
             {
@@ -38,16 +49,211 @@ namespace TowerBuilder.GameWorld.UI
                 return entityButton;
             }).ToList();
 
-
-            entityTypeBuildButtons = new EntityTypeBuildButtons(entityTypeBuildButtonsWrapper);
-            entityTypeBuildButtons.Setup();
+            categoryButtonsWrapper = entityTypeBuildButtonsWrapper.Find(categoryButtonsWrapperName);
+            definitionButtonsWrapper = entityTypeBuildButtonsWrapper.Find(definitionButtonsWrapperName);
 
             Registry.appState.Tools.buildToolState.events.onSelectedEntityKeyUpdated += OnSelectedEntityKeyUpdated;
+            Registry.appState.Tools.buildToolState.events.onSelectedEntityCategoryUpdated += OnSelectedEntityCategoryUpdated;
+            Registry.appState.Tools.buildToolState.events.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
+
+            Setup();
+        }
+
+        public void Setup()
+        {
+            ResetCategoryButtons();
+            ResetDefinitionButtons();
+        }
+
+        public void Teardown()
+        {
+            DestroyCategoryButtons();
+            DestroyDefinitionButtons();
+        }
+
+        void ResetCategoryButtons()
+        {
+            DestroyCategoryButtons();
+            CreateCategoryButtons();
+        }
+
+        void CreateCategoryButtons()
+        {
+            categoryButtons = UISelectButton.CreateButtonListFromInputList(categoryButtonsWrapper, GenerateCategoryButtonInputs());
+
+            foreach (UISelectButton selectButton in categoryButtons)
+            {
+                selectButton.transform.SetParent(this.categoryButtonsWrapper, false);
+                selectButton.onClick += OnCategoryButtonClick;
+            }
+
+            HighlightSelectedCategoryButton();
+        }
+
+        void HighlightSelectedCategoryButton()
+        {
+            foreach (UISelectButton button in categoryButtons)
+            {
+                button.SetSelected(button.value == Registry.appState.Tools.buildToolState.selectedEntityCategory);
+            }
+        }
+
+        void DestroyCategoryButtons()
+        {
+            TransformUtils.DestroyChildren(categoryButtonsWrapper);
+
+            foreach (UISelectButton categoryButton in categoryButtons)
+            {
+                categoryButton.onClick -= OnCategoryButtonClick;
+                GameObject.Destroy(categoryButton.gameObject);
+            }
+        }
+
+        void ResetDefinitionButtons()
+        {
+            DestroyDefinitionButtons();
+            CreateDefinitionButtons();
+        }
+
+        void CreateDefinitionButtons()
+        {
+            definitionButtons = UISelectButton.CreateButtonListFromInputList(definitionButtonsWrapper, GenerateDefinitionButtonInputs());
+
+            foreach (UISelectButton definitionButton in definitionButtons)
+            {
+                definitionButton.onClick += OnDefinitionButtonClick;
+            }
+
+            HighlightSelectedDefinitionButton();
+        }
+
+        void HighlightSelectedDefinitionButton()
+        {
+            foreach (UISelectButton button in definitionButtons)
+            {
+                button.SetSelected(button.value == Registry.appState.Tools.buildToolState.selectedEntityDefinition?.title);
+            }
+        }
+
+        void DestroyDefinitionButtons()
+        {
+            TransformUtils.DestroyChildren(definitionButtonsWrapper);
+            foreach (UISelectButton definitionButton in definitionButtons)
+            {
+                definitionButton.onClick -= OnDefinitionButtonClick;
+                GameObject.Destroy(definitionButton.gameObject);
+            }
+        }
+
+        List<UISelectButton.Input> GenerateCategoryButtonInputs()
+        {
+            List<UISelectButton> result = new List<UISelectButton>();
+            Entity.Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
+
+            List<string> allEntityCategories = selectedEntityType switch
+            {
+                Entity.Type.Room => Registry.Definitions.Entities.Rooms.Queries.FindAllCategories(),
+                Entity.Type.Furniture => Registry.Definitions.Entities.Furnitures.Queries.FindAllCategories(),
+                Entity.Type.Resident => Registry.Definitions.Entities.Residents.Queries.FindAllCategories(),
+                Entity.Type.TransportationItem => Registry.Definitions.Entities.TransportationItems.Queries.FindAllCategories(),
+                _ => null
+            };
+
+            return allEntityCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
+        }
+
+        List<UISelectButton.Input> GenerateDefinitionButtonInputs()
+        {
+            string currentCategory = Registry.appState.Tools.buildToolState.selectedEntityCategory;
+
+            return Registry.appState.Tools.buildToolState.selectedEntityType switch
+            {
+                Entity.Type.Room =>
+                    Registry.Definitions.Entities.Rooms.Queries.FindByCategory(currentCategory)
+                        .Select((definition) =>
+                            new UISelectButton.Input()
+                            {
+                                label = definition.title,
+                                value = Room.KeyLabelMap.ValueFromKey(definition.key)
+                            }
+                        ).ToList(),
+                Entity.Type.Furniture =>
+                    Registry.Definitions.Entities.Furnitures.Queries.FindByCategory(currentCategory)
+                        .Select((definition) =>
+                            new UISelectButton.Input()
+                            {
+                                label = definition.title,
+                                value = Furniture.KeyLabelMap.ValueFromKey(definition.key)
+                            }
+                        ).ToList(),
+                Entity.Type.Resident =>
+                    Registry.Definitions.Entities.Residents.Queries.FindByCategory(currentCategory)
+                        .Select((definition) =>
+                            new UISelectButton.Input()
+                            {
+                                label = definition.title,
+                                value = Resident.KeyLabelMap.ValueFromKey(definition.key)
+                            }
+                        ).ToList(),
+                Entity.Type.TransportationItem =>
+                    Registry.Definitions.Entities.TransportationItems.Queries.FindByCategory(currentCategory)
+                        .Select((definition) =>
+                            new UISelectButton.Input()
+                            {
+                                label = definition.title,
+                                value = TransportationItem.KeyLabelMap.ValueFromKey(definition.key)
+                            }
+                        ).ToList(),
+                _ => null
+            };
         }
 
         /*
             Event Handlers
         */
+        void OnCategoryButtonClick(string entityCategory)
+        {
+            Registry.appState.Tools.buildToolState.SetSelectedEntityCategory(entityCategory);
+        }
+
+        void OnDefinitionButtonClick(string keyLabel)
+        {
+            Debug.Log("clicked on: ");
+            Debug.Log(keyLabel);
+
+            Registry.appState.Tools.buildToolState.SetSelectedEntityDefinition(keyLabel);
+        }
+
+        void OnSelectedEntityCategoryUpdated(string newEntityCategory)
+        {
+            // Build new set of definition buttons
+            ResetCategoryButtons();
+            ResetDefinitionButtons();
+        }
+
+        void OnSelectedEntityDefinitionUpdated(EntityDefinition entityDefinition)
+        {
+            Entity.Type entityType = Registry.appState.Tools.buildToolState.selectedEntityType;
+
+            string label = entityDefinition switch
+            {
+                RoomDefinition roomDefinition =>
+                    Room.KeyLabelMap.ValueFromKey(roomDefinition.key),
+                FurnitureDefinition furnitureDefinition =>
+                    Furniture.KeyLabelMap.ValueFromKey(furnitureDefinition.key),
+                ResidentDefinition residentDefinition =>
+                    Resident.KeyLabelMap.ValueFromKey(residentDefinition.key),
+                TransportationItemDefinition transportationItemDefinition =>
+                    TransportationItem.KeyLabelMap.ValueFromKey(transportationItemDefinition.key),
+                _ => null
+            };
+
+            // ResetDefinitionButtons();
+            HighlightSelectedDefinitionButton();
+
+            // Registry.appState.Tools.buildToolState.SetSelectedEntityDefinition(label);
+        }
+
         void OnEntityGroupButtonClick(string newCategory)
         {
             Entity.Type newEntityType = Entity.TypeLabels.KeyFromValue(newCategory);
@@ -64,12 +270,8 @@ namespace TowerBuilder.GameWorld.UI
                 selectButton.SetSelected(isSelected);
             });
 
-            if (entityTypeBuildButtons != null)
-            {
-                entityTypeBuildButtons.Teardown();
-                entityTypeBuildButtons = null;
-                entityTypeBuildButtons = new EntityTypeBuildButtons(entityTypeBuildButtonsWrapper);
-            }
+            ResetCategoryButtons();
+            ResetDefinitionButtons();
         }
     }
 }

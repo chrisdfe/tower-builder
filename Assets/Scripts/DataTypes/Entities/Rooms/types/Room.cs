@@ -11,18 +11,19 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
         public enum Key
         {
             Default,
+            OtherDefault,
             Wheels
         }
 
         public static EnumStringMap<Key> KeyLabelMap = new EnumStringMap<Key>(
             new Dictionary<Key, string>() {
                 { Key.Default, "Default" },
+                { Key.OtherDefault, "OtherDefault" },
                 { Key.Wheels,  "Wheels" },
             }
         );
 
         public override string idKey => "Rooms";
-
 
         public Dimensions blockDimensions { get; } = Dimensions.one;
 
@@ -43,8 +44,6 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
 
             this.skin = new Skin(roomDefinition.skinKey);
         }
-
-        public override string ToString() => $"room {id}";
     }
 }
 

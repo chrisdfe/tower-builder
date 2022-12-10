@@ -15,7 +15,7 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
 
         public Room.Skin.Key skinKey = Room.Skin.Key.Default;
 
-        public new ValidatorFactory validatorFactory = (Entity entity) => new RoomValidator(entity as Room);
+        public override ValidatorFactory validatorFactory => (Entity entity) => new RoomValidator(entity as Room);
     }
 }
 

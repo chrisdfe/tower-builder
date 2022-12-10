@@ -28,9 +28,6 @@ namespace TowerBuilder.DataTypes.Entities.Residents
 
         public Resident(ResidentDefinition definition) : base(definition) { }
 
-        public override string ToString()
-        {
-            return $"Resident {id}";
-        }
+        public override string ToString() => $"Resident {id}";
     }
 }

@@ -22,7 +22,10 @@ namespace TowerBuilder.Definitions
                 ),
                 entranceCellCoordinates = new CellCoordinates(0, 0),
                 exitCellCoordinates = new CellCoordinates(1, 1),
-                pricePerCell = 800
+                pricePerCell = 800,
+
+                resizability = TransportationItem.Resizability.Diagonal
+                // resizability = TransportationItem.Resizability.Flexible
             },
 
             new TransportationItemDefinition() {
@@ -37,7 +40,9 @@ namespace TowerBuilder.Definitions
                 ),
                 entranceCellCoordinates = new CellCoordinates(0, 0),
                 exitCellCoordinates = new CellCoordinates(0, 1),
-                pricePerCell = 400
+                pricePerCell = 400,
+
+                resizability = TransportationItem.Resizability.Vertical
             },
 
             new TransportationItemDefinition() {
@@ -52,7 +57,9 @@ namespace TowerBuilder.Definitions
                 ),
                 entranceCellCoordinates = new CellCoordinates(0, 0),
                 exitCellCoordinates = new CellCoordinates(1, 0),
-                pricePerCell = 200
+                pricePerCell = 200,
+
+                resizability = TransportationItem.Resizability.Inflexible
             }
         };
 

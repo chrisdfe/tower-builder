@@ -16,7 +16,7 @@ namespace TowerBuilder.DataTypes
 
         public int highestX =>
             items.Aggregate(int.MinValue, (highestX, coordinates) =>
-                (coordinates.x > highestX) ? coordinates.x : lowestX
+                (coordinates.x > highestX) ? coordinates.x : highestX
             );
 
         public int lowestFloor =>

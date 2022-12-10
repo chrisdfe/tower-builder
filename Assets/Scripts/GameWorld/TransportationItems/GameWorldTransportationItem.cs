@@ -53,10 +53,10 @@ namespace TowerBuilder.GameWorld.Rooms
 
             GameWorldTransportationManager transportationManager = GameWorldTransportationManager.Find();
 
+            GameObject prefabMesh = transportationManager.meshAssets.FindByKey(transportationItem.key);
+
             meshWrapperList = transportationItem.cellCoordinatesList.items.Select((cellCoordinates) =>
             {
-                GameObject prefabMesh = transportationManager.meshAssets.FindByKey(transportationItem.key);
-
                 MeshWrapper<TransportationItem.Key> meshWrapper =
                      new MeshWrapper<TransportationItem.Key>(transform, prefabMesh, cellCoordinates, transportationItem.cellCoordinatesList);
 

@@ -42,6 +42,7 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             GameWorldTransportationItem gameWorldTransportationItem = GameWorldTransportationItem.Create(transform);
             gameWorldTransportationItem.transportationItem = transportationItem;
+            gameWorldTransportationItem.transportationItem = transportationItem;
             gameWorldTransportationItem.Setup();
             gameWorldTransportationItemList.Add(gameWorldTransportationItem);
         }

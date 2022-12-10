@@ -19,8 +19,6 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Build(EntityType entity)
         {
-            Debug.Log("Building entity");
-            Debug.Log(entity.GetType());
             // TODO - don't do this here
             entity.validator.Validate(appState);
 

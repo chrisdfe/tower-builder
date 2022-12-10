@@ -48,5 +48,10 @@ namespace TowerBuilder.ApplicationState.Entities.TransportationItems
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
+
+        public override void Add(TransportationItem entity)
+        {
+            base.Add(entity);
+        }
     }
 }

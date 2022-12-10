@@ -124,8 +124,12 @@ namespace TowerBuilder.GameWorld.UI
             ResidentAttributesWrapper residentAttributesWrapper = Registry.appState.ResidentAttributesWrappers.queries.FindByResident(resident);
 
             string text = "Resident"
-            + $"   name: {resident}\n"
-            + $"   state: {residentBehavior.currentState}\n";
+            + $"   name: {resident}\n";
+
+            if (residentBehavior != null)
+            {
+                text += $"   state: {residentBehavior.currentState}\n";
+            }
 
             if (residentAttributesWrapper != null)
             {

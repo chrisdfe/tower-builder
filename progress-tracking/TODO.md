@@ -2,13 +2,15 @@
 
 ## Tasks
 
+- Destroy tool seems to be broken
+- TransportationItem meshes are broken again
+- Rooms aren't validating that they're on top of another room again
 - GameWorldEntity
 - BuildValidators/DestroyValidators?
 - EntityStateSlice build chould fire onItemsBuilt event as well - currently it's just singular
 - Rename "MeshWrapper" to "EntityMeshWrapper"
 - Maybe entity needs to have a couple more generic parameters, like TemplateType and ValidatorType
 - "Entities state slice"? is that getting too deep into inheritence
-- auto generate entity buttons
 - reorganize/simplify buildtool state to be more dynamic
 - same as with how I made an entities appState slice:
   - Attributes appState slice group
@@ -184,7 +186,6 @@
 
 ## Cleanup
 
-- Tileable.cs probably has classes in there that need to be broken out
 - Switch the order of ListType and ItemType in ListItemStateSlice generic (ItemType should be first)
 - Room datatypes/state is structured in a different way to some of the newer classes (e.g make it Room.SkinKey instead of RoomSkinKey)
 - RouteFinder creates too many branches
@@ -217,6 +218,8 @@
 
 # Done
 
+- Tileable.cs probably has classes in there that need to be broken out
+- auto generate entity buttons
 - Fix room cell tiling
 - abstract room/furniture validators -> entity validators
 - Move the rest of the entities states (resident, transportationitems etc) into the entities state

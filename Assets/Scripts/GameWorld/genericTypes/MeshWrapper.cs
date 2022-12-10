@@ -29,12 +29,6 @@ namespace TowerBuilder.GameWorld
             this.prefabMesh = prefabMesh;
 
             this.cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);
-            Debug.Log("cellNeighbors: " + cellNeighbors);
-
-            if (this.cellNeighbors.occupied == CellOrientation.AboveRight)
-            {
-                Debug.Log("yes, Above right");
-            }
 
             this.cellPosition = Tileable.GetCellPosition(this.cellNeighbors);
         }
@@ -76,7 +70,6 @@ namespace TowerBuilder.GameWorld
             if (child != null)
             {
                 Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
-                Debug.Log("cellPosition: " + cellPosition);
 
                 foreach (Transform node in child)
                 {

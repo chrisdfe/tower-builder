@@ -13,10 +13,16 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
         protected override List<EntityCellValidationFunc> cellValidators { get; } =
             EntityValidator.BaseCellValidators.Concat(new List<EntityCellValidationFunc>()
             {
+                ValidateAboveOtherRoom,
                 ValidateAcceptableOverhang,
             }).ToList();
 
         public RoomValidator(Room room) : base(room) { }
+
+        public static EntityValidationErrorList ValidateAboveOtherRoom(AppState appState, Entity entity, CellCoordinates cellCoordinates)
+        {
+            return new EntityValidationErrorList();
+        }
 
         public static EntityValidationErrorList ValidateAcceptableOverhang(AppState appState, Entity entity, CellCoordinates cellCoordinates)
         {

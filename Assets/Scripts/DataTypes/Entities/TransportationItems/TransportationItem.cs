@@ -45,9 +45,9 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
         public override void PositionAtCoordinates(CellCoordinates cellCoordinates)
         {
             base.PositionAtCoordinates(cellCoordinates);
-            TransportationItemDefinition definition = this.definition as TransportationItemDefinition;
-            entranceCellCoordinates = CellCoordinates.Add(cellCoordinates, definition.entranceCellCoordinates);
-            exitCellCoordinates = CellCoordinates.Add(cellCoordinates, definition.exitCellCoordinates);
+            TransportationItemDefinition transportationItemDefinition = this.definition as TransportationItemDefinition;
+            entranceCellCoordinates = CellCoordinates.Add(cellCoordinates, transportationItemDefinition.entranceCellCoordinates);
+            exitCellCoordinates = CellCoordinates.Add(cellCoordinates, transportationItemDefinition.exitCellCoordinates);
         }
 
         public CellCoordinates GetEntranceOrExit(CellCoordinates cellCoordinates)

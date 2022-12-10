@@ -23,8 +23,18 @@ namespace TowerBuilder.Definitions
                     }
                 ),
 
+                resizability = Room.Resizability.Flexible,
+                pricePerCell = 1000,
+            },
 
-                blockSize = new Dimensions(1, 1),
+            new RoomDefinition()
+            {
+                title = "Empty - Large",
+                key = Room.Key.OtherDefault,
+                category = "Empty",
+
+                cellCoordinatesList = CellCoordinatesList.CreateRectangle(2, 2),
+
                 resizability = Room.Resizability.Flexible,
                 pricePerCell = 1000,
             },
@@ -41,7 +51,6 @@ namespace TowerBuilder.Definitions
                     }
                 ),
 
-                blockSize = new Dimensions(1, 1),
                 resizability = Room.Resizability.Horizontal,
                 pricePerCell = 5000,
 

@@ -117,6 +117,9 @@ namespace TowerBuilder.DataTypes
                 }
             }
 
+            // Debug.Log("cellNeighbors");
+            // Debug.Log(cellNeighbors);
+            // Debug.Log("cellPosition: " + cellPosition);
             return cellPosition;
         }
 

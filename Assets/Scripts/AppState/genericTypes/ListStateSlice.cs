@@ -1,5 +1,6 @@
 using System;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
@@ -31,6 +32,7 @@ namespace TowerBuilder.ApplicationState
         public virtual void Add(ListWrapperType newItemsList)
         {
             list.Add(newItemsList);
+
             events.onItemsAdded?.Invoke(newItemsList);
             events.onListUpdated?.Invoke(list);
         }

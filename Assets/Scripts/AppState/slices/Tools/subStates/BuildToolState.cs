@@ -53,7 +53,7 @@ namespace TowerBuilder.ApplicationState.Tools
         public bool isLocked = false;
         bool buildIsActive = false;
 
-        static Dictionary<Entity.Type, StateSlice> entityStateSliceMap = new Dictionary<Entity.Type, StateSlice>();
+        // static Dictionary<Entity.Type, StateSlice> entityStateSliceMap = new Dictionary<Entity.Type, StateSlice>();
 
         public BuildToolState(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
@@ -61,11 +61,12 @@ namespace TowerBuilder.ApplicationState.Tools
 
             ResetCategoryAndDefinition();
 
-            entityStateSliceMap = new Dictionary<Entity.Type, StateSlice>() {
-                { Entity.Type.Room, appState.Entities.Rooms },
-                { Entity.Type.Furniture, appState.Entities.Furnitures },
-                { Entity.Type.Resident, appState.Entities.Residents }
-            };
+            // entityStateSliceMap = new Dictionary<Entity.Type, StateSlice>() {
+            //     { Entity.Type.Room, () => appState.Entities.Rooms },
+            //     { Entity.Type.Furniture, () => appState.Entities.Furnitures },
+            //     { Entity.Type.Resident, appState.Entities.Residents },
+            //     { Entity.Type.TransportationItem, appState.Entities.TransportationItems }
+            // };
         }
 
         public override void Setup()
@@ -139,8 +140,31 @@ namespace TowerBuilder.ApplicationState.Tools
 
 
         // TODO - this should probably use key instead of title string
-        public void SetSelectedEntityDefinition(string title)
+        public void SetSelectedEntityDefinition(string keyLabel)
         {
+            Debug.Log("SetSelectedEntityDefinition: ");
+
+            switch (selectedEntityType)
+            {
+                case Entity.Type.Room:
+                    Room.Key roomKey = Room.KeyLabelMap.KeyFromValue(keyLabel);
+                    this.selectedEntityDefinition = Registry.Definitions.Entities.Rooms.Queries.FindByKey(roomKey);
+                    break;
+                case Entity.Type.Furniture:
+                    Furniture.Key furnitureKey = Furniture.KeyLabelMap.KeyFromValue(keyLabel);
+                    this.selectedEntityDefinition = Registry.Definitions.Entities.Furnitures.Queries.FindByKey(furnitureKey);
+                    break;
+                case Entity.Type.Resident:
+                    Resident.Key residentKey = Resident.KeyLabelMap.KeyFromValue(keyLabel);
+                    this.selectedEntityDefinition = Registry.Definitions.Entities.Residents.Queries.FindByKey(residentKey);
+                    break;
+                case Entity.Type.TransportationItem:
+                    TransportationItem.Key transportationItemKey = TransportationItem.KeyLabelMap.KeyFromValue(keyLabel);
+                    this.selectedEntityDefinition = Registry.Definitions.Entities.TransportationItems.Queries.FindByKey(transportationItemKey);
+                    break;
+            }
+
+            /*
             this.selectedEntityDefinition = selectedEntityType switch
             {
                 Entity.Type.Room => Registry.Definitions.Entities.Rooms.Queries.FindByTitle(title),
@@ -149,12 +173,19 @@ namespace TowerBuilder.ApplicationState.Tools
                 Entity.Type.TransportationItem => Registry.Definitions.Entities.TransportationItems.Queries.FindByTitle(title),
                 _ => null
             };
+            */
+
+            Debug.Log("this.selectedEntityDefinition: ");
+            Debug.Log(this.selectedEntityDefinition);
 
             ResetBlueprintEntity();
 
             events.onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
         }
 
+        /*
+            Internals
+        */
         void ResetCategoryAndDefinition()
         {
             switch (selectedEntityType)
@@ -217,9 +248,6 @@ namespace TowerBuilder.ApplicationState.Tools
 
         void CreateBlueprintEntity()
         {
-            Debug.Log("CreateBlueprintEntity");
-            Debug.Log(selectedEntityType);
-
             blueprintEntity = selectedEntityType switch
             {
                 Entity.Type.Room => new Room(selectedEntityDefinition as RoomDefinition),
@@ -228,9 +256,6 @@ namespace TowerBuilder.ApplicationState.Tools
                 Entity.Type.TransportationItem => new TransportationItem(selectedEntityDefinition as TransportationItemDefinition),
                 _ => null
             };
-
-            Debug.Log("blueprintEntity");
-            Debug.Log(blueprintEntity);
 
             blueprintEntity.isInBlueprintMode = true;
             blueprintEntity.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
@@ -277,9 +302,6 @@ namespace TowerBuilder.ApplicationState.Tools
         void RemoveBlueprintEntity()
         {
             if (blueprintEntity == null) return;
-
-            Debug.Log("blueprintEntity");
-            Debug.Log(blueprintEntity);
 
             switch (blueprintEntity)
             {
