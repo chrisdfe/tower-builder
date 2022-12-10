@@ -25,14 +25,14 @@ namespace TowerBuilder.GameWorld.Rooms
         {
             Registry.appState.Entities.TransportationItems.events.onItemsAdded += OnTransportationItemsAdded;
             Registry.appState.Entities.TransportationItems.events.onItemsRemoved += OnTransportationItemsRemoved;
-            Registry.appState.Entities.TransportationItems.events.onItemBuilt += OnTransportationItemBuilt;
+            Registry.appState.Entities.TransportationItems.events.onItemsBuilt += OnTransportationItemsBuilt;
         }
 
         void Teardown()
         {
             Registry.appState.Entities.TransportationItems.events.onItemsAdded -= OnTransportationItemsAdded;
             Registry.appState.Entities.TransportationItems.events.onItemsRemoved -= OnTransportationItemsRemoved;
-            Registry.appState.Entities.TransportationItems.events.onItemBuilt -= OnTransportationItemBuilt;
+            Registry.appState.Entities.TransportationItems.events.onItemsBuilt -= OnTransportationItemsBuilt;
         }
 
         /* 
@@ -77,7 +77,7 @@ namespace TowerBuilder.GameWorld.Rooms
             });
         }
 
-        void OnTransportationItemBuilt(TransportationItem transportationItem)
+        void OnTransportationItemsBuilt(TransportationItemsList transportationItemList)
         {
         }
     }

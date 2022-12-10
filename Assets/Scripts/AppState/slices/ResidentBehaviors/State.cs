@@ -74,6 +74,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
          */
         public void AddBehaviorForResident(Resident resident)
         {
+            Debug.Log("AddBehaviorForResident");
             ResidentBehavior residentBehavior = new ResidentBehavior(appState, resident);
             Add(residentBehavior);
         }
@@ -86,7 +87,6 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
                 Remove(residentBehavior);
             }
         }
-
 
         public void AddResidentBehaviorGoals(Resident resident, ResidentBehavior.Goal[] goals)
         {
@@ -201,8 +201,12 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         void OnResidentsAdded(ResidentsList residentsList)
         {
+            Debug.Log("OnResidentsAdded");
+            Debug.Log(residentsList.Count);
             foreach (Resident resident in residentsList.items)
             {
+                Debug.Log("resident.isInBlueprintMode");
+                Debug.Log(resident.isInBlueprintMode);
                 if (!resident.isInBlueprintMode)
                 {
                     AddBehaviorForResident(resident);
@@ -212,6 +216,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
 
         void OnResidentsBuilt(ResidentsList residentsList)
         {
+            Debug.Log("OnResidentsBuilt");
             foreach (Resident resident in residentsList.items)
             {
                 AddBehaviorForResident(resident);

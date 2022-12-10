@@ -69,6 +69,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public virtual void OnBuild()
         {
+            Debug.Log("entity on build");
             isInBlueprintMode = false;
         }
 

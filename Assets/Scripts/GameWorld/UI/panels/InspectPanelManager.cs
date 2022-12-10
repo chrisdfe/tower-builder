@@ -123,7 +123,7 @@ namespace TowerBuilder.GameWorld.UI
 
             ResidentAttributesWrapper residentAttributesWrapper = Registry.appState.ResidentAttributesWrappers.queries.FindByResident(resident);
 
-            string text = "Resident"
+            string text = "Resident\n"
             + $"   name: {resident}\n";
 
             if (residentBehavior != null)
@@ -133,7 +133,7 @@ namespace TowerBuilder.GameWorld.UI
 
             if (residentAttributesWrapper != null)
             {
-                text += "    attributes:";
+                text += "    attributes:\n";
                 residentAttributesWrapper.attributes.ForEach((attribute) =>
                 {
                     text += $"        {attribute.key}: {attribute.value}\n";

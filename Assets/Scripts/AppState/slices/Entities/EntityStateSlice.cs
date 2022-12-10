@@ -12,7 +12,7 @@ namespace TowerBuilder.ApplicationState.Entities
     {
         public new class Events : ListStateSlice<ListWrapperType, EntityType, EventsType>.Events
         {
-            public Events.ItemEvent onItemBuilt;
+            public Events.ListEvent onItemsBuilt;
         }
 
         public EntityStateSlice(AppState appState) : base(appState) { }
@@ -54,7 +54,9 @@ namespace TowerBuilder.ApplicationState.Entities
             OnPreBuild(entity);
             entity.OnBuild();
 
-            events.onItemBuilt?.Invoke(entity);
+            ListWrapperType listWrapper = new ListWrapperType();
+            listWrapper.Add(entity);
+            events.onItemsBuilt?.Invoke(listWrapper);
         }
 
         protected virtual void OnPreBuild(EntityType entity) { }
