@@ -192,30 +192,6 @@ namespace TowerBuilder.DataTypes.Entities
                     }
                 }
             }
-
-            CellCoordinates GetBottomLeftCoordinates() =>
-                definition.resizability switch
-                {
-                    Resizability.Flexible =>
-                        new CellCoordinates(
-                            selectionBox.cellCoordinatesList.bottomLeftCoordinates.x,
-                            selectionBox.cellCoordinatesList.bottomLeftCoordinates.floor
-                        ),
-                    Resizability.Diagonal =>
-                        selectionBox.cellCoordinatesList.bottomLeftCoordinates,
-                    Resizability.Horizontal =>
-                        new CellCoordinates(
-                            selectionBox.cellCoordinatesList.bottomLeftCoordinates.x,
-                            selectionBox.start.floor
-                        ),
-                    Resizability.Vertical =>
-                         new CellCoordinates(
-                            selectionBox.start.x,
-                            selectionBox.cellCoordinatesList.bottomLeftCoordinates.floor
-                        ),
-                    Resizability.Inflexible => selectionBox.end,
-                    _ => selectionBox.end
-                };
         }
 
         public CellCoordinatesBlock FindBlockByCellCoordinates(CellCoordinates cellCoordinates) =>

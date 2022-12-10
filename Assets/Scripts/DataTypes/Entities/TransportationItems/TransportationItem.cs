@@ -27,42 +27,70 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
             }
         );
 
-        public CellCoordinates entranceCellCoordinates = CellCoordinates.zero;
-        public CellCoordinates exitCellCoordinates = CellCoordinates.zero;
+        public CellCoordinatesList entranceCellCoordinatesList = new CellCoordinatesList();
+        public CellCoordinatesList exitCellCoordinatesList = new CellCoordinatesList();
+        List<(CellCoordinates, CellCoordinates)> entranceExitTuples;
 
         // TODO - replace this with Transportation direction
         public bool isOneWay = false;
 
         public TransportationItem(TransportationItemDefinition definition) : base(definition)
         {
-            this.entranceCellCoordinates = definition.entranceCellCoordinates;
-            this.exitCellCoordinates = definition.exitCellCoordinates;
+            entranceExitTuples = (definition as TransportationItemDefinition).entranceExitBuilder(this);
         }
+
 
         /*
             Public Interface
         */
+        public override void OnBuild()
+        {
+            base.OnBuild();
+
+            TransportationItemDefinition transportationItemDefinition = this.definition as TransportationItemDefinition;
+            entranceCellCoordinatesList = new CellCoordinatesList();
+            exitCellCoordinatesList = new CellCoordinatesList();
+
+            Debug.Log("cellCoordinatesList");
+            Debug.Log(cellCoordinatesList.Count);
+            Debug.Log(cellCoordinatesList.topRightCoordinates);
+            Debug.Log("cellCoordinatesList.topRightCoordinates");
+
+            entranceExitTuples = (definition as TransportationItemDefinition).entranceExitBuilder(this);
+
+            foreach ((CellCoordinates, CellCoordinates) entranceExitTuple in entranceExitTuples)
+            {
+                var (entranceCellCoordinates, exitCellCoordinates) = entranceExitTuple;
+                entranceCellCoordinatesList.Add(entranceCellCoordinates);
+                exitCellCoordinatesList.Add(exitCellCoordinates);
+            }
+
+            Debug.Log("entranceCellCoordinatesList");
+            Debug.Log(entranceCellCoordinatesList.Count);
+            Debug.Log(entranceCellCoordinatesList?.items[0]);
+            Debug.Log("exitCellCoordinatesList");
+            Debug.Log(exitCellCoordinatesList.Count);
+            Debug.Log(exitCellCoordinatesList?.items[0]);
+        }
+
         public override void PositionAtCoordinates(CellCoordinates cellCoordinates)
         {
             base.PositionAtCoordinates(cellCoordinates);
-            TransportationItemDefinition transportationItemDefinition = this.definition as TransportationItemDefinition;
-            entranceCellCoordinates = CellCoordinates.Add(cellCoordinates, transportationItemDefinition.entranceCellCoordinates);
-            exitCellCoordinates = CellCoordinates.Add(cellCoordinates, transportationItemDefinition.exitCellCoordinates);
         }
 
-        public CellCoordinates GetEntranceOrExit(CellCoordinates cellCoordinates)
-        {
-            if (cellCoordinates.Matches(entranceCellCoordinates))
-            {
-                return exitCellCoordinates;
-            }
+        // public CellCoordinates GetEntranceOrExit(CellCoordinates cellCoordinates)
+        // {
+        //     if (cellCoordinates.Matches(entranceCellCoordinates))
+        //     {
+        //         return exitCellCoordinates;
+        //     }
 
-            if (cellCoordinates.Matches(exitCellCoordinates))
-            {
-                return entranceCellCoordinates;
-            }
+        //     if (cellCoordinates.Matches(exitCellCoordinates))
+        //     {
+        //         return entranceCellCoordinates;
+        //     }
 
-            return null;
-        }
+        //     return null;
+        // }
     }
 }

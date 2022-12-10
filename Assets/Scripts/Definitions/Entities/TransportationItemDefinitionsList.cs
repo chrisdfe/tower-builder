@@ -20,16 +20,31 @@ namespace TowerBuilder.Definitions
                         new CellCoordinates(1, 1)
                     }
                 ),
-                entranceCellCoordinates = new CellCoordinates(0, 0),
-                exitCellCoordinates = new CellCoordinates(1, 1),
+
+                entranceExitBuilder = (TransportationItem transporationItem) => {
+                    List<(CellCoordinates, CellCoordinates)> result = new List<(CellCoordinates, CellCoordinates)>();
+
+                    result.Add(
+                        (
+                            transporationItem.cellCoordinatesList.bottomLeftCoordinates,
+                            transporationItem.cellCoordinatesList.topRightCoordinates
+                        )
+                    );
+
+                    // TODO - both ways if the transportation item is two way
+
+                    return result;
+                },
+
                 pricePerCell = 800,
 
                 resizability = TransportationItem.Resizability.Diagonal
                 // resizability = TransportationItem.Resizability.Flexible
             },
 
-            new TransportationItemDefinition() {
-                key = TransportationItem.Key.Ladder,
+            new TransportationItemDefinition()
+        {
+            key = TransportationItem.Key.Ladder,
                 title = "Ladder",
                 category = "Ladders",
                 cellCoordinatesList = new CellCoordinatesList(
@@ -38,15 +53,28 @@ namespace TowerBuilder.Definitions
                         new CellCoordinates(0, 1)
                     }
                 ),
-                entranceCellCoordinates = new CellCoordinates(0, 0),
-                exitCellCoordinates = new CellCoordinates(0, 1),
+
+                entranceExitBuilder = (TransportationItem transporationItem) => {
+                    List<(CellCoordinates, CellCoordinates)> result = new List<(CellCoordinates, CellCoordinates)>();
+
+                    result.Add(
+                        (
+                            transporationItem.cellCoordinatesList.bottomLeftCoordinates,
+                            transporationItem.cellCoordinatesList.topLeftCoordinates
+                        )
+                    );
+
+                    return result;
+                },
+
                 pricePerCell = 400,
 
                 resizability = TransportationItem.Resizability.Vertical
             },
 
-            new TransportationItemDefinition() {
-                key = TransportationItem.Key.Doorway,
+            new TransportationItemDefinition()
+        {
+            key = TransportationItem.Key.Doorway,
                 title = "Doorway",
                 category = "Doorways",
                 cellCoordinatesList = new CellCoordinatesList(
@@ -55,13 +83,25 @@ namespace TowerBuilder.Definitions
                         new CellCoordinates(1, 0)
                     }
                 ),
-                entranceCellCoordinates = new CellCoordinates(0, 0),
-                exitCellCoordinates = new CellCoordinates(1, 0),
+
+                entranceExitBuilder = (TransportationItem transporationItem) => {
+                    List<(CellCoordinates, CellCoordinates)> result = new List<(CellCoordinates, CellCoordinates)>();
+
+                    result.Add(
+                        (
+                            transporationItem.cellCoordinatesList.bottomLeftCoordinates,
+                            transporationItem.cellCoordinatesList.bottomRightCoordinates
+                        )
+                    );
+
+                    return result;
+                },
+
                 pricePerCell = 200,
 
                 resizability = TransportationItem.Resizability.Inflexible
             }
-        };
+    };
 
         public TransportationItemDefinitionsList() : base() { }
     }

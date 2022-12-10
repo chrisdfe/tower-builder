@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Entities.Rooms;
 using TowerBuilder.DataTypes;
@@ -107,7 +108,7 @@ namespace TowerBuilder.DataTypes.Routes
             }
             else
             {
-                TransportationItemsList transportationItemsList = appState.Entities.TransportationItems.queries.FindTransportationItemsConnectingToRoom(currentRouteAttempt.currentRoom);
+                TransportationItemsList transportationItemsList = appState.Entities.TransportationItems.queries.FindTransportationItemsEnterableFromRoom(currentRouteAttempt.currentRoom);
 
                 transportationItemsList.ForEach(transportationItem =>
                 {
@@ -122,49 +123,51 @@ namespace TowerBuilder.DataTypes.Routes
 
             RouteAttempt routeAttemptBranch = currentRouteAttempt.Clone();
 
-            // Determine which way we're traveling through this transportation item, entrance->exit or exit->entrance
-            Room entranceRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
-            Room exitRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.exitCellCoordinates);
-
-            // TODO - check if transportation item is one way
-            CellCoordinates transportationStartCoordinates;
-            CellCoordinates transportationEndCoordinates;
-            Room nextRoom;
-
-            if (routeAttemptBranch.currentRoom == entranceRoom)
+            // // Determine which way we're traveling through this transportation item, entrance->exit or exit->entrance
+            // Room entranceRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
+            // Room exitRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.exitCellCoordinates);
+            CellCoordinates entranceCoordinates = transportationItem.entranceCellCoordinatesList.items.Find((cellCoordinates) =>
             {
-                nextRoom = exitRoom;
-                transportationStartCoordinates = transportationItem.entranceCellCoordinates;
-                transportationEndCoordinates = transportationItem.exitCellCoordinates;
-            }
-            else
+                Room room = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates);
+                return room == routeAttemptBranch.currentRoom;
+            });
+
+            // No need to pay attentin to  exits that exit into the current room
+            CellCoordinatesList exitCoordinatesList = new CellCoordinatesList(
+                transportationItem.exitCellCoordinatesList.items.FindAll((cellCoordinates) =>
+                {
+                    Room room = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates);
+                    return room != routeAttemptBranch.currentRoom;
+                })
+            );
+
+            foreach (CellCoordinates exitCoordinates in exitCoordinatesList.items)
             {
-                nextRoom = entranceRoom;
-                transportationStartCoordinates = transportationItem.exitCellCoordinates;
-                transportationEndCoordinates = transportationItem.entranceCellCoordinates;
-            }
+                // TODO - check if transportation item is one way
+                Room nextRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(exitCoordinates);
 
-            if (!routeAttemptBranch.visitedRooms.Contains(nextRoom))
-            {
-                // Walk from the current location to the otherRoomEntrance
-                routeAttemptBranch.GoTo(
-                    new RouteSegment.Node(
-                        transportationStartCoordinates,
-                        routeAttemptBranch.currentRoom
-                    ),
-                    RouteSegment.Type.WalkingAcrossRoom
-                );
+                if (!routeAttemptBranch.visitedRooms.Contains(nextRoom))
+                {
+                    // Walk from the current location to the otherRoomEntrance
+                    routeAttemptBranch.GoTo(
+                        new RouteSegment.Node(
+                            entranceCoordinates,
+                            routeAttemptBranch.currentRoom
+                        ),
+                        RouteSegment.Type.WalkingAcrossRoom
+                    );
 
-                // Use transportationItem and end up at the other Node
-                routeAttemptBranch.GoTo(
-                    new RouteSegment.Node(
-                        transportationEndCoordinates,
-                        nextRoom
-                    ),
-                    RouteSegment.Type.UsingTransportationItem
-                );
+                    // Use transportationItem and end up at the other Node
+                    routeAttemptBranch.GoTo(
+                        new RouteSegment.Node(
+                            exitCoordinates,
+                            nextRoom
+                        ),
+                        RouteSegment.Type.UsingTransportationItem
+                    );
 
-                ContinueRouteAttempt(routeAttemptBranch);
+                    ContinueRouteAttempt(routeAttemptBranch);
+                }
             }
         }
 

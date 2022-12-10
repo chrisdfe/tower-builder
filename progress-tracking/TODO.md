@@ -2,8 +2,9 @@
 
 ## Tasks
 
+- TransportationItemDefinition/entranceExitBuilder should probably return 2 lists (1 for entrances and 2 for exits) instead of entrance/exit tuples of single coordinates
+- escalators should be able to be 3 tiles high/wide - right now it's just increments of 2
 - Destroy tool seems to be broken
-- TransportationItem meshes are broken again
 - Rooms aren't validating that they're on top of another room again
 - GameWorldEntity
 - BuildValidators/DestroyValidators?
@@ -218,6 +219,8 @@
 
 # Done
 
+- transportation items should support multiple sets of entrances/exits
+- TransportationItem meshes are broken again
 - Tileable.cs probably has classes in there that need to be broken out
 - auto generate entity buttons
 - Fix room cell tiling

@@ -1,4 +1,5 @@
 using System.Linq;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using UnityEngine;
@@ -27,13 +28,20 @@ namespace TowerBuilder.ApplicationState.Entities.TransportationItems
                 this.state = state;
             }
 
-            public TransportationItemsList FindTransportationItemsConnectingToRoom(Room room) =>
+            public TransportationItemsList FindTransportationItemsEnterableFromRoom(Room room) =>
                 new TransportationItemsList(
                     state.list.items.FindAll(transportationItem =>
                     {
-                        Room entranceCellRoom = appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.entranceCellCoordinates);
-                        Room exitCellRoom = appState.Entities.Rooms.queries.FindRoomAtCell(transportationItem.exitCellCoordinates);
-                        return (entranceCellRoom == room || exitCellRoom == room);
+                        foreach (CellCoordinates entranceCoordinates in transportationItem.entranceCellCoordinatesList.items)
+                        {
+                            Room entranceCellRoom = appState.Entities.Rooms.queries.FindRoomAtCell(entranceCoordinates);
+                            if (entranceCellRoom == room)
+                            {
+                                return true;
+                            }
+                        }
+
+                        return false;
                     }).ToList()
                 );
         }
