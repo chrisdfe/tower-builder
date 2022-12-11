@@ -19,53 +19,11 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
 
         public new class Events : FurnitureEntityStateSlice.Events { }
 
-        public class Queries
-        {
-            AppState appState;
-            State state;
-
-            public Queries(AppState appState, State state)
-            {
-                this.state = state;
-            }
-
-            public FurnitureList FindFurnitureByRoom(Room room) =>
-                new FurnitureList(
-                    state.list.items.FindAll(furniture =>
-                        appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]) == room
-                    )
-                );
-
-            public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates)
-            {
-                return state.list.FindFurnitureAtCell(cellCoordinates);
-            }
-
-            public FurnitureList FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
-            {
-                List<Furniture> furnitureList = new List<Furniture>();
-
-                foreach (CellCoordinatesBlock block in cellCoordinatesBlockList.items)
-                {
-                    foreach (CellCoordinates cellCoordinates in block.items)
-                    {
-                        Furniture furnitureAtCell = FindFurnitureAtCell(cellCoordinates);
-                        if (furnitureAtCell != null)
-                        {
-                            furnitureList.Add(furnitureAtCell);
-                        }
-                    }
-                }
-
-                return new FurnitureList(furnitureList);
-            }
-        }
-
-        public Queries queries;
+        public StateQueries queries;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(appState, this);
+            queries = new StateQueries(appState, this);
         }
 
         public override void Setup()
@@ -138,6 +96,48 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
         {
             FurnitureList furnituresInBlock = queries.FindFurnitureInBlocks(roomBlocks);
             Remove(furnituresInBlock);
+        }
+
+        public class StateQueries
+        {
+            AppState appState;
+            State state;
+
+            public StateQueries(AppState appState, State state)
+            {
+                this.state = state;
+            }
+
+            public FurnitureList FindFurnitureByRoom(Room room) =>
+                new FurnitureList(
+                    state.list.items.FindAll(furniture =>
+                        appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]) == room
+                    )
+                );
+
+            public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates)
+            {
+                return state.list.FindFurnitureAtCell(cellCoordinates);
+            }
+
+            public FurnitureList FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
+            {
+                List<Furniture> furnitureList = new List<Furniture>();
+
+                foreach (CellCoordinatesBlock block in cellCoordinatesBlockList.items)
+                {
+                    foreach (CellCoordinates cellCoordinates in block.items)
+                    {
+                        Furniture furnitureAtCell = FindFurnitureAtCell(cellCoordinates);
+                        if (furnitureAtCell != null)
+                        {
+                            furnitureList.Add(furnitureAtCell);
+                        }
+                    }
+                }
+
+                return new FurnitureList(furnitureList);
+            }
         }
     }
 }

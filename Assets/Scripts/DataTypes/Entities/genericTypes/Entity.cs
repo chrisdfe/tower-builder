@@ -1,5 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.Residents;
+using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities.TransportationItems;
+using TowerBuilder.Definitions;
 using TowerBuilder.Utils;
 using UnityEngine;
 
@@ -13,6 +18,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public enum Type
         {
+            None,
             Room,
             Resident,
             Furniture,
@@ -197,6 +203,38 @@ namespace TowerBuilder.DataTypes.Entities
 
         public CellCoordinatesBlock FindBlockByCellCoordinates(CellCoordinates cellCoordinates) =>
             blocksList.items.Find(cellCoordinatesBlock => cellCoordinatesBlock.Contains(cellCoordinates));
+
+
+        /*
+            Static API
+        */
+        public static Entity CreateFromDefinition(EntityDefinition definition) =>
+            (definition) switch
+            {
+                RoomDefinition =>
+                    new Entities.Rooms.Room(definition as RoomDefinition),
+                FurnitureDefinition =>
+                    new Entities.Furnitures.Furniture(definition as FurnitureDefinition),
+                ResidentDefinition =>
+                    new Entities.Residents.Resident(definition as ResidentDefinition),
+                TransportationItemDefinition =>
+                    new Entities.TransportationItems.TransportationItem(definition as TransportationItemDefinition),
+                _ => null
+            };
+
+        public static string GetEntityDefinitionLabel(EntityDefinition definition) =>
+            definition switch
+            {
+                RoomDefinition roomDefinition =>
+                    Room.KeyLabelMap.ValueFromKey(roomDefinition.key),
+                FurnitureDefinition furnitureDefinition =>
+                    Furniture.KeyLabelMap.ValueFromKey(furnitureDefinition.key),
+                ResidentDefinition residentDefinition =>
+                    Resident.KeyLabelMap.ValueFromKey(residentDefinition.key),
+                TransportationItemDefinition transportationItemDefinition =>
+                    TransportationItem.KeyLabelMap.ValueFromKey(transportationItemDefinition.key),
+                _ => null
+            };
     }
 
     public class Entity<KeyType> : Entity

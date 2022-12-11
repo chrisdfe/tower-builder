@@ -1,5 +1,10 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.Residents;
+using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities.TransportationItems;
+
 
 namespace TowerBuilder.ApplicationState.Entities
 {
@@ -35,6 +40,8 @@ namespace TowerBuilder.ApplicationState.Entities
 
         Dictionary<Entity.Type, StateSlice> EntityKeyTypeMap;
 
+        public StateQueries Queries;
+
         public State(AppState appState, Input input) : base(appState)
         {
             Rooms = new Rooms.State(appState, input.Rooms);
@@ -50,6 +57,8 @@ namespace TowerBuilder.ApplicationState.Entities
                 { Entity.Type.Resident, Residents },
                 { Entity.Type.TransportationItem, TransportationItems },
             };
+
+            Queries = new StateQueries(this);
         }
 
         public override void Setup()
@@ -60,6 +69,73 @@ namespace TowerBuilder.ApplicationState.Entities
             TransportationItems.Setup();
             Vehicles.Setup();
             Freight.Setup();
+        }
+
+        public void Add(Entity entity)
+        {
+            switch (entity)
+            {
+                case Room room:
+                    Rooms.Add(room);
+                    break;
+                case Furniture furniture:
+                    Furnitures.Add(furniture);
+                    break;
+                case Resident resident:
+                    Residents.Add(resident);
+                    break;
+                case TransportationItem transportationItems:
+                    TransportationItems.Add(transportationItems);
+                    break;
+            }
+        }
+
+        public void Build(Entity entity)
+        {
+            switch (entity)
+            {
+                case Room room:
+                    Rooms.Build(room);
+                    break;
+                case Furniture furniture:
+                    Furnitures.Build(furniture);
+                    break;
+                case Resident resident:
+                    Residents.Build(resident);
+                    break;
+                case TransportationItem transportationItems:
+                    TransportationItems.Build(transportationItems);
+                    break;
+            }
+        }
+
+        public void Remove(Entity entity)
+        {
+            switch (entity)
+            {
+                case Room room:
+                    Rooms.Remove(room);
+                    break;
+                case Furniture furniture:
+                    Furnitures.Remove(furniture);
+                    break;
+                case Resident resident:
+                    Residents.Remove(resident);
+                    break;
+                case TransportationItem transportationItems:
+                    TransportationItems.Remove(transportationItems);
+                    break;
+            }
+        }
+
+        public class StateQueries
+        {
+            State state;
+
+            public StateQueries(State state)
+            {
+                this.state = state;
+            }
         }
     }
 }

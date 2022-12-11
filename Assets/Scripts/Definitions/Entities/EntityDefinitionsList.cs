@@ -47,6 +47,9 @@ namespace TowerBuilder.Definitions
             public List<DefinitionType> FindByCategory(string category) =>
                 Definitions.FindAll(definition => definition.category == category);
 
+            public List<CategoryDefinitionType> FindByCategory<CategoryDefinitionType>(string category) where CategoryDefinitionType : EntityDefinition =>
+                FindByCategory(category).Select(definition => definition as CategoryDefinitionType).ToList();
+
             public DefinitionType FindFirstInCategory(string category) =>
                 Definitions.Find(definition => definition.category == category);
 

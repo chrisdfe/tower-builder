@@ -131,7 +131,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             foreach (UISelectButton button in definitionButtons)
             {
-                button.SetSelected(button.value == Registry.appState.Tools.buildToolState.selectedEntityDefinition?.title);
+                button.SetSelected(button.value == Entity.GetEntityDefinitionLabel(Registry.appState.Tools.buildToolState.selectedEntityDefinition));
             }
         }
 
@@ -150,62 +150,24 @@ namespace TowerBuilder.GameWorld.UI
             List<UISelectButton> result = new List<UISelectButton>();
             Entity.Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
 
-            List<string> allEntityCategories = selectedEntityType switch
-            {
-                Entity.Type.Room => Registry.Definitions.Entities.Rooms.Queries.FindAllCategories(),
-                Entity.Type.Furniture => Registry.Definitions.Entities.Furnitures.Queries.FindAllCategories(),
-                Entity.Type.Resident => Registry.Definitions.Entities.Residents.Queries.FindAllCategories(),
-                Entity.Type.TransportationItem => Registry.Definitions.Entities.TransportationItems.Queries.FindAllCategories(),
-                _ => null
-            };
+            var allEntityCategories = Registry.Definitions.Entities.Queries.FindAllCategories(selectedEntityType);
 
             return allEntityCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
         }
 
         List<UISelectButton.Input> GenerateDefinitionButtonInputs()
         {
+            Entity.Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
             string currentCategory = Registry.appState.Tools.buildToolState.selectedEntityCategory;
 
-            return Registry.appState.Tools.buildToolState.selectedEntityType switch
-            {
-                Entity.Type.Room =>
-                    Registry.Definitions.Entities.Rooms.Queries.FindByCategory(currentCategory)
-                        .Select((definition) =>
-                            new UISelectButton.Input()
-                            {
-                                label = definition.title,
-                                value = Room.KeyLabelMap.ValueFromKey(definition.key)
-                            }
-                        ).ToList(),
-                Entity.Type.Furniture =>
-                    Registry.Definitions.Entities.Furnitures.Queries.FindByCategory(currentCategory)
-                        .Select((definition) =>
-                            new UISelectButton.Input()
-                            {
-                                label = definition.title,
-                                value = Furniture.KeyLabelMap.ValueFromKey(definition.key)
-                            }
-                        ).ToList(),
-                Entity.Type.Resident =>
-                    Registry.Definitions.Entities.Residents.Queries.FindByCategory(currentCategory)
-                        .Select((definition) =>
-                            new UISelectButton.Input()
-                            {
-                                label = definition.title,
-                                value = Resident.KeyLabelMap.ValueFromKey(definition.key)
-                            }
-                        ).ToList(),
-                Entity.Type.TransportationItem =>
-                    Registry.Definitions.Entities.TransportationItems.Queries.FindByCategory(currentCategory)
-                        .Select((definition) =>
-                            new UISelectButton.Input()
-                            {
-                                label = definition.title,
-                                value = TransportationItem.KeyLabelMap.ValueFromKey(definition.key)
-                            }
-                        ).ToList(),
-                _ => null
-            };
+            return Registry.Definitions.Entities.Queries.FindByCategory(selectedEntityType, currentCategory)
+                .Select((definition) =>
+                    new UISelectButton.Input()
+                    {
+                        label = definition.title,
+                        value = Entity.GetEntityDefinitionLabel(definition)
+                    }
+                ).ToList();
         }
 
         /*
@@ -216,9 +178,9 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Tools.buildToolState.SetSelectedEntityCategory(entityCategory);
         }
 
-        void OnDefinitionButtonClick(string keyLabel)
+        void OnDefinitionButtonClick(string title)
         {
-            Registry.appState.Tools.buildToolState.SetSelectedEntityDefinition(keyLabel);
+            Registry.appState.Tools.buildToolState.SetSelectedEntityDefinition(title);
         }
 
         void OnSelectedEntityCategoryUpdated(string newEntityCategory)
@@ -230,20 +192,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnSelectedEntityDefinitionUpdated(EntityDefinition entityDefinition)
         {
-            Entity.Type entityType = Registry.appState.Tools.buildToolState.selectedEntityType;
-
-            string label = entityDefinition switch
-            {
-                RoomDefinition roomDefinition =>
-                    Room.KeyLabelMap.ValueFromKey(roomDefinition.key),
-                FurnitureDefinition furnitureDefinition =>
-                    Furniture.KeyLabelMap.ValueFromKey(furnitureDefinition.key),
-                ResidentDefinition residentDefinition =>
-                    Resident.KeyLabelMap.ValueFromKey(residentDefinition.key),
-                TransportationItemDefinition transportationItemDefinition =>
-                    TransportationItem.KeyLabelMap.ValueFromKey(transportationItemDefinition.key),
-                _ => null
-            };
+            // Entity.GetEntityDefinitionLabel(entityDefinition)
 
             // ResetDefinitionButtons();
             HighlightSelectedDefinitionButton();

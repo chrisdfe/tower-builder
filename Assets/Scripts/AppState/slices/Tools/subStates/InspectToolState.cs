@@ -40,7 +40,7 @@ namespace TowerBuilder.ApplicationState.Tools
                     return null;
                 }
 
-                return inspectedEntityList.entities[inspectedEntityIndex];
+                return inspectedEntityList.items[inspectedEntityIndex];
             }
         }
 
@@ -129,39 +129,25 @@ namespace TowerBuilder.ApplicationState.Tools
          */
         void OnFurnituresRemoved(FurnitureList furnitureList)
         {
-            bool shouldReset = false;
-
-            foreach (Furniture furniture in furnitureList.items)
-            {
-                if (inspectedEntityList.Contains<Furniture>(furniture))
-                {
-                    shouldReset = true;
-                    inspectedEntityList.Remove(furniture);
-                }
-            }
-
-            if (shouldReset)
-            {
-                // back up to the top
-                inspectedEntityIndex = inspectedEntityList.Count - 1;
-
-                if (events.onCurrentSelectedEntityUpdated != null)
-                {
-                    events.onCurrentSelectedEntityUpdated(inspectedEntity);
-                }
-            }
+            OnEntitiesRemoved<Furniture>(furnitureList);
         }
 
         void OnResidentsRemoved(ResidentsList residentsList)
         {
+            OnEntitiesRemoved<Resident>(residentsList);
+        }
+
+        void OnEntitiesRemoved<EntityType>(ListWrapper<EntityType> entityList)
+            where EntityType : Entity
+        {
             bool shouldReset = false;
 
-            foreach (Resident resident in residentsList.items)
+            foreach (Entity entity in entityList.items)
             {
-                if (inspectedEntityList.Contains<Resident>(resident))
+                if (inspectedEntityList.Contains(entity))
                 {
                     shouldReset = true;
-                    inspectedEntityList.Remove(resident);
+                    inspectedEntityList.Remove(entity);
                 }
             }
 

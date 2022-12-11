@@ -32,12 +32,12 @@ namespace TowerBuilder.ApplicationState.Entities.Rooms
             public RoomBlocksEvent onRoomBlocksUpdated;
         }
 
-        public Queries queries;
+        public StateQueries queries;
 
         public State(AppState appState, Input input) : base(appState)
         {
             list = input.roomList ?? new RoomList();
-            queries = new Queries(this);
+            queries = new StateQueries(this);
         }
 
         /* 
@@ -98,6 +98,54 @@ namespace TowerBuilder.ApplicationState.Entities.Rooms
 
                 events.onRoomBlocksRemoved?.Invoke(room, roomBlockList);
                 events.onRoomBlocksUpdated?.Invoke(room, room.blocksList);
+            }
+        }
+
+        public class StateQueries
+        {
+            State state;
+            public StateQueries(State state)
+            {
+                this.state = state;
+            }
+
+            public Room FindRoomAtCell(CellCoordinates cellCoordinates)
+            {
+                return state.list.FindRoomAtCell(cellCoordinates);
+            }
+
+            public (Room, CellCoordinatesBlock) FindRoomBlockAtCell(CellCoordinates cellCoordinates)
+            {
+                Room room = FindRoomAtCell(cellCoordinates);
+
+                if (room != null)
+                {
+                    CellCoordinatesBlock roomBlock = room.FindBlockByCellCoordinates(cellCoordinates);
+
+                    if (roomBlock != null)
+                    {
+                        return (room, roomBlock);
+                    }
+                }
+
+                return (null, null);
+            }
+
+            public List<Room> FindPerimeterRooms(Room room)
+            {
+                List<CellCoordinates> perimeterRoomCellCoordinates = room.cellCoordinatesList.GetPerimeterCellCoordinates();
+                List<Room> result = new List<Room>();
+
+                foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
+                {
+                    Room perimeterRoom = FindRoomAtCell(coordinates);
+                    if (perimeterRoom != null && perimeterRoom != room)
+                    {
+                        result.Add(perimeterRoom);
+                    }
+                }
+
+                return result;
             }
         }
     }

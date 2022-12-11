@@ -22,28 +22,13 @@ namespace TowerBuilder.ApplicationState.Entities.Residents
             public ResidentEntityStateSlice.Events.ItemEvent onItemPositionUpdated;
         }
 
-        public class Queries
-        {
-            State state;
-
-            public Queries(State state)
-            {
-                this.state = state;
-            }
-
-            public Resident FindResidentAtCell(CellCoordinates cellCoordinates)
-            {
-                return state.list.FindResidentAtCell(cellCoordinates);
-            }
-        }
-
-        public Queries queries { get; private set; }
+        public StateQueries queries { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
         {
             this.list = input.residentsList ?? new ResidentsList();
 
-            queries = new Queries(this);
+            queries = new StateQueries(this);
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
@@ -54,6 +39,21 @@ namespace TowerBuilder.ApplicationState.Entities.Residents
             resident.cellCoordinatesList.PositionAtCoordinates(cellCoordinates);
 
             events.onItemPositionUpdated?.Invoke(resident);
+        }
+
+        public class StateQueries
+        {
+            State state;
+
+            public StateQueries(State state)
+            {
+                this.state = state;
+            }
+
+            public Resident FindResidentAtCell(CellCoordinates cellCoordinates)
+            {
+                return state.list.FindResidentAtCell(cellCoordinates);
+            }
         }
     }
 }

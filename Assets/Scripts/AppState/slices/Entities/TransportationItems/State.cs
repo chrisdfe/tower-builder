@@ -17,16 +17,39 @@ namespace TowerBuilder.ApplicationState.Entities.TransportationItems
 
         public new class Events : TransportationItemsEntityStateSlice.Events { }
 
-        public class Queries
+        public StateQueries queries { get; private set; }
+
+        public State(AppState appState, Input input) : base(appState)
+        {
+            list = input.transportationItemsList ?? new TransportationItemsList();
+
+            queries = new StateQueries(appState, this);
+        }
+
+        public State(AppState appState) : this(appState, new Input()) { }
+
+        public override void Add(TransportationItem entity)
+        {
+            base.Add(entity);
+        }
+
+        public class StateQueries
         {
             AppState appState;
             State state;
 
-            public Queries(AppState appState, State state)
+            public StateQueries(AppState appState, State state)
             {
                 this.appState = appState;
                 this.state = state;
             }
+
+            public TransportationItemsList FindAtCell(CellCoordinates cellCoordinates) =>
+                new TransportationItemsList(
+                    state.list.items.FindAll(transportationItem =>
+                        transportationItem.cellCoordinatesList.Contains(cellCoordinates)
+                    ).ToList()
+                );
 
             public TransportationItemsList FindTransportationItemsEnterableFromRoom(Room room) =>
                 new TransportationItemsList(
@@ -44,22 +67,6 @@ namespace TowerBuilder.ApplicationState.Entities.TransportationItems
                         return false;
                     }).ToList()
                 );
-        }
-
-        public Queries queries { get; private set; }
-
-        public State(AppState appState, Input input) : base(appState)
-        {
-            list = input.transportationItemsList ?? new TransportationItemsList();
-
-            queries = new Queries(appState, this);
-        }
-
-        public State(AppState appState) : this(appState, new Input()) { }
-
-        public override void Add(TransportationItem entity)
-        {
-            base.Add(entity);
         }
     }
 }

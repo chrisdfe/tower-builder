@@ -6,6 +6,7 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
 
@@ -185,21 +186,31 @@ namespace TowerBuilder.ApplicationState.UI
             {
                 if (currentSelectedRoom != null)
                 {
-                    entityList.Add<Room>(currentSelectedRoom);
+                    entityList.Add(currentSelectedRoom);
                 }
 
                 Furniture furnitureAtCell = appState.Entities.Furnitures.queries.FindFurnitureAtCell(currentSelectedCell);
 
                 if (furnitureAtCell != null)
                 {
-                    entityList.Add<Furniture>(furnitureAtCell);
+                    entityList.Add(furnitureAtCell);
                 }
 
                 Resident residentAtCell = appState.Entities.Residents.queries.FindResidentAtCell(currentSelectedCell);
 
                 if (residentAtCell != null)
                 {
-                    entityList.Add<Resident>(residentAtCell);
+                    entityList.Add(residentAtCell);
+                }
+
+                TransportationItemsList transportationItemsAtCell = appState.Entities.TransportationItems.queries.FindAtCell(currentSelectedCell);
+
+                if (transportationItemsAtCell.Count > 0)
+                {
+                    foreach (TransportationItem item in transportationItemsAtCell.items)
+                    {
+                        entityList.Add(item);
+                    }
                 }
             }
 

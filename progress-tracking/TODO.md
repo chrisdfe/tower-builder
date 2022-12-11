@@ -193,6 +193,10 @@
 
 ## Ideas
 
+- ability to skew certain types of rooms?
+- battle formation of vehicles - side-by-side, single file, etc
+- with multiple vehicles all vehicles need to be piloted at the same time to go/stop. when one of them stops they are all signalled to stop
+- Electrical plugs? for furniture to plug into?
 - Residents can join your convoy and walk along side of the vehicle if you don't have enough beds.
   - They sleep outside in tents?
 - Lots of non-player vehicles:

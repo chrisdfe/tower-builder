@@ -8,6 +8,7 @@ using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Residents.Attributes;
 using TowerBuilder.DataTypes.Entities.Residents.Behaviors;
 using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -86,6 +87,9 @@ namespace TowerBuilder.GameWorld.UI
                 case Resident residentEntity:
                     SetInspectedResidentText(residentEntity);
                     break;
+                case TransportationItem transportationItemEntity:
+                    SetInspectedTransportationItemText(transportationItemEntity);
+                    break;
                 default:
                     SetNullInspectedText();
                     break;
@@ -140,6 +144,15 @@ namespace TowerBuilder.GameWorld.UI
                 });
             }
 
+            inspectText.text = text;
+        }
+
+        void SetInspectedTransportationItemText(TransportationItem transportationItem)
+        {
+            if (transportationItem == null) return;
+
+            string text = "TransportationItem\n"
+            + $"   name: {transportationItem}\n";
 
             inspectText.text = text;
         }

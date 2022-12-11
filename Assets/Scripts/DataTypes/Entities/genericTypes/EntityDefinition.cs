@@ -5,6 +5,8 @@ namespace TowerBuilder.DataTypes.Entities
 {
     public class EntityDefinition
     {
+        public static Entity.Type entityType;
+
         public string title = "None";
         public string category = "None";
 
