@@ -248,6 +248,9 @@ namespace TowerBuilder.ApplicationState.Tools
 
         void CreateBlueprintEntity()
         {
+            Type type = typeof(Room);
+            // Room room = Activator.CreateInstance(type);
+
             blueprintEntity = selectedEntityType switch
             {
                 Entity.Type.Room => new Room(selectedEntityDefinition as RoomDefinition),

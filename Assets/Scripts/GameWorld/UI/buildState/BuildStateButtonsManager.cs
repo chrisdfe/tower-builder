@@ -218,9 +218,6 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnDefinitionButtonClick(string keyLabel)
         {
-            Debug.Log("clicked on: ");
-            Debug.Log(keyLabel);
-
             Registry.appState.Tools.buildToolState.SetSelectedEntityDefinition(keyLabel);
         }
 

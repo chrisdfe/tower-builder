@@ -2,28 +2,23 @@
 
 ## Tasks
 
+- BuildToolState/BuildStateButtonsManager are a big mess with all these switch statements now
+- Make cells 1x1.5 or 1x2 as in my sketchbook - floors/ceilings/walls are part of the Inside of box
+- change EntityDefinition.cellCoordinatesList to something else, it's easy to confuse with entity.cellCoordinatesList
 - TransportationItemDefinition/entranceExitBuilder should probably return 2 lists (1 for entrances and 2 for exits) instead of entrance/exit tuples of single coordinates
-- escalators should be able to be 3 tiles high/wide - right now it's just increments of 2
 - Destroy tool seems to be broken
 - Rooms aren't validating that they're on top of another room again
-- GameWorldEntity
+- GameWorldEntity/GameWorldEntityList
 - BuildValidators/DestroyValidators?
 - EntityStateSlice build chould fire onItemsBuilt event as well - currently it's just singular
 - Rename "MeshWrapper" to "EntityMeshWrapper"
 - Maybe entity needs to have a couple more generic parameters, like TemplateType and ValidatorType
-- "Entities state slice"? is that getting too deep into inheritence
 - reorganize/simplify buildtool state to be more dynamic
 - same as with how I made an entities appState slice:
   - Attributes appState slice group
   - Behaviors appState slice group
   - Validators appState slice group
-- Fix transportationitem tiling
-- Rename "templates" to "definitions" & remove a lot of 'constant' fields from entity, like title, category, etc. A reference to its definition is good enough
 - replace ValidateWheelsAreOnCorrectFloor with generic validator
-- abstract room validators up into EntityValidators
-- ssame with room definitions/queries
-- Maybe instead of roomCells room could use the entity cellCoordinatesList
-- Definitions/Queries could probably be pulled out into a "EntityTemplateListQueries" class
 - these "if (entity is Resident) && ((Resident)entity) == resident)" statements should be abstracted to an Equals method on Entity
 - in build mode somewhere in the UI it should give you a list of all the validation rules about the current selected entity
 - entity layers (determines the z-index the entity is rendered at)
@@ -219,6 +214,14 @@
 
 # Done
 
+- abstract room validators up into EntityValidators
+- ssame with room definitions/queries
+- Maybe instead of roomCells room could use the entity cellCoordinatesList
+- Definitions/Queries could probably be pulled out into a "EntityTemplateListQueries" class
+- "Entities state slice"? is that getting too deep into inheritence
+- Fix transportationitem tiling
+- Rename "templates" to "definitions" & remove a lot of 'constant' fields from entity, like title, category, etc. A reference to its definition is good enough
+- escalators should be able to be 3 tiles high/wide - right now it's just increments of 2
 - transportation items should support multiple sets of entrances/exits
 - TransportationItem meshes are broken again
 - Tileable.cs probably has classes in there that need to be broken out

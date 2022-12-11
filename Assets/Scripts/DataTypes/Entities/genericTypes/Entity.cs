@@ -108,9 +108,6 @@ namespace TowerBuilder.DataTypes.Entities
                     );
                 }
 
-                Debug.Log("newCellCoordinatesList");
-                Debug.Log(newCellCoordinatesList.Count);
-
                 this.cellCoordinatesList = newCellCoordinatesList;
                 this.blocksList = newBlocksList;
             }
@@ -130,6 +127,10 @@ namespace TowerBuilder.DataTypes.Entities
             List<CellCoordinates> GetBlockStartingCoordinates()
             {
                 List<CellCoordinates> result = new List<CellCoordinates>();
+                Distance incrementAmount = new Distance(
+                    definition.staticBlockSize ? definition.cellCoordinatesList.width : 1,
+                    definition.staticBlockSize ? definition.cellCoordinatesList.floorSpan : 1
+                );
 
                 switch (definition.resizability)
                 {
@@ -154,9 +155,9 @@ namespace TowerBuilder.DataTypes.Entities
 
                 void CalculateFlexible()
                 {
-                    for (int x = 0; x < selectionBox.cellCoordinatesList.width; x += definition.cellCoordinatesList.width)
+                    for (int x = 0; x < selectionBox.cellCoordinatesList.width; x += incrementAmount.x)
                     {
-                        for (int floor = 0; floor < selectionBox.cellCoordinatesList.floorSpan; floor += definition.cellCoordinatesList.floorSpan)
+                        for (int floor = 0; floor < selectionBox.cellCoordinatesList.floorSpan; floor += incrementAmount.floors)
                         {
                             result.Add(new CellCoordinates(x, floor));
                         }
@@ -165,7 +166,7 @@ namespace TowerBuilder.DataTypes.Entities
 
                 void CalculateHorizontal()
                 {
-                    for (int x = 0; x < selectionBox.cellCoordinatesList.width; x += definition.cellCoordinatesList.width)
+                    for (int x = 0; x < selectionBox.cellCoordinatesList.width; x += incrementAmount.x)
                     {
                         result.Add(new CellCoordinates(x, 0));
                     }
@@ -173,7 +174,7 @@ namespace TowerBuilder.DataTypes.Entities
 
                 void CalculateVertical()
                 {
-                    for (int floor = 0; floor < selectionBox.cellCoordinatesList.floorSpan; floor += definition.cellCoordinatesList.floorSpan)
+                    for (int floor = 0; floor < selectionBox.cellCoordinatesList.floorSpan; floor += incrementAmount.floors)
                     {
                         result.Add(new CellCoordinates(0, floor));
                     }
@@ -187,8 +188,8 @@ namespace TowerBuilder.DataTypes.Entities
                     while (x < selectionBox.cellCoordinatesList.width && floor < selectionBox.cellCoordinatesList.floorSpan)
                     {
                         result.Add(new CellCoordinates(x, floor));
-                        x += definition.cellCoordinatesList.width;
-                        floor += definition.cellCoordinatesList.width;
+                        x += incrementAmount.x;
+                        floor += incrementAmount.floors;
                     }
                 }
             }

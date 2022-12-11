@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities;
 
 namespace TowerBuilder.ApplicationState.Entities
@@ -32,6 +33,8 @@ namespace TowerBuilder.ApplicationState.Entities
         public Vehicles.State Vehicles { get; }
         public Freight.State Freight { get; }
 
+        Dictionary<Entity.Type, StateSlice> EntityKeyTypeMap;
+
         public State(AppState appState, Input input) : base(appState)
         {
             Rooms = new Rooms.State(appState, input.Rooms);
@@ -40,6 +43,13 @@ namespace TowerBuilder.ApplicationState.Entities
             TransportationItems = new TransportationItems.State(appState, input.TransportationItems);
             Vehicles = new Vehicles.State(appState, input.Vehicles);
             Freight = new Freight.State(appState, input.Freight);
+
+            EntityKeyTypeMap = new Dictionary<Entity.Type, StateSlice>() {
+                { Entity.Type.Room, Rooms },
+                { Entity.Type.Furniture, Furnitures },
+                { Entity.Type.Resident, Residents },
+                { Entity.Type.TransportationItem, TransportationItems },
+            };
         }
 
         public override void Setup()

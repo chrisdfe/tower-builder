@@ -20,6 +20,7 @@ namespace TowerBuilder.Definitions
                         new CellCoordinates(1, 1)
                     }
                 ),
+                staticBlockSize = false,
 
                 entranceExitBuilder = (TransportationItem transporationItem) => {
                     List<(CellCoordinates, CellCoordinates)> result = new List<(CellCoordinates, CellCoordinates)>();
@@ -66,6 +67,7 @@ namespace TowerBuilder.Definitions
 
                     return result;
                 },
+                staticBlockSize = false,
 
                 pricePerCell = 400,
 

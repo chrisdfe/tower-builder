@@ -12,6 +12,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         // public CellCoordinatesList cellCoordinatesList = new CellCoordinatesList(CellCoordinates.zero);
         public CellCoordinatesList cellCoordinatesList = new CellCoordinatesList();
+        public bool staticBlockSize = true;
 
         public int pricePerCell = 100;
 
