@@ -2,7 +2,7 @@ using TowerBuilder.DataTypes.Entities.Freights;
 
 namespace TowerBuilder.ApplicationState.Entities.Freight.FreightItems
 {
-    using FreightItemListStateSlice = ListStateSlice<FreightItemList, FreightItem, State.Events>;
+    using FreightItemListStateSlice = EntityStateSlice<FreightItemList, FreightItem, State.Events>;
 
     public class State : FreightItemListStateSlice
     {

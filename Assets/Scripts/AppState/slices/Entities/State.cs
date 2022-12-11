@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
@@ -38,8 +39,6 @@ namespace TowerBuilder.ApplicationState.Entities
         public Vehicles.State Vehicles { get; }
         public Freight.State Freight { get; }
 
-        Dictionary<Entity.Type, StateSlice> EntityKeyTypeMap;
-
         public StateQueries Queries;
 
         public State(AppState appState, Input input) : base(appState)
@@ -50,13 +49,6 @@ namespace TowerBuilder.ApplicationState.Entities
             TransportationItems = new TransportationItems.State(appState, input.TransportationItems);
             Vehicles = new Vehicles.State(appState, input.Vehicles);
             Freight = new Freight.State(appState, input.Freight);
-
-            EntityKeyTypeMap = new Dictionary<Entity.Type, StateSlice>() {
-                { Entity.Type.Room, Rooms },
-                { Entity.Type.Furniture, Furnitures },
-                { Entity.Type.Resident, Residents },
-                { Entity.Type.TransportationItem, TransportationItems },
-            };
 
             Queries = new StateQueries(this);
         }
@@ -84,8 +76,11 @@ namespace TowerBuilder.ApplicationState.Entities
                 case Resident resident:
                     Residents.Add(resident);
                     break;
-                case TransportationItem transportationItems:
-                    TransportationItems.Add(transportationItems);
+                case TransportationItem transportationItem:
+                    TransportationItems.Add(transportationItem);
+                    break;
+                case FreightItem freightItem:
+                    Freight.FreightItems.Add(freightItem);
                     break;
             }
         }
@@ -106,6 +101,9 @@ namespace TowerBuilder.ApplicationState.Entities
                 case TransportationItem transportationItems:
                     TransportationItems.Build(transportationItems);
                     break;
+                case FreightItem freightItem:
+                    Freight.FreightItems.Build(freightItem);
+                    break;
             }
         }
 
@@ -124,6 +122,9 @@ namespace TowerBuilder.ApplicationState.Entities
                     break;
                 case TransportationItem transportationItems:
                     TransportationItems.Remove(transportationItems);
+                    break;
+                case FreightItem freightItem:
+                    Freight.FreightItems.Remove(freightItem);
                     break;
             }
         }

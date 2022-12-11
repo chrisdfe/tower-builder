@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
@@ -22,7 +23,8 @@ namespace TowerBuilder.DataTypes.Entities
             Room,
             Resident,
             Furniture,
-            TransportationItem
+            TransportationItem,
+            Freight
         }
 
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
@@ -30,7 +32,8 @@ namespace TowerBuilder.DataTypes.Entities
                 { Type.Room,               "Room" },
                 { Type.Resident,           "Resident" },
                 { Type.Furniture,          "Furniture" },
-                { Type.TransportationItem, "Transportation Item" }
+                { Type.TransportationItem, "Transportation Item" },
+                { Type.Freight,            "Freight" }
             }
         );
 
@@ -219,6 +222,8 @@ namespace TowerBuilder.DataTypes.Entities
                     new Entities.Residents.Resident(definition as ResidentDefinition),
                 TransportationItemDefinition =>
                     new Entities.TransportationItems.TransportationItem(definition as TransportationItemDefinition),
+                FreightDefinition =>
+                    new Entities.Freights.FreightItem(definition as FreightDefinition),
                 _ => null
             };
 
@@ -233,6 +238,8 @@ namespace TowerBuilder.DataTypes.Entities
                     Resident.KeyLabelMap.ValueFromKey(residentDefinition.key),
                 TransportationItemDefinition transportationItemDefinition =>
                     TransportationItem.KeyLabelMap.ValueFromKey(transportationItemDefinition.key),
+                FreightDefinition freightDefinition =>
+                    FreightItem.KeyLabelMap.ValueFromKey(freightDefinition.key),
                 _ => null
             };
     }

@@ -13,6 +13,15 @@ namespace TowerBuilder.DataTypes.Entities.Freights
             Large
         }
 
+        public static EnumStringMap<Key> KeyLabelMap = new EnumStringMap<Key>(
+            new Dictionary<Key, string>() {
+                { Key.None,   "None" },
+                { Key.Small,  "Small" },
+                { Key.Medium, "Medium" },
+                { Key.Large,  "Large" },
+            }
+        );
+
         public FreightItem(FreightDefinition entityDefinition) : base(entityDefinition) { }
     }
 }
