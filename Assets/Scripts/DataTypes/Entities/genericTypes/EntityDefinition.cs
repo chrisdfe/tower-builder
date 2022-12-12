@@ -17,6 +17,8 @@ namespace TowerBuilder.DataTypes.Entities
 
         public int pricePerCell = 100;
 
+        public int[] zLayers = new[] { 0 };
+
         public delegate EntityValidator ValidatorFactory(Entity entity);
         public virtual ValidatorFactory validatorFactory => (Entity entity) => new EntityValidator(entity);
     }

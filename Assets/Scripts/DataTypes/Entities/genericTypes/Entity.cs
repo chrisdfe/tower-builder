@@ -47,7 +47,11 @@ namespace TowerBuilder.DataTypes.Entities
             Flexible,
         }
 
-        public EnumMap<Type, int> EntityLayerMap = new EnumMap<Type, int>(
+        // TODO - this might make more sense to live in Definitinos instead
+        //        i.e EntityDefinition has a default, overridden for each EntityDefinition variant type (e.g furnitureDefinition)
+        //            and each instance of that variant type can override it further (e.g ladder could be inside, but by default
+        //            transportation items are at the front)
+        public EnumMap<Type, int> DefaultEntityTypeZLayerMap = new EnumMap<Type, int>(
             new Dictionary<Type, int>()
             {
                 { Type.Room, 0 },
@@ -57,6 +61,8 @@ namespace TowerBuilder.DataTypes.Entities
                 { Type.TransportationItem, 3 },
             }
         );
+
+        public int[] zLayers = new int[] { 0 };
 
         public int price => definition.pricePerCell * cellCoordinatesList.Count;
 
