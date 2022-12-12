@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes.Entities.Freights;
@@ -46,12 +47,23 @@ namespace TowerBuilder.DataTypes.Entities
             Flexible,
         }
 
+        public EnumMap<Type, int> EntityLayerMap = new EnumMap<Type, int>(
+            new Dictionary<Type, int>()
+            {
+                { Type.Room, 0 },
+                { Type.Resident, 1 },
+                { Type.Furniture, 2 },
+                { Type.Freight, 2 },
+                { Type.TransportationItem, 3 },
+            }
+        );
+
         public int price => definition.pricePerCell * cellCoordinatesList.Count;
 
         public bool isInBlueprintMode { get; set; } = false;
 
-        public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>() { };
-        public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>() { };
+        public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
+        public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 
         // TODO - remove the set; accessors too
         public CellCoordinatesList cellCoordinatesList { get; set; } = new CellCoordinatesList();
@@ -95,42 +107,29 @@ namespace TowerBuilder.DataTypes.Entities
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {
             CreateBlockCells();
-            // PositionAtCoordinates(GetBottomLeftCoordinates());
-            PositionAtCoordinates(selectionBox.cellCoordinatesList.bottomLeftCoordinates.Clone());
-            SetTileableMap();
+            CalculateTileableMap();
 
             void CreateBlockCells()
             {
-                List<CellCoordinates> blockStartingCoordinates = GetBlockStartingCoordinates();
+                CellCoordinatesList blockStartingCoordinates = new CellCoordinatesList(GetBlockStartingCoordinates());
+
+                blockStartingCoordinates.PositionAtCoordinates(selectionBox.cellCoordinatesList.bottomLeftCoordinates.Clone());
+
                 CellCoordinatesList newCellCoordinatesList = new CellCoordinatesList();
                 CellCoordinatesBlockList newBlocksList = new CellCoordinatesBlockList();
 
-                foreach (CellCoordinates startingCoordinates in blockStartingCoordinates)
+                foreach (CellCoordinates startingCoordinates in blockStartingCoordinates.items)
                 {
-                    CellCoordinatesList blockCells = definition.cellCoordinatesList.Clone();
+                    CellCoordinatesBlock blockCells = new CellCoordinatesBlock(definition.cellCoordinatesList.Clone());
                     blockCells.PositionAtCoordinates(startingCoordinates);
 
                     newCellCoordinatesList.Add(blockCells);
 
-                    newBlocksList.Add(
-                        blockCells.items.Select(cellCoordinates => new CellCoordinatesBlock(cellCoordinates)).ToList()
-                    );
+                    newBlocksList.Add(blockCells);
                 }
 
                 this.cellCoordinatesList = newCellCoordinatesList;
                 this.blocksList = newBlocksList;
-            }
-
-            void SetTileableMap()
-            {
-                cellCoordinatesList.ForEach((cellCoordinates) =>
-                {
-                    CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);
-                    cellNeighborsMap.Add(cellCoordinates, cellNeighbors);
-
-                    Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
-                    cellPositionMap.Add(cellCoordinates, cellPosition);
-                });
             }
 
             List<CellCoordinates> GetBlockStartingCoordinates()
@@ -202,6 +201,21 @@ namespace TowerBuilder.DataTypes.Entities
                     }
                 }
             }
+        }
+
+        public void CalculateTileableMap()
+        {
+            cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
+            cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
+
+            cellCoordinatesList.ForEach((cellCoordinates) =>
+            {
+                CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);
+                cellNeighborsMap.Add(cellCoordinates, cellNeighbors);
+
+                Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
+                cellPositionMap.Add(cellCoordinates, cellPosition);
+            });
         }
 
         public CellCoordinatesBlock FindBlockByCellCoordinates(CellCoordinates cellCoordinates) =>

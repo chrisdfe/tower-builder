@@ -67,10 +67,7 @@ namespace TowerBuilder.ApplicationState.Tools
         {
             CalculateDeleteCells();
 
-            if (events.onDestroySelectionUpdated != null)
-            {
-                events.onDestroySelectionUpdated();
-            }
+            events.onDestroySelectionUpdated?.Invoke();
         }
 
         public override void OnSelectionStart(SelectionBox selectionBox)
@@ -100,6 +97,13 @@ namespace TowerBuilder.ApplicationState.Tools
             if (!destroyIsActive) return;
 
             destroyIsActive = false;
+
+            Debug.Log("roomsToDeleteBlocksFrom");
+            Debug.Log("roomsToDeleteBlocksFrom.Count");
+            Debug.Log(roomsToDeleteBlocksFrom.Count);
+            Debug.Log("blocksToDelete.Count");
+            Debug.Log(blocksToDelete.Count);
+
             // Restrict destroy to whichever room destroy started on
             if (roomsToDeleteBlocksFrom.Count > 0 && blocksToDelete.Count > 0)
             {
@@ -116,10 +120,7 @@ namespace TowerBuilder.ApplicationState.Tools
             roomsToDeleteBlocksFrom = new RoomList();
             blocksToDelete = new CellCoordinatesBlockList();
 
-            if (events.onDestroyEnd != null)
-            {
-                events.onDestroyEnd();
-            }
+            events.onDestroyEnd?.Invoke();
         }
 
         void CalculateDeleteCells()
@@ -129,9 +130,18 @@ namespace TowerBuilder.ApplicationState.Tools
             roomsToDeleteBlocksFrom = new RoomList();
             blocksToDelete = new CellCoordinatesBlockList();
 
+            // Debug.Log("selectionBox.cellCoordinatesList.Count");
+            // Debug.Log(selectionBox.cellCoordinatesList.Count);
+
             foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
             {
+                // Debug.Log("cellCoordinates");
+                // Debug.Log(cellCoordinates);
                 var (roomToDelete, roomBlockToDelete) = Registry.appState.Entities.Rooms.queries.FindRoomBlockAtCell(cellCoordinates);
+
+                // Debug.Log("(roomToDelete, roomBlockToDelete)");
+                // Debug.Log(roomToDelete);
+                // Debug.Log(roomBlockToDelete);
 
                 if (roomToDelete != null && roomBlockToDelete != null)
                 {

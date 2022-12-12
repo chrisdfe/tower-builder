@@ -115,8 +115,11 @@ namespace TowerBuilder.GameWorld.Rooms
         void OnRoomBlocksUpdated(Room room, CellCoordinatesBlockList blocks)
         {
             GameWorldRoom gameWorldRoom = FindGameWorldRoomByRoom(room);
-            if (gameWorldRoom == null) return;
-            gameWorldRoom.Reset();
+
+            if (gameWorldRoom != null)
+            {
+                gameWorldRoom.Reset();
+            }
         }
 
         void OnCurrentSelectedRoomUpdated(Room selectedRoom)

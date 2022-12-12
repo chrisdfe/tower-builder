@@ -15,7 +15,7 @@ namespace TowerBuilder.DataTypes
         public CellCoordinatesBlockList(CellCoordinatesBlockList cellCoordinatesBlockList) : base(cellCoordinatesBlockList) { }
 
         public CellCoordinatesList Flatten() =>
-            items.Aggregate(new CellCoordinatesList(), (acc, cellCoordinatesBlock) =>
+        items.Aggregate(new CellCoordinatesList(), (acc, cellCoordinatesBlock) =>
             {
                 acc.Add(cellCoordinatesBlock.items);
                 return acc;

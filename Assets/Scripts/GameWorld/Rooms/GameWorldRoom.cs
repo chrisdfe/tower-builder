@@ -79,7 +79,6 @@ namespace TowerBuilder.GameWorld.Rooms
 
                 gameWorldRoomCell.room = room;
                 gameWorldRoomCell.cellCoordinates = cellCoordinates;
-                // gameWorldRoomCell.cellNeighbors = room.cellNeighborsMap[cellCoordinates];
                 gameWorldRoomCell.cellCoordinatesList = room.cellCoordinatesList;
                 gameWorldRoomCell.cellPosition = room.cellPositionMap[cellCoordinates];
                 gameWorldRoomCell.gameWorldRoom = this;

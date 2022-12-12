@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
@@ -37,7 +38,7 @@ namespace TowerBuilder.DataTypes
 
         public void Add(List<ItemType> items)
         {
-            items = items.Concat(items).ToList();
+            this.items = this.items.Concat(items).ToList();
         }
 
         public void Add(ListWrapper<ItemType> listWrapper)

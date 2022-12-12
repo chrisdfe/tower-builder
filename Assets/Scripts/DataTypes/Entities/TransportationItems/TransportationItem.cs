@@ -51,11 +51,6 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
             entranceCellCoordinatesList = new CellCoordinatesList();
             exitCellCoordinatesList = new CellCoordinatesList();
 
-            Debug.Log("cellCoordinatesList");
-            Debug.Log(cellCoordinatesList.Count);
-            Debug.Log(cellCoordinatesList.topRightCoordinates);
-            Debug.Log("cellCoordinatesList.topRightCoordinates");
-
             entranceExitTuples = (definition as TransportationItemDefinition).entranceExitBuilder(this);
 
             foreach ((CellCoordinates, CellCoordinates) entranceExitTuple in entranceExitTuples)
@@ -64,13 +59,6 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
                 entranceCellCoordinatesList.Add(entranceCellCoordinates);
                 exitCellCoordinatesList.Add(exitCellCoordinates);
             }
-
-            Debug.Log("entranceCellCoordinatesList");
-            Debug.Log(entranceCellCoordinatesList.Count);
-            Debug.Log(entranceCellCoordinatesList?.items[0]);
-            Debug.Log("exitCellCoordinatesList");
-            Debug.Log(exitCellCoordinatesList.Count);
-            Debug.Log(exitCellCoordinatesList?.items[0]);
         }
 
         public override void PositionAtCoordinates(CellCoordinates cellCoordinates)

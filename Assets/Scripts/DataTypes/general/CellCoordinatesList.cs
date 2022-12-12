@@ -138,9 +138,12 @@ namespace TowerBuilder.DataTypes
         /*
             Static API
         */
+
+        // TODO - this should be in cellcoordates
         public static CellCoordinates Add(CellCoordinates a, CellCoordinates b) =>
             new CellCoordinates(a.x + b.x, a.floor + b.floor);
 
+        // TODO - this should be in cellcoordates
         public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b) =>
             new CellCoordinates(a.x - b.x, a.floor - b.floor);
 

@@ -2,11 +2,9 @@
 
 ## Tasks
 
-- BuildToolState/BuildStateButtonsManager are a big mess with all these switch statements now
 - Make cells 1x1.5 or 1x2 as in my sketchbook - floors/ceilings/walls are part of the Inside of box
 - change EntityDefinition.cellCoordinatesList to something else, it's easy to confuse with entity.cellCoordinatesList
 - TransportationItemDefinition/entranceExitBuilder should probably return 2 lists (1 for entrances and 2 for exits) instead of entrance/exit tuples of single coordinates
-- Destroy tool seems to be broken
 - Rooms aren't validating that they're on top of another room again
 - GameWorldEntity/GameWorldEntityList
 - BuildValidators/DestroyValidators?
@@ -218,6 +216,8 @@
 
 # Done
 
+- Destroy tool seems to be broken
+- BuildToolState/BuildStateButtonsManager are a big mess with all these switch statements now
 - abstract room validators up into EntityValidators
 - ssame with room definitions/queries
 - Maybe instead of roomCells room could use the entity cellCoordinatesList

@@ -94,6 +94,7 @@ namespace TowerBuilder.ApplicationState.Entities.Rooms
             else
             {
                 // room.Reset();
+                room.CalculateTileableMap();
                 // TODO - recalculate here
 
                 events.onRoomBlocksRemoved?.Invoke(room, roomBlockList);
@@ -109,10 +110,8 @@ namespace TowerBuilder.ApplicationState.Entities.Rooms
                 this.state = state;
             }
 
-            public Room FindRoomAtCell(CellCoordinates cellCoordinates)
-            {
-                return state.list.FindRoomAtCell(cellCoordinates);
-            }
+            public Room FindRoomAtCell(CellCoordinates cellCoordinates) =>
+                state.list.FindRoomAtCell(cellCoordinates);
 
             public (Room, CellCoordinatesBlock) FindRoomBlockAtCell(CellCoordinates cellCoordinates)
             {
