@@ -81,7 +81,7 @@ namespace TowerBuilder.DataTypes.Entities
             this.definition = definition;
             this.id = UIDGenerator.Generate(idKey);
 
-            this.cellCoordinatesList = definition.cellCoordinatesList.Clone();
+            this.cellCoordinatesList = definition.blockCellsTemplate.Clone();
 
             this.validator = definition.validatorFactory(this);
         }
@@ -90,7 +90,6 @@ namespace TowerBuilder.DataTypes.Entities
 
         public virtual void OnBuild()
         {
-            Debug.Log("entity on build");
             isInBlueprintMode = false;
         }
 
@@ -120,7 +119,7 @@ namespace TowerBuilder.DataTypes.Entities
 
                 foreach (CellCoordinates startingCoordinates in blockStartingCoordinates.items)
                 {
-                    CellCoordinatesBlock blockCells = new CellCoordinatesBlock(definition.cellCoordinatesList.Clone());
+                    CellCoordinatesBlock blockCells = new CellCoordinatesBlock(definition.blockCellsTemplate.Clone());
                     blockCells.PositionAtCoordinates(startingCoordinates);
 
                     newCellCoordinatesList.Add(blockCells);
@@ -136,8 +135,8 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 List<CellCoordinates> result = new List<CellCoordinates>();
                 Distance incrementAmount = new Distance(
-                    definition.staticBlockSize ? definition.cellCoordinatesList.width : 1,
-                    definition.staticBlockSize ? definition.cellCoordinatesList.floorSpan : 1
+                    definition.staticBlockSize ? definition.blockCellsTemplate.width : 1,
+                    definition.staticBlockSize ? definition.blockCellsTemplate.floorSpan : 1
                 );
 
                 switch (definition.resizability)

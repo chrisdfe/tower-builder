@@ -14,7 +14,8 @@ namespace TowerBuilder.Definitions
                 key = TransportationItem.Key.Escalator,
                 title = "Escalator",
                 category = "Escalators",
-                cellCoordinatesList = new CellCoordinatesList(
+
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                         new CellCoordinates(1, 1)
@@ -48,7 +49,8 @@ namespace TowerBuilder.Definitions
             key = TransportationItem.Key.Ladder,
                 title = "Ladder",
                 category = "Ladders",
-                cellCoordinatesList = new CellCoordinatesList(
+
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                         new CellCoordinates(0, 1)
@@ -79,7 +81,8 @@ namespace TowerBuilder.Definitions
             key = TransportationItem.Key.Doorway,
                 title = "Doorway",
                 category = "Doorways",
-                cellCoordinatesList = new CellCoordinatesList(
+
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                         new CellCoordinates(1, 0)

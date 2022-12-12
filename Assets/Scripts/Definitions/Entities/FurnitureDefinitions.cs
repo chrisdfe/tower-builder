@@ -18,7 +18,7 @@ namespace TowerBuilder.Definitions
                 title = "Pilot Seat",
                 category = "PilotSeats",
 
-                cellCoordinatesList = new CellCoordinatesList(
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }
@@ -32,7 +32,7 @@ namespace TowerBuilder.Definitions
                 title = "Engine",
                 category = "Engines",
 
-                cellCoordinatesList = new CellCoordinatesList(
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }
@@ -47,7 +47,7 @@ namespace TowerBuilder.Definitions
                 category = "Beds",
                 homeSlotCount = 1,
 
-                cellCoordinatesList = new CellCoordinatesList(
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }
@@ -60,11 +60,13 @@ namespace TowerBuilder.Definitions
                 key = Furniture.Key.MoneyMachine,
                 title = "Money Machine",
                 category = "Industry",
-                cellCoordinatesList = new CellCoordinatesList(
+
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }
                 ),
+
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new MoneyMachineBehavior(appState, furniture),
             },
         };

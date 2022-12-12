@@ -2,8 +2,8 @@
 
 ## Tasks
 
+- Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
 - Make cells 1x1.5 or 1x2 as in my sketchbook - floors/ceilings/walls are part of the Inside of box
-- change EntityDefinition.cellCoordinatesList to something else, it's easy to confuse with entity.cellCoordinatesList
 - TransportationItemDefinition/entranceExitBuilder should probably return 2 lists (1 for entrances and 2 for exits) instead of entrance/exit tuples of single coordinates
 - Rooms aren't validating that they're on top of another room again
 - GameWorldEntity/GameWorldEntityList
@@ -216,6 +216,7 @@
 
 # Done
 
+- change EntityDefinition.cellCoordinatesList to something else, it's easy to confuse with entity.cellCoordinatesList
 - Destroy tool seems to be broken
 - BuildToolState/BuildStateButtonsManager are a big mess with all these switch statements now
 - abstract room validators up into EntityValidators

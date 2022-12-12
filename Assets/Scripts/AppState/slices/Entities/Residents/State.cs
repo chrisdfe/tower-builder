@@ -35,7 +35,7 @@ namespace TowerBuilder.ApplicationState.Entities.Residents
 
         public void SetResidentPosition(Resident resident, CellCoordinates cellCoordinates)
         {
-            resident.cellCoordinatesList = resident.definition.cellCoordinatesList.Clone();
+            resident.cellCoordinatesList = resident.definition.blockCellsTemplate.Clone();
             resident.cellCoordinatesList.PositionAtCoordinates(cellCoordinates);
 
             events.onItemPositionUpdated?.Invoke(resident);

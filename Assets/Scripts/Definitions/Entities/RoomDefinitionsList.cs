@@ -17,7 +17,7 @@ namespace TowerBuilder.Definitions
                 key = Room.Key.Default,
                 category = "Empty",
 
-                cellCoordinatesList = new CellCoordinatesList(
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }
@@ -33,7 +33,7 @@ namespace TowerBuilder.Definitions
                 key = Room.Key.OtherDefault,
                 category = "Empty",
 
-                cellCoordinatesList = CellCoordinatesList.CreateRectangle(2, 2),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(2, 2),
 
                 resizability = Room.Resizability.Flexible,
                 pricePerCell = 1000,
@@ -45,7 +45,7 @@ namespace TowerBuilder.Definitions
                 key = Room.Key.Wheels,
                 category = "Wheels",
 
-                cellCoordinatesList = new CellCoordinatesList(
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }

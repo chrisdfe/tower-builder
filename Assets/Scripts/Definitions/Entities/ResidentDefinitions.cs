@@ -18,7 +18,7 @@ namespace TowerBuilder.Definitions
                 title = "Default",
                 category = "Default",
 
-                cellCoordinatesList = new CellCoordinatesList(
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }
@@ -32,7 +32,7 @@ namespace TowerBuilder.Definitions
                 title = "OtherDefault",
                 category = "OtherDefault",
 
-                cellCoordinatesList = new CellCoordinatesList(
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }

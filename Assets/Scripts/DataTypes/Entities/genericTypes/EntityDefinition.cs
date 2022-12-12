@@ -12,8 +12,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public Entity.Resizability resizability = Entity.Resizability.Flexible;
 
-        // public CellCoordinatesList cellCoordinatesList = new CellCoordinatesList(CellCoordinates.zero);
-        public CellCoordinatesList cellCoordinatesList = new CellCoordinatesList();
+        public CellCoordinatesList blockCellsTemplate = new CellCoordinatesList();
         public bool staticBlockSize = true;
 
         public int pricePerCell = 100;

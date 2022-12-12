@@ -13,7 +13,7 @@ namespace TowerBuilder.Definitions
                 title = "Small",
                 category = "Basic",
 
-                cellCoordinatesList = new CellCoordinatesList(
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }
@@ -25,7 +25,7 @@ namespace TowerBuilder.Definitions
                 title = "Medium",
                 category = "Basic",
 
-                cellCoordinatesList = new CellCoordinatesList(
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }
@@ -37,7 +37,7 @@ namespace TowerBuilder.Definitions
                 title = "Large",
                 category = "Basic",
 
-                cellCoordinatesList = new CellCoordinatesList(
+                blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
                     }
