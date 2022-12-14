@@ -9,12 +9,13 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.TransportationItems
 {
-    public class GameWorldTransportationItem : MonoBehaviour, IGameWorldEntity
+    [RequireComponent(typeof(EntityMeshWrapper))]
+    public class GameWorldTransportationItem : MonoBehaviour
     {
         [HideInInspector]
         public TransportationItem transportationItem;
 
-        public EntityMeshWrapper entityMeshWrapper { get; private set; }
+        EntityMeshWrapper entityMeshWrapper;
 
         /*
             Lifecycle Methods
@@ -61,7 +62,9 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
 
             GameObject prefabMesh = transportationManager.meshAssets.FindByKey(transportationItem.key);
 
-            entityMeshWrapper = new EntityMeshWrapper(transform, prefabMesh, transportationItem.cellCoordinatesList);
+            entityMeshWrapper = GetComponent<EntityMeshWrapper>();
+            entityMeshWrapper.prefabMesh = prefabMesh;
+            entityMeshWrapper.cellCoordinatesList = transportationItem.cellCoordinatesList;
             entityMeshWrapper.Setup();
         }
 

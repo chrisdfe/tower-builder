@@ -70,11 +70,11 @@ namespace TowerBuilder.GameWorld.Entities.Residents
         {
             if (gameWorldResident.resident.isInBlueprintMode)
             {
-                gameWorldResident.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
+                gameWorldResident.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
             }
             else
             {
-                gameWorldResident.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Default);
+                gameWorldResident.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.Default);
             }
         }
 
@@ -105,7 +105,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
         void OnResidentPositionUpdated(Resident resident)
         {
             GameWorldResident gameWorldResident = gameWorldResidentsList.Find(gameWorldResident => gameWorldResident.resident == resident);
-            gameWorldResident.UpdatePosition();
+            gameWorldResident.GetComponent<EntityMeshWrapper>().UpdatePosition();
         }
 
         void OnCurrentSelectedEntityUpdated(Entity entity)
@@ -114,11 +114,11 @@ namespace TowerBuilder.GameWorld.Entities.Residents
             {
                 if ((entity is Resident) && ((Resident)entity) == gameWorldResident.resident)
                 {
-                    gameWorldResident.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Inspected);
+                    gameWorldResident.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.Inspected);
                 }
                 else
                 {
-                    gameWorldResident.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Default);
+                    gameWorldResident.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.Default);
                 }
             }
         }

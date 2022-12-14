@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Furnitures
 {
-    public class GameWorldFurniture : MonoBehaviour, IGameWorldEntity
+    [RequireComponent(typeof(EntityMeshWrapper))]
+    public class GameWorldFurniture : MonoBehaviour
     {
         public Furniture furniture { get; set; }
-        public EntityMeshWrapper entityMeshWrapper { get; private set; }
+
+        EntityMeshWrapper entityMeshWrapper;
 
         Transform cube;
 
@@ -17,19 +19,15 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
 
         public void Setup()
         {
-            entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, furniture.cellCoordinatesList);
+            entityMeshWrapper = GetComponent<EntityMeshWrapper>();
+            entityMeshWrapper.prefabMesh = cube.gameObject;
+            entityMeshWrapper.cellCoordinatesList = furniture.cellCoordinatesList;
             entityMeshWrapper.Setup();
-            UpdatePosition();
         }
 
         public void Teardown()
         {
 
-        }
-
-        void UpdatePosition()
-        {
-            // transform.position = GameWorldUtils.CellCoordinatesToPosition(furniture.cellCoordinatesList.bottomLeftCoordinates);
         }
 
         /* 

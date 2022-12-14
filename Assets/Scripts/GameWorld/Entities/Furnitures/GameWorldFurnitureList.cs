@@ -126,7 +126,7 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
 
             if (!hasUpdated)
             {
-                gameWorldFurniture.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Default);
+                gameWorldFurniture.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.Default);
             }
 
             void SetBuildStateColor()
@@ -136,11 +136,11 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
                 {
                     if (furniture.validator.isValid)
                     {
-                        gameWorldFurniture.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
+                        gameWorldFurniture.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
                     }
                     else
                     {
-                        gameWorldFurniture.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.InvalidBlueprint);
+                        gameWorldFurniture.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.InvalidBlueprint);
                     }
 
                     hasUpdated = true;
@@ -156,7 +156,7 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
             {
                 if ((inspectedEntity is Furniture) && ((Furniture)inspectedEntity) == furniture)
                 {
-                    gameWorldFurniture.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Inspected);
+                    gameWorldFurniture.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.Inspected);
                     hasUpdated = true;
                 }
             }

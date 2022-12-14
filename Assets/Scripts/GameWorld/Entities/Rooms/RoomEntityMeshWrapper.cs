@@ -10,13 +10,13 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
     {
         protected Dictionary<string, Transform> segments = new Dictionary<string, Transform>();
 
-        Room.Skin.Key skinKey;
+        public Room.Skin.Key skinKey { get; set; }
 
-        public RoomEntityMeshWrapper(Transform parent, GameObject prefabMesh, CellCoordinatesList cellCoordinatesList, Room.Skin.Key skinKey)
-            : base(parent, prefabMesh, cellCoordinatesList)
-        {
-            this.skinKey = skinKey;
-        }
+        // public RoomEntityMeshWrapper(Transform parent, GameObject prefabMesh, CellCoordinatesList cellCoordinatesList, Room.Skin.Key skinKey)
+        //     : base(parent, prefabMesh, cellCoordinatesList)
+        // {
+        //     this.skinKey = skinKey;
+        // }
 
         protected override EntityMeshCellWrapper CreateEntityCellMeshWrapper(Transform parent, GameObject prefabMesh, CellCoordinates cellCoordinates, CellNeighbors cellNeighbors, Tileable.CellPosition cellPosition) =>
             skinKey switch

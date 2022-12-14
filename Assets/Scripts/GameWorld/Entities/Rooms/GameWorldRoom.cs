@@ -11,13 +11,11 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Rooms
 {
-    public class GameWorldRoom : MonoBehaviour, IGameWorldEntity
+    [RequireComponent(typeof(RoomEntityMeshWrapper))]
+    public class GameWorldRoom : MonoBehaviour
     {
         public Room room { get; private set; }
 
-        // public List<GameWorldRoomCell> gameWorldRoomCells = new List<GameWorldRoomCell>();
-
-        public EntityMeshWrapper entityMeshWrapper => roomEntityMeshWrapper;
         RoomEntityMeshWrapper roomEntityMeshWrapper;
 
         /*
@@ -51,8 +49,12 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
             GameObject prefabMesh = assetList.FindByKey(key);
 
-            roomEntityMeshWrapper = new RoomEntityMeshWrapper(transform, prefabMesh, room.cellCoordinatesList, room.skin.key);
+            roomEntityMeshWrapper = GetComponent<RoomEntityMeshWrapper>();
+            roomEntityMeshWrapper.prefabMesh = prefabMesh;
+            roomEntityMeshWrapper.cellCoordinatesList = room.cellCoordinatesList;
+            roomEntityMeshWrapper.skinKey = room.skin.key;
             roomEntityMeshWrapper.Setup();
+
             UpdatePosition();
         }
 

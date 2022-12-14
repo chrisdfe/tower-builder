@@ -105,7 +105,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
             if (!hasUpdated)
             {
-                gameWorldRoom.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Default);
+                gameWorldRoom.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.Default);
             }
 
             void SetBuildStateColor()
@@ -114,11 +114,11 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
                 {
                     if (room.validator.isValid)
                     {
-                        gameWorldRoom.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
+                        gameWorldRoom.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
                     }
                     else
                     {
-                        gameWorldRoom.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.InvalidBlueprint);
+                        gameWorldRoom.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.InvalidBlueprint);
                     }
 
                     hasUpdated = true;
@@ -134,7 +134,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
             {
                 if ((inspectedEntity is Room) && ((Room)inspectedEntity) == room)
                 {
-                    gameWorldRoom.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Inspected);
+                    gameWorldRoom.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.Inspected);
                     hasUpdated = true;
                 }
             }

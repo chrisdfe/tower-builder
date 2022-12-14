@@ -9,14 +9,15 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Residents
 {
-    public class GameWorldResident : MonoBehaviour, IGameWorldEntity
+    [RequireComponent(typeof(EntityMeshWrapper))]
+    public class GameWorldResident : MonoBehaviour
     {
         public Resident resident;
         public ResidentBehavior residentBehavior;
 
         public CurrentAndNext<(TimeValue, CellCoordinates)> currentAndNextPosition;
 
-        public EntityMeshWrapper entityMeshWrapper { get; private set; }
+        EntityMeshWrapper entityMeshWrapper;
 
         Transform cube;
 
@@ -40,24 +41,14 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
         public void Setup()
         {
-            entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
-            entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
+            // entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
+            entityMeshWrapper = GetComponent<EntityMeshWrapper>();
+            entityMeshWrapper.prefabMesh = cube.gameObject;
+            entityMeshWrapper.cellCoordinatesList = resident.cellCoordinatesList;
             entityMeshWrapper.Setup();
-
-            UpdatePosition();
         }
 
         public void Teardown() { }
-
-        /* 
-            Public interface
-        */
-        public void UpdatePosition()
-        {
-            // TODO - use all all coordinates in cellCoordinatesList
-            // transform.position =
-            //     GameWorldUtils.CellCoordinatesToPosition(resident.cellCoordinatesList.bottomLeftCoordinates);
-        }
 
         /* 
             Internals

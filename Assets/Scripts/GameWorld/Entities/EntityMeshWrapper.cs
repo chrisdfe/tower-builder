@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities
 {
-    public class EntityMeshWrapper : ISetupable
+    public class EntityMeshWrapper : MonoBehaviour, ISetupable
     {
         public enum ColorKey
         {
@@ -30,19 +30,10 @@ namespace TowerBuilder.GameWorld.Entities
 
         public const string PLACEHOLDER_NODE_NAME = "Placeholder";
 
-        public GameObject prefabMesh { get; private set; }
-        public Transform parent { get; private set; }
-
-        CellCoordinatesList cellCoordinatesList;
+        public GameObject prefabMesh { get; set; }
+        public CellCoordinatesList cellCoordinatesList { get; set; }
 
         List<EntityMeshCellWrapper> entityCellMeshWrapperList = new List<EntityMeshCellWrapper>();
-
-        public EntityMeshWrapper(Transform parent, GameObject prefabMesh, CellCoordinatesList cellCoordinatesList)
-        {
-            this.parent = parent;
-            this.prefabMesh = prefabMesh;
-            this.cellCoordinatesList = cellCoordinatesList;
-        }
 
         public virtual void Setup()
         {
@@ -56,9 +47,11 @@ namespace TowerBuilder.GameWorld.Entities
             // GameObject.Destroy(meshTransform.gameObject);
         }
 
-        protected virtual EntityMeshCellWrapper CreateEntityCellMeshWrapper(Transform parent, GameObject prefabMesh, CellCoordinates cellCoordinates, CellNeighbors cellNeighbors, Tileable.CellPosition cellPosition) =>
-            new EntityMeshCellWrapper(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition);
 
+        public void UpdatePosition()
+        {
+
+        }
 
         public void SetColor(ColorKey key)
         {
@@ -68,9 +61,12 @@ namespace TowerBuilder.GameWorld.Entities
             }
         }
 
+        protected virtual EntityMeshCellWrapper CreateEntityCellMeshWrapper(Transform parent, GameObject prefabMesh, CellCoordinates cellCoordinates, CellNeighbors cellNeighbors, Tileable.CellPosition cellPosition) =>
+            new EntityMeshCellWrapper(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition);
+
         void DestroyPlaceholder()
         {
-            Transform placeholder = parent.Find(PLACEHOLDER_NODE_NAME);
+            Transform placeholder = transform.Find(PLACEHOLDER_NODE_NAME);
 
             if (placeholder != null)
             {
@@ -86,7 +82,7 @@ namespace TowerBuilder.GameWorld.Entities
 
                 Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
 
-                EntityMeshCellWrapper entityMeshCellWrapper = CreateEntityCellMeshWrapper(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition);
+                EntityMeshCellWrapper entityMeshCellWrapper = CreateEntityCellMeshWrapper(transform, prefabMesh, cellCoordinates, cellNeighbors, cellPosition);
                 entityMeshCellWrapper.Setup();
 
                 return entityMeshCellWrapper;
