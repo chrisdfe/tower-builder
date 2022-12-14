@@ -1,14 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.GameWorld;
-using TowerBuilder.GameWorld.Rooms;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace TowerBuilder.GameWorld.UI

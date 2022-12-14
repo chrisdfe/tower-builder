@@ -9,7 +9,7 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Rooms
+namespace TowerBuilder.GameWorld.Entities.Rooms
 {
     public class GameWorldRoomsManager : MonoBehaviour, IFindable
     {

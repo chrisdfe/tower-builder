@@ -29,6 +29,18 @@ namespace TowerBuilder.Definitions
 
             new RoomDefinition()
             {
+                title = "Empty - Tall",
+                key = Room.Key.Default,
+                category = "Empty - Tall",
+
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, 5),
+
+                resizability = Room.Resizability.Flexible,
+                pricePerCell = 1000,
+            },
+
+            new RoomDefinition()
+            {
                 title = "Empty - Large",
                 key = Room.Key.OtherDefault,
                 category = "Empty",

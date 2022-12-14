@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Furnitures
+namespace TowerBuilder.GameWorld.Entities.Furnitures
 {
     public class GameWorldFurnitureManager : MonoBehaviour, IFindable
     {

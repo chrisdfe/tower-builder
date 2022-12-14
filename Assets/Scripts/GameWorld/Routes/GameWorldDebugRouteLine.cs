@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TowerBuilder.DataTypes.Routes;
 using TowerBuilder.GameWorld;
-using TowerBuilder.GameWorld.Map;
-using TowerBuilder.GameWorld.Rooms;
 using UnityEngine;
 
 public class GameWorldDebugRouteLine : MonoBehaviour

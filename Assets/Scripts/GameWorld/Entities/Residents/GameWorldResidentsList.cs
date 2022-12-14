@@ -7,7 +7,7 @@ using TowerBuilder.DataTypes.Entities.Residents.Behaviors;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Residents
+namespace TowerBuilder.GameWorld.Entities.Residents
 {
     public class GameWorldResidentsList : MonoBehaviour
     {
@@ -70,11 +70,11 @@ namespace TowerBuilder.GameWorld.Residents
         {
             if (gameWorldResident.resident.isInBlueprintMode)
             {
-                gameWorldResident.SetColor(GameWorldResident.ColorKey.ValidBlueprint);
+                gameWorldResident.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
             }
             else
             {
-                gameWorldResident.SetColor(GameWorldResident.ColorKey.Default);
+                gameWorldResident.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Default);
             }
         }
 
@@ -114,11 +114,11 @@ namespace TowerBuilder.GameWorld.Residents
             {
                 if ((entity is Resident) && ((Resident)entity) == gameWorldResident.resident)
                 {
-                    gameWorldResident.SetColor(GameWorldResident.ColorKey.Inspected);
+                    gameWorldResident.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Inspected);
                 }
                 else
                 {
-                    gameWorldResident.SetColor(GameWorldResident.ColorKey.Default);
+                    gameWorldResident.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Default);
                 }
             }
         }

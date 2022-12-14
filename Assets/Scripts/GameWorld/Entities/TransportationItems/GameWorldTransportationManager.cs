@@ -1,7 +1,7 @@
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Rooms
+namespace TowerBuilder.GameWorld.Entities.TransportationItems
 {
     public class GameWorldTransportationManager : MonoBehaviour, IFindable
     {

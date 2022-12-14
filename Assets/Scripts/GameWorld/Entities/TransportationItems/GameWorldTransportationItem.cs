@@ -1,18 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
+using TowerBuilder.GameWorld.Entities;
 using TowerBuilder.Utils;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Rooms
+namespace TowerBuilder.GameWorld.Entities.TransportationItems
 {
-    public class GameWorldTransportationItem : MonoBehaviour
+    public class GameWorldTransportationItem : MonoBehaviour, IGameWorldEntity
     {
         [HideInInspector]
         public TransportationItem transportationItem;
 
-        List<MeshWrapper<TransportationItem.Key>> meshWrapperList = new List<MeshWrapper<TransportationItem.Key>>();
+        public EntityMeshWrapper entityMeshWrapper { get; private set; }
 
         /*
             Lifecycle Methods
@@ -24,59 +26,50 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnDestroy()
         {
-            DestroyMesh();
+            Teardown();
         }
 
         public void Setup()
         {
-            UpdatePosition();
             CreateMesh();
+            UpdatePosition();
         }
 
-        public void Teardown() { }
+        public void Teardown()
+        {
+            DestroyMesh();
+        }
 
         public void Reset() { }
 
         public void OnBuild() { }
 
-        /* 
-            Public Interface
-        */
-        public void UpdatePosition() { }
+
+        void UpdatePosition()
+        {
+            // transform.position = GameWorldUtils.CellCoordinatesToPosition(transportationItem.cellCoordinatesList.bottomLeftCoordinates);
+        }
 
         /* 
             Internals
         */
         void CreateMesh()
         {
-            TransformUtils.DestroyChildren(transform);
+            // TransformUtils.DestroyChildren(transform);
 
             GameWorldTransportationManager transportationManager = GameWorldTransportationManager.Find();
 
             GameObject prefabMesh = transportationManager.meshAssets.FindByKey(transportationItem.key);
 
-            meshWrapperList = transportationItem.cellCoordinatesList.items.Select((cellCoordinates) =>
-            {
-                MeshWrapper<TransportationItem.Key> meshWrapper =
-                     new MeshWrapper<TransportationItem.Key>(transform, prefabMesh, cellCoordinates, transportationItem.cellCoordinatesList);
-
-                meshWrapper.Setup();
-
-                // TODO here - use entity layer instead
-                meshWrapper.meshTransform.position = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
-                meshWrapper.meshTransform.Translate(new Vector3(0, 0, -2f));
-
-                return meshWrapper;
-            }).ToList();
+            entityMeshWrapper = new EntityMeshWrapper(transform, prefabMesh, transportationItem.cellCoordinatesList);
+            entityMeshWrapper.Setup();
         }
 
         void DestroyMesh()
         {
-            foreach (MeshWrapper<TransportationItem.Key> meshWrapper in meshWrapperList)
-            {
-                meshWrapper.Teardown();
-            }
+            entityMeshWrapper.Teardown();
         }
+
         /* 
             Static API
          */

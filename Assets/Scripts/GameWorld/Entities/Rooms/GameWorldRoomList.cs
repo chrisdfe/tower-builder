@@ -2,17 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
+using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Rooms
+namespace TowerBuilder.GameWorld.Entities.Rooms
 {
     public class GameWorldRoomList : MonoBehaviour
     {
         [HideInInspector]
-        public List<GameWorldRoom> gameWorldRooms = new List<GameWorldRoom>();
+        public List<GameWorldRoom> gameWorldRoomList = new List<GameWorldRoom>();
 
         void Awake()
         {
@@ -55,32 +56,88 @@ namespace TowerBuilder.GameWorld.Rooms
         /*
          * Rooms - Internals
          */
+        GameWorldRoom FindGameWorldRoomByRoom(Room room) =>
+            gameWorldRoomList.Find(gwr => gwr.room == room);
+
         void CreateRoom(Room room)
         {
             GameWorldRoom gameWorldRoom = GameWorldRoom.Create(transform);
             gameWorldRoom.SetRoom(room);
             gameWorldRoom.Setup();
-            gameWorldRooms.Add(gameWorldRoom);
+            gameWorldRoomList.Add(gameWorldRoom);
         }
 
         void RemoveRoom(Room room)
         {
-            GameWorldRoom gameWorldRoom = gameWorldRooms.Find(otherRoom => otherRoom.room == room);
-            gameWorldRooms.Remove(gameWorldRoom);
+            GameWorldRoom gameWorldRoom = gameWorldRoomList.Find(otherRoom => otherRoom.room == room);
+            gameWorldRoomList.Remove(gameWorldRoom);
             Destroy(gameWorldRoom.gameObject);
         }
 
-        GameWorldRoom FindGameWorldRoomByRoom(Room room)
+        void UpdateRoomColors()
         {
-            return gameWorldRooms.Find(gwr => gwr.room == room);
+            foreach (GameWorldRoom gameWorldRoom in gameWorldRoomList)
+            {
+                UpdateRoomColor(gameWorldRoom);
+            }
         }
 
-        /*
-         * Room Cells - Internals
-         */
-        void SetRoomCellColors()
+        void UpdateRoomColor(GameWorldRoom gameWorldRoom)
         {
-            gameWorldRooms.ForEach(gameWorldRoom => gameWorldRoom.SetRoomCellColors());
+            Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+            Room room = gameWorldRoom.room;
+            ToolState toolState = Registry.appState.Tools.toolState;
+
+            bool hasUpdated = false;
+
+            switch (toolState)
+            {
+                case (ToolState.Build):
+                    SetBuildStateColor();
+                    break;
+                case (ToolState.Destroy):
+                    SetDestroyStateColor();
+                    break;
+                default:
+                    SetInspectStateColor();
+                    break;
+            }
+
+            if (!hasUpdated)
+            {
+                gameWorldRoom.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Default);
+            }
+
+            void SetBuildStateColor()
+            {
+                if (room.isInBlueprintMode)
+                {
+                    if (room.validator.isValid)
+                    {
+                        gameWorldRoom.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
+                    }
+                    else
+                    {
+                        gameWorldRoom.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.InvalidBlueprint);
+                    }
+
+                    hasUpdated = true;
+                }
+            }
+
+            void SetDestroyStateColor()
+            {
+                // not supported yet
+            }
+
+            void SetInspectStateColor()
+            {
+                if ((inspectedEntity is Room) && ((Room)inspectedEntity) == room)
+                {
+                    gameWorldRoom.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Inspected);
+                    hasUpdated = true;
+                }
+            }
         }
 
         /* 
@@ -124,7 +181,7 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnCurrentSelectedRoomUpdated(Room selectedRoom)
         {
-            SetRoomCellColors();
+            UpdateRoomColors();
         }
 
         void OnCurrentSelectedRoomBlockUpdated(CellCoordinatesBlock roomBlock) { }
@@ -133,12 +190,12 @@ namespace TowerBuilder.GameWorld.Rooms
 
         void OnDestroySelectionUpdated()
         {
-            SetRoomCellColors();
+            UpdateRoomColors();
         }
 
         void OnCurrentSelectedEntityUpdated(Entity entity)
         {
-            SetRoomCellColors();
+            UpdateRoomColors();
         }
     }
 }

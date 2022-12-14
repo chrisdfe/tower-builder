@@ -2,6 +2,9 @@
 
 ## Tasks
 
+- Transportation item capacity - residents queue up when it's at capacity
+- Clean up UI padding/spacing, right now it's pretty inconsistent
+- Room should just be a collection of walls/floor, in a similar way relationship to vehicles -> rooms
 - Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
 - Make cells 1x1.5 or 1x2 as in my sketchbook - floors/ceilings/walls are part of the Inside of box
 - TransportationItemDefinition/entranceExitBuilder should probably return 2 lists (1 for entrances and 2 for exits) instead of entrance/exit tuples of single coordinates
@@ -191,6 +194,14 @@
 
 ## Ideas
 
+- An exterior shape that doesn't conform to the tile system
+- 'front hallway' that stairs/escalators live in; front hallway doors
+- right click dropdown contextual menu
+  - generic "dropdown" component
+- "dirty sci-fi"
+  - borderlands 3
+  - warhammer
+  - jedi fallen order (beginning)
 - ability to skew certain types of rooms?
 - battle formation of vehicles - side-by-side, single file, etc
 - with multiple vehicles all vehicles need to be piloted at the same time to go/stop. when one of them stops they are all signalled to stop

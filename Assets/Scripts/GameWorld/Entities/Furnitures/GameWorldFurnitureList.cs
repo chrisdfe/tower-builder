@@ -1,16 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using TowerBuilder;
-using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.GameWorld;
-using TowerBuilder.GameWorld.Furnitures;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Furnitures
+namespace TowerBuilder.GameWorld.Entities.Furnitures
 {
     public class GameWorldFurnitureList : MonoBehaviour
     {
@@ -131,7 +126,7 @@ namespace TowerBuilder.GameWorld.Furnitures
 
             if (!hasUpdated)
             {
-                gameWorldFurniture.SetDefaultColor();
+                gameWorldFurniture.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Default);
             }
 
             void SetBuildStateColor()
@@ -141,11 +136,11 @@ namespace TowerBuilder.GameWorld.Furnitures
                 {
                     if (furniture.validator.isValid)
                     {
-                        gameWorldFurniture.SetValidBlueprintColor();
+                        gameWorldFurniture.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
                     }
                     else
                     {
-                        gameWorldFurniture.SetInvalidBlueprintColor();
+                        gameWorldFurniture.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.InvalidBlueprint);
                     }
 
                     hasUpdated = true;
@@ -161,7 +156,7 @@ namespace TowerBuilder.GameWorld.Furnitures
             {
                 if ((inspectedEntity is Furniture) && ((Furniture)inspectedEntity) == furniture)
                 {
-                    gameWorldFurniture.SetInspectedColor();
+                    gameWorldFurniture.entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Inspected);
                     hasUpdated = true;
                 }
             }

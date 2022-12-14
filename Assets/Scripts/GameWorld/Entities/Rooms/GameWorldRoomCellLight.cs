@@ -1,7 +1,7 @@
 using TowerBuilder.GameWorld.Lights;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Rooms
+namespace TowerBuilder.GameWorld.Entities.Rooms
 {
     public class GameWorldRoomCellLight
     {
