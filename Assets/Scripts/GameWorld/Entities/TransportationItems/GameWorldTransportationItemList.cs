@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using UnityEngine;
@@ -65,7 +66,7 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
         /* 
             Event Handlers
         */
-        void OnTransportationItemsAdded(TransportationItemsList transportationItemList)
+        void OnTransportationItemsAdded(ListWrapper<TransportationItem> transportationItemList)
         {
             transportationItemList.ForEach(transportationItem =>
             {
@@ -73,7 +74,7 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
             });
         }
 
-        void OnTransportationItemsRemoved(TransportationItemsList transportationItemList)
+        void OnTransportationItemsRemoved(ListWrapper<TransportationItem> transportationItemList)
         {
             transportationItemList.ForEach(transportationItem =>
             {
@@ -81,7 +82,7 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
             });
         }
 
-        void OnTransportationItemsBuilt(TransportationItemsList transportationItemList)
+        void OnTransportationItemsBuilt(ListWrapper<TransportationItem> transportationItemList)
         {
         }
 

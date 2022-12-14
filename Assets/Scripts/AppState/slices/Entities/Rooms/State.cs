@@ -12,38 +12,34 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities.Rooms
 {
-    using RoomEntityStateSlice = EntityStateSlice<RoomList, Room, State.Events>;
-
     [Serializable]
-    public partial class State : RoomEntityStateSlice
+    public class State : EntityStateSlice<Room, State.Events>
     {
         public struct Input
         {
-            public RoomList roomList;
+            public List<Room> roomList;
         }
 
-        public new class Events : RoomEntityStateSlice.Events
+        public new class Events : EntityStateSlice<Room, State.Events>.Events
         {
             public delegate void RoomBlocksEvent(Room room, CellCoordinatesBlockList roomBlocks);
-            public RoomBlocksEvent onRoomBlocksAdded;
-            public RoomBlocksEvent onRoomBlocksRemoved;
+            public RoomBlocksEvent onRoomBlocksAdded { get; set; }
+            public RoomBlocksEvent onRoomBlocksRemoved { get; set; }
 
             public delegate void RoomBlockUpdatedEvent(Room room);
-            public RoomBlocksEvent onRoomBlocksUpdated;
+            public RoomBlocksEvent onRoomBlocksUpdated { get; set; }
         }
 
-        public StateQueries queries;
+        public new Queries queries;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            list = input.roomList ?? new RoomList();
-            queries = new StateQueries(this);
+            queries = new Queries(appState, this);
         }
 
         /* 
             Rooms
         */
-
         protected override void OnPreBuild(Room entity)
         {
             base.OnPreBuild(entity);
@@ -102,16 +98,13 @@ namespace TowerBuilder.ApplicationState.Entities.Rooms
             }
         }
 
-        public class StateQueries
+        public new class Queries : EntityStateSlice<Room, State.Events>.Queries
         {
-            State state;
-            public StateQueries(State state)
-            {
-                this.state = state;
-            }
+            public Queries(AppState appState, State state) : base(appState, state) { }
 
             public Room FindRoomAtCell(CellCoordinates cellCoordinates) =>
-                state.list.FindRoomAtCell(cellCoordinates);
+                state.list.items
+                    .Find(room => room.cellCoordinatesList.Contains(cellCoordinates));
 
             public (Room, CellCoordinatesBlock) FindRoomBlockAtCell(CellCoordinates cellCoordinates)
             {

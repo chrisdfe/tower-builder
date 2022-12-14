@@ -108,7 +108,7 @@ namespace TowerBuilder.DataTypes.Routes
             }
             else
             {
-                TransportationItemsList transportationItemsList = appState.Entities.TransportationItems.queries.FindTransportationItemsEnterableFromRoom(currentRouteAttempt.currentRoom);
+                ListWrapper<TransportationItem> transportationItemsList = appState.Entities.TransportationItems.queries.FindTransportationItemsEnterableFromRoom(currentRouteAttempt.currentRoom);
 
                 transportationItemsList.ForEach(transportationItem =>
                 {

@@ -10,20 +10,18 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities.Furnitures
 {
-    using FurnitureEntityStateSlice = EntityStateSlice<FurnitureList, Furniture, State.Events>;
-
     [Serializable]
-    public class State : FurnitureEntityStateSlice
+    public class State : EntityStateSlice<Furniture, State.Events>
     {
         public class Input { }
 
-        public new class Events : FurnitureEntityStateSlice.Events { }
+        public new class Events : EntityStateSlice<Furniture, State.Events>.Events { }
 
-        public StateQueries queries;
+        public new Queries queries;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new StateQueries(appState, this);
+            queries = new Queries(appState, this);
         }
 
         public override void Setup()
@@ -49,22 +47,22 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
         /* 
             Event Handlers
         */
-        void OnRoomsAdded(RoomList roomList)
+        void OnRoomsAdded(ListWrapper<Room> roomList)
         {
             roomList.ForEach(room =>
             {
-                FurnitureList roomFurnitures = room.furnitureBuilder.BuildFurniture(room.isInBlueprintMode);
+                ListWrapper<Furniture> roomFurnitures = room.furnitureBuilder.BuildFurniture(room.isInBlueprintMode);
                 Add(roomFurnitures);
             });
         }
 
-        void OnRoomsBuilt(RoomList roomList)
+        void OnRoomsBuilt(ListWrapper<Room> roomList)
         {
             roomList.ForEach(room =>
             {
-                FurnitureList roomFurnitures = queries.FindFurnitureByRoom(room);
+                ListWrapper<Furniture> roomFurnitures = queries.FindFurnitureByRoom(room);
 
-                FurnitureList blueprintFurnitures = new FurnitureList(
+                ListWrapper<Furniture> blueprintFurnitures = new ListWrapper<Furniture>(
                     roomFurnitures.items.FindAll(roomFurniture => roomFurniture.isInBlueprintMode == true).ToList()
                 );
 
@@ -78,11 +76,11 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
             });
         }
 
-        void OnRoomsRemoved(RoomList roomList)
+        void OnRoomsRemoved(ListWrapper<Room> roomList)
         {
             roomList.ForEach(room =>
             {
-                FurnitureList furnituresToRemove = queries.FindFurnitureByRoom(room);
+                ListWrapper<Furniture> furnituresToRemove = queries.FindFurnitureByRoom(room);
                 Remove(furnituresToRemove);
             });
         }
@@ -94,33 +92,25 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
 
         void OnRoomBlocksRemoved(Room room, CellCoordinatesBlockList roomBlocks)
         {
-            FurnitureList furnituresInBlock = queries.FindFurnitureInBlocks(roomBlocks);
+            ListWrapper<Furniture> furnituresInBlock = queries.FindFurnitureInBlocks(roomBlocks);
             Remove(furnituresInBlock);
         }
 
-        public class StateQueries
+        public new class Queries : EntityStateSlice<Furniture, State.Events>.Queries
         {
-            AppState appState;
-            State state;
+            public Queries(AppState appState, State state) : base(appState, state) { }
 
-            public StateQueries(AppState appState, State state)
-            {
-                this.state = state;
-            }
-
-            public FurnitureList FindFurnitureByRoom(Room room) =>
-                new FurnitureList(
+            public ListWrapper<Furniture> FindFurnitureByRoom(Room room) =>
+                new ListWrapper<Furniture>(
                     state.list.items.FindAll(furniture =>
                         appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]) == room
                     )
                 );
 
-            public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates)
-            {
-                return state.list.FindFurnitureAtCell(cellCoordinates);
-            }
+            public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates) =>
+                FindEntityTypeAtCell(cellCoordinates);
 
-            public FurnitureList FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
+            public ListWrapper<Furniture> FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
             {
                 List<Furniture> furnitureList = new List<Furniture>();
 
@@ -136,7 +126,7 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
                     }
                 }
 
-                return new FurnitureList(furnitureList);
+                return new ListWrapper<Furniture>(furnitureList);
             }
         }
     }

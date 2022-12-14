@@ -7,7 +7,7 @@ using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.Entities.Vehicles
+namespace TowerBuilder.ApplicationState.Vehicles
 {
     using VehicleListStateSlice = ListStateSlice<VehicleList, Vehicle, State.Events>;
 
@@ -93,7 +93,7 @@ namespace TowerBuilder.ApplicationState.Entities.Vehicles
         /* 
             Event Handlers
         */
-        void OnRoomsAdded(RoomList roomList)
+        void OnRoomsAdded(ListWrapper<Room> roomList)
         {
             roomList.ForEach(room =>
             {
@@ -116,7 +116,7 @@ namespace TowerBuilder.ApplicationState.Entities.Vehicles
             });
         }
 
-        void OnRoomsBuilt(RoomList roomList)
+        void OnRoomsBuilt(ListWrapper<Room> roomList)
         {
             roomList.ForEach(room =>
             {
@@ -137,7 +137,7 @@ namespace TowerBuilder.ApplicationState.Entities.Vehicles
             });
         }
 
-        void OnRoomsRemoved(RoomList roomList)
+        void OnRoomsRemoved(ListWrapper<Room> roomList)
         {
             roomList.ForEach(room =>
             {

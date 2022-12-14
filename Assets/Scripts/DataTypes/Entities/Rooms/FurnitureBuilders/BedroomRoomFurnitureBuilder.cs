@@ -11,7 +11,7 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.FurnitureBuilders
     {
         public BedroomRoomFurnitureBuilder(Room room) : base(room) { }
 
-        public override FurnitureList BuildFurniture(bool isInBlueprintMode)
+        public override ListWrapper<Furniture> BuildFurniture(bool isInBlueprintMode)
         {
             List<Furniture> items = new List<Furniture>();
 
@@ -20,7 +20,7 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.FurnitureBuilders
             furniture.isInBlueprintMode = isInBlueprintMode;
             items.Add(furniture);
 
-            return new FurnitureList(items);
+            return new ListWrapper<Furniture>(items);
         }
     }
 }

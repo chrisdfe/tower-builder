@@ -6,6 +6,6 @@ namespace TowerBuilder.DataTypes.Vehicles
     public class Vehicle
     {
         public int id = UIDGenerator.Generate("vehicle");
-        public RoomList roomList { get; private set; } = new RoomList();
+        public ListWrapper<Room> roomList { get; private set; } = new ListWrapper<Room>();
     }
 }

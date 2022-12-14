@@ -16,9 +16,9 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.FurnitureBuilders
             this.room = room;
         }
 
-        public virtual FurnitureList BuildFurniture(bool isInBlueprintMode)
+        public virtual ListWrapper<Furniture> BuildFurniture(bool isInBlueprintMode)
         {
-            return new FurnitureList();
+            return new ListWrapper<Furniture>();
         }
     }
 }

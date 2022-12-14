@@ -117,7 +117,7 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
         /* 
             Event handlers
         */
-        void OnFurnituresAdded(FurnitureList furnitureList)
+        void OnFurnituresAdded(ListWrapper<Furniture> furnitureList)
         {
             foreach (Furniture furniture in furnitureList.items)
             {
@@ -128,7 +128,7 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
             }
         }
 
-        void OnFurnituresRemoved(FurnitureList furnitureList)
+        void OnFurnituresRemoved(ListWrapper<Furniture> furnitureList)
         {
             foreach (Furniture furniture in furnitureList.items)
             {
@@ -136,7 +136,7 @@ namespace TowerBuilder.ApplicationState.FurnitureBehaviors
             }
         }
 
-        void OnFurnituresBuilt(FurnitureList furnitureList)
+        void OnFurnituresBuilt(ListWrapper<Furniture> furnitureList)
         {
             foreach (Furniture furniture in furnitureList.items)
             {

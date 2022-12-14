@@ -198,7 +198,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             list.ForEach(residentBehavior => ProcessResidentBehaviorTick(residentBehavior));
         }
 
-        void OnResidentsAdded(ResidentsList residentsList)
+        void OnResidentsAdded(ListWrapper<Resident> residentsList)
         {
             foreach (Resident resident in residentsList.items)
             {
@@ -209,7 +209,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             }
         }
 
-        void OnResidentsBuilt(ResidentsList residentsList)
+        void OnResidentsBuilt(ListWrapper<Resident> residentsList)
         {
             foreach (Resident resident in residentsList.items)
             {
@@ -217,7 +217,7 @@ namespace TowerBuilder.ApplicationState.ResidentBehaviors
             }
         }
 
-        void OnResidentsRemoved(ResidentsList residentsList)
+        void OnResidentsRemoved(ListWrapper<Resident> residentsList)
         {
             foreach (Resident resident in residentsList.items)
             {

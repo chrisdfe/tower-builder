@@ -25,6 +25,8 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
 
         public override string idKey => "Rooms";
 
+        public override Type type => Entity.Type.Room;
+
         public Dimensions blockDimensions { get; } = Dimensions.one;
 
         public int cellsInBlock

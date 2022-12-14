@@ -86,7 +86,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
         /*
             Event handlers
         */
-        void OnResidentsAdded(ResidentsList residentList)
+        void OnResidentsAdded(ListWrapper<Resident> residentList)
         {
             foreach (Resident resident in residentList.items)
             {
@@ -94,7 +94,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
             }
         }
 
-        void OnResidentsRemoved(ResidentsList residentList)
+        void OnResidentsRemoved(ListWrapper<Resident> residentList)
         {
             foreach (Resident resident in residentList.items)
             {

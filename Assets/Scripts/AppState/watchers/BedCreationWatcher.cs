@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using UnityEngine;
@@ -24,17 +25,17 @@ namespace TowerBuilder.ApplicationState
             appState.Entities.Furnitures.events.onItemsBuilt -= OnFurnituresBuilt;
         }
 
-        void OnFurnituresAdded(FurnitureList furnitureList)
+        void OnFurnituresAdded(ListWrapper<Furniture> furnitureList)
         {
             MoveNewResidentInIfThereIsRoom(furnitureList);
         }
 
-        void OnFurnituresBuilt(FurnitureList furnitureList)
+        void OnFurnituresBuilt(ListWrapper<Furniture> furnitureList)
         {
             MoveNewResidentInIfThereIsRoom(furnitureList);
         }
 
-        void MoveNewResidentInIfThereIsRoom(FurnitureList furnitureList)
+        void MoveNewResidentInIfThereIsRoom(ListWrapper<Furniture> furnitureList)
         {
             furnitureList.items.ForEach(furniture => MoveNewResidentInIfThereIsRoom(furniture));
         }

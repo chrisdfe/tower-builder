@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Floors should be taken into account in route finding
 - AssetManager classes (FurnitureAssetManager etc) should derive from a base class
 - Delete Scratchboard transform
 - Stairs transportation item

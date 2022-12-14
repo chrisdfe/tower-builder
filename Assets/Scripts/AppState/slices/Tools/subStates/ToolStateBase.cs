@@ -27,7 +27,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public virtual void OnCurrentSelectedRoomBlockUpdated(CellCoordinatesBlock roomBlock) { }
 
-        public virtual void OnCurrentSelectedEntityListUpdated(EntityList entityList) { }
+        public virtual void OnCurrentSelectedEntityListUpdated(ListWrapper<Entity> entityList) { }
 
         public virtual void OnSelectionStart(SelectionBox selectionBox) { }
 

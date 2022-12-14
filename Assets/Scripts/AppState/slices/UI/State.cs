@@ -35,7 +35,7 @@ namespace TowerBuilder.ApplicationState.UI
             public SelectionBoxEvent onSelectionStart;
             public SelectionBoxEvent onSelectionEnd;
 
-            public delegate void SelectedCellEntityListEvent(EntityList entityList);
+            public delegate void SelectedCellEntityListEvent(ListWrapper<Entity> entityList);
             public SelectedCellEntityListEvent onCurrentSelectedEntityListUpdated;
 
             public delegate void ActionEvent();
@@ -52,7 +52,7 @@ namespace TowerBuilder.ApplicationState.UI
         public SelectionBox selectionBox { get; private set; }
         public bool selectionIsActive { get; private set; } = false;
 
-        public EntityList currentSelectedCellEntityList { get; private set; } = new EntityList();
+        public ListWrapper<Entity> currentSelectedCellEntityList { get; private set; } = new ListWrapper<Entity>();
 
         public Events events;
         public Queries queries;
@@ -107,7 +107,7 @@ namespace TowerBuilder.ApplicationState.UI
             {
                 currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
 
-                currentSelectedVehicle = Registry.appState.Entities.Vehicles.queries.FindVehicleByRoom(currentSelectedRoom);
+                currentSelectedVehicle = Registry.appState.Vehicles.queries.FindVehicleByRoom(currentSelectedRoom);
             }
 
             if (selectionIsActive)
@@ -180,7 +180,7 @@ namespace TowerBuilder.ApplicationState.UI
 
         void SetEntityList()
         {
-            EntityList entityList = new EntityList();
+            ListWrapper<Entity> entityList = new ListWrapper<Entity>();
 
             if (currentSelectedCell != null)
             {
@@ -196,14 +196,14 @@ namespace TowerBuilder.ApplicationState.UI
                     entityList.Add(furnitureAtCell);
                 }
 
-                Resident residentAtCell = appState.Entities.Residents.queries.FindResidentAtCell(currentSelectedCell);
+                Resident residentAtCell = appState.Entities.Residents.queries.FindEntityTypeAtCell(currentSelectedCell);
 
                 if (residentAtCell != null)
                 {
                     entityList.Add(residentAtCell);
                 }
 
-                TransportationItemsList transportationItemsAtCell = appState.Entities.TransportationItems.queries.FindAtCell(currentSelectedCell);
+                ListWrapper<TransportationItem> transportationItemsAtCell = appState.Entities.TransportationItems.queries.FindAtCell(currentSelectedCell);
 
                 if (transportationItemsAtCell.Count > 0)
                 {

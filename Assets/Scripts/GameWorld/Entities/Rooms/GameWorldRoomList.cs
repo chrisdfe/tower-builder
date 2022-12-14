@@ -143,15 +143,16 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
         /* 
          * Event Handlers
          */
-        void OnRoomsAdded(RoomList roomList)
+        void OnRoomsAdded(ListWrapper<Room> roomList)
         {
+            Debug.Log("room has been added");
             roomList.ForEach(room =>
             {
                 CreateRoom(room);
             });
         }
 
-        void OnRoomsBuilt(RoomList roomList)
+        void OnRoomsBuilt(ListWrapper<Room> roomList)
         {
             roomList.ForEach(room =>
             {
@@ -161,7 +162,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
             });
         }
 
-        void OnRoomsRemoved(RoomList roomList)
+        void OnRoomsRemoved(ListWrapper<Room> roomList)
         {
             roomList.ForEach(room =>
             {

@@ -47,7 +47,7 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
         /*
             Event Handlers
         */
-        void OnFurnituresAdded(FurnitureList furnitureList)
+        void OnFurnituresAdded(ListWrapper<Furniture> furnitureList)
         {
             foreach (Furniture furniture in furnitureList.items)
             {
@@ -55,7 +55,7 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
             }
         }
 
-        void OnFurnituresRemoved(FurnitureList furnitureList)
+        void OnFurnituresRemoved(ListWrapper<Furniture> furnitureList)
         {
             foreach (Furniture furniture in furnitureList.items)
             {

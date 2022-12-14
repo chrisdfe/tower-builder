@@ -70,5 +70,11 @@ namespace TowerBuilder.DataTypes
         {
             items.ForEach(action);
         }
+
+        public ListWrapper<ConvertedItemType> ConvertAll<ConvertedItemType>()
+            where ConvertedItemType : class =>
+            new ListWrapper<ConvertedItemType>(
+                items.ConvertAll<ConvertedItemType>(item => item as ConvertedItemType)
+            );
     }
 }

@@ -56,6 +56,8 @@ namespace TowerBuilder.DataTypes.Entities
 
         public bool isInBlueprintMode { get; set; } = false;
 
+        public virtual Type type { get; }
+
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 

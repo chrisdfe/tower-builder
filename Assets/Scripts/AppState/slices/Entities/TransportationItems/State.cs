@@ -1,58 +1,44 @@
+using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities.TransportationItems
 {
-    using TransportationItemsEntityStateSlice = EntityStateSlice<TransportationItemsList, TransportationItem, State.Events>;
-
-    public class State : TransportationItemsEntityStateSlice
+    public class State : EntityStateSlice<TransportationItem, State.Events>
     {
         public class Input
         {
-            public TransportationItemsList transportationItemsList;
+            public ListWrapper<TransportationItem> transportationItemsList;
         }
 
-        public new class Events : TransportationItemsEntityStateSlice.Events { }
+        public new class Events : EntityStateSlice<TransportationItem, State.Events>.Events { }
 
-        public StateQueries queries { get; private set; }
+        public new Queries queries { get; }
 
         public State(AppState appState, Input input) : base(appState)
         {
-            list = input.transportationItemsList ?? new TransportationItemsList();
-
-            queries = new StateQueries(appState, this);
+            queries = new Queries(appState, this);
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
 
-        public override void Add(TransportationItem entity)
+        public new class Queries : EntityStateSlice<TransportationItem, State.Events>.Queries
         {
-            base.Add(entity);
-        }
+            public Queries(AppState appState, State state) : base(appState, state) { }
 
-        public class StateQueries
-        {
-            AppState appState;
-            State state;
-
-            public StateQueries(AppState appState, State state)
-            {
-                this.appState = appState;
-                this.state = state;
-            }
-
-            public TransportationItemsList FindAtCell(CellCoordinates cellCoordinates) =>
-                new TransportationItemsList(
+            public ListWrapper<TransportationItem> FindAtCell(CellCoordinates cellCoordinates) =>
+                new ListWrapper<TransportationItem>(
                     state.list.items.FindAll(transportationItem =>
                         transportationItem.cellCoordinatesList.Contains(cellCoordinates)
                     ).ToList()
                 );
 
-            public TransportationItemsList FindTransportationItemsEnterableFromRoom(Room room) =>
-                new TransportationItemsList(
+            public ListWrapper<TransportationItem> FindTransportationItemsEnterableFromRoom(Room room) =>
+                new ListWrapper<TransportationItem>(
                     state.list.items.FindAll(transportationItem =>
                     {
                         foreach (CellCoordinates entranceCoordinates in transportationItem.entranceCellCoordinatesList.items)

@@ -19,7 +19,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public class Events
         {
-            public delegate void InspectedEntityListEvent(EntityList entityList);
+            public delegate void InspectedEntityListEvent(ListWrapper<Entity> entityList);
             public InspectedEntityListEvent onInspectedEntityListUpdated;
 
             public delegate void CurrentSelectedEntityEvent(Entity entity);
@@ -28,7 +28,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public Events events;
 
-        public EntityList inspectedEntityList { get; private set; } = new EntityList();
+        public ListWrapper<Entity> inspectedEntityList { get; private set; } = new ListWrapper<Entity>();
         public int inspectedEntityIndex { get; private set; } = -1;
 
         public Entity inspectedEntity
@@ -68,7 +68,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
             appState.UI.events.onSecondaryActionPerformed -= OnSecondaryActionPerformed;
 
-            inspectedEntityList = new EntityList();
+            inspectedEntityList = new ListWrapper<Entity>();
             inspectedEntityIndex = -1;
 
             if (events.onInspectedEntityListUpdated != null)
@@ -127,12 +127,12 @@ namespace TowerBuilder.ApplicationState.Tools
         /* 
             Event handlers
          */
-        void OnFurnituresRemoved(FurnitureList furnitureList)
+        void OnFurnituresRemoved(ListWrapper<Furniture> furnitureList)
         {
             OnEntitiesRemoved<Furniture>(furnitureList);
         }
 
-        void OnResidentsRemoved(ResidentsList residentsList)
+        void OnResidentsRemoved(ListWrapper<Resident> residentsList)
         {
             OnEntitiesRemoved<Resident>(residentsList);
         }

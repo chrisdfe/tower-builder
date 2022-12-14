@@ -64,7 +64,7 @@ namespace TowerBuilder.GameWorld.Entities.Floors
         /*
             Event handlers
         */
-        void OnFloorsAdded(FloorList floorList)
+        void OnFloorsAdded(ListWrapper<Floor> floorList)
         {
             foreach (Floor floor in floorList.items)
             {
@@ -72,7 +72,7 @@ namespace TowerBuilder.GameWorld.Entities.Floors
             }
         }
 
-        void OnFloorsRemoved(FloorList floorList)
+        void OnFloorsRemoved(ListWrapper<Floor> floorList)
         {
             foreach (Floor floor in floorList.items)
             {

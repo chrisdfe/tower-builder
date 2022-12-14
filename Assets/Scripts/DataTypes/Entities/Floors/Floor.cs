@@ -22,6 +22,8 @@ namespace TowerBuilder.DataTypes.Entities.Floors
 
         public override string idKey { get => "floors"; }
 
+        public override Type type => Entity.Type.Floor;
+
         public Floor(FloorDefinition floorDefinition) : base(floorDefinition) { }
     }
 }

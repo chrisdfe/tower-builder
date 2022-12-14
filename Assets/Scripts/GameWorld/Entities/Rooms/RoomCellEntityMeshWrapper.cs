@@ -64,8 +64,6 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         public override void SetSegments()
         {
-            Debug.Log("Setting segments");
-            Debug.Log(meshTransform);
             segments = new Dictionary<string, Transform>() {
                     { "leftWall",           meshTransform.Find("Wrapper").Find("LeftWall").Find("LeftWallFull") },
                     { "rightWall",          meshTransform.Find("Wrapper").Find("RightWall").Find("RightWallFull") },

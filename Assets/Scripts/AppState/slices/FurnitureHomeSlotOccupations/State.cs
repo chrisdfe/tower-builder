@@ -26,7 +26,7 @@ namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations
             public Furniture GetHomeFurnitureFor(Resident resident) =>
                 state.list.GetHomeFurnitureFor(resident);
 
-            public ResidentsList GetResidentsLivingAt(Furniture furniture) =>
+            public ListWrapper<Resident> GetResidentsLivingAt(Furniture furniture) =>
                 state.list.GetResidentsLivingAt(furniture);
         }
 

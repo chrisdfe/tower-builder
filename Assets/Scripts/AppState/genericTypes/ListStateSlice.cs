@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
@@ -7,6 +8,32 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState
 {
+    public delegate void ListEvent<ItemType>(ListWrapper<ItemType> list);
+    public delegate void ItemEvent<ItemType>(ItemType item);
+
+    public interface IListStateSlice<ItemType>
+    {
+        // public interface IEvents
+        // {
+        //     public ListEvent<ItemType> onItemsAdded { get; set; }
+        //     public ListEvent<ItemType> onItemsRemoved { get; set; }
+        //     public ListEvent<ItemType> onListUpdated { get; set; }
+        // }
+
+        // TODO - fix this covariance issue (ListWrapper<ItemType> != ListWrapperType)
+        public ListWrapper<ItemType> list { get; }
+
+        // public IEvents events { get; }
+
+        public void Add(ListWrapper<ItemType> newItemsList);
+
+        public void Add(ItemType item);
+
+        public void Remove(ListWrapper<ItemType> removedItemsList);
+
+        public void Remove(ItemType item);
+    }
+
     [Serializable]
     public class ListStateSlice<ListWrapperType, ItemType, EventsType> : StateSlice
         where ListWrapperType : ListWrapper<ItemType>, new()

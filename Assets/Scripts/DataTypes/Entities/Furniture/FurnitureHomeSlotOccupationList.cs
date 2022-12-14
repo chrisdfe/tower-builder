@@ -18,9 +18,9 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
             return null;
         }
 
-        public ResidentsList GetResidentsLivingAt(Furniture furniture)
+        public ListWrapper<Resident> GetResidentsLivingAt(Furniture furniture)
         {
-            return new ResidentsList(
+            return new ListWrapper<Resident>(
                 items
                     .FindAll(furnitureHomeSlotOccupation => furnitureHomeSlotOccupation.furniture == furniture)
                     .Select(furnitureHomeSlotOccupation => furnitureHomeSlotOccupation.resident)

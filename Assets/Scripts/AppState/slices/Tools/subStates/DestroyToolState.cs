@@ -24,7 +24,7 @@ namespace TowerBuilder.ApplicationState.Tools
         public Events events { get; private set; }
 
         // TODO - List<CellCoordinates> is all a room block is, but maybe it should be its own RoomBlock class
-        public RoomList roomsToDeleteBlocksFrom { get; private set; } = new RoomList();
+        public ListWrapper<Room> roomsToDeleteBlocksFrom { get; private set; } = new ListWrapper<Room>();
         public CellCoordinatesBlockList blocksToDelete { get; private set; } = new CellCoordinatesBlockList();
 
         bool destroyIsActive = false;
@@ -52,14 +52,14 @@ namespace TowerBuilder.ApplicationState.Tools
         public override void Setup()
         {
             base.Setup();
-            roomsToDeleteBlocksFrom = new RoomList();
+            roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
         }
 
         public override void Teardown()
         {
             base.Teardown();
-            roomsToDeleteBlocksFrom = new RoomList();
+            roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
         }
 
@@ -98,12 +98,6 @@ namespace TowerBuilder.ApplicationState.Tools
 
             destroyIsActive = false;
 
-            Debug.Log("roomsToDeleteBlocksFrom");
-            Debug.Log("roomsToDeleteBlocksFrom.Count");
-            Debug.Log(roomsToDeleteBlocksFrom.Count);
-            Debug.Log("blocksToDelete.Count");
-            Debug.Log(blocksToDelete.Count);
-
             // Restrict destroy to whichever room destroy started on
             if (roomsToDeleteBlocksFrom.Count > 0 && blocksToDelete.Count > 0)
             {
@@ -117,7 +111,7 @@ namespace TowerBuilder.ApplicationState.Tools
                 }
             }
 
-            roomsToDeleteBlocksFrom = new RoomList();
+            roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
 
             events.onDestroyEnd?.Invoke();
@@ -127,7 +121,7 @@ namespace TowerBuilder.ApplicationState.Tools
         {
             SelectionBox selectionBox = Registry.appState.UI.selectionBox;
 
-            roomsToDeleteBlocksFrom = new RoomList();
+            roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
 
             // Debug.Log("selectionBox.cellCoordinatesList.Count");

@@ -92,7 +92,7 @@ namespace TowerBuilder.ApplicationState.ResidentAttributesWrappers
         /* 
             Event handlers
          */
-        void OnResidentsAdded(ResidentsList residentsList)
+        void OnResidentsAdded(ListWrapper<Resident> residentsList)
         {
             foreach (Resident resident in residentsList.items)
             {
@@ -103,7 +103,7 @@ namespace TowerBuilder.ApplicationState.ResidentAttributesWrappers
             }
         }
 
-        void OnResidentsBuilt(ResidentsList residentsList)
+        void OnResidentsBuilt(ListWrapper<Resident> residentsList)
         {
             foreach (Resident resident in residentsList.items)
             {
@@ -111,7 +111,7 @@ namespace TowerBuilder.ApplicationState.ResidentAttributesWrappers
             }
         }
 
-        void OnResidentsRemoved(ResidentsList residentsList)
+        void OnResidentsRemoved(ListWrapper<Resident> residentsList)
         {
             foreach (Resident resident in residentsList.items)
             {

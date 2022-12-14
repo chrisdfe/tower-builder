@@ -2,7 +2,7 @@ using TowerBuilder.DataTypes.Entities.Freights;
 
 namespace TowerBuilder.ApplicationState.Entities.Freight
 {
-    public class State : StateSlice
+    public class State : EntityStateSlice<FreightItem, State.Events>
     {
         public class Input
         {
@@ -10,6 +10,8 @@ namespace TowerBuilder.ApplicationState.Entities.Freight
             public FreightItemStacks.State freightItemStacks;
             public FreightItems.State freightItems;
         }
+
+        public new class Events : EntityStateSlice<FreightItem, State.Events>.Events { }
 
         public FreightItemStackGroups.State FreightItemStackGroups { get; private set; }
         public FreightItemStacks.State FreightItemStacks { get; private set; }

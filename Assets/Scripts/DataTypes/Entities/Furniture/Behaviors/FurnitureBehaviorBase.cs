@@ -21,7 +21,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
 
         public Furniture furniture { get; private set; }
 
-        public ResidentsList interactingResidentsList { get; private set; } = new ResidentsList();
+        public ListWrapper<Resident> interactingResidentsList { get; private set; } = new ListWrapper<Resident>();
 
         public virtual string title { get; }
 

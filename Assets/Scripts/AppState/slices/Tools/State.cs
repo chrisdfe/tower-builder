@@ -105,7 +105,7 @@ namespace TowerBuilder.ApplicationState.Tools
             activeToolState.OnSelectionEnd(selectionBox);
         }
 
-        void OnCurrentSelectedEntityListUpdated(EntityList entityList)
+        void OnCurrentSelectedEntityListUpdated(ListWrapper<Entity> entityList)
         {
             activeToolState.OnCurrentSelectedEntityListUpdated(entityList);
         }

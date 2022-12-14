@@ -10,44 +10,27 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities.Floors
 {
-    using FloorEntityStateSlice = EntityStateSlice<FloorList, Floor, State.Events>;
-
     [Serializable]
-    public class State : FloorEntityStateSlice
+    public class State : EntityStateSlice<Floor, State.Events>
     {
         public class Input { }
 
-        public new class Events : FloorEntityStateSlice.Events { }
+        public new class Events : EntityStateSlice<Floor, State.Events>.Events { }
 
-        public StateQueries queries;
+        public new Queries queries { get; }
 
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new StateQueries(appState, this);
+            queries = new Queries(appState, this);
         }
 
-        public override void Setup()
+        public override void Setup() { }
+
+        public override void Teardown() { }
+
+        public new class Queries : EntityStateSlice<Floor, State.Events>.Queries
         {
-
-        }
-
-        public override void Teardown()
-        {
-
-        }
-
-        public class StateQueries
-        {
-            AppState appState;
-            State state;
-
-            public StateQueries(AppState appState, State state)
-            {
-                this.state = state;
-            }
-
-            public Floor FindFloorAtCell(CellCoordinates cellCoordinates) =>
-                state.list.FindFloorAtCell(cellCoordinates);
+            public Queries(AppState appState, State state) : base(appState, state) { }
         }
     }
 }

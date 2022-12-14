@@ -63,7 +63,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectIndexText()
         {
-            EntityList inspectedEntityList = Registry.appState.Tools.inspectToolState.inspectedEntityList;
+            ListWrapper<Entity> inspectedEntityList = Registry.appState.Tools.inspectToolState.inspectedEntityList;
             int index = Registry.appState.Tools.inspectToolState.inspectedEntityIndex;
 
             string text = $"entityList: {inspectedEntityList.Count}\n"
@@ -221,7 +221,7 @@ namespace TowerBuilder.GameWorld.UI
         /* 
             Event Handlers
         */
-        void OnInspectedEntityListUpdated(EntityList entityList)
+        void OnInspectedEntityListUpdated(ListWrapper<Entity> entityList)
         {
             SetText();
         }
