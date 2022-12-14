@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
@@ -13,6 +14,7 @@ namespace TowerBuilder.Definitions
         public DefinitionQueries Queries { get; }
 
         public RoomDefinitionsList Rooms = new RoomDefinitionsList();
+        public FloorDefinitionsList Floors = new FloorDefinitionsList();
         public FurnitureDefinitionsList Furnitures = new FurnitureDefinitionsList();
         public ResidentDefinitionsList Residents = new ResidentDefinitionsList();
         public TransportationItemDefinitionsList TransportationItems = new TransportationItemDefinitionsList();
@@ -37,6 +39,8 @@ namespace TowerBuilder.Definitions
                 {
                     Entity.Type.Room =>
                         entityDefinitions.Rooms.Queries.FindAllCategories(),
+                    Entity.Type.Floor =>
+                        entityDefinitions.Floors.Queries.FindAllCategories(),
                     Entity.Type.Furniture =>
                         entityDefinitions.Furnitures.Queries.FindAllCategories(),
                     Entity.Type.Resident =>
@@ -53,6 +57,8 @@ namespace TowerBuilder.Definitions
                 {
                     Entity.Type.Room =>
                         entityDefinitions.Rooms.Queries.FindByCategory<EntityDefinition>(category),
+                    Entity.Type.Floor =>
+                        entityDefinitions.Floors.Queries.FindByCategory<EntityDefinition>(category),
                     Entity.Type.Furniture =>
                         entityDefinitions.Furnitures.Queries.FindByCategory<EntityDefinition>(category),
                     Entity.Type.Resident =>
@@ -71,6 +77,8 @@ namespace TowerBuilder.Definitions
                 {
                     Entity.Type.Room =>
                         entityDefinitions.Rooms.Queries.FindFirstInCategory(category),
+                    Entity.Type.Floor =>
+                        entityDefinitions.Floors.Queries.FindFirstInCategory(category),
                     Entity.Type.Furniture =>
                         entityDefinitions.Furnitures.Queries.FindFirstInCategory(category),
                     Entity.Type.Resident =>
@@ -89,6 +97,9 @@ namespace TowerBuilder.Definitions
                     case Entity.Type.Room:
                         Room.Key roomKey = Room.KeyLabelMap.KeyFromValue(keyLabel);
                         return entityDefinitions.Rooms.Queries.FindByKey(roomKey);
+                    case Entity.Type.Floor:
+                        Floor.Key floorKey = Floor.KeyLabelMap.KeyFromValue(keyLabel);
+                        return entityDefinitions.Floors.Queries.FindByKey(floorKey);
                     case Entity.Type.Furniture:
                         Furniture.Key furnitureKey = Furniture.KeyLabelMap.KeyFromValue(keyLabel);
                         return entityDefinitions.Furnitures.Queries.FindByKey(furnitureKey);

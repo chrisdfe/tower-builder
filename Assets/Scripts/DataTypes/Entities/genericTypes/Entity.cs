@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
@@ -22,6 +23,7 @@ namespace TowerBuilder.DataTypes.Entities
         {
             None,
             Room,
+            Floor,
             Resident,
             Furniture,
             TransportationItem,
@@ -31,6 +33,7 @@ namespace TowerBuilder.DataTypes.Entities
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
                 { Type.Room,               "Room" },
+                { Type.Floor,              "Floor" },
                 { Type.Resident,           "Resident" },
                 { Type.Furniture,          "Furniture" },
                 { Type.TransportationItem, "Transportation Item" },
@@ -46,21 +49,6 @@ namespace TowerBuilder.DataTypes.Entities
             Diagonal,
             Flexible,
         }
-
-        // TODO - this might make more sense to live in Definitinos instead
-        //        i.e EntityDefinition has a default, overridden for each EntityDefinition variant type (e.g furnitureDefinition)
-        //            and each instance of that variant type can override it further (e.g ladder could be inside, but by default
-        //            transportation items are at the front)
-        public EnumMap<Type, int> DefaultEntityTypeZLayerMap = new EnumMap<Type, int>(
-            new Dictionary<Type, int>()
-            {
-                { Type.Room, 0 },
-                { Type.Resident, 1 },
-                { Type.Furniture, 2 },
-                { Type.Freight, 2 },
-                { Type.TransportationItem, 3 },
-            }
-        );
 
         public int[] zLayers = new int[] { 0 };
 
@@ -235,6 +223,8 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 RoomDefinition =>
                     new Entities.Rooms.Room(definition as RoomDefinition),
+                FloorDefinition floorDefinition =>
+                    new Entities.Floors.Floor(definition as FloorDefinition),
                 FurnitureDefinition =>
                     new Entities.Furnitures.Furniture(definition as FurnitureDefinition),
                 ResidentDefinition =>
@@ -251,6 +241,8 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 RoomDefinition roomDefinition =>
                     Room.KeyLabelMap.ValueFromKey(roomDefinition.key),
+                FloorDefinition floorDefinition =>
+                    Floor.KeyLabelMap.ValueFromKey(floorDefinition.key),
                 FurnitureDefinition furnitureDefinition =>
                     Furniture.KeyLabelMap.ValueFromKey(furnitureDefinition.key),
                 ResidentDefinition residentDefinition =>

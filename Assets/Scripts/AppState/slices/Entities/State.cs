@@ -1,11 +1,12 @@
+using System;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
-
 
 namespace TowerBuilder.ApplicationState.Entities
 {
@@ -17,6 +18,7 @@ namespace TowerBuilder.ApplicationState.Entities
             public Residents.State.Input Residents = new Residents.State.Input();
 
             public Rooms.State.Input Rooms;
+            public Floors.State.Input Floors;
             public TransportationItems.State.Input TransportationItems;
             public Vehicles.State.Input Vehicles;
             public Freight.State.Input Freight;
@@ -24,6 +26,7 @@ namespace TowerBuilder.ApplicationState.Entities
             public Input()
             {
                 Rooms = new Rooms.State.Input();
+                Floors = new Floors.State.Input();
                 Furnitures = new Furnitures.State.Input();
                 Residents = new Residents.State.Input();
                 TransportationItems = new TransportationItems.State.Input();
@@ -33,6 +36,8 @@ namespace TowerBuilder.ApplicationState.Entities
         }
 
         public Rooms.State Rooms { get; }
+        public Floors.State Floors { get; }
+
         public Furnitures.State Furnitures { get; }
         public Residents.State Residents { get; }
         public TransportationItems.State TransportationItems { get; }
@@ -44,6 +49,8 @@ namespace TowerBuilder.ApplicationState.Entities
         public State(AppState appState, Input input) : base(appState)
         {
             Rooms = new Rooms.State(appState, input.Rooms);
+            Floors = new Floors.State(appState, input.Floors);
+
             Furnitures = new Furnitures.State(appState, input.Furnitures);
             Residents = new Residents.State(appState, input.Residents);
             TransportationItems = new TransportationItems.State(appState, input.TransportationItems);
@@ -56,6 +63,8 @@ namespace TowerBuilder.ApplicationState.Entities
         public override void Setup()
         {
             Rooms.Setup();
+            Floors.Setup();
+
             Furnitures.Setup();
             Residents.Setup();
             TransportationItems.Setup();
@@ -70,6 +79,9 @@ namespace TowerBuilder.ApplicationState.Entities
                 case Room room:
                     Rooms.Add(room);
                     break;
+                case Floor floor:
+                    Floors.Add(floor);
+                    break;
                 case Furniture furniture:
                     Furnitures.Add(furniture);
                     break;
@@ -82,6 +94,8 @@ namespace TowerBuilder.ApplicationState.Entities
                 case FreightItem freightItem:
                     Freight.FreightItems.Add(freightItem);
                     break;
+                default:
+                    throw new NotSupportedException($"Entity type not handled: {entity.GetType()}");
             }
         }
 
@@ -91,6 +105,9 @@ namespace TowerBuilder.ApplicationState.Entities
             {
                 case Room room:
                     Rooms.Build(room);
+                    break;
+                case Floor floor:
+                    Floors.Build(floor);
                     break;
                 case Furniture furniture:
                     Furnitures.Build(furniture);
@@ -104,6 +121,8 @@ namespace TowerBuilder.ApplicationState.Entities
                 case FreightItem freightItem:
                     Freight.FreightItems.Build(freightItem);
                     break;
+                default:
+                    throw new NotSupportedException($"Entity type not handled: {entity.GetType()}");
             }
         }
 
@@ -113,6 +132,9 @@ namespace TowerBuilder.ApplicationState.Entities
             {
                 case Room room:
                     Rooms.Remove(room);
+                    break;
+                case Floor floor:
+                    Floors.Remove(floor);
                     break;
                 case Furniture furniture:
                     Furnitures.Remove(furniture);
@@ -126,6 +148,8 @@ namespace TowerBuilder.ApplicationState.Entities
                 case FreightItem freightItem:
                     Freight.FreightItems.Remove(freightItem);
                     break;
+                default:
+                    throw new NotSupportedException($"Entity type not handled: {entity.GetType()}");
             }
         }
 

@@ -9,7 +9,6 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
         public Furniture furniture { get; set; }
 
         EntityMeshWrapper entityMeshWrapper;
-
         Transform cube;
 
         void Awake()

@@ -138,6 +138,7 @@ namespace TowerBuilder.DataTypes
         /*
             Static API
         */
+        public static CellCoordinatesList one => new CellCoordinatesList(CellCoordinates.zero);
 
         // TODO - this should be in cellcoordates
         public static CellCoordinates Add(CellCoordinates a, CellCoordinates b) =>
