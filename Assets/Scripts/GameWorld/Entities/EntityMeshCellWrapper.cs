@@ -48,6 +48,7 @@ namespace TowerBuilder.GameWorld.Entities
 
         public virtual void Teardown()
         {
+            GameObject.Destroy(meshTransform.gameObject);
         }
 
         public void SetColor(EntityMeshWrapper.ColorKey key)
@@ -73,13 +74,14 @@ namespace TowerBuilder.GameWorld.Entities
             // TODO - something more extensible than this
             void SetColor(MeshRenderer meshRenderer, Color color)
             {
-                meshRenderer.material.color = color;
+                Color defaultColor = defaultColorMap[meshRenderer];
+                meshRenderer.material.color = new Color(color.r, color.g, color.b, defaultColor.a);
             }
         }
 
         protected void InstantiateModel()
         {
-            Transform meshTransform = GameObject.Instantiate(prefabMesh).GetComponent<Transform>();
+            meshTransform = GameObject.Instantiate(prefabMesh).GetComponent<Transform>();
             meshTransform.SetParent(parent);
             meshTransform.localPosition = Vector3.zero;
 
@@ -88,13 +90,11 @@ namespace TowerBuilder.GameWorld.Entities
             meshTransform.Translate(new Vector3(0, 0, -2f));
 
 
-            this.meshTransform = meshTransform;
-
-            this.childrenMeshRenderers = TransformUtils.FindDeepChildrenWhere(meshTransform, (child) =>
+            childrenMeshRenderers = TransformUtils.FindDeepChildrenWhere(meshTransform, (child) =>
                 child.GetComponent<MeshRenderer>() != null
             ).Select(child => child.GetComponent<MeshRenderer>()).ToList();
 
-            this.defaultColorMap = childrenMeshRenderers.Aggregate(new Dictionary<MeshRenderer, Color>(), (acc, meshRenderer) =>
+            defaultColorMap = childrenMeshRenderers.Aggregate(new Dictionary<MeshRenderer, Color>(), (acc, meshRenderer) =>
             {
                 acc[meshRenderer] = meshRenderer.material.color;
                 return acc;

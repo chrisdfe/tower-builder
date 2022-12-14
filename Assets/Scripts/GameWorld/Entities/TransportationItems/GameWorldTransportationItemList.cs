@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using UnityEngine;
 
@@ -26,6 +27,8 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
             Registry.appState.Entities.TransportationItems.events.onItemsAdded += OnTransportationItemsAdded;
             Registry.appState.Entities.TransportationItems.events.onItemsRemoved += OnTransportationItemsRemoved;
             Registry.appState.Entities.TransportationItems.events.onItemsBuilt += OnTransportationItemsBuilt;
+
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
         void Teardown()
@@ -33,6 +36,8 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
             Registry.appState.Entities.TransportationItems.events.onItemsAdded -= OnTransportationItemsAdded;
             Registry.appState.Entities.TransportationItems.events.onItemsRemoved -= OnTransportationItemsRemoved;
             Registry.appState.Entities.TransportationItems.events.onItemsBuilt -= OnTransportationItemsBuilt;
+
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
         /* 
@@ -78,6 +83,21 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
 
         void OnTransportationItemsBuilt(TransportationItemsList transportationItemList)
         {
+        }
+
+        void OnCurrentSelectedEntityUpdated(Entity entity)
+        {
+            foreach (GameWorldTransportationItem gameWorldTransportationItem in gameWorldTransportationItemList)
+            {
+                if ((entity is TransportationItem) && ((TransportationItem)entity) == gameWorldTransportationItem.transportationItem)
+                {
+                    gameWorldTransportationItem.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.Inspected);
+                }
+                else
+                {
+                    gameWorldTransportationItem.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.Default);
+                }
+            }
         }
     }
 }

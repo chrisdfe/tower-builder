@@ -44,9 +44,13 @@ namespace TowerBuilder.GameWorld.Entities
         public virtual void Teardown()
         {
             DestroyEntityCellWrappers();
-            // GameObject.Destroy(meshTransform.gameObject);
         }
 
+        public void Reset()
+        {
+            Teardown();
+            Setup();
+        }
 
         public void UpdatePosition()
         {

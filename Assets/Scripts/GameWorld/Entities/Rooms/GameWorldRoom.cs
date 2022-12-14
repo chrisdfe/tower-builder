@@ -64,6 +64,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         public void Reset()
         {
+            roomEntityMeshWrapper.Reset();
         }
 
         /* 

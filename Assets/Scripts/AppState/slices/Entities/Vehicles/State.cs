@@ -149,7 +149,7 @@ namespace TowerBuilder.ApplicationState.Entities.Vehicles
 
                 if (vehicleContainingRoom.roomList.Count == 0)
                 {
-                    Add(vehicleContainingRoom);
+                    Remove(vehicleContainingRoom);
                 }
             });
         }

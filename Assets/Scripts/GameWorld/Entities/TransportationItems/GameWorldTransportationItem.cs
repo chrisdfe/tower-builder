@@ -38,7 +38,6 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
 
         public void Teardown()
         {
-            DestroyMesh();
         }
 
         public void Reset() { }
