@@ -37,9 +37,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
         /* 
             Static API
         */
-        public static GameWorldRoomsManager Find()
-        {
-            return GameWorldFindableCache.Find<GameWorldRoomsManager>("RoomsManager");
-        }
+        public static GameWorldRoomsManager Find() =>
+            GameWorldFindableCache.Find<GameWorldRoomsManager>("RoomsManager");
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.Utils;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld
@@ -9,46 +10,27 @@ namespace TowerBuilder.GameWorld
     {
         public static void ReplaceMaterials(Transform parent)
         {
-            List<Transform> materialChildren = FindAllChildrenWhereRecursive(parent, (child) =>
+            MaterialsManager materialsManager = MaterialsManager.Find();
+
+            List<Transform> materialChildren = TransformUtils.FindDeepChildrenWhere(parent, (child) =>
                 GetChildMaterial(child) != null
             );
 
-            materialChildren.ForEach(child => ReplaceMaterial(child));
+            materialChildren.ForEach(child => ReplaceMaterial(child, materialsManager));
         }
 
-        static void ReplaceMaterial(Transform child)
+        static void ReplaceMaterial(Transform child, MaterialsManager materialsManager)
         {
             MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
             Material material = meshRenderer.sharedMaterial;
             string materialName = material.name;
-            string cleanedName = materialName.Replace(" (Instance)", "");
-            MaterialsManager materialsManager = MaterialsManager.Find();
+            string cleanedName = materialName.Replace(" (Instance)", "").ToLower();
             Material replacementMaterial = materialsManager.FindByName(cleanedName);
+
             if (replacementMaterial != null)
             {
                 meshRenderer.sharedMaterial = replacementMaterial;
             }
-        }
-
-        // TODO - put in TransformUtils
-        public delegate bool Predicate(Transform transform);
-        static List<Transform> FindAllChildrenWhereRecursive(Transform parent, Predicate predicate)
-        {
-            List<Transform> result = new List<Transform>();
-
-            foreach (Transform child in parent)
-            {
-                if (predicate(child))
-                {
-                    result.Add(child);
-                }
-
-                if (child.childCount > 0)
-                {
-                    result = result.Concat(FindAllChildrenWhereRecursive(child, predicate)).ToList();
-                }
-            }
-            return result;
         }
 
         static Material GetChildMaterial(Transform child)

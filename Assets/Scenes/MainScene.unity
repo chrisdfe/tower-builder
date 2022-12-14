@@ -5945,7 +5945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81461dd12fb134d44b1367fe880a0e16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameWorldRooms: []
+  gameWorldRoomList: []
 --- !u!1 &1423086432
 GameObject:
   m_ObjectHideFlags: 0
@@ -7626,7 +7626,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialList:
-    list: []
+    list:
+    - key: 0
+      value: {fileID: 2100000, guid: 1577e74f42ad3f0468b3e4633ef8b1f0, type: 2}
+    - key: 1
+      value: {fileID: 2100000, guid: 23ac2b21e8db93543b19c1c88e886791, type: 2}
+    - key: 2
+      value: {fileID: 2100000, guid: 340d87034ea2d294e9b68cf45d10aa8e, type: 2}
 --- !u!1 &2005510992
 GameObject:
   m_ObjectHideFlags: 0

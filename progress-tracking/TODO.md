@@ -2,6 +2,9 @@
 
 ## Tasks
 
+- AssetManager classes (FurnitureAssetManager etc) should derive from a base class
+- Delete Scratchboard transform
+- Stairs transportation item
 - Transportation item capacity - residents queue up when it's at capacity
 - Clean up UI padding/spacing, right now it's pretty inconsistent
 - Room should just be a collection of walls/floor, in a similar way relationship to vehicles -> rooms
@@ -9,7 +12,7 @@
 - Make cells 1x1.5 or 1x2 as in my sketchbook - floors/ceilings/walls are part of the Inside of box
 - TransportationItemDefinition/entranceExitBuilder should probably return 2 lists (1 for entrances and 2 for exits) instead of entrance/exit tuples of single coordinates
 - Rooms aren't validating that they're on top of another room again
-- GameWorldEntity/GameWorldEntityList
+- GameWorldEntityList
 - BuildValidators/DestroyValidators?
 - EntityStateSlice build chould fire onItemsBuilt event as well - currently it's just singular
 - Rename "MeshWrapper" to "EntityMeshWrapper"
@@ -227,6 +230,7 @@
 
 # Done
 
+- GameWorldEntity
 - change EntityDefinition.cellCoordinatesList to something else, it's easy to confuse with entity.cellCoordinatesList
 - Destroy tool seems to be broken
 - BuildToolState/BuildStateButtonsManager are a big mess with all these switch statements now

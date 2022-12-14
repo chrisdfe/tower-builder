@@ -16,6 +16,7 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
 
         void Awake()
         {
+            Debug.Log("replacing transportation mesh asset materials");
             meshAssets.ReplaceMaterials();
         }
 
