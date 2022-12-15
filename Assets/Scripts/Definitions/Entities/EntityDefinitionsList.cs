@@ -1,42 +1,69 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 
 namespace TowerBuilder.Definitions
 {
-    public class EntityDefinitionsList { }
+    public interface IEntityDefinitionsListQueries
+    {
+        public EntityDefinition FindByTitle(string title);
 
-    public class EntityDefinitionsList<KeyType, EntityType, DefinitionType> : EntityDefinitionsList
+        public List<string> FindAllCategories();
+
+        public string FindFirstCategory();
+
+        public ListWrapper<EntityDefinition> FindByCategory(string category);
+
+        public EntityDefinition FindByKey<DefinitionKeyType>(DefinitionKeyType key) where DefinitionKeyType : struct;
+
+        public EntityDefinition FindFirstInCategory(string category);
+    }
+
+    public interface IEntityDefinitionsList
+    {
+        public List<EntityDefinition> EntityDefinitions { get; }
+        public IEntityDefinitionsListQueries Queries { get; }
+    }
+
+    public class EntityDefinitionsList<KeyType, DefinitionType> : IEntityDefinitionsList
         where KeyType : struct
-        where EntityType : Entity<KeyType>
         where DefinitionType : EntityDefinition<KeyType>
     {
-        public DefinitionQueries Queries { get; }
+        public IEntityDefinitionsListQueries Queries { get; }
 
         public virtual List<DefinitionType> Definitions { get; } = new List<DefinitionType>();
+
+        public List<EntityDefinition> EntityDefinitions =>
+            Definitions.ConvertAll<EntityDefinition>(definition => definition as EntityDefinition);
 
         public EntityDefinitionsList()
         {
             Queries = new DefinitionQueries(Definitions);
         }
 
-        public class DefinitionQueries
+        public class DefinitionQueries : IEntityDefinitionsListQueries
         {
-            List<DefinitionType> Definitions;
+            ListWrapper<DefinitionType> Definitions;
 
             public DefinitionQueries(List<DefinitionType> Definitions)
             {
-                this.Definitions = Definitions;
+                this.Definitions = new ListWrapper<DefinitionType>(Definitions);
             }
 
-            public DefinitionType FindByKey(KeyType key) =>
-                Definitions.Find(definition => definition.key.Equals(key));
+            public EntityDefinition FindByKey<DefinitionKeyType>(DefinitionKeyType key)
+                where DefinitionKeyType : struct =>
+                Definitions.Find(definition => (
+                    (definition.key.GetType()) == key.GetType()) &&
+                    (Convert.ToInt32(definition.key)).Equals(Convert.ToInt32(key))
+                );
 
-            public DefinitionType FindByTitle(string title) =>
+            public EntityDefinition FindByTitle(string title) =>
                 Definitions.Find(definition => definition.title == title);
 
             public List<string> FindAllCategories() =>
-                Definitions.Aggregate(new HashSet<string>(), (acc, definition) =>
+                Definitions.items.Aggregate(new HashSet<string>(), (acc, definition) =>
                 {
                     acc.Add(definition.category);
                     return acc;
@@ -44,15 +71,12 @@ namespace TowerBuilder.Definitions
 
             public string FindFirstCategory() => FindAllCategories()[0];
 
-            public List<DefinitionType> FindByCategory(string category) =>
-                Definitions.FindAll(definition => definition.category == category);
+            public ListWrapper<EntityDefinition> FindByCategory(string category) =>
+                Definitions.FindAll(definition => definition.category == category)
+                           .ConvertAll<EntityDefinition>();
 
-            public List<CategoryDefinitionType> FindByCategory<CategoryDefinitionType>(string category) where CategoryDefinitionType : EntityDefinition =>
-                FindByCategory(category).Select(definition => definition as CategoryDefinitionType).ToList();
-
-            public DefinitionType FindFirstInCategory(string category) =>
-                Definitions.Find(definition => definition.category == category);
-
+            public EntityDefinition FindFirstInCategory(string category) =>
+                Definitions.Find(definition => definition.category == category) as EntityDefinition;
         }
     }
 }

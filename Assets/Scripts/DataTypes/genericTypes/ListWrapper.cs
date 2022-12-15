@@ -66,6 +66,19 @@ namespace TowerBuilder.DataTypes
             return items.Contains(item);
         }
 
+        public ItemType Find(Predicate<ItemType> predicate) => items.Find(predicate);
+
+        public ListWrapper<ItemType> FindAll(Predicate<ItemType> predicate)
+        {
+            List<ItemType> result = items.FindAll(predicate);
+            if (result != null)
+            {
+                return new ListWrapper<ItemType>(result);
+            }
+
+            return null;
+        }
+
         public void ForEach(Action<ItemType> action)
         {
             items.ForEach(action);

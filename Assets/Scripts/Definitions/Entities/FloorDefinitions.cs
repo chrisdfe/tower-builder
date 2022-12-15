@@ -4,7 +4,7 @@ using TowerBuilder.DataTypes.Entities.Floors;
 
 namespace TowerBuilder.Definitions
 {
-    public class FloorDefinitionsList : EntityDefinitionsList<Floor.Key, Floor, FloorDefinition>
+    public class FloorDefinitionsList : EntityDefinitionsList<Floor.Key, FloorDefinition>
     {
         public override List<FloorDefinition> Definitions { get; } = new List<FloorDefinition>()
         {

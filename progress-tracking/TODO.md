@@ -16,9 +16,6 @@
 - GameWorldEntityList
 - BuildValidators/DestroyValidators?
 - EntityStateSlice build chould fire onItemsBuilt event as well - currently it's just singular
-- Rename "MeshWrapper" to "EntityMeshWrapper"
-- Maybe entity needs to have a couple more generic parameters, like TemplateType and ValidatorType
-- reorganize/simplify buildtool state to be more dynamic
 - same as with how I made an entities appState slice:
   - Attributes appState slice group
   - Behaviors appState slice group
@@ -42,10 +39,6 @@
   - maybe should create a lookup table indexed by material name or something to avoid traversing gameObject tree too much?
 - spiral staircase transportation
 - Make rooms a collection of walls/back walls/windows/floors/lights. Some floors are 1 tile? floors vs platforms (like in teraria)
-- Freight Entity
-- Rooms shouldn't be able to be x number of cells wider than wheel base
-- Create "IEntity" interface to abstract some of this OnBuild/OnDestroy stuff
-  - Same for things that are Setup/Teardown-able?
 - "front door" transportation items - connection to the outside world
 - Ability for residents to walk around on the ground
 - When new resident slots open up (beds built) residents should arrive via ground, not just appear
@@ -198,6 +191,7 @@
 
 ## Ideas
 
+- Vehicles that fit inside of other vehicles and vice versa
 - An exterior shape that doesn't conform to the tile system
 - 'front hallway' that stairs/escalators live in; front hallway doors
 - right click dropdown contextual menu
@@ -222,6 +216,7 @@
   - temperature
   - freight/cargo
   - passengers/passenger seat
+  - passengers/passenger seat
 - this game loop:
   - Vehicles (moving vehicles) need fuel
   - You need scrap (currency) to buy fuel
@@ -231,6 +226,13 @@
 
 # Done
 
+- Rooms shouldn't be able to be x number of cells wider than wheel base
+- Create "IEntity" interface to abstract some of this OnBuild/OnDestroy stuff
+  - Same for things that are Setup/Teardown-able?
+- reorganize/simplify buildtool state to be more dynamic
+- Freight Entity
+- Maybe entity needs to have a couple more generic parameters, like TemplateType and ValidatorType
+- Rename "MeshWrapper" to "EntityMeshWrapper"
 - GameWorldEntity
 - change EntityDefinition.cellCoordinatesList to something else, it's easy to confuse with entity.cellCoordinatesList
 - Destroy tool seems to be broken

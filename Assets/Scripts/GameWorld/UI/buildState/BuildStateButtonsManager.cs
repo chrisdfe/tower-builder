@@ -161,7 +161,7 @@ namespace TowerBuilder.GameWorld.UI
             string currentCategory = Registry.appState.Tools.buildToolState.selectedEntityCategory;
 
             return Registry.Definitions.Entities.Queries.FindByCategory(selectedEntityType, currentCategory)
-                .Select((definition) =>
+                .items.Select((definition) =>
                     new UISelectButton.Input()
                     {
                         label = definition.title,

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Definitions
 {
-    public class FurnitureDefinitionsList : EntityDefinitionsList<Furniture.Key, Furniture, FurnitureDefinition>
+    public class FurnitureDefinitionsList : EntityDefinitionsList<Furniture.Key, FurnitureDefinition>
     {
         public override List<FurnitureDefinition> Definitions { get; } = new List<FurnitureDefinition>()
         {

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Definitions
 {
-    public class ResidentDefinitionsList : EntityDefinitionsList<Resident.Key, Resident, ResidentDefinition>
+    public class ResidentDefinitionsList : EntityDefinitionsList<Resident.Key, ResidentDefinition>
     {
         public override List<ResidentDefinition> Definitions { get; } = new List<ResidentDefinition>()
         {

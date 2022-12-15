@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Definitions
 {
-    public class TransportationItemDefinitionsList : EntityDefinitionsList<TransportationItem.Key, TransportationItem, TransportationItemDefinition>
+    public class TransportationItemDefinitionsList : EntityDefinitionsList<TransportationItem.Key, TransportationItemDefinition>
     {
         public override List<TransportationItemDefinition> Definitions { get; } = new List<TransportationItemDefinition>()
         {

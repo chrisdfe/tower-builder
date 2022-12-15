@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Freights;
@@ -20,75 +21,49 @@ namespace TowerBuilder.Definitions
         public TransportationItemDefinitionsList TransportationItems = new TransportationItemDefinitionsList();
         public FreightDefinitionsList Freights = new FreightDefinitionsList();
 
+        Dictionary<Entity.Type, IEntityDefinitionsList> entityDefinitionsMap;
+
         public EntityDefinitions()
         {
             Queries = new DefinitionQueries(this);
+
+            entityDefinitionsMap = new Dictionary<Entity.Type, IEntityDefinitionsList>() {
+                { Entity.Type.Room, Rooms },
+                { Entity.Type.Floor, Floors },
+                { Entity.Type.Furniture, Furnitures },
+                { Entity.Type.Resident, Residents },
+                { Entity.Type.TransportationItem, TransportationItems },
+                { Entity.Type.Freight, Freights },
+            };
         }
+
+        IEntityDefinitionsList DefinitionFromEntityType(Entity.Type type) =>
+            entityDefinitionsMap[type];
 
         public class DefinitionQueries
         {
-            EntityDefinitions entityDefinitions;
+            EntityDefinitions Definitions;
 
             public DefinitionQueries(EntityDefinitions entityDefinitions)
             {
-                this.entityDefinitions = entityDefinitions;
+                this.Definitions = entityDefinitions;
             }
 
             public List<string> FindAllCategories(Entity.Type type) =>
-                type switch
-                {
-                    Entity.Type.Room =>
-                        entityDefinitions.Rooms.Queries.FindAllCategories(),
-                    Entity.Type.Floor =>
-                        entityDefinitions.Floors.Queries.FindAllCategories(),
-                    Entity.Type.Furniture =>
-                        entityDefinitions.Furnitures.Queries.FindAllCategories(),
-                    Entity.Type.Resident =>
-                        entityDefinitions.Residents.Queries.FindAllCategories(),
-                    Entity.Type.TransportationItem =>
-                        entityDefinitions.TransportationItems.Queries.FindAllCategories(),
-                    Entity.Type.Freight =>
-                        entityDefinitions.Freights.Queries.FindAllCategories(),
-                    _ => null
-                };
+                Definitions.DefinitionFromEntityType(type)?.Queries.FindAllCategories();
 
-            public List<EntityDefinition> FindByCategory(Entity.Type type, string category) =>
-                type switch
-                {
-                    Entity.Type.Room =>
-                        entityDefinitions.Rooms.Queries.FindByCategory<EntityDefinition>(category),
-                    Entity.Type.Floor =>
-                        entityDefinitions.Floors.Queries.FindByCategory<EntityDefinition>(category),
-                    Entity.Type.Furniture =>
-                        entityDefinitions.Furnitures.Queries.FindByCategory<EntityDefinition>(category),
-                    Entity.Type.Resident =>
-                        entityDefinitions.Residents.Queries.FindByCategory<EntityDefinition>(category),
-                    Entity.Type.TransportationItem =>
-                        entityDefinitions.TransportationItems.Queries.FindByCategory<EntityDefinition>(category),
-                    Entity.Type.Freight =>
-                        entityDefinitions.Freights.Queries.FindByCategory<EntityDefinition>(category),
-                    _ => null
-                };
+            public ListWrapper<EntityDefinition> FindByCategory(Entity.Type type, string category) =>
+                Definitions.DefinitionFromEntityType(type)?.Queries.FindByCategory(category);
 
             public string FindFirstCategory(Entity.Type type) => FindAllCategories(type)[0];
 
             public EntityDefinition FindFirstInCategory(Entity.Type type, string category) =>
-                type switch
-                {
-                    Entity.Type.Room =>
-                        entityDefinitions.Rooms.Queries.FindFirstInCategory(category),
-                    Entity.Type.Floor =>
-                        entityDefinitions.Floors.Queries.FindFirstInCategory(category),
-                    Entity.Type.Furniture =>
-                        entityDefinitions.Furnitures.Queries.FindFirstInCategory(category),
-                    Entity.Type.Resident =>
-                        entityDefinitions.Residents.Queries.FindFirstInCategory(category),
-                    Entity.Type.TransportationItem =>
-                        entityDefinitions.TransportationItems.Queries.FindFirstInCategory(category),
-                    Entity.Type.Freight =>
-                        entityDefinitions.Freights.Queries.FindFirstInCategory(category),
-                    _ => null
-                };
+                Definitions.DefinitionFromEntityType(type)?.Queries.FindFirstInCategory(category);
+
+            public EntityDefinition FindByKey<KeyType>(Entity.Type type, KeyType key)
+                where KeyType : struct =>
+                Definitions.DefinitionFromEntityType(type)?.Queries.FindByKey<KeyType>(key);
+
 
             public EntityDefinition FindDefinitionByKeyLabel(Entity.Type type, string keyLabel)
             {
@@ -96,22 +71,22 @@ namespace TowerBuilder.Definitions
                 {
                     case Entity.Type.Room:
                         Room.Key roomKey = Room.KeyLabelMap.KeyFromValue(keyLabel);
-                        return entityDefinitions.Rooms.Queries.FindByKey(roomKey);
+                        return Definitions.Rooms.Queries.FindByKey(roomKey);
                     case Entity.Type.Floor:
                         Floor.Key floorKey = Floor.KeyLabelMap.KeyFromValue(keyLabel);
-                        return entityDefinitions.Floors.Queries.FindByKey(floorKey);
+                        return Definitions.Floors.Queries.FindByKey(floorKey);
                     case Entity.Type.Furniture:
                         Furniture.Key furnitureKey = Furniture.KeyLabelMap.KeyFromValue(keyLabel);
-                        return entityDefinitions.Furnitures.Queries.FindByKey(furnitureKey);
+                        return Definitions.Furnitures.Queries.FindByKey(furnitureKey);
                     case Entity.Type.Resident:
                         Resident.Key residentKey = Resident.KeyLabelMap.KeyFromValue(keyLabel);
-                        return entityDefinitions.Residents.Queries.FindByKey(residentKey);
+                        return Definitions.Residents.Queries.FindByKey(residentKey);
                     case Entity.Type.TransportationItem:
                         TransportationItem.Key transportationItemKey = TransportationItem.KeyLabelMap.KeyFromValue(keyLabel);
-                        return entityDefinitions.TransportationItems.Queries.FindByKey(transportationItemKey);
+                        return Definitions.TransportationItems.Queries.FindByKey(transportationItemKey);
                     case Entity.Type.Freight:
                         FreightItem.Key freightItemKey = FreightItem.KeyLabelMap.KeyFromValue(keyLabel);
-                        return entityDefinitions.Freights.Queries.FindByKey(freightItemKey);
+                        return Definitions.Freights.Queries.FindByKey(freightItemKey);
                 }
 
                 return null;

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.Definitions
 {
-    public class RoomDefinitionsList : EntityDefinitionsList<Room.Key, Room, RoomDefinition>
+    public class RoomDefinitionsList : EntityDefinitionsList<Room.Key, RoomDefinition>
     {
         public override List<RoomDefinition> Definitions { get; } = new List<RoomDefinition>() {
             new RoomDefinition()

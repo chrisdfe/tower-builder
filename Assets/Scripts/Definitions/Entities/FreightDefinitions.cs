@@ -4,7 +4,7 @@ using TowerBuilder.DataTypes.Entities.Freights;
 
 namespace TowerBuilder.Definitions
 {
-    public class FreightDefinitionsList : EntityDefinitionsList<FreightItem.Key, FreightItem, FreightDefinition>
+    public class FreightDefinitionsList : EntityDefinitionsList<FreightItem.Key, FreightDefinition>
     {
         public override List<FreightDefinition> Definitions { get; } = new List<FreightDefinition>()
         {
