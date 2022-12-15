@@ -4,6 +4,7 @@ using System.Linq;
 using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.InteriorWalls;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
@@ -33,6 +34,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
+                { Type.None,               "None" },
                 { Type.Room,               "Room" },
                 { Type.Floor,              "Floor" },
                 { Type.InteriorWall,       "InteriorWall" },
@@ -218,25 +220,26 @@ namespace TowerBuilder.DataTypes.Entities
         public CellCoordinatesBlock FindBlockByCellCoordinates(CellCoordinates cellCoordinates) =>
             blocksList.items.Find(cellCoordinatesBlock => cellCoordinatesBlock.Contains(cellCoordinates));
 
-
         /*
             Static API
         */
         public static Entity CreateFromDefinition(EntityDefinition definition) =>
             (definition) switch
             {
-                RoomDefinition =>
-                    new Entities.Rooms.Room(definition as RoomDefinition),
+                RoomDefinition roomDefinition =>
+                    new Entities.Rooms.Room(roomDefinition),
+                InteriorWallDefinition interiorWallDefinition =>
+                    new Entities.InteriorWalls.InteriorWall(interiorWallDefinition),
                 FloorDefinition floorDefinition =>
-                    new Entities.Floors.Floor(definition as FloorDefinition),
-                FurnitureDefinition =>
-                    new Entities.Furnitures.Furniture(definition as FurnitureDefinition),
-                ResidentDefinition =>
-                    new Entities.Residents.Resident(definition as ResidentDefinition),
-                TransportationItemDefinition =>
-                    new Entities.TransportationItems.TransportationItem(definition as TransportationItemDefinition),
-                FreightDefinition =>
-                    new Entities.Freights.FreightItem(definition as FreightDefinition),
+                    new Entities.Floors.Floor(floorDefinition),
+                FurnitureDefinition furnitureDefinition =>
+                    new Entities.Furnitures.Furniture(furnitureDefinition),
+                ResidentDefinition residentDefinition =>
+                    new Entities.Residents.Resident(residentDefinition),
+                TransportationItemDefinition transportationItemDefinition =>
+                    new Entities.TransportationItems.TransportationItem(transportationItemDefinition),
+                FreightDefinition freightDefinition =>
+                    new Entities.Freights.FreightItem(freightDefinition),
                 _ => null
             };
 
@@ -247,6 +250,8 @@ namespace TowerBuilder.DataTypes.Entities
                     Room.KeyLabelMap.ValueFromKey(roomDefinition.key),
                 FloorDefinition floorDefinition =>
                     Floor.KeyLabelMap.ValueFromKey(floorDefinition.key),
+                InteriorWallDefinition interiorWallDefinition =>
+                    InteriorWall.KeyLabelMap.ValueFromKey(interiorWallDefinition.key),
                 FurnitureDefinition furnitureDefinition =>
                     Furniture.KeyLabelMap.ValueFromKey(furnitureDefinition.key),
                 ResidentDefinition residentDefinition =>
@@ -263,6 +268,8 @@ namespace TowerBuilder.DataTypes.Entities
         where KeyType : struct
     {
         public KeyType key { get; protected set; }
+
+        // public static EnumStringMap<KeyType> KeyLabelMap;
 
         public Entity(EntityDefinition<KeyType> definition) : base(definition as EntityDefinition)
         {

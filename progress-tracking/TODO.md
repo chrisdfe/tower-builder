@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Decouple entity keys with the mesh they use - use "skinKey" like roomcell
 - Clean up final gross entity type switch statements
   - FindDefinitionByKeyLabel
   - Entity.CreateFromDefinition

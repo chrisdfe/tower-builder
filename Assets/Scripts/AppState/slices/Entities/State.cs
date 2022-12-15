@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities;
+using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities
 {
@@ -82,6 +83,8 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Add(Entity entity)
         {
+            Debug.Log("Add");
+            Debug.Log(GetStateSlice(entity)?.GetType());
             GetStateSlice(entity)?.Add(entity);
         }
 
