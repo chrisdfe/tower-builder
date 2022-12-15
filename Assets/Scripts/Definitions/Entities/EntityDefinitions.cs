@@ -4,6 +4,7 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.InteriorWalls;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
@@ -16,6 +17,7 @@ namespace TowerBuilder.Definitions
 
         public RoomDefinitionsList Rooms = new RoomDefinitionsList();
         public FloorDefinitionsList Floors = new FloorDefinitionsList();
+        public InteriorWallDefinitionsList InteriorWalls = new InteriorWallDefinitionsList();
         public FurnitureDefinitionsList Furnitures = new FurnitureDefinitionsList();
         public ResidentDefinitionsList Residents = new ResidentDefinitionsList();
         public TransportationItemDefinitionsList TransportationItems = new TransportationItemDefinitionsList();
@@ -30,6 +32,7 @@ namespace TowerBuilder.Definitions
             entityDefinitionsMap = new Dictionary<Entity.Type, IEntityDefinitionsList>() {
                 { Entity.Type.Room, Rooms },
                 { Entity.Type.Floor, Floors },
+                { Entity.Type.InteriorWall, InteriorWalls },
                 { Entity.Type.Furniture, Furnitures },
                 { Entity.Type.Resident, Residents },
                 { Entity.Type.TransportationItem, TransportationItems },
@@ -72,6 +75,9 @@ namespace TowerBuilder.Definitions
                     case Entity.Type.Room:
                         Room.Key roomKey = Room.KeyLabelMap.KeyFromValue(keyLabel);
                         return Definitions.Rooms.Queries.FindByKey(roomKey);
+                    case Entity.Type.InteriorWall:
+                        InteriorWall.Key interiorWallKey = InteriorWall.KeyLabelMap.KeyFromValue(keyLabel);
+                        return Definitions.InteriorWalls.Queries.FindByKey(interiorWallKey);
                     case Entity.Type.Floor:
                         Floor.Key floorKey = Floor.KeyLabelMap.KeyFromValue(keyLabel);
                         return Definitions.Floors.Queries.FindByKey(floorKey);

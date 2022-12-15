@@ -24,6 +24,7 @@ namespace TowerBuilder.DataTypes.Entities
             None,
             Room,
             Floor,
+            InteriorWall,
             Resident,
             Furniture,
             TransportationItem,
@@ -34,6 +35,7 @@ namespace TowerBuilder.DataTypes.Entities
             new Dictionary<Type, string>() {
                 { Type.Room,               "Room" },
                 { Type.Floor,              "Floor" },
+                { Type.InteriorWall,       "InteriorWall" },
                 { Type.Resident,           "Resident" },
                 { Type.Furniture,          "Furniture" },
                 { Type.TransportationItem, "Transportation Item" },
