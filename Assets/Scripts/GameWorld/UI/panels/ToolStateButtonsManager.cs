@@ -21,7 +21,6 @@ namespace TowerBuilder.GameWorld.UI
         Button BuildButton;
         Button DestroyButton;
         Button InspectButton;
-        Button RoutesButton;
 
         Button currentButton;
         Color originalColor;
@@ -34,16 +33,14 @@ namespace TowerBuilder.GameWorld.UI
             BuildButton = transform.Find("BuildButton").GetComponent<Button>();
             DestroyButton = transform.Find("DestroyButton").GetComponent<Button>();
             InspectButton = transform.Find("InspectButton").GetComponent<Button>();
-            RoutesButton = transform.Find("RoutesButton").GetComponent<Button>();
 
             // NoneButton.onClick.AddListener(OnNoneButtonClick);
             BuildButton.onClick.AddListener(OnBuildButtonClick);
             DestroyButton.onClick.AddListener(OnDestroyButtonClick);
             InspectButton.onClick.AddListener(OnInspectButtonClick);
-            RoutesButton.onClick.AddListener(OnRoutesButtonClick);
 
             currentButton = GetToolStateButton(Registry.appState.Tools.toolState);
-            buttons = new List<Button> { BuildButton, DestroyButton, InspectButton, RoutesButton };
+            buttons = new List<Button> { BuildButton, DestroyButton, InspectButton };
             HighlightCurrentButton();
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
@@ -125,11 +122,6 @@ namespace TowerBuilder.GameWorld.UI
             if (toolState == ToolState.Inspect)
             {
                 return InspectButton;
-            }
-
-            if (toolState == ToolState.Routes)
-            {
-                return RoutesButton;
             }
 
             return null;

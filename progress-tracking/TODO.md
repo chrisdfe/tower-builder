@@ -2,6 +2,18 @@
 
 ## Tasks
 
+- chassis that can expand vertically really high without needing support but can't support anything above it
+  - tent, for freight
+  - spectrum between this (can only expand 1 high) and be able to have lots of weight
+- 3 layers - main, lower, and absolute bottom (wheel areas)
+- Bring back "is on top of another room" room validation
+- Validate entity is not overlapping another entity in the same cell(s)
+  - also cells in the same "overlapGroup" or whatever (freight and furntiure);
+- 'unconstrained' vs 'constrained' selection box - tile/based vs mouse position coordinates
+- Build ToolStateButtons dynamically from available states
+- Make vehicles an entity again - I want to be able to place vehicles + have vehicle definitions
+- "CursorManager" parent class to manage whether selection box is shown vs regular cursor, etc
+- I should probably switch back to the raycast method of determining which entities are being moused over
 - Decouple entity keys with the mesh they use - use "skinKey" like roomcell
 - Clean up final gross entity type switch statements
   - FindDefinitionByKeyLabel
@@ -196,6 +208,9 @@
 
 ## Ideas
 
+- warm fire orange with a neutral grey/blue shadow to accentuate the warmth of the light
+- The feeling of going on a journey
+  - A home base that you gradually build up, along with vehciles that you can send on excursions that you can improve along the way - the resources you gather during this journey can contriute torwards your overall coloy resources
 - Vehicles that fit inside of other vehicles and vice versa
 - An exterior shape that doesn't conform to the tile system
 - 'front hallway' that stairs/escalators live in; front hallway doors
