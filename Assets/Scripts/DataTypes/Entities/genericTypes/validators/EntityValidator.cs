@@ -25,6 +25,12 @@ namespace TowerBuilder.DataTypes.Entities
             // GenericEntityCellValidations.ValidateAcceptableOverhang,
         };
 
+        protected virtual List<EntityValidationFunc> baseValidatorIgnoreList { get; } =
+            new List<EntityValidationFunc>();
+
+        protected virtual List<EntityCellValidationFunc> baseCellValidatorIgnoreList { get; } =
+            new List<EntityCellValidationFunc>();
+
         protected virtual List<EntityValidationFunc> validators { get; } = new List<EntityValidationFunc>();
         protected virtual List<EntityCellValidationFunc> cellValidators { get; } = new List<EntityCellValidationFunc>();
 
@@ -39,17 +45,26 @@ namespace TowerBuilder.DataTypes.Entities
         {
             errors = new EntityValidationErrorList();
 
-            List<EntityValidationFunc> AllEntityValidators = BaseValidators.Concat(validators).ToList();
-            List<EntityCellValidationFunc> AllEntityCellValidators = BaseCellValidators.Concat(cellValidators).ToList();
+            List<EntityValidationFunc> entityValidators =
+                BaseValidators
+                    .FindAll(validator => !baseValidatorIgnoreList.Contains(validator))
+                    .Concat(validators)
+                    .ToList();
 
-            foreach (EntityValidationFunc EntityValidationFunc in AllEntityValidators)
+            List<EntityCellValidationFunc> entityCellValidators =
+                BaseCellValidators
+                    .FindAll(validator => !baseCellValidatorIgnoreList.Contains(validator))
+                    .Concat(cellValidators)
+                    .ToList();
+
+            foreach (EntityValidationFunc EntityValidationFunc in entityValidators)
             {
                 errors.Add(EntityValidationFunc(appState, entity));
             }
 
             entity.cellCoordinatesList.ForEach((cellCoordinates) =>
             {
-                foreach (EntityCellValidationFunc EntityCellValidationFunc in AllEntityCellValidators)
+                foreach (EntityCellValidationFunc EntityCellValidationFunc in entityCellValidators)
                 {
                     errors.Add(EntityCellValidationFunc(appState, entity, cellCoordinates));
                 }

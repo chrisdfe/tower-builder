@@ -11,11 +11,11 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
     public class RoomValidator : EntityValidator
     {
         protected override List<EntityCellValidationFunc> cellValidators { get; } =
-            EntityValidator.BaseCellValidators.Concat(new List<EntityCellValidationFunc>()
+            new List<EntityCellValidationFunc>()
             {
                 ValidateAboveOtherRoom,
                 ValidateAcceptableOverhang,
-            }).ToList();
+            };
 
         public RoomValidator(Room room) : base(room) { }
 
