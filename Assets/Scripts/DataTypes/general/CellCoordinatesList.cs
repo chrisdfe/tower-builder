@@ -69,6 +69,10 @@ namespace TowerBuilder.DataTypes
                 items.Select(cellCoordinates => Subtract(cellCoordinates, bottomLeftCoordinates)).ToList()
             );
 
+        public CellCoordinatesList bottomRow =>
+            new CellCoordinatesList(
+                items.FindAll(cellCoordinates => cellCoordinates.floor == lowestFloor)
+            );
 
         public CellCoordinatesList() { }
 
@@ -125,15 +129,12 @@ namespace TowerBuilder.DataTypes
             return result;
         }
 
-        public CellCoordinatesList Clone()
-        {
-            return new CellCoordinatesList(
+        public CellCoordinatesList Clone() =>
+            new CellCoordinatesList(
                 items.Select(cellCoordinates => cellCoordinates.Clone()).ToList()
             );
-        }
 
-        public delegate void ForEachPredicate(CellCoordinates cellCoordinates);
-        public void ForEach(ForEachPredicate predicate) => items.ForEach(cellCoordinates => predicate(cellCoordinates));
+        public void ForEach(Predicate<CellCoordinates> predicate) => items.ForEach(cellCoordinates => predicate(cellCoordinates));
 
         /*
             Static API

@@ -7,6 +7,8 @@ namespace TowerBuilder.ApplicationState.Entities
 {
     public interface IEntityStateSlice
     {
+        public ListWrapper<Entity> entityList { get; }
+
         public void Add(ListWrapper<Entity> newItemsList);
         public void Add(Entity item);
         public void Remove(ListWrapper<Entity> removedItemsList);
@@ -29,6 +31,8 @@ namespace TowerBuilder.ApplicationState.Entities
         public ListWrapper<EntityType> list { get; }
         public EventsType events { get; }
         public Queries queries { get; }
+
+        public ListWrapper<Entity> entityList => list.ConvertAll<Entity>();
 
         public EntityStateSlice(AppState appState) : base(appState)
         {
@@ -98,9 +102,6 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Build(EntityType entity)
         {
-            // TODO - don't do this here
-            // entity.validator.Validate(appState);
-
             if (!entity.validator.isValid)
             {
                 // TODO - these should be unique messages - right now they are not

@@ -88,6 +88,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
+            Debug.Log("BuildToolState OnSelectionBoxUpdated: " + isLocked);
             if (isLocked) return;
 
             ResetBlueprintEntity();
@@ -98,7 +99,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public void SetSelectedEntityKey(Entity.Type entityType)
         {
-            this.isLocked = true;
+            isLocked = true;
             Entity.Type previousEntityType = this.selectedEntityType;
             this.selectedEntityType = entityType;
 
@@ -106,7 +107,7 @@ namespace TowerBuilder.ApplicationState.Tools
             ResetBlueprintEntity();
 
             events.onSelectedEntityKeyUpdated?.Invoke(this.selectedEntityType, previousEntityType);
-            this.isLocked = false;
+            isLocked = false;
         }
 
         public void SetSelectedEntityCategory(string entityCategory)
@@ -155,6 +156,8 @@ namespace TowerBuilder.ApplicationState.Tools
             if (isLocked || !buildIsActive) return;
             buildIsActive = false;
 
+            isLocked = true;
+
             blueprintEntity.validator.Validate(Registry.appState);
 
             if (blueprintEntity.validator.isValid)
@@ -176,6 +179,8 @@ namespace TowerBuilder.ApplicationState.Tools
             }
 
             events.onBuildEnd?.Invoke();
+
+            isLocked = false;
         }
 
         void CreateBlueprintEntity()

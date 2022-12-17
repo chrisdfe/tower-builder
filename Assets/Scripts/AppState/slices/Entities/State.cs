@@ -83,8 +83,6 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Add(Entity entity)
         {
-            Debug.Log("Add");
-            Debug.Log(GetStateSlice(entity)?.GetType());
             GetStateSlice(entity)?.Add(entity);
         }
 
@@ -98,7 +96,7 @@ namespace TowerBuilder.ApplicationState.Entities
             GetStateSlice(entity)?.Remove(entity);
         }
 
-        IEntityStateSlice GetStateSlice(Entity.Type type)
+        public IEntityStateSlice GetStateSlice(Entity.Type type)
         {
             if (!sliceMap.ContainsKey(type))
             {
@@ -107,7 +105,8 @@ namespace TowerBuilder.ApplicationState.Entities
 
             return sliceMap[type];
         }
-        IEntityStateSlice GetStateSlice(Entity entity) => GetStateSlice(entity.type);
+
+        public IEntityStateSlice GetStateSlice(Entity entity) => GetStateSlice(entity.type);
 
         public class StateQueries
         {

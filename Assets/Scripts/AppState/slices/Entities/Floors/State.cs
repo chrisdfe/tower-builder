@@ -24,13 +24,77 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
             queries = new Queries(appState, this);
         }
 
-        public override void Setup() { }
+        public override void Setup()
+        {
+            base.Setup();
+            appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
+            appState.Entities.Rooms.events.onItemsBuilt += OnRoomsBuilt;
+            appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
+        }
 
-        public override void Teardown() { }
+        public override void Teardown()
+        {
+            base.Teardown();
+
+            appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
+            appState.Entities.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
+            appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
+        }
 
         public new class Queries : EntityStateSlice<Floor, State.Events>.Queries
         {
             public Queries(AppState appState, State state) : base(appState, state) { }
         }
+
+        public void OnRoomsAdded(ListWrapper<Room> roomsList)
+        {
+            FloorDefinition defaultFloorDefinition =
+                Registry.Definitions.Entities.Floors.defaultDefinition as FloorDefinition;
+
+            foreach (Room room in roomsList.items)
+            {
+                CellCoordinatesList bottomRow = room.cellCoordinatesList.bottomRow;
+
+                List<Floor> floorsToAdd = bottomRow.items.Select((cellCoordinates) =>
+                {
+                    Floor newFloor = new Floor(defaultFloorDefinition);
+                    newFloor.PositionAtCoordinates(cellCoordinates);
+                    newFloor.isInBlueprintMode = true;
+                    return newFloor;
+                }).ToList();
+
+                Add(new ListWrapper<Floor>(floorsToAdd));
+            }
+        }
+
+        public void OnRoomsBuilt(ListWrapper<Room> roomsList)
+        {
+            foreach (Room room in roomsList.items)
+            {
+                ListWrapper<Floor> floorsInsideRoom = GetFloorsInsideRoom(room);
+
+                foreach (Floor floor in floorsInsideRoom.items)
+                {
+                    floor.OnBuild();
+                }
+            }
+        }
+
+        public void OnRoomsRemoved(ListWrapper<Room> roomsList)
+        {
+            foreach (Room room in roomsList.items)
+            {
+                ListWrapper<Floor> floorsInsideRoom =
+                    GetFloorsInsideRoom(room).FindAll((floor) =>
+                        floor.isInBlueprintMode == room.isInBlueprintMode
+                    );
+                Remove(floorsInsideRoom);
+            }
+        }
+
+        ListWrapper<Floor> GetFloorsInsideRoom(Room room) =>
+            list.FindAll((floor) =>
+                floor.cellCoordinatesList.OverlapsWith(room.cellCoordinatesList)
+            );
     }
 }

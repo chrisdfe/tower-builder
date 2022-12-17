@@ -154,6 +154,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         void OnRoomsBuilt(ListWrapper<Room> roomList)
         {
+            Debug.Log("room has been built");
             roomList.ForEach(room =>
             {
                 GameWorldRoom gameWorldRoom = FindGameWorldRoomByRoom(room);
@@ -164,6 +165,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         void OnRoomsRemoved(ListWrapper<Room> roomList)
         {
+            Debug.Log("room has been removed");
             roomList.ForEach(room =>
             {
                 RemoveRoom(room);

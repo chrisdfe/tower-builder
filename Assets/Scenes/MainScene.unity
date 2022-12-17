@@ -8610,7 +8610,7 @@ MonoBehaviour:
   meshAssets:
     list:
     - key: 0
-      value: {fileID: 1509519143630756925, guid: 28c17f021ab72ac4d82f97bf81765a84, type: 3}
+      value: {fileID: 3612006901943348525, guid: 28c17f021ab72ac4d82f97bf81765a84, type: 3}
     - key: 1
       value: {fileID: 919132149155446097, guid: 535f046140e95a04992cca9748c5c440, type: 3}
 --- !u!1 &2063518519

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Rooms.FurnitureBuilders;
 using TowerBuilder.DataTypes.Entities.Rooms.Validators;
@@ -16,6 +17,9 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
         public Room.Skin.Key skinKey = Room.Skin.Key.Default;
 
         public override ValidatorFactory validatorFactory => (Entity entity) => new RoomValidator(entity as Room);
+
+        public delegate List<Floor> FloorBuilder(Room room);
+        public FloorBuilder floorBuilder = (Room room) => new List<Floor>();
     }
 }
 

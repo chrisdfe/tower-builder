@@ -70,14 +70,14 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
                     { "backWallFull",       meshTransform.Find("Wrapper").Find("BackWall").Find("BackWallFull") },
                     { "backWallWithWindow", meshTransform.Find("Wrapper").Find("BackWall").Find("BackWall__Window") },
                     { "ceiling",            meshTransform.Find("Wrapper").Find("Ceiling").Find("CeilingFull") },
-                    { "floor",              meshTransform.Find("Wrapper").Find("Floor").Find("FloorFull") },
+                    // { "floor",              meshTransform.Find("Wrapper").Find("Floor").Find("FloorFull") },
                 };
 
             wallSegments = new Transform[] {
                     segments["ceiling"],
                     segments["leftWall"],
                     segments["rightWall"],
-                    segments["floor"],
+                    // segments["floor"],
                 };
         }
 
@@ -96,18 +96,18 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
                 Tileable.CellPosition.Top => new[] { "ceiling" },
                 Tileable.CellPosition.TopRight => new[] { "ceiling", "rightWall" },
                 Tileable.CellPosition.Right => new[] { "rightWall" },
-                Tileable.CellPosition.BottomRight => new[] { "rightWall", "floor" },
-                Tileable.CellPosition.Bottom => new[] { "floor" },
-                Tileable.CellPosition.BottomLeft => new[] { "floor", "leftWall" },
+                Tileable.CellPosition.BottomRight => new[] { "rightWall" },
+                Tileable.CellPosition.Bottom => new string[0],
+                Tileable.CellPosition.BottomLeft => new[] { "leftWall" },
                 Tileable.CellPosition.Left => new[] { "leftWall" },
                 Tileable.CellPosition.TopLeft => new[] { "leftWall", "ceiling" },
                 Tileable.CellPosition.TopIsolated => new[] { "leftWall", "ceiling", "rightWall", },
-                Tileable.CellPosition.RightIsolated => new[] { "ceiling", "rightWall", "floor" },
-                Tileable.CellPosition.BottomIsolated => new[] { "leftWall", "rightWall", "floor" },
-                Tileable.CellPosition.LeftIsolated => new[] { "leftWall", "ceiling", "floor" },
-                Tileable.CellPosition.Single => new[] { "leftWall", "ceiling", "rightWall", "floor" },
+                Tileable.CellPosition.RightIsolated => new[] { "ceiling", "rightWall" },
+                Tileable.CellPosition.BottomIsolated => new[] { "leftWall", "rightWall" },
+                Tileable.CellPosition.LeftIsolated => new[] { "leftWall", "ceiling" },
+                Tileable.CellPosition.Single => new[] { "leftWall", "ceiling", "rightWall" },
                 Tileable.CellPosition.Center => new string[0],
-                Tileable.CellPosition.HorizontalCenter => new[] { "ceiling", "floor" },
+                Tileable.CellPosition.HorizontalCenter => new[] { "ceiling" },
                 Tileable.CellPosition.VerticalCenter => new[] { "leftWall", "rightWall" },
                 _ => new string[0],
             };

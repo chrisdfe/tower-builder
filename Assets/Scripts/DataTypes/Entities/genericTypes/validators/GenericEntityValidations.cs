@@ -1,5 +1,7 @@
 using TowerBuilder.ApplicationState;
+using TowerBuilder.ApplicationState.Entities;
 using TowerBuilder.DataTypes.Entities.Rooms;
+using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities
 {
@@ -33,7 +35,6 @@ namespace TowerBuilder.DataTypes.Entities
         public static EntityValidationErrorList ValidateNotDirectlyNextToEntityOfSameType(AppState appState, Entity entity, CellCoordinates cellCoordinates)
         {
             // TODO - entity layers
-            // Elevators can't be too close together
             // TODO - check above + to the left + right and below + to the left and right (not directly above or below, that's ok)
             // Room leftRoom = allRooms.FindRoomAtCell(cellCoordinates.coordinatesLeft);
             // Room rightRoom = allRooms.FindRoomAtCell(cellCoordinates.coordinatesRight);
@@ -54,18 +55,19 @@ namespace TowerBuilder.DataTypes.Entities
     {
         public static EntityValidationErrorList ValidateEntityCellIsNotOverlappingAnotherEntity(AppState appState, Entity entity, CellCoordinates cellCoordinates)
         {
-            EntityValidationErrorList errors = new EntityValidationErrorList();
+            IEntityStateSlice stateSlice = appState.Entities.GetStateSlice(entity);
 
             // TODO - entity layers
+            Entity overlappingEntity = stateSlice.entityList.Find((otherEntity) =>
+                otherEntity != entity &&
+                otherEntity.cellCoordinatesList.Contains(cellCoordinates)
+            );
 
-            // // Check for overlapping cells
-            // foreach (Room otherRoom in allRooms.items)
-            // {
-            //     if (otherRoom != room && otherRoom.cellCoordinatesList.Contains(cellCoordinates))
-            //     {
-            //         return new EntityValidationErrorList("You cannot build rooms on top of each other.");
-            //     }
-            // }
+            if (overlappingEntity != null)
+            {
+                string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
+                return new EntityValidationErrorList($"You cannot build {entityLabel}s on top of each other.");
+            }
 
             return new EntityValidationErrorList();
         }
@@ -74,7 +76,8 @@ namespace TowerBuilder.DataTypes.Entities
         {
             if (cellCoordinates.floor < 0)
             {
-                return new EntityValidationErrorList("You cannot build rooms underground.");
+                string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
+                return new EntityValidationErrorList($"You cannot build {entityLabel} underground.");
             }
 
             return new EntityValidationErrorList();

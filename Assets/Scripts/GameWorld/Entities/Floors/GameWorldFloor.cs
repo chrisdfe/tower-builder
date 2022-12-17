@@ -36,8 +36,6 @@ namespace TowerBuilder.GameWorld.Entities.Floors
 
             GameObject prefabMesh = assetList.FindByKey(floor.key);
 
-            Debug.Log(floor.cellCoordinatesList.Count);
-
             // entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;

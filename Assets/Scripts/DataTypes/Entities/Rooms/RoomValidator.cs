@@ -21,6 +21,25 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
 
         public static EntityValidationErrorList ValidateAboveOtherRoom(AppState appState, Entity entity, CellCoordinates cellCoordinates)
         {
+            // It's fine to be built on the ground floor
+            if (entity.cellCoordinatesList.lowestFloor == 0)
+            {
+                return new EntityValidationErrorList();
+            }
+
+            CellCoordinatesList bottomRow = entity.cellCoordinatesList.bottomRow;
+
+            foreach (CellCoordinates bottomRowCellCoordinates in bottomRow.items)
+            {
+                Room roomBelow = appState.Entities.Rooms.queries
+                    .FindEntityTypeAtCell(cellCoordinates.coordinatesBelow);
+
+                if (roomBelow == null)
+                {
+                    return new EntityValidationErrorList("Room must be built above other room");
+                }
+            }
+
             return new EntityValidationErrorList();
         }
 

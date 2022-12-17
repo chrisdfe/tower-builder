@@ -38,6 +38,8 @@ namespace TowerBuilder.Definitions
         public List<EntityDefinition> EntityDefinitions =>
             Definitions.ConvertAll<EntityDefinition>(definition => definition as EntityDefinition);
 
+        public EntityDefinition defaultDefinition => Definitions[0];
+
         public EntityDefinitionsList()
         {
             Queries = new DefinitionQueries(Definitions);

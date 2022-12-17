@@ -107,7 +107,7 @@ namespace TowerBuilder.GameWorld.Entities
 
             if (tileabileWrapper == null)
             {
-                Debug.Log("No TileableWrapper found");
+                // Debug.Log("No TileableWrapper found");
                 return;
             }
 

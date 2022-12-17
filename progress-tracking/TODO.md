@@ -2,10 +2,11 @@
 
 ## Tasks
 
+- a hard-to-follow series of entity add/deletes happens after builtToolState.EndBuild happens - the entity is built and then the selection box in UI/state is reset and buildToolState calls ResetBlueprintEntity and removes/adds a new entity. Ideally this only happens as many times as it needs to, there's some redundancy it seems like.
+- wheels should be their own entity instead of a room now
 - chassis that can expand vertically really high without needing support but can't support anything above it
   - tent, for freight
   - spectrum between this (can only expand 1 high) and be able to have lots of weight
-- 3 layers - main, lower, and absolute bottom (wheel areas)
 - Bring back "is on top of another room" room validation
 - Validate entity is not overlapping another entity in the same cell(s)
   - also cells in the same "overlapGroup" or whatever (freight and furntiure);
@@ -46,6 +47,7 @@
   - Back walls entity
   - Floor entity
   - Side wall entity
+  - light entity
   - Room would be a "group", making a room would be making a floor, back walls, etc simultaneously
 - "Cell" class that encompasses coordinates, orientation?
 - perhaps game should pause in build/destroy modes; can't switch back to play mode until everything is valid
@@ -151,7 +153,6 @@
 - Reconsider how routes are constructed - maybe every segment should be 1 cell?
 - Convert other List wrappers to use the new ListWrapper generic
 - "reset" button to reset state to default
-- Replace ground cells with a simpler ground for now
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 - RouteFinder shouldn't look for every room entrance in the room, just on the current floor - it should also look for furniture on the current floor that could transport the resident elsewhere
 - Transportation room furniture interface - have a "connects to"
@@ -184,7 +185,6 @@
 - "Path" constants for paths used in Resource.Load - refactoring/moving things around would be easier
   if they're all in one place
 - Z-index constants
-- Convert TILE_SIZE to a Vector2
 - should the destroy tool replace the room with an empty floor, at least on floors 0 and above? otherwise, certain rooms would be undestroyable?
 
 ## Projects
@@ -208,6 +208,8 @@
 
 ## Ideas
 
+- Upgrades to exterior or wheels need to be done at a mechanic
+- 3 layers - main, lower, and absolute bottom (wheel areas)
 - warm fire orange with a neutral grey/blue shadow to accentuate the warmth of the light
 - The feeling of going on a journey
   - A home base that you gradually build up, along with vehciles that you can send on excursions that you can improve along the way - the resources you gather during this journey can contriute torwards your overall coloy resources
@@ -246,6 +248,8 @@
 
 # Done
 
+- Replace ground cells with a simpler ground for now
+- Convert TILE_SIZE to a Vector2
 - Rooms shouldn't be able to be x number of cells wider than wheel base
 - Create "IEntity" interface to abstract some of this OnBuild/OnDestroy stuff
   - Same for things that are Setup/Teardown-able?
