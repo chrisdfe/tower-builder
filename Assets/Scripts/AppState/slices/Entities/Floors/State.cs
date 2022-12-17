@@ -41,11 +41,9 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
             appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
         }
 
-        public new class Queries : EntityStateSlice<Floor, State.Events>.Queries
-        {
-            public Queries(AppState appState, State state) : base(appState, state) { }
-        }
-
+        /* 
+            Event Handlers
+        */
         public void OnRoomsAdded(ListWrapper<Room> roomsList)
         {
             FloorDefinition defaultFloorDefinition =
@@ -71,7 +69,7 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
         {
             foreach (Room room in roomsList.items)
             {
-                ListWrapper<Floor> floorsInsideRoom = GetFloorsInsideRoom(room);
+                ListWrapper<Floor> floorsInsideRoom = queries.GetFloorsInsideRoom(room);
 
                 foreach (Floor floor in floorsInsideRoom.items)
                 {
@@ -85,16 +83,29 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
             foreach (Room room in roomsList.items)
             {
                 ListWrapper<Floor> floorsInsideRoom =
-                    GetFloorsInsideRoom(room).FindAll((floor) =>
+                    queries.GetFloorsInsideRoom(room).FindAll((floor) =>
                         floor.isInBlueprintMode == room.isInBlueprintMode
                     );
                 Remove(floorsInsideRoom);
             }
         }
 
-        ListWrapper<Floor> GetFloorsInsideRoom(Room room) =>
-            list.FindAll((floor) =>
-                floor.cellCoordinatesList.OverlapsWith(room.cellCoordinatesList)
-            );
+        public new class Queries : EntityStateSlice<Floor, State.Events>.Queries
+        {
+            public Queries(AppState appState, State state) : base(appState, state) { }
+
+            public ListWrapper<Floor> GetFloorsInsideRoom(Room room) =>
+                state.list.FindAll((floor) =>
+                    floor.cellCoordinatesList.OverlapsWith(room.cellCoordinatesList)
+                );
+
+            public ListWrapper<Floor> GetFloorsOnFloor(int floorNumber) =>
+                state.list.FindAll((floor) => floor.cellCoordinatesList.floorValues.Contains(floorNumber));
+
+            public ListWrapper<Floor> GetFloorsInsideRoomOnFloor(Room room, int floorNumber) =>
+                GetFloorsInsideRoom(room).FindAll((floor) =>
+                    floor.cellCoordinatesList.floorValues.Contains(floorNumber)
+                );
+        }
     }
 }

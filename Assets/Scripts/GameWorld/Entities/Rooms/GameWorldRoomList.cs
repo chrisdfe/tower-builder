@@ -114,10 +114,12 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
                 {
                     if (room.validator.isValid)
                     {
+                        Debug.Log("setting color to valid blueprint");
                         gameWorldRoom.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
                     }
                     else
                     {
+                        Debug.Log("setting color to INVALID blueprint");
                         gameWorldRoom.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.InvalidBlueprint);
                     }
 

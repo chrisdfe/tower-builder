@@ -35,8 +35,11 @@ namespace TowerBuilder.GameWorld.Entities
 
         List<EntityMeshCellWrapper> entityCellMeshWrapperList = new List<EntityMeshCellWrapper>();
 
+        CellCoordinates originCellCoordinates => cellCoordinatesList.bottomLeftCoordinates;
+
         public virtual void Setup()
         {
+            UpdatePosition();
             DestroyPlaceholder();
             CreateEntityCellWrappers();
         }
@@ -54,7 +57,12 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void UpdatePosition()
         {
+            transform.localPosition = GameWorldUtils.CellCoordinatesToPosition(originCellCoordinates, 1f);
+        }
 
+        public void SetPosition(Vector3 position)
+        {
+            transform.position = position;
         }
 
         public void SetColor(ColorKey key)
@@ -65,7 +73,13 @@ namespace TowerBuilder.GameWorld.Entities
             }
         }
 
-        protected virtual EntityMeshCellWrapper CreateEntityCellMeshWrapper(Transform parent, GameObject prefabMesh, CellCoordinates cellCoordinates, CellNeighbors cellNeighbors, Tileable.CellPosition cellPosition) =>
+        protected virtual EntityMeshCellWrapper CreateEntityCellMeshWrapper(
+            Transform parent,
+            GameObject prefabMesh,
+            CellCoordinates cellCoordinates,
+            CellNeighbors cellNeighbors,
+            Tileable.CellPosition cellPosition
+        ) =>
             new EntityMeshCellWrapper(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition);
 
         void DestroyPlaceholder()
@@ -80,17 +94,28 @@ namespace TowerBuilder.GameWorld.Entities
 
         void CreateEntityCellWrappers()
         {
-            entityCellMeshWrapperList = cellCoordinatesList.items.Select((cellCoordinates) =>
-            {
-                CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);
+            entityCellMeshWrapperList = cellCoordinatesList.items
+                .Select((cellCoordinates) =>
+                {
+                    CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);
 
-                Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
+                    Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
 
-                EntityMeshCellWrapper entityMeshCellWrapper = CreateEntityCellMeshWrapper(transform, prefabMesh, cellCoordinates, cellNeighbors, cellPosition);
-                entityMeshCellWrapper.Setup();
+                    CellCoordinates relativeCellCoordiantes = cellCoordinatesList.AsRelativeCoordinates(cellCoordinates);
 
-                return entityMeshCellWrapper;
-            }).ToList();
+                    EntityMeshCellWrapper entityMeshCellWrapper =
+                        CreateEntityCellMeshWrapper(
+                            transform,
+                            prefabMesh,
+                            relativeCellCoordiantes,
+                            cellNeighbors,
+                            cellPosition
+                        );
+
+                    entityMeshCellWrapper.Setup();
+
+                    return entityMeshCellWrapper;
+                }).ToList();
         }
 
         void DestroyEntityCellWrappers()

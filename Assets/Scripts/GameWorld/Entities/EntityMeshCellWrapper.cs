@@ -53,6 +53,8 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void SetColor(EntityMeshWrapper.ColorKey key)
         {
+            Debug.Log("setting color to: " + key);
+
             foreach (MeshRenderer meshRenderer in childrenMeshRenderers)
             {
                 if (key == EntityMeshWrapper.ColorKey.Default)
@@ -82,17 +84,18 @@ namespace TowerBuilder.GameWorld.Entities
         protected void InstantiateModel()
         {
             meshTransform = GameObject.Instantiate(prefabMesh).GetComponent<Transform>();
-            meshTransform.SetParent(parent);
+            meshTransform.SetParent(parent, false);
             meshTransform.localPosition = Vector3.zero;
 
             // TODO here - use entity layer instead
-            // meshTransform.position = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
+            meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
             meshTransform.Translate(new Vector3(0, 0, -2f));
 
-
-            childrenMeshRenderers = TransformUtils.FindDeepChildrenWhere(meshTransform, (child) =>
-                child.GetComponent<MeshRenderer>() != null
-            ).Select(child => child.GetComponent<MeshRenderer>()).ToList();
+            childrenMeshRenderers =
+                TransformUtils
+                    .FindDeepChildrenWhere(meshTransform, (child) => child.GetComponent<MeshRenderer>() != null)
+                    .Select(child => child.GetComponent<MeshRenderer>())
+                    .ToList();
 
             defaultColorMap = childrenMeshRenderers.Aggregate(new Dictionary<MeshRenderer, Color>(), (acc, meshRenderer) =>
             {
@@ -126,7 +129,7 @@ namespace TowerBuilder.GameWorld.Entities
 
         protected void SetPosition()
         {
-            meshTransform.position = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates);
+            // meshTransform.position = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates);
         }
     }
 }

@@ -2,12 +2,15 @@
 
 ## Tasks
 
+- Floors should be taken into account in route finding
+- ability to save/load different chunks of the game world
+  - day time atmosphere effects
+  - vehicles
 - a hard-to-follow series of entity add/deletes happens after builtToolState.EndBuild happens - the entity is built and then the selection box in UI/state is reset and buildToolState calls ResetBlueprintEntity and removes/adds a new entity. Ideally this only happens as many times as it needs to, there's some redundancy it seems like.
 - wheels should be their own entity instead of a room now
 - chassis that can expand vertically really high without needing support but can't support anything above it
   - tent, for freight
   - spectrum between this (can only expand 1 high) and be able to have lots of weight
-- Bring back "is on top of another room" room validation
 - Validate entity is not overlapping another entity in the same cell(s)
   - also cells in the same "overlapGroup" or whatever (freight and furntiure);
 - 'unconstrained' vs 'constrained' selection box - tile/based vs mouse position coordinates
@@ -20,7 +23,6 @@
   - FindDefinitionByKeyLabel
   - Entity.CreateFromDefinition
   - Entity.GetEntityDefinitionLabel
-- Floors should be taken into account in route finding
 - AssetManager classes (FurnitureAssetManager etc) should derive from a base class
 - Delete Scratchboard transform
 - Stairs transportation item
@@ -208,6 +210,9 @@
 
 ## Ideas
 
+- headlights
+- optional exterior walls - without them your vehicle looks bare and industrial, like a star wars/eve online spaceship
+- more resizable entity configuration - "caps" (corners that are static sizes) and "extendible parts" (bits that repeat to fill up the SelectionBox shape)
 - Upgrades to exterior or wheels need to be done at a mechanic
 - 3 layers - main, lower, and absolute bottom (wheel areas)
 - warm fire orange with a neutral grey/blue shadow to accentuate the warmth of the light
@@ -248,6 +253,7 @@
 
 # Done
 
+- Bring back "is on top of another room" room validation
 - Replace ground cells with a simpler ground for now
 - Convert TILE_SIZE to a Vector2
 - Rooms shouldn't be able to be x number of cells wider than wheel base

@@ -66,7 +66,7 @@ namespace TowerBuilder.DataTypes
 
         public CellCoordinatesList asRelativeCoordinates =>
             new CellCoordinatesList(
-                items.Select(cellCoordinates => Subtract(cellCoordinates, bottomLeftCoordinates)).ToList()
+                items.Select(cellCoordinates => AsRelativeCoordinates(cellCoordinates)).ToList()
             );
 
         public CellCoordinatesList bottomRow =>
@@ -128,6 +128,9 @@ namespace TowerBuilder.DataTypes
 
             return result;
         }
+
+        public CellCoordinates AsRelativeCoordinates(CellCoordinates cellCoordinates) =>
+            Subtract(cellCoordinates, bottomLeftCoordinates);
 
         public CellCoordinatesList Clone() =>
             new CellCoordinatesList(

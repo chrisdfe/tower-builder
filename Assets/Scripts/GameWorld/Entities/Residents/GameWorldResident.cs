@@ -50,6 +50,12 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
         public void Teardown() { }
 
+        public void UpdatePosition()
+        {
+            entityMeshWrapper.cellCoordinatesList = resident.cellCoordinatesList;
+            entityMeshWrapper.UpdatePosition();
+        }
+
         /* 
             Internals
         */
@@ -60,11 +66,11 @@ namespace TowerBuilder.GameWorld.Entities.Residents
                 var ((startTick, startCoordinates), (endTick, endCoordinates)) = currentAndNextPosition;
                 float normalizedTickProgress = GameWorldTimeSystemManager.Find().normalizedTickProgress;
 
-                transform.position = Vector3.Lerp(
+                entityMeshWrapper.SetPosition(Vector3.Lerp(
                     GameWorldUtils.CellCoordinatesToPosition(startCoordinates),
                     GameWorldUtils.CellCoordinatesToPosition(endCoordinates),
                     normalizedTickProgress
-                );
+                ));
             }
         }
 

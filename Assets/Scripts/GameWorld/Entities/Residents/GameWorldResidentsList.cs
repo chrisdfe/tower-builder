@@ -51,7 +51,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
         {
             GameWorldResident gameWorldResident = CreateGameWorldResident(resident);
             gameWorldResidentsList.Add(gameWorldResident);
-            gameWorldResident.Setup();
+
             SetResidentColor(gameWorldResident);
         }
 
@@ -105,7 +105,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
         void OnResidentPositionUpdated(Resident resident)
         {
             GameWorldResident gameWorldResident = gameWorldResidentsList.Find(gameWorldResident => gameWorldResident.resident == resident);
-            gameWorldResident.GetComponent<EntityMeshWrapper>().UpdatePosition();
+            gameWorldResident.UpdatePosition();
         }
 
         void OnCurrentSelectedEntityUpdated(Entity entity)

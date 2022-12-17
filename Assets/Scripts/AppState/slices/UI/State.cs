@@ -32,6 +32,7 @@ namespace TowerBuilder.ApplicationState.UI
 
             public delegate void SelectionBoxEvent(SelectionBox selectionBox);
             public SelectionBoxEvent onSelectionBoxUpdated;
+            public SelectionBoxEvent onSelectionBoxReset;
             public SelectionBoxEvent onSelectionStart;
             public SelectionBoxEvent onSelectionEnd;
 
@@ -83,6 +84,7 @@ namespace TowerBuilder.ApplicationState.UI
 
         public void LeftClickEnd()
         {
+            Debug.Log("left click end");
             SelectEnd();
         }
 
@@ -121,25 +123,13 @@ namespace TowerBuilder.ApplicationState.UI
 
             SetEntityList();
 
-            if (events.onCurrentSelectedCellUpdated != null)
-            {
-                events.onCurrentSelectedCellUpdated(currentSelectedCell);
-            }
+            events.onCurrentSelectedCellUpdated?.Invoke(currentSelectedCell);
 
-            if (events.onCurrentSelectedRoomUpdated != null)
-            {
-                events.onCurrentSelectedRoomUpdated(currentSelectedRoom);
-            }
+            events.onSelectionBoxUpdated?.Invoke(selectionBox);
 
-            if (events.onCurrentSelectedRoomBlockUpdated != null)
-            {
-                events.onCurrentSelectedRoomBlockUpdated(currentSelectedRoomBlock);
-            }
+            events.onCurrentSelectedRoomUpdated?.Invoke(currentSelectedRoom);
 
-            if (events.onSelectionBoxUpdated != null)
-            {
-                events.onSelectionBoxUpdated(selectionBox);
-            }
+            events.onCurrentSelectedRoomBlockUpdated?.Invoke(currentSelectedRoomBlock);
         }
 
         public void SelectStart()
@@ -147,10 +137,7 @@ namespace TowerBuilder.ApplicationState.UI
             selectionIsActive = true;
             selectionBox.SetStartAndEnd(currentSelectedCell);
 
-            if (events.onSelectionStart != null)
-            {
-                events.onSelectionStart(selectionBox);
-            }
+            events.onSelectionStart?.Invoke(selectionBox);
         }
 
         public void SelectEnd()
@@ -158,10 +145,7 @@ namespace TowerBuilder.ApplicationState.UI
             selectionIsActive = false;
             selectionBox.SetEnd(currentSelectedCell);
 
-            if (events.onSelectionEnd != null)
-            {
-                events.onSelectionEnd(selectionBox);
-            }
+            events.onSelectionEnd?.Invoke(selectionBox);
 
             ResetSelectionBox();
         }
@@ -170,7 +154,8 @@ namespace TowerBuilder.ApplicationState.UI
         {
             selectionBox = new SelectionBox(currentSelectedCell);
 
-            events.onSelectionBoxUpdated?.Invoke(selectionBox);
+            // events.onSelectionBoxUpdated?.Invoke(selectionBox);
+            events.onSelectionBoxReset?.Invoke(selectionBox);
         }
 
         void PerformSecondaryAction()
@@ -216,10 +201,7 @@ namespace TowerBuilder.ApplicationState.UI
 
             currentSelectedCellEntityList = entityList;
 
-            if (events.onCurrentSelectedEntityListUpdated != null)
-            {
-                events.onCurrentSelectedEntityListUpdated(currentSelectedCellEntityList);
-            }
+            events.onCurrentSelectedEntityListUpdated?.Invoke(currentSelectedCellEntityList);
         }
     }
 }

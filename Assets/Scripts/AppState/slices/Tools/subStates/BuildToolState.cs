@@ -88,11 +88,9 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
-            Debug.Log("BuildToolState OnSelectionBoxUpdated: " + isLocked);
             if (isLocked) return;
 
             ResetBlueprintEntity();
-            blueprintEntity.validator.Validate(Registry.appState);
 
             events.onBlueprintEntityUpdated?.Invoke(blueprintEntity);
         }
