@@ -2,6 +2,14 @@
 
 ## Tasks
 
+- Finish up route finder algorithm
+  - Make sure each cell between current + target cells have enough vertical clearance
+- Different types of transportation items should be able to occupy the same cell (escalators + doorways etc)
+- Route parameters - routes
+  - This would enable freight to require a large enough door for the freight to fit into
+  - Also potentially allow for residents of different sizes
+- Doors of different heights
+- Rooms are highlighted as "invalid" when they are multiple cells high, even though they are allowed to be built
 - Floors should be taken into account in route finding
 - ability to save/load different chunks of the game world
   - day time atmosphere effects
@@ -11,6 +19,7 @@
 - chassis that can expand vertically really high without needing support but can't support anything above it
   - tent, for freight
   - spectrum between this (can only expand 1 high) and be able to have lots of weight
+  - also cheap/vs expensive (tent = cheap)
 - Validate entity is not overlapping another entity in the same cell(s)
   - also cells in the same "overlapGroup" or whatever (freight and furntiure);
 - 'unconstrained' vs 'constrained' selection box - tile/based vs mouse position coordinates
@@ -253,6 +262,7 @@
 
 # Done
 
+- Add two way transportation items back in (right now doorways are one way)
 - Bring back "is on top of another room" room validation
 - Replace ground cells with a simpler ground for now
 - Convert TILE_SIZE to a Vector2

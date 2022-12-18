@@ -57,9 +57,6 @@ namespace TowerBuilder.DataTypes.Routes
             ValidateRouteMarker(startCoordinates);
             ValidateRouteMarker(endCoordinates);
 
-            Debug.Log("errors");
-            Debug.Log(errors);
-
             if (errors.Count > 0) return null;
 
             this.startCoordinates = startCoordinates;
@@ -73,6 +70,7 @@ namespace TowerBuilder.DataTypes.Routes
             firstRouteAttempt.currentCellCoordinates = startCoordinates;
             firstRouteAttempt.currentRoom = startRoom;
             firstRouteAttempt.AddVisitedRoom(startRoom);
+            routeAttempts.Add(firstRouteAttempt);
 
             ContinueRouteAttempt(firstRouteAttempt);
 
@@ -87,14 +85,7 @@ namespace TowerBuilder.DataTypes.Routes
 
             void ValidateRouteMarker(CellCoordinates cellCoordinates)
             {
-                Debug.Log("is valid inside point: " + IsValidInsideRoutePoint(cellCoordinates));
-                Debug.Log("is valid outside point: " + IsValidOutsideRoutePoint(cellCoordinates));
-
-                // TODO - put these into a more general functions
-                if (
-                    !IsValidInsideRoutePoint(cellCoordinates) &&
-                    !IsValidOutsideRoutePoint(cellCoordinates)
-                )
+                if (!IsValidRoutePoint(cellCoordinates))
                 {
                     errors.Add(new RouteError($"Invalid coordinates: {cellCoordinates}"));
                 }
@@ -104,20 +95,14 @@ namespace TowerBuilder.DataTypes.Routes
         /* 
             Internals
         */
-        // TODO - put these two somewhere more general so they can be used for resident validation too
-        // outside + on the ground
-        bool IsValidOutsideRoutePoint(CellCoordinates cellCoordinates) =>
-            appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) == null &&
-            cellCoordinates.floor == 0;
-
-        // inside + on a floor
-        bool IsValidInsideRoutePoint(CellCoordinates cellCoordinates) =>
-            appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
-            appState.Entities.Floors.queries.FindEntityTypeAtCell(cellCoordinates) != null;
-
         void ContinueRouteAttempt(RouteAttempt currentRouteAttempt)
         {
-            if (currentRouteAttempt.latestSegmentNode.room == endRoom)
+            Debug.Log("ContinueRouteAttempt");
+            Debug.Log("CanWalkTo(currentRouteAttempt, endCoordinates)");
+            Debug.Log(CanWalkTo(currentRouteAttempt, endCoordinates));
+
+            // TODO - make sure the resident is on the same floor as the end point too
+            if (CanWalkTo(currentRouteAttempt, endCoordinates))
             {
                 CompleteRoute(currentRouteAttempt);
             }
@@ -125,18 +110,7 @@ namespace TowerBuilder.DataTypes.Routes
             {
                 ListWrapper<TransportationItem> transportationItemsList =
                     appState.Entities.TransportationItems.queries
-                        .FindTransportationItemsEnterableFromRoom(currentRouteAttempt.currentRoom)
-                        // find transportation items that have an entrance on the current floor
-                        // .FindAll((transportationItem) => (
-                        //     transportationItem.entranceCellCoordinatesList.Find(
-                        //         (entranceCellCoordinates) => (
-                        //             appState
-                        //                 .Entities.Floors.queries
-                        //                 .FindEntityTypeAtCell(entranceCellCoordinates) != null
-                        //         )
-                        //     ) != null
-                        // ));
-                        ;
+                        .FindTransportationItemsEnterableFromRoom(currentRouteAttempt.currentRoom);
 
                 transportationItemsList.ForEach(transportationItem =>
                 {
@@ -147,53 +121,56 @@ namespace TowerBuilder.DataTypes.Routes
 
         void UseTransportationItemIfUnvisited(RouteAttempt currentRouteAttempt, TransportationItem transportationItem)
         {
-            routeAttempts.Add(currentRouteAttempt);
+            var (entranceCoordinatesList, exitCoordinatesList) = GetValidTransportationItemEntrancesAndExits(transportationItem, currentRouteAttempt);
+            Debug.Log("entranceCoordinatesList: " + entranceCoordinatesList.Count);
+            Debug.Log("exitCoordinatesList: " + exitCoordinatesList.Count);
 
-            RouteAttempt routeAttemptBranch = currentRouteAttempt.Clone();
-
-            CellCoordinates entranceCoordinates =
-                transportationItem.entranceCellCoordinatesList.items.Find((cellCoordinates) =>
-                {
-                    Room room = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates);
-                    return room == routeAttemptBranch.currentRoom;
-                });
-
-            CellCoordinatesList exitCoordinatesList = new CellCoordinatesList(
-                transportationItem.exitCellCoordinatesList.items
-                    // No need to pay attention to  exits that exit into the current room
-                    .FindAll((cellCoordinates) =>
-                    {
-                        Room room = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates);
-                        return room != routeAttemptBranch.currentRoom;
-                    })
-            );
-
-            foreach (CellCoordinates exitCoordinates in exitCoordinatesList.items)
+            if (entranceCoordinatesList.Count == 0 || exitCoordinatesList.Count == 0)
             {
-                // TODO - check if transportation item is one way
-                Room nextRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(exitCoordinates);
+                // We have reached the end of this route
+                return;
+            }
 
-                if (!routeAttemptBranch.visitedRooms.Contains(nextRoom))
+            foreach (CellCoordinates entranceCoordinates in entranceCoordinatesList.items)
+            {
+                foreach (CellCoordinates exitCoordinates in exitCoordinatesList.items)
                 {
-                    // Walk from the current location to the otherRoomEntrance
-                    routeAttemptBranch.GoTo(
-                        new RouteSegment.Node(
-                            entranceCoordinates,
-                            routeAttemptBranch.currentRoom
-                        ),
-                        RouteSegment.Type.WalkingAcrossRoom
-                    );
+                    Room nextRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(exitCoordinates);
 
-                    // Use transportationItem and end up at the other Node
-                    routeAttemptBranch.GoTo(
-                        new RouteSegment.Node(
-                            exitCoordinates,
-                            nextRoom
-                        ),
-                        RouteSegment.Type.UsingTransportationItem
-                    );
+                    Debug.Log("currentRouteAttempt.visitedRooms.Contains(nextRoom)");
+                    Debug.Log(currentRouteAttempt.visitedRooms.Contains(nextRoom));
 
-                    ContinueRouteAttempt(routeAttemptBranch);
+                    Debug.Log("CanWalkTo(currentRouteAttempt, entranceCoordinates)");
+                    Debug.Log(CanWalkTo(currentRouteAttempt, entranceCoordinates));
+
+                    if (!currentRouteAttempt.visitedRooms.Contains(nextRoom) && CanWalkTo(currentRouteAttempt, entranceCoordinates))
+                    {
+                        RouteAttempt routeAttemptBranch = currentRouteAttempt.Clone();
+                        routeAttempts.Add(routeAttemptBranch);
+
+                        // TODO next - draw a path between current coordinates and entrance coordinates
+                        //             and make sure each step along the way is valid (has floor, enough clearance etc)
+
+                        // Walk from the current location to the otherRoomEntrance
+                        routeAttemptBranch.GoTo(
+                            new RouteSegment.Node(
+                                entranceCoordinates,
+                                routeAttemptBranch.currentRoom
+                            ),
+                            RouteSegment.Type.WalkingAcrossRoom
+                        );
+
+                        // Use transportationItem and end up at the other Node in the other room
+                        routeAttemptBranch.GoTo(
+                            new RouteSegment.Node(
+                                exitCoordinates,
+                                nextRoom
+                            ),
+                            RouteSegment.Type.UsingTransportationItem
+                        );
+
+                        ContinueRouteAttempt(routeAttemptBranch);
+                    }
                 }
             }
         }
@@ -212,6 +189,97 @@ namespace TowerBuilder.DataTypes.Routes
             // The route is now over
             routeAttempts.Add(currentRouteAttempt);
             currentRouteAttempt.status = RouteAttempt.Status.Complete;
+        }
+
+        bool IsOnLatestSegmentFloor(RouteAttempt routeAttempt, CellCoordinates cellCoordinates) =>
+            cellCoordinates.floor == routeAttempt.latestSegmentNode.cellCoordinates.floor;
+
+        bool IsInCurrentRoom(RouteAttempt routeAttempt, CellCoordinates cellCoordinates) =>
+                Registry.appState.Entities.Rooms.queries
+                    .FindRoomAtCell(cellCoordinates) == routeAttempt.currentRoom;
+
+        // TODO - write this function
+        bool CanWalkTo(RouteAttempt routeAttempt, CellCoordinates targetCellCoordinates)
+        {
+            if (appState.Entities.Rooms.queries.FindEntityTypeAtCell(targetCellCoordinates) != routeAttempt.currentRoom)
+            {
+                return false;
+            }
+
+            // At this point I'm assuming targetCellCoordinates and currentCoordinates are on the same floor
+            int currentX = routeAttempt.latestSegmentNode.cellCoordinates.x;
+
+            // TODO next - draw a path between current coordinates and entrance coordinates
+            //             and make sure each step along the way is valid (has floor, enough clearance etc)
+
+            while (currentX != targetCellCoordinates.x)
+            {
+                if (currentX > targetCellCoordinates.x)
+                {
+                    currentX--;
+                }
+                else if (currentX < targetCellCoordinates.x)
+                {
+                    currentX++;
+                }
+
+                CellCoordinates currentCoordinates = new CellCoordinates(currentX, targetCellCoordinates.floor);
+
+                if (appState.Entities.Floors.queries.FindEntityTypeAtCell(currentCoordinates) == null)
+                {
+                    return false;
+                }
+
+                // TODO - check that there's nothing blocking the cell(s) above, either:
+                //        the cell above is not in the same room as the current room, or
+                //        there is a floor in the cell above
+                // if there is, then return false
+            }
+
+            return true;
+        }
+
+        // TODO - put these two somewhere more general so they can be used for resident validation too
+        // outside + on the ground
+        bool IsValidOutsideRoutePoint(CellCoordinates cellCoordinates) =>
+            appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) == null &&
+            cellCoordinates.floor == 0 &&
+            HasEnoughVerticalSpace(cellCoordinates);
+
+        // inside + on a floor
+        bool IsValidInsideRoutePoint(CellCoordinates cellCoordinates) =>
+            appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
+            appState.Entities.Floors.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
+            HasEnoughVerticalSpace(cellCoordinates);
+
+        bool IsValidRoutePoint(CellCoordinates cellCoordinates) =>
+            IsValidInsideRoutePoint(cellCoordinates) || IsValidOutsideRoutePoint(cellCoordinates);
+
+        bool HasEnoughVerticalSpace(CellCoordinates cellCoordinates) => true;
+
+        (CellCoordinatesList, CellCoordinatesList) GetValidTransportationItemEntrancesAndExits(TransportationItem transportationItem, RouteAttempt routeAttempt)
+        {
+            CellCoordinatesList validEntrances =
+                new CellCoordinatesList(
+                    transportationItem.entranceCellCoordinatesList.items
+                        .FindAll((entranceCellCoordinates) =>
+                            IsValidRoutePoint(entranceCellCoordinates) &&
+                            IsOnLatestSegmentFloor(routeAttempt, entranceCellCoordinates) &&
+                            IsInCurrentRoom(routeAttempt, entranceCellCoordinates)
+                        )
+                        .ToList()
+                );
+            CellCoordinatesList validExits =
+                new CellCoordinatesList(
+                    transportationItem.exitCellCoordinatesList.items
+                        .FindAll((exitCellCoordinates) =>
+                            IsValidRoutePoint(exitCellCoordinates) &&
+                            !IsInCurrentRoom(routeAttempt, exitCellCoordinates)
+                        )
+                        .ToList()
+                );
+
+            return (validEntrances, validExits);
         }
     }
 }

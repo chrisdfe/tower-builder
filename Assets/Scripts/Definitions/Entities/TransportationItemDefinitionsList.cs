@@ -26,10 +26,19 @@ namespace TowerBuilder.Definitions
                 entranceExitBuilder = (TransportationItem transporationItem) => {
                     List<(CellCoordinates, CellCoordinates)> result = new List<(CellCoordinates, CellCoordinates)>();
 
+                    // bottom to top
                     result.Add(
                         (
                             transporationItem.cellCoordinatesList.bottomLeftCoordinates,
                             transporationItem.cellCoordinatesList.topRightCoordinates
+                        )
+                    );
+
+                    // top to bottom
+                    result.Add(
+                        (
+                            transporationItem.cellCoordinatesList.topRightCoordinates,
+                            transporationItem.cellCoordinatesList.bottomLeftCoordinates
                         )
                     );
 
@@ -60,10 +69,19 @@ namespace TowerBuilder.Definitions
                 entranceExitBuilder = (TransportationItem transporationItem) => {
                     List<(CellCoordinates, CellCoordinates)> result = new List<(CellCoordinates, CellCoordinates)>();
 
+                    // bottom to top
                     result.Add(
                         (
                             transporationItem.cellCoordinatesList.bottomLeftCoordinates,
                             transporationItem.cellCoordinatesList.topLeftCoordinates
+                        )
+                    );
+
+                    // top to bottom
+                    result.Add(
+                        (
+                            transporationItem.cellCoordinatesList.topLeftCoordinates,
+                            transporationItem.cellCoordinatesList.bottomLeftCoordinates
                         )
                     );
 
@@ -92,10 +110,19 @@ namespace TowerBuilder.Definitions
                 entranceExitBuilder = (TransportationItem transporationItem) => {
                     List<(CellCoordinates, CellCoordinates)> result = new List<(CellCoordinates, CellCoordinates)>();
 
+                    // left to right
                     result.Add(
                         (
                             transporationItem.cellCoordinatesList.bottomLeftCoordinates,
                             transporationItem.cellCoordinatesList.bottomRightCoordinates
+                        )
+                    );
+
+                    // right to left
+                    result.Add(
+                        (
+                            transporationItem.cellCoordinatesList.bottomRightCoordinates,
+                            transporationItem.cellCoordinatesList.bottomLeftCoordinates
                         )
                     );
 

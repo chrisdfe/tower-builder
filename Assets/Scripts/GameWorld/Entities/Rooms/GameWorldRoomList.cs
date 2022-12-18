@@ -114,12 +114,10 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
                 {
                     if (room.validator.isValid)
                     {
-                        Debug.Log("setting color to valid blueprint");
                         gameWorldRoom.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
                     }
                     else
                     {
-                        Debug.Log("setting color to INVALID blueprint");
                         gameWorldRoom.GetComponent<EntityMeshWrapper>().SetColor(EntityMeshWrapper.ColorKey.InvalidBlueprint);
                     }
 
@@ -147,7 +145,6 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
          */
         void OnRoomsAdded(ListWrapper<Room> roomList)
         {
-            Debug.Log("room has been added");
             roomList.ForEach(room =>
             {
                 CreateRoom(room);
@@ -156,7 +153,6 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         void OnRoomsBuilt(ListWrapper<Room> roomList)
         {
-            Debug.Log("room has been built");
             roomList.ForEach(room =>
             {
                 GameWorldRoom gameWorldRoom = FindGameWorldRoomByRoom(room);
@@ -167,7 +163,6 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         void OnRoomsRemoved(ListWrapper<Room> roomList)
         {
-            Debug.Log("room has been removed");
             roomList.ForEach(room =>
             {
                 RemoveRoom(room);

@@ -84,7 +84,6 @@ namespace TowerBuilder.ApplicationState.UI
 
         public void LeftClickEnd()
         {
-            Debug.Log("left click end");
             SelectEnd();
         }
 

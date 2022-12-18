@@ -53,8 +53,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void SetColor(EntityMeshWrapper.ColorKey key)
         {
-            Debug.Log("setting color to: " + key);
-
             foreach (MeshRenderer meshRenderer in childrenMeshRenderers)
             {
                 if (key == EntityMeshWrapper.ColorKey.Default)
