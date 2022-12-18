@@ -36,18 +36,20 @@ namespace TowerBuilder.GameWorld.UI
             entityTypeButtonsWrapper = transform.Find(entityTypeButtonsWrapperName);
             entityTypeBuildButtonsWrapper = transform.Find(entityTypeBuildButtonsWrapperName);
 
-            entityTypeSelectButtons = Entity.TypeLabels.labels.Select(label =>
-            {
-                UISelectButton entityButton = UISelectButton.Create(
-                    entityTypeButtonsWrapper,
-                    new UISelectButton.Input()
-                    {
-                        label = label,
-                        value = label
-                    });
-                entityButton.onClick += OnEntityGroupButtonClick;
-                return entityButton;
-            }).ToList();
+            entityTypeSelectButtons = Entity.TypeLabels.labels
+                .Select(label =>
+                {
+                    UISelectButton entityButton = UISelectButton.Create(
+                        entityTypeButtonsWrapper,
+                        new UISelectButton.Input()
+                        {
+                            label = label,
+                            value = label
+                        });
+                    entityButton.onClick += OnEntityGroupButtonClick;
+                    return entityButton;
+                })
+                .ToList();
 
             categoryButtonsWrapper = entityTypeBuildButtonsWrapper.Find(categoryButtonsWrapperName);
             definitionButtonsWrapper = entityTypeBuildButtonsWrapper.Find(definitionButtonsWrapperName);

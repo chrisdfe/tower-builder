@@ -54,12 +54,17 @@ namespace TowerBuilder.Definitions
                 this.Definitions = new ListWrapper<DefinitionType>(Definitions);
             }
 
+            // public EntityDefinition FindByKeyLabel<DefinitionKeyType>(string key)
+            // {
+
+            // }
+
             public EntityDefinition FindByKey<DefinitionKeyType>(DefinitionKeyType key)
                 where DefinitionKeyType : struct =>
-                Definitions.Find(definition => (
-                    (definition.key.GetType()) == key.GetType()) &&
-                    (Convert.ToInt32(definition.key)).Equals(Convert.ToInt32(key))
-                );
+                    Definitions.Find(definition => (
+                        (definition.key.GetType()) == key.GetType()) &&
+                        (Convert.ToInt32(definition.key)).Equals(Convert.ToInt32(key))
+                    );
 
             public EntityDefinition FindByTitle(string title) =>
                 Definitions.Find(definition => definition.title == title);

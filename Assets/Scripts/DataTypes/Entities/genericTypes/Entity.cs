@@ -34,7 +34,6 @@ namespace TowerBuilder.DataTypes.Entities
 
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
-                { Type.None,               "None" },
                 { Type.Room,               "Room" },
                 { Type.Floor,              "Floor" },
                 { Type.InteriorWall,       "InteriorWall" },
@@ -223,25 +222,17 @@ namespace TowerBuilder.DataTypes.Entities
         /*
             Static API
         */
-        public static Entity CreateFromDefinition(EntityDefinition definition) =>
-            (definition) switch
+        public static Entity CreateFromDefinition(EntityDefinition definition)
+        {
+            System.Type EntityType = EntityDefinitions.EntityDefinitionEntityTypeMap[definition.GetType()];
+
+            if (EntityType != null)
             {
-                RoomDefinition roomDefinition =>
-                    new Entities.Rooms.Room(roomDefinition),
-                InteriorWallDefinition interiorWallDefinition =>
-                    new Entities.InteriorWalls.InteriorWall(interiorWallDefinition),
-                FloorDefinition floorDefinition =>
-                    new Entities.Floors.Floor(floorDefinition),
-                FurnitureDefinition furnitureDefinition =>
-                    new Entities.Furnitures.Furniture(furnitureDefinition),
-                ResidentDefinition residentDefinition =>
-                    new Entities.Residents.Resident(residentDefinition),
-                TransportationItemDefinition transportationItemDefinition =>
-                    new Entities.TransportationItems.TransportationItem(transportationItemDefinition),
-                FreightDefinition freightDefinition =>
-                    new Entities.Freights.FreightItem(freightDefinition),
-                _ => null
-            };
+                return (Entity)(Activator.CreateInstance(EntityType, definition));
+            }
+
+            return null;
+        }
 
         public static string GetEntityDefinitionLabel(EntityDefinition definition) =>
             definition switch

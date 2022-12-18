@@ -2,6 +2,8 @@
 
 ## Tasks
 
+- maybe walls + ceiling should be the same entity as it is now
+- windows entity
 - Finish up route finder algorithm
   - Make sure each cell between current + target cells have enough vertical clearance
 - Different types of transportation items should be able to occupy the same cell (escalators + doorways etc)
@@ -9,8 +11,6 @@
   - This would enable freight to require a large enough door for the freight to fit into
   - Also potentially allow for residents of different sizes
 - Doors of different heights
-- Rooms are highlighted as "invalid" when they are multiple cells high, even though they are allowed to be built
-- Floors should be taken into account in route finding
 - ability to save/load different chunks of the game world
   - day time atmosphere effects
   - vehicles
@@ -37,6 +37,7 @@
 - Stairs transportation item
 - Transportation item capacity - residents queue up when it's at capacity
 - Clean up UI padding/spacing, right now it's pretty inconsistent
+  - Panel should be a prefab
 - Room should just be a collection of walls/floor, in a similar way relationship to vehicles -> rooms
 - Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
 - Make cells 1x1.5 or 1x2 as in my sketchbook - floors/ceilings/walls are part of the Inside of box
@@ -219,6 +220,10 @@
 
 ## Ideas
 
+- Finding broken things in the countryside + breaking them down for scrap (at a piece of furniture)
+  - they take up cargo space until they're broken down
+- cozy and warm inside glow, cold and forboding exterior
+- star wars laser guns. pew pew
 - headlights
 - optional exterior walls - without them your vehicle looks bare and industrial, like a star wars/eve online spaceship
 - more resizable entity configuration - "caps" (corners that are static sizes) and "extendible parts" (bits that repeat to fill up the SelectionBox shape)
@@ -262,6 +267,11 @@
 
 # Done
 
+- Clean up final gross entity type switch statements
+  - Entity.CreateFromDefinition
+- Rooms are highlighted as "invalid" when they are multiple cells high, even though they are allowed to be built
+- Floors should be taken into account in route finding
+- Clicking "none" in the build tool state buttons crashes the game
 - Add two way transportation items back in (right now doorways are one way)
 - Bring back "is on top of another room" room validation
 - Replace ground cells with a simpler ground for now

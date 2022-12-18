@@ -13,6 +13,16 @@ namespace TowerBuilder.Definitions
 {
     public class EntityDefinitions
     {
+        public static Dictionary<System.Type, System.Type> EntityDefinitionEntityTypeMap = new Dictionary<System.Type, System.Type>() {
+            { typeof(RoomDefinition), typeof(Room) },
+            { typeof(InteriorWallDefinition), typeof(InteriorWall) },
+            { typeof(FloorDefinition), typeof(Floor) },
+            { typeof(FurnitureDefinition), typeof(Furniture) },
+            { typeof(ResidentDefinition), typeof(Resident) },
+            { typeof(TransportationItemDefinition), typeof(TransportationItem) },
+            { typeof(FreightDefinition), typeof(FreightItem) },
+        };
+
         public DefinitionQueries Queries { get; }
 
         public RoomDefinitionsList Rooms = new RoomDefinitionsList();
@@ -23,7 +33,7 @@ namespace TowerBuilder.Definitions
         public TransportationItemDefinitionsList TransportationItems = new TransportationItemDefinitionsList();
         public FreightDefinitionsList Freights = new FreightDefinitionsList();
 
-        Dictionary<Entity.Type, IEntityDefinitionsList> entityDefinitionsMap;
+        public Dictionary<Entity.Type, IEntityDefinitionsList> entityDefinitionsMap { get; }
 
         public EntityDefinitions()
         {

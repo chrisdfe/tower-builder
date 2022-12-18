@@ -14,7 +14,7 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
             new List<EntityCellValidationFunc>()
             {
                 ValidateAboveOtherRoom,
-                ValidateAcceptableOverhang,
+                // ValidateAcceptableOverhang,
             };
 
         public RoomValidator(Room room) : base(room) { }
