@@ -2,7 +2,8 @@
 
 ## Tasks
 
-- Beef up validations for different entity types
+- Entities are staying "valid blueprint blue" after being built
+- I don't think these static Create() functions on GameWorldRoom etc are used anymore
 - Freight contents
 - For a first draft, every 1 mile of journey a random passer-by shows up
   - after that, then encounters with other vehicles
@@ -216,6 +217,7 @@
 
 ## Projects
 
+- Store system
 - Kitchen/restaurant room
 - Top-level "KeyBindingsManager" that listens for user input + dispatches actions
 - UI overlays
@@ -281,6 +283,8 @@
 
 # Done
 
+- Beef up validations for different entity types
+- Wheels should not have vertical flexibility
 - get rid of Room.Skin + config for now (wheels entity renders it obsolete)
 - GameWorldEntity
 - GameWorldEntityList that manages:

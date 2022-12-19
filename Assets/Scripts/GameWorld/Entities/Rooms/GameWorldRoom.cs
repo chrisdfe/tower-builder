@@ -25,11 +25,6 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
             Setup();
         }
 
-        // When this has been converted from a blueprint room to a actual room
-        public void OnBuild()
-        {
-        }
-
         void OnDestroy()
         {
         }
@@ -61,13 +56,8 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
             roomEntityMeshWrapper.Reset();
         }
 
-        /* 
-            Public Interface
-        */
         public void UpdatePosition()
         {
-            // TODO - use all all coordinates in cellCoordinatesList
-            // transform.position = GameWorldUtils.CellCoordinatesToPosition(room.cellCoordinatesList.bottomLeftCoordinates);
         }
 
         public void SetRoom(Room room)

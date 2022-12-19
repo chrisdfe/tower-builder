@@ -13,6 +13,7 @@ namespace TowerBuilder.GameWorld.Entities
         [HideInInspector]
         public GameObject prefabMesh { get; set; }
 
+        [HideInInspector]
         public EntityMeshWrapper customMeshWrapper;
 
         EntityMeshWrapper entityMeshWrapper => customMeshWrapper ?? GetComponent<EntityMeshWrapper>();

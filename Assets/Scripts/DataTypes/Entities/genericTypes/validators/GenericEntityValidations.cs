@@ -1,5 +1,6 @@
 using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Entities;
+using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
@@ -25,11 +26,27 @@ namespace TowerBuilder.DataTypes.Entities
 
                 if (entityRoom == null)
                 {
-                    return new EntityValidationErrorList($"{entity.definition.title} must be placed inside.");
+                    return new EntityValidationErrorList($"{GetEntityLabel(entity)} must be placed inside.");
                 }
             }
 
             return new EntityValidationErrorList();
+        }
+
+        public static EntityValidationErrorList ValidateIsOnFloor(AppState appState, Entity entity)
+        {
+            foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.bottomRow.items)
+            {
+                Floor floor = appState.Entities.Floors.queries.FindEntityTypeAtCell(cellCoordinates);
+
+                if (floor == null)
+                {
+                    return new EntityValidationErrorList($"{GetEntityLabel(entity)} must be placed on floor.");
+                }
+            }
+
+            return new EntityValidationErrorList();
+
         }
 
         public static EntityValidationErrorList ValidateNotDirectlyNextToEntityOfSameType(AppState appState, Entity entity, CellCoordinates cellCoordinates)
@@ -61,8 +78,7 @@ namespace TowerBuilder.DataTypes.Entities
 
             if (overlappingEntity != null)
             {
-                string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
-                return new EntityValidationErrorList($"You cannot build {entityLabel}s on top of each other.");
+                return new EntityValidationErrorList($"You cannot build {GetEntityLabel(entity)}s on top of each other.");
             }
 
             return new EntityValidationErrorList();
@@ -74,8 +90,7 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 if (floor < 0)
                 {
-                    string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
-                    return new EntityValidationErrorList($"You cannot build {entityLabel} underground.");
+                    return new EntityValidationErrorList($"You cannot build {GetEntityLabel(entity)} underground.");
                 }
             }
 
@@ -87,8 +102,7 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 if (entity.cellCoordinatesList.lowestFloor != floor)
                 {
-                    string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
-                    return new EntityValidationErrorList($"{entityLabel} must be placed on floor {floor + 1}");
+                    return new EntityValidationErrorList($"{GetEntityLabel(entity)} must be placed on floor {floor + 1}");
                 }
 
                 return new EntityValidationErrorList();
@@ -99,11 +113,12 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 if (entity.cellCoordinatesList.lowestFloor == floor)
                 {
-                    string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
-                    return new EntityValidationErrorList($"{entityLabel} must not be placed on floor {floor + 1}");
+                    return new EntityValidationErrorList($"{GetEntityLabel(entity)} must not be placed on floor {floor + 1}");
                 }
 
                 return new EntityValidationErrorList();
             };
+
+        static string GetEntityLabel(Entity entity) => Entity.TypeLabels.ValueFromKey(entity.type);
     }
 }

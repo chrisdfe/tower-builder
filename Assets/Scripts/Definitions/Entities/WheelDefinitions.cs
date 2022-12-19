@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Wheels;
 
 namespace TowerBuilder.Definitions
@@ -12,6 +13,8 @@ namespace TowerBuilder.Definitions
                 key = Wheel.Key.Default,
                 title = "Small",
                 category = "Basic",
+
+                resizability = Entity.Resizability.Horizontal,
 
                 blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {

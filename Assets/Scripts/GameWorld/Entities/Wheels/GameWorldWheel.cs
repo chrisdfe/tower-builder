@@ -11,13 +11,9 @@ namespace TowerBuilder.GameWorld.Entities.Wheels
     [RequireComponent(typeof(GameWorldEntity))]
     public class GameWorldWheel : MonoBehaviour
     {
-        public Wheel wheel;
-
-        public CurrentAndNext<(TimeValue, CellCoordinates)> currentAndNextPosition;
-
         EntityMeshWrapper entityMeshWrapper;
-
         Transform cube;
+        Wheel wheel;
 
         /* 
             Lifecycle Methods
@@ -27,14 +23,15 @@ namespace TowerBuilder.GameWorld.Entities.Wheels
             cube = transform.Find("Placeholder");
         }
 
+        void Start()
+        {
+            wheel = GetComponent<GameWorldEntity>().entity as Wheel;
+
+            Setup();
+        }
         void OnDestroy()
         {
             Teardown();
-        }
-
-        void Update()
-        {
-            UpdateMovement();
         }
 
         public void Setup()
@@ -47,33 +44,12 @@ namespace TowerBuilder.GameWorld.Entities.Wheels
             entityMeshWrapper.prefabMesh = prefabMesh;
             entityMeshWrapper.cellCoordinatesList = wheel.cellCoordinatesList;
             entityMeshWrapper.Setup();
+
+            GameWorldEntity gameWorldEntity = GetComponent<GameWorldEntity>();
+            gameWorldEntity.Setup();
         }
 
         public void Teardown() { }
-
-        public void UpdatePosition()
-        {
-            entityMeshWrapper.cellCoordinatesList = wheel.cellCoordinatesList;
-            entityMeshWrapper.UpdatePosition();
-        }
-
-        /* 
-            Internals
-        */
-        void UpdateMovement()
-        {
-            if (currentAndNextPosition != null)
-            {
-                var ((startTick, startCoordinates), (endTick, endCoordinates)) = currentAndNextPosition;
-                float normalizedTickProgress = GameWorldTimeSystemManager.Find().normalizedTickProgress;
-
-                entityMeshWrapper.SetPosition(Vector3.Lerp(
-                    GameWorldUtils.CellCoordinatesToPosition(startCoordinates),
-                    GameWorldUtils.CellCoordinatesToPosition(endCoordinates),
-                    normalizedTickProgress
-                ));
-            }
-        }
 
         /* 
             Static API

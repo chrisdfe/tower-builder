@@ -120,6 +120,11 @@ namespace TowerBuilder.ApplicationState.Entities
             Freight.events.onEntitiesAdded += OnEntitiesAdded;
             Freight.events.onEntitiesRemoved += OnEntitiesRemoved;
             Freight.events.onEntitiesBuilt += OnEntitiesBuilt;
+
+            Wheels.Setup();
+            Wheels.events.onEntitiesAdded += OnEntitiesAdded;
+            Wheels.events.onEntitiesRemoved += OnEntitiesRemoved;
+            Wheels.events.onEntitiesBuilt += OnEntitiesBuilt;
         }
 
         public void Add(Entity entity)
@@ -151,8 +156,6 @@ namespace TowerBuilder.ApplicationState.Entities
 
         void OnEntitiesAdded(ListWrapper<Entity> entityList)
         {
-            Debug.Log("on entities added");
-            Debug.Log(entityList.Count);
             events.onEntitiesAdded?.Invoke(entityList);
         }
 
