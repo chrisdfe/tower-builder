@@ -7,7 +7,7 @@ namespace TowerBuilder.DataTypes.Entities.Freights
     {
         public enum Key
         {
-            None,
+            // None,
             Small,
             Medium,
             Large
@@ -15,7 +15,7 @@ namespace TowerBuilder.DataTypes.Entities.Freights
 
         public static EnumStringMap<Key> KeyLabelMap = new EnumStringMap<Key>(
             new Dictionary<Key, string>() {
-                { Key.None,   "None" },
+                // { Key.None,   "None" },
                 { Key.Small,  "Small" },
                 { Key.Medium, "Medium" },
                 { Key.Large,  "Large" },

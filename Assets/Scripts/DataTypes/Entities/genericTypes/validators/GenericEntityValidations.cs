@@ -97,10 +97,8 @@ namespace TowerBuilder.DataTypes.Entities
         public static EntityValidationFunc CreateValidateEntityCellIsNotOnFloor(int floor) =>
             (AppState appState, Entity entity) =>
             {
-                Debug.Log($"validating entity is not on floor {floor}");
                 if (entity.cellCoordinatesList.lowestFloor == floor)
                 {
-                    Debug.Log("it is");
                     string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
                     return new EntityValidationErrorList($"{entityLabel} must not be placed on floor {floor + 1}");
                 }

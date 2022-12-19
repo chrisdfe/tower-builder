@@ -11,12 +11,12 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Rooms
 {
+    [RequireComponent(typeof(GameWorldEntity))]
     [RequireComponent(typeof(RoomEntityMeshWrapper))]
     public class GameWorldRoom : MonoBehaviour
     {
-        public Room room { get; private set; }
-
         RoomEntityMeshWrapper roomEntityMeshWrapper;
+        Room room;
 
         /*
             Lifecycle Methods
@@ -24,6 +24,13 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
         void Awake()
         {
             transform.localPosition = Vector3.zero;
+        }
+
+        void Start()
+        {
+            room = GetComponent<GameWorldEntity>().entity as Room;
+
+            Setup();
         }
 
         // When this has been converted from a blueprint room to a actual room
@@ -56,6 +63,10 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
             roomEntityMeshWrapper.Setup();
 
             UpdatePosition();
+
+            GameWorldEntity gameWorldEntity = GetComponent<GameWorldEntity>();
+            gameWorldEntity.customMeshWrapper = roomEntityMeshWrapper;
+            gameWorldEntity.Setup();
         }
 
         public void Teardown()

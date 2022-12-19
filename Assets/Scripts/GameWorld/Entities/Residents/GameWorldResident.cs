@@ -9,17 +9,16 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Residents
 {
-    [RequireComponent(typeof(EntityMeshWrapper))]
+    [RequireComponent(typeof(GameWorldEntity))]
     public class GameWorldResident : MonoBehaviour
     {
-        public Resident resident;
-        public ResidentBehavior residentBehavior;
+        // public ResidentBehavior residentBehavior;
 
         public CurrentAndNext<(TimeValue, CellCoordinates)> currentAndNextPosition;
 
         EntityMeshWrapper entityMeshWrapper;
-
         Transform cube;
+        Resident resident;
 
         /* 
             Lifecycle Methods
@@ -27,6 +26,13 @@ namespace TowerBuilder.GameWorld.Entities.Residents
         void Awake()
         {
             cube = transform.Find("Placeholder");
+        }
+
+        void Start()
+        {
+            resident = GetComponent<GameWorldEntity>().entity as Resident;
+
+            Setup();
         }
 
         void OnDestroy()
@@ -46,6 +52,8 @@ namespace TowerBuilder.GameWorld.Entities.Residents
             entityMeshWrapper.prefabMesh = cube.gameObject;
             entityMeshWrapper.cellCoordinatesList = resident.cellCoordinatesList;
             entityMeshWrapper.Setup();
+
+            GetComponent<GameWorldEntity>().Setup();
         }
 
         public void Teardown() { }

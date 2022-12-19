@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Floors;
+using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Residents.Behaviors;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
-namespace TowerBuilder.GameWorld.Entities.Floors
+namespace TowerBuilder.GameWorld.Entities.Freight
 {
     [RequireComponent(typeof(GameWorldEntity))]
-    public class GameWorldFloor : MonoBehaviour
+    public class GameWorldFreight : MonoBehaviour
     {
         EntityMeshWrapper entityMeshWrapper;
         Transform cube;
-        Floor floor;
+        FreightItem freightItem;
 
         /* 
             Lifecycle Methods
@@ -26,7 +26,10 @@ namespace TowerBuilder.GameWorld.Entities.Floors
 
         void Start()
         {
-            floor = GetComponent<GameWorldEntity>().entity as Floor;
+            Debug.Log("Start");
+            freightItem = GetComponent<GameWorldEntity>().entity as FreightItem;
+            Debug.Log("freightItem");
+            Debug.Log(freightItem);
             Setup();
         }
 
@@ -37,14 +40,20 @@ namespace TowerBuilder.GameWorld.Entities.Floors
 
         public void Setup()
         {
-            AssetList<Floor.Key> assetList = GameWorldFloorsManager.Find().meshAssets;
+            AssetList<FreightItem.Key> assetList = GameWorldFreightManager.Find().meshAssets;
 
-            GameObject prefabMesh = assetList.FindByKey(floor.key);
+            Debug.Log("freightItem");
+            Debug.Log(freightItem);
+            Debug.Log(freightItem.key);
+
+            GameObject prefabMesh = assetList.FindByKey(freightItem.key);
+            Debug.Log("prefabMesh");
+            Debug.Log(prefabMesh);
 
             // entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
-            entityMeshWrapper.cellCoordinatesList = floor.cellCoordinatesList;
+            entityMeshWrapper.cellCoordinatesList = freightItem.cellCoordinatesList;
             entityMeshWrapper.Setup();
 
             GetComponent<GameWorldEntity>().Setup();
@@ -55,17 +64,17 @@ namespace TowerBuilder.GameWorld.Entities.Floors
         /* 
             Static API
          */
-        public static GameWorldFloor Create(Transform parent)
+        public static GameWorldFreight Create(Transform parent)
         {
-            GameWorldFloorsManager floorsManager = GameWorldFloorsManager.Find();
-            GameObject prefab = floorsManager.assetList.FindByKey(GameWorldFloorsManager.AssetKey.Floor);
+            GameWorldFreightManager freightsManager = GameWorldFreightManager.Find();
+            GameObject prefab = freightsManager.assetList.FindByKey(GameWorldFreightManager.AssetKey.Freight);
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;
             gameObject.transform.localPosition = Vector3.zero;
 
-            GameWorldFloor gameWorldFloor = gameObject.GetComponent<GameWorldFloor>();
-            return gameWorldFloor;
+            GameWorldFreight gameWorldFreight = gameObject.GetComponent<GameWorldFreight>();
+            return gameWorldFreight;
         }
     }
 }

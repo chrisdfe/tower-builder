@@ -9,6 +9,7 @@ using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.DataTypes.Entities.Wheels;
+using UnityEngine;
 
 namespace TowerBuilder.Definitions
 {
@@ -106,6 +107,9 @@ namespace TowerBuilder.Definitions
                         return Definitions.TransportationItems.Queries.FindByKey(transportationItemKey);
                     case Entity.Type.Freight:
                         FreightItem.Key freightItemKey = FreightItem.KeyLabelMap.KeyFromValue(keyLabel);
+                        Debug.Log("Entity.Type.Freight");
+                        Debug.Log("Definitions.Freights.Queries.FindByKey(freightItemKey)");
+                        Debug.Log(Definitions.Freights.Queries.FindByKey(freightItemKey));
                         return Definitions.Freights.Queries.FindByKey(freightItemKey);
                 }
 

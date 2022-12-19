@@ -9,13 +9,13 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.InteriorWalls
 {
-    [RequireComponent(typeof(EntityMeshWrapper))]
+    [RequireComponent(typeof(GameWorldEntity))]
     public class GameWorldInteriorWall : MonoBehaviour
     {
-        public InteriorWall interiorWall { get; set; }
 
         EntityMeshWrapper entityMeshWrapper;
         Transform cube;
+        InteriorWall interiorWall;
 
         /* 
             Lifecycle Methods
@@ -23,6 +23,13 @@ namespace TowerBuilder.GameWorld.Entities.InteriorWalls
         void Awake()
         {
             cube = transform.Find("Placeholder");
+        }
+
+        void Start()
+        {
+            interiorWall = GetComponent<GameWorldEntity>().entity as InteriorWall;
+
+            Setup();
         }
 
         void OnDestroy()
@@ -41,6 +48,8 @@ namespace TowerBuilder.GameWorld.Entities.InteriorWalls
             entityMeshWrapper.prefabMesh = prefabMesh;
             entityMeshWrapper.cellCoordinatesList = interiorWall.cellCoordinatesList;
             entityMeshWrapper.Setup();
+
+            GetComponent<GameWorldEntity>().Setup();
         }
 
         public void Teardown() { }

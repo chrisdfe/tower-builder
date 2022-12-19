@@ -3,17 +3,23 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Furnitures
 {
-    [RequireComponent(typeof(EntityMeshWrapper))]
+    [RequireComponent(typeof(GameWorldEntity))]
     public class GameWorldFurniture : MonoBehaviour
     {
-        public Furniture furniture { get; set; }
 
         EntityMeshWrapper entityMeshWrapper;
         Transform cube;
+        Furniture furniture;
 
         void Awake()
         {
             cube = transform.Find("Placeholder");
+        }
+
+        void Start()
+        {
+            furniture = GetComponent<GameWorldEntity>().entity as Furniture;
+            Setup();
         }
 
         public void Setup()
@@ -22,6 +28,8 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
             entityMeshWrapper.prefabMesh = cube.gameObject;
             entityMeshWrapper.cellCoordinatesList = furniture.cellCoordinatesList;
             entityMeshWrapper.Setup();
+
+            GetComponent<GameWorldEntity>().Setup();
         }
 
         public void Teardown()

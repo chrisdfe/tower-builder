@@ -9,13 +9,11 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.TransportationItems
 {
-    [RequireComponent(typeof(EntityMeshWrapper))]
+    [RequireComponent(typeof(GameWorldEntity))]
     public class GameWorldTransportationItem : MonoBehaviour
     {
-        [HideInInspector]
-        public TransportationItem transportationItem;
-
         EntityMeshWrapper entityMeshWrapper;
+        TransportationItem transportationItem;
 
         /*
             Lifecycle Methods
@@ -23,6 +21,13 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
         void Awake()
         {
             transform.localPosition = Vector3.zero;
+        }
+
+        void Start()
+        {
+            transportationItem = GetComponent<GameWorldEntity>().entity as TransportationItem;
+
+            Setup();
         }
 
         void OnDestroy()
@@ -34,6 +39,8 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
         {
             CreateMesh();
             UpdatePosition();
+
+            GetComponent<GameWorldEntity>().Setup();
         }
 
         public void Teardown()
@@ -56,9 +63,7 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
         void CreateMesh()
         {
             // TransformUtils.DestroyChildren(transform);
-
             GameWorldTransportationManager transportationManager = GameWorldTransportationManager.Find();
-
             GameObject prefabMesh = transportationManager.meshAssets.FindByKey(transportationItem.key);
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();

@@ -2,6 +2,9 @@
 
 ## Tasks
 
+- show/hide different entity layers/types
+- UI elements to manage/interact with different entity layers/types
+  - e.g lights: "turn all/selected lights off/on" toggle and "set all/selected light colors" button
 - 'tileability strategy' or something - I can foresee needing 2 different types of tileability:
   - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)
   - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)

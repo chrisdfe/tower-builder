@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using UnityEngine;
 
@@ -34,6 +35,13 @@ namespace TowerBuilder.ApplicationState.Entities
             }
         }
 
+        public class Events
+        {
+            public ListEvent<Entity> onEntitiesAdded;
+            public ListEvent<Entity> onEntitiesRemoved;
+            public ListEvent<Entity> onEntitiesBuilt;
+        }
+
         public Rooms.State Rooms { get; }
         public Floors.State Floors { get; }
         public InteriorWalls.State InteriorWalls { get; }
@@ -44,7 +52,8 @@ namespace TowerBuilder.ApplicationState.Entities
         public Freight.State Freight { get; }
         public Wheels.State Wheels { get; }
 
-        public StateQueries Queries;
+        public Events events { get; }
+        public StateQueries Queries { get; }
 
         Dictionary<Entity.Type, IEntityStateSlice> sliceMap;
 
@@ -71,19 +80,46 @@ namespace TowerBuilder.ApplicationState.Entities
                 {Entity.Type.Wheel,              Wheels }
             };
 
-            this.Queries = new StateQueries(this);
+            Queries = new StateQueries(this);
+            events = new Events();
         }
 
         public override void Setup()
         {
             Rooms.Setup();
+            Rooms.events.onEntitiesAdded += OnEntitiesAdded;
+            Rooms.events.onEntitiesRemoved += OnEntitiesRemoved;
+            Rooms.events.onEntitiesBuilt += OnEntitiesBuilt;
+
             Floors.Setup();
+            Floors.events.onEntitiesAdded += OnEntitiesAdded;
+            Floors.events.onEntitiesRemoved += OnEntitiesRemoved;
+            Floors.events.onEntitiesBuilt += OnEntitiesBuilt;
+
             InteriorWalls.Setup();
+            InteriorWalls.events.onEntitiesAdded += OnEntitiesAdded;
+            InteriorWalls.events.onEntitiesRemoved += OnEntitiesRemoved;
+            InteriorWalls.events.onEntitiesBuilt += OnEntitiesBuilt;
 
             Furnitures.Setup();
+            Furnitures.events.onEntitiesAdded += OnEntitiesAdded;
+            Furnitures.events.onEntitiesRemoved += OnEntitiesRemoved;
+            Furnitures.events.onEntitiesBuilt += OnEntitiesBuilt;
+
             Residents.Setup();
+            Residents.events.onEntitiesAdded += OnEntitiesAdded;
+            Residents.events.onEntitiesRemoved += OnEntitiesRemoved;
+            Residents.events.onEntitiesBuilt += OnEntitiesBuilt;
+
             TransportationItems.Setup();
+            TransportationItems.events.onEntitiesAdded += OnEntitiesAdded;
+            TransportationItems.events.onEntitiesRemoved += OnEntitiesRemoved;
+            TransportationItems.events.onEntitiesBuilt += OnEntitiesBuilt;
+
             Freight.Setup();
+            Freight.events.onEntitiesAdded += OnEntitiesAdded;
+            Freight.events.onEntitiesRemoved += OnEntitiesRemoved;
+            Freight.events.onEntitiesBuilt += OnEntitiesBuilt;
         }
 
         public void Add(Entity entity)
@@ -112,6 +148,23 @@ namespace TowerBuilder.ApplicationState.Entities
         }
 
         public IEntityStateSlice GetStateSlice(Entity entity) => GetStateSlice(entity.type);
+
+        void OnEntitiesAdded(ListWrapper<Entity> entityList)
+        {
+            Debug.Log("on entities added");
+            Debug.Log(entityList.Count);
+            events.onEntitiesAdded?.Invoke(entityList);
+        }
+
+        void OnEntitiesRemoved(ListWrapper<Entity> entityList)
+        {
+            events.onEntitiesRemoved?.Invoke(entityList);
+        }
+
+        void OnEntitiesBuilt(ListWrapper<Entity> entityList)
+        {
+            events.onEntitiesBuilt?.Invoke(entityList);
+        }
 
         public class StateQueries
         {

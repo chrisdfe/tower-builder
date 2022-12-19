@@ -27,11 +27,13 @@ namespace TowerBuilder.GameWorld.UI
             NotificationsList allNotifications = Registry.appState.Notifications.list;
             int notificationsLength = allNotifications.Count;
 
+            // TODO - why don't I need Enumerable.Reverse here?
             // Get the n most recent notifications
             NotificationsList displayNotifications = new NotificationsList(
-                Enumerable.Reverse(allNotifications.items)
-                    .Take(NOTIFICATIONS_LIMIT)
-                    .ToList()
+                    // Enumerable.Reverse(allNotifications.items)
+                    allNotifications.items
+                        .Take(NOTIFICATIONS_LIMIT)
+                        .ToList()
             );
 
             string newText = "";

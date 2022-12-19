@@ -23,9 +23,15 @@ namespace TowerBuilder.ApplicationState.Entities
         public class Events
         {
             public ListEvent<EntityType> onItemsAdded { get; set; }
+            public ListEvent<Entity> onEntitiesAdded { get; set; }
+
             public ListEvent<EntityType> onItemsRemoved { get; set; }
-            public ListEvent<EntityType> onListUpdated { get; set; }
+            public ListEvent<Entity> onEntitiesRemoved { get; set; }
+
             public ListEvent<EntityType> onItemsBuilt { get; set; }
+            public ListEvent<Entity> onEntitiesBuilt { get; set; }
+
+            public ListEvent<EntityType> onListUpdated { get; set; }
         }
 
         public ListWrapper<EntityType> list { get; }
@@ -44,7 +50,10 @@ namespace TowerBuilder.ApplicationState.Entities
         public void Add(ListWrapper<EntityType> newItemsList)
         {
             list.Add(newItemsList);
+
             events.onItemsAdded?.Invoke(newItemsList);
+            events.onEntitiesAdded?.Invoke(newItemsList.ConvertAll<Entity>());
+
             events.onListUpdated?.Invoke(list);
         }
 
@@ -71,6 +80,7 @@ namespace TowerBuilder.ApplicationState.Entities
             removedItemsList.items.ForEach((entity) =>
             {
                 OnPreDestroy(entity);
+
                 // TODO - validation
                 // TODO - add money back into wallet
 
@@ -80,13 +90,14 @@ namespace TowerBuilder.ApplicationState.Entities
             list.Remove(removedItemsList);
 
             events.onItemsRemoved?.Invoke(removedItemsList);
+            events.onEntitiesRemoved?.Invoke(removedItemsList.ConvertAll<Entity>());
+
             events.onListUpdated?.Invoke(list);
         }
 
         public void Remove(EntityType item)
         {
-            ListWrapper<EntityType> removedItemsList = new ListWrapper<EntityType>();
-            removedItemsList.Add(item);
+            ListWrapper<EntityType> removedItemsList = new ListWrapper<EntityType>(item);
             Remove(removedItemsList);
         }
 
@@ -118,9 +129,11 @@ namespace TowerBuilder.ApplicationState.Entities
             OnPreBuild(entity);
             entity.OnBuild();
 
-            ListWrapper<EntityType> listWrapper = new ListWrapper<EntityType>();
-            listWrapper.Add(entity);
-            events.onItemsBuilt?.Invoke(listWrapper);
+            ListWrapper<EntityType> builtItemsList = new ListWrapper<EntityType>();
+            builtItemsList.Add(entity);
+
+            events.onItemsBuilt?.Invoke(builtItemsList);
+            events.onEntitiesBuilt?.Invoke(builtItemsList.ConvertAll<Entity>());
         }
 
         public void Build(Entity entity)

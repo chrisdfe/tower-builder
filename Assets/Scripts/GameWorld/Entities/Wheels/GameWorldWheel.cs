@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Wheels
 {
-    [RequireComponent(typeof(EntityMeshWrapper))]
+    [RequireComponent(typeof(GameWorldEntity))]
     public class GameWorldWheel : MonoBehaviour
     {
         public Wheel wheel;

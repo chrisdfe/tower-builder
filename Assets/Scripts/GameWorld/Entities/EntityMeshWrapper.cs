@@ -67,6 +67,9 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void SetColor(ColorKey key)
         {
+            Debug.Log("SetColor");
+            Debug.Log("entityCellMeshWrapperList");
+            Debug.Log(entityCellMeshWrapperList.Count);
             foreach (var child in entityCellMeshWrapperList)
             {
                 child.SetColor(key);
@@ -94,6 +97,10 @@ namespace TowerBuilder.GameWorld.Entities
 
         void CreateEntityCellWrappers()
         {
+            Debug.Log("CreateEntityCellWrappers");
+            Debug.Log("cellCoordinatesList.Count");
+            Debug.Log(cellCoordinatesList.Count);
+
             entityCellMeshWrapperList = cellCoordinatesList.items
                 .Select((cellCoordinates) =>
                 {
@@ -116,6 +123,9 @@ namespace TowerBuilder.GameWorld.Entities
 
                     return entityMeshCellWrapper;
                 }).ToList();
+
+            Debug.Log("entityCellMeshWrapperList.Count");
+            Debug.Log(entityCellMeshWrapperList.Count);
         }
 
         void DestroyEntityCellWrappers()
