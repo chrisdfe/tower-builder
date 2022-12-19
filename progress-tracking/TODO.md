@@ -2,6 +2,19 @@
 
 ## Tasks
 
+- 'tileability strategy' or something - I can foresee needing 2 different types of tileability:
+  - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)
+  - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)
+- light entity
+- GameWorldEntity
+- GameWorldEntityList that manages:
+  - setting colors responding to inspect/build/destroy state
+  - Adding/destroying entity types when they are added/removed from the store
+- Reconsider whether entity key types (e.g Room.Key) are worth it in their current state
+  - they could be stored as a string on the entitites themselves but remain as an enum to help with the unity editor
+  - i.e in the code using an enum doesn't help much, but it does help in making sure you're connecting to the right thing in assetList
+- pull Wheel.skinKey up into Entity/EntityDefinition
+- get rid of Room.Skin + config for now (wheels entity renders it obsolete)
 - maybe walls + ceiling should be the same entity as it is now
 - windows entity
 - Finish up route finder algorithm

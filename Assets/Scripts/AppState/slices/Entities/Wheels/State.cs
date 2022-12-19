@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities.Wheels;
+using TowerBuilder.DataTypes.Notifications;
+using UnityEngine;
+
+namespace TowerBuilder.ApplicationState.Entities.Wheels
+{
+    [Serializable]
+    public class State : EntityStateSlice<Wheel, State.Events>
+    {
+        public class Input { }
+
+        public new class Events : EntityStateSlice<Wheel, State.Events>.Events { }
+
+        public new Queries queries { get; }
+
+        public State(AppState appState, Input input) : base(appState)
+        {
+            queries = new Queries(appState, this);
+        }
+
+        public override void Setup()
+        {
+            base.Setup();
+        }
+
+        public override void Teardown()
+        {
+            base.Teardown();
+        }
+
+        public new class Queries : EntityStateSlice<Wheel, State.Events>.Queries
+        {
+            public Queries(AppState appState, State state) : base(appState, state) { }
+        }
+    }
+}

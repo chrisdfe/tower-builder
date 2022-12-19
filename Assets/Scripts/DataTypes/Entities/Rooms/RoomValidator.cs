@@ -1,48 +1,43 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using TowerBuilder;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Entities.Rooms;
-using UnityEngine;
+using TowerBuilder.DataTypes.Entities.Wheels;
 
 namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
 {
     public class RoomValidator : EntityValidator
     {
-        protected override List<EntityCellValidationFunc> cellValidators { get; } =
-            new List<EntityCellValidationFunc>()
+        protected override List<EntityValidationFunc> customValidators =>
+            new List<EntityValidationFunc>()
             {
-                ValidateAboveOtherRoom,
+                GenericEntityValidations.CreateValidateEntityCellIsNotOnFloor(0),
+                ValidateRoomAboveOtherRoomOrWheels,
                 // ValidateAcceptableOverhang,
             };
 
         public RoomValidator(Room room) : base(room) { }
 
-        public static EntityValidationErrorList ValidateAboveOtherRoom(AppState appState, Entity entity, CellCoordinates cellCoordinates)
+        public static EntityValidationErrorList ValidateRoomAboveOtherRoomOrWheels(AppState appState, Entity entity)
         {
-            // It's fine to be built on the ground floor
-            if (entity.cellCoordinatesList.lowestFloor == 0)
-            {
-                return new EntityValidationErrorList();
-            }
-
             CellCoordinatesList bottomRow = entity.cellCoordinatesList.bottomRow;
 
-            foreach (CellCoordinates bottomRowCellCoordinates in bottomRow.items)
+            foreach (CellCoordinates cellCoordinates in bottomRow.items)
             {
                 Room roomBelow = appState.Entities.Rooms.queries
                     .FindEntityTypeAtCell(cellCoordinates.coordinatesBelow);
 
-                if (roomBelow == null)
+                Wheel wheelsBelow = appState.Entities.Wheels.queries
+                    .FindEntityTypeAtCell(cellCoordinates.coordinatesBelow);
+
+                if (roomBelow == null && wheelsBelow == null)
                 {
-                    return new EntityValidationErrorList("Room must be built above other room");
+                    return new EntityValidationErrorList("Room must be built above other room or wheels");
                 }
             }
 
             return new EntityValidationErrorList();
         }
 
+        /*
         public static EntityValidationErrorList ValidateAcceptableOverhang(AppState appState, Entity entity, CellCoordinates cellCoordinates)
         {
             Room room = entity as Room;
@@ -71,6 +66,6 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
 
             return new EntityValidationErrorList();
         }
-
+        */
     }
 }

@@ -8,6 +8,7 @@ using TowerBuilder.DataTypes.Entities.InteriorWalls;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
+using TowerBuilder.DataTypes.Entities.Wheels;
 
 namespace TowerBuilder.Definitions
 {
@@ -21,6 +22,7 @@ namespace TowerBuilder.Definitions
             { typeof(ResidentDefinition), typeof(Resident) },
             { typeof(TransportationItemDefinition), typeof(TransportationItem) },
             { typeof(FreightDefinition), typeof(FreightItem) },
+            { typeof(WheelDefinition), typeof(Wheel) },
         };
 
         public DefinitionQueries Queries { get; }
@@ -32,6 +34,7 @@ namespace TowerBuilder.Definitions
         public ResidentDefinitionsList Residents = new ResidentDefinitionsList();
         public TransportationItemDefinitionsList TransportationItems = new TransportationItemDefinitionsList();
         public FreightDefinitionsList Freights = new FreightDefinitionsList();
+        public WheelDefinitionsList Wheels = new WheelDefinitionsList();
 
         public Dictionary<Entity.Type, IEntityDefinitionsList> entityDefinitionsMap { get; }
 
@@ -47,6 +50,7 @@ namespace TowerBuilder.Definitions
                 { Entity.Type.Resident, Residents },
                 { Entity.Type.TransportationItem, TransportationItems },
                 { Entity.Type.Freight, Freights },
+                { Entity.Type.Wheel, Wheels },
             };
         }
 

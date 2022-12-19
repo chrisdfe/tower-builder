@@ -18,6 +18,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
             public TransportationItems.State.Input TransportationItems;
             public Freight.State.Input Freight;
+            public Wheels.State.Input Wheels;
 
             public Input()
             {
@@ -29,6 +30,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 Residents = new Residents.State.Input();
                 TransportationItems = new TransportationItems.State.Input();
                 Freight = new Freight.State.Input();
+                Wheels = new Wheels.State.Input();
             }
         }
 
@@ -40,6 +42,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public Residents.State Residents { get; }
         public TransportationItems.State TransportationItems { get; }
         public Freight.State Freight { get; }
+        public Wheels.State Wheels { get; }
 
         public StateQueries Queries;
 
@@ -55,6 +58,7 @@ namespace TowerBuilder.ApplicationState.Entities
             Residents = new Residents.State(appState, input.Residents);
             TransportationItems = new TransportationItems.State(appState, input.TransportationItems);
             Freight = new Freight.State(appState, input.Freight);
+            Wheels = new Wheels.State(appState, input.Wheels);
 
             sliceMap = new Dictionary<Entity.Type, IEntityStateSlice> {
                 {Entity.Type.Room,               Rooms },
@@ -63,7 +67,8 @@ namespace TowerBuilder.ApplicationState.Entities
                 {Entity.Type.Furniture,          Furnitures },
                 {Entity.Type.Resident,           Residents },
                 {Entity.Type.TransportationItem, TransportationItems },
-                {Entity.Type.Freight,            Freight }
+                {Entity.Type.Freight,            Freight },
+                {Entity.Type.Wheel,              Wheels }
             };
 
             this.Queries = new StateQueries(this);

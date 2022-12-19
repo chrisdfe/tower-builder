@@ -36,8 +36,6 @@ namespace TowerBuilder.GameWorld.Entities.InteriorWalls
 
             GameObject prefabMesh = assetList.FindByKey(interiorWall.key);
 
-            Debug.Log(interiorWall.cellCoordinatesList.Count);
-
             // entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;

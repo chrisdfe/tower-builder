@@ -49,18 +49,14 @@ namespace TowerBuilder.DataTypes.Entities
 
             return new EntityValidationErrorList();
         }
-    }
 
-    public static class GenericEntityCellValidations
-    {
-        public static EntityValidationErrorList ValidateEntityCellIsNotOverlappingAnotherEntity(AppState appState, Entity entity, CellCoordinates cellCoordinates)
+        public static EntityValidationErrorList ValidateEntityIsNotOverlappingAnotherEntity(AppState appState, Entity entity)
         {
             IEntityStateSlice stateSlice = appState.Entities.GetStateSlice(entity);
 
-            // TODO - entity layers
             Entity overlappingEntity = stateSlice.entityList.Find((otherEntity) =>
                 otherEntity != entity &&
-                otherEntity.cellCoordinatesList.Contains(cellCoordinates)
+                otherEntity.cellCoordinatesList.OverlapsWith(entity.cellCoordinatesList)
             );
 
             if (overlappingEntity != null)
@@ -72,38 +68,41 @@ namespace TowerBuilder.DataTypes.Entities
             return new EntityValidationErrorList();
         }
 
-        public static EntityValidationErrorList ValidateEntityCellIsNotUnderground(AppState appState, Entity entity, CellCoordinates cellCoordinates)
+        public static EntityValidationErrorList ValidateEntityIsNotUnderground(AppState appState, Entity entity)
         {
-            if (cellCoordinates.floor < 0)
+            foreach (int floor in entity.cellCoordinatesList.floorValues)
             {
-                string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
-                return new EntityValidationErrorList($"You cannot build {entityLabel} underground.");
+                if (floor < 0)
+                {
+                    string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
+                    return new EntityValidationErrorList($"You cannot build {entityLabel} underground.");
+                }
             }
 
             return new EntityValidationErrorList();
         }
 
-        public static EntityCellValidationFunc CreateValidateEntityCellIsOnFloor(int floor) =>
-            (AppState appState, Entity entity, CellCoordinates cellCoordinates) =>
+        public static EntityValidationFunc CreateValidateEntityIsOnFloor(int floor) =>
+            (AppState appState, Entity entity) =>
             {
-                // Since rooms can be multiple tiles high, make sure the cell we're validating here is the bottom-most cell
-                bool isOnBottom = entity.cellCoordinatesList.asRelativeCoordinates.lowestFloor == 0;
-                if (isOnBottom && cellCoordinates.floor != floor)
+                if (entity.cellCoordinatesList.lowestFloor != floor)
                 {
-                    return new EntityValidationErrorList($"{entity.definition.title} must be placed on floor {floor + 1}");
+                    string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
+                    return new EntityValidationErrorList($"{entityLabel} must be placed on floor {floor + 1}");
                 }
 
                 return new EntityValidationErrorList();
             };
 
-        public static EntityCellValidationFunc CreateValidateEntityCellIsNotOnFloor(int floor) =>
-            (AppState appState, Entity entity, CellCoordinates cellCoordinates) =>
+        public static EntityValidationFunc CreateValidateEntityCellIsNotOnFloor(int floor) =>
+            (AppState appState, Entity entity) =>
             {
-                // Since rooms can be multiple tiles high, make sure the cell we're validating here is the bottom-most cell
-                bool isOnBottom = entity.cellCoordinatesList.asRelativeCoordinates.lowestFloor == 0;
-                if (isOnBottom && cellCoordinates.floor == floor)
+                Debug.Log($"validating entity is not on floor {floor}");
+                if (entity.cellCoordinatesList.lowestFloor == floor)
                 {
-                    return new EntityValidationErrorList($"{entity.definition.title} must not be placed on floor {floor + 1}");
+                    Debug.Log("it is");
+                    string entityLabel = Entity.TypeLabels.ValueFromKey(entity.type);
+                    return new EntityValidationErrorList($"{entityLabel} must not be placed on floor {floor + 1}");
                 }
 
                 return new EntityValidationErrorList();
