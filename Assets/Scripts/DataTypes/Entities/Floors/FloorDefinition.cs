@@ -6,6 +6,6 @@ namespace TowerBuilder.DataTypes.Entities.Floors
 {
     public class FloorDefinition : EntityDefinition<Floor.Key>
     {
-        // public new CellCoordinatesList blockCellsTemplate = CellCoordinatesList.one;
+        public override ValidatorFactory validatorFactory => (Entity entity) => new FloorValidator(entity as Floor);
     }
 }

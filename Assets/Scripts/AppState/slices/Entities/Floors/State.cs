@@ -73,7 +73,7 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
 
                 foreach (Floor floor in floorsInsideRoom.items)
                 {
-                    floor.OnBuild();
+                    Build(floor);
                 }
             }
         }

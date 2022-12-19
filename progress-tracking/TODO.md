@@ -2,7 +2,8 @@
 
 ## Tasks
 
-- Entities are staying "valid blueprint blue" after being built
+- Procedurally generated background that scrolls by
+- Switch UI/State.SetEntityList to use a list of entities from Entities/State
 - I don't think these static Create() functions on GameWorldRoom etc are used anymore
 - Freight contents
 - For a first draft, every 1 mile of journey a random passer-by shows up
@@ -283,6 +284,7 @@
 
 # Done
 
+- Entities are staying "valid blueprint blue" after being built
 - Beef up validations for different entity types
 - Wheels should not have vertical flexibility
 - get rid of Room.Skin + config for now (wheels entity renders it obsolete)

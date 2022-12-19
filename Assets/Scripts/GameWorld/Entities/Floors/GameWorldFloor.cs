@@ -27,6 +27,7 @@ namespace TowerBuilder.GameWorld.Entities.Floors
         void Start()
         {
             floor = GetComponent<GameWorldEntity>().entity as Floor;
+
             Setup();
         }
 
@@ -41,7 +42,6 @@ namespace TowerBuilder.GameWorld.Entities.Floors
 
             GameObject prefabMesh = assetList.FindByKey(floor.key);
 
-            // entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
             entityMeshWrapper.cellCoordinatesList = floor.cellCoordinatesList;

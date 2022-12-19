@@ -27,7 +27,9 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void UpdateEntityColor()
         {
-            Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+            Debug.Log("updating color for " + entity.GetType());
+            Debug.Log(entity.isInBlueprintMode);
+
             ToolState toolState = Registry.appState.Tools.toolState;
 
             bool hasUpdated = false;
@@ -74,6 +76,8 @@ namespace TowerBuilder.GameWorld.Entities
 
             void SetInspectStateColor()
             {
+                Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+
                 if (inspectedEntity == entity)
                 {
                     entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Inspected);

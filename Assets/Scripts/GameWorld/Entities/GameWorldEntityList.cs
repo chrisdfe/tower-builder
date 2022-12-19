@@ -52,7 +52,7 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void RemoveEntity(Entity entity)
         {
-            GameWorldEntity gwEntity = entities.Find(gameWorldEntity => gameWorldEntity.entity == entity);
+            GameWorldEntity gwEntity = FindByEntity(entity);
 
             entities.Remove(gwEntity);
             Destroy(gwEntity.gameObject);
@@ -60,7 +60,8 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void BuildEntity(Entity entity)
         {
-
+            GameWorldEntity gwEntity = FindByEntity(entity);
+            gwEntity.UpdateEntityColor();
         }
 
         public void UpdateEntityColors()
@@ -70,5 +71,7 @@ namespace TowerBuilder.GameWorld.Entities
                 gameWorldEntity.UpdateEntityColor();
             }
         }
+
+        GameWorldEntity FindByEntity(Entity entity) => entities.Find(gameWorldEntity => gameWorldEntity.entity == entity);
     }
 }
