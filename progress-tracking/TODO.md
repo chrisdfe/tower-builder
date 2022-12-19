@@ -2,6 +2,9 @@
 
 ## Tasks
 
+- starting a room selection inside another room should expand that room
+- Placeable windows - new state slice/entity type
+- New tool for merging/splitting up rooms
 - Procedurally generated background that scrolls by
 - Switch UI/State.SetEntityList to use a list of entities from Entities/State
 - I don't think these static Create() functions on GameWorldRoom etc are used anymore
@@ -28,11 +31,10 @@
   - This would enable freight to require a large enough door for the freight to fit into
   - Also potentially allow for residents of different sizes
 - Doors of different heights
-- ability to save/load different chunks of the game world
+- ability to save/load different chunks of the game world to a file
   - day time atmosphere effects
   - vehicles
 - a hard-to-follow series of entity add/deletes happens after builtToolState.EndBuild happens - the entity is built and then the selection box in UI/state is reset and buildToolState calls ResetBlueprintEntity and removes/adds a new entity. Ideally this only happens as many times as it needs to, there's some redundancy it seems like.
-- wheels should be their own entity instead of a room now
 - chassis that can expand vertically really high without needing support but can't support anything above it
   - tent, for freight
   - spectrum between this (can only expand 1 high) and be able to have lots of weight
@@ -59,22 +61,17 @@
 - Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
 - Make cells 1x1.5 or 1x2 as in my sketchbook - floors/ceilings/walls are part of the Inside of box
 - TransportationItemDefinition/entranceExitBuilder should probably return 2 lists (1 for entrances and 2 for exits) instead of entrance/exit tuples of single coordinates
-- Rooms aren't validating that they're on top of another room again
-- GameWorldEntityList
 - BuildValidators/DestroyValidators?
-- EntityStateSlice build chould fire onItemsBuilt event as well - currently it's just singular
+- EntityStateSlice build should fire onItemsBuilt event as well - currently it's just singular
 - same as with how I made an entities appState slice:
   - Attributes appState slice group
   - Behaviors appState slice group
   - Validators appState slice group
-- replace ValidateWheelsAreOnCorrectFloor with generic validator
-- these "if (entity is Resident) && ((Resident)entity) == resident)" statements should be abstracted to an Equals method on Entity
 - in build mode somewhere in the UI it should give you a list of all the validation rules about the current selected entity
 - entity layers (determines the z-index the entity is rendered at)
 - Furniture usage slots
 - Break room entity down into:
   - Back walls entity
-  - Floor entity
   - Side wall entity
   - light entity
   - Room would be a "group", making a room would be making a floor, back walls, etc simultaneously
@@ -93,9 +90,7 @@
 - Stronger chassis should be able to have longer overhangs
 - "Hunger" resident attribute
 - SelectionBox should span the default size of transportation items instead of just the current cell
-- Draggable/resizable transportation items
 - Pull out a lot of the logic in these static Create() method
-- New tool for merging/splitting up rooms
 - UI element that displays current resident's goals
 - "TickTimer" utility class
 - new Route normalization algorithm should treat "UsingTransportationItem" segments differently
@@ -126,10 +121,6 @@
 - 'current selected vehicle' in UI state
 - More cells - heavier; wheels can only manage a certain amount of weight (better wheels = can handle more weight)
 - Modular way of applying materials to specific meshes
-- starting a room selection inside another room should expand that room
-- system for items that can connect horizontally/vertically
-  - a way of organizing/naming nodes in the mesh tree to do this automatically without configuration
-- "Journey" datatype - driving vehicle gets you closer to your destination
 - Things you can do/specialize in with your vehicle:
   - be a bus (have passengers)
   - be an overnight bus (hotel rooms)
@@ -139,7 +130,6 @@
 - helpers for finding a cell off of the side of the left or right side of the screen, for spawning new residents, npc vehicles etc
 - TransportationItem selectable entity
 - Move entities when placing them instead of continually adding/removing them
-- Placeable windows - new state slice/entity type
 - Template button should be visible when selecting a new entity type - right now it's just the category button
 - Move RoomConnections into its own state slice
 - maybe UI should be a sibling namespace to GameWorld instead of child
@@ -147,14 +137,12 @@
   - same with transportation items
 - TransportationItem/Furniture that takes up multiple cells
 - Fix the mesh scaling (everything is either 0.1 or 10 or 100 not 1)
-- room should run furniture validations before being built as well?
 - Some kind of way of making BedCreationWatcher not immediately add new residents - perhaps on a interval longer than every tick
 - Moonlight/inside lights
 - furniture z indexes
 - destroy validation (cannot delete room with another room above it)
-- tank treads room type
-- don't default to weird "none" room type
-- blank rooms, proper room 'templates' prepopulated with furniture
+- tank treads wheels type
+- proper room 'templates' prepopulated with furniture
   - bedroom
   - cockpit
 - furniture that occupys different # of tiles
@@ -165,7 +153,6 @@
   - RoomConnection subtype for outside connections
   - Wheels room should allow ladder furniture
   - Residents should be able to walk on the ground and climb up the wheels ladder
-- "floors" - not all room cells should have floors by default
 - furniture that requires floor/does not require floor
 - consider putting RoomConnections in seperate state slice
 - tick animations
@@ -184,11 +171,7 @@
 - "reset" button to reset state to default
 - ability to start game with a non-empty state already - load rooms, connections, residents, current time, etc
 - RouteFinder shouldn't look for every room entrance in the room, just on the current floor - it should also look for furniture on the current floor that could transport the resident elsewhere
-- Transportation room furniture interface - have a "connects to"
-  - Room entrances could be "Doorway" furniture instead
 - Furniture "usage slots" - an array of residents currently using this piece of furniture the size of the furnitures occupancy
-- roomcell "has floor" boolean state - for tall rooms
-  - additionally, a "bridge" furniture type?
 - Residents currently stay on the same cell for more than one cycle currently - because of repeating cellCoordinates in segment end/start
 - Wallet transation history
   - Wallet "batch" transactions so the transactions don't get flooded with lots of tiny transactions (e.g. desk income)
@@ -284,6 +267,18 @@
 
 # Done
 
+- Transportation room furniture interface - have a "connects to"
+  - Room entrances could be "Doorway" furniture instead
+- "Journey" datatype - driving vehicle gets you closer to your destination
+- Draggable/resizable transportation items
+- Rooms aren't validating that they're on top of another room again
+- GameWorldEntityList
+- replace ValidateWheelsAreOnCorrectFloor with generic validator
+- don't default to weird "none" room type
+- "floors" - not all room cells should have floors by default
+- system for items that can connect horizontally/vertically
+  - a way of organizing/naming nodes in the mesh tree to do this automatically without configuration
+- wheels should be their own entity instead of a room now
 - Entities are staying "valid blueprint blue" after being built
 - Beef up validations for different entity types
 - Wheels should not have vertical flexibility
