@@ -39,8 +39,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         public GameWorldEntity CreateEntity(Entity entity)
         {
-            Debug.Log("CreateEntity");
-            Debug.Log(entity);
             GameObject entityGameObject = Instantiate(entityPrefab);
             GameWorldEntity gameWorldEntity = entityGameObject.GetComponent<GameWorldEntity>();
 

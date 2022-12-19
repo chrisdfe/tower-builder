@@ -10,15 +10,10 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
     {
         protected Dictionary<string, Transform> segments = new Dictionary<string, Transform>();
 
-        public Room.Skin.Key skinKey { get; set; }
+        public Room.SkinKey skinKey { get; set; }
 
         protected override EntityMeshCellWrapper CreateEntityCellMeshWrapper(Transform parent, GameObject prefabMesh, CellCoordinates cellCoordinates, CellNeighbors cellNeighbors, Tileable.CellPosition cellPosition) =>
-            skinKey switch
-            {
-                Room.Skin.Key.Wheels => new RoomCellWheelsMeshWrapper(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition),
-                _ => new RoomCellDefaultMeshWrapper(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition)
-            };
-
+            new RoomCellEntityMeshWrapper(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition);
 
         public override void Setup()
         {

@@ -11,10 +11,10 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
 {
     public class RoomDefinition : EntityDefinition<Room.Key>
     {
+        public Room.SkinKey skinKey = Room.SkinKey.Default;
+
         public delegate RoomFurnitureBuilderBase FurnitureBuilderFactory(Room room);
         public FurnitureBuilderFactory furnitureBuilderFactory = (Room room) => new RoomFurnitureBuilderBase(room);
-
-        public Room.Skin.Key skinKey = Room.Skin.Key.Default;
 
         public override ValidatorFactory validatorFactory => (Entity entity) => new RoomValidator(entity as Room);
 

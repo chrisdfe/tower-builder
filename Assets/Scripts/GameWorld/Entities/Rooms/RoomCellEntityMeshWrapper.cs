@@ -8,7 +8,8 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 {
     public class RoomCellEntityMeshWrapper : EntityMeshCellWrapper
     {
-        protected Dictionary<string, Transform> segments = new Dictionary<string, Transform>();
+        Dictionary<string, Transform> segments = new Dictionary<string, Transform>();
+        Transform[] wallSegments;
 
         public RoomCellEntityMeshWrapper(
             Transform parent,
@@ -26,62 +27,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
             UpdateMesh();
         }
 
-        public virtual void UpdateMesh() { }
-        public virtual void SetSegments() { }
-        public virtual void SetColor(Color color) { }
-
-        protected void SetSegmentEnabled(Transform segment, bool enabled)
-        {
-            segment.gameObject.SetActive(enabled);
-        }
-
-        protected void SetSegmentColor(Transform segment, Color color)
-        {
-            Material material = segment.GetComponent<MeshRenderer>().material;
-            material.color = color;
-        }
-    }
-
-    class RoomCellDefaultMeshWrapper : RoomCellEntityMeshWrapper
-    {
-        public RoomCellDefaultMeshWrapper(
-            Transform parent,
-            GameObject prefabMesh,
-            CellCoordinates cellCoordinates,
-            CellNeighbors cellNeighbors,
-            Tileable.CellPosition cellPosition
-        ) : base(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition) { }
-
-        public override void SetColor(Color color)
-        {
-            foreach (Transform segment in wallSegments)
-            {
-                SetSegmentColor(segment, color);
-            }
-        }
-
-        Transform[] wallSegments;
-
-        public override void SetSegments()
-        {
-            segments = new Dictionary<string, Transform>() {
-                    { "leftWall",           meshTransform.Find("Wrapper").Find("LeftWall").Find("LeftWallFull") },
-                    { "rightWall",          meshTransform.Find("Wrapper").Find("RightWall").Find("RightWallFull") },
-                    { "backWallFull",       meshTransform.Find("Wrapper").Find("BackWall").Find("BackWallFull") },
-                    { "backWallWithWindow", meshTransform.Find("Wrapper").Find("BackWall").Find("BackWall__Window") },
-                    { "ceiling",            meshTransform.Find("Wrapper").Find("Ceiling").Find("CeilingFull") },
-                    // { "floor",              meshTransform.Find("Wrapper").Find("Floor").Find("FloorFull") },
-                };
-
-            wallSegments = new Transform[] {
-                    segments["ceiling"],
-                    segments["leftWall"],
-                    segments["rightWall"],
-                    // segments["floor"],
-                };
-        }
-
-        public override void UpdateMesh()
+        public void UpdateMesh()
         {
             SetSegmentEnabled(segments["backWallFull"], false);
             SetSegmentEnabled(segments["backWallWithWindow"], true);
@@ -117,29 +63,44 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
                 SetSegmentEnabled(segments[key], true);
             }
         }
-    }
 
-    class RoomCellWheelsMeshWrapper : RoomCellEntityMeshWrapper
-    {
-        public RoomCellWheelsMeshWrapper(
-            Transform parent,
-            GameObject prefabMesh,
-            CellCoordinates cellCoordinates,
-            CellNeighbors cellNeighbors,
-            Tileable.CellPosition cellPosition
-        ) : base(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition) { }
-
-        public override void SetSegments()
+        public void SetColor(Color color)
         {
-            segments = new Dictionary<string, Transform>() {
-                { "tire", meshTransform.Find("Tire") },
-                { "hubcap", meshTransform.Find("Hubcap") },
-            };
+            foreach (Transform segment in wallSegments)
+            {
+                SetSegmentColor(segment, color);
+            }
         }
 
-        public override void SetColor(Color color)
+        /*
+            Internals
+        */
+        void SetSegmentEnabled(Transform segment, bool enabled)
         {
-            SetSegmentColor(segments["tire"], color);
+            segment.gameObject.SetActive(enabled);
+        }
+
+        void SetSegmentColor(Transform segment, Color color)
+        {
+            Material material = segment.GetComponent<MeshRenderer>().material;
+            material.color = color;
+        }
+
+        void SetSegments()
+        {
+            segments = new Dictionary<string, Transform>() {
+                { "leftWall",           meshTransform.Find("Wrapper").Find("LeftWall").Find("LeftWallFull") },
+                { "rightWall",          meshTransform.Find("Wrapper").Find("RightWall").Find("RightWallFull") },
+                { "backWallFull",       meshTransform.Find("Wrapper").Find("BackWall").Find("BackWallFull") },
+                { "backWallWithWindow", meshTransform.Find("Wrapper").Find("BackWall").Find("BackWall__Window") },
+                { "ceiling",            meshTransform.Find("Wrapper").Find("Ceiling").Find("CeilingFull") },
+            };
+
+            wallSegments = new Transform[] {
+                segments["ceiling"],
+                segments["leftWall"],
+                segments["rightWall"],
+            };
         }
     }
 }

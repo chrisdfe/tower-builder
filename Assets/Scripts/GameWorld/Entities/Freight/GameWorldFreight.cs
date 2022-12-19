@@ -26,10 +26,7 @@ namespace TowerBuilder.GameWorld.Entities.Freight
 
         void Start()
         {
-            Debug.Log("Start");
             freightItem = GetComponent<GameWorldEntity>().entity as FreightItem;
-            Debug.Log("freightItem");
-            Debug.Log(freightItem);
             Setup();
         }
 
@@ -42,13 +39,7 @@ namespace TowerBuilder.GameWorld.Entities.Freight
         {
             AssetList<FreightItem.Key> assetList = GameWorldFreightManager.Find().meshAssets;
 
-            Debug.Log("freightItem");
-            Debug.Log(freightItem);
-            Debug.Log(freightItem.key);
-
             GameObject prefabMesh = assetList.FindByKey(freightItem.key);
-            Debug.Log("prefabMesh");
-            Debug.Log(prefabMesh);
 
             // entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();

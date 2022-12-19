@@ -83,7 +83,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         void OnEntitiesAdded(ListWrapper<Entity> entityList)
         {
-            Debug.Log("entities added");
             entityList.items.ForEach((entity) =>
             {
                 GetListByType(entity.GetType())?.CreateEntity(entity);
@@ -93,7 +92,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         void OnEntitiesRemoved(ListWrapper<Entity> entityList)
         {
-            Debug.Log("entities removed");
             entityList.items.ForEach((entity) =>
             {
                 GetListByType(entity.GetType())?.RemoveEntity(entity);
@@ -103,8 +101,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         void OnEntitiesBuilt(ListWrapper<Entity> entityList)
         {
-            Debug.Log("entities built");
-
             entityList.items.ForEach((entity) =>
             {
                 GetListByType(entity.GetType())?.BuildEntity(entity);

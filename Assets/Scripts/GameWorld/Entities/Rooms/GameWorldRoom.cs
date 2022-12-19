@@ -1,11 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TowerBuilder;
-using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Tools;
-using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
@@ -44,22 +36,13 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         public void Setup()
         {
-            AssetList<GameWorldRoomsManager.MeshAssetKey> assetList = GameWorldRoomsManager.Find().meshAssets;
+            AssetList<Room.SkinKey> meshAssets = GameWorldRoomsManager.Find().meshAssets;
 
-            // TODO - I should probably just use Skin.Key instead of GameWorldRoomsManager.MeshAssetKey
-            GameWorldRoomsManager.MeshAssetKey key = room.skin.key switch
-            {
-                Room.Skin.Key.Default => GameWorldRoomsManager.MeshAssetKey.Default,
-                Room.Skin.Key.Wheels => GameWorldRoomsManager.MeshAssetKey.Wheels,
-                _ => GameWorldRoomsManager.MeshAssetKey.Default
-            };
-
-            GameObject prefabMesh = assetList.FindByKey(key);
+            GameObject prefabMesh = meshAssets.FindByKey(room.skinKey);
 
             roomEntityMeshWrapper = GetComponent<RoomEntityMeshWrapper>();
             roomEntityMeshWrapper.prefabMesh = prefabMesh;
             roomEntityMeshWrapper.cellCoordinatesList = room.cellCoordinatesList;
-            roomEntityMeshWrapper.skinKey = room.skin.key;
             roomEntityMeshWrapper.Setup();
 
             UpdatePosition();

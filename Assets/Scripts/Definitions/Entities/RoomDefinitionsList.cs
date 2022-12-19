@@ -30,7 +30,7 @@ namespace TowerBuilder.Definitions
             new RoomDefinition()
             {
                 title = "Empty - Tall",
-                key = Room.Key.Default,
+                key = Room.Key.OtherDefault,
                 category = "Empty - Tall",
 
                 blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, 5),
@@ -49,24 +49,6 @@ namespace TowerBuilder.Definitions
 
                 resizability = Room.Resizability.Flexible,
                 pricePerCell = 1000,
-            },
-
-            new RoomDefinition()
-            {
-                title = "Wheels",
-                key = Room.Key.Wheels,
-                category = "Wheels",
-
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                    }
-                ),
-
-                resizability = Room.Resizability.Horizontal,
-                pricePerCell = 5000,
-
-                skinKey = Room.Skin.Key.Wheels
             },
         };
 

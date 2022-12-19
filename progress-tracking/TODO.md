@@ -2,6 +2,10 @@
 
 ## Tasks
 
+- Beef up validations for different entity types
+- Freight contents
+- For a first draft, every 1 mile of journey a random passer-by shows up
+  - after that, then encounters with other vehicles
 - show/hide different entity layers/types
 - UI elements to manage/interact with different entity layers/types
   - e.g lights: "turn all/selected lights off/on" toggle and "set all/selected light colors" button
@@ -9,17 +13,12 @@
   - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)
   - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)
 - light entity
-- GameWorldEntity
-- GameWorldEntityList that manages:
-  - setting colors responding to inspect/build/destroy state
-  - Adding/destroying entity types when they are added/removed from the store
+- windows entity
 - Reconsider whether entity key types (e.g Room.Key) are worth it in their current state
   - they could be stored as a string on the entitites themselves but remain as an enum to help with the unity editor
   - i.e in the code using an enum doesn't help much, but it does help in making sure you're connecting to the right thing in assetList
 - pull Wheel.skinKey up into Entity/EntityDefinition
-- get rid of Room.Skin + config for now (wheels entity renders it obsolete)
 - maybe walls + ceiling should be the same entity as it is now
-- windows entity
 - Finish up route finder algorithm
   - Make sure each cell between current + target cells have enough vertical clearance
 - Different types of transportation items should be able to occupy the same cell (escalators + doorways etc)
@@ -273,7 +272,6 @@
   - temperature
   - freight/cargo
   - passengers/passenger seat
-  - passengers/passenger seat
 - this game loop:
   - Vehicles (moving vehicles) need fuel
   - You need scrap (currency) to buy fuel
@@ -283,6 +281,11 @@
 
 # Done
 
+- get rid of Room.Skin + config for now (wheels entity renders it obsolete)
+- GameWorldEntity
+- GameWorldEntityList that manages:
+  - setting colors responding to inspect/build/destroy state
+  - Adding/destroying entity types when they are added/removed from the store
 - Clean up final gross entity type switch statements
   - Entity.CreateFromDefinition
 - Rooms are highlighted as "invalid" when they are multiple cells high, even though they are allowed to be built
