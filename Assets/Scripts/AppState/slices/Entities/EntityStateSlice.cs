@@ -17,10 +17,18 @@ namespace TowerBuilder.ApplicationState.Entities
         public void Build(Entity item);
 
         public IQueries entityQueries { get; }
+        public IEvents entityEvents { get; }
 
         public interface IQueries
         {
             public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates);
+        }
+
+        public interface IEvents
+        {
+            public ListEvent<Entity> onEntitiesAdded { get; set; }
+            public ListEvent<Entity> onEntitiesRemoved { get; set; }
+            public ListEvent<Entity> onEntitiesBuilt { get; set; }
         }
     }
 
@@ -28,7 +36,7 @@ namespace TowerBuilder.ApplicationState.Entities
         where EventsType : EntityStateSlice<EntityType, EventsType>.Events, new()
         where EntityType : Entity
     {
-        public class Events
+        public class Events : IEntityStateSlice.IEvents
         {
             public ListEvent<EntityType> onItemsAdded { get; set; }
             public ListEvent<Entity> onEntitiesAdded { get; set; }
@@ -43,7 +51,10 @@ namespace TowerBuilder.ApplicationState.Entities
         }
 
         public ListWrapper<EntityType> list { get; }
+
         public EventsType events { get; }
+        public IEntityStateSlice.IEvents entityEvents => events as IEntityStateSlice.IEvents;
+
         public Queries queries { get; protected set; }
         public IEntityStateSlice.IQueries entityQueries => queries as IEntityStateSlice.IQueries;
 

@@ -103,49 +103,38 @@ namespace TowerBuilder.ApplicationState.Entities
         public override void Setup()
         {
             Rooms.Setup();
-            Rooms.events.onEntitiesAdded += OnEntitiesAdded;
-            Rooms.events.onEntitiesRemoved += OnEntitiesRemoved;
-            Rooms.events.onEntitiesBuilt += OnEntitiesBuilt;
+            AddListeners(Rooms);
 
             Floors.Setup();
-            Floors.events.onEntitiesAdded += OnEntitiesAdded;
-            Floors.events.onEntitiesRemoved += OnEntitiesRemoved;
-            Floors.events.onEntitiesBuilt += OnEntitiesBuilt;
+            AddListeners(Floors);
 
             InteriorWalls.Setup();
-            InteriorWalls.events.onEntitiesAdded += OnEntitiesAdded;
-            InteriorWalls.events.onEntitiesRemoved += OnEntitiesRemoved;
-            InteriorWalls.events.onEntitiesBuilt += OnEntitiesBuilt;
+            AddListeners(InteriorWalls);
 
             Furnitures.Setup();
-            Furnitures.events.onEntitiesAdded += OnEntitiesAdded;
-            Furnitures.events.onEntitiesRemoved += OnEntitiesRemoved;
-            Furnitures.events.onEntitiesBuilt += OnEntitiesBuilt;
+            AddListeners(Furnitures);
 
             Residents.Setup();
-            Residents.events.onEntitiesAdded += OnEntitiesAdded;
-            Residents.events.onEntitiesRemoved += OnEntitiesRemoved;
-            Residents.events.onEntitiesBuilt += OnEntitiesBuilt;
+            AddListeners(Residents);
 
             TransportationItems.Setup();
-            TransportationItems.events.onEntitiesAdded += OnEntitiesAdded;
-            TransportationItems.events.onEntitiesRemoved += OnEntitiesRemoved;
-            TransportationItems.events.onEntitiesBuilt += OnEntitiesBuilt;
+            AddListeners(TransportationItems);
 
             Freight.Setup();
-            Freight.events.onEntitiesAdded += OnEntitiesAdded;
-            Freight.events.onEntitiesRemoved += OnEntitiesRemoved;
-            Freight.events.onEntitiesBuilt += OnEntitiesBuilt;
+            AddListeners(Freight);
 
             Wheels.Setup();
-            Wheels.events.onEntitiesAdded += OnEntitiesAdded;
-            Wheels.events.onEntitiesRemoved += OnEntitiesRemoved;
-            Wheels.events.onEntitiesBuilt += OnEntitiesBuilt;
+            AddListeners(Wheels);
 
             Vehicles.Setup();
-            Vehicles.events.onEntitiesAdded += OnEntitiesAdded;
-            Vehicles.events.onEntitiesRemoved += OnEntitiesRemoved;
-            Vehicles.events.onEntitiesBuilt += OnEntitiesBuilt;
+            AddListeners(Vehicles);
+
+            void AddListeners(IEntityStateSlice stateSlice)
+            {
+                stateSlice.entityEvents.onEntitiesAdded += OnEntitiesAdded;
+                stateSlice.entityEvents.onEntitiesRemoved += OnEntitiesRemoved;
+                stateSlice.entityEvents.onEntitiesBuilt += OnEntitiesBuilt;
+            }
         }
 
         public void Add(Entity entity)

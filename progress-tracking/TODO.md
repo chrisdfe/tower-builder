@@ -2,6 +2,11 @@
 
 ## Tasks
 
+- "EntityGroup"s - a list (group) of entities
+  - used for a things like room, vehicle
+  - the cost of the group would be the sum of all of the entities prices
+  - basic version could work like a stamp - could be called "static"
+  - the next iteration would be resizable - each entity type could have their own resiability definition/strategy
 - different furniture interaction types? using, repairing, cleaning, etc
 - game world resident movement is broken rn
 - Make "make resident go here and do this" button be right click, not ctrl+left click
@@ -15,7 +20,7 @@
 - I don't think these static Create() functions on GameWorldRoom etc are used anymore
 - Freight contents
 - For a first draft, every 1 mile of journey a random passer-by shows up
-  - after that, then encounters with other vehicles
+  - after that, encounters with other vehicles
 - show/hide different entity layers/types
 - UI elements to manage/interact with different entity layers/types
   - e.g lights: "turn all/selected lights off/on" toggle and "set all/selected light colors" button

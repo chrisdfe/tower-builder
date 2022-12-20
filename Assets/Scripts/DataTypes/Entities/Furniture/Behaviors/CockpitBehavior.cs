@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
@@ -19,10 +20,10 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
         {
             base.InteractStart(resident);
 
-            // Vehicle vehicle = appState.Vehicles.queries.FindVehicleByFurniture(furniture);
-            // VehicleAttributesWrapper vehicleAttributesWrapper = appState.VehicleAttributesWrappers.queries.FindByVehicle(vehicle);
+            Vehicle vehicle = appState.Vehicles.queries.FindVehicleByFurniture(furniture);
+            VehicleAttributesWrapper vehicleAttributesWrapper = appState.VehicleAttributesWrappers.queries.FindByVehicle(vehicle);
 
-            // VehicleAttribute.Modifier modifier = new VehicleAttribute.Modifier("Engine Power", 1f);
+            VehicleAttribute.Modifier modifier = new VehicleAttribute.Modifier("Engine Power", 1f);
             // foreach (Room room in vehicle.roomList.items)
             // {
             //     FurnitureBehaviorList furnitureBehaviorList =
