@@ -2,9 +2,13 @@
 
 ## Tasks
 
+- Make vehicles an entity again - I want to be able to place vehicles + have vehicle definitions
+- different furniture interaction types? using, repairing, cleaning, etc
+- game world resident movement is broken rn
+- Make "make resident go here and do this" button be right click, not ctrl+left click
 - Way of deleting types of entities other than rooms
   - inspect panel should also allow each one to be deleted
-- Placeable windows - new state slice/entity type
+- Windows entity - new state slice/entity type
 - New tool for merging/splitting up rooms
 - Procedurally generated background that scrolls by
 - holding down shift - select multiple entities
@@ -20,7 +24,6 @@
   - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)
   - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)
 - light entity
-- windows entity
 - Reconsider whether entity key types (e.g Room.Key) are worth it in their current state
   - they could be stored as a string on the entitites themselves but remain as an enum to help with the unity editor
   - i.e in the code using an enum doesn't help much, but it does help in making sure you're connecting to the right thing in assetList
@@ -45,7 +48,6 @@
   - also cells in the same "overlapGroup" or whatever (freight and furntiure);
 - 'unconstrained' vs 'constrained' selection box - tile/based vs mouse position coordinates
 - Build ToolStateButtons dynamically from available states
-- Make vehicles an entity again - I want to be able to place vehicles + have vehicle definitions
 - "CursorManager" parent class to manage whether selection box is shown vs regular cursor, etc
 - I should probably switch back to the raycast method of determining which entities are being moused over
 - Decouple entity keys with the mesh they use - use "skinKey" like roomcell

@@ -40,6 +40,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
             //     result += engineBehaviorList.Count;
             // }
 
+            Debug.Log("engine interact start");
         }
 
         public override void InteractEnd(Resident resident)
