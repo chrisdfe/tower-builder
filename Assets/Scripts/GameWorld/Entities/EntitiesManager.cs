@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.GameWorld.Entities.Floors;
@@ -17,6 +18,7 @@ namespace TowerBuilder.GameWorld.Entities
     public class EntitiesManager : MonoBehaviour
     {
         public Dictionary<Type, GameWorldEntityList> entityManagerMap { get; private set; }
+        public List<GameWorldEntityList> entityManagerList { get; private set; }
 
         void Awake()
         {
@@ -64,6 +66,8 @@ namespace TowerBuilder.GameWorld.Entities
                 }
             };
 
+            entityManagerList = entityManagerMap.Values.ToList();
+
             Setup();
         }
 
@@ -72,6 +76,9 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.events.onEntitiesAdded += OnEntitiesAdded;
             Registry.appState.Entities.events.onEntitiesRemoved += OnEntitiesRemoved;
             Registry.appState.Entities.events.onEntitiesBuilt += OnEntitiesBuilt;
+
+            Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
         public void Teardown()
@@ -79,6 +86,9 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.events.onEntitiesAdded -= OnEntitiesAdded;
             Registry.appState.Entities.events.onEntitiesRemoved -= OnEntitiesRemoved;
             Registry.appState.Entities.events.onEntitiesBuilt -= OnEntitiesBuilt;
+
+            Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
+            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
         void OnEntitiesAdded(ListWrapper<Entity> entityList)
@@ -103,6 +113,22 @@ namespace TowerBuilder.GameWorld.Entities
             {
                 GetListByType(entity.GetType())?.BuildEntity(entity);
             });
+        }
+
+        void OnInspectedEntityListUpdated(ListWrapper<Entity> entitiesList)
+        {
+            foreach (GameWorldEntityList entityList in entityManagerList)
+            {
+                entityList.UpdateEntityColors();
+            }
+        }
+
+        void OnCurrentSelectedEntityUpdated(Entity entity)
+        {
+            foreach (GameWorldEntityList entityList in entityManagerList)
+            {
+                entityList.UpdateEntityColors();
+            }
         }
 
         GameWorldEntityList GetListByType(Type EntityType) => entityManagerMap[EntityType];

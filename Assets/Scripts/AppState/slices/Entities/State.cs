@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using UnityEngine;
@@ -55,7 +56,15 @@ namespace TowerBuilder.ApplicationState.Entities
         public Events events { get; }
         public StateQueries Queries { get; }
 
-        Dictionary<Entity.Type, IEntityStateSlice> sliceMap;
+        public Dictionary<Entity.Type, IEntityStateSlice> sliceMap { get; }
+        public List<IEntityStateSlice> sliceList { get; }
+
+        public ListWrapper<Entity> allEntities =>
+            sliceList.Aggregate(new ListWrapper<Entity>(), (acc, stateSlice) =>
+            {
+                acc.Add(stateSlice.entityList);
+                return acc;
+            });
 
         public State(AppState appState, Input input) : base(appState)
         {
@@ -79,6 +88,8 @@ namespace TowerBuilder.ApplicationState.Entities
                 {Entity.Type.Freight,            Freight },
                 {Entity.Type.Wheel,              Wheels }
             };
+
+            sliceList = sliceMap.Values.ToList();
 
             Queries = new StateQueries(this);
             events = new Events();
@@ -177,6 +188,13 @@ namespace TowerBuilder.ApplicationState.Entities
             {
                 this.state = state;
             }
+
+            public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
+                state.sliceList.Aggregate(new ListWrapper<Entity>(), (acc, slice) =>
+                {
+                    acc.Add(slice.entityQueries.FindEntitiesAtCell(cellCoordinates));
+                    return acc;
+                });
         }
     }
 }

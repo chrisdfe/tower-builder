@@ -63,6 +63,8 @@ namespace TowerBuilder.DataTypes.Entities
 
         public virtual Type type { get; }
 
+        public string typeLabel => TypeLabels.ValueFromKey(type);
+
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 
@@ -74,7 +76,6 @@ namespace TowerBuilder.DataTypes.Entities
 
         // TODO - remove this and put in seperate state - only have list of error messages or isValid
         public EntityValidator validator { get; }
-
 
         public Entity(EntityDefinition definition)
         {

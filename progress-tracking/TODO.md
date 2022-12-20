@@ -2,10 +2,13 @@
 
 ## Tasks
 
+- Way of deleting types of entities other than rooms
+  - inspect panel should also allow each one to be deleted
 - Placeable windows - new state slice/entity type
 - New tool for merging/splitting up rooms
 - Procedurally generated background that scrolls by
-- Switch UI/State.SetEntityList to use a list of entities from Entities/State
+- holding down shift - select multiple entities
+  - some UI element that says how many entities are selected (and what types)
 - I don't think these static Create() functions on GameWorldRoom etc are used anymore
 - Freight contents
 - For a first draft, every 1 mile of journey a random passer-by shows up
@@ -198,6 +201,12 @@
 - Z-index constants
 - should the destroy tool replace the room with an empty floor, at least on floors 0 and above? otherwise, certain rooms would be undestroyable?
 
+## Furniture ideas
+
+- Television (recreation) (uses power)
+- Fridge (food)
+- bunkbed
+
 ## Projects
 
 - Store system
@@ -273,6 +282,7 @@
 
 # Done
 
+- Switch UI/State.SetEntityList to use a list of entities from Entities/State
 - Destroying room blocks seems to be broken again
 - Room datatypes/state is structured in a different way to some of the newer classes (e.g make it Room.SkinKey instead of RoomSkinKey)
 - Maybe Floor should have a Room room field to simplify things

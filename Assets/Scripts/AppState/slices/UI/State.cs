@@ -164,43 +164,11 @@ namespace TowerBuilder.ApplicationState.UI
 
         void SetEntityList()
         {
-            ListWrapper<Entity> entityList = new ListWrapper<Entity>();
-
             if (currentSelectedCell != null)
             {
-                if (currentSelectedRoom != null)
-                {
-                    entityList.Add(currentSelectedRoom);
-                }
-
-                Furniture furnitureAtCell = appState.Entities.Furnitures.queries.FindFurnitureAtCell(currentSelectedCell);
-
-                if (furnitureAtCell != null)
-                {
-                    entityList.Add(furnitureAtCell);
-                }
-
-                Resident residentAtCell = appState.Entities.Residents.queries.FindEntityTypeAtCell(currentSelectedCell);
-
-                if (residentAtCell != null)
-                {
-                    entityList.Add(residentAtCell);
-                }
-
-                ListWrapper<TransportationItem> transportationItemsAtCell = appState.Entities.TransportationItems.queries.FindAtCell(currentSelectedCell);
-
-                if (transportationItemsAtCell.Count > 0)
-                {
-                    foreach (TransportationItem item in transportationItemsAtCell.items)
-                    {
-                        entityList.Add(item);
-                    }
-                }
+                currentSelectedCellEntityList = appState.Entities.Queries.FindEntitiesAtCell(currentSelectedCell);
+                events.onCurrentSelectedEntityListUpdated?.Invoke(currentSelectedCellEntityList);
             }
-
-            currentSelectedCellEntityList = entityList;
-
-            events.onCurrentSelectedEntityListUpdated?.Invoke(currentSelectedCellEntityList);
         }
     }
 }

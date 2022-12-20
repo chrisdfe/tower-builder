@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Notifications;
@@ -14,6 +15,13 @@ namespace TowerBuilder.ApplicationState.Entities
         public void Remove(ListWrapper<Entity> removedItemsList);
         public void Remove(Entity item);
         public void Build(Entity item);
+
+        public IQueries entityQueries { get; }
+
+        public interface IQueries
+        {
+            public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates);
+        }
     }
 
     public class EntityStateSlice<EntityType, EventsType> : StateSlice, IEntityStateSlice
@@ -37,6 +45,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public ListWrapper<EntityType> list { get; }
         public EventsType events { get; }
         public Queries queries { get; }
+        public IEntityStateSlice.IQueries entityQueries => queries as IEntityStateSlice.IQueries;
 
         public ListWrapper<Entity> entityList => list.ConvertAll<Entity>();
 
@@ -145,7 +154,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
         protected virtual void OnPreDestroy(EntityType entity) { }
 
-        public class Queries
+        public class Queries : IEntityStateSlice.IQueries
         {
             protected AppState appState;
             protected EntityStateSlice<EntityType, EventsType> state;
@@ -157,7 +166,21 @@ namespace TowerBuilder.ApplicationState.Entities
             }
 
             public EntityType FindEntityTypeAtCell(CellCoordinates cellCoordinates) =>
-                state.list.items.Find(entity => entity.cellCoordinatesList.Contains(cellCoordinates));
+                state.list.items
+                    .Find(entity => entity.cellCoordinatesList.Contains(cellCoordinates));
+
+
+            public Entity FindEntityAtCell(CellCoordinates cellCoordinates) =>
+                FindEntityTypeAtCell(cellCoordinates) as Entity;
+
+            public ListWrapper<EntityType> FindEntityTypesAtCell(CellCoordinates cellCoordinates) =>
+                new ListWrapper<EntityType>(
+                    state.list.items
+                        .FindAll(entity => entity.cellCoordinatesList.Contains(cellCoordinates))
+                );
+
+            public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
+                FindEntityTypesAtCell(cellCoordinates).ConvertAll<Entity>();
         }
     }
 }

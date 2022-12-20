@@ -107,26 +107,26 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
                     )
                 );
 
-            public Furniture FindFurnitureAtCell(CellCoordinates cellCoordinates) =>
-                FindEntityTypeAtCell(cellCoordinates);
+            public ListWrapper<Furniture> FindFurnituresAtCell(CellCoordinates cellCoordinates) =>
+                FindEntityTypesAtCell(cellCoordinates).ConvertAll<Furniture>();
 
             public ListWrapper<Furniture> FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
             {
-                List<Furniture> furnitureList = new List<Furniture>();
+                ListWrapper<Furniture> furnitureList = new ListWrapper<Furniture>();
 
                 foreach (CellCoordinatesBlock block in cellCoordinatesBlockList.items)
                 {
                     foreach (CellCoordinates cellCoordinates in block.items)
                     {
-                        Furniture furnitureAtCell = FindFurnitureAtCell(cellCoordinates);
-                        if (furnitureAtCell != null)
+                        ListWrapper<Furniture> furnituresAtCell = FindFurnituresAtCell(cellCoordinates);
+                        if (furnituresAtCell.Count > 0)
                         {
-                            furnitureList.Add(furnitureAtCell);
+                            furnitureList.Add(furnituresAtCell);
                         }
                     }
                 }
 
-                return new ListWrapper<Furniture>(furnitureList);
+                return furnitureList;
             }
         }
     }

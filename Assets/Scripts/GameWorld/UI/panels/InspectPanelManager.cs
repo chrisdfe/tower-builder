@@ -76,6 +76,10 @@ namespace TowerBuilder.GameWorld.UI
         {
             Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
 
+            if (inspectedEntity == null) return;
+
+            inspectText.text = $"{inspectedEntity.typeLabel} - {inspectedEntity.ToString()}\n";
+
             switch (inspectedEntity)
             {
                 case Room roomEntity:
@@ -90,47 +94,36 @@ namespace TowerBuilder.GameWorld.UI
                 case TransportationItem transportationItemEntity:
                     SetInspectedTransportationItemText(transportationItemEntity);
                     break;
-                default:
-                    SetNullInspectedText();
-                    break;
             }
-        }
-
-        void SetNullInspectedText()
-        {
-            inspectText.text = "---";
         }
 
         void SetInspectedFurnitureText(Furniture furniture)
         {
-            string text = "Furniture\n"
-                + $"   name: {furniture}\n";
+            string text = $"   name: {furniture}\n";
 
-            inspectText.text = text;
+            inspectText.text += text;
         }
 
         void SetInspectedRoomEntityText(Room room)
         {
-            string text = "Room\n"
-            + $"    name: {room}\n"
+            string text =
+              $"    name: {room}\n"
             + $"    title: {room.definition.title}\n"
             + $"    price: {room.price}\n"
             + $"    cells: {room.cellCoordinatesList.Count}\n"
             + $"    blocks: {room.blocksList.Count}\n";
 
-            inspectText.text = text;
+            inspectText.text += text;
         }
 
         void SetInspectedResidentText(Resident resident)
         {
-            if (resident == null) return;
-
             ResidentBehavior residentBehavior = Registry.appState.ResidentBehaviors.queries.FindByResident(resident);
 
             ResidentAttributesWrapper residentAttributesWrapper = Registry.appState.ResidentAttributesWrappers.queries.FindByResident(resident);
 
-            string text = "Resident\n"
-            + $"   name: {resident}\n";
+            string text =
+              $"   name: {resident}\n";
 
             if (residentBehavior != null)
             {
@@ -146,17 +139,16 @@ namespace TowerBuilder.GameWorld.UI
                 });
             }
 
-            inspectText.text = text;
+            inspectText.text += text;
         }
 
         void SetInspectedTransportationItemText(TransportationItem transportationItem)
         {
             if (transportationItem == null) return;
 
-            string text = "TransportationItem\n"
-            + $"   name: {transportationItem}\n";
+            string text = $"   name: {transportationItem}\n";
 
-            inspectText.text = text;
+            inspectText.text += text;
         }
 
         void SetActionButtons()

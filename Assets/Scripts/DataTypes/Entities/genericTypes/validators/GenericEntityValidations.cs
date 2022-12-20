@@ -37,9 +37,9 @@ namespace TowerBuilder.DataTypes.Entities
         {
             foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.bottomRow.items)
             {
-                Floor floor = appState.Entities.Floors.queries.FindEntityTypeAtCell(cellCoordinates);
+                ListWrapper<Floor> floors = appState.Entities.Floors.queries.FindEntityTypesAtCell(cellCoordinates);
 
-                if (floor == null)
+                if (floors.Count == 0)
                 {
                     return new EntityValidationErrorList($"{GetEntityLabel(entity)} must be placed on floor.");
                 }

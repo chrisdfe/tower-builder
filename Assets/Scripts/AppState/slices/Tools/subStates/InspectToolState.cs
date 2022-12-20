@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
@@ -165,10 +166,12 @@ namespace TowerBuilder.ApplicationState.Tools
 
             Resident resident = (inspectedEntity as Resident);
             CellCoordinates targetCellCoordinates = appState.UI.currentSelectedCell;
-            Furniture furnitureAtTarget = appState.Entities.Furnitures.queries.FindFurnitureAtCell(targetCellCoordinates);
+            ListWrapper<Furniture> furnituresAtTarget = appState.Entities.Furnitures.queries.FindFurnituresAtCell(targetCellCoordinates);
 
-            if (furnitureAtTarget != null)
+            if (furnituresAtTarget.Count > 0)
             {
+                // TODO - a different/smarter way of doing this
+                Furniture furnitureAtTarget = furnituresAtTarget.items[0];
                 appState.ResidentBehaviors.SendResidentTo(resident, furnitureAtTarget);
             }
             else
