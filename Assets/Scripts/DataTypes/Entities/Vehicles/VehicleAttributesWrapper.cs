@@ -6,7 +6,7 @@ using TowerBuilder.DataTypes.Entities.Furnitures.Behaviors;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Vehicles
+namespace TowerBuilder.DataTypes.Entities.Vehicles
 {
     public class VehicleAttributesWrapper : AttributesWrapper<VehicleAttribute, VehicleAttribute.Key>
     {

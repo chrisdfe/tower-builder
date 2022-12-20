@@ -2,7 +2,6 @@
 
 ## Tasks
 
-- Make vehicles an entity again - I want to be able to place vehicles + have vehicle definitions
 - different furniture interaction types? using, repairing, cleaning, etc
 - game world resident movement is broken rn
 - Make "make resident go here and do this" button be right click, not ctrl+left click
@@ -284,6 +283,7 @@
 
 # Done
 
+- Make vehicles an entity again - I want to be able to place vehicles + have vehicle definitions
 - Switch UI/State.SetEntityList to use a list of entities from Entities/State
 - Destroying room blocks seems to be broken again
 - Room datatypes/state is structured in a different way to some of the newer classes (e.g make it Room.SkinKey instead of RoomSkinKey)

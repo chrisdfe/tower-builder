@@ -1,40 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.ApplicationState.Entities;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Rooms;
-using TowerBuilder.DataTypes.Vehicles;
+using TowerBuilder.DataTypes.Entities.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Vehicles
 {
-    using VehicleListStateSlice = ListStateSlice<VehicleList, Vehicle, State.Events>;
-
-    public class State : VehicleListStateSlice
+    public class State : EntityStateSlice<Vehicle, State.Events>
     {
         public class Input
         {
-            public VehicleList vehicleList;
+            public ListWrapper<Vehicle> vehicleList;
         }
 
-        public new class Events : VehicleListStateSlice.Events
+        public new class Events : EntityStateSlice<Vehicle, State.Events>.Events
         {
             public delegate void VehicleRoomEvent(Vehicle vehicle, Room room);
             public VehicleRoomEvent onVehicleRoomAdded;
             public VehicleRoomEvent onVehicleRoomRemoved;
         }
 
-        public class Queries
+        public new class Queries : EntityStateSlice<Vehicle, State.Events>.Queries
         {
-            AppState appState;
-            State state;
-
-            public Queries(AppState appState, State state)
-            {
-                this.appState = appState;
-                this.state = state;
-            }
+            public Queries(AppState appState, State state) : base(appState, state) { }
 
             public Vehicle FindVehicleByRoom(Room room) =>
                 state.list.items.Find(otherVehicle => otherVehicle.roomList.Contains(room));
@@ -44,17 +36,16 @@ namespace TowerBuilder.ApplicationState.Vehicles
                 FindVehicleByRoom(appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]));
         }
 
-        public Queries queries;
+        public new Queries queries;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            list = input.vehicleList ?? new VehicleList();
-
             queries = new Queries(appState, this);
         }
 
         public override void Setup()
         {
+            base.Setup();
             appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
             appState.Entities.Rooms.events.onItemsBuilt += OnRoomsBuilt;
             appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
@@ -62,6 +53,7 @@ namespace TowerBuilder.ApplicationState.Vehicles
 
         public override void Teardown()
         {
+            base.Teardown();
             appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
             appState.Entities.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
             appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
@@ -109,7 +101,7 @@ namespace TowerBuilder.ApplicationState.Vehicles
                 }
                 else
                 {
-                    Vehicle vehicle = new Vehicle();
+                    Vehicle vehicle = new Vehicle(Registry.Definitions.Entities.Vehicles.defaultDefinition as VehicleDefinition);
                     vehicle.roomList.Add(room);
                     Add(vehicle);
                 }
@@ -130,7 +122,7 @@ namespace TowerBuilder.ApplicationState.Vehicles
                 }
                 else
                 {
-                    Vehicle vehicle = new Vehicle();
+                    Vehicle vehicle = new Vehicle(Registry.Definitions.Entities.Vehicles.defaultDefinition as VehicleDefinition);
                     vehicle.roomList.Add(room);
                     Add(vehicle);
                 }

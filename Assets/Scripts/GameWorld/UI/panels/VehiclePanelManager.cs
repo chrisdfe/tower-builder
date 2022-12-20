@@ -1,7 +1,8 @@
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Entities.Vehicles;
 using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Time;
-using TowerBuilder.DataTypes.Vehicles;
 using TowerBuilder.Systems;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -71,12 +72,12 @@ namespace TowerBuilder.GameWorld.UI
         /*
             Event Handlers
         */
-        void OnVehiclesAdded(VehicleList vehicleList)
+        void OnVehiclesAdded(ListWrapper<Vehicle> vehicleList)
         {
             this.vehicle = vehicleList.items[0];
         }
 
-        void OnVehiclesRemoved(VehicleList vehicleList)
+        void OnVehiclesRemoved(ListWrapper<Vehicle> vehicleList)
         {
             this.vehicle = null;
         }

@@ -21,6 +21,7 @@ namespace TowerBuilder.ApplicationState.Entities
             public TransportationItems.State.Input TransportationItems;
             public Freight.State.Input Freight;
             public Wheels.State.Input Wheels;
+            public Vehicles.State.Input Vehicles;
 
             public Input()
             {
@@ -33,6 +34,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 TransportationItems = new TransportationItems.State.Input();
                 Freight = new Freight.State.Input();
                 Wheels = new Wheels.State.Input();
+                Vehicles = new Vehicles.State.Input();
             }
         }
 
@@ -52,6 +54,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public TransportationItems.State TransportationItems { get; }
         public Freight.State Freight { get; }
         public Wheels.State Wheels { get; }
+        public Vehicles.State Vehicles { get; }
 
         public Events events { get; }
         public StateQueries Queries { get; }
@@ -77,6 +80,7 @@ namespace TowerBuilder.ApplicationState.Entities
             TransportationItems = new TransportationItems.State(appState, input.TransportationItems);
             Freight = new Freight.State(appState, input.Freight);
             Wheels = new Wheels.State(appState, input.Wheels);
+            Vehicles = new Vehicles.State(appState, input.Vehicles);
 
             sliceMap = new Dictionary<Entity.Type, IEntityStateSlice> {
                 {Entity.Type.Room,               Rooms },
@@ -86,7 +90,8 @@ namespace TowerBuilder.ApplicationState.Entities
                 {Entity.Type.Resident,           Residents },
                 {Entity.Type.TransportationItem, TransportationItems },
                 {Entity.Type.Freight,            Freight },
-                {Entity.Type.Wheel,              Wheels }
+                {Entity.Type.Wheel,              Wheels },
+                {Entity.Type.Vehicle,            Vehicles }
             };
 
             sliceList = sliceMap.Values.ToList();
@@ -136,6 +141,11 @@ namespace TowerBuilder.ApplicationState.Entities
             Wheels.events.onEntitiesAdded += OnEntitiesAdded;
             Wheels.events.onEntitiesRemoved += OnEntitiesRemoved;
             Wheels.events.onEntitiesBuilt += OnEntitiesBuilt;
+
+            Vehicles.Setup();
+            Vehicles.events.onEntitiesAdded += OnEntitiesAdded;
+            Vehicles.events.onEntitiesRemoved += OnEntitiesRemoved;
+            Vehicles.events.onEntitiesBuilt += OnEntitiesBuilt;
         }
 
         public void Add(Entity entity)

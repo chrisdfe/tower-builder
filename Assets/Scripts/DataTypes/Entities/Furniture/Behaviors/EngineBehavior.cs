@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
-using TowerBuilder.DataTypes.Vehicles;
+using TowerBuilder.DataTypes.Entities.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors

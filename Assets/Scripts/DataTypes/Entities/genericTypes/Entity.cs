@@ -30,7 +30,8 @@ namespace TowerBuilder.DataTypes.Entities
             Furniture,
             TransportationItem,
             Freight,
-            Wheel
+            Wheel,
+            Vehicle
         }
 
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
@@ -42,7 +43,8 @@ namespace TowerBuilder.DataTypes.Entities
                 { Type.Furniture,          "Furniture" },
                 { Type.TransportationItem, "Transportation Item" },
                 { Type.Freight,            "Freight" },
-                { Type.Wheel,              "Wheel" }
+                { Type.Wheel,              "Wheel" },
+                { Type.Vehicle,            "Vehicle" }
             }
         );
 

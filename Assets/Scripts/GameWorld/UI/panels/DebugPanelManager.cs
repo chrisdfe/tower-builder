@@ -6,7 +6,7 @@ using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Rooms;
-using TowerBuilder.DataTypes.Vehicles;
+using TowerBuilder.DataTypes.Entities.Vehicles;
 using TowerBuilder.Systems;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -63,7 +63,7 @@ namespace TowerBuilder.GameWorld.UI
             SetSelectionBoxText();
         }
 
-        void OnVehicleListUpdated(VehicleList vehicles)
+        void OnVehicleListUpdated(ListWrapper<Vehicle> vehicles)
         {
             SetVehicleCountText();
         }
@@ -93,7 +93,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetVehicleCountText()
         {
-            VehicleList allVehicles = Registry.appState.Vehicles.list;
+            ListWrapper<Vehicle> allVehicles = Registry.appState.Vehicles.list;
             vehicleCountText.text = $"Vehicles: {allVehicles.Count}";
         }
 

@@ -44,7 +44,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public ListWrapper<EntityType> list { get; }
         public EventsType events { get; }
-        public Queries queries { get; }
+        public Queries queries { get; protected set; }
         public IEntityStateSlice.IQueries entityQueries => queries as IEntityStateSlice.IQueries;
 
         public ListWrapper<Entity> entityList => list.ConvertAll<Entity>();
@@ -75,7 +75,6 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Add(Entity entity)
         {
-            // entity.validator.Validate(appState);
             Add(entity as EntityType);
         }
 

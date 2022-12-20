@@ -7,7 +7,7 @@ using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
-using TowerBuilder.DataTypes.Vehicles;
+using TowerBuilder.DataTypes.Entities.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.UI

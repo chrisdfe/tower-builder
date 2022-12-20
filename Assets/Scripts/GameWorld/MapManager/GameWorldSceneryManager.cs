@@ -1,5 +1,5 @@
+using TowerBuilder.DataTypes.Entities.Vehicles;
 using TowerBuilder.DataTypes.Time;
-using TowerBuilder.DataTypes.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager

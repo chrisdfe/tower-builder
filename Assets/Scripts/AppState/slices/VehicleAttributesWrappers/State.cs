@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures.Behaviors;
 using TowerBuilder.DataTypes.Entities.Rooms;
-using TowerBuilder.DataTypes.Vehicles;
+using TowerBuilder.DataTypes.Entities.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.VehicleAttributesWrappers
@@ -85,7 +85,7 @@ namespace TowerBuilder.ApplicationState.VehicleAttributesWrappers
         /* 
             Event Handlers
         */
-        void OnVehiclesAdded(VehicleList vehicleList)
+        void OnVehiclesAdded(ListWrapper<Vehicle> vehicleList)
         {
             vehicleList.ForEach(vehicle =>
             {
@@ -93,7 +93,7 @@ namespace TowerBuilder.ApplicationState.VehicleAttributesWrappers
             });
         }
 
-        void OnVehiclesRemoved(VehicleList vehicleList)
+        void OnVehiclesRemoved(ListWrapper<Vehicle> vehicleList)
         {
             vehicleList.ForEach(vehicle =>
             {
