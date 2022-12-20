@@ -23,7 +23,9 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
             Vehicle vehicle = appState.Vehicles.queries.FindVehicleByFurniture(furniture);
             VehicleAttributesWrapper vehicleAttributesWrapper = appState.VehicleAttributesWrappers.queries.FindByVehicle(vehicle);
 
-            VehicleAttribute.Modifier modifier = new VehicleAttribute.Modifier("Engine Power", 1f);
+            VehicleAttribute.Modifier modifier = new VehicleAttribute.Modifier("Piloting", 1f);
+            appState.VehicleAttributesWrappers.AddStaticAttributeModifier(vehicleAttributesWrapper, VehicleAttribute.Key.CurrentSpeed, modifier);
+
             // foreach (Room room in vehicle.roomList.items)
             // {
             //     FurnitureBehaviorList furnitureBehaviorList =

@@ -1,5 +1,5 @@
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Vehicles;
-using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager
@@ -36,15 +36,15 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public void Setup()
         {
-            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperAdded += OnVehicleAttributesWrapperAdded;
-            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperRemoved += OnVehicleAttributesWrapperRemoved;
+            Registry.appState.VehicleAttributesWrappers.events.onItemsAdded += OnVehicleAttributesWrappersAdded;
+            Registry.appState.VehicleAttributesWrappers.events.onItemsRemoved += OnVehicleAttributesWrappersRemoved;
             Registry.appState.VehicleAttributesWrappers.events.onAttributeValueUpdated += OnVehicleAttributeValueUpdated;
         }
 
         public void Teardown()
         {
-            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperAdded -= OnVehicleAttributesWrapperAdded;
-            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperRemoved -= OnVehicleAttributesWrapperRemoved;
+            Registry.appState.VehicleAttributesWrappers.events.onItemsAdded -= OnVehicleAttributesWrappersAdded;
+            Registry.appState.VehicleAttributesWrappers.events.onItemsRemoved -= OnVehicleAttributesWrappersRemoved;
             Registry.appState.VehicleAttributesWrappers.events.onAttributeValueUpdated -= OnVehicleAttributeValueUpdated;
         }
 
@@ -55,9 +55,12 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void MoveScenery()
         {
+            // Debug.Log(vehicleAttributesWrapper);
             if (vehicleAttributesWrapper == null) return;
 
             float currentTickInterval = Registry.appState.Time.queries.currentTickInterval;
+
+            Debug.Log(vehicleAttributesWrapper.FindByKey(VehicleAttribute.Key.CurrentSpeed).value);
 
             if (vehicleAttributesWrapper.isMoving)
             {
@@ -70,24 +73,34 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         /* 
             Event Handlers
         */
-        void OnVehicleAttributesWrapperAdded(VehicleAttributesWrapper vehicleAttributesWrapper)
+        void OnVehicleAttributesWrappersAdded(ListWrapper<VehicleAttributesWrapper> vehicleAttributesWrappers)
         {
+            VehicleAttributesWrapper vehicleAttributesWrapper = vehicleAttributesWrappers.items[0];
+
+            // Debug.Log("OnVehicleAttributesWrapperAdded");
             if (this.vehicleAttributesWrapper == null)
             {
                 this.vehicleAttributesWrapper = vehicleAttributesWrapper;
             }
         }
 
-        void OnVehicleAttributesWrapperRemoved(VehicleAttributesWrapper vehicleAttributesWrapper)
+        void OnVehicleAttributesWrappersRemoved(ListWrapper<VehicleAttributesWrapper> vehicleAttributesWrappers)
         {
-            if (vehicleAttributesWrapper == this.vehicleAttributesWrapper)
+            foreach (VehicleAttributesWrapper vehicleAttributesWrapper in vehicleAttributesWrappers.items)
             {
-                this.vehicleAttributesWrapper = null;
+                // Debug.Log("OnVehicleAttributesWrapperRemoved");
+                if (vehicleAttributesWrapper == this.vehicleAttributesWrapper)
+                {
+                    this.vehicleAttributesWrapper = null;
+                }
             }
         }
 
         void OnVehicleAttributeValueUpdated(VehicleAttributesWrapper vehicleAttributesWrapper, VehicleAttribute attribute)
         {
+            // Debug.Log("OnVehicleAttributeValueUpdated");
+            // Debug.Log(attribute.key);
+            // Debug.Log(attribute.value);
         }
     }
 }

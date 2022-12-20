@@ -29,11 +29,6 @@ namespace TowerBuilder.ApplicationState
     {
         public new class Events : ListStateSlice<AttributesWrapperListType, AttributesWrapperType, EventsType>.Events
         {
-            public delegate void AttributesWrapperEvent(AttributesWrapperType attributesWrapper);
-            public AttributesWrapperEvent onAttributesWrapperAdded;
-            public AttributesWrapperEvent onAttributesWrapperRemoved;
-            public AttributesWrapperEvent onAttributesWrapperUpdated;
-
             public delegate void AttributesEvent(AttributesWrapperType attributesWrapper, AttributeType attribute);
             public AttributesEvent onAttributeValueUpdated;
 
@@ -114,7 +109,9 @@ namespace TowerBuilder.ApplicationState
                     events.onAttributeValueUpdated?.Invoke(attributesWrapper, attribute);
                 });
 
-                events.onAttributesWrapperUpdated?.Invoke(attributesWrapper);
+                AttributesWrapperListType wrapperList = new AttributesWrapperListType();
+                wrapperList.Add(attributesWrapper);
+                events.onItemsUpdated?.Invoke(wrapperList);
             });
         }
     }

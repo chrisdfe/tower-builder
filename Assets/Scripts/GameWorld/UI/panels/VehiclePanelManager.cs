@@ -35,7 +35,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Vehicles.events.onItemsAdded += OnVehiclesAdded;
             Registry.appState.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
 
-            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperUpdated += OnVehicleAttributesWrapperUpdated;
+            Registry.appState.VehicleAttributesWrappers.events.onItemsUpdated += OnVehicleAttributesWrappersUpdated;
         }
 
         void Teardown()
@@ -43,7 +43,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
             Registry.appState.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
 
-            Registry.appState.VehicleAttributesWrappers.events.onAttributesWrapperUpdated += OnVehicleAttributesWrapperUpdated;
+            Registry.appState.VehicleAttributesWrappers.events.onItemsUpdated += OnVehicleAttributesWrappersUpdated;
         }
 
         void UpdateText()
@@ -82,11 +82,14 @@ namespace TowerBuilder.GameWorld.UI
             this.vehicle = null;
         }
 
-        void OnVehicleAttributesWrapperUpdated(VehicleAttributesWrapper vehicleAttributesWrapper)
+        void OnVehicleAttributesWrappersUpdated(VehicleAttributesWrapperList vehicleAttributesWrapperList)
         {
-            if (vehicleAttributesWrapper.vehicle == this.vehicle)
+            foreach (VehicleAttributesWrapper vehicleAttributesWrapper in vehicleAttributesWrapperList.items)
             {
-                UpdateText();
+                if (vehicleAttributesWrapper.vehicle == this.vehicle)
+                {
+                    UpdateText();
+                }
             }
         }
     }

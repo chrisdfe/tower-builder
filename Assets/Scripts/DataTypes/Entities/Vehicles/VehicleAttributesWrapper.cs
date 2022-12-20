@@ -23,7 +23,12 @@ namespace TowerBuilder.DataTypes.Entities.Vehicles
 
         public bool isMoving
         {
-            get => FindByKey(VehicleAttribute.Key.CurrentSpeed).value > 0;
+            get
+            {
+                Debug.Log("FindByKey(VehicleAttribute.Key.CurrentSpeed).value");
+                Debug.Log(FindByKey(VehicleAttribute.Key.CurrentSpeed).value);
+                return FindByKey(VehicleAttribute.Key.CurrentSpeed).value > 0;
+            }
         }
 
         public VehicleAttributesWrapper(AppState appState, Vehicle vehicle) : base(appState)

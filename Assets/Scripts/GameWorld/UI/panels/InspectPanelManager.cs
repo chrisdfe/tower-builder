@@ -37,7 +37,7 @@ namespace TowerBuilder.GameWorld.UI
 
         public void Setup()
         {
-            Registry.appState.ResidentAttributesWrappers.events.onAttributesWrapperUpdated += OnResidentAttributeWrapperUpdated;
+            Registry.appState.ResidentAttributesWrappers.events.onItemsUpdated += OnResidentAttributeWrappersUpdated;
 
             Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
@@ -45,7 +45,7 @@ namespace TowerBuilder.GameWorld.UI
 
         public void Teardown()
         {
-            Registry.appState.ResidentAttributesWrappers.events.onAttributesWrapperUpdated -= OnResidentAttributeWrapperUpdated;
+            Registry.appState.ResidentAttributesWrappers.events.onItemsUpdated -= OnResidentAttributeWrappersUpdated;
 
             Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
@@ -223,14 +223,17 @@ namespace TowerBuilder.GameWorld.UI
             SetText();
         }
 
-        void OnResidentAttributeWrapperUpdated(ResidentAttributesWrapper residentAttributesWrapper)
+        void OnResidentAttributeWrappersUpdated(ResidentAttributesWrapperList residentAttributesWrappers)
         {
-            if (
-                (Registry.appState.Tools.inspectToolState.inspectedEntity is Resident) &&
-                residentAttributesWrapper.resident == (Registry.appState.Tools.inspectToolState.inspectedEntity as Resident)
-            )
+            foreach (ResidentAttributesWrapper residentAttributesWrapper in residentAttributesWrappers.items)
             {
-                SetText();
+                if (
+                    (Registry.appState.Tools.inspectToolState.inspectedEntity is Resident) &&
+                    residentAttributesWrapper.resident == (Registry.appState.Tools.inspectToolState.inspectedEntity as Resident)
+                )
+                {
+                    SetText();
+                }
             }
         }
     }

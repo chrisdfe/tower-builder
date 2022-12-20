@@ -11,9 +11,7 @@ namespace TowerBuilder.DataTypes.Entities.Vehicles
         public VehicleAttributesWrapperList(List<VehicleAttributesWrapper> vehicleAttributesWrapperList) : base(vehicleAttributesWrapperList) { }
         public VehicleAttributesWrapperList(VehicleAttributesWrapperList vehicleAttributesWrapperList) : base(vehicleAttributesWrapperList) { }
 
-        public VehicleAttributesWrapper FindByVehicle(Vehicle vehicle)
-        {
-            return items.Find(vehicleAttributesWrapper => vehicleAttributesWrapper.vehicle == vehicle);
-        }
+        public VehicleAttributesWrapper FindByVehicle(Vehicle vehicle) =>
+            items.Find(vehicleAttributesWrapper => vehicleAttributesWrapper.vehicle == vehicle);
     }
 }

@@ -46,6 +46,8 @@ namespace TowerBuilder.ApplicationState
             public delegate void ListEvent(ListWrapperType list);
             public ListEvent onItemsAdded;
             public ListEvent onItemsRemoved;
+            public ListEvent onItemsUpdated;
+
             public ListEvent onListUpdated;
 
             public delegate void ItemEvent(ItemType item);

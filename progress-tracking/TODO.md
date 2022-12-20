@@ -2,6 +2,11 @@
 
 ## Tasks
 
+- Get rid of the remnants of all the ListWrapper<T> subtypes
+  - ListSTateType
+  - AttibuteStateType
+- AttributesStateSlice OnTick should only fire update event if the value is different than before
+- Other entities should be added to vehicle as well (not just room)
 - "EntityGroup"s - a list (group) of entities
   - used for a things like room, vehicle
   - the cost of the group would be the sum of all of the entities prices

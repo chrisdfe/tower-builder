@@ -20,8 +20,7 @@ namespace TowerBuilder.DataTypes
             {
                 float result = currentValue;
                 staticModifiers.ForEach(modifier => result += modifier.amount);
-                result = Mathf.Clamp(result, min, max);
-                return result;
+                return Mathf.Clamp(result, min, max);
             }
         }
 
