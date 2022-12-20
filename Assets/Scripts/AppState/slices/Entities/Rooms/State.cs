@@ -40,25 +40,27 @@ namespace TowerBuilder.ApplicationState.Entities.Rooms
         /* 
             Rooms
         */
-        protected override void OnPreBuild(Room entity)
+        protected override void OnPreBuild(Room room)
         {
-            base.OnPreBuild(entity);
+            base.OnPreBuild(room);
 
-            /*
-            // Decide whether to create a new room or to add to an existing one
-            List<Room> roomsToCombineWith = queries.FindRoomsToCombineWith(room);
+            ListWrapper<Room> overlappingRooms = list.FindAll((otherRoom) =>
+                otherRoom != room &&
+                otherRoom.cellCoordinatesList.OverlapsWith(room.cellCoordinatesList)
+            );
 
-            if (roomsToCombineWith.Count > 0)
+            if (overlappingRooms.Count > 0)
             {
-                foreach (Room otherRoom in roomsToCombineWith)
+                Room newRoom = new Room(room.definition as RoomDefinition);
+
+                foreach (Room otherRoom in overlappingRooms.items)
                 {
-                    room.blocks.Add(otherRoom.blocks);
+                    room.cellCoordinatesList.Add(otherRoom.cellCoordinatesList);
                     Remove(otherRoom);
                 }
 
-                room.Reset();
+                newRoom.CalculateTileableMap();
             }
-            */
         }
 
         /* 
@@ -89,9 +91,7 @@ namespace TowerBuilder.ApplicationState.Entities.Rooms
             }
             else
             {
-                // room.Reset();
                 room.CalculateTileableMap();
-                // TODO - recalculate here
 
                 events.onRoomBlocksRemoved?.Invoke(room, roomBlockList);
                 events.onRoomBlocksUpdated?.Invoke(room, room.blocksList);

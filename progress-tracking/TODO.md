@@ -2,7 +2,7 @@
 
 ## Tasks
 
-- starting a room selection inside another room should expand that room
+- Destroying room blocks seems to be broken again
 - Placeable windows - new state slice/entity type
 - New tool for merging/splitting up rooms
 - Procedurally generated background that scrolls by
@@ -221,6 +221,10 @@
 
 ## Ideas
 
+- Idea for organizing entities:
+  - Atoms (lights, furniture)
+  - Molecules (groups of atoms - rooms, etc)
+  - Cells (groups of molecules - vehicles, buildings)
 - Finding broken things in the countryside + breaking them down for scrap (at a piece of furniture)
   - they take up cargo space until they're broken down
 - cozy and warm inside glow, cold and forboding exterior
@@ -267,6 +271,8 @@
 
 # Done
 
+- Maybe Floor should have a Room room field to simplify things
+- starting a room selection inside another room should expand that room
 - Transportation room furniture interface - have a "connects to"
   - Room entrances could be "Doorway" furniture instead
 - "Journey" datatype - driving vehicle gets you closer to your destination

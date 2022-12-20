@@ -14,6 +14,12 @@ namespace TowerBuilder.DataTypes.Entities.Rooms.Validators
                 // ValidateAcceptableOverhang,
             };
 
+        protected override List<EntityValidationFunc> baseValidatorIgnoreList => new List<EntityValidationFunc>()
+        {
+            // To allow rooms to be extended by building another room on top of it
+            GenericEntityValidations.ValidateEntityIsNotOverlappingAnotherEntity,
+        };
+
         public RoomValidator(Room room) : base(room) { }
 
         public static EntityValidationErrorList ValidateRoomAboveOtherRoomOrWheels(AppState appState, Entity entity)

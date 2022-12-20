@@ -27,9 +27,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void UpdateEntityColor()
         {
-            Debug.Log("updating color for " + entity.GetType());
-            Debug.Log(entity.isInBlueprintMode);
-
             ToolState toolState = Registry.appState.Tools.toolState;
 
             bool hasUpdated = false;

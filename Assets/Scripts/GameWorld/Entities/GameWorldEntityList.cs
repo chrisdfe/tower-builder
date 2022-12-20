@@ -61,7 +61,10 @@ namespace TowerBuilder.GameWorld.Entities
         public void BuildEntity(Entity entity)
         {
             GameWorldEntity gwEntity = FindByEntity(entity);
-            gwEntity.UpdateEntityColor();
+
+            // Hacky way to reset entity
+            RemoveEntity(entity);
+            CreateEntity(entity);
         }
 
         public void UpdateEntityColors()

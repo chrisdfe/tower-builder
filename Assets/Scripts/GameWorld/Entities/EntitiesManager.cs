@@ -86,7 +86,6 @@ namespace TowerBuilder.GameWorld.Entities
             entityList.items.ForEach((entity) =>
             {
                 GetListByType(entity.GetType())?.CreateEntity(entity);
-                Debug.Log(entity.GetType());
             });
         }
 
@@ -95,7 +94,6 @@ namespace TowerBuilder.GameWorld.Entities
             entityList.items.ForEach((entity) =>
             {
                 GetListByType(entity.GetType())?.RemoveEntity(entity);
-                Debug.Log(entity.GetType());
             });
         }
 
@@ -104,7 +102,6 @@ namespace TowerBuilder.GameWorld.Entities
             entityList.items.ForEach((entity) =>
             {
                 GetListByType(entity.GetType())?.BuildEntity(entity);
-                Debug.Log(entity.GetType());
             });
         }
 

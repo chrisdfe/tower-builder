@@ -38,12 +38,15 @@ namespace TowerBuilder.DataTypes
 
         public void Add(List<ItemType> items)
         {
-            this.items = this.items.Concat(items).ToList();
+            foreach (ItemType item in items)
+            {
+                Add(item);
+            }
         }
 
         public void Add(ListWrapper<ItemType> listWrapper)
         {
-            items = listWrapper.items.Concat(items).ToList();
+            Add(listWrapper.items);
         }
 
         public void Remove(ItemType item)

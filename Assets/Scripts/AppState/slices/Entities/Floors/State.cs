@@ -46,27 +46,14 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
         */
         public void OnRoomsAdded(ListWrapper<Room> roomsList)
         {
-            FloorDefinition defaultFloorDefinition =
-                Registry.Definitions.Entities.Floors.defaultDefinition as FloorDefinition;
-
-            foreach (Room room in roomsList.items)
-            {
-                CellCoordinatesList bottomRow = room.cellCoordinatesList.bottomRow;
-
-                List<Floor> floorsToAdd = bottomRow.items.Select((cellCoordinates) =>
-                {
-                    Floor newFloor = new Floor(defaultFloorDefinition);
-                    newFloor.PositionAtCoordinates(cellCoordinates);
-                    newFloor.isInBlueprintMode = true;
-                    return newFloor;
-                }).ToList();
-
-                Add(new ListWrapper<Floor>(floorsToAdd));
-            }
+            AddFloorsForRooms(roomsList);
         }
 
         public void OnRoomsBuilt(ListWrapper<Room> roomsList)
         {
+            RemoveFloorsForRooms(roomsList);
+            AddFloorsForRooms(roomsList);
+
             foreach (Room room in roomsList.items)
             {
                 ListWrapper<Floor> floorsInsideRoom = queries.GetFloorsInsideRoom(room);
@@ -80,12 +67,38 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
 
         public void OnRoomsRemoved(ListWrapper<Room> roomsList)
         {
-            foreach (Room room in roomsList.items)
+            RemoveFloorsForRooms(roomsList);
+        }
+
+        void AddFloorsForRooms(ListWrapper<Room> roomList)
+        {
+            FloorDefinition defaultFloorDefinition =
+                Registry.Definitions.Entities.Floors.defaultDefinition as FloorDefinition;
+
+            foreach (Room room in roomList.items)
+            {
+                CellCoordinatesList bottomRow = room.cellCoordinatesList.bottomRow;
+
+                List<Floor> floorsToAdd = bottomRow.items.Select((cellCoordinates) =>
+                {
+                    Floor newFloor = new Floor(defaultFloorDefinition);
+                    newFloor.PositionAtCoordinates(cellCoordinates);
+                    newFloor.isInBlueprintMode = true;
+                    newFloor.room = room;
+                    return newFloor;
+                }).ToList();
+
+                Add(new ListWrapper<Floor>(floorsToAdd));
+            }
+        }
+
+        void RemoveFloorsForRooms(ListWrapper<Room> roomList)
+        {
+            foreach (Room room in roomList.items)
             {
                 ListWrapper<Floor> floorsInsideRoom =
-                    queries.GetFloorsInsideRoom(room).FindAll((floor) =>
-                        floor.isInBlueprintMode == room.isInBlueprintMode
-                    );
+                    queries.GetFloorsInsideRoom(room);
+
                 Remove(floorsInsideRoom);
             }
         }
@@ -96,7 +109,8 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
 
             public ListWrapper<Floor> GetFloorsInsideRoom(Room room) =>
                 state.list.FindAll((floor) =>
-                    floor.cellCoordinatesList.OverlapsWith(room.cellCoordinatesList)
+                    floor.room == room
+                // floor.cellCoordinatesList.OverlapsWith(room.cellCoordinatesList)
                 );
 
             public ListWrapper<Floor> GetFloorsOnFloor(int floorNumber) =>
