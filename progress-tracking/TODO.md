@@ -13,7 +13,6 @@
   - basic version could work like a stamp - could be called "static"
   - the next iteration would be resizable - each entity type could have their own resiability definition/strategy
 - different furniture interaction types? using, repairing, cleaning, etc
-- game world resident movement is broken rn
 - Make "make resident go here and do this" button be right click, not ctrl+left click
 - Way of deleting types of entities other than rooms
   - inspect panel should also allow each one to be deleted
@@ -217,6 +216,7 @@
 - Television (recreation) (uses power)
 - Fridge (food)
 - bunkbed
+- Scrap workbench (for breaking down junk)
 
 ## Projects
 
@@ -293,6 +293,7 @@
 
 # Done
 
+- game world resident movement is broken rn
 - Make vehicles an entity again - I want to be able to place vehicles + have vehicle definitions
 - Switch UI/State.SetEntityList to use a list of entities from Entities/State
 - Destroying room blocks seems to be broken again

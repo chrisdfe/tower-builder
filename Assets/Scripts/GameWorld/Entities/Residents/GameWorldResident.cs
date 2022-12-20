@@ -47,7 +47,6 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
         public void Setup()
         {
-            // entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = cube.gameObject;
             entityMeshWrapper.cellCoordinatesList = resident.cellCoordinatesList;

@@ -39,8 +39,6 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
             //     // TODO - some engines produce more engine power than others
             //     result += engineBehaviorList.Count;
             // }
-
-            Debug.Log("engine interact start");
         }
 
         public override void InteractEnd(Resident resident)

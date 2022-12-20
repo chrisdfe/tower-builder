@@ -16,16 +16,28 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
 
         public CockpitBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
 
+
+        Vehicle vehicle => appState.Vehicles.queries.FindVehicleByFurniture(furniture);
+        VehicleAttributesWrapper vehicleAttributesWrapper => appState.VehicleAttributesWrappers.queries.FindByVehicle(vehicle);
+        VehicleAttribute.Modifier pilotModifier;
+
         public override void InteractStart(Resident resident)
         {
             base.InteractStart(resident);
 
-            Vehicle vehicle = appState.Vehicles.queries.FindVehicleByFurniture(furniture);
-            VehicleAttributesWrapper vehicleAttributesWrapper = appState.VehicleAttributesWrappers.queries.FindByVehicle(vehicle);
+            pilotModifier = new VehicleAttribute.Modifier("Piloting", 1f);
+            appState.VehicleAttributesWrappers.AddStaticAttributeModifier(vehicleAttributesWrapper, VehicleAttribute.Key.CurrentSpeed, pilotModifier);
+        }
 
-            VehicleAttribute.Modifier modifier = new VehicleAttribute.Modifier("Piloting", 1f);
-            appState.VehicleAttributesWrappers.AddStaticAttributeModifier(vehicleAttributesWrapper, VehicleAttribute.Key.CurrentSpeed, modifier);
+        public override void InteractEnd(Resident resident)
+        {
+            base.InteractEnd(resident);
+            appState.VehicleAttributesWrappers.RemoveStaticAttributeModifier(vehicleAttributesWrapper, VehicleAttribute.Key.CurrentSpeed, pilotModifier);
+        }
 
+        // TODO - this should go in vehicle queries
+        public int CalculateEnginePower()
+        {
             // foreach (Room room in vehicle.roomList.items)
             // {
             //     FurnitureBehaviorList furnitureBehaviorList =
@@ -39,7 +51,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures.Behaviors
             //     result += engineBehaviorList.Count;
             // }
 
-            Debug.Log("cockpit interact start");
+            return 1;
         }
     }
 }

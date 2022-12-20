@@ -85,9 +85,6 @@ namespace TowerBuilder.GameWorld.Entities
             }
         }
 
-        /* 
-            Internals
-        */
-        GameWorldEntity FindByEntity(Entity entity) => entities.Find(gameWorldEntity => gameWorldEntity.entity == entity);
+        public GameWorldEntity FindByEntity(Entity entity) => entities.Find(gameWorldEntity => gameWorldEntity.entity == entity);
     }
 }
