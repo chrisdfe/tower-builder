@@ -124,18 +124,9 @@ namespace TowerBuilder.ApplicationState.Tools
             roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
 
-            // Debug.Log("selectionBox.cellCoordinatesList.Count");
-            // Debug.Log(selectionBox.cellCoordinatesList.Count);
-
             foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
             {
-                // Debug.Log("cellCoordinates");
-                // Debug.Log(cellCoordinates);
                 var (roomToDelete, roomBlockToDelete) = Registry.appState.Entities.Rooms.queries.FindRoomBlockAtCell(cellCoordinates);
-
-                // Debug.Log("(roomToDelete, roomBlockToDelete)");
-                // Debug.Log(roomToDelete);
-                // Debug.Log(roomBlockToDelete);
 
                 if (roomToDelete != null && roomBlockToDelete != null)
                 {

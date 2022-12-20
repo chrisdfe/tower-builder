@@ -3,6 +3,7 @@ using TowerBuilder.ApplicationState.Entities;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities
@@ -24,6 +25,11 @@ namespace TowerBuilder.GameWorld.Entities
             entitiesInstanceWrapper = GameObject.Find("EntitiesInstanceWrapper").transform;
         }
 
+        void Start()
+        {
+            Setup();
+        }
+
         void OnDestroy()
         {
             Teardown();
@@ -35,6 +41,14 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void Teardown()
         {
+        }
+
+        public void ResetEntity(Entity entity)
+        {
+            GameWorldEntity gameWorldEntity = FindByEntity(entity);
+
+            RemoveEntity(entity);
+            CreateEntity(entity);
         }
 
         public GameWorldEntity CreateEntity(Entity entity)
@@ -52,19 +66,15 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void RemoveEntity(Entity entity)
         {
-            GameWorldEntity gwEntity = FindByEntity(entity);
+            GameWorldEntity gameWorldEntity = FindByEntity(entity);
 
-            entities.Remove(gwEntity);
-            Destroy(gwEntity.gameObject);
+            entities.Remove(gameWorldEntity);
+            Destroy(gameWorldEntity.gameObject);
         }
 
         public void BuildEntity(Entity entity)
         {
-            GameWorldEntity gwEntity = FindByEntity(entity);
-
-            // Hacky way to reset entity
-            RemoveEntity(entity);
-            CreateEntity(entity);
+            ResetEntity(entity);
         }
 
         public void UpdateEntityColors()
@@ -75,6 +85,9 @@ namespace TowerBuilder.GameWorld.Entities
             }
         }
 
+        /* 
+            Internals
+        */
         GameWorldEntity FindByEntity(Entity entity) => entities.Find(gameWorldEntity => gameWorldEntity.entity == entity);
     }
 }

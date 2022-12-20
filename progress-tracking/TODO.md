@@ -2,7 +2,6 @@
 
 ## Tasks
 
-- Destroying room blocks seems to be broken again
 - Placeable windows - new state slice/entity type
 - New tool for merging/splitting up rooms
 - Procedurally generated background that scrolls by
@@ -211,7 +210,6 @@
 ## Cleanup
 
 - Switch the order of ListType and ItemType in ListItemStateSlice generic (ItemType should be first)
-- Room datatypes/state is structured in a different way to some of the newer classes (e.g make it Room.SkinKey instead of RoomSkinKey)
 - RouteFinder creates too many branches
 - RoomCells -> RoomCellList OR RoomList -> Rooms
 - FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor
@@ -221,6 +219,10 @@
 
 ## Ideas
 
+- ability to customize Tileability strategy for x/floor seperately
+  - caps (static corners/ends)
+  - repeat-block
+  - a stretchy middle that is just a repeating block of 1
 - Idea for organizing entities:
   - Atoms (lights, furniture)
   - Molecules (groups of atoms - rooms, etc)
@@ -271,6 +273,8 @@
 
 # Done
 
+- Destroying room blocks seems to be broken again
+- Room datatypes/state is structured in a different way to some of the newer classes (e.g make it Room.SkinKey instead of RoomSkinKey)
 - Maybe Floor should have a Room room field to simplify things
 - starting a room selection inside another room should expand that room
 - Transportation room furniture interface - have a "connects to"

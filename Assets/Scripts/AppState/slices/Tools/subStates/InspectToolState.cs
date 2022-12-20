@@ -1,12 +1,8 @@
-using System.Collections.Generic;
-using TowerBuilder.ApplicationState.Entities.Rooms;
-using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
-using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools
 {

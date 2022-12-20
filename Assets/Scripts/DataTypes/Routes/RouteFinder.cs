@@ -97,10 +97,6 @@ namespace TowerBuilder.DataTypes.Routes
         */
         void ContinueRouteAttempt(RouteAttempt currentRouteAttempt)
         {
-            Debug.Log("ContinueRouteAttempt");
-            Debug.Log("CanWalkTo(currentRouteAttempt, endCoordinates)");
-            Debug.Log(CanWalkTo(currentRouteAttempt, endCoordinates));
-
             // TODO - make sure the resident is on the same floor as the end point too
             if (CanWalkTo(currentRouteAttempt, endCoordinates))
             {
@@ -122,8 +118,6 @@ namespace TowerBuilder.DataTypes.Routes
         void UseTransportationItemIfUnvisited(RouteAttempt currentRouteAttempt, TransportationItem transportationItem)
         {
             var (entranceCoordinatesList, exitCoordinatesList) = GetValidTransportationItemEntrancesAndExits(transportationItem, currentRouteAttempt);
-            Debug.Log("entranceCoordinatesList: " + entranceCoordinatesList.Count);
-            Debug.Log("exitCoordinatesList: " + exitCoordinatesList.Count);
 
             if (entranceCoordinatesList.Count == 0 || exitCoordinatesList.Count == 0)
             {
@@ -136,12 +130,6 @@ namespace TowerBuilder.DataTypes.Routes
                 foreach (CellCoordinates exitCoordinates in exitCoordinatesList.items)
                 {
                     Room nextRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(exitCoordinates);
-
-                    Debug.Log("currentRouteAttempt.visitedRooms.Contains(nextRoom)");
-                    Debug.Log(currentRouteAttempt.visitedRooms.Contains(nextRoom));
-
-                    Debug.Log("CanWalkTo(currentRouteAttempt, entranceCoordinates)");
-                    Debug.Log(CanWalkTo(currentRouteAttempt, entranceCoordinates));
 
                     if (!currentRouteAttempt.visitedRooms.Contains(nextRoom) && CanWalkTo(currentRouteAttempt, entranceCoordinates))
                     {
