@@ -1,3 +1,4 @@
+using System;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes.Entities;
 using UnityEngine;
@@ -16,6 +17,9 @@ namespace TowerBuilder.GameWorld.Entities
         [HideInInspector]
         public EntityMeshWrapper customMeshWrapper;
 
+        [HideInInspector]
+        public Action<GameWorldEntity> customColorUpdater = null;
+
         EntityMeshWrapper entityMeshWrapper => customMeshWrapper ?? GetComponent<EntityMeshWrapper>();
 
         public void Setup()
@@ -26,6 +30,18 @@ namespace TowerBuilder.GameWorld.Entities
         public void Teardown() { }
 
         public void UpdateEntityColor()
+        {
+            if (customColorUpdater != null)
+            {
+                customColorUpdater(this);
+            }
+            else
+            {
+                DefaultUpdateEntityColor();
+            }
+        }
+
+        void DefaultUpdateEntityColor()
         {
             ToolState toolState = Registry.appState.Tools.toolState;
 
@@ -81,6 +97,7 @@ namespace TowerBuilder.GameWorld.Entities
                     hasUpdated = true;
                 }
             }
+
         }
     }
 }

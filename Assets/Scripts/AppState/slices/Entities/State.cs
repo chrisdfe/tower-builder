@@ -17,6 +17,7 @@ namespace TowerBuilder.ApplicationState.Entities
             public Rooms.State.Input Rooms;
             public Floors.State.Input Floors;
             public InteriorWalls.State.Input InteriorWalls;
+            public InteriorLights.State.Input InteriorLights;
 
             public TransportationItems.State.Input TransportationItems;
             public Freight.State.Input Freight;
@@ -28,6 +29,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 Rooms = new Rooms.State.Input();
                 Floors = new Floors.State.Input();
                 InteriorWalls = new InteriorWalls.State.Input();
+                InteriorLights = new InteriorLights.State.Input();
 
                 Furnitures = new Furnitures.State.Input();
                 Residents = new Residents.State.Input();
@@ -48,6 +50,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public Rooms.State Rooms { get; }
         public Floors.State Floors { get; }
         public InteriorWalls.State InteriorWalls { get; }
+        public InteriorLights.State InteriorLights { get; }
 
         public Furnitures.State Furnitures { get; }
         public Residents.State Residents { get; }
@@ -74,6 +77,7 @@ namespace TowerBuilder.ApplicationState.Entities
             Rooms = new Rooms.State(appState, input.Rooms);
             Floors = new Floors.State(appState, input.Floors);
             InteriorWalls = new InteriorWalls.State(appState, input.InteriorWalls);
+            InteriorLights = new InteriorLights.State(appState, input.InteriorLights);
 
             Furnitures = new Furnitures.State(appState, input.Furnitures);
             Residents = new Residents.State(appState, input.Residents);
@@ -86,6 +90,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 {Entity.Type.Room,               Rooms },
                 {Entity.Type.Floor,              Floors },
                 {Entity.Type.InteriorWall,       InteriorWalls },
+                {Entity.Type.InteriorLight,      InteriorLights },
                 {Entity.Type.Furniture,          Furnitures },
                 {Entity.Type.Resident,           Residents },
                 {Entity.Type.TransportationItem, TransportationItems },
@@ -110,6 +115,9 @@ namespace TowerBuilder.ApplicationState.Entities
 
             InteriorWalls.Setup();
             AddListeners(InteriorWalls);
+
+            InteriorLights.Setup();
+            AddListeners(InteriorLights);
 
             Furnitures.Setup();
             AddListeners(Furnitures);

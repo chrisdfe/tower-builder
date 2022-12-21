@@ -88,6 +88,7 @@ namespace TowerBuilder.GameWorld.Lights
                 key = TimeOfDay.Key.DuskNight,
                 skyColor = ColorUtils.ColorFromHex("#111E1E"),
                 sunColor = ColorUtils.ColorFromHex("#111E1E"),
+                interiorLightIntensity = 1f,
                 sunRotation = 170f,
             }
         };

@@ -6,6 +6,7 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.GameWorld.Entities.Floors;
 using TowerBuilder.GameWorld.Entities.Freight;
 using TowerBuilder.GameWorld.Entities.Furnitures;
+using TowerBuilder.GameWorld.Entities.InteriorLights;
 using TowerBuilder.GameWorld.Entities.InteriorWalls;
 using TowerBuilder.GameWorld.Entities.Residents;
 using TowerBuilder.GameWorld.Entities.Rooms;
@@ -38,6 +39,11 @@ namespace TowerBuilder.GameWorld.Entities
                 {
                     typeof(DataTypes.Entities.InteriorWalls.InteriorWall),
                     GameWorldInteriorWallsManager.Find()
+                        .GetComponent<GameWorldEntityList>()
+                },
+                {
+                    typeof(DataTypes.Entities.InteriorLights.InteriorLight),
+                    GameWorldInteriorLightsManager.Find()
                         .GetComponent<GameWorldEntityList>()
                 },
                 {

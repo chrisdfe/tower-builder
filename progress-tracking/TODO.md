@@ -2,6 +2,11 @@
 
 ## Tasks
 
+- Windows entity - new state slice/entity type
+- Rename "LightsManager" to "AtmosphereManager"
+- I should probably replace Entity.Type with typof(Entity) because they're used in the same way
+- Room lights that turn out + window blinds/curtains that shut when the resident goes to sleep
+  - Only if there isn't another resident in the room at the same time
 - Get rid of the remnants of all the ListWrapper<T> subtypes
   - ListSTateType
   - AttibuteStateType
@@ -12,11 +17,13 @@
   - the cost of the group would be the sum of all of the entities prices
   - basic version could work like a stamp - could be called "static"
   - the next iteration would be resizable - each entity type could have their own resiability definition/strategy
+- Convert room to an entity group
+  - walls/ceiling (figure out a name for this)
+  - floor
 - different furniture interaction types? using, repairing, cleaning, etc
 - Make "make resident go here and do this" button be right click, not ctrl+left click
 - Way of deleting types of entities other than rooms
   - inspect panel should also allow each one to be deleted
-- Windows entity - new state slice/entity type
 - New tool for merging/splitting up rooms
 - Procedurally generated background that scrolls by
 - holding down shift - select multiple entities
@@ -31,7 +38,6 @@
 - 'tileability strategy' or something - I can foresee needing 2 different types of tileability:
   - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)
   - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)
-- light entity
 - Reconsider whether entity key types (e.g Room.Key) are worth it in their current state
   - they could be stored as a string on the entitites themselves but remain as an enum to help with the unity editor
   - i.e in the code using an enum doesn't help much, but it does help in making sure you're connecting to the right thing in assetList
@@ -85,7 +91,6 @@
 - Break room entity down into:
   - Back walls entity
   - Side wall entity
-  - light entity
   - Room would be a "group", making a room would be making a floor, back walls, etc simultaneously
 - "Cell" class that encompasses coordinates, orientation?
 - perhaps game should pause in build/destroy modes; can't switch back to play mode until everything is valid
@@ -150,7 +155,7 @@
 - TransportationItem/Furniture that takes up multiple cells
 - Fix the mesh scaling (everything is either 0.1 or 10 or 100 not 1)
 - Some kind of way of making BedCreationWatcher not immediately add new residents - perhaps on a interval longer than every tick
-- Moonlight/inside lights
+- Moonlight
 - furniture z indexes
 - destroy validation (cannot delete room with another room above it)
 - tank treads wheels type
@@ -176,8 +181,7 @@
 - furniture interaction slots
   - direction (left, center, right)
 - furniture z indexes - in front, behind
-- Improved lighting
-  - room lights that come on at night
+
 - Reconsider how routes are constructed - maybe every segment should be 1 cell?
 - Convert other List wrappers to use the new ListWrapper generic
 - "reset" button to reset state to default
@@ -293,6 +297,9 @@
 
 # Done
 
+- Improved lighting
+  - room lights that come on at night
+- light entity
 - game world resident movement is broken rn
 - Make vehicles an entity again - I want to be able to place vehicles + have vehicle definitions
 - Switch UI/State.SetEntityList to use a list of entities from Entities/State

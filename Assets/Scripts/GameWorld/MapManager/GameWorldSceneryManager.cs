@@ -59,8 +59,6 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             float currentTickInterval = Registry.appState.Time.queries.currentTickInterval;
 
-            Debug.Log(vehicleAttributesWrapper.FindByKey(VehicleAttribute.Key.CurrentSpeed).value);
-
             if (vehicleAttributesWrapper.isMoving)
             {
                 float currentSpeed = vehicleAttributesWrapper.FindByKey(VehicleAttribute.Key.CurrentSpeed).value;

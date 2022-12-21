@@ -4,6 +4,7 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.InteriorLights;
 using TowerBuilder.DataTypes.Entities.InteriorWalls;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
@@ -19,6 +20,7 @@ namespace TowerBuilder.Definitions
         public static Dictionary<System.Type, System.Type> EntityDefinitionEntityTypeMap = new Dictionary<System.Type, System.Type>() {
             { typeof(RoomDefinition), typeof(Room) },
             { typeof(InteriorWallDefinition), typeof(InteriorWall) },
+            { typeof(InteriorLightDefinition), typeof(InteriorLight) },
             { typeof(FloorDefinition), typeof(Floor) },
             { typeof(FurnitureDefinition), typeof(Furniture) },
             { typeof(ResidentDefinition), typeof(Resident) },
@@ -33,6 +35,7 @@ namespace TowerBuilder.Definitions
         public RoomDefinitionsList Rooms = new RoomDefinitionsList();
         public FloorDefinitionsList Floors = new FloorDefinitionsList();
         public InteriorWallDefinitionsList InteriorWalls = new InteriorWallDefinitionsList();
+        public InteriorLightDefinitionsList InteriorLights = new InteriorLightDefinitionsList();
         public FurnitureDefinitionsList Furnitures = new FurnitureDefinitionsList();
         public ResidentDefinitionsList Residents = new ResidentDefinitionsList();
         public TransportationItemDefinitionsList TransportationItems = new TransportationItemDefinitionsList();
@@ -50,6 +53,7 @@ namespace TowerBuilder.Definitions
                 { Entity.Type.Room, Rooms },
                 { Entity.Type.Floor, Floors },
                 { Entity.Type.InteriorWall, InteriorWalls },
+                { Entity.Type.InteriorLight, InteriorLights },
                 { Entity.Type.Furniture, Furnitures },
                 { Entity.Type.Resident, Residents },
                 { Entity.Type.TransportationItem, TransportationItems },
