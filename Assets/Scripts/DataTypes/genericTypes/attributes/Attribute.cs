@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes
@@ -14,15 +15,10 @@ namespace TowerBuilder.DataTypes
         public float max { get; private set; } = 100;
 
         float currentValue = 100;
-        public float value
-        {
-            get
-            {
-                float result = currentValue;
-                staticModifiers.ForEach(modifier => result += modifier.amount);
-                return Mathf.Clamp(result, min, max);
-            }
-        }
+        public float value =>
+            ClampValue(
+                staticModifiers.Aggregate(currentValue, (acc, modifier) => acc + modifier.amount)
+            );
 
         public Attribute(KeyType key)
         {
@@ -59,6 +55,8 @@ namespace TowerBuilder.DataTypes
             tickModifiers.ForEach(modifier => currentValue += modifier.amount);
             currentValue = Mathf.Clamp(currentValue, min, max);
         }
+
+        float ClampValue(float value) => Mathf.Clamp(value, min, max);
 
         public class Modifier
         {

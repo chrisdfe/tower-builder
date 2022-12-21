@@ -1,5 +1,5 @@
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Vehicles;
+using TowerBuilder.DataTypes.Attributes.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager

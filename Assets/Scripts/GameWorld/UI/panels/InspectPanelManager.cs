@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Attributes.Residents;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Entities.Behaviors.Residents;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
-using TowerBuilder.DataTypes.Entities.Residents.Attributes;
-using TowerBuilder.DataTypes.Entities.Residents.Behaviors;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.GameWorld.UI.Components;
@@ -223,7 +223,7 @@ namespace TowerBuilder.GameWorld.UI
             SetText();
         }
 
-        void OnResidentAttributeWrappersUpdated(ResidentAttributesWrapperList residentAttributesWrappers)
+        void OnResidentAttributeWrappersUpdated(ListWrapper<ResidentAttributesWrapper> residentAttributesWrappers)
         {
             foreach (ResidentAttributesWrapper residentAttributesWrapper in residentAttributesWrappers.items)
             {

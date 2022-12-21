@@ -1,14 +1,15 @@
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Freights;
 
 namespace TowerBuilder.ApplicationState.Entities.Freight.FreightItemStackGroups
 {
-    using FreightItemStackGroupListStateSlice = ListStateSlice<FreightItemStackGroupList, FreightItemStackGroup, State.Events>;
+    using FreightItemStackGroupListStateSlice = ListStateSlice<FreightItemStackGroup, State.Events>;
 
     public class State : FreightItemStackGroupListStateSlice
     {
         public class Input
         {
-            public FreightItemStackGroupList list;
+            public ListWrapper<FreightItemStackGroup> list;
         }
 
         public new class Events : FreightItemStackGroupListStateSlice.Events { }
@@ -29,7 +30,7 @@ namespace TowerBuilder.ApplicationState.Entities.Freight.FreightItemStackGroups
 
         public State(AppState appState, Input input) : base(appState)
         {
-            list = input.list ?? new FreightItemStackGroupList();
+            list = input.list ?? new ListWrapper<FreightItemStackGroup>();
 
             queries = new Queries(appState, this);
 

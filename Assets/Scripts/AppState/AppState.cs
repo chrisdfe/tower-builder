@@ -25,7 +25,6 @@ namespace TowerBuilder.ApplicationState
             public ResidentBehaviors.State.Input residentBehaviors;
             public FurnitureBehaviors.State.Input furnitureBehaviors;
 
-
             public UI.State.Input ui;
             public Tools.State.Input tools;
 

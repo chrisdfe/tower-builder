@@ -7,7 +7,7 @@
 - Windows entity - new state slice/entity type
 - Rename "LightsManager" to "AtmosphereManager"
 - I should probably replace Entity.Type with typof(Entity) because they're used in the same way
-- Room lights that turn out + window blinds/curtains that shut when the resident goes to sleep
+- Room lights that turn off + window blinds/curtains that shut when the resident goes to sleep
   - Only if there isn't another resident in the room at the same time
 - Get rid of the remnants of all the ListWrapper<T> subtypes
   - ListSTateType
@@ -246,6 +246,11 @@
 
 ## Ideas
 
+- long series of glowy patterned lights, star wars style
+- little vehicles with only room for 1 resident
+  - swoop bike
+  - buggy
+  - comfort and energy go down slower
 - star wars pew pew laser volleys that get quicker and quicker as the vehicles get closer (like in star tours)
 - ability to customize Tileability strategy for x/floor seperately
   - caps (static corners/ends)

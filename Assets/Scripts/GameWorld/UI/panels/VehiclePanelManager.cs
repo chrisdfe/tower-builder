@@ -1,10 +1,6 @@
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.Attributes.Vehicles;
 using TowerBuilder.DataTypes.Entities.Vehicles;
-using TowerBuilder.DataTypes.Notifications;
-using TowerBuilder.DataTypes.Time;
-using TowerBuilder.Systems;
-using TowerBuilder.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -82,7 +78,7 @@ namespace TowerBuilder.GameWorld.UI
             this.vehicle = null;
         }
 
-        void OnVehicleAttributesWrappersUpdated(VehicleAttributesWrapperList vehicleAttributesWrapperList)
+        void OnVehicleAttributesWrappersUpdated(ListWrapper<VehicleAttributesWrapper> vehicleAttributesWrapperList)
         {
             foreach (VehicleAttributesWrapper vehicleAttributesWrapper in vehicleAttributesWrapperList.items)
             {

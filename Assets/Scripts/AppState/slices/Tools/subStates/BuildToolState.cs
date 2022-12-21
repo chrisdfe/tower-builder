@@ -166,7 +166,7 @@ namespace TowerBuilder.ApplicationState.Tools
             else
             {
                 Registry.appState.Notifications.Add(
-                    new NotificationsList(
+                    new ListWrapper<Notification>(
                         blueprintEntity.validator.errors.items
                             .Select(error => new Notification(error.message))
                             .ToList()

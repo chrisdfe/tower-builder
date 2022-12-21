@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Entities.Furnitures.Behaviors;
+using TowerBuilder.DataTypes.Behaviors.Furnitures;
 
 namespace TowerBuilder.DataTypes.Entities.Furnitures
 {

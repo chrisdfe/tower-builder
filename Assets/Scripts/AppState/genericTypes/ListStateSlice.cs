@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Entities.Rooms;
-using UnityEngine;
 
 namespace TowerBuilder.ApplicationState
 {
@@ -13,17 +8,7 @@ namespace TowerBuilder.ApplicationState
 
     public interface IListStateSlice<ItemType>
     {
-        // public interface IEvents
-        // {
-        //     public ListEvent<ItemType> onItemsAdded { get; set; }
-        //     public ListEvent<ItemType> onItemsRemoved { get; set; }
-        //     public ListEvent<ItemType> onListUpdated { get; set; }
-        // }
-
-        // TODO - fix this covariance issue (ListWrapper<ItemType> != ListWrapperType)
         public ListWrapper<ItemType> list { get; }
-
-        // public IEvents events { get; }
 
         public void Add(ListWrapper<ItemType> newItemsList);
 
@@ -35,15 +20,14 @@ namespace TowerBuilder.ApplicationState
     }
 
     [Serializable]
-    public class ListStateSlice<ListWrapperType, ItemType, EventsType> : StateSlice
-        where ListWrapperType : ListWrapper<ItemType>, new()
-        where EventsType : ListStateSlice<ListWrapperType, ItemType, EventsType>.Events, new()
+    public class ListStateSlice<ItemType, EventsType> : StateSlice
+        where EventsType : ListStateSlice<ItemType, EventsType>.Events, new()
     {
-        public ListWrapperType list { get; protected set; } = new ListWrapperType();
+        public ListWrapper<ItemType> list { get; protected set; } = new ListWrapper<ItemType>();
 
         public class Events
         {
-            public delegate void ListEvent(ListWrapperType list);
+            public delegate void ListEvent(ListWrapper<ItemType> list);
             public ListEvent onItemsAdded;
             public ListEvent onItemsRemoved;
             public ListEvent onItemsUpdated;
@@ -57,7 +41,7 @@ namespace TowerBuilder.ApplicationState
 
         public ListStateSlice(AppState appState) : base(appState) { }
 
-        public virtual void Add(ListWrapperType newItemsList)
+        public virtual void Add(ListWrapper<ItemType> newItemsList)
         {
             list.Add(newItemsList);
 
@@ -67,12 +51,12 @@ namespace TowerBuilder.ApplicationState
 
         public virtual void Add(ItemType item)
         {
-            ListWrapperType newItemsList = new ListWrapperType();
+            ListWrapper<ItemType> newItemsList = new ListWrapper<ItemType>();
             newItemsList.Add(item);
             Add(newItemsList);
         }
 
-        public virtual void Remove(ListWrapperType removedItemsList)
+        public virtual void Remove(ListWrapper<ItemType> removedItemsList)
         {
             list.Remove(removedItemsList);
             events.onItemsRemoved?.Invoke(removedItemsList);
@@ -81,7 +65,7 @@ namespace TowerBuilder.ApplicationState
 
         public virtual void Remove(ItemType item)
         {
-            ListWrapperType removedItemsList = new ListWrapperType();
+            ListWrapper<ItemType> removedItemsList = new ListWrapper<ItemType>();
             removedItemsList.Add(item);
             Remove(removedItemsList);
         }

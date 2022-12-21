@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using TowerBuilder.ApplicationState;
+using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.Residents;
+using UnityEngine;
+
+namespace TowerBuilder.DataTypes.Behaviors.Furnitures
+{
+    public class MoneyMachineBehavior : FurnitureBehaviorBase
+    {
+        public override Key key { get; } = FurnitureBehaviorBase.Key.MoneyMachine;
+
+        public override FurnitureBehaviorTag[] tags
+        {
+            get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Industry }; }
+        }
+
+        public MoneyMachineBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
+
+        public override void InteractTick(Resident resident)
+        {
+            base.InteractTick(resident);
+
+            appState.Wallet.AddBalance(1000);
+        }
+    }
+}

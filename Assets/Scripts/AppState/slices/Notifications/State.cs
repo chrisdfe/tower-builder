@@ -6,20 +6,20 @@ using TowerBuilder.DataTypes.Notifications;
 
 namespace TowerBuilder.ApplicationState.Notifications
 {
-    using NotificationsListStateSlice = ListStateSlice<NotificationsList, Notification, State.Events>;
+    using NotificationsListStateSlice = ListStateSlice<Notification, State.Events>;
 
     public class State : NotificationsListStateSlice
     {
         public class Input
         {
-            public NotificationsList notificationsList;
+            public ListWrapper<Notification> notificationsList;
         }
 
         public new class Events : NotificationsListStateSlice.Events { }
 
         public State(AppState appState, Input input) : base(appState)
         {
-            list = input.notificationsList ?? new NotificationsList();
+            list = input.notificationsList ?? new ListWrapper<Notification>();
         }
 
         public State(AppState appState) : this(appState, new Input()) { }

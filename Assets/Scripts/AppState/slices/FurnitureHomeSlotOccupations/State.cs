@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations
 {
-    using FurnitureHomeSlotOccupiationStateSlice = ListStateSlice<FurnitureHomeSlotOccupationList, FurnitureHomeSlotOccupation, State.Events>;
+    using FurnitureHomeSlotOccupiationStateSlice = ListStateSlice<FurnitureHomeSlotOccupation, State.Events>;
 
     public class State : FurnitureHomeSlotOccupiationStateSlice
     {
@@ -24,10 +24,15 @@ namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations
             }
 
             public Furniture GetHomeFurnitureFor(Resident resident) =>
-                state.list.GetHomeFurnitureFor(resident);
+                state.list.Find(furnitureHomeSlotOccupation => furnitureHomeSlotOccupation.resident == resident)?.furniture;
 
             public ListWrapper<Resident> GetResidentsLivingAt(Furniture furniture) =>
-                state.list.GetResidentsLivingAt(furniture);
+                new ListWrapper<Resident>(
+                    state.list.items
+                        .FindAll(furnitureHomeSlotOccupation => furnitureHomeSlotOccupation.furniture == furniture)
+                        .Select(furnitureHomeSlotOccupation => furnitureHomeSlotOccupation.resident)
+                        .ToList()
+                );
         }
 
         public Queries queries { get; private set; }
