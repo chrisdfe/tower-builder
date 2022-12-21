@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
@@ -32,8 +33,7 @@ namespace TowerBuilder.GameWorld.Entities
 
         public GameObject prefabMesh { get; set; }
         public CellCoordinatesList cellCoordinatesList { get; set; }
-
-        List<EntityMeshCellWrapper> entityCellMeshWrapperList = new List<EntityMeshCellWrapper>();
+        public List<EntityMeshCellWrapper> entityCellMeshWrapperList { get; private set; } = new List<EntityMeshCellWrapper>();
 
         CellCoordinates originCellCoordinates => cellCoordinatesList.bottomLeftCoordinates;
 
@@ -77,10 +77,11 @@ namespace TowerBuilder.GameWorld.Entities
             Transform parent,
             GameObject prefabMesh,
             CellCoordinates cellCoordinates,
+            CellCoordinates relativeCellCoordinates,
             CellNeighbors cellNeighbors,
             Tileable.CellPosition cellPosition
         ) =>
-            new EntityMeshCellWrapper(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition);
+            new EntityMeshCellWrapper(parent, prefabMesh, cellCoordinates, relativeCellCoordinates, cellNeighbors, cellPosition);
 
         void DestroyPlaceholder()
         {
@@ -107,6 +108,7 @@ namespace TowerBuilder.GameWorld.Entities
                         CreateEntityCellMeshWrapper(
                             transform,
                             prefabMesh,
+                            cellCoordinates,
                             relativeCellCoordiantes,
                             cellNeighbors,
                             cellPosition

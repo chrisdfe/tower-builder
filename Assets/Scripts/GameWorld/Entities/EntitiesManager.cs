@@ -89,6 +89,7 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.events.onEntitiesRemoved += OnEntitiesRemoved;
             Registry.appState.Entities.events.onEntitiesBuilt += OnEntitiesBuilt;
 
+            Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated += OnDestroySelectionUpdated;
             Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
@@ -99,6 +100,7 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.events.onEntitiesRemoved -= OnEntitiesRemoved;
             Registry.appState.Entities.events.onEntitiesBuilt -= OnEntitiesBuilt;
 
+            Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
             Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
@@ -136,6 +138,14 @@ namespace TowerBuilder.GameWorld.Entities
         }
 
         void OnCurrentSelectedEntityUpdated(Entity entity)
+        {
+            foreach (GameWorldEntityList entityList in entityManagerList)
+            {
+                entityList.UpdateEntityColors();
+            }
+        }
+
+        void OnDestroySelectionUpdated()
         {
             foreach (GameWorldEntityList entityList in entityManagerList)
             {

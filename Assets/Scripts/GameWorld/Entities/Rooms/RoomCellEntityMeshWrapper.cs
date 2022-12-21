@@ -15,9 +15,10 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
             Transform parent,
             GameObject prefabMesh,
             CellCoordinates cellCoordinates,
+            CellCoordinates relativeCellCoordinates,
             CellNeighbors cellNeighbors,
             Tileable.CellPosition cellPosition
-        ) : base(parent, prefabMesh, cellCoordinates, cellNeighbors, cellPosition) { }
+        ) : base(parent, prefabMesh, cellCoordinates, relativeCellCoordinates, cellNeighbors, cellPosition) { }
 
         public override void Setup()
         {

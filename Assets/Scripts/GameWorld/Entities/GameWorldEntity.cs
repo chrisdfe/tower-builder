@@ -1,5 +1,6 @@
 using System;
 using TowerBuilder.ApplicationState.Tools;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using UnityEngine;
 
@@ -84,7 +85,21 @@ namespace TowerBuilder.GameWorld.Entities
 
             void SetDestroyStateColor()
             {
-                // not supported yet
+                CellCoordinatesList cellCoordinatesToDestroyFrom = Registry.appState.Tools.destroyToolState.cellCoordinatesToDelete;
+
+                // TODO - highlight on a per-cell basis
+                if (entity.cellCoordinatesList.OverlapsWith(Registry.appState.UI.selectionBox.cellCoordinatesList))
+                {
+                    foreach (EntityMeshCellWrapper entityMeshCellWrapper in entityMeshWrapper.entityCellMeshWrapperList)
+                    {
+                        if (cellCoordinatesToDestroyFrom.Contains(entityMeshCellWrapper.cellCoordinates))
+                        {
+                            entityMeshCellWrapper.SetColor(EntityMeshWrapper.ColorKey.Destroy);
+                        }
+                    }
+
+                    hasUpdated = true;
+                }
             }
 
             void SetInspectStateColor()

@@ -2,6 +2,8 @@
 
 ## Tasks
 
+- 'entity' and 'entity group' buildToolState subStates
+- Bring back selectionbox resetting on mouse up
 - Windows entity - new state slice/entity type
 - Rename "LightsManager" to "AtmosphereManager"
 - I should probably replace Entity.Type with typof(Entity) because they're used in the same way
@@ -12,6 +14,7 @@
   - AttibuteStateType
 - AttributesStateSlice OnTick should only fire update event if the value is different than before
 - Other entities should be added to vehicle as well (not just room)
+- Wheels aren't highlighting with the destroy tool
 - "EntityGroup"s - a list (group) of entities
   - used for a things like room, vehicle
   - the cost of the group would be the sum of all of the entities prices
@@ -243,6 +246,7 @@
 
 ## Ideas
 
+- star wars pew pew laser volleys that get quicker and quicker as the vehicles get closer (like in star tours)
 - ability to customize Tileability strategy for x/floor seperately
   - caps (static corners/ends)
   - repeat-block
@@ -297,6 +301,7 @@
 
 # Done
 
+- Bring back destroy tool highlighting
 - Improved lighting
   - room lights that come on at night
 - light entity

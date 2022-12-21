@@ -23,9 +23,9 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public Events events { get; private set; }
 
-        // TODO - List<CellCoordinates> is all a room block is, but maybe it should be its own RoomBlock class
         public ListWrapper<Room> roomsToDeleteBlocksFrom { get; private set; } = new ListWrapper<Room>();
         public CellCoordinatesBlockList blocksToDelete { get; private set; } = new CellCoordinatesBlockList();
+        public CellCoordinatesList cellCoordinatesToDelete { get; private set; } = new CellCoordinatesList();
 
         bool destroyIsActive = false;
 
@@ -52,15 +52,19 @@ namespace TowerBuilder.ApplicationState.Tools
         public override void Setup()
         {
             base.Setup();
+
             roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
+            cellCoordinatesToDelete = new CellCoordinatesList();
         }
 
         public override void Teardown()
         {
             base.Teardown();
+
             roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
+            cellCoordinatesToDelete = new CellCoordinatesList();
         }
 
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
@@ -123,6 +127,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
             roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
+            cellCoordinatesToDelete = new CellCoordinatesList();
 
             foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
             {
@@ -132,6 +137,7 @@ namespace TowerBuilder.ApplicationState.Tools
                 {
                     roomsToDeleteBlocksFrom.Add(roomToDelete);
                     blocksToDelete.Add(roomBlockToDelete);
+                    cellCoordinatesToDelete.Add(roomBlockToDelete.items);
                 }
             }
         }

@@ -32,10 +32,7 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
             GetComponent<GameWorldEntity>().Setup();
         }
 
-        public void Teardown()
-        {
-
-        }
+        public void Teardown() { }
 
         /* 
             Static API
