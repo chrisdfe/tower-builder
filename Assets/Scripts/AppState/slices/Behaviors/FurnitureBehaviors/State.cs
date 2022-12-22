@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.FurnitureBehaviors
+namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
 {
     using FurnitureBehaviorsListStateSlice = ListStateSlice<FurnitureBehaviorBase, State.Events>;
 

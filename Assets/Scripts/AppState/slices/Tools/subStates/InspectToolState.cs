@@ -172,11 +172,11 @@ namespace TowerBuilder.ApplicationState.Tools
             {
                 // TODO - a different/smarter way of doing this
                 Furniture furnitureAtTarget = furnituresAtTarget.items[0];
-                appState.ResidentBehaviors.SendResidentTo(resident, furnitureAtTarget);
+                appState.Behaviors.Residents.SendResidentTo(resident, furnitureAtTarget);
             }
             else
             {
-                appState.ResidentBehaviors.SendResidentTo(resident, targetCellCoordinates);
+                appState.Behaviors.Residents.SendResidentTo(resident, targetCellCoordinates);
             }
         }
     }

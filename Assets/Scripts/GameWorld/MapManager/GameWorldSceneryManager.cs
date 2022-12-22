@@ -36,16 +36,16 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public void Setup()
         {
-            Registry.appState.VehicleAttributesWrappers.events.onItemsAdded += OnVehicleAttributesWrappersAdded;
-            Registry.appState.VehicleAttributesWrappers.events.onItemsRemoved += OnVehicleAttributesWrappersRemoved;
-            Registry.appState.VehicleAttributesWrappers.events.onAttributeValueUpdated += OnVehicleAttributeValueUpdated;
+            Registry.appState.Attributes.Vehicles.events.onItemsAdded += OnVehicleAttributesWrappersAdded;
+            Registry.appState.Attributes.Vehicles.events.onItemsRemoved += OnVehicleAttributesWrappersRemoved;
+            Registry.appState.Attributes.Vehicles.events.onAttributeValueUpdated += OnVehicleAttributeValueUpdated;
         }
 
         public void Teardown()
         {
-            Registry.appState.VehicleAttributesWrappers.events.onItemsAdded -= OnVehicleAttributesWrappersAdded;
-            Registry.appState.VehicleAttributesWrappers.events.onItemsRemoved -= OnVehicleAttributesWrappersRemoved;
-            Registry.appState.VehicleAttributesWrappers.events.onAttributeValueUpdated -= OnVehicleAttributeValueUpdated;
+            Registry.appState.Attributes.Vehicles.events.onItemsAdded -= OnVehicleAttributesWrappersAdded;
+            Registry.appState.Attributes.Vehicles.events.onItemsRemoved -= OnVehicleAttributesWrappersRemoved;
+            Registry.appState.Attributes.Vehicles.events.onAttributeValueUpdated -= OnVehicleAttributeValueUpdated;
         }
 
         void Update()

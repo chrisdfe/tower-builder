@@ -10,7 +10,7 @@ using TowerBuilder.DataTypes.Routes;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.ResidentBehaviors
+namespace TowerBuilder.ApplicationState.Behaviors.Residents
 {
     using ResidentBehaviorsListStateSlice = ListStateSlice<ResidentBehavior, State.Events>;
 

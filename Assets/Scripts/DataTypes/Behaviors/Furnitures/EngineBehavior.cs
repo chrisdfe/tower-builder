@@ -25,7 +25,7 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
             base.InteractStart(resident);
 
             Vehicle vehicle = appState.Vehicles.queries.FindVehicleByFurniture(furniture);
-            VehicleAttributesWrapper vehicleAttributesWrapper = appState.VehicleAttributesWrappers.queries.FindByVehicle(vehicle);
+            VehicleAttributesWrapper vehicleAttributesWrapper = appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
 
             VehicleAttribute.Modifier modifier = new VehicleAttribute.Modifier("Engine Power", 1f);
             // foreach (Room room in vehicle.roomList.items)

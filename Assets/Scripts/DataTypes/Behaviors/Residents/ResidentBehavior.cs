@@ -154,7 +154,7 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
                 case StateKey.Traveling:
                     break;
                 case StateKey.InteractingWithFurniture:
-                    appState.FurnitureBehaviors.StartInteraction(resident, interactionFurniture);
+                    appState.Behaviors.Furnitures.StartInteraction(resident, interactionFurniture);
                     break;
             }
         }
@@ -169,7 +169,7 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
                     routeProgress = null;
                     break;
                 case StateKey.InteractingWithFurniture:
-                    appState.FurnitureBehaviors.EndInteraction(resident, interactionFurniture);
+                    appState.Behaviors.Furnitures.EndInteraction(resident, interactionFurniture);
                     interactionFurniture = null;
                     break;
             }
@@ -212,7 +212,7 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
         void InteractingWithFurnitureTick()
         {
             // TODO - check if there is anything higher priority to do
-            appState.FurnitureBehaviors.InteractwithFurniture(resident, interactionFurniture);
+            appState.Behaviors.Furnitures.InteractwithFurniture(resident, interactionFurniture);
         }
 
         void TravelingTick()

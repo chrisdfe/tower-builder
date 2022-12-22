@@ -9,7 +9,7 @@ using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.Vehicles;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.VehicleAttributesWrappers
+namespace TowerBuilder.ApplicationState.Attributes.Vehicles
 {
     using VehicleAtributesStateSlice = AttributesStateSlice<
         VehicleAttribute.Key,

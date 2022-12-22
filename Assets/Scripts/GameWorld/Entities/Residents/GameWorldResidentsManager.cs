@@ -46,7 +46,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
         void OnTick(TimeValue time)
         {
-            ListWrapper<ResidentBehavior> residentBehaviorsList = Registry.appState.ResidentBehaviors.list;
+            ListWrapper<ResidentBehavior> residentBehaviorsList = Registry.appState.Behaviors.Residents.list;
 
             foreach (ResidentBehavior residentBehavior in residentBehaviorsList.items)
             {

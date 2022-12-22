@@ -37,7 +37,7 @@ namespace TowerBuilder.GameWorld.UI
 
         public void Setup()
         {
-            Registry.appState.ResidentAttributesWrappers.events.onItemsUpdated += OnResidentAttributeWrappersUpdated;
+            Registry.appState.Attributes.Residents.events.onItemsUpdated += OnResidentAttributeWrappersUpdated;
 
             Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
@@ -45,7 +45,7 @@ namespace TowerBuilder.GameWorld.UI
 
         public void Teardown()
         {
-            Registry.appState.ResidentAttributesWrappers.events.onItemsUpdated -= OnResidentAttributeWrappersUpdated;
+            Registry.appState.Attributes.Residents.events.onItemsUpdated -= OnResidentAttributeWrappersUpdated;
 
             Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
@@ -118,9 +118,9 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectedResidentText(Resident resident)
         {
-            ResidentBehavior residentBehavior = Registry.appState.ResidentBehaviors.queries.FindByResident(resident);
+            ResidentBehavior residentBehavior = Registry.appState.Behaviors.Residents.queries.FindByResident(resident);
 
-            ResidentAttributesWrapper residentAttributesWrapper = Registry.appState.ResidentAttributesWrappers.queries.FindByResident(resident);
+            ResidentAttributesWrapper residentAttributesWrapper = Registry.appState.Attributes.Residents.queries.FindByResident(resident);
 
             string text =
               $"   name: {resident}\n";

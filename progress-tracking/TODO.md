@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Turret entity
 - 'entity' and 'entity group' buildToolState subStates
 - Bring back selectionbox resetting on mouse up
 - Windows entity - new state slice/entity type
@@ -85,9 +86,8 @@
 - BuildValidators/DestroyValidators?
 - EntityStateSlice build should fire onItemsBuilt event as well - currently it's just singular
 - same as with how I made an entities appState slice:
-  - Attributes appState slice group
-  - Behaviors appState slice group
   - Validators appState slice group
+  - Relations appState slice group
 - in build mode somewhere in the UI it should give you a list of all the validation rules about the current selected entity
 - entity layers (determines the z-index the entity is rendered at)
 - Furniture usage slots
@@ -246,6 +246,11 @@
 
 ## Ideas
 
+- Turrets
+  - manned and auto turrets
+- Crops
+  - different benefits from different types of plant
+  - you can grow plants that give you stuff other than food
 - long series of glowy patterned lights, star wars style
 - little vehicles with only room for 1 resident
   - swoop bike
@@ -306,6 +311,9 @@
 
 # Done
 
+- same as with how I made an entities appState slice:
+  - Attributes appState slice group
+  - Behaviors appState slice group
 - Bring back destroy tool highlighting
 - Improved lighting
   - room lights that come on at night

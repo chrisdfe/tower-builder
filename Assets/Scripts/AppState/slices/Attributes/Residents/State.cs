@@ -2,7 +2,7 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Attributes.Residents;
 using TowerBuilder.DataTypes.Entities.Residents;
 
-namespace TowerBuilder.ApplicationState.ResidentAttributesWrappers
+namespace TowerBuilder.ApplicationState.Attributes.Residents
 {
     using ResidentAtributesStateSlice = AttributesStateSlice<
         ResidentAttribute.Key,
