@@ -26,7 +26,7 @@ namespace TowerBuilder.DataTypes.Entities
 
                 if (entityRoom == null)
                 {
-                    return new EntityValidationErrorList($"{GetEntityLabel(entity)} must be placed inside.");
+                    return new EntityValidationErrorList($"{entity.typeLabel} must be placed inside.");
                 }
             }
 
@@ -41,7 +41,7 @@ namespace TowerBuilder.DataTypes.Entities
 
                 if (floors.Count == 0)
                 {
-                    return new EntityValidationErrorList($"{GetEntityLabel(entity)} must be placed on floor.");
+                    return new EntityValidationErrorList($"{entity.typeLabel} must be placed on floor.");
                 }
             }
 
@@ -78,7 +78,7 @@ namespace TowerBuilder.DataTypes.Entities
 
             if (overlappingEntity != null)
             {
-                return new EntityValidationErrorList($"You cannot build {GetEntityLabel(entity)}s on top of each other.");
+                return new EntityValidationErrorList($"You cannot build {entity.typeLabel}s on top of each other.");
             }
 
             return new EntityValidationErrorList();
@@ -90,19 +90,45 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 if (floor < 0)
                 {
-                    return new EntityValidationErrorList($"You cannot build {GetEntityLabel(entity)} underground.");
+                    return new EntityValidationErrorList($"You cannot build {entity.typeLabel} underground.");
                 }
             }
 
             return new EntityValidationErrorList();
         }
 
+        // TODO - this still doesn't seem like the right place for this
+        // TODO - take entity height into account as well
+        public static bool IsValidStandardLocation(AppState appState, CellCoordinates cellCoordinates) =>
+            IsInsideRoom(appState, cellCoordinates)
+                ? IsValidInsideEntityLocation(appState, cellCoordinates)
+                : IsValidOutsideEntityLocation(appState, cellCoordinates);
+
+        public static bool IsInsideRoom(AppState appState, CellCoordinates cellCoordinates) =>
+            appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null;
+
+        // outside + on the ground
+        public static bool IsValidOutsideEntityLocation(AppState appState, CellCoordinates cellCoordinates) =>
+            cellCoordinates.floor == 0 &&
+            HasEnoughVerticalSpace(appState, cellCoordinates);
+
+        // inside + on a floor
+        public static bool IsValidInsideEntityLocation(AppState appState, CellCoordinates cellCoordinates) =>
+            appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
+            appState.Entities.Floors.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
+            HasEnoughVerticalSpace(appState, cellCoordinates);
+
+        public static bool HasEnoughVerticalSpace(AppState appState, CellCoordinates cellCoordinates) => true;
+
+        /*
+            Validation creators
+        */
         public static EntityValidationFunc CreateValidateEntityIsOnFloor(int floor) =>
             (AppState appState, Entity entity) =>
             {
                 if (entity.cellCoordinatesList.lowestFloor != floor)
                 {
-                    return new EntityValidationErrorList($"{GetEntityLabel(entity)} must be placed on floor {floor + 1}");
+                    return new EntityValidationErrorList($"{entity.typeLabel} must be placed on floor {floor + 1}");
                 }
 
                 return new EntityValidationErrorList();
@@ -113,12 +139,10 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 if (entity.cellCoordinatesList.lowestFloor == floor)
                 {
-                    return new EntityValidationErrorList($"{GetEntityLabel(entity)} must not be placed on floor {floor + 1}");
+                    return new EntityValidationErrorList($"{entity.typeLabel} must not be placed on floor {floor + 1}");
                 }
 
                 return new EntityValidationErrorList();
             };
-
-        static string GetEntityLabel(Entity entity) => Entity.TypeLabels.ValueFromKey(entity.type);
     }
 }

@@ -17,7 +17,6 @@ namespace TowerBuilder.ApplicationState.Attributes
         public Residents.State Residents;
         public Vehicles.State Vehicles;
 
-
         public State(AppState appState, Input input) : base(appState)
         {
             Residents = new Residents.State(appState, input.Residents);

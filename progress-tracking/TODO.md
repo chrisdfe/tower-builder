@@ -2,20 +2,13 @@
 
 ## Tasks
 
-- Turret entity
-- 'entity' and 'entity group' buildToolState subStates
-- Bring back selectionbox resetting on mouse up
-- Windows entity - new state slice/entity type
-- Rename "LightsManager" to "AtmosphereManager"
-- I should probably replace Entity.Type with typof(Entity) because they're used in the same way
-- Room lights that turn off + window blinds/curtains that shut when the resident goes to sleep
-  - Only if there isn't another resident in the room at the same time
-- Get rid of the remnants of all the ListWrapper<T> subtypes
-  - ListSTateType
-  - AttibuteStateType
-- AttributesStateSlice OnTick should only fire update event if the value is different than before
-- Other entities should be added to vehicle as well (not just room)
-- Wheels aren't highlighting with the destroy tool
+- Validate that either transportation entrnace or exit is inside (or both)
+- Different types of transportation items should be able to occupy the same cell (escalators + doorways etc)
+- Finish up current iteration of route finder algorithm
+  - Make sure each cell between current + target cells have enough vertical clearance
+- Exterior walls that form around outer perimeter of rooms
+- For a first draft, every 1 mile of journey a random passer-by shows up
+  - after that, encounters with other vehicles
 - "EntityGroup"s - a list (group) of entities
   - used for a things like room, vehicle
   - the cost of the group would be the sum of all of the entities prices
@@ -24,6 +17,21 @@
 - Convert room to an entity group
   - walls/ceiling (figure out a name for this)
   - floor
+- Different vehicle/building types
+  - stationary
+  - vehicle
+  - maybe I should rename vehicle back to Building for this
+- Freight areas look different to home areas etc so you can tell the difference at a glance
+- Turret entity
+- 'entity' and 'entity group' buildToolState subStates
+- Bring back selectionbox resetting on mouse up
+- Windows entity - new state slice/entity type
+- Rename "LightsManager" to "AtmosphereManager"
+- I should probably replace Entity.Type with typof(Entity) because they're used in the same way
+- Room lights that turn off + window blinds/curtains that shut when the resident goes to sleep
+  - Only if there isn't another resident in the room at the same time
+- AttributesStateSlice OnTick should only fire update event if the value is different than before
+- Other entities should be added to vehicle as well (not just room)
 - different furniture interaction types? using, repairing, cleaning, etc
 - Make "make resident go here and do this" button be right click, not ctrl+left click
 - Way of deleting types of entities other than rooms
@@ -34,8 +42,6 @@
   - some UI element that says how many entities are selected (and what types)
 - I don't think these static Create() functions on GameWorldRoom etc are used anymore
 - Freight contents
-- For a first draft, every 1 mile of journey a random passer-by shows up
-  - after that, encounters with other vehicles
 - show/hide different entity layers/types
 - UI elements to manage/interact with different entity layers/types
   - e.g lights: "turn all/selected lights off/on" toggle and "set all/selected light colors" button
@@ -47,9 +53,6 @@
   - i.e in the code using an enum doesn't help much, but it does help in making sure you're connecting to the right thing in assetList
 - pull Wheel.skinKey up into Entity/EntityDefinition
 - maybe walls + ceiling should be the same entity as it is now
-- Finish up route finder algorithm
-  - Make sure each cell between current + target cells have enough vertical clearance
-- Different types of transportation items should be able to occupy the same cell (escalators + doorways etc)
 - Route parameters - routes
   - This would enable freight to require a large enough door for the freight to fit into
   - Also potentially allow for residents of different sizes
@@ -167,14 +170,7 @@
   - cockpit
 - furniture that occupys different # of tiles
 - dynamically rendered "Outer walls" of vehicle
-- cellCoordinates.bottom row function - use in room cell overhang validator
-- Connections to outside
-  - RouteSegmentNode subtype for outside connections
-  - RoomConnection subtype for outside connections
-  - Wheels room should allow ladder furniture
-  - Residents should be able to walk on the ground and climb up the wheels ladder
 - furniture that requires floor/does not require floor
-- consider putting RoomConnections in seperate state slice
 - tick animations
   - eg resident going from one cell to the other
   - this probably means reorganizing things to calculate the next tick every tick (for the animation to know where to lerp from/to)
@@ -311,6 +307,16 @@
 
 # Done
 
+- Connections to outside
+  - RouteSegmentNode subtype for outside connections
+  - RoomConnection subtype for outside connections
+  - Wheels room should allow ladder furniture
+  - Residents should be able to walk on the ground and climb up the wheels ladder
+- cellCoordinates.bottom row function - use in room cell overhang validator
+- Get rid of the remnants of all the ListWrapper<T> subtypes
+  - ListStateType
+  - AttibuteStateType
+- Wheels aren't highlighting with the destroy tool
 - same as with how I made an entities appState slice:
   - Attributes appState slice group
   - Behaviors appState slice group

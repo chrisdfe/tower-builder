@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Entities.Rooms;
-using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
@@ -37,15 +36,8 @@ namespace TowerBuilder.DataTypes.Routes
         public List<RouteAttempt> sucessfulRouteAttempts =>
             routeAttempts.FindAll(routeAttempt => routeAttempt.status == RouteAttempt.Status.Complete);
 
-        public RouteAttempt bestRouteAttempt
-        {
-            get
-            {
-                if (sucessfulRouteAttempts.Count == 0) return null;
-                // TODO - find shortest
-                return sucessfulRouteAttempts[0];
-            }
-        }
+        // TODO - find shortest
+        public RouteAttempt bestRouteAttempt => sucessfulRouteAttempts.Count > 0 ? sucessfulRouteAttempts[0] : null;
 
         public RouteFinder(AppState appState)
         {
@@ -85,7 +77,7 @@ namespace TowerBuilder.DataTypes.Routes
 
             void ValidateRouteMarker(CellCoordinates cellCoordinates)
             {
-                if (!IsValidRoutePoint(cellCoordinates))
+                if (!GenericEntityValidations.IsValidStandardLocation(appState, cellCoordinates))
                 {
                     errors.Add(new RouteError($"Invalid coordinates: {cellCoordinates}"));
                 }
@@ -186,7 +178,6 @@ namespace TowerBuilder.DataTypes.Routes
                 Registry.appState.Entities.Rooms.queries
                     .FindRoomAtCell(cellCoordinates) == routeAttempt.currentRoom;
 
-        // TODO - write this function
         bool CanWalkTo(RouteAttempt routeAttempt, CellCoordinates targetCellCoordinates)
         {
             if (appState.Entities.Rooms.queries.FindEntityTypeAtCell(targetCellCoordinates) != routeAttempt.currentRoom)
@@ -197,9 +188,7 @@ namespace TowerBuilder.DataTypes.Routes
             // At this point I'm assuming targetCellCoordinates and currentCoordinates are on the same floor
             int currentX = routeAttempt.latestSegmentNode.cellCoordinates.x;
 
-            // TODO next - draw a path between current coordinates and entrance coordinates
-            //             and make sure each step along the way is valid (has floor, enough clearance etc)
-
+            // TODO - factor in entity width
             while (currentX != targetCellCoordinates.x)
             {
                 if (currentX > targetCellCoordinates.x)
@@ -213,37 +202,14 @@ namespace TowerBuilder.DataTypes.Routes
 
                 CellCoordinates currentCoordinates = new CellCoordinates(currentX, targetCellCoordinates.floor);
 
-                if (appState.Entities.Floors.queries.FindEntityTypeAtCell(currentCoordinates) == null)
+                if (!GenericEntityValidations.IsValidStandardLocation(appState, currentCoordinates))
                 {
                     return false;
                 }
-
-                // TODO - check that there's nothing blocking the cell(s) above, either:
-                //        the cell above is not in the same room as the current room, or
-                //        there is a floor in the cell above
-                // if there is, then return false
             }
 
             return true;
         }
-
-        // TODO - put these two somewhere more general so they can be used for resident validation too
-        // outside + on the ground
-        bool IsValidOutsideRoutePoint(CellCoordinates cellCoordinates) =>
-            appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) == null &&
-            cellCoordinates.floor == 0 &&
-            HasEnoughVerticalSpace(cellCoordinates);
-
-        // inside + on a floor
-        bool IsValidInsideRoutePoint(CellCoordinates cellCoordinates) =>
-            appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
-            appState.Entities.Floors.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
-            HasEnoughVerticalSpace(cellCoordinates);
-
-        bool IsValidRoutePoint(CellCoordinates cellCoordinates) =>
-            IsValidInsideRoutePoint(cellCoordinates) || IsValidOutsideRoutePoint(cellCoordinates);
-
-        bool HasEnoughVerticalSpace(CellCoordinates cellCoordinates) => true;
 
         (CellCoordinatesList, CellCoordinatesList) GetValidTransportationItemEntrancesAndExits(TransportationItem transportationItem, RouteAttempt routeAttempt)
         {
@@ -251,7 +217,7 @@ namespace TowerBuilder.DataTypes.Routes
                 new CellCoordinatesList(
                     transportationItem.entranceCellCoordinatesList.items
                         .FindAll((entranceCellCoordinates) =>
-                            IsValidRoutePoint(entranceCellCoordinates) &&
+                            GenericEntityValidations.IsValidStandardLocation(appState, entranceCellCoordinates) &&
                             IsOnLatestSegmentFloor(routeAttempt, entranceCellCoordinates) &&
                             IsInCurrentRoom(routeAttempt, entranceCellCoordinates)
                         )
@@ -261,7 +227,7 @@ namespace TowerBuilder.DataTypes.Routes
                 new CellCoordinatesList(
                     transportationItem.exitCellCoordinatesList.items
                         .FindAll((exitCellCoordinates) =>
-                            IsValidRoutePoint(exitCellCoordinates) &&
+                            GenericEntityValidations.IsValidStandardLocation(appState, exitCellCoordinates) &&
                             !IsInCurrentRoom(routeAttempt, exitCellCoordinates)
                         )
                         .ToList()

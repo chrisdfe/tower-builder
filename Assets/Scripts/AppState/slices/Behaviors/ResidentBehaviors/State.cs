@@ -125,7 +125,8 @@ namespace TowerBuilder.ApplicationState.Behaviors.Residents
         */
         Route FindRouteTo(CellCoordinates fromCellCoordinates, CellCoordinates toCellCoordinates)
         {
-            Route route = new RouteFinder(appState).FindRouteBetween(fromCellCoordinates, toCellCoordinates);
+            RouteFinder routeFinder = new RouteFinder(appState);
+            Route route = routeFinder.FindRouteBetween(fromCellCoordinates, toCellCoordinates);
 
             if (route != null)
             {
@@ -133,7 +134,18 @@ namespace TowerBuilder.ApplicationState.Behaviors.Residents
             }
             else
             {
-                appState.Notifications.Add(new Notification("No route found"));
+                if (routeFinder.errors.Count > 0)
+                {
+                    foreach (RouteFinder.RouteError error in routeFinder.errors)
+                    {
+                        appState.Notifications.Add(new Notification(error.message));
+                    }
+                }
+                else
+                {
+                    appState.Notifications.Add(new Notification("No route found"));
+                }
+
                 return null;
             }
         }

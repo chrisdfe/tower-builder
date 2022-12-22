@@ -124,7 +124,6 @@ namespace TowerBuilder.ApplicationState
             Vehicles.Setup();
 
             Entities.Setup();
-
             Attributes.Setup();
 
             FurnitureHomeSlotOccupations.Setup();
