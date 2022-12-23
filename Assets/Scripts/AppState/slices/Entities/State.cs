@@ -13,12 +13,10 @@ namespace TowerBuilder.ApplicationState.Entities
         {
             public Furnitures.State.Input Furnitures = new Furnitures.State.Input();
             public Residents.State.Input Residents = new Residents.State.Input();
-
             public Rooms.State.Input Rooms;
             public Floors.State.Input Floors;
             public InteriorWalls.State.Input InteriorWalls;
             public InteriorLights.State.Input InteriorLights;
-
             public TransportationItems.State.Input TransportationItems;
             public Freight.State.Input Freight;
             public Wheels.State.Input Wheels;
@@ -30,7 +28,6 @@ namespace TowerBuilder.ApplicationState.Entities
                 Floors = new Floors.State.Input();
                 InteriorWalls = new InteriorWalls.State.Input();
                 InteriorLights = new InteriorLights.State.Input();
-
                 Furnitures = new Furnitures.State.Input();
                 Residents = new Residents.State.Input();
                 TransportationItems = new TransportationItems.State.Input();
@@ -62,7 +59,6 @@ namespace TowerBuilder.ApplicationState.Entities
         public Events events { get; }
         public StateQueries Queries { get; }
 
-        public Dictionary<Entity.Type, IEntityStateSlice> sliceMap { get; }
         public List<IEntityStateSlice> sliceList { get; }
 
         public ListWrapper<Entity> allEntities =>
@@ -78,7 +74,6 @@ namespace TowerBuilder.ApplicationState.Entities
             Floors = new Floors.State(appState, input.Floors);
             InteriorWalls = new InteriorWalls.State(appState, input.InteriorWalls);
             InteriorLights = new InteriorLights.State(appState, input.InteriorLights);
-
             Furnitures = new Furnitures.State(appState, input.Furnitures);
             Residents = new Residents.State(appState, input.Residents);
             TransportationItems = new TransportationItems.State(appState, input.TransportationItems);
@@ -86,20 +81,18 @@ namespace TowerBuilder.ApplicationState.Entities
             Wheels = new Wheels.State(appState, input.Wheels);
             Vehicles = new Vehicles.State(appState, input.Vehicles);
 
-            sliceMap = new Dictionary<Entity.Type, IEntityStateSlice> {
-                {Entity.Type.Room,               Rooms },
-                {Entity.Type.Floor,              Floors },
-                {Entity.Type.InteriorWall,       InteriorWalls },
-                {Entity.Type.InteriorLight,      InteriorLights },
-                {Entity.Type.Furniture,          Furnitures },
-                {Entity.Type.Resident,           Residents },
-                {Entity.Type.TransportationItem, TransportationItems },
-                {Entity.Type.Freight,            Freight },
-                {Entity.Type.Wheel,              Wheels },
-                {Entity.Type.Vehicle,            Vehicles }
+            sliceList = new List<IEntityStateSlice>() {
+                Rooms,
+                Floors,
+                InteriorWalls,
+                InteriorLights,
+                Furnitures,
+                Residents,
+                TransportationItems,
+                Freight,
+                Wheels,
+                Vehicles
             };
-
-            sliceList = sliceMap.Values.ToList();
 
             Queries = new StateQueries(this);
             events = new Events();
@@ -160,17 +153,21 @@ namespace TowerBuilder.ApplicationState.Entities
             GetStateSlice(entity)?.Remove(entity);
         }
 
-        public IEntityStateSlice GetStateSlice(Entity.Type type)
-        {
-            if (!sliceMap.ContainsKey(type))
+        public IEntityStateSlice GetStateSlice(Entity entity) =>
+            entity switch
             {
-                throw new NotSupportedException($"Entity type not handled: {type}");
-            }
-
-            return sliceMap[type];
-        }
-
-        public IEntityStateSlice GetStateSlice(Entity entity) => GetStateSlice(entity.type);
+                DataTypes.Entities.Rooms.Room => Rooms,
+                DataTypes.Entities.Floors.Floor => Floors,
+                DataTypes.Entities.InteriorWalls.InteriorWall => InteriorWalls,
+                DataTypes.Entities.InteriorLights.InteriorLight => InteriorLights,
+                DataTypes.Entities.Furnitures.Furniture => Furnitures,
+                DataTypes.Entities.Residents.Resident => Residents,
+                DataTypes.Entities.TransportationItems.TransportationItem => TransportationItems,
+                DataTypes.Entities.Freights.FreightItem => Freight,
+                DataTypes.Entities.Wheels.Wheel => Wheels,
+                DataTypes.Entities.Vehicles.Vehicle => Vehicles,
+                _ => throw new NotSupportedException($"Entity type not handled: {entity.GetType()}")
+            };
 
         void OnEntitiesAdded(ListWrapper<Entity> entityList)
         {

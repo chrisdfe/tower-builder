@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes.Entities;
@@ -150,7 +151,7 @@ namespace TowerBuilder.GameWorld.UI
         List<UISelectButton.Input> GenerateCategoryButtonInputs()
         {
             List<UISelectButton> result = new List<UISelectButton>();
-            Entity.Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
+            Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
 
             var allEntityCategories = Registry.Definitions.Entities.Queries.FindAllCategories(selectedEntityType);
 
@@ -159,7 +160,7 @@ namespace TowerBuilder.GameWorld.UI
 
         List<UISelectButton.Input> GenerateDefinitionButtonInputs()
         {
-            Entity.Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
+            Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
             string currentCategory = Registry.appState.Tools.buildToolState.selectedEntityCategory;
 
             return Registry.Definitions.Entities.Queries.FindByCategory(selectedEntityType, currentCategory)
@@ -204,11 +205,11 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnEntityGroupButtonClick(string newCategory)
         {
-            Entity.Type newEntityType = Entity.TypeLabels.KeyFromValue(newCategory);
+            Type newEntityType = Entity.TypeLabels.KeyFromValue(newCategory);
             Registry.appState.Tools.buildToolState.SetSelectedEntityKey(newEntityType);
         }
 
-        void OnSelectedEntityKeyUpdated(Entity.Type entityType, Entity.Type previousEntityType)
+        void OnSelectedEntityKeyUpdated(Type entityType, Type previousEntityType)
         {
             if (entityType == previousEntityType) return;
 

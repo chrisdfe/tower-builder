@@ -22,8 +22,6 @@ namespace TowerBuilder.DataTypes.Entities.InteriorLights
 
         public override string idKey { get => "interiorLight"; }
 
-        public override Type type => Entity.Type.InteriorLight;
-
         public InteriorLight(InteriorLightDefinition interiorLightDefinition) : base(interiorLightDefinition) { }
     }
 }

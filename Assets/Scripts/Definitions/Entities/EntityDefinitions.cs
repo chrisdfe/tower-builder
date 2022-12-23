@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
@@ -43,27 +44,27 @@ namespace TowerBuilder.Definitions
         public WheelDefinitionsList Wheels = new WheelDefinitionsList();
         public VehicleDefinitionsList Vehicles = new VehicleDefinitionsList();
 
-        public Dictionary<Entity.Type, IEntityDefinitionsList> entityDefinitionsMap { get; }
+        public Dictionary<Type, IEntityDefinitionsList> entityDefinitionsMap { get; }
 
         public EntityDefinitions()
         {
             Queries = new DefinitionQueries(this);
 
-            entityDefinitionsMap = new Dictionary<Entity.Type, IEntityDefinitionsList>() {
-                { Entity.Type.Room, Rooms },
-                { Entity.Type.Floor, Floors },
-                { Entity.Type.InteriorWall, InteriorWalls },
-                { Entity.Type.InteriorLight, InteriorLights },
-                { Entity.Type.Furniture, Furnitures },
-                { Entity.Type.Resident, Residents },
-                { Entity.Type.TransportationItem, TransportationItems },
-                { Entity.Type.Freight, Freights },
-                { Entity.Type.Wheel, Wheels },
-                { Entity.Type.Vehicle, Vehicles },
+            entityDefinitionsMap = new Dictionary<Type, IEntityDefinitionsList>() {
+                { typeof(Room),               Rooms },
+                { typeof(Floor),              Floors },
+                { typeof(InteriorWall),       InteriorWalls },
+                { typeof(InteriorLight),      InteriorLights },
+                { typeof(Furniture),          Furnitures },
+                { typeof(Resident),           Residents },
+                { typeof(TransportationItem), TransportationItems },
+                { typeof(FreightItem),        Freights },
+                { typeof(Wheel),              Wheels },
+                { typeof(Vehicle),            Vehicles },
             };
         }
 
-        IEntityDefinitionsList DefinitionFromEntityType(Entity.Type type) =>
+        IEntityDefinitionsList DefinitionFromEntityType(Type type) =>
             entityDefinitionsMap[type];
 
         public class DefinitionQueries
@@ -75,54 +76,43 @@ namespace TowerBuilder.Definitions
                 this.Definitions = entityDefinitions;
             }
 
-            public List<string> FindAllCategories(Entity.Type type) =>
+            public List<string> FindAllCategories(Type type) =>
                 Definitions.DefinitionFromEntityType(type)?.Queries.FindAllCategories();
 
-            public ListWrapper<EntityDefinition> FindByCategory(Entity.Type type, string category) =>
+            public ListWrapper<EntityDefinition> FindByCategory(Type type, string category) =>
                 Definitions.DefinitionFromEntityType(type)?.Queries.FindByCategory(category);
 
-            public string FindFirstCategory(Entity.Type type) => FindAllCategories(type)[0];
+            public string FindFirstCategory(Type type) => FindAllCategories(type)[0];
 
-            public EntityDefinition FindFirstInCategory(Entity.Type type, string category) =>
+            public EntityDefinition FindFirstInCategory(Type type, string category) =>
                 Definitions.DefinitionFromEntityType(type)?.Queries.FindFirstInCategory(category);
 
-            public EntityDefinition FindByKey<KeyType>(Entity.Type type, KeyType key)
+            public EntityDefinition FindByKey<KeyType>(Type type, KeyType key)
                 where KeyType : struct =>
                 Definitions.DefinitionFromEntityType(type)?.Queries.FindByKey<KeyType>(key);
 
 
-            public EntityDefinition FindDefinitionByKeyLabel(Entity.Type type, string keyLabel)
-            {
-                switch (type)
+            public EntityDefinition FindDefinitionByKeyLabel(EntityDefinition entityDefinition, string keyLabel) =>
+                entityDefinition switch
                 {
-                    case Entity.Type.Room:
-                        Room.Key roomKey = Room.KeyLabelMap.KeyFromValue(keyLabel);
-                        return Definitions.Rooms.Queries.FindByKey(roomKey);
-                    case Entity.Type.InteriorWall:
-                        InteriorWall.Key interiorWallKey = InteriorWall.KeyLabelMap.KeyFromValue(keyLabel);
-                        return Definitions.InteriorWalls.Queries.FindByKey(interiorWallKey);
-                    case Entity.Type.Floor:
-                        Floor.Key floorKey = Floor.KeyLabelMap.KeyFromValue(keyLabel);
-                        return Definitions.Floors.Queries.FindByKey(floorKey);
-                    case Entity.Type.Furniture:
-                        Furniture.Key furnitureKey = Furniture.KeyLabelMap.KeyFromValue(keyLabel);
-                        return Definitions.Furnitures.Queries.FindByKey(furnitureKey);
-                    case Entity.Type.Resident:
-                        Resident.Key residentKey = Resident.KeyLabelMap.KeyFromValue(keyLabel);
-                        return Definitions.Residents.Queries.FindByKey(residentKey);
-                    case Entity.Type.TransportationItem:
-                        TransportationItem.Key transportationItemKey = TransportationItem.KeyLabelMap.KeyFromValue(keyLabel);
-                        return Definitions.TransportationItems.Queries.FindByKey(transportationItemKey);
-                    case Entity.Type.Freight:
-                        FreightItem.Key freightItemKey = FreightItem.KeyLabelMap.KeyFromValue(keyLabel);
-                        return Definitions.Freights.Queries.FindByKey(freightItemKey);
-                    case Entity.Type.Vehicle:
-                        Vehicle.Key vehicleKey = Vehicle.KeyLabelMap.KeyFromValue(keyLabel);
-                        return Definitions.Vehicles.Queries.FindByKey(vehicleKey);
-                }
-
-                return null;
-            }
+                    RoomDefinition =>
+                        Definitions.Rooms.Queries.FindByKey(Room.KeyLabelMap.KeyFromValue(keyLabel)),
+                    InteriorWallDefinition =>
+                        Definitions.InteriorWalls.Queries.FindByKey(InteriorWall.KeyLabelMap.KeyFromValue(keyLabel)),
+                    FloorDefinition =>
+                        Definitions.Floors.Queries.FindByKey(Floor.KeyLabelMap.KeyFromValue(keyLabel)),
+                    FurnitureDefinition =>
+                        Definitions.Furnitures.Queries.FindByKey(Furniture.KeyLabelMap.KeyFromValue(keyLabel)),
+                    ResidentDefinition =>
+                        Definitions.Residents.Queries.FindByKey(Resident.KeyLabelMap.KeyFromValue(keyLabel)),
+                    TransportationItemDefinition =>
+                        Definitions.TransportationItems.Queries.FindByKey(TransportationItem.KeyLabelMap.KeyFromValue(keyLabel)),
+                    FreightDefinition =>
+                        Definitions.Freights.Queries.FindByKey(FreightItem.KeyLabelMap.KeyFromValue(keyLabel)),
+                    VehicleDefinition =>
+                        Definitions.Vehicles.Queries.FindByKey(Vehicle.KeyLabelMap.KeyFromValue(keyLabel)),
+                    _ => null
+                };
         }
     }
 }

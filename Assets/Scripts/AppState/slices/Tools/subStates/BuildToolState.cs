@@ -1,14 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.ApplicationState.Entities;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Entities.Residents;
-using TowerBuilder.DataTypes.Entities.Rooms;
-using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.Definitions;
 using TowerBuilder.Utils;
@@ -21,12 +14,11 @@ namespace TowerBuilder.ApplicationState.Tools
         public struct Input
         {
             public string selectedEntityCategory;
-            public RoomDefinition selectedRoomDefinition;
         }
 
         public class Events
         {
-            public delegate void SelectedEntityKeyEvent(Entity.Type entityKey, Entity.Type previousEntityType);
+            public delegate void SelectedEntityKeyEvent(Type entityKey, Type previousEntityType);
             public SelectedEntityKeyEvent onSelectedEntityKeyUpdated;
 
             public delegate void buildIsActiveEvent();
@@ -43,7 +35,7 @@ namespace TowerBuilder.ApplicationState.Tools
             public blueprintUpdateEvent onBlueprintEntityUpdated;
         }
 
-        public Entity.Type selectedEntityType { get; private set; } = Entity.Type.Room;
+        public Type selectedEntityType { get; private set; } = typeof(DataTypes.Entities.Rooms.Room);
         public string selectedEntityCategory { get; private set; } = "";
         public EntityDefinition selectedEntityDefinition { get; private set; } = null;
         public Entity blueprintEntity { get; private set; } = null;
@@ -52,8 +44,6 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public bool isLocked = false;
         bool buildIsActive = false;
-
-        // static Dictionary<Entity.Type, StateSlice> entityStateSliceMap = new Dictionary<Entity.Type, StateSlice>();
 
         public BuildToolState(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
@@ -95,10 +85,10 @@ namespace TowerBuilder.ApplicationState.Tools
             events.onBlueprintEntityUpdated?.Invoke(blueprintEntity);
         }
 
-        public void SetSelectedEntityKey(Entity.Type entityType)
+        public void SetSelectedEntityKey(Type entityType)
         {
             isLocked = true;
-            Entity.Type previousEntityType = this.selectedEntityType;
+            Type previousEntityType = this.selectedEntityType;
             this.selectedEntityType = entityType;
 
             ResetCategoryAndDefinition();
@@ -124,7 +114,7 @@ namespace TowerBuilder.ApplicationState.Tools
         // TODO - this should probably use key instead of title string
         public void SetSelectedEntityDefinition(string keyLabel)
         {
-            this.selectedEntityDefinition = Registry.Definitions.Entities.Queries.FindDefinitionByKeyLabel(selectedEntityType, keyLabel);
+            this.selectedEntityDefinition = Registry.Definitions.Entities.Queries.FindDefinitionByKeyLabel(selectedEntityDefinition, keyLabel);
 
             ResetBlueprintEntity();
 

@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.ApplicationState.Tools;
@@ -65,7 +65,7 @@ namespace TowerBuilder.GameWorld.UI
                 }
                 else
                 {
-                    Entity.Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
+                    Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
                     Entity blueprintEntity = Registry.appState.Tools.buildToolState.blueprintEntity;
 
                     if (blueprintEntity != null)

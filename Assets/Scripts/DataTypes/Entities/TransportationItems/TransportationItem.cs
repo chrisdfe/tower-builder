@@ -10,8 +10,6 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
     {
         public override string idKey => "TransportationItem";
 
-        public override Type type => Entity.Type.TransportationItem;
-
         public enum Key
         {
             None,

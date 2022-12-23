@@ -22,8 +22,6 @@ namespace TowerBuilder.DataTypes.Entities.InteriorWalls
 
         public override string idKey { get => "interiorWall"; }
 
-        public override Type type => Entity.Type.InteriorWall;
-
         public InteriorWall(InteriorWallDefinition interiorWallDefinition) : base(interiorWallDefinition) { }
     }
 }

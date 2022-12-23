@@ -18,8 +18,6 @@ namespace TowerBuilder.DataTypes.Entities.Vehicles
 
         public override string idKey => "vehicles";
 
-        public override Type type => Entity.Type.Vehicle;
-
         public ListWrapper<Room> roomList { get; private set; } = new ListWrapper<Room>();
 
         public Vehicle(VehicleDefinition vehicleDefinition) : base(vehicleDefinition) { }

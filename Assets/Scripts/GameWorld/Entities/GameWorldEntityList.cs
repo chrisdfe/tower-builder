@@ -1,9 +1,6 @@
+using System;
 using System.Collections.Generic;
-using TowerBuilder.ApplicationState.Entities;
-using TowerBuilder.ApplicationState.Tools;
-using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities
@@ -15,8 +12,8 @@ namespace TowerBuilder.GameWorld.Entities
         [HideInInspector]
         public List<GameWorldEntity> entities = new List<GameWorldEntity>();
 
-        [HideInInspector]
-        public Entity.Type entityType;
+        // [HideInInspector]
+        // public Type entityType;
 
         Transform entitiesInstanceWrapper;
 

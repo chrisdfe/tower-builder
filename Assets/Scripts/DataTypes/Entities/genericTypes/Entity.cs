@@ -4,10 +4,13 @@ using System.Linq;
 using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.InteriorLights;
 using TowerBuilder.DataTypes.Entities.InteriorWalls;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
+using TowerBuilder.DataTypes.Entities.Vehicles;
+using TowerBuilder.DataTypes.Entities.Wheels;
 using TowerBuilder.Definitions;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -20,33 +23,18 @@ namespace TowerBuilder.DataTypes.Entities
 
         public int id { get; }
 
-        public enum Type
-        {
-            None,
-            Room,
-            Floor,
-            InteriorWall,
-            InteriorLight,
-            Resident,
-            Furniture,
-            TransportationItem,
-            Freight,
-            Wheel,
-            Vehicle
-        }
-
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
-                { Type.Room,               "Room" },
-                { Type.Floor,              "Floor" },
-                { Type.InteriorWall,       "InteriorWall" },
-                { Type.InteriorLight,      "InteriorLight" },
-                { Type.Resident,           "Resident" },
-                { Type.Furniture,          "Furniture" },
-                { Type.TransportationItem, "Transportation Item" },
-                { Type.Freight,            "Freight" },
-                { Type.Wheel,              "Wheel" },
-                { Type.Vehicle,            "Vehicle" }
+                { typeof(Room),               "Room" },
+                { typeof(Floor),              "Floor" },
+                { typeof(InteriorWall),       "InteriorWall" },
+                { typeof(InteriorLight),      "InteriorLight" },
+                { typeof(Resident),           "Resident" },
+                { typeof(Furniture),          "Furniture" },
+                { typeof(TransportationItem), "Transportation Item" },
+                { typeof(FreightItem),        "Freight" },
+                { typeof(Wheel),              "Wheel" },
+                { typeof(Vehicle),            "Vehicle" }
             }
         );
 
@@ -65,9 +53,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public bool isInBlueprintMode { get; set; } = false;
 
-        public virtual Type type { get; }
-
-        public string typeLabel => TypeLabels.ValueFromKey(type);
+        public string typeLabel => TypeLabels.ValueFromKey(GetType());
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();

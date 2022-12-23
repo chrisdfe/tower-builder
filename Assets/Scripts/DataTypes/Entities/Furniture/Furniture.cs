@@ -28,8 +28,6 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
 
         public override string idKey { get => "furniture"; }
 
-        public override Type type => Entity.Type.Furniture;
-
         public Furniture(FurnitureDefinition furnitureDefinition) : base(furnitureDefinition) { }
     }
 }

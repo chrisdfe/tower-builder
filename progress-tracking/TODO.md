@@ -2,6 +2,10 @@
 
 ## Tasks
 
+- World position will need to be tracked too, for buildings/residents to scroll by as the vehicle passes
+- Residents should decide when it is time to change what they're doing
+  - Goal priority (if the next goal in the list is higher priority than the current one)
+  - Schedule (e.g if it is time to go to sleep)
 - Validate that either transportation entrnace or exit is inside (or both)
 - Different types of transportation items should be able to occupy the same cell (escalators + doorways etc)
 - Finish up current iteration of route finder algorithm
@@ -27,7 +31,6 @@
 - Bring back selectionbox resetting on mouse up
 - Windows entity - new state slice/entity type
 - Rename "LightsManager" to "AtmosphereManager"
-- I should probably replace Entity.Type with typof(Entity) because they're used in the same way
 - Room lights that turn off + window blinds/curtains that shut when the resident goes to sleep
   - Only if there isn't another resident in the room at the same time
 - AttributesStateSlice OnTick should only fire update event if the value is different than before
@@ -307,6 +310,7 @@
 
 # Done
 
+- I should probably replace Entity.Type with typof(Entity) because they're used in the same way
 - Connections to outside
   - RouteSegmentNode subtype for outside connections
   - RoomConnection subtype for outside connections

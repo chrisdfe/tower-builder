@@ -27,8 +27,6 @@ namespace TowerBuilder.DataTypes.Entities.Wheels
 
         public override string idKey { get => "wheels"; }
 
-        public override Type type => Entity.Type.Wheel;
-
         public SkinKey skinKey;
 
         public Wheel(WheelDefinition wheelDefinition) : base(wheelDefinition)

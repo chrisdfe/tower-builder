@@ -4,16 +4,13 @@
 
 ## TODO
 
+- Increasing the size of a room into a different room has weird results - they sort of combine but then there's a phantom room
 - I'm already running into performance issues when making large rooms
   - investigate the number of nested objects inside of each roomcell mesh
   - also investigate how every roomcell/entity gets removed/created instead of moved
-- Ladders aren't tiling properly
-- Residents don't seem to be interacting with furniture properly right now
 - Sometimes when sending a resident back and forth between cells there's an out of bounds exception with RouteProgress
-- Figure out why residents stay in one spot for a while when traveling
 - Entity doesn't update when an entity is built
-- Rooms aren't combining correctly anymore
-- Individual roomCells should know if they are valid again (right now it's just the room)
+- Individual cells should know if they are valid again (right now it's just the room)
 - Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
 - RoomEntrances in the blueprint room aren't getting highlighted
 - Input.GetMouseButtonDown(0) does not work consistently on macos
@@ -21,6 +18,10 @@
 
 # Done
 
+- Rooms aren't combining correctly anymore
+- Figure out why residents stay in one spot for a while when traveling
+- Residents don't seem to be interacting with furniture properly right now
+- Ladders aren't tiling properly
 - Room connections don't work reliably (probably because of room blocks)
 - Inspect highlight doesn't stay after user mouses out
 - Rooms + vehicles still don't get destroyed properly

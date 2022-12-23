@@ -28,16 +28,11 @@ namespace TowerBuilder.DataTypes.Entities.Rooms
 
         public override string idKey => "Rooms";
 
-        public override Type type => Entity.Type.Room;
-
         public SkinKey skinKey;
 
         public Dimensions blockDimensions { get; } = Dimensions.one;
 
-        public int cellsInBlock
-        {
-            get => blockDimensions.width * blockDimensions.height;
-        }
+        public int cellsInBlock => blockDimensions.width * blockDimensions.height;
 
         // TODO - get rid of this
         public RoomFurnitureBuilderBase furnitureBuilder { get; }

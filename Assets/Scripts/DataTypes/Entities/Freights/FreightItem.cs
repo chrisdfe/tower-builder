@@ -24,8 +24,6 @@ namespace TowerBuilder.DataTypes.Entities.Freights
 
         public override string idKey => "freightItems";
 
-        public override Type type => Entity.Type.Freight;
-
         public FreightItem(FreightDefinition entityDefinition) : base(entityDefinition) { }
     }
 }
