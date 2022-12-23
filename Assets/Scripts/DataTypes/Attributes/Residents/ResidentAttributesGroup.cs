@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Attributes.Residents
 {
-    public class ResidentAttributesWrapper : AttributesWrapper<ResidentAttribute, ResidentAttribute.Key>
+    public class ResidentAttributesGroup : AttributesGroup<ResidentAttribute, ResidentAttribute.Key>
     {
         public Resident resident { get; private set; }
 
@@ -20,7 +20,7 @@ namespace TowerBuilder.DataTypes.Attributes.Residents
             )
         };
 
-        public ResidentAttributesWrapper(AppState appState, Resident resident) : base(appState)
+        public ResidentAttributesGroup(AppState appState, Resident resident) : base(appState)
         {
             this.resident = resident;
         }

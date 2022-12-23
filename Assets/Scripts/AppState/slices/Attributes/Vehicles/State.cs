@@ -13,7 +13,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
 {
     using VehicleAtributesStateSlice = AttributesStateSlice<
         VehicleAttribute.Key,
-        VehicleAttributesWrapper,
+        VehicleAttributesGroup,
         VehicleAttribute,
         VehicleAttribute.Modifier,
         State.Events
@@ -23,7 +23,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
     {
         public class Input
         {
-            public ListWrapper<VehicleAttributesWrapper> vehicleAttributesWrapperList;
+            public ListWrapper<VehicleAttributesGroup> vehicleAttributesGroupList;
         }
 
         public new class Events : VehicleAtributesStateSlice.Events { }
@@ -39,8 +39,8 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
                 this.state = state;
             }
 
-            public VehicleAttributesWrapper FindByVehicle(Vehicle vehicle) =>
-                state.list.Find(attributesWrapper => attributesWrapper.vehicle == vehicle);
+            public VehicleAttributesGroup FindByVehicle(Vehicle vehicle) =>
+                state.list.Find(AttributesGroup => AttributesGroup.vehicle == vehicle);
         }
 
         public Queries queries;
@@ -68,16 +68,16 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
             appState.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
         }
 
-        public void AddAttributesWrapperForVehicle(Vehicle vehicle)
+        public void AddAttributesGroupForVehicle(Vehicle vehicle)
         {
-            VehicleAttributesWrapper vehicleAttributesWrapper = new VehicleAttributesWrapper(appState, vehicle);
-            Add(vehicleAttributesWrapper);
+            VehicleAttributesGroup vehicleAttributesGroup = new VehicleAttributesGroup(appState, vehicle);
+            Add(vehicleAttributesGroup);
         }
 
-        public void RemoveAttributesWrapperForVehicle(Vehicle vehicle)
+        public void RemoveAttributesGroupForVehicle(Vehicle vehicle)
         {
-            VehicleAttributesWrapper vehicleAttributesWrapper = queries.FindByVehicle(vehicle);
-            Remove(vehicleAttributesWrapper);
+            VehicleAttributesGroup vehicleAttributesGroup = queries.FindByVehicle(vehicle);
+            Remove(vehicleAttributesGroup);
         }
 
         /* 
@@ -87,7 +87,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
         {
             vehicleList.ForEach(vehicle =>
             {
-                AddAttributesWrapperForVehicle(vehicle);
+                AddAttributesGroupForVehicle(vehicle);
             });
         }
 
@@ -95,7 +95,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
         {
             vehicleList.ForEach(vehicle =>
             {
-                RemoveAttributesWrapperForVehicle(vehicle);
+                RemoveAttributesGroupForVehicle(vehicle);
             });
         }
     }

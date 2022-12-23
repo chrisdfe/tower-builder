@@ -120,7 +120,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             ResidentBehavior residentBehavior = Registry.appState.Behaviors.Residents.queries.FindByResident(resident);
 
-            ResidentAttributesWrapper residentAttributesWrapper = Registry.appState.Attributes.Residents.queries.FindByResident(resident);
+            ResidentAttributesGroup residentAttributesGroup = Registry.appState.Attributes.Residents.queries.FindByResident(resident);
 
             string text =
               $"   name: {resident}\n";
@@ -130,10 +130,10 @@ namespace TowerBuilder.GameWorld.UI
                 text += $"   state: {residentBehavior.currentState}\n";
             }
 
-            if (residentAttributesWrapper != null)
+            if (residentAttributesGroup != null)
             {
                 text += "    attributes:\n";
-                residentAttributesWrapper.attributes.ForEach((attribute) =>
+                residentAttributesGroup.attributes.ForEach((attribute) =>
                 {
                     text += $"        {attribute.key}: {attribute.value}\n";
                 });
@@ -223,13 +223,13 @@ namespace TowerBuilder.GameWorld.UI
             SetText();
         }
 
-        void OnResidentAttributeWrappersUpdated(ListWrapper<ResidentAttributesWrapper> residentAttributesWrappers)
+        void OnResidentAttributeWrappersUpdated(ListWrapper<ResidentAttributesGroup> residentAttributesGroups)
         {
-            foreach (ResidentAttributesWrapper residentAttributesWrapper in residentAttributesWrappers.items)
+            foreach (ResidentAttributesGroup residentAttributesGroup in residentAttributesGroups.items)
             {
                 if (
                     (Registry.appState.Tools.inspectToolState.inspectedEntity is Resident) &&
-                    residentAttributesWrapper.resident == (Registry.appState.Tools.inspectToolState.inspectedEntity as Resident)
+                    residentAttributesGroup.resident == (Registry.appState.Tools.inspectToolState.inspectedEntity as Resident)
                 )
                 {
                     SetText();

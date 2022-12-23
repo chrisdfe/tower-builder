@@ -7,14 +7,14 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    public class AttributesWrapper<AttributeType, KeyType>
+    public class AttributesGroup<AttributeType, KeyType>
         where AttributeType : Attribute<KeyType>
     {
         public virtual List<AttributeType> attributes { get; } = new List<AttributeType>();
 
         protected AppState appState;
 
-        public AttributesWrapper(AppState appState)
+        public AttributesGroup(AppState appState)
         {
             this.appState = appState;
         }

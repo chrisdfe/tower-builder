@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Attributes.Vehicles
 {
-    public class VehicleAttributesWrapper : AttributesWrapper<VehicleAttribute, VehicleAttribute.Key>
+    public class VehicleAttributesGroup : AttributesGroup<VehicleAttribute, VehicleAttribute.Key>
     {
         public Vehicle vehicle { get; private set; }
 
@@ -23,7 +23,7 @@ namespace TowerBuilder.DataTypes.Attributes.Vehicles
 
         public bool isMoving => FindByKey(VehicleAttribute.Key.CurrentSpeed).value > 0;
 
-        public VehicleAttributesWrapper(AppState appState, Vehicle vehicle) : base(appState)
+        public VehicleAttributesGroup(AppState appState, Vehicle vehicle) : base(appState)
         {
             this.vehicle = vehicle;
         }

@@ -15,7 +15,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         Transform wrapper;
 
-        VehicleAttributesWrapper vehicleAttributesWrapper;
+        VehicleAttributesGroup vehicleAttributesGroup;
 
         float parallaxLevel = 0.1f;
 
@@ -36,15 +36,15 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public void Setup()
         {
-            Registry.appState.Attributes.Vehicles.events.onItemsAdded += OnVehicleAttributesWrappersAdded;
-            Registry.appState.Attributes.Vehicles.events.onItemsRemoved += OnVehicleAttributesWrappersRemoved;
+            Registry.appState.Attributes.Vehicles.events.onItemsAdded += OnVehicleAttributesGroupsAdded;
+            Registry.appState.Attributes.Vehicles.events.onItemsRemoved += OnVehicleAttributesGroupsRemoved;
             Registry.appState.Attributes.Vehicles.events.onAttributeValueUpdated += OnVehicleAttributeValueUpdated;
         }
 
         public void Teardown()
         {
-            Registry.appState.Attributes.Vehicles.events.onItemsAdded -= OnVehicleAttributesWrappersAdded;
-            Registry.appState.Attributes.Vehicles.events.onItemsRemoved -= OnVehicleAttributesWrappersRemoved;
+            Registry.appState.Attributes.Vehicles.events.onItemsAdded -= OnVehicleAttributesGroupsAdded;
+            Registry.appState.Attributes.Vehicles.events.onItemsRemoved -= OnVehicleAttributesGroupsRemoved;
             Registry.appState.Attributes.Vehicles.events.onAttributeValueUpdated -= OnVehicleAttributeValueUpdated;
         }
 
@@ -55,13 +55,13 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void MoveScenery()
         {
-            if (vehicleAttributesWrapper == null) return;
+            if (vehicleAttributesGroup == null) return;
 
             float currentTickInterval = Registry.appState.Time.queries.currentTickInterval;
 
-            if (vehicleAttributesWrapper.isMoving)
+            if (vehicleAttributesGroup.isMoving)
             {
-                float currentSpeed = vehicleAttributesWrapper.FindByKey(VehicleAttribute.Key.CurrentSpeed).value;
+                float currentSpeed = vehicleAttributesGroup.FindByKey(VehicleAttribute.Key.CurrentSpeed).value;
                 float xMovement = -((currentSpeed * (Time.deltaTime * parallaxLevel)) / currentTickInterval);
                 wrapper.Translate(new Vector3(xMovement, 0, 0));
             }
@@ -70,28 +70,28 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         /* 
             Event Handlers
         */
-        void OnVehicleAttributesWrappersAdded(ListWrapper<VehicleAttributesWrapper> vehicleAttributesWrappers)
+        void OnVehicleAttributesGroupsAdded(ListWrapper<VehicleAttributesGroup> vehicleAttributesGroups)
         {
-            VehicleAttributesWrapper vehicleAttributesWrapper = vehicleAttributesWrappers.items[0];
+            VehicleAttributesGroup vehicleAttributesGroup = vehicleAttributesGroups.items[0];
 
-            if (this.vehicleAttributesWrapper == null)
+            if (this.vehicleAttributesGroup == null)
             {
-                this.vehicleAttributesWrapper = vehicleAttributesWrapper;
+                this.vehicleAttributesGroup = vehicleAttributesGroup;
             }
         }
 
-        void OnVehicleAttributesWrappersRemoved(ListWrapper<VehicleAttributesWrapper> vehicleAttributesWrappers)
+        void OnVehicleAttributesGroupsRemoved(ListWrapper<VehicleAttributesGroup> vehicleAttributesGroups)
         {
-            foreach (VehicleAttributesWrapper vehicleAttributesWrapper in vehicleAttributesWrappers.items)
+            foreach (VehicleAttributesGroup vehicleAttributesGroup in vehicleAttributesGroups.items)
             {
-                if (vehicleAttributesWrapper == this.vehicleAttributesWrapper)
+                if (vehicleAttributesGroup == this.vehicleAttributesGroup)
                 {
-                    this.vehicleAttributesWrapper = null;
+                    this.vehicleAttributesGroup = null;
                 }
             }
         }
 
-        void OnVehicleAttributeValueUpdated(VehicleAttributesWrapper vehicleAttributesWrapper, VehicleAttribute attribute)
+        void OnVehicleAttributeValueUpdated(VehicleAttributesGroup vehicleAttributesGroup, VehicleAttribute attribute)
         {
         }
     }

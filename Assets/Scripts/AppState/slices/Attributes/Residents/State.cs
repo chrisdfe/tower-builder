@@ -6,7 +6,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
 {
     using ResidentAtributesStateSlice = AttributesStateSlice<
         ResidentAttribute.Key,
-        ResidentAttributesWrapper,
+        ResidentAttributesGroup,
         ResidentAttribute,
         ResidentAttribute.Modifier,
         State.Events
@@ -16,7 +16,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
     {
         public class Input
         {
-            ListWrapper<ResidentAttributesWrapper> list;
+            ListWrapper<ResidentAttributesGroup> list;
         }
 
         public new class Events : ResidentAtributesStateSlice.Events { }
@@ -32,7 +32,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
                 this.state = state;
             }
 
-            public ResidentAttributesWrapper FindByResident(Resident resident) =>
+            public ResidentAttributesGroup FindByResident(Resident resident) =>
                 state.list.Find(attribute => attribute.resident == resident);
         }
 
@@ -68,17 +68,17 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
          */
         public void AddAttributesForResident(Resident resident)
         {
-            ResidentAttributesWrapper residentAttributesWrapper = new ResidentAttributesWrapper(appState, resident);
-            Add(residentAttributesWrapper);
+            ResidentAttributesGroup residentAttributesGroup = new ResidentAttributesGroup(appState, resident);
+            Add(residentAttributesGroup);
         }
 
         public void RemoveAttributesForResident(Resident resident)
         {
-            ResidentAttributesWrapper residentAttributesWrapper = queries.FindByResident(resident);
+            ResidentAttributesGroup residentAttributesGroup = queries.FindByResident(resident);
 
-            if (residentAttributesWrapper != null)
+            if (residentAttributesGroup != null)
             {
-                Remove(residentAttributesWrapper);
+                Remove(residentAttributesGroup);
             }
         }
 

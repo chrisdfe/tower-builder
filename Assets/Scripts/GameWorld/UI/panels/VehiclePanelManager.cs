@@ -31,7 +31,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Vehicles.events.onItemsAdded += OnVehiclesAdded;
             Registry.appState.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
 
-            Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesWrappersUpdated;
+            Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesGroupsUpdated;
         }
 
         void Teardown()
@@ -39,7 +39,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
             Registry.appState.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
 
-            Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesWrappersUpdated;
+            Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesGroupsUpdated;
         }
 
         void UpdateText()
@@ -52,11 +52,11 @@ namespace TowerBuilder.GameWorld.UI
 
             string result = $"{vehicle}";
 
-            VehicleAttributesWrapper vehicleAttributesWrapper = Registry.appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
+            VehicleAttributesGroup vehicleAttributesGroup = Registry.appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
 
-            if (vehicleAttributesWrapper != null)
+            if (vehicleAttributesGroup != null)
             {
-                vehicleAttributesWrapper.attributes.ForEach(attribute =>
+                vehicleAttributesGroup.attributes.ForEach(attribute =>
                 {
                     result += $"{attribute.key}: {attribute.value}\n";
                 });
@@ -78,11 +78,11 @@ namespace TowerBuilder.GameWorld.UI
             this.vehicle = null;
         }
 
-        void OnVehicleAttributesWrappersUpdated(ListWrapper<VehicleAttributesWrapper> vehicleAttributesWrapperList)
+        void OnVehicleAttributesGroupsUpdated(ListWrapper<VehicleAttributesGroup> vehicleAttributesGroupList)
         {
-            foreach (VehicleAttributesWrapper vehicleAttributesWrapper in vehicleAttributesWrapperList.items)
+            foreach (VehicleAttributesGroup vehicleAttributesGroup in vehicleAttributesGroupList.items)
             {
-                if (vehicleAttributesWrapper.vehicle == this.vehicle)
+                if (vehicleAttributesGroup.vehicle == this.vehicle)
                 {
                     UpdateText();
                 }

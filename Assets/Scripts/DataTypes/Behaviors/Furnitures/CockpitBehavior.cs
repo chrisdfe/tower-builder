@@ -19,7 +19,7 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
 
         Vehicle vehicle => appState.Vehicles.queries.FindVehicleByFurniture(furniture);
-        VehicleAttributesWrapper vehicleAttributesWrapper => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
+        VehicleAttributesGroup vehicleAttributesGroup => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
         VehicleAttribute.Modifier pilotModifier;
 
         public override void InteractStart(Resident resident)
@@ -27,13 +27,13 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
             base.InteractStart(resident);
 
             pilotModifier = new VehicleAttribute.Modifier("Piloting", 1f);
-            appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesWrapper, VehicleAttribute.Key.CurrentSpeed, pilotModifier);
+            appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.CurrentSpeed, pilotModifier);
         }
 
         public override void InteractEnd(Resident resident)
         {
             base.InteractEnd(resident);
-            appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributesWrapper, VehicleAttribute.Key.CurrentSpeed, pilotModifier);
+            appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.CurrentSpeed, pilotModifier);
         }
 
         // TODO - this should go in vehicle queries
