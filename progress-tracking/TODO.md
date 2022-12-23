@@ -2,8 +2,10 @@
 
 ## Tasks
 
-- Some kind of namespace to put all of the other stuff at the top of AppState - time, wallet, journey, etc.
+- Handle (or disallow) a furniture being removed when a resident is using it
+- If a furnitureBehavior becomes invalid in OnInteractTick the resident doesn't register that it needs to change state
 - Ability for furniture behavior interaction to fail for some reason - validation?
+  - use first for pilot seat -> without any engines then it will not work
 - 'tileability strategy' or something - I can foresee needing 2 different types of tileability:
   - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)
   - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)
@@ -17,6 +19,7 @@
   - Schedule (e.g if it is time to go to sleep)
 - Validate that either transportation entrnace or exit is inside (or both)
 - Different types of transportation items should be able to occupy the same cell (escalators + doorways etc)
+- Some kind of namespace to put all of the other stuff at the top of AppState - time, wallet, journey, etc.
 - Finish up current iteration of route finder algorithm
   - Make sure each cell between current + target cells have enough vertical clearance
 - For a first draft, every 1 mile of journey a random passer-by shows up

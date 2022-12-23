@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
@@ -193,6 +194,11 @@ namespace TowerBuilder.ApplicationState.Entities
 
             public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
                 FindEntityTypesAtCell(cellCoordinates).ConvertAll<Entity>();
+
+            public ListWrapper<Entity> FindEntityByType(Type type) =>
+                new ListWrapper<Entity>(
+                    state.entityList.items.FindAll(entity => entity.GetType() == type)
+                );
         }
     }
 }

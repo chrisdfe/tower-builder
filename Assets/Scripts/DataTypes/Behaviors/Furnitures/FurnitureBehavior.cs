@@ -47,7 +47,11 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
             this.validator = createValidator();
         }
 
-        public void StartInteraction(Resident resident)
+        public virtual void Setup() { }
+
+        public virtual void Teardown() { }
+
+        public bool StartInteraction(Resident resident)
         {
             validator.Validate(appState);
 
@@ -58,27 +62,47 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
             }
             else
             {
-                appState.Notifications.Add(
-                    new ListWrapper<Notification>(
-                        validator.errors.items.Select(error => new Notification(error.message)).ToList()
-                    )
-                );
+                AddValidationErrorNotifications();
+                return false;
             }
+
+            return true;
         }
 
-        public void EndInteraction(Resident resident)
+        public bool EndInteraction(Resident resident)
         {
             interactingResidentsList.Remove(resident);
             OnInteractEnd(resident);
+            return true;
         }
 
-        public void InteractTick(Resident resident)
+        // TODO - validate every tick and return false if it is not valied
+        public bool InteractTick(Resident resident)
         {
-            OnInteractTick(resident);
+            validator.Validate(appState);
+
+            if (validator.isValid)
+            {
+                OnInteractTick(resident);
+            }
+            else
+            {
+                AddValidationErrorNotifications();
+                return false;
+            }
+
+            return true;
         }
 
         protected virtual void OnInteractStart(Resident resident) { }
         protected virtual void OnInteractEnd(Resident resident) { }
         protected virtual void OnInteractTick(Resident resident) { }
+
+        void AddValidationErrorNotifications() =>
+            appState.Notifications.Add(
+                new ListWrapper<Notification>(
+                    validator.errors.items.Select(error => new Notification(error.message)).ToList()
+                )
+            );
     }
 }

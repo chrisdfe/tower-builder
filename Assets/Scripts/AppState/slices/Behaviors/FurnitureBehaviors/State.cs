@@ -56,6 +56,18 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
         /* 
             Public Interface
         */
+        public override void Add(FurnitureBehavior behavior)
+        {
+            base.Add(behavior);
+            behavior.Setup();
+        }
+
+        public override void Remove(FurnitureBehavior behavior)
+        {
+            base.Remove(behavior);
+            behavior.Teardown();
+        }
+
         public FurnitureBehavior AddFurnitureBehaviorForFurniture(Furniture furniture)
         {
             if (furniture.isInBlueprintMode) return null;
@@ -76,17 +88,23 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
             }
         }
 
-        public FurnitureBehavior StartInteraction(Resident resident, Furniture furniture)
+        public bool StartInteraction(Resident resident, Furniture furniture)
         {
             FurnitureBehavior furnitureBehavior = queries.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
-                furnitureBehavior.StartInteraction(resident);
-                events.onInteractStart?.Invoke(furnitureBehavior);
+                bool wasSuccesful = furnitureBehavior.StartInteraction(resident);
+
+                if (wasSuccesful)
+                {
+                    events.onInteractStart?.Invoke(furnitureBehavior);
+                }
+
+                return wasSuccesful;
             }
 
-            return furnitureBehavior;
+            return false;
         }
 
         public void EndInteraction(Resident resident, Furniture furniture)
@@ -100,7 +118,7 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
             }
         }
 
-        public void InteractwithFurniture(Resident resident, Furniture furniture)
+        public void InteractWithFurniture(Resident resident, Furniture furniture)
         {
             FurnitureBehavior furnitureBehavior = queries.FindByFurniture(furniture);
 
@@ -108,7 +126,13 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
             {
                 if (furnitureBehavior.interactingResidentsList.Contains(resident))
                 {
-                    furnitureBehavior.InteractTick(resident);
+                    bool wasSuccessful = furnitureBehavior.InteractTick(resident);
+
+                    // TODO - maybe the notifications should get added here instead of in FurnitureBehavior itself
+                    if (!wasSuccessful)
+                    {
+                        EndInteraction(resident, furniture);
+                    }
                 }
                 else
                 {

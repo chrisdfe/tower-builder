@@ -17,18 +17,41 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
         Vehicle vehicle => appState.Entities.Vehicles.queries.FindVehicleByFurniture(furniture);
         VehicleAttributesGroup vehicleAttributesGroup => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
-        VehicleAttribute.Modifier modifier;
+        VehicleAttribute.Modifier baseEnginePowerModifier;
+        VehicleAttribute.Modifier mannedEngineModifier;
+
+        public override void Setup()
+        {
+            base.Setup();
+
+            baseEnginePowerModifier = new VehicleAttribute.Modifier("Base Engine Power", 1f);
+            AddStaticModifier(baseEnginePowerModifier);
+        }
+
+        public override void Teardown()
+        {
+            base.Teardown();
+
+            RemoveStaticModifier(baseEnginePowerModifier);
+            baseEnginePowerModifier = null;
+        }
 
         protected override void OnInteractStart(Resident resident)
         {
-            modifier = new VehicleAttribute.Modifier("Engine Power", 1f);
-            appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.EnginePower, modifier);
+            mannedEngineModifier = new VehicleAttribute.Modifier("Manned Engine Power", 1f);
+            AddStaticModifier(mannedEngineModifier);
         }
 
         protected override void OnInteractEnd(Resident resident)
         {
-            appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.EnginePower, modifier);
-            modifier = null;
+            RemoveStaticModifier(mannedEngineModifier);
+            mannedEngineModifier = null;
         }
+
+        void AddStaticModifier(VehicleAttribute.Modifier modifier) =>
+            appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.EnginePower, modifier);
+
+        void RemoveStaticModifier(VehicleAttribute.Modifier modifier) =>
+            appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.EnginePower, modifier);
     }
 }

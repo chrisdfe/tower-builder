@@ -140,11 +140,15 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
             StateKey previousState = currentState;
             TeardownCurrentState();
             currentState = nextState;
+
             SetupCurrentState();
 
             Debug.Log($"Transitioned {resident} behavior from {previousState} to {currentState}");
         }
 
+        // TODO - there should probably be a sepearate 'validation' pass before setup,
+        //        it feels bad for validation to be happening once we've already switched
+        //        to the new state
         public void SetupCurrentState()
         {
             switch (currentState)
@@ -154,7 +158,11 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
                 case StateKey.Traveling:
                     break;
                 case StateKey.InteractingWithFurniture:
-                    appState.Behaviors.Furnitures.StartInteraction(resident, interactionFurniture);
+                    bool wasSuccessful = appState.Behaviors.Furnitures.StartInteraction(resident, interactionFurniture);
+                    if (!wasSuccessful)
+                    {
+                        goals.current.isComplete = true;
+                    }
                     break;
             }
         }
@@ -212,7 +220,7 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
         void InteractingWithFurnitureTick()
         {
             // TODO - check if there is anything higher priority to do
-            appState.Behaviors.Furnitures.InteractwithFurniture(resident, interactionFurniture);
+            appState.Behaviors.Furnitures.InteractWithFurniture(resident, interactionFurniture);
         }
 
         void TravelingTick()
