@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Ability for furniture behavior interaction to fail for some reason - validation?
 - 'tileability strategy' or something - I can foresee needing 2 different types of tileability:
   - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)
   - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)

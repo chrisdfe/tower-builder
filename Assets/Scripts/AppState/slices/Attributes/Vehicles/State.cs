@@ -56,16 +56,16 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
         {
             base.Setup();
 
-            appState.Vehicles.events.onItemsAdded += OnVehiclesAdded;
-            appState.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
+            appState.Entities.Vehicles.events.onItemsAdded += OnVehiclesAdded;
+            appState.Entities.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            appState.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
-            appState.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
+            appState.Entities.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
+            appState.Entities.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
         }
 
         public void AddAttributesGroupForVehicle(Vehicle vehicle)

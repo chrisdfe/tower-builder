@@ -108,7 +108,7 @@ namespace TowerBuilder.ApplicationState.UI
             {
                 currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
 
-                currentSelectedVehicle = Registry.appState.Vehicles.queries.FindVehicleByRoom(currentSelectedRoom);
+                currentSelectedVehicle = Registry.appState.Entities.Vehicles.queries.FindVehicleByRoom(currentSelectedRoom);
             }
 
             if (selectionIsActive)

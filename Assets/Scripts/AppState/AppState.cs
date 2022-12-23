@@ -10,10 +10,8 @@ namespace TowerBuilder.ApplicationState
             public Time.State.Input Time;
             public Wallet.State.Input Wallet;
             public Journeys.State.Input Journeys;
-            public Vehicles.State.Input Vehicles;
 
             public Entities.State.Input Entities;
-
             public Attributes.State.Input Attributes;
             public Relations.State.Input Relations;
             public Behaviors.State.Input Behaviors;
@@ -27,10 +25,8 @@ namespace TowerBuilder.ApplicationState
                 Time = new Time.State.Input();
                 Wallet = new Wallet.State.Input();
                 Journeys = new Journeys.State.Input();
-                Vehicles = new Vehicles.State.Input();
 
                 Entities = new Entities.State.Input();
-
                 Attributes = new Attributes.State.Input();
                 Relations = new Relations.State.Input();
                 Behaviors = new Behaviors.State.Input();
@@ -45,7 +41,6 @@ namespace TowerBuilder.ApplicationState
         public Time.State Time;
         public Wallet.State Wallet;
         public Journeys.State Journeys;
-        public Vehicles.State Vehicles;
 
         public Entities.State Entities;
         public Attributes.State Attributes;
@@ -104,7 +99,6 @@ namespace TowerBuilder.ApplicationState
             Time.Setup();
             Wallet.Setup();
             Journeys.Setup();
-            Vehicles.Setup();
 
             Entities.Setup();
             Attributes.Setup();

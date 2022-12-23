@@ -28,7 +28,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
             Registry.appState.UI.events.onSelectionBoxUpdated += OnSelectionBoxUpdated;
 
-            Registry.appState.Vehicles.events.onListUpdated += OnVehicleListUpdated;
+            Registry.appState.Entities.Vehicles.events.onListUpdated += OnVehicleListUpdated;
 
             Registry.appState.Entities.Rooms.events.onListUpdated += OnRoomListUpdated;
 
@@ -93,7 +93,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetVehicleCountText()
         {
-            ListWrapper<Vehicle> allVehicles = Registry.appState.Vehicles.list;
+            ListWrapper<Vehicle> allVehicles = Registry.appState.Entities.Vehicles.list;
             vehicleCountText.text = $"Vehicles: {allVehicles.Count}";
         }
 
