@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using TowerBuilder.DataTypes.Validators.Entities;
 
 namespace TowerBuilder.DataTypes.Entities.Residents
 {
     public class ResidentValidator : EntityValidator
     {
-        protected override List<EntityValidationFunc> customValidators =>
-            new List<EntityValidationFunc>()
+        protected override List<EntityValidator.ValidationFunc> customValidators =>
+            new List<EntityValidator.ValidationFunc>()
             {
                 GenericEntityValidations.ValidateIsInsideRoom,
                 GenericEntityValidations.ValidateIsOnFloor

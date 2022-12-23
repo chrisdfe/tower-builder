@@ -49,7 +49,7 @@ namespace TowerBuilder.DataTypes.Attributes.Vehicles
                         .FindByRoom(room);
                 FurnitureBehaviorList engineBehaviorList =
                     furnitureBehaviorList
-                        .FilterByType(FurnitureBehaviorBase.Key.Engine);
+                        .FilterByType(FurnitureBehavior.Key.Engine);
 
                 // TODO - some engines produce more engine power than others
                 result += engineBehaviorList.Count;

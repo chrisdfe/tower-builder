@@ -9,28 +9,25 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 {
-    public class BedBehavior : FurnitureBehaviorBase
+    public class BedBehavior : FurnitureBehavior
     {
-        public override Key key { get; } = FurnitureBehaviorBase.Key.Bed;
-
-        public override FurnitureBehaviorTag[] tags { get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Sleeping }; } }
+        public override Key key => FurnitureBehavior.Key.Bed;
 
         public BedBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
 
+        Resident resident;
+        ResidentAttributesGroup residentAttributesGroup => appState.Attributes.Residents.queries.FindByResident(resident);
         ResidentAttribute.Modifier modifier;
 
-        public override void InteractStart(Resident resident)
+        protected override void OnInteractStart(Resident resident)
         {
-            base.InteractStart(resident);
-            ResidentAttributesGroup residentAttributesGroup = appState.Attributes.Residents.queries.FindByResident(resident);
+            this.resident = resident;
             modifier = new ResidentAttribute.Modifier("sleeping", 1.6f);
             appState.Attributes.Residents.AddTickAttributeModifier(residentAttributesGroup, ResidentAttribute.Key.Energy, modifier);
         }
 
-        public override void InteractEnd(Resident resident)
+        protected override void OnInteractEnd(Resident resident)
         {
-            base.InteractEnd(resident);
-            ResidentAttributesGroup residentAttributesGroup = appState.Attributes.Residents.queries.FindByResident(resident);
             appState.Attributes.Residents.RemoveTickAttributeModifier(residentAttributesGroup, ResidentAttribute.Key.Energy, modifier);
             modifier = null;
         }

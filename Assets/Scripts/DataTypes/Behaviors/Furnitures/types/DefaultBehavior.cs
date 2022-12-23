@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 {
-    public class DefaultBehavior : FurnitureBehaviorBase
+    public class DefaultBehavior : FurnitureBehavior
     {
-        public override Key key { get; } = FurnitureBehaviorBase.Key.Default;
+        public override Key key { get; } = FurnitureBehavior.Key.Default;
 
         public DefaultBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
     }

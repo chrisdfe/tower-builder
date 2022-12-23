@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
 {
-    using FurnitureBehaviorsListStateSlice = ListStateSlice<FurnitureBehaviorBase, State.Events>;
+    using FurnitureBehaviorsListStateSlice = ListStateSlice<FurnitureBehavior, State.Events>;
 
     public class State : FurnitureBehaviorsListStateSlice
     {
@@ -28,7 +28,7 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
                 this.state = state;
             }
 
-            public FurnitureBehaviorBase FindByFurniture(Furniture furniture) =>
+            public FurnitureBehavior FindByFurniture(Furniture furniture) =>
                 state.list.Find(behavior => behavior.furniture == furniture);
         }
 
@@ -56,11 +56,11 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
         /* 
             Public Interface
         */
-        public FurnitureBehaviorBase AddFurnitureBehaviorForFurniture(Furniture furniture)
+        public FurnitureBehavior AddFurnitureBehaviorForFurniture(Furniture furniture)
         {
             if (furniture.isInBlueprintMode) return null;
 
-            FurnitureBehaviorBase furnitureBehavior = (furniture.definition as FurnitureDefinition).furnitureBehaviorFactory(appState, furniture);
+            FurnitureBehavior furnitureBehavior = (furniture.definition as FurnitureDefinition).furnitureBehaviorFactory(appState, furniture);
             Add(furnitureBehavior);
 
             return furnitureBehavior;
@@ -68,7 +68,7 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
 
         public void RemoveFurnitureBehaviorForFurniture(Furniture furniture)
         {
-            FurnitureBehaviorBase furnitureBehavior = queries.FindByFurniture(furniture);
+            FurnitureBehavior furnitureBehavior = queries.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
@@ -76,13 +76,13 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
             }
         }
 
-        public FurnitureBehaviorBase StartInteraction(Resident resident, Furniture furniture)
+        public FurnitureBehavior StartInteraction(Resident resident, Furniture furniture)
         {
-            FurnitureBehaviorBase furnitureBehavior = queries.FindByFurniture(furniture);
+            FurnitureBehavior furnitureBehavior = queries.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
-                furnitureBehavior.InteractStart(resident);
+                furnitureBehavior.StartInteraction(resident);
                 events.onInteractStart?.Invoke(furnitureBehavior);
             }
 
@@ -91,18 +91,18 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
 
         public void EndInteraction(Resident resident, Furniture furniture)
         {
-            FurnitureBehaviorBase furnitureBehavior = queries.FindByFurniture(furniture);
+            FurnitureBehavior furnitureBehavior = queries.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
-                furnitureBehavior.InteractEnd(resident);
+                furnitureBehavior.EndInteraction(resident);
                 events.onInteractEnd?.Invoke(furnitureBehavior);
             }
         }
 
         public void InteractwithFurniture(Resident resident, Furniture furniture)
         {
-            FurnitureBehaviorBase furnitureBehavior = queries.FindByFurniture(furniture);
+            FurnitureBehavior furnitureBehavior = queries.FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {

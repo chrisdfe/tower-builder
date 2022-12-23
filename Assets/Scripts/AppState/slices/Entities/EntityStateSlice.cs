@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Notifications;
+using TowerBuilder.DataTypes.Validators;
+using TowerBuilder.DataTypes.Validators.Entities;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities
@@ -135,7 +137,7 @@ namespace TowerBuilder.ApplicationState.Entities
             if (!entity.validator.isValid)
             {
                 // TODO - these should be unique messages - right now they are not
-                foreach (EntityValidationError validationError in entity.validator.errors.items)
+                foreach (ValidationError validationError in entity.validator.errors.items)
                 {
                     appState.Notifications.Add(new Notification(validationError.message));
                 }

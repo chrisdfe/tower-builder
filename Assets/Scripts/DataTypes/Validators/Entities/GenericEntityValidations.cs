@@ -1,24 +1,25 @@
 using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Entities;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Entities
+namespace TowerBuilder.DataTypes.Validators.Entities
 {
     public static class GenericEntityValidations
     {
-        public static EntityValidationErrorList ValidateWalletHasEnoughMoney(AppState appState, Entity entity)
+        public static ListWrapper<ValidationError> ValidateWalletHasEnoughMoney(AppState appState, Entity entity)
         {
             if (appState.Wallet.balance < entity.price)
             {
-                return new EntityValidationErrorList("Insufficient funds.");
+                return Validator.CreateSingleItemValidationErrorList("Insufficient funds.");
             }
 
-            return new EntityValidationErrorList();
+            return new ListWrapper<ValidationError>();
         }
 
-        public static EntityValidationErrorList ValidateIsInsideRoom(AppState appState, Entity entity)
+        public static ListWrapper<ValidationError> ValidateIsInsideRoom(AppState appState, Entity entity)
         {
             foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.items)
             {
@@ -26,14 +27,14 @@ namespace TowerBuilder.DataTypes.Entities
 
                 if (entityRoom == null)
                 {
-                    return new EntityValidationErrorList($"{entity.typeLabel} must be placed inside.");
+                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed inside.");
                 }
             }
 
-            return new EntityValidationErrorList();
+            return new ListWrapper<ValidationError>();
         }
 
-        public static EntityValidationErrorList ValidateIsOnFloor(AppState appState, Entity entity)
+        public static ListWrapper<ValidationError> ValidateIsOnFloor(AppState appState, Entity entity)
         {
             foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.bottomRow.items)
             {
@@ -41,15 +42,15 @@ namespace TowerBuilder.DataTypes.Entities
 
                 if (floors.Count == 0)
                 {
-                    return new EntityValidationErrorList($"{entity.typeLabel} must be placed on floor.");
+                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed on floor.");
                 }
             }
 
-            return new EntityValidationErrorList();
+            return new ListWrapper<ValidationError>();
 
         }
 
-        public static EntityValidationErrorList ValidateNotDirectlyNextToEntityOfSameType(AppState appState, Entity entity, CellCoordinates cellCoordinates)
+        public static ListWrapper<ValidationError> ValidateNotDirectlyNextToEntityOfSameType(AppState appState, Entity entity, CellCoordinates cellCoordinates)
         {
             // TODO - entity layers
             // TODO - check above + to the left + right and below + to the left and right (not directly above or below, that's ok)
@@ -61,13 +62,13 @@ namespace TowerBuilder.DataTypes.Entities
             //     (rightRoom != null && rightRoom.definition.category == entity.definition.category)
             // )
             // {
-            //     return new EntityValidationErrorList($"{entity.definition.title} cannot be placed directly next to each other.");
+            //     return new ListWrapper<ValidationError>($"{entity.definition.title} cannot be placed directly next to each other.");
             // }
 
-            return new EntityValidationErrorList();
+            return new ListWrapper<ValidationError>();
         }
 
-        public static EntityValidationErrorList ValidateEntityIsNotOverlappingAnotherEntity(AppState appState, Entity entity)
+        public static ListWrapper<ValidationError> ValidateEntityIsNotOverlappingAnotherEntity(AppState appState, Entity entity)
         {
             IEntityStateSlice stateSlice = appState.Entities.GetStateSlice(entity);
 
@@ -78,25 +79,53 @@ namespace TowerBuilder.DataTypes.Entities
 
             if (overlappingEntity != null)
             {
-                return new EntityValidationErrorList($"You cannot build {entity.typeLabel}s on top of each other.");
+                return Validator.CreateSingleItemValidationErrorList($"You cannot build {entity.typeLabel}s on top of each other.");
             }
 
-            return new EntityValidationErrorList();
+            return new ListWrapper<ValidationError>();
         }
 
-        public static EntityValidationErrorList ValidateEntityIsNotUnderground(AppState appState, Entity entity)
+        public static ListWrapper<ValidationError> ValidateEntityIsNotUnderground(AppState appState, Entity entity)
         {
             foreach (int floor in entity.cellCoordinatesList.floorValues)
             {
                 if (floor < 0)
                 {
-                    return new EntityValidationErrorList($"You cannot build {entity.typeLabel} underground.");
+                    return Validator.CreateSingleItemValidationErrorList($"You cannot build {entity.typeLabel} underground.");
                 }
             }
 
-            return new EntityValidationErrorList();
+            return new ListWrapper<ValidationError>();
         }
 
+        /*
+            Validation creators
+        */
+        public static EntityValidator.ValidationFunc CreateValidateEntityIsOnFloor(int floor) =>
+            (AppState appState, Entity entity) =>
+            {
+                if (entity.cellCoordinatesList.lowestFloor != floor)
+                {
+                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed on floor {floor + 1}");
+                }
+
+                return new ListWrapper<ValidationError>();
+            };
+
+        public static EntityValidator.ValidationFunc CreateValidateEntityCellIsNotOnFloor(int floor) =>
+            (AppState appState, Entity entity) =>
+            {
+                if (entity.cellCoordinatesList.lowestFloor == floor)
+                {
+                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must not be placed on floor {floor + 1}");
+                }
+
+                return new ListWrapper<ValidationError>();
+            };
+
+        /* 
+            Validations that return a bool not a list of ValidationErrors
+        */
         // TODO - this still doesn't seem like the right place for this
         // TODO - take entity height into account as well
         public static bool IsValidStandardLocation(AppState appState, CellCoordinates cellCoordinates) =>
@@ -119,30 +148,5 @@ namespace TowerBuilder.DataTypes.Entities
             HasEnoughVerticalSpace(appState, cellCoordinates);
 
         public static bool HasEnoughVerticalSpace(AppState appState, CellCoordinates cellCoordinates) => true;
-
-        /*
-            Validation creators
-        */
-        public static EntityValidationFunc CreateValidateEntityIsOnFloor(int floor) =>
-            (AppState appState, Entity entity) =>
-            {
-                if (entity.cellCoordinatesList.lowestFloor != floor)
-                {
-                    return new EntityValidationErrorList($"{entity.typeLabel} must be placed on floor {floor + 1}");
-                }
-
-                return new EntityValidationErrorList();
-            };
-
-        public static EntityValidationFunc CreateValidateEntityCellIsNotOnFloor(int floor) =>
-            (AppState appState, Entity entity) =>
-            {
-                if (entity.cellCoordinatesList.lowestFloor == floor)
-                {
-                    return new EntityValidationErrorList($"{entity.typeLabel} must not be placed on floor {floor + 1}");
-                }
-
-                return new EntityValidationErrorList();
-            };
     }
 }

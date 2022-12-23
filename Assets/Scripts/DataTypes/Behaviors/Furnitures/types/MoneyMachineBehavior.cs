@@ -7,21 +7,14 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 {
-    public class MoneyMachineBehavior : FurnitureBehaviorBase
+    public class MoneyMachineBehavior : FurnitureBehavior
     {
-        public override Key key { get; } = FurnitureBehaviorBase.Key.MoneyMachine;
-
-        public override FurnitureBehaviorTag[] tags
-        {
-            get { return new FurnitureBehaviorTag[] { FurnitureBehaviorTag.Industry }; }
-        }
+        public override Key key { get; } = FurnitureBehavior.Key.MoneyMachine;
 
         public MoneyMachineBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
 
-        public override void InteractTick(Resident resident)
+        protected override void OnInteractTick(Resident resident)
         {
-            base.InteractTick(resident);
-
             appState.Wallet.AddBalance(1000);
         }
     }

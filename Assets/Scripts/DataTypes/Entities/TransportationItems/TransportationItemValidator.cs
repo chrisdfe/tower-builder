@@ -1,27 +1,29 @@
 using System;
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
+using TowerBuilder.DataTypes.Validators;
+using TowerBuilder.DataTypes.Validators.Entities;
 
 namespace TowerBuilder.DataTypes.Entities.TransportationItems
 {
     public class TransportationItemValidator : EntityValidator
     {
-        protected override List<EntityValidationFunc> customValidators =>
-            new List<EntityValidationFunc>()
+        protected override List<EntityValidator.ValidationFunc> customValidators =>
+            new List<EntityValidator.ValidationFunc>()
             {
                 ValidateEntrancesAndExits
             };
 
         public TransportationItemValidator(TransportationItem transportationItem) : base(transportationItem) { }
 
-        static EntityValidationErrorList ValidateEntrancesAndExits(AppState appState, Entity entity)
+        static ListWrapper<ValidationError> ValidateEntrancesAndExits(AppState appState, Entity entity)
         {
             TransportationItem transportationItem = entity as TransportationItem;
             foreach (CellCoordinates cellCoordinates in transportationItem.entranceCellCoordinatesList.items)
             {
                 if (!GenericEntityValidations.IsValidStandardLocation(appState, cellCoordinates))
                 {
-                    return new EntityValidationErrorList($"Invalid entrance.");
+                    return Validator.CreateSingleItemValidationErrorList($"Invalid entrance.");
                 }
             }
 
@@ -29,11 +31,11 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
             {
                 if (!GenericEntityValidations.IsValidStandardLocation(appState, cellCoordinates))
                 {
-                    return new EntityValidationErrorList($"Invalid exit.");
+                    return Validator.CreateSingleItemValidationErrorList($"Invalid exit.");
                 }
             }
 
-            return new EntityValidationErrorList();
+            return new ListWrapper<ValidationError>();
         }
     }
 }

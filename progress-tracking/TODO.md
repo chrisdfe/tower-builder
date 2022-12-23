@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Some kind of namespace to put all of the other stuff at the top of AppState - time, wallet, journey, etc.
 - Ability for furniture behavior interaction to fail for some reason - validation?
 - 'tileability strategy' or something - I can foresee needing 2 different types of tileability:
   - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)

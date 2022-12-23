@@ -5,6 +5,7 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
+using TowerBuilder.DataTypes.Validators.Entities;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Routes
