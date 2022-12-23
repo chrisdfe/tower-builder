@@ -6,19 +6,16 @@ namespace TowerBuilder.ApplicationState
     {
         public class Input
         {
-            public Notifications.State.Input notifications;
-            public Time.State.Input time;
-            public Wallet.State.Input wallet;
+            public Notifications.State.Input Notifications;
+            public Time.State.Input Time;
+            public Wallet.State.Input Wallet;
             public Journeys.State.Input Journeys;
             public Vehicles.State.Input Vehicles;
 
             public Entities.State.Input Entities;
 
             public Attributes.State.Input Attributes;
-
-            // Relations
-            public FurnitureHomeSlotOccupations.State.Input furnitureHomeSlotOccupations;
-
+            public Relations.State.Input Relations;
             public Behaviors.State.Input Behaviors;
 
             public UI.State.Input ui;
@@ -26,19 +23,16 @@ namespace TowerBuilder.ApplicationState
 
             public Input()
             {
-                notifications = new Notifications.State.Input();
-                time = new Time.State.Input();
-                wallet = new Wallet.State.Input();
+                Notifications = new Notifications.State.Input();
+                Time = new Time.State.Input();
+                Wallet = new Wallet.State.Input();
                 Journeys = new Journeys.State.Input();
                 Vehicles = new Vehicles.State.Input();
 
                 Entities = new Entities.State.Input();
 
                 Attributes = new Attributes.State.Input();
-
-                // Relations
-                furnitureHomeSlotOccupations = new FurnitureHomeSlotOccupations.State.Input();
-
+                Relations = new Relations.State.Input();
                 Behaviors = new Behaviors.State.Input();
 
                 // UI
@@ -54,13 +48,8 @@ namespace TowerBuilder.ApplicationState
         public Vehicles.State Vehicles;
 
         public Entities.State Entities;
-
         public Attributes.State Attributes;
-
-        // Relations
-        public FurnitureHomeSlotOccupations.State FurnitureHomeSlotOccupations;
-
-        // Behaviors
+        public Relations.State Relations;
         public Behaviors.State Behaviors;
 
         public UI.State UI;
@@ -90,22 +79,16 @@ namespace TowerBuilder.ApplicationState
 
         public AppState(Input input)
         {
-            Notifications = new Notifications.State(this, input.notifications);
-            Time = new Time.State(this, input.time);
-            Wallet = new Wallet.State(this, input.wallet);
+            Notifications = new Notifications.State(this, input.Notifications);
+            Time = new Time.State(this, input.Time);
+            Wallet = new Wallet.State(this, input.Wallet);
             Journeys = new Journeys.State(this, input.Journeys);
-            Vehicles = new Vehicles.State(this, input.Vehicles);
 
             Entities = new Entities.State(this, input.Entities);
-
-            // Attributes
             Attributes = new Attributes.State(this, input.Attributes);
-
-            // Relations
-            FurnitureHomeSlotOccupations = new FurnitureHomeSlotOccupations.State(this, input.furnitureHomeSlotOccupations);
-
-            // Behaviors
+            Relations = new Relations.State(this, input.Relations);
             Behaviors = new Behaviors.State(this, input.Behaviors);
+
             // UI
             UI = new UI.State(this, input.ui);
             Tools = new Tools.State(this, input.tools);
@@ -125,9 +108,7 @@ namespace TowerBuilder.ApplicationState
 
             Entities.Setup();
             Attributes.Setup();
-
-            FurnitureHomeSlotOccupations.Setup();
-
+            Relations.Setup();
             Behaviors.Setup();
 
             UI.Setup();

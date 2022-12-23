@@ -21,12 +21,12 @@ namespace TowerBuilder.DataTypes
         // Map of CellPosition enum -> fbx node names
         public static EnumStringMap<Tileable.Type> TypeLabelMap = new EnumStringMap<Tileable.Type>(
             new Dictionary<Type, string>() {
-                { Type.None, "None" },
-                { Type.Single, "Single" },
+                { Type.None,       "None" },
+                { Type.Single,     "Single" },
                 { Type.Horizontal, "Horizontal" },
-                { Type.Vertical, "Vertical" },
-                { Type.Diagonal, "Diagonal" },
-                { Type.Full, "Full" },
+                { Type.Vertical,   "Vertical" },
+                { Type.Diagonal,   "Diagonal" },
+                { Type.Full,       "Full" },
             }
         );
 
@@ -103,6 +103,7 @@ namespace TowerBuilder.DataTypes
             }
         );
 
+        // TODO - instead of using diagonal as a fallback, it should be a seperate "strategy"
         public static CellPosition GetCellPosition(CellNeighbors cellNeighbors)
         {
             CellPosition cellPosition = GetOrthagonalCellPosition(cellNeighbors);
@@ -120,6 +121,8 @@ namespace TowerBuilder.DataTypes
             return cellPosition;
         }
 
+        // TODO - 
+        // this is the main function that will be extended in different tileability strategies
         static CellPosition GetOrthagonalCellPosition(CellNeighbors cellNeighbors) =>
             cellNeighbors.occupiedOrthogonal switch
             {

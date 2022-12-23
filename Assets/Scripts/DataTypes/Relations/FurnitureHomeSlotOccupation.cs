@@ -1,6 +1,7 @@
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 
-namespace TowerBuilder.DataTypes.Entities.Furnitures
+namespace TowerBuilder.DataTypes.Relations
 {
     public class FurnitureHomeSlotOccupation
     {

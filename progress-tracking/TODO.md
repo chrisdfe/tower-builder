@@ -2,6 +2,13 @@
 
 ## Tasks
 
+- 'tileability strategy' or something - I can foresee needing 2 different types of tileability:
+  - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)
+  - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)
+- Exterior walls that form around outer perimeter of rooms
+- Tooltips
+  - UI
+  - game elements
 - World position will need to be tracked too, for buildings/residents to scroll by as the vehicle passes
 - Residents should decide when it is time to change what they're doing
   - Goal priority (if the next goal in the list is higher priority than the current one)
@@ -10,7 +17,6 @@
 - Different types of transportation items should be able to occupy the same cell (escalators + doorways etc)
 - Finish up current iteration of route finder algorithm
   - Make sure each cell between current + target cells have enough vertical clearance
-- Exterior walls that form around outer perimeter of rooms
 - For a first draft, every 1 mile of journey a random passer-by shows up
   - after that, encounters with other vehicles
 - "EntityGroup"s - a list (group) of entities
@@ -48,9 +54,6 @@
 - show/hide different entity layers/types
 - UI elements to manage/interact with different entity layers/types
   - e.g lights: "turn all/selected lights off/on" toggle and "set all/selected light colors" button
-- 'tileability strategy' or something - I can foresee needing 2 different types of tileability:
-  - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)
-  - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)
 - Reconsider whether entity key types (e.g Room.Key) are worth it in their current state
   - they could be stored as a string on the entitites themselves but remain as an enum to help with the unity editor
   - i.e in the code using an enum doesn't help much, but it does help in making sure you're connecting to the right thing in assetList
@@ -93,7 +96,6 @@
 - EntityStateSlice build should fire onItemsBuilt event as well - currently it's just singular
 - same as with how I made an entities appState slice:
   - Validators appState slice group
-  - Relations appState slice group
 - in build mode somewhere in the UI it should give you a list of all the validation rules about the current selected entity
 - entity layers (determines the z-index the entity is rendered at)
 - Furniture usage slots
@@ -310,6 +312,8 @@
 
 # Done
 
+- same as with how I made an entities appState slice:
+  - Relations appState slice group
 - I should probably replace Entity.Type with typof(Entity) because they're used in the same way
 - Connections to outside
   - RouteSegmentNode subtype for outside connections

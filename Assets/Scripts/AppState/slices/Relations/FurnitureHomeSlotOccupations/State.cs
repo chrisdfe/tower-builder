@@ -2,9 +2,10 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
+using TowerBuilder.DataTypes.Relations;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.FurnitureHomeSlotOccupations
+namespace TowerBuilder.ApplicationState.Relations.FurnitureHomeSlotOccupations
 {
     using FurnitureHomeSlotOccupiationStateSlice = ListStateSlice<FurnitureHomeSlotOccupation, State.Events>;
 
