@@ -8,7 +8,7 @@ namespace TowerBuilder.GameWorld.CameraManager
     public class CameraManager : MonoBehaviour
     {
         Transform cameraTransform;
-        Camera camera;
+        new Camera camera;
 
         // In secondds
         public static float ROTATION_TIME = 0.2f;
