@@ -98,6 +98,9 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
         protected virtual void OnInteractEnd(Resident resident) { }
         protected virtual void OnInteractTick(Resident resident) { }
 
+        /*
+            Internals
+        */
         void AddValidationErrorNotifications() =>
             appState.Notifications.Add(
                 new ListWrapper<Notification>(

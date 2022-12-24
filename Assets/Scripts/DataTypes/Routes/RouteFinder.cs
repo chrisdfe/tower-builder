@@ -5,6 +5,7 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
+using TowerBuilder.DataTypes.Validators;
 using TowerBuilder.DataTypes.Validators.Entities;
 using UnityEngine;
 
@@ -12,16 +13,6 @@ namespace TowerBuilder.DataTypes.Routes
 {
     public class RouteFinder
     {
-        public class RouteError
-        {
-            public string message { get; private set; } = "";
-
-            public RouteError(string message)
-            {
-                this.message = message;
-            }
-        }
-
         public List<RouteAttempt> routeAttempts { get; private set; } = new List<RouteAttempt>();
 
         AppState appState;
@@ -32,7 +23,7 @@ namespace TowerBuilder.DataTypes.Routes
         Room startRoom;
         Room endRoom;
 
-        public List<RouteError> errors = new List<RouteError>();
+        public ListWrapper<ValidationError> errors = new ListWrapper<ValidationError>();
 
         public List<RouteAttempt> sucessfulRouteAttempts =>
             routeAttempts.FindAll(routeAttempt => routeAttempt.status == RouteAttempt.Status.Complete);
@@ -80,7 +71,7 @@ namespace TowerBuilder.DataTypes.Routes
             {
                 if (!GenericEntityValidations.IsValidStandardLocation(appState, cellCoordinates))
                 {
-                    errors.Add(new RouteError($"Invalid coordinates: {cellCoordinates}"));
+                    errors.Add(new ValidationError($"Invalid coordinates: {cellCoordinates}"));
                 }
             }
         }

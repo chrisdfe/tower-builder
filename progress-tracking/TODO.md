@@ -2,8 +2,10 @@
 
 ## Tasks
 
-- Handle (or disallow) a furniture being removed when a resident is using it
-- If a furnitureBehavior becomes invalid in OnInteractTick the resident doesn't register that it needs to change state
+- Residents should decide when it is time to change what they're doing
+  - Goal priority (if the next goal in the list is higher priority than the current one)
+  - Schedule (e.g if it is time to go to sleep)
+- Make ResidentBehavior.Goals a bit higher level - e.g instead of Dequeue() maybe Complete()
 - Ability for furniture behavior interaction to fail for some reason - validation?
   - use first for pilot seat -> without any engines then it will not work
 - 'tileability strategy' or something - I can foresee needing 2 different types of tileability:
@@ -14,10 +16,8 @@
   - UI
   - game elements
 - World position will need to be tracked too, for buildings/residents to scroll by as the vehicle passes
-- Residents should decide when it is time to change what they're doing
-  - Goal priority (if the next goal in the list is higher priority than the current one)
-  - Schedule (e.g if it is time to go to sleep)
-- Validate that either transportation entrnace or exit is inside (or both)
+- Handle (or disallow) a furniture being removed when a resident is using it
+- Validate that either transportation entranae or exit is inside (or both)
 - Different types of transportation items should be able to occupy the same cell (escalators + doorways etc)
 - Some kind of namespace to put all of the other stuff at the top of AppState - time, wallet, journey, etc.
 - Finish up current iteration of route finder algorithm
@@ -317,6 +317,7 @@
 
 # Done
 
+- If a furnitureBehavior becomes invalid in OnInteractTick the resident doesn't register that it needs to change state
 - same as with how I made an entities appState slice:
   - Relations appState slice group
 - I should probably replace Entity.Type with typof(Entity) because they're used in the same way

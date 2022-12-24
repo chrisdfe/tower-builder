@@ -1,4 +1,5 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Attributes.Residents;
 using TowerBuilder.DataTypes.Entities.Behaviors.Residents;
@@ -8,6 +9,7 @@ using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Routes;
 using TowerBuilder.DataTypes.Time;
+using TowerBuilder.DataTypes.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Behaviors.Residents
@@ -89,12 +91,25 @@ namespace TowerBuilder.ApplicationState.Behaviors.Residents
         {
             ResidentBehavior residentBehavior = queries.FindByResident(resident);
 
-            foreach (ResidentBehavior.Goal goal in goals)
-            {
-                residentBehavior.goals.Enqueue(goal);
-            }
+            ListWrapper<ValidationError> validationErrors =
+                goals.Aggregate(
+                    new ListWrapper<ValidationError>(),
+                    (acc, goal) =>
+                    {
+                        acc.Add(residentBehavior.ValidateGoal(goal));
+                        return acc;
+                    }
+                );
 
-            events.onGoalsAdded?.Invoke(residentBehavior);
+            if (validationErrors.Count == 0)
+            {
+                residentBehavior.goals.Enqueue(goals);
+                events.onGoalsAdded?.Invoke(residentBehavior);
+            }
+            else
+            {
+                appState.Notifications.Add(validationErrors);
+            }
         }
 
         public void SendResidentTo(Resident resident, Furniture furniture)
@@ -104,9 +119,16 @@ namespace TowerBuilder.ApplicationState.Behaviors.Residents
             if (route != null)
             {
                 ResidentBehavior.TravelGoal travelGoal = new ResidentBehavior.TravelGoal() { route = route };
-                ResidentBehavior.InteractingWithFurnitureGoal furnitureGoal = new ResidentBehavior.InteractingWithFurnitureGoal() { furniture = furniture };
-                AddResidentBehaviorGoals(resident, new ResidentBehavior.Goal[] { travelGoal, furnitureGoal });
+                AddResidentBehaviorGoals(resident, new ResidentBehavior.Goal[] { travelGoal });
+                AddFurnitureInteractionGoal(resident, furniture);
             }
+        }
+
+        public void AddFurnitureInteractionGoal(Resident resident, Furniture furniture)
+        {
+            ResidentBehavior.InteractingWithFurnitureGoal furnitureGoal = new ResidentBehavior.InteractingWithFurnitureGoal() { furniture = furniture };
+
+            AddResidentBehaviorGoals(resident, new ResidentBehavior.Goal[] { furnitureGoal });
         }
 
         public void SendResidentTo(Resident resident, CellCoordinates cellCoordinates)
@@ -136,10 +158,8 @@ namespace TowerBuilder.ApplicationState.Behaviors.Residents
             {
                 if (routeFinder.errors.Count > 0)
                 {
-                    foreach (RouteFinder.RouteError error in routeFinder.errors)
-                    {
-                        appState.Notifications.Add(new Notification(error.message));
-                    }
+                    appState.Notifications.Add(routeFinder.errors
+);
                 }
                 else
                 {
@@ -153,11 +173,19 @@ namespace TowerBuilder.ApplicationState.Behaviors.Residents
         void ProcessResidentBehaviorTick(ResidentBehavior residentBehavior)
         {
             // 
-            residentBehavior.ProcessTick();
+            ListWrapper<ValidationError> validationErrors =
+                residentBehavior.ValidateGoal(residentBehavior.goals.current);
 
-            if (events.onTickProcessed != null)
+            if (validationErrors.Count == 0)
             {
-                events.onTickProcessed(residentBehavior);
+                residentBehavior.ProcessTick();
+                events.onTickProcessed?.Invoke(residentBehavior);
+            }
+            else
+            {
+                // handle invalid furniture interaction
+                // for now just complete the current goal and move on to the next thing
+                residentBehavior.goals.current.isComplete = true;
             }
 
             // Remove current goal if it has been marked as complete
@@ -165,10 +193,7 @@ namespace TowerBuilder.ApplicationState.Behaviors.Residents
 
             if (residentBehavior.goals.current != null && residentBehavior.goals.current.isComplete)
             {
-                if (events.onCurrentGoalCompleted != null)
-                {
-                    events.onCurrentGoalCompleted(residentBehavior);
-                }
+                events.onCurrentGoalCompleted?.Invoke(residentBehavior);
 
                 residentBehavior.goals.Dequeue();
             }

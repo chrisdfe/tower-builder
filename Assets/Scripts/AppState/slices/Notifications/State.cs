@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Notifications;
+using TowerBuilder.DataTypes.Validators;
 
 namespace TowerBuilder.ApplicationState.Notifications
 {
@@ -23,5 +24,16 @@ namespace TowerBuilder.ApplicationState.Notifications
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
+
+        public void Add(ListWrapper<ValidationError> validationErrors)
+        {
+            Add(
+                new ListWrapper<Notification>(
+                    validationErrors.items
+                        .Select(error => new Notification(error.message))
+                        .ToList()
+                )
+            );
+        }
     }
 }

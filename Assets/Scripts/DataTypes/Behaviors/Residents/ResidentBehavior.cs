@@ -1,52 +1,38 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Attributes.Residents;
+using TowerBuilder.DataTypes.Behaviors.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Routes;
+using TowerBuilder.DataTypes.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
 {
-    public class ResidentBehavior
+    public partial class ResidentBehavior
     {
-        public abstract class Goal
-        {
-            public virtual string title { get; } = "Goal";
-            public bool isComplete = false;
-            public bool hasBegun = false;
-        }
-
-        public class TravelGoal : Goal
-        {
-            public override string title { get => "Walk"; }
-            public Route route;
-        }
-
-        public class InteractingWithFurnitureGoal : Goal
-        {
-            public override string title { get => $"Use {furniture}"; }
-            public Furniture furniture;
-        }
-
         public class Goals
         {
             public Queue<Goal> queue { get; private set; } = new Queue<Goal>();
 
             public int Count { get => queue.Count; }
 
-            public Goal current
-            {
-                get
-                {
-                    if (queue.Count == 0) return null;
-                    return queue.Peek();
-                }
-            }
+            public Goal current => queue.Count > 0 ? queue.Peek() : null;
+
+            public Goal next => queue.Count > 1 ? queue.ToArray()[1] : null;
 
             public void Enqueue(Goal goal)
             {
                 queue.Enqueue(goal);
+            }
+
+            public void Enqueue(Goal[] goals)
+            {
+                foreach (Goal goal in goals)
+                {
+                    queue.Enqueue(goal);
+                }
             }
 
             public void Dequeue()
@@ -138,12 +124,27 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
         public void TransitionToNextState()
         {
             StateKey previousState = currentState;
+
             TeardownCurrentState();
             currentState = nextState;
-
             SetupCurrentState();
 
             Debug.Log($"Transitioned {resident} behavior from {previousState} to {currentState}");
+        }
+
+        public ListWrapper<ValidationError> ValidateGoal(Goal goal)
+        {
+            switch (goal)
+            {
+                case TravelGoal:
+                    break;
+                case InteractingWithFurnitureGoal interactingWithFurnitureGoal:
+                    FurnitureBehavior furnitureBehavior = appState.Behaviors.Furnitures.queries.FindByFurniture(interactingWithFurnitureGoal.furniture);
+                    furnitureBehavior.validator.Validate(appState);
+                    return furnitureBehavior.validator.errors;
+            }
+
+            return new ListWrapper<ValidationError>();
         }
 
         // TODO - there should probably be a sepearate 'validation' pass before setup,
@@ -158,11 +159,7 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
                 case StateKey.Traveling:
                     break;
                 case StateKey.InteractingWithFurniture:
-                    bool wasSuccessful = appState.Behaviors.Furnitures.StartInteraction(resident, interactionFurniture);
-                    if (!wasSuccessful)
-                    {
-                        goals.current.isComplete = true;
-                    }
+                    appState.Behaviors.Furnitures.StartInteraction(resident, interactionFurniture);
                     break;
             }
         }

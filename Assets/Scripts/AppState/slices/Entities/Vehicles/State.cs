@@ -31,23 +31,6 @@ namespace TowerBuilder.ApplicationState.Vehicles
             public Vehicle FindVehicleByRoom(Room room) =>
                 state.list.items.Find(otherVehicle => otherVehicle.roomList.Contains(room));
 
-            public int GetVehicleEnginePower(Vehicle vehicle)
-            {
-                // foreach (Room room in vehicle.roomList.items)
-                // {
-                //     FurnitureBehaviorList furnitureBehaviorList =
-                //         appState.FurnitureBehaviors.furnitureBehaviorList
-                //             .FindByRoom(room);
-                //     FurnitureBehaviorList engineBehaviorList =
-                //         furnitureBehaviorList
-                //             .FilterByType(FurnitureBehavior.Key.Engine);
-
-                //     // TODO - some engines produce more engine power than others
-                //     result += engineBehaviorList.Count;
-                // }
-                return 1;
-            }
-
             // TODO - don't use items[0] I think?
             public Vehicle FindVehicleByFurniture(Furniture furniture) =>
                 FindVehicleByRoom(appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]));
