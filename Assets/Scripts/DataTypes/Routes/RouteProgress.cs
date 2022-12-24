@@ -12,7 +12,7 @@ namespace TowerBuilder.DataTypes.Routes
     {
         public Route route { get; private set; }
 
-        public bool isAtEndOfRoute { get { return currentSegmentIndex >= route.segments.Count - 1; } }
+        public bool isAtEndOfRoute => currentSegmentIndex >= route.segments.Count - 1;
 
         int currentSegmentIndex = 0;
         // This will only be true at the very beginning of the route, since one segment's endNode is the next's startNode
@@ -53,13 +53,7 @@ namespace TowerBuilder.DataTypes.Routes
             }
         }
 
-        public RouteSegment nextSegment
-        {
-            get
-            {
-                return route.segments[nextSegmentIndex];
-            }
-        }
+        public RouteSegment nextSegment => route.segments[nextSegmentIndex];
 
         public CellCoordinates nextCell
         {

@@ -2,23 +2,18 @@
 
 ## Tasks
 
-- Adding new engines too quickly causes the new attributes not to get registered correctly?
-  - why aren't things getting registered until the next tick? Is it just the UI?
-- expanding a room with furnitures inside of it crashes the game
-- Vehicle stops when you add to a room
+- entity layers (determines the z-index the entity is rendered at)
+  - entities should default to the a constant value for that type of entity, and have the ability to be customized on a per definition/entity basis (e.g transportation items go in the front, except for ladders that connect two rooms should go inside)
+- Z-index constants
+
+- Add a "replace room" function - removing/adding rooms when you expand them causes some issues
 - Rimworld-style "color picker" style button to go to build tool mode with that entity type selected
-- How to get journey progress to happen
-  - Modifiers dynamic values?
-  - Derived/calculated value?
-  - Watcher that updates vehicle?
 - Residents should decide when it is time to change what they're doing
   - Goal priority (if the next goal in the list is higher priority than the current one)
   - Schedule (e.g if it is time to go to sleep)
-- Make ResidentBehavior.Goals a bit higher level - e.g instead of Dequeue() maybe Complete()
-- Ability for furniture behavior interaction to fail for some reason - validation?
-  - use first for pilot seat -> without any engines then it will not work
 - 'tileability strategy' or something - I can foresee needing 2 different types of tileability:
   - corners or 'caps' (left hand side or right hand side) of a fixed size, with 'middle' sections of a variable size (e.g what I'm currently doing for rooms etc)
+  - orthogonal, diagonal, or both
   - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)
 - Exterior walls that form around outer perimeter of rooms
 - Tooltips
@@ -28,12 +23,11 @@
 - Handle (or disallow) a furniture being removed when a resident is using it
 - Validate that either transportation entranae or exit is inside (or both)
 - Different types of transportation items should be able to occupy the same cell (escalators + doorways etc)
-- Some kind of namespace to put all of the other stuff at the top of AppState - time, wallet, journey, etc.
 - Finish up current iteration of route finder algorithm
   - Make sure each cell between current + target cells have enough vertical clearance
 - For a first draft, every 1 mile of journey a random passer-by shows up
   - after that, encounters with other vehicles
-- "EntityGroup"s - a list (group) of entities
+- "EntityGroup"s - a wrapper around a list (group) of entities without its own cellCoordinatesList
   - used for a things like room, vehicle
   - the cost of the group would be the sum of all of the entities prices
   - basic version could work like a stamp - could be called "static"
@@ -111,7 +105,6 @@
 - same as with how I made an entities appState slice:
   - Validators appState slice group
 - in build mode somewhere in the UI it should give you a list of all the validation rules about the current selected entity
-- entity layers (determines the z-index the entity is rendered at)
 - Furniture usage slots
 - Break room entity down into:
   - Back walls entity
@@ -181,7 +174,6 @@
 - Fix the mesh scaling (everything is either 0.1 or 10 or 100 not 1)
 - Some kind of way of making BedCreationWatcher not immediately add new residents - perhaps on a interval longer than every tick
 - Moonlight
-- furniture z indexes
 - destroy validation (cannot delete room with another room above it)
 - tank treads wheels type
 - proper room 'templates' prepopulated with furniture
@@ -199,7 +191,6 @@
 - furniture interaction slots
   - direction (left, center, right)
 - furniture z indexes - in front, behind
-
 - Reconsider how routes are constructed - maybe every segment should be 1 cell?
 - Convert other List wrappers to use the new ListWrapper generic
 - "reset" button to reset state to default
@@ -230,8 +221,27 @@
 - rooms should not be able to be built in thin air above ground floor
 - "Path" constants for paths used in Resource.Load - refactoring/moving things around would be easier
   if they're all in one place
-- Z-index constants
 - should the destroy tool replace the room with an empty floor, at least on floors 0 and above? otherwise, certain rooms would be undestroyable?
+
+## Bugs
+
+- Adding new engines too quickly causes the new attributes not to get registered correctly?
+  - why aren't things getting registered until the next tick? Is it just the UI?
+- expanding a room with furnitures inside of it crashes the game
+- Vehicle stops when you add to a room
+- Make ResidentBehavior.Goals a bit higher level - e.g instead of Dequeue() maybe Complete()
+- 'lock' route progress to stop those out of bounds errors from happening when a resident is in the process of traveling
+- Increasing the size of a room into a different room has weird results - they sort of combine but then there's a phantom room
+- I'm already running into performance issues when making large rooms
+  - investigate the number of nested objects inside of each roomcell mesh
+  - also investigate how every roomcell/entity gets removed/created instead of moved
+- Sometimes when sending a resident back and forth between cells there's an out of bounds exception with RouteProgress
+- Entity doesn't update when an entity is built
+- Individual cells should know if they are valid again (right now it's just the room)
+- Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
+- RoomEntrances in the blueprint room aren't getting highlighted
+- Input.GetMouseButtonDown(0) does not work consistently on macos
+- UI is way too big on my laptop
 
 ## Furniture ideas
 
@@ -251,6 +261,8 @@
 
 ## Cleanup
 
+- Some kind of namespace to put all of the other stuff at the top of AppState - time, wallet, journey, etc.
+- "Derived" attributes? the way I'm setting current speed dynamically feels kind of messy
 - Switch the order of ListType and ItemType in ListItemStateSlice generic (ItemType should be first)
 - RouteFinder creates too many branches
 - RoomCells -> RoomCellList OR RoomList -> Rooms
@@ -328,6 +340,8 @@
 
 # Done
 
+- Ability for furniture behavior interaction to fail for some reason - validation?
+  - use first for pilot seat -> without any engines then it will not work
 - If a furnitureBehavior becomes invalid in OnInteractTick the resident doesn't register that it needs to change state
 - same as with how I made an entities appState slice:
   - Relations appState slice group
