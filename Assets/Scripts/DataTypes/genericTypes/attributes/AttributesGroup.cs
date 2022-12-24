@@ -38,5 +38,7 @@ namespace TowerBuilder.DataTypes
         public virtual void Teardown() { }
 
         public Attribute FindByKey(KeyType key) => attributes.GetValueOrDefault(key);
+
+        public virtual void CalculateDerivedAttributes(AppState appState) { }
     }
 }

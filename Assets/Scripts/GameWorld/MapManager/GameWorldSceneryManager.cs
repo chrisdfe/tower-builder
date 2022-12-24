@@ -64,7 +64,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             if (vehicleAttributes.isMoving)
             {
                 // TODO - cache this stuff to avoid re-querying everything every frame
-                float currentSpeed = vehicleAttributes.FindByKey(VehicleAttributes.Key.CurrentSpeed).value;
+                float currentSpeed = vehicleAttributes.currentSpeed;
                 float xMovement = -((currentSpeed * (Time.deltaTime * parallaxLevel)) / currentTickInterval);
                 wrapper.Translate(new Vector3(xMovement, 0, 0));
             }

@@ -3,6 +3,7 @@ using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Behaviors.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.Vehicles;
 using UnityEngine;
 
@@ -14,29 +15,72 @@ namespace TowerBuilder.DataTypes.Attributes.Vehicles
 
         public enum Key
         {
-            CurrentSpeed,
+            // CurrentSpeed,
             Fuel,
             Weight,
             EnginePower,
             TargetSpeed,
-            MaxSpeed,
-            IsPiloted,
+            // MaxSpeed,
+            // IsPiloted,
         }
 
         public override Dictionary<Key, Attribute> attributes { get; } = new Dictionary<Key, Attribute>() {
             { Key.Weight,       new Attribute(0) },
             { Key.Fuel,         new Attribute(0) },
             { Key.EnginePower,  new Attribute(0) },
-            { Key.MaxSpeed,     new Attribute(0) },
+            // { Key.MaxSpeed,     new Attribute(0) },
             { Key.TargetSpeed,  new Attribute(0) },
-            { Key.CurrentSpeed, new Attribute(0) },
+            // { Key.CurrentSpeed, new Attribute(0) },
         };
 
-        public bool isMoving => attributes.GetValueOrDefault(Key.CurrentSpeed).value > 0;
+        public float maxSpeed { get; private set; }
+        public float currentSpeed { get; private set; }
+
+        // public bool isMoving => attributes.GetValueOrDefault(Key.CurrentSpeed).value > 0;
+        public bool isMoving => currentSpeed > 0;
 
         public VehicleAttributes(AppState appState, Vehicle vehicle) : base(appState)
         {
             this.vehicle = vehicle;
+        }
+
+        public override void CalculateDerivedAttributes(AppState appState)
+        {
+            base.CalculateDerivedAttributes(appState);
+
+            CalculateSpeed(appState);
+        }
+
+        void CalculateSpeed(AppState appState)
+        {
+            float currentCurrentSpeed = currentSpeed;
+            float newCurrentSpeed = currentCurrentSpeed;
+
+            if (vehicle.isPiloted)
+            {
+                Attribute enginePowerAttribute = FindByKey(VehicleAttributes.Key.EnginePower);
+                float enginePowerAmount = enginePowerAttribute.value;
+
+                // for now currentSpeed == enginePower
+                if (currentCurrentSpeed != enginePowerAmount)
+                {
+                    newCurrentSpeed = enginePowerAmount;
+                }
+            }
+            else
+            {
+                newCurrentSpeed = 0;
+            }
+
+            if (newCurrentSpeed != currentCurrentSpeed)
+            {
+                // AddOrUpdateStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.CurrentSpeed, "Calculated Engine Speed", newCurrentSpeed);
+                // For now vehicle alayws goes a
+                this.currentSpeed = newCurrentSpeed;
+
+                // TODO - max speed should remain the same whether or not it is piloted
+                this.maxSpeed = newCurrentSpeed;
+            }
         }
 
         /*        
@@ -49,7 +93,7 @@ namespace TowerBuilder.DataTypes.Attributes.Vehicles
             });
         }
 
-        public void RecalculateEnginePower()
+        void RecalculateEnginePower(AppState appState)
         {
             int result = 0;
 

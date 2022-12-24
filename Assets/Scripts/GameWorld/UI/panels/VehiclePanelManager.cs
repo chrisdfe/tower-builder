@@ -32,6 +32,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Entities.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
 
             Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesUpdated;
+            Registry.appState.Attributes.Vehicles.events.onVehicleDerivedAttributesRecalculated += OnVehicleDerivedAttributesRecalculated;
         }
 
         void Teardown()
@@ -40,6 +41,7 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.Entities.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
 
             Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesUpdated;
+            Registry.appState.Attributes.Vehicles.events.onVehicleDerivedAttributesRecalculated -= OnVehicleDerivedAttributesRecalculated;
         }
 
         void UpdateText()
@@ -87,6 +89,14 @@ namespace TowerBuilder.GameWorld.UI
                 {
                     UpdateText();
                 }
+            }
+        }
+
+        void OnVehicleDerivedAttributesRecalculated(VehicleAttributes vehicleAttributes)
+        {
+            if (vehicleAttributes.vehicle == this.vehicle)
+            {
+                UpdateText();
             }
         }
     }

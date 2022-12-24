@@ -25,7 +25,10 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
             public ListWrapper<Attribute> vehicleAttributesList;
         }
 
-        public new class Events : VehicleAttributesStateSlice.Events { }
+        public new class Events : VehicleAttributesStateSlice.Events
+        {
+            public ItemEvent<VehicleAttributes> onVehicleDerivedAttributesRecalculated;
+        }
 
         public class Queries
         {
@@ -93,51 +96,27 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
             if (list.Count == 0) return;
 
             // Update journey progress counter
-            ListWrapper<Attribute> currentSpeedAttributes = queries.FindByKey(VehicleAttributes.Key.CurrentSpeed);
+            // TODO - use convoy speed instead of first vehicle only
+            VehicleAttributes vehicleAttributes = list.items[0];
 
-            Attribute currentSpeedAttribute = currentSpeedAttributes.items[0];
-            appState.Journeys.UpdateJourneyProgress(currentSpeedAttribute.value);
+            appState.Journeys.UpdateJourneyProgress(vehicleAttributes.currentSpeed);
         }
 
         protected override void OnPostStaticModifierAdd(VehicleAttributes vehicleAttributes, VehicleAttributes.Key key, AttributeModifier modifier)
         {
             if (key == VehicleAttributes.Key.EnginePower)
             {
-                CalculateCurrentSpeed(vehicleAttributes);
+                CalculateDerivedAttributes(vehicleAttributes);
             }
         }
 
         /* 
             Internals
         */
-        void CalculateCurrentSpeed(VehicleAttributes vehicleAttributes)
+        void CalculateDerivedAttributes(VehicleAttributes vehicleAttributes)
         {
-            float currentSpeed = vehicleAttributes.FindByKey(VehicleAttributes.Key.CurrentSpeed).value;
-            float newCurrentSpeed = currentSpeed;
-
-            if (vehicleAttributes.vehicle.isPiloted)
-            {
-                Attribute enginePowerAttribute = vehicleAttributes.FindByKey(VehicleAttributes.Key.EnginePower);
-                float enginePowerAmount = enginePowerAttribute.value;
-
-                // for now currentSpeed == enginePower
-                if (currentSpeed != enginePowerAmount)
-                {
-                    newCurrentSpeed = enginePowerAmount;
-                }
-            }
-            else
-            {
-                newCurrentSpeed = 0;
-            }
-
-            Debug.Log("new current speed");
-            Debug.Log(newCurrentSpeed);
-
-            if (newCurrentSpeed != currentSpeed)
-            {
-                AddOrUpdateStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.CurrentSpeed, "Calculated Engine Speed", newCurrentSpeed);
-            }
+            vehicleAttributes.CalculateDerivedAttributes(appState);
+            events.onVehicleDerivedAttributesRecalculated?.Invoke(vehicleAttributes);
         }
 
         /* 
@@ -161,10 +140,8 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
 
         void OnVehicleIsPilotedUpdated(Vehicle vehicle)
         {
-            Debug.Log("OnVehicleIsPilotedUpdated");
-            Debug.Log(vehicle.isPiloted);
             VehicleAttributes attributes = queries.FindByVehicle(vehicle);
-            CalculateCurrentSpeed(attributes);
+            CalculateDerivedAttributes(attributes);
         }
     }
 }

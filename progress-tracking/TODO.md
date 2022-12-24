@@ -2,10 +2,12 @@
 
 ## Tasks
 
+- Windows entity - new state slice/entity type
+- implement CalculateDerivedAttributes for vehicle attributes (calculate currentSpeed in there)
+- Bring back selectionbox resetting on mouse up
 - entity layers (determines the z-index the entity is rendered at)
   - entities should default to the a constant value for that type of entity, and have the ability to be customized on a per definition/entity basis (e.g transportation items go in the front, except for ladders that connect two rooms should go inside)
 - Z-index constants
-
 - Add a "replace room" function - removing/adding rooms when you expand them causes some issues
 - Rimworld-style "color picker" style button to go to build tool mode with that entity type selected
 - Residents should decide when it is time to change what they're doing
@@ -42,8 +44,6 @@
 - Freight areas look different to home areas etc so you can tell the difference at a glance
 - Turret entity
 - 'entity' and 'entity group' buildToolState subStates
-- Bring back selectionbox resetting on mouse up
-- Windows entity - new state slice/entity type
 - Rename "LightsManager" to "AtmosphereManager"
 - Room lights that turn off + window blinds/curtains that shut when the resident goes to sleep
   - Only if there isn't another resident in the room at the same time
