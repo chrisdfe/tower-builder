@@ -8,7 +8,6 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
         ResidentAttribute.Key,
         ResidentAttributesGroup,
         ResidentAttribute,
-        ResidentAttribute.Modifier,
         State.Events
     >;
 

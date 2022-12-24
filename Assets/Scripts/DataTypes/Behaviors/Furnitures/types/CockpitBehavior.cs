@@ -20,19 +20,19 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
         Vehicle vehicle => appState.Entities.Vehicles.queries.FindVehicleByFurniture(furniture);
         VehicleAttributesGroup vehicleAttributesGroup => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
-        VehicleAttribute.Modifier modifier;
+        AttributeModifier modifier;
 
         protected override FurnitureBehaviorValidator createValidator() => new CockpitBehaviorValidator(this);
 
         protected override void OnInteractStart(Resident resident)
         {
-            modifier = new VehicleAttribute.Modifier("Piloting", 1f);
-            appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.CurrentSpeed, modifier);
+            modifier = new AttributeModifier("Piloting", 1f);
+            appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.IsPiloted, modifier);
         }
 
         protected override void OnInteractEnd(Resident resident)
         {
-            appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.CurrentSpeed, modifier);
+            appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.IsPiloted, modifier);
             modifier = null;
         }
 

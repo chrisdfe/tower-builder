@@ -2,6 +2,14 @@
 
 ## Tasks
 
+- capability to add boolean attribute modifiers
+  - e.g isPiloted
+- Vehicle stops when you add to a room
+- Rimworld-style "color picker" style button to go to build tool mode with that entity type selected
+- How to get journey progress to happen
+  - Modifiers dynamic values?
+  - Derived/calculated value?
+  - Watcher that updates vehicle?
 - Residents should decide when it is time to change what they're doing
   - Goal priority (if the next goal in the list is higher priority than the current one)
   - Schedule (e.g if it is time to go to sleep)
@@ -252,6 +260,8 @@
 
 ## Ideas
 
+- Front wall segments to give more of a feeling of peering through into a building
+- Change to perspective with a really high (or low?) FOV
 - Turrets
   - manned and auto turrets
 - Crops

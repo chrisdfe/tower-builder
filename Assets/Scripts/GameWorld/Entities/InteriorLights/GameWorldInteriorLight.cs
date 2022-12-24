@@ -68,10 +68,7 @@ namespace TowerBuilder.GameWorld.Entities.InteriorLights
             LightsManager.Find().interiorLights.Remove(light);
         }
 
-        void UpdateColor(GameWorldEntity gameWorldEntity)
-        {
-            Debug.Log("here is my custom color");
-        }
+        void UpdateColor(GameWorldEntity gameWorldEntity) { }
 
         /* 
             Static API

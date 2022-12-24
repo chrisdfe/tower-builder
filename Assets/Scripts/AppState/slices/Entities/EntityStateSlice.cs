@@ -138,10 +138,7 @@ namespace TowerBuilder.ApplicationState.Entities
             if (!entity.validator.isValid)
             {
                 // TODO - these should be unique messages - right now they are not
-                foreach (ValidationError validationError in entity.validator.errors.items)
-                {
-                    appState.Notifications.Add(new Notification(validationError.message));
-                }
+                appState.Notifications.Add(entity.validator.errors);
                 return;
             }
 

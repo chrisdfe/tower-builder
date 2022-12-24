@@ -66,46 +66,21 @@ namespace TowerBuilder.ApplicationState.Vehicles
         {
             vehicle.roomList.Add(room);
 
-            if (events.onVehicleRoomAdded != null)
-            {
-                events.onVehicleRoomAdded(vehicle, room);
-            }
+            events.onVehicleRoomAdded?.Invoke(vehicle, room);
         }
 
         public void RemoveRoomFromVehicle(Vehicle vehicle, Room room)
         {
             vehicle.roomList.Remove(room);
 
-            if (events.onVehicleRoomRemoved != null)
-            {
-                events.onVehicleRoomRemoved(vehicle, room);
-            }
+            events.onVehicleRoomRemoved?.Invoke(vehicle, room);
         }
 
-        /* 
+        /*
             Event Handlers
         */
         void OnRoomsAdded(ListWrapper<Room> roomList)
         {
-            roomList.ForEach(room =>
-            {
-                if (room.isInBlueprintMode) return;
-
-                List<Room> perimeterRooms = appState.Entities.Rooms.queries.FindPerimeterRooms(room);
-
-                if (perimeterRooms.Count > 0)
-                {
-                    // TODO here - if perimeterRooms has more than 1 then combine them
-                    Vehicle vehicle = queries.FindVehicleByRoom(perimeterRooms[0]);
-                    AddRoomToVehicle(vehicle, room);
-                }
-                else
-                {
-                    Vehicle vehicle = new Vehicle(Registry.Definitions.Entities.Vehicles.defaultDefinition as VehicleDefinition);
-                    vehicle.roomList.Add(room);
-                    Add(vehicle);
-                }
-            });
         }
 
         void OnRoomsBuilt(ListWrapper<Room> roomList)
@@ -118,11 +93,13 @@ namespace TowerBuilder.ApplicationState.Vehicles
                 {
                     // TODO here - if perimeterRooms has more than 1 then combine them
                     Vehicle vehicle = queries.FindVehicleByRoom(perimeterRooms[0]);
+
                     AddRoomToVehicle(vehicle, room);
                 }
                 else
                 {
                     Vehicle vehicle = new Vehicle(Registry.Definitions.Entities.Vehicles.defaultDefinition as VehicleDefinition);
+
                     vehicle.roomList.Add(room);
                     Add(vehicle);
                 }

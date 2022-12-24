@@ -7,6 +7,7 @@ using TowerBuilder.DataTypes.Behaviors.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.Vehicles;
+using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Attributes.Vehicles
@@ -15,7 +16,6 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
         VehicleAttribute.Key,
         VehicleAttributesGroup,
         VehicleAttribute,
-        VehicleAttribute.Modifier,
         State.Events
     >;
 
@@ -40,7 +40,14 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
             }
 
             public VehicleAttributesGroup FindByVehicle(Vehicle vehicle) =>
-                state.list.Find(AttributesGroup => AttributesGroup.vehicle == vehicle);
+                state.list.Find(attributesGroup => attributesGroup.vehicle == vehicle);
+
+            public ListWrapper<VehicleAttribute> FindByKey(VehicleAttribute.Key key) =>
+                new ListWrapper<VehicleAttribute>(
+                    state.list.items
+                        .Select(attributesGroup => attributesGroup.FindByKey(key))
+                        .ToList()
+                );
         }
 
         public Queries queries;
@@ -78,6 +85,35 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
         {
             VehicleAttributesGroup vehicleAttributesGroup = queries.FindByVehicle(vehicle);
             Remove(vehicleAttributesGroup);
+        }
+
+        protected override void OnPostTick(TimeValue time)
+        {
+            if (list.Count == 0) return;
+
+            // Update current speed
+
+            // Update journey progress counter
+            ListWrapper<VehicleAttribute> currentSpeedAttributes = queries.FindByKey(VehicleAttribute.Key.CurrentSpeed);
+
+            VehicleAttribute currentSpeedAttribute = currentSpeedAttributes.items[0];
+            appState.Journeys.UpdateJourneyProgress(currentSpeedAttribute.value);
+        }
+
+        protected override void OnPostStaticModifierAdd(VehicleAttributesGroup attributesGroup, VehicleAttribute.Key key, AttributeModifier modifier)
+        {
+            if (key == VehicleAttribute.Key.IsPiloted)
+            {
+                VehicleAttribute enginePowerAttribute = attributesGroup.FindByKey(VehicleAttribute.Key.EnginePower);
+                VehicleAttribute currentSpeedAttribute = attributesGroup.FindByKey(VehicleAttribute.Key.CurrentSpeed);
+                float enginePowerAmount = enginePowerAttribute.value;
+
+                // for now currentSpeed == enginePower
+                if (currentSpeedAttribute.value != currentSpeedAttribute.value)
+                {
+
+                }
+            }
         }
 
         /* 

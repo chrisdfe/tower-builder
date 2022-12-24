@@ -17,14 +17,15 @@ namespace TowerBuilder.DataTypes.Attributes.Vehicles
             Weight,
             EnginePower,
             TargetSpeed,
-            MaxSpeed
+            MaxSpeed,
+            IsPiloted,
         }
 
         public VehicleAttribute(Key key) : base(key) { }
         public VehicleAttribute(Key key, float initialValue) : base(key, initialValue) { }
         public VehicleAttribute(Key key, float initialValue, float min, float max) : base(key, initialValue, min, max) { }
 
-        public VehicleAttribute(Key key, List<VehicleAttribute.Modifier> initialStaticModifiers, List<VehicleAttribute.Modifier> initialTickModifiers)
+        public VehicleAttribute(Key key, List<AttributeModifier> initialStaticModifiers, List<AttributeModifier> initialTickModifiers)
             : base(key, initialTickModifiers, initialTickModifiers) { }
     }
 }

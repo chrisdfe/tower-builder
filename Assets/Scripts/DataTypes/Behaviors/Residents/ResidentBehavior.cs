@@ -190,7 +190,6 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
                     if (routeProgress.isAtEndOfRoute)
                     {
                         goals.current.isComplete = true;
-                        // nextState = StateKey.Idle;
                     }
 
                     break;
@@ -199,7 +198,6 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
                     if (goals.Count > 1)
                     {
                         goals.current.isComplete = true;
-                        // nextState = StateKey.Idle;
                     }
                     break;
             }

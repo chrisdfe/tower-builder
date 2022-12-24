@@ -17,14 +17,14 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
         Vehicle vehicle => appState.Entities.Vehicles.queries.FindVehicleByFurniture(furniture);
         VehicleAttributesGroup vehicleAttributesGroup => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
-        VehicleAttribute.Modifier baseEnginePowerModifier;
-        VehicleAttribute.Modifier mannedEngineModifier;
+        AttributeModifier baseEnginePowerModifier;
+        AttributeModifier mannedEngineModifier;
 
         public override void Setup()
         {
             base.Setup();
 
-            baseEnginePowerModifier = new VehicleAttribute.Modifier("Base Engine Power", 1f);
+            baseEnginePowerModifier = new AttributeModifier("Base Engine Power", 1f);
             AddStaticModifier(baseEnginePowerModifier);
         }
 
@@ -38,7 +38,7 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
         protected override void OnInteractStart(Resident resident)
         {
-            mannedEngineModifier = new VehicleAttribute.Modifier("Manned Engine Power", 1f);
+            mannedEngineModifier = new AttributeModifier("Manned Engine Power", 1f);
             AddStaticModifier(mannedEngineModifier);
         }
 
@@ -48,10 +48,10 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
             mannedEngineModifier = null;
         }
 
-        void AddStaticModifier(VehicleAttribute.Modifier modifier) =>
+        void AddStaticModifier(AttributeModifier modifier) =>
             appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.EnginePower, modifier);
 
-        void RemoveStaticModifier(VehicleAttribute.Modifier modifier) =>
+        void RemoveStaticModifier(AttributeModifier modifier) =>
             appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.EnginePower, modifier);
     }
 }

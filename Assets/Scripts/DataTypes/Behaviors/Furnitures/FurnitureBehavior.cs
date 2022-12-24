@@ -102,10 +102,6 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
             Internals
         */
         void AddValidationErrorNotifications() =>
-            appState.Notifications.Add(
-                new ListWrapper<Notification>(
-                    validator.errors.items.Select(error => new Notification(error.message)).ToList()
-                )
-            );
+            appState.Notifications.Add(validator.errors);
     }
 }

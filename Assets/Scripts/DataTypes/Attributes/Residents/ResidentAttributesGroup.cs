@@ -13,9 +13,9 @@ namespace TowerBuilder.DataTypes.Attributes.Residents
 
         public override List<ResidentAttribute> attributes { get; } = new List<ResidentAttribute>() {
             new ResidentAttribute(ResidentAttribute.Key.Energy,
-                new List<ResidentAttribute.Modifier>(),
-                new List<ResidentAttribute.Modifier>() {
-                    new ResidentAttribute.Modifier("Natural degredation", -0.8f)
+                new List<AttributeModifier>(),
+                new List<AttributeModifier>() {
+                    new AttributeModifier("Natural degredation", -0.8f)
                 }
             )
         };

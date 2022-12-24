@@ -19,6 +19,7 @@ namespace TowerBuilder.DataTypes.Attributes.Vehicles
             new VehicleAttribute(VehicleAttribute.Key.MaxSpeed, 0),
             new VehicleAttribute(VehicleAttribute.Key.TargetSpeed, 0),
             new VehicleAttribute(VehicleAttribute.Key.CurrentSpeed, 0),
+            new VehicleAttribute(VehicleAttribute.Key.IsPiloted, 0),
         };
 
         public bool isMoving => FindByKey(VehicleAttribute.Key.CurrentSpeed).value > 0;

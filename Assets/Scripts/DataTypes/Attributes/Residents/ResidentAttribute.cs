@@ -13,7 +13,7 @@ namespace TowerBuilder.DataTypes.Attributes.Residents
 
         public ResidentAttribute(Key key) : base(key) { }
 
-        public ResidentAttribute(Key key, List<Modifier> initialStaticModifiers, List<Modifier> initialTickModifiers)
+        public ResidentAttribute(Key key, List<AttributeModifier> initialStaticModifiers, List<AttributeModifier> initialTickModifiers)
             : base(key, initialTickModifiers, initialTickModifiers) { }
     }
 }

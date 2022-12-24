@@ -6,7 +6,11 @@ namespace TowerBuilder.ApplicationState.Journeys
     {
         public class Input { }
 
-        public class Events { }
+        public class Events
+        {
+            public delegate void JourneyEvent(Journey journey);
+            public JourneyEvent onJourneyProgressUpdated;
+        }
 
         public class Queries
         {
@@ -18,9 +22,11 @@ namespace TowerBuilder.ApplicationState.Journeys
             }
         }
 
-        public Journey currentJourney;
+        // TODO - don't initialize this here like this
+        public Journey currentJourney = new Journey();
 
-        public Queries queries { get; private set; }
+        public Events events { get; } = new Events();
+        public Queries queries { get; }
 
         public State(AppState appState, Input input) : base(appState)
         {
@@ -28,5 +34,11 @@ namespace TowerBuilder.ApplicationState.Journeys
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
+
+        public void UpdateJourneyProgress(float amount)
+        {
+            currentJourney.currentProgress += amount;
+            events.onJourneyProgressUpdated?.Invoke(currentJourney);
+        }
     }
 }

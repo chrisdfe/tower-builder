@@ -8,8 +8,8 @@ namespace TowerBuilder.DataTypes
     {
         public KeyType key;
 
-        public List<Modifier> staticModifiers { get; private set; } = new List<Modifier>();
-        public List<Modifier> tickModifiers { get; private set; } = new List<Modifier>();
+        public List<AttributeModifier> staticModifiers { get; } = new List<AttributeModifier>();
+        public List<AttributeModifier> tickModifiers { get; } = new List<AttributeModifier>();
 
         public float min { get; private set; } = 0;
         public float max { get; private set; } = 100;
@@ -36,14 +36,21 @@ namespace TowerBuilder.DataTypes
             this.max = max;
         }
 
-        public Attribute(KeyType key, List<Modifier> initialStaticModifiers, List<Modifier> initialTickModifiers)
+        public Attribute(KeyType key, List<AttributeModifier> initialStaticModifiers, List<AttributeModifier> initialTickModifiers)
             : this(key)
         {
             this.staticModifiers = initialStaticModifiers;
             this.tickModifiers = initialTickModifiers;
         }
 
-        public Attribute(KeyType key, float initialValue, float min, float max, List<Modifier> initialStaticModifiers, List<Modifier> initialTickModifiers)
+        public Attribute(
+            KeyType key,
+            float initialValue,
+            float min,
+            float max,
+            List<AttributeModifier> initialStaticModifiers,
+            List<AttributeModifier> initialTickModifiers
+        )
             : this(key, initialValue, min, max)
         {
             this.staticModifiers = initialStaticModifiers;
@@ -57,17 +64,5 @@ namespace TowerBuilder.DataTypes
         }
 
         float ClampValue(float value) => Mathf.Clamp(value, min, max);
-
-        public class Modifier
-        {
-            public string name;
-            public float amount;
-
-            public Modifier(string name, float amount)
-            {
-                this.name = name;
-                this.amount = amount;
-            }
-        }
     }
 }

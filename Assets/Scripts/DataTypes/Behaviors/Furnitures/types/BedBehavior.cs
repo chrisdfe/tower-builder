@@ -17,12 +17,12 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
         Resident resident;
         ResidentAttributesGroup residentAttributesGroup => appState.Attributes.Residents.queries.FindByResident(resident);
-        ResidentAttribute.Modifier modifier;
+        AttributeModifier modifier;
 
         protected override void OnInteractStart(Resident resident)
         {
             this.resident = resident;
-            modifier = new ResidentAttribute.Modifier("sleeping", 1.6f);
+            modifier = new AttributeModifier("sleeping", 1.6f);
             appState.Attributes.Residents.AddTickAttributeModifier(residentAttributesGroup, ResidentAttribute.Key.Energy, modifier);
         }
 
