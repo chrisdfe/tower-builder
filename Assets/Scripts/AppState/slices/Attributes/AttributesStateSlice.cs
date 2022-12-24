@@ -1,34 +1,33 @@
-using System;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState
 {
-    [Serializable]
+    [System.Serializable]
     public abstract class AttributesStateSlice<
         KeyType,
         AttributesGroupType,
-        AttributeType,
         EventsType
     > : ListStateSlice<AttributesGroupType, EventsType>
-        where AttributeType : Attribute<KeyType>
-        where AttributesGroupType : AttributesGroup<AttributeType, KeyType>
+        where AttributesGroupType : AttributesGroup<KeyType>
         where EventsType : AttributesStateSlice<
             KeyType,
             AttributesGroupType,
-            AttributeType,
             EventsType
         >.Events, new()
     {
         public new class Events : ListStateSlice<AttributesGroupType, EventsType>.Events
         {
-            public delegate void AttributesEvent(AttributesGroupType AttributesGroup, AttributeType attribute);
+            public delegate void AttributesEvent(AttributesGroupType AttributesGroup, Attribute attribute);
             public AttributesEvent onAttributeValueUpdated;
 
             public delegate void AttributeModifierEvent(AttributesGroupType AttributesGroup, KeyType key, AttributeModifier modifier);
+
             public AttributeModifierEvent onStaticAttributeModifierAdded;
             public AttributeModifierEvent onStaticAttributeModifierRemoved;
+            public AttributeModifierEvent onStaticAttributeModifierUpdated;
+
             public AttributeModifierEvent onTickAttributeModifierAdded;
             public AttributeModifierEvent onTickAttributeModifierRemoved;
         }
@@ -63,7 +62,7 @@ namespace TowerBuilder.ApplicationState
 
         public void AddStaticAttributeModifier(AttributesGroupType AttributesGroup, KeyType key, AttributeModifier modifier)
         {
-            AttributeType attribute = AttributesGroup.FindByKey(key);
+            Attribute attribute = AttributesGroup.FindByKey(key);
 
             attribute.staticModifiers.Add(modifier);
 
@@ -79,6 +78,45 @@ namespace TowerBuilder.ApplicationState
             events.onStaticAttributeModifierRemoved?.Invoke(AttributesGroup, key, modifier);
 
             OnPostStaticModifierRemove(AttributesGroup, key, modifier);
+        }
+
+        public void AddOrUpdateStaticAttributeModifier(AttributesGroupType attributesGroup, KeyType key, string modifierName, float value)
+        {
+            Debug.Log("AddOrUpdateStaticAttributeModifier");
+            Debug.Log("modifierName");
+            Debug.Log(modifierName);
+            Attribute attribute = attributesGroup.FindByKey(key);
+
+            Debug.Log("finding modiifer");
+            AttributeModifier modifier = attribute.staticModifiers.Find((modifier) =>
+            {
+                Debug.Log("modifier.name");
+                Debug.Log(modifier.name);
+                return modifier.name == modifierName;
+            });
+
+            Debug.Log("modiifer:");
+            Debug.Log(modifier);
+
+            if (modifier != null)
+            {
+                // TODO - probably use an overloaded version of this to avoid re-querying everything
+                UpdateStaticAttributeModifier(attributesGroup, key, modifierName, value);
+            }
+            else
+            {
+                AttributeModifier newModifier = new AttributeModifier(modifierName, value);
+                AddStaticAttributeModifier(attributesGroup, key, newModifier);
+            }
+        }
+
+        public void UpdateStaticAttributeModifier(AttributesGroupType AttributesGroup, KeyType key, string modifierName, float newValue)
+        {
+            Attribute attributeToUpdate = AttributesGroup.FindByKey(key);
+            AttributeModifier modifierToUpdate = attributeToUpdate.staticModifiers.Find(modifier => modifier.name == modifierName);
+            modifierToUpdate.value = newValue;
+
+            events.onStaticAttributeModifierUpdated?.Invoke(AttributesGroup, key, modifierToUpdate);
         }
 
         public void AddTickAttributeModifier(AttributesGroupType AttributesGroup, KeyType key, AttributeModifier modifier)
@@ -104,8 +142,9 @@ namespace TowerBuilder.ApplicationState
 
             list.ForEach((attributesGroup) =>
             {
-                attributesGroup.attributes.ForEach(attribute =>
+                attributesGroup.asTupleList.ForEach(tuple =>
                 {
+                    var (key, attribute) = tuple;
                     attribute.CalculateTickModifiers();
                     events.onAttributeValueUpdated?.Invoke(attributesGroup, attribute);
                 });

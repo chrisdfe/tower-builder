@@ -2,8 +2,9 @@
 
 ## Tasks
 
-- capability to add boolean attribute modifiers
-  - e.g isPiloted
+- Adding new engines too quickly causes the new attributes not to get registered correctly?
+  - why aren't things getting registered until the next tick? Is it just the UI?
+- expanding a room with furnitures inside of it crashes the game
 - Vehicle stops when you add to a room
 - Rimworld-style "color picker" style button to go to build tool mode with that entity type selected
 - How to get journey progress to happen

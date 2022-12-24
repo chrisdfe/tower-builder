@@ -37,7 +37,7 @@ namespace TowerBuilder.GameWorld.UI
 
         public void Setup()
         {
-            Registry.appState.Attributes.Residents.events.onItemsUpdated += OnResidentAttributeWrappersUpdated;
+            Registry.appState.Attributes.Residents.events.onItemsUpdated += OnResidentAttributesUpdated;
 
             Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
@@ -45,7 +45,7 @@ namespace TowerBuilder.GameWorld.UI
 
         public void Teardown()
         {
-            Registry.appState.Attributes.Residents.events.onItemsUpdated -= OnResidentAttributeWrappersUpdated;
+            Registry.appState.Attributes.Residents.events.onItemsUpdated -= OnResidentAttributesUpdated;
 
             Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
             Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
@@ -120,7 +120,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             ResidentBehavior residentBehavior = Registry.appState.Behaviors.Residents.queries.FindByResident(resident);
 
-            ResidentAttributesGroup residentAttributesGroup = Registry.appState.Attributes.Residents.queries.FindByResident(resident);
+            ResidentAttributes residentAttributes = Registry.appState.Attributes.Residents.queries.FindByResident(resident);
 
             string text =
               $"   name: {resident}\n";
@@ -130,12 +130,13 @@ namespace TowerBuilder.GameWorld.UI
                 text += $"   state: {residentBehavior.currentState}\n";
             }
 
-            if (residentAttributesGroup != null)
+            if (residentAttributes != null)
             {
                 text += "    attributes:\n";
-                residentAttributesGroup.attributes.ForEach((attribute) =>
+                residentAttributes.asTupleList.ForEach(tuple =>
                 {
-                    text += $"        {attribute.key}: {attribute.value}\n";
+                    var (key, attribute) = tuple;
+                    text += $"{key}: {attribute.value}\n";
                 });
             }
 
@@ -223,13 +224,13 @@ namespace TowerBuilder.GameWorld.UI
             SetText();
         }
 
-        void OnResidentAttributeWrappersUpdated(ListWrapper<ResidentAttributesGroup> residentAttributesGroups)
+        void OnResidentAttributesUpdated(ListWrapper<ResidentAttributes> residentAttributess)
         {
-            foreach (ResidentAttributesGroup residentAttributesGroup in residentAttributesGroups.items)
+            foreach (ResidentAttributes residentAttributes in residentAttributess.items)
             {
                 if (
                     (Registry.appState.Tools.inspectToolState.inspectedEntity is Resident) &&
-                    residentAttributesGroup.resident == (Registry.appState.Tools.inspectToolState.inspectedEntity as Resident)
+                    residentAttributes.resident == (Registry.appState.Tools.inspectToolState.inspectedEntity as Resident)
                 )
                 {
                     SetText();

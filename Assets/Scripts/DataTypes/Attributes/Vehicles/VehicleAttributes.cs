@@ -8,23 +8,33 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Attributes.Vehicles
 {
-    public class VehicleAttributesGroup : AttributesGroup<VehicleAttribute, VehicleAttribute.Key>
+    public class VehicleAttributes : AttributesGroup<VehicleAttributes.Key>
     {
         public Vehicle vehicle { get; private set; }
 
-        public override List<VehicleAttribute> attributes { get; } = new List<VehicleAttribute>() {
-            new VehicleAttribute(VehicleAttribute.Key.Weight, 0),
-            new VehicleAttribute(VehicleAttribute.Key.Fuel, 0),
-            new VehicleAttribute(VehicleAttribute.Key.EnginePower, 0),
-            new VehicleAttribute(VehicleAttribute.Key.MaxSpeed, 0),
-            new VehicleAttribute(VehicleAttribute.Key.TargetSpeed, 0),
-            new VehicleAttribute(VehicleAttribute.Key.CurrentSpeed, 0),
-            new VehicleAttribute(VehicleAttribute.Key.IsPiloted, 0),
+        public enum Key
+        {
+            CurrentSpeed,
+            Fuel,
+            Weight,
+            EnginePower,
+            TargetSpeed,
+            MaxSpeed,
+            IsPiloted,
+        }
+
+        public override Dictionary<Key, Attribute> attributes { get; } = new Dictionary<Key, Attribute>() {
+            { Key.Weight,       new Attribute(0) },
+            { Key.Fuel,         new Attribute(0) },
+            { Key.EnginePower,  new Attribute(0) },
+            { Key.MaxSpeed,     new Attribute(0) },
+            { Key.TargetSpeed,  new Attribute(0) },
+            { Key.CurrentSpeed, new Attribute(0) },
         };
 
-        public bool isMoving => FindByKey(VehicleAttribute.Key.CurrentSpeed).value > 0;
+        public bool isMoving => attributes.GetValueOrDefault(Key.CurrentSpeed).value > 0;
 
-        public VehicleAttributesGroup(AppState appState, Vehicle vehicle) : base(appState)
+        public VehicleAttributes(AppState appState, Vehicle vehicle) : base(appState)
         {
             this.vehicle = vehicle;
         }

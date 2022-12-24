@@ -20,6 +20,8 @@ namespace TowerBuilder.DataTypes.Entities.Vehicles
 
         public ListWrapper<Room> roomList { get; private set; } = new ListWrapper<Room>();
 
+        public bool isPiloted { get; set; }
+
         public Vehicle(VehicleDefinition vehicleDefinition) : base(vehicleDefinition) { }
     }
 }

@@ -19,6 +19,8 @@ namespace TowerBuilder.ApplicationState.Vehicles
 
         public new class Events : EntityStateSlice<Vehicle, State.Events>.Events
         {
+            public ItemEvent<Vehicle> onVehicleIsPilotedUpdated;
+
             public delegate void VehicleRoomEvent(Vehicle vehicle, Room room);
             public VehicleRoomEvent onVehicleRoomAdded;
             public VehicleRoomEvent onVehicleRoomRemoved;
@@ -74,6 +76,12 @@ namespace TowerBuilder.ApplicationState.Vehicles
             vehicle.roomList.Remove(room);
 
             events.onVehicleRoomRemoved?.Invoke(vehicle, room);
+        }
+
+        public void SetVehicleIsPiloted(Vehicle vehicle, bool isPiloted)
+        {
+            vehicle.isPiloted = isPiloted;
+            events.onVehicleIsPilotedUpdated?.Invoke(vehicle);
         }
 
         /*

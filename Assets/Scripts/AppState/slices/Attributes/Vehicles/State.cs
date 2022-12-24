@@ -12,21 +12,20 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Attributes.Vehicles
 {
-    using VehicleAtributesStateSlice = AttributesStateSlice<
-        VehicleAttribute.Key,
-        VehicleAttributesGroup,
-        VehicleAttribute,
+    using VehicleAttributesStateSlice = AttributesStateSlice<
+        VehicleAttributes.Key,
+        VehicleAttributes,
         State.Events
     >;
 
-    public class State : VehicleAtributesStateSlice
+    public class State : VehicleAttributesStateSlice
     {
         public class Input
         {
-            public ListWrapper<VehicleAttributesGroup> vehicleAttributesGroupList;
+            public ListWrapper<Attribute> vehicleAttributesList;
         }
 
-        public new class Events : VehicleAtributesStateSlice.Events { }
+        public new class Events : VehicleAttributesStateSlice.Events { }
 
         public class Queries
         {
@@ -39,11 +38,11 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
                 this.state = state;
             }
 
-            public VehicleAttributesGroup FindByVehicle(Vehicle vehicle) =>
+            public VehicleAttributes FindByVehicle(Vehicle vehicle) =>
                 state.list.Find(attributesGroup => attributesGroup.vehicle == vehicle);
 
-            public ListWrapper<VehicleAttribute> FindByKey(VehicleAttribute.Key key) =>
-                new ListWrapper<VehicleAttribute>(
+            public ListWrapper<Attribute> FindByKey(VehicleAttributes.Key key) =>
+                new ListWrapper<Attribute>(
                     state.list.items
                         .Select(attributesGroup => attributesGroup.FindByKey(key))
                         .ToList()
@@ -65,6 +64,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
 
             appState.Entities.Vehicles.events.onItemsAdded += OnVehiclesAdded;
             appState.Entities.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
+            appState.Entities.Vehicles.events.onVehicleIsPilotedUpdated += OnVehicleIsPilotedUpdated;
         }
 
         public override void Teardown()
@@ -73,46 +73,70 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
 
             appState.Entities.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
             appState.Entities.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
+            appState.Entities.Vehicles.events.onVehicleIsPilotedUpdated -= OnVehicleIsPilotedUpdated;
         }
 
         public void AddAttributesGroupForVehicle(Vehicle vehicle)
         {
-            VehicleAttributesGroup vehicleAttributesGroup = new VehicleAttributesGroup(appState, vehicle);
-            Add(vehicleAttributesGroup);
+            VehicleAttributes vehicleAttributes = new VehicleAttributes(appState, vehicle);
+            Add(vehicleAttributes);
         }
 
         public void RemoveAttributesGroupForVehicle(Vehicle vehicle)
         {
-            VehicleAttributesGroup vehicleAttributesGroup = queries.FindByVehicle(vehicle);
-            Remove(vehicleAttributesGroup);
+            VehicleAttributes vehicleAttributes = queries.FindByVehicle(vehicle);
+            Remove(vehicleAttributes);
         }
 
         protected override void OnPostTick(TimeValue time)
         {
             if (list.Count == 0) return;
 
-            // Update current speed
-
             // Update journey progress counter
-            ListWrapper<VehicleAttribute> currentSpeedAttributes = queries.FindByKey(VehicleAttribute.Key.CurrentSpeed);
+            ListWrapper<Attribute> currentSpeedAttributes = queries.FindByKey(VehicleAttributes.Key.CurrentSpeed);
 
-            VehicleAttribute currentSpeedAttribute = currentSpeedAttributes.items[0];
+            Attribute currentSpeedAttribute = currentSpeedAttributes.items[0];
             appState.Journeys.UpdateJourneyProgress(currentSpeedAttribute.value);
         }
 
-        protected override void OnPostStaticModifierAdd(VehicleAttributesGroup attributesGroup, VehicleAttribute.Key key, AttributeModifier modifier)
+        protected override void OnPostStaticModifierAdd(VehicleAttributes vehicleAttributes, VehicleAttributes.Key key, AttributeModifier modifier)
         {
-            if (key == VehicleAttribute.Key.IsPiloted)
+            if (key == VehicleAttributes.Key.EnginePower)
             {
-                VehicleAttribute enginePowerAttribute = attributesGroup.FindByKey(VehicleAttribute.Key.EnginePower);
-                VehicleAttribute currentSpeedAttribute = attributesGroup.FindByKey(VehicleAttribute.Key.CurrentSpeed);
+                CalculateCurrentSpeed(vehicleAttributes);
+            }
+        }
+
+        /* 
+            Internals
+        */
+        void CalculateCurrentSpeed(VehicleAttributes vehicleAttributes)
+        {
+            float currentSpeed = vehicleAttributes.FindByKey(VehicleAttributes.Key.CurrentSpeed).value;
+            float newCurrentSpeed = currentSpeed;
+
+            if (vehicleAttributes.vehicle.isPiloted)
+            {
+                Attribute enginePowerAttribute = vehicleAttributes.FindByKey(VehicleAttributes.Key.EnginePower);
                 float enginePowerAmount = enginePowerAttribute.value;
 
                 // for now currentSpeed == enginePower
-                if (currentSpeedAttribute.value != currentSpeedAttribute.value)
+                if (currentSpeed != enginePowerAmount)
                 {
-
+                    newCurrentSpeed = enginePowerAmount;
                 }
+            }
+            else
+            {
+                newCurrentSpeed = 0;
+            }
+
+            Debug.Log("new current speed");
+            Debug.Log(newCurrentSpeed);
+
+            if (newCurrentSpeed != currentSpeed)
+            {
+                AddOrUpdateStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.CurrentSpeed, "Calculated Engine Speed", newCurrentSpeed);
             }
         }
 
@@ -133,6 +157,14 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
             {
                 RemoveAttributesGroupForVehicle(vehicle);
             });
+        }
+
+        void OnVehicleIsPilotedUpdated(Vehicle vehicle)
+        {
+            Debug.Log("OnVehicleIsPilotedUpdated");
+            Debug.Log(vehicle.isPiloted);
+            VehicleAttributes attributes = queries.FindByVehicle(vehicle);
+            CalculateCurrentSpeed(attributes);
         }
     }
 }

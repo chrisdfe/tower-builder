@@ -19,20 +19,22 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
         public CockpitBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
 
         Vehicle vehicle => appState.Entities.Vehicles.queries.FindVehicleByFurniture(furniture);
-        VehicleAttributesGroup vehicleAttributesGroup => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
+        VehicleAttributes vehicleAttributesGroup => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
         AttributeModifier modifier;
 
         protected override FurnitureBehaviorValidator createValidator() => new CockpitBehaviorValidator(this);
 
         protected override void OnInteractStart(Resident resident)
         {
-            modifier = new AttributeModifier("Piloting", 1f);
-            appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.IsPiloted, modifier);
+            // modifier = new BoolAttributeModifier("Piloting", 1f);
+            // appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesGroup, VehicleAttributes.Key.IsPiloted, modifier);
+            appState.Entities.Vehicles.SetVehicleIsPiloted(vehicle, true);
         }
 
         protected override void OnInteractEnd(Resident resident)
         {
-            appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.IsPiloted, modifier);
+            // TODO - support multiple pilot seats by checking that other CockpitBehaviors exist first
+            appState.Entities.Vehicles.SetVehicleIsPiloted(vehicle, false);
             modifier = null;
         }
 
@@ -50,9 +52,9 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
                 Furniture furniture = furnitureBehavior.furniture;
                 Room room = appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]);
                 Vehicle vehicle = appState.Entities.Vehicles.queries.FindVehicleByRoom(room);
-                VehicleAttributesGroup vehicleAttributesGroup = appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
+                VehicleAttributes vehicleAttributes = appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
 
-                VehicleAttribute enginePower = vehicleAttributesGroup.FindByKey(VehicleAttribute.Key.EnginePower);
+                Attribute enginePower = vehicleAttributes.FindByKey(VehicleAttributes.Key.EnginePower);
 
                 if (enginePower.value == 0)
                 {

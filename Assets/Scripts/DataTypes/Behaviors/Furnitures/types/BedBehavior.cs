@@ -16,19 +16,19 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
         public BedBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
 
         Resident resident;
-        ResidentAttributesGroup residentAttributesGroup => appState.Attributes.Residents.queries.FindByResident(resident);
+        ResidentAttributes residentAttributes => appState.Attributes.Residents.queries.FindByResident(resident);
         AttributeModifier modifier;
 
         protected override void OnInteractStart(Resident resident)
         {
             this.resident = resident;
             modifier = new AttributeModifier("sleeping", 1.6f);
-            appState.Attributes.Residents.AddTickAttributeModifier(residentAttributesGroup, ResidentAttribute.Key.Energy, modifier);
+            appState.Attributes.Residents.AddTickAttributeModifier(residentAttributes, ResidentAttributes.Key.Energy, modifier);
         }
 
         protected override void OnInteractEnd(Resident resident)
         {
-            appState.Attributes.Residents.RemoveTickAttributeModifier(residentAttributesGroup, ResidentAttribute.Key.Energy, modifier);
+            appState.Attributes.Residents.RemoveTickAttributeModifier(residentAttributes, ResidentAttributes.Key.Energy, modifier);
             modifier = null;
         }
     }

@@ -5,9 +5,8 @@ using TowerBuilder.DataTypes.Entities.Residents;
 namespace TowerBuilder.ApplicationState.Attributes.Residents
 {
     using ResidentAtributesStateSlice = AttributesStateSlice<
-        ResidentAttribute.Key,
-        ResidentAttributesGroup,
-        ResidentAttribute,
+        ResidentAttributes.Key,
+        ResidentAttributes,
         State.Events
     >;
 
@@ -15,7 +14,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
     {
         public class Input
         {
-            ListWrapper<ResidentAttributesGroup> list;
+            ListWrapper<ResidentAttributes> list;
         }
 
         public new class Events : ResidentAtributesStateSlice.Events { }
@@ -31,7 +30,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
                 this.state = state;
             }
 
-            public ResidentAttributesGroup FindByResident(Resident resident) =>
+            public ResidentAttributes FindByResident(Resident resident) =>
                 state.list.Find(attribute => attribute.resident == resident);
         }
 
@@ -67,17 +66,17 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
          */
         public void AddAttributesForResident(Resident resident)
         {
-            ResidentAttributesGroup residentAttributesGroup = new ResidentAttributesGroup(appState, resident);
-            Add(residentAttributesGroup);
+            ResidentAttributes residentAttributes = new ResidentAttributes(appState, resident);
+            Add(residentAttributes);
         }
 
         public void RemoveAttributesForResident(Resident resident)
         {
-            ResidentAttributesGroup residentAttributesGroup = queries.FindByResident(resident);
+            ResidentAttributes residentAttributes = queries.FindByResident(resident);
 
-            if (residentAttributesGroup != null)
+            if (residentAttributes != null)
             {
-                Remove(residentAttributesGroup);
+                Remove(residentAttributes);
             }
         }
 

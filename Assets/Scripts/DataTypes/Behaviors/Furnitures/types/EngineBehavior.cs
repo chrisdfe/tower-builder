@@ -16,7 +16,7 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
         public EngineBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
 
         Vehicle vehicle => appState.Entities.Vehicles.queries.FindVehicleByFurniture(furniture);
-        VehicleAttributesGroup vehicleAttributesGroup => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
+        VehicleAttributes vehicleAttributes => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
         AttributeModifier baseEnginePowerModifier;
         AttributeModifier mannedEngineModifier;
 
@@ -49,9 +49,9 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
         }
 
         void AddStaticModifier(AttributeModifier modifier) =>
-            appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.EnginePower, modifier);
+            appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.EnginePower, modifier);
 
         void RemoveStaticModifier(AttributeModifier modifier) =>
-            appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributesGroup, VehicleAttribute.Key.EnginePower, modifier);
+            appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.EnginePower, modifier);
     }
 }

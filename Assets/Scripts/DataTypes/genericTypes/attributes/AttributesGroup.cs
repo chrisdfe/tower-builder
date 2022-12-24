@@ -7,10 +7,24 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    public class AttributesGroup<AttributeType, KeyType>
-        where AttributeType : Attribute<KeyType>
+    public class AttributesGroup<KeyType>
     {
-        public virtual List<AttributeType> attributes { get; } = new List<AttributeType>();
+        public virtual Dictionary<KeyType, Attribute> attributes { get; } = new Dictionary<KeyType, Attribute>();
+
+        public List<(KeyType, Attribute)> asTupleList
+        {
+            get
+            {
+                List<(KeyType, Attribute)> result = new List<(KeyType, Attribute)>();
+
+                foreach (KeyType key in attributes.Keys)
+                {
+                    result.Add((key, attributes[key]));
+                }
+
+                return result;
+            }
+        }
 
         protected AppState appState;
 
@@ -23,6 +37,6 @@ namespace TowerBuilder.DataTypes
 
         public virtual void Teardown() { }
 
-        public AttributeType FindByKey(KeyType key) => attributes.Find(attribute => attribute.key.Equals(key));
+        public Attribute FindByKey(KeyType key) => attributes.GetValueOrDefault(key);
     }
 }

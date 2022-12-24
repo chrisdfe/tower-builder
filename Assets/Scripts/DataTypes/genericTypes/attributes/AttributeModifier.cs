@@ -6,13 +6,17 @@ namespace TowerBuilder.DataTypes
 {
     public class AttributeModifier
     {
-        public string name;
-        public float amount;
+        public float value { get; set; }
+        public string name { get; }
 
-        public AttributeModifier(string name, float amount)
+        public AttributeModifier(string name)
         {
             this.name = name;
-            this.amount = amount;
+        }
+
+        public AttributeModifier(string name, float value) : this(name)
+        {
+            this.value = value;
         }
     }
 }
