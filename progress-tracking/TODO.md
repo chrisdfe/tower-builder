@@ -2,8 +2,13 @@
 
 ## Tasks
 
+- ceiling entity - 1 tile tall
+- floors should be 2 tiles tall
+- maybe residents could be 2 1/2 tiles tall - they could fit comfortably in 3 but have to crouch for 2 (bedrooms, cockpits etc could be that small)
+- Change standard room cell size
+  - 1x5? 1x8? tall and skinny
 - Windows entity - new state slice/entity type
-- implement CalculateDerivedAttributes for vehicle attributes (calculate currentSpeed in there)
+- blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
 - Bring back selectionbox resetting on mouse up
 - entity layers (determines the z-index the entity is rendered at)
   - entities should default to the a constant value for that type of entity, and have the ability to be customized on a per definition/entity basis (e.g transportation items go in the front, except for ladders that connect two rooms should go inside)
@@ -225,6 +230,7 @@
 
 ## Bugs
 
+- Clicking into build state -> selecting an entity definition other than the default -> switching to a different tool -> switching back to build state => the default definition is shown as selected in the UI again even though the other definition is selected in the appState.
 - Adding new engines too quickly causes the new attributes not to get registered correctly?
   - why aren't things getting registered until the next tick? Is it just the UI?
 - expanding a room with furnitures inside of it crashes the game
@@ -340,6 +346,7 @@
 
 # Done
 
+- implement CalculateDerivedAttributes for vehicle attributes (calculate currentSpeed in there)
 - Ability for furniture behavior interaction to fail for some reason - validation?
   - use first for pilot seat -> without any engines then it will not work
 - If a furnitureBehavior becomes invalid in OnInteractTick the resident doesn't register that it needs to change state

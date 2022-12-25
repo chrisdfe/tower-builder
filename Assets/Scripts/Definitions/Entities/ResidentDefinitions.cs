@@ -21,10 +21,9 @@ namespace TowerBuilder.Definitions
                 blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
+                        new CellCoordinates(0, 1),
                     }
                 ),
-
-                // ResidentBehaviorFactory = (AppState appState, Resident Resident) => new CockpitBehavior(appState, Resident),
             },
 
             new ResidentDefinition() {
@@ -35,10 +34,10 @@ namespace TowerBuilder.Definitions
                 blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {
                         new CellCoordinates(0, 0),
+                        new CellCoordinates(0, 1),
+                        new CellCoordinates(0, 2),
                     }
                 ),
-
-                // ResidentBehaviorFactory = (AppState appState, Resident Resident) => new EngineBehavior(appState, Resident),
             },
         };
 

@@ -30,8 +30,10 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         public void UpdateMesh()
         {
-            SetSegmentEnabled(segments["backWallFull"], false);
-            SetSegmentEnabled(segments["backWallWithWindow"], true);
+            // SetSegmentEnabled(segments["backWallFull"], false);
+            // SetSegmentEnabled(segments["backWallWithWindow"], true);
+            SetSegmentEnabled(segments["backWallFull"], true);
+            SetSegmentEnabled(segments["backWallWithWindow"], false);
 
             foreach (Transform segment in wallSegments)
             {
