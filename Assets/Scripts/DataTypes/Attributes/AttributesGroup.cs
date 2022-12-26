@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities.Furnitures;
@@ -8,8 +9,12 @@ using UnityEngine;
 namespace TowerBuilder.DataTypes
 {
     public class AttributesGroup<KeyType>
+        where KeyType : struct
     {
+
         public virtual Dictionary<KeyType, Attribute> attributes { get; } = new Dictionary<KeyType, Attribute>();
+
+        public List<Attribute> list => attributes.Values.ToList();
 
         public List<(KeyType, Attribute)> asTupleList
         {

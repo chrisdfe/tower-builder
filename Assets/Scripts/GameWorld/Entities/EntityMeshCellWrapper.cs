@@ -110,11 +110,7 @@ namespace TowerBuilder.GameWorld.Entities
         {
             Transform tileabileWrapper = TransformUtils.FindDeepChild(meshTransform, TILEABLE_WRAPPER_NODE_NAME);
 
-            if (tileabileWrapper == null)
-            {
-                // Debug.Log("No TileableWrapper found");
-                return;
-            }
+            if (tileabileWrapper == null) return;
 
             Transform child = tileabileWrapper.GetChild(0);
 
@@ -123,6 +119,7 @@ namespace TowerBuilder.GameWorld.Entities
                 foreach (Transform node in child)
                 {
                     Tileable.CellPosition nodeCellPosition = Tileable.CellPositionLabelMap.KeyFromValue(node.name);
+
                     node.localPosition = Vector3.zero;
                     node.gameObject.SetActive(nodeCellPosition == cellPosition);
                 }

@@ -11,6 +11,7 @@ using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.DataTypes.Entities.Vehicles;
 using TowerBuilder.DataTypes.Entities.Wheels;
+using TowerBuilder.DataTypes.Entities.Windows;
 using TowerBuilder.DataTypes.Validators;
 using TowerBuilder.DataTypes.Validators.Entities;
 using TowerBuilder.Definitions;
@@ -36,7 +37,8 @@ namespace TowerBuilder.DataTypes.Entities
                 { typeof(TransportationItem), "Transportation Item" },
                 { typeof(FreightItem),        "Freight" },
                 { typeof(Wheel),              "Wheel" },
-                { typeof(Vehicle),            "Vehicle" }
+                { typeof(Vehicle),            "Vehicle" },
+                { typeof(Window),            "Window" }
             }
         );
 

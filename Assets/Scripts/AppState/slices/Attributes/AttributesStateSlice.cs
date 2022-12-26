@@ -10,6 +10,7 @@ namespace TowerBuilder.ApplicationState
         AttributesGroupType,
         EventsType
     > : ListStateSlice<AttributesGroupType, EventsType>
+        where KeyType : struct
         where AttributesGroupType : AttributesGroup<KeyType>
         where EventsType : AttributesStateSlice<
             KeyType,
@@ -82,20 +83,12 @@ namespace TowerBuilder.ApplicationState
 
         public void AddOrUpdateStaticAttributeModifier(AttributesGroupType attributesGroup, KeyType key, string modifierName, float value)
         {
-            Debug.Log("AddOrUpdateStaticAttributeModifier");
-            Debug.Log("modifierName");
-            Debug.Log(modifierName);
             Attribute attribute = attributesGroup.FindByKey(key);
 
-            Debug.Log("finding modiifer");
             AttributeModifier modifier = attribute.staticModifiers.Find((modifier) =>
-            {
-                Debug.Log("modifier.name");
-                Debug.Log(modifier.name);
-                return modifier.name == modifierName;
-            });
+                modifier.name == modifierName
+            );
 
-            Debug.Log("modiifer:");
             Debug.Log(modifier);
 
             if (modifier != null)

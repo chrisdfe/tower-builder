@@ -32,13 +32,9 @@ namespace TowerBuilder.GameWorld.Entities
             Teardown();
         }
 
-        public void Setup()
-        {
-        }
+        public void Setup() { }
 
-        public void Teardown()
-        {
-        }
+        public void Teardown() { }
 
         public void ResetEntity(Entity entity)
         {

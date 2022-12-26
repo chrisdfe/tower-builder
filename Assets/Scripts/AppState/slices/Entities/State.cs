@@ -15,6 +15,7 @@ namespace TowerBuilder.ApplicationState.Entities
             public Residents.State.Input Residents = new Residents.State.Input();
             public Rooms.State.Input Rooms;
             public Floors.State.Input Floors;
+            public Windows.State.Input Windows;
             public InteriorWalls.State.Input InteriorWalls;
             public InteriorLights.State.Input InteriorLights;
             public TransportationItems.State.Input TransportationItems;
@@ -26,6 +27,7 @@ namespace TowerBuilder.ApplicationState.Entities
             {
                 Rooms = new Rooms.State.Input();
                 Floors = new Floors.State.Input();
+                Windows = new Windows.State.Input();
                 InteriorWalls = new InteriorWalls.State.Input();
                 InteriorLights = new InteriorLights.State.Input();
                 Furnitures = new Furnitures.State.Input();
@@ -34,6 +36,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 Freight = new Freight.State.Input();
                 Wheels = new Wheels.State.Input();
                 Vehicles = new Vehicles.State.Input();
+                Windows = new Windows.State.Input();
             }
         }
 
@@ -46,6 +49,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public Rooms.State Rooms { get; }
         public Floors.State Floors { get; }
+        public Windows.State Windows { get; }
         public InteriorWalls.State InteriorWalls { get; }
         public InteriorLights.State InteriorLights { get; }
 
@@ -72,6 +76,7 @@ namespace TowerBuilder.ApplicationState.Entities
         {
             Rooms = new Rooms.State(appState, input.Rooms);
             Floors = new Floors.State(appState, input.Floors);
+            Windows = new Windows.State(appState, input.Windows);
             InteriorWalls = new InteriorWalls.State(appState, input.InteriorWalls);
             InteriorLights = new InteriorLights.State(appState, input.InteriorLights);
             Furnitures = new Furnitures.State(appState, input.Furnitures);
@@ -84,6 +89,7 @@ namespace TowerBuilder.ApplicationState.Entities
             sliceList = new List<IEntityStateSlice>() {
                 Rooms,
                 Floors,
+                Windows,
                 InteriorWalls,
                 InteriorLights,
                 Furnitures,
@@ -91,7 +97,8 @@ namespace TowerBuilder.ApplicationState.Entities
                 TransportationItems,
                 Freight,
                 Wheels,
-                Vehicles
+                Vehicles,
+                Windows
             };
 
             Queries = new StateQueries(this);
@@ -105,6 +112,9 @@ namespace TowerBuilder.ApplicationState.Entities
 
             Floors.Setup();
             AddListeners(Floors);
+
+            Windows.Setup();
+            AddListeners(Windows);
 
             InteriorWalls.Setup();
             AddListeners(InteriorWalls);
@@ -130,11 +140,31 @@ namespace TowerBuilder.ApplicationState.Entities
             Vehicles.Setup();
             AddListeners(Vehicles);
 
+            Windows.Setup();
+            AddListeners(Windows);
+
             void AddListeners(IEntityStateSlice stateSlice)
             {
                 stateSlice.entityEvents.onEntitiesAdded += OnEntitiesAdded;
                 stateSlice.entityEvents.onEntitiesRemoved += OnEntitiesRemoved;
                 stateSlice.entityEvents.onEntitiesBuilt += OnEntitiesBuilt;
+            }
+        }
+
+        public override void Teardown()
+        {
+            base.Teardown();
+
+            sliceList.ForEach((slice) =>
+            {
+                RemoveListeners(slice);
+            });
+
+            void RemoveListeners(IEntityStateSlice stateSlice)
+            {
+                stateSlice.entityEvents.onEntitiesAdded -= OnEntitiesAdded;
+                stateSlice.entityEvents.onEntitiesRemoved -= OnEntitiesRemoved;
+                stateSlice.entityEvents.onEntitiesBuilt -= OnEntitiesBuilt;
             }
         }
 
@@ -166,6 +196,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 DataTypes.Entities.Freights.FreightItem => Freight,
                 DataTypes.Entities.Wheels.Wheel => Wheels,
                 DataTypes.Entities.Vehicles.Vehicle => Vehicles,
+                DataTypes.Entities.Windows.Window => Windows,
                 _ => throw new NotSupportedException($"Entity type not handled: {entity.GetType()}")
             };
 

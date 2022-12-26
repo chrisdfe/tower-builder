@@ -12,6 +12,7 @@ using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.DataTypes.Entities.Vehicles;
 using TowerBuilder.DataTypes.Entities.Wheels;
+using TowerBuilder.DataTypes.Entities.Windows;
 using UnityEngine;
 
 namespace TowerBuilder.Definitions
@@ -29,6 +30,7 @@ namespace TowerBuilder.Definitions
             { typeof(FreightDefinition), typeof(FreightItem) },
             { typeof(WheelDefinition), typeof(Wheel) },
             { typeof(VehicleDefinition), typeof(Vehicle) },
+            { typeof(WindowDefinition), typeof(Window) },
         };
 
         public DefinitionQueries Queries { get; }
@@ -43,6 +45,7 @@ namespace TowerBuilder.Definitions
         public FreightDefinitionsList Freights = new FreightDefinitionsList();
         public WheelDefinitionsList Wheels = new WheelDefinitionsList();
         public VehicleDefinitionsList Vehicles = new VehicleDefinitionsList();
+        public WindowDefinitionsList Windows = new WindowDefinitionsList();
 
         public Dictionary<Type, IEntityDefinitionsList> entityDefinitionsMap { get; }
 
@@ -61,6 +64,7 @@ namespace TowerBuilder.Definitions
                 { typeof(FreightItem),        Freights },
                 { typeof(Wheel),              Wheels },
                 { typeof(Vehicle),            Vehicles },
+                { typeof(Window),             Windows },
             };
         }
 
@@ -111,6 +115,8 @@ namespace TowerBuilder.Definitions
                         Definitions.Freights.Queries.FindByKey(FreightItem.KeyLabelMap.KeyFromValue(keyLabel)),
                     VehicleDefinition =>
                         Definitions.Vehicles.Queries.FindByKey(Vehicle.KeyLabelMap.KeyFromValue(keyLabel)),
+                    WindowDefinition =>
+                        Definitions.Windows.Queries.FindByKey(Window.KeyLabelMap.KeyFromValue(keyLabel)),
                     _ => null
                 };
         }

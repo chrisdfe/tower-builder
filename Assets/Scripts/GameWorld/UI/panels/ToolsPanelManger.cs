@@ -13,14 +13,14 @@ namespace TowerBuilder.GameWorld.UI
     public class ToolsPanelManger : MonoBehaviour
     {
         ToolStateButtonsManager toolStateButtonsManager;
-        BuildStateButtonsManager buildStateButtonsManager;
+        BuildToolStateButtonsManager buildToolStateButtonsManager;
 
         Text descriptionText;
 
         void Awake()
         {
             toolStateButtonsManager = transform.Find("ToolStateButtons").GetComponent<ToolStateButtonsManager>();
-            buildStateButtonsManager = transform.Find("BuildStateButtons").GetComponent<BuildStateButtonsManager>();
+            buildToolStateButtonsManager = transform.Find("BuildToolStateButtons").GetComponent<BuildToolStateButtonsManager>();
 
             descriptionText = transform.Find("DescriptionText").GetComponent<Text>();
 
@@ -87,7 +87,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void ToggleBuildStateButtonsPanel(bool show)
         {
-            buildStateButtonsManager.gameObject.SetActive(show);
+            buildToolStateButtonsManager.gameObject.SetActive(show);
         }
     }
 }

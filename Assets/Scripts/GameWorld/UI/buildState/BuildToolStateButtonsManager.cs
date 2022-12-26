@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class BuildStateButtonsManager : MonoBehaviour
+    public class BuildToolStateButtonsManager : MonoBehaviour
     {
         Color originalColor;
         Button currentButton;

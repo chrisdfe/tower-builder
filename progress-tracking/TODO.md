@@ -2,8 +2,14 @@
 
 ## Tasks
 
-- ceiling entity - 1 tile tall
-- floors should be 2 tiles tall
+- built in way of entities to add modifiers to related entities,
+  - to avoid all the boilerplate of adding/removing modifiers in setup/teardown
+  - to allow entities without behaviors to add modifiers to other entities
+  - "AttributeModifierCreators"?
+- GameWorld attributes + behavior components
+- maybe ceilings and floors should be the same entity
+  - ceiling entity - 1 tile tall
+  - floors could be 2 tiles tall
 - maybe residents could be 2 1/2 tiles tall - they could fit comfortably in 3 but have to crouch for 2 (bedrooms, cockpits etc could be that small)
 - Change standard room cell size
   - 1x5? 1x8? tall and skinny
@@ -279,6 +285,8 @@
 
 ## Ideas
 
+- slopes/diagonal walls of arbitrary heights (1 wide by 4 high, 1x3, 1x1, etc)
+- "coverings" - carpet, wallpaper, other decorative stuff
 - Front wall segments to give more of a feeling of peering through into a building
 - Change to perspective with a really high (or low?) FOV
 - Turrets
