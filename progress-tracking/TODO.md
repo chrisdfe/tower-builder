@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Refactor entity.CalculateCellsFromSelectionBox to allow for different "fill mode" - marquee, pencil
 - built in way of entities to add modifiers to related entities,
   - to avoid all the boilerplate of adding/removing modifiers in setup/teardown
   - to allow entities without behaviors to add modifiers to other entities
@@ -10,7 +11,7 @@
 - maybe ceilings and floors should be the same entity
   - ceiling entity - 1 tile tall
   - floors could be 2 tiles tall
-- maybe residents could be 2 1/2 tiles tall - they could fit comfortably in 3 but have to crouch for 2 (bedrooms, cockpits etc could be that small)
+- maybe residents could be 1 1/2 tiles tall - they could fit comfortably in 2 but have to crouch for 1 (bedrooms, cockpits etc could be that small)
 - Change standard room cell size
   - 1x5? 1x8? tall and skinny
 - Windows entity - new state slice/entity type

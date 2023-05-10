@@ -87,7 +87,14 @@ namespace TowerBuilder.GameWorld.UI
 
         void ToggleBuildStateButtonsPanel(bool show)
         {
-            buildToolStateButtonsManager.gameObject.SetActive(show);
+            if (show)
+            {
+                buildToolStateButtonsManager.Open();
+            }
+            else
+            {
+                buildToolStateButtonsManager.Close();
+            }
         }
     }
 }

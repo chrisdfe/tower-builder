@@ -127,7 +127,6 @@ namespace TowerBuilder.DataTypes.Validators.Entities
             Validations that return a bool not a list of ValidationErrors
         */
         // TODO - this still doesn't seem like the right place for this
-        // TODO - take entity height into account as well
         public static bool IsValidStandardLocation(AppState appState, CellCoordinates cellCoordinates) =>
             IsInsideRoom(appState, cellCoordinates)
                 ? IsValidInsideEntityLocation(appState, cellCoordinates)

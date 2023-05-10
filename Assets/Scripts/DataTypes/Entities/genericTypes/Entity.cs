@@ -38,7 +38,7 @@ namespace TowerBuilder.DataTypes.Entities
                 { typeof(FreightItem),        "Freight" },
                 { typeof(Wheel),              "Wheel" },
                 { typeof(Vehicle),            "Vehicle" },
-                { typeof(Window),            "Window" }
+                { typeof(Window),             "Window" }
             }
         );
 

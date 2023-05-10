@@ -18,42 +18,27 @@ namespace TowerBuilder.GameWorld.UI
         Color originalColor;
         Button currentButton;
 
+        Transform entitySelectButtonWrappers;
         Transform entityTypeButtonsWrapper;
-        Transform entityTypeBuildButtonsWrapper;
         Transform categoryButtonsWrapper;
         Transform definitionButtonsWrapper;
 
-        List<UISelectButton> entityTypeSelectButtons = new List<UISelectButton>();
+        List<UISelectButton> entityTypeButtons = new List<UISelectButton>();
         List<UISelectButton> categoryButtons = new List<UISelectButton>();
         List<UISelectButton> definitionButtons = new List<UISelectButton>();
 
-        const string entityTypeButtonsWrapperName = "EntityTypeButtonsWrapper";
-        const string entityTypeBuildButtonsWrapperName = "EntityTypeBuildButtonsWrapper";
+        const string entitySelectButtonWrappersName = "EntitySelectButtonWrappers";
+        const string entityTypeButtonsWrapperName = "EntityTypeButtons";
         const string categoryButtonsWrapperName = "CategoryButtons";
         const string definitionButtonsWrapperName = "DefinitionButtons";
 
         void Awake()
         {
-            entityTypeButtonsWrapper = transform.Find(entityTypeButtonsWrapperName);
-            entityTypeBuildButtonsWrapper = transform.Find(entityTypeBuildButtonsWrapperName);
+            entitySelectButtonWrappers = transform.Find(entitySelectButtonWrappersName);
 
-            entityTypeSelectButtons = Entity.TypeLabels.labels
-                .Select(label =>
-                {
-                    UISelectButton entityButton = UISelectButton.Create(
-                        entityTypeButtonsWrapper,
-                        new UISelectButton.Input()
-                        {
-                            label = label,
-                            value = label
-                        });
-                    entityButton.onClick += OnEntityGroupButtonClick;
-                    return entityButton;
-                })
-                .ToList();
-
-            categoryButtonsWrapper = entityTypeBuildButtonsWrapper.Find(categoryButtonsWrapperName);
-            definitionButtonsWrapper = entityTypeBuildButtonsWrapper.Find(definitionButtonsWrapperName);
+            entityTypeButtonsWrapper = entitySelectButtonWrappers.Find(entityTypeButtonsWrapperName);
+            categoryButtonsWrapper = entitySelectButtonWrappers.Find(categoryButtonsWrapperName);
+            definitionButtonsWrapper = entitySelectButtonWrappers.Find(definitionButtonsWrapperName);
 
             Registry.appState.Tools.buildToolState.events.onSelectedEntityKeyUpdated += OnSelectedEntityKeyUpdated;
             Registry.appState.Tools.buildToolState.events.onSelectedEntityCategoryUpdated += OnSelectedEntityCategoryUpdated;
@@ -62,18 +47,94 @@ namespace TowerBuilder.GameWorld.UI
             Setup();
         }
 
+        public void Open()
+        {
+            gameObject.SetActive(true);
+
+            HighlightSelectedEntityTypeButton();
+            HighlightSelectedCategoryButton();
+            HighlightSelectedDefinitionButton();
+        }
+
+        public void Close()
+        {
+            gameObject.SetActive(false);
+        }
+
         public void Setup()
         {
+            ResetEntityTypeButtons();
             ResetCategoryButtons();
             ResetDefinitionButtons();
         }
 
         public void Teardown()
         {
-            DestroyCategoryButtons();
+            DestroyEntityTypeButtons();
+            DestroyEntityTypeButtons();
             DestroyDefinitionButtons();
         }
 
+        /* 
+            Entity Type buttons
+        */
+        void ResetEntityTypeButtons()
+        {
+            DestroyEntityTypeButtons();
+            CreateEntityTypeButtons();
+        }
+
+        void CreateEntityTypeButtons()
+        {
+            entityTypeButtons = UISelectButton.CreateButtonListFromInputList(entityTypeButtonsWrapper, GenerateEntityTypeButtonInputs());
+
+            foreach (UISelectButton selectButton in entityTypeButtons)
+            {
+                selectButton.transform.SetParent(this.entityTypeButtonsWrapper, false);
+                selectButton.onClick += OnEntityTypeButtonClick;
+            }
+
+            HighlightSelectedEntityTypeButton();
+        }
+
+        void HighlightSelectedEntityTypeButton()
+        {
+            foreach (UISelectButton button in entityTypeButtons)
+            {
+                button.SetSelected(button.value == Entity.TypeLabels.ValueFromKey(Registry.appState.Tools.buildToolState.selectedEntityType));
+            }
+        }
+
+        void DestroyEntityTypeButtons()
+        {
+            foreach (UISelectButton entityTypeButton in entityTypeButtons)
+            {
+                entityTypeButton.onClick -= OnEntityTypeButtonClick;
+                GameObject.Destroy(entityTypeButton.gameObject);
+            }
+
+            TransformUtils.DestroyChildren(entityTypeButtonsWrapper);
+        }
+
+        List<UISelectButton.Input> GenerateEntityTypeButtonInputs()
+        {
+            List<UISelectButton> result = new List<UISelectButton>();
+            Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
+
+            return Entity.TypeLabels.labels
+                .Select(label =>
+                    new UISelectButton.Input()
+                    {
+                        label = label,
+                        value = label
+                    }
+                )
+                .ToList();
+        }
+
+        /* 
+            Entity Category buttons
+        */
         void ResetCategoryButtons()
         {
             DestroyCategoryButtons();
@@ -103,15 +164,28 @@ namespace TowerBuilder.GameWorld.UI
 
         void DestroyCategoryButtons()
         {
-            TransformUtils.DestroyChildren(categoryButtonsWrapper);
-
             foreach (UISelectButton categoryButton in categoryButtons)
             {
                 categoryButton.onClick -= OnCategoryButtonClick;
                 GameObject.Destroy(categoryButton.gameObject);
             }
+
+            TransformUtils.DestroyChildren(categoryButtonsWrapper);
         }
 
+        List<UISelectButton.Input> GenerateCategoryButtonInputs()
+        {
+            List<UISelectButton> result = new List<UISelectButton>();
+            Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
+
+            var allEntityCategories = Registry.Definitions.Entities.Queries.FindAllCategories(selectedEntityType);
+
+            return allEntityCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
+        }
+
+        /* 
+            Entity Definition buttons
+        */
         void ResetDefinitionButtons()
         {
             DestroyDefinitionButtons();
@@ -140,22 +214,13 @@ namespace TowerBuilder.GameWorld.UI
 
         void DestroyDefinitionButtons()
         {
-            TransformUtils.DestroyChildren(definitionButtonsWrapper);
             foreach (UISelectButton definitionButton in definitionButtons)
             {
                 definitionButton.onClick -= OnDefinitionButtonClick;
                 GameObject.Destroy(definitionButton.gameObject);
             }
-        }
 
-        List<UISelectButton.Input> GenerateCategoryButtonInputs()
-        {
-            List<UISelectButton> result = new List<UISelectButton>();
-            Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
-
-            var allEntityCategories = Registry.Definitions.Entities.Queries.FindAllCategories(selectedEntityType);
-
-            return allEntityCategories.Select(category => new UISelectButton.Input() { label = category, value = category }).ToList();
+            TransformUtils.DestroyChildren(definitionButtonsWrapper);
         }
 
         List<UISelectButton.Input> GenerateDefinitionButtonInputs()
@@ -176,6 +241,14 @@ namespace TowerBuilder.GameWorld.UI
         /*
             Event Handlers
         */
+        void OnEntityTypeButtonClick(string newEntityTypeName)
+        {
+            Debug.Log("newEntityTypeName");
+            Debug.Log(newEntityTypeName);
+            Type newEntityType = Entity.TypeLabels.KeyFromValue(newEntityTypeName);
+            Registry.appState.Tools.buildToolState.SetSelectedEntityKey(newEntityType);
+        }
+
         void OnCategoryButtonClick(string entityCategory)
         {
             Registry.appState.Tools.buildToolState.SetSelectedEntityCategory(entityCategory);
@@ -184,6 +257,16 @@ namespace TowerBuilder.GameWorld.UI
         void OnDefinitionButtonClick(string title)
         {
             Registry.appState.Tools.buildToolState.SetSelectedEntityDefinition(title);
+        }
+
+        // EntityType buttons
+        void OnSelectedEntityKeyUpdated(Type entityType, Type previousEntityType)
+        {
+            if (entityType == previousEntityType) return;
+
+            HighlightSelectedEntityTypeButton();
+            ResetCategoryButtons();
+            ResetDefinitionButtons();
         }
 
         void OnSelectedEntityCategoryUpdated(string newEntityCategory)
@@ -195,32 +278,8 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnSelectedEntityDefinitionUpdated(EntityDefinition entityDefinition)
         {
-            // Entity.GetEntityDefinitionLabel(entityDefinition)
-
             // ResetDefinitionButtons();
             HighlightSelectedDefinitionButton();
-
-            // Registry.appState.Tools.buildToolState.SetSelectedEntityDefinition(label);
-        }
-
-        void OnEntityGroupButtonClick(string newCategory)
-        {
-            Type newEntityType = Entity.TypeLabels.KeyFromValue(newCategory);
-            Registry.appState.Tools.buildToolState.SetSelectedEntityKey(newEntityType);
-        }
-
-        void OnSelectedEntityKeyUpdated(Type entityType, Type previousEntityType)
-        {
-            if (entityType == previousEntityType) return;
-
-            entityTypeSelectButtons.ForEach((selectButton) =>
-            {
-                bool isSelected = Entity.TypeLabels.KeyFromValue(selectButton.value) == entityType;
-                selectButton.SetSelected(isSelected);
-            });
-
-            ResetCategoryButtons();
-            ResetDefinitionButtons();
         }
     }
 }
