@@ -76,7 +76,7 @@ namespace TowerBuilder.GameWorld.UI
             Vector3 worldPosition = GameWorldUtils.CellCoordinatesToPosition(currentSelectedCell);
             Vector3 adjustedWorldPosition = new Vector3(
                 worldPosition.x,
-                worldPosition.y + DataTypes.Entities.Rooms.Constants.TILE_SIZE.y / 4,
+                worldPosition.y + Entities.Constants.CELL_HEIGHT / 4,
                 0
             );
 

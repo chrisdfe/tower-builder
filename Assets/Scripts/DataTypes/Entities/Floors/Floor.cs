@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.GameWorld.Entities;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Floors

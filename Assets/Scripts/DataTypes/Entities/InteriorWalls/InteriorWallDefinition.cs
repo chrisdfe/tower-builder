@@ -6,5 +6,6 @@ namespace TowerBuilder.DataTypes.Entities.InteriorWalls
 {
     public class InteriorWallDefinition : EntityDefinition<InteriorWall.Key>
     {
+        public override Entity.Resizability resizability { get; set; } = Entity.Resizability.Vertical;
     }
 }

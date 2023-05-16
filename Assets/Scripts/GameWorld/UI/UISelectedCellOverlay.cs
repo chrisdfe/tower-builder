@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.GameWorld;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -37,8 +37,8 @@ namespace TowerBuilder.GameWorld.UI
             CellCoordinates bottomLeftCoordinates = selectionBox.cellCoordinatesList.bottomLeftCoordinates;
 
             transform.position = new Vector3(
-                (bottomLeftCoordinates.x * Constants.TILE_SIZE.x) + (width / 2) - (Constants.TILE_SIZE.x / 2),
-                (bottomLeftCoordinates.floor * Constants.TILE_SIZE.y) + (height / 2) - (Constants.TILE_SIZE.y / 2),
+                (bottomLeftCoordinates.x * Entities.Constants.CELL_WIDTH) + (width / 2) - (Entities.Constants.CELL_WIDTH / 2),
+                (bottomLeftCoordinates.floor * Entities.Constants.CELL_HEIGHT) + (height / 2) - (Entities.Constants.CELL_HEIGHT / 2),
                 Z_INDEX
             );
 

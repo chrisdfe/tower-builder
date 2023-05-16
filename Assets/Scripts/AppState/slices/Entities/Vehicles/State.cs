@@ -48,6 +48,7 @@ namespace TowerBuilder.ApplicationState.Vehicles
         public override void Setup()
         {
             base.Setup();
+
             appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
             appState.Entities.Rooms.events.onItemsBuilt += OnRoomsBuilt;
             appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
@@ -56,6 +57,7 @@ namespace TowerBuilder.ApplicationState.Vehicles
         public override void Teardown()
         {
             base.Teardown();
+
             appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
             appState.Entities.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
             appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;

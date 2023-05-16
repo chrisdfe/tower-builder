@@ -32,21 +32,17 @@ namespace TowerBuilder.GameWorld
 
         public static CellCoordinates RoundVector2ToCellCoordinates(Vector2 vector)
         {
-            Vector2 TileSize = DataTypes.Entities.Rooms.Constants.TILE_SIZE;
-
             return new CellCoordinates(
-                RoundToNearestInt(vector.x, TileSize.x),
-                RoundToNearestInt(vector.y, TileSize.y)
+                RoundToNearestInt(vector.x, Entities.Constants.CELL_WIDTH),
+                RoundToNearestInt(vector.y, Entities.Constants.CELL_HEIGHT)
             );
         }
 
         public static Vector3 CellCoordinatesToPosition(CellCoordinates cellCoordinates, float zIndex = 0f)
         {
-            Vector2 TileSize = DataTypes.Entities.Rooms.Constants.TILE_SIZE;
-
             return new Vector3(
-                cellCoordinates.x * TileSize.x,
-                cellCoordinates.floor * TileSize.y,
+                cellCoordinates.x * Entities.Constants.CELL_WIDTH,
+                cellCoordinates.floor * Entities.Constants.CELL_HEIGHT,
                 zIndex
             );
         }

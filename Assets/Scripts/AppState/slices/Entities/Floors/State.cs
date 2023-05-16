@@ -27,6 +27,7 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
         public override void Setup()
         {
             base.Setup();
+
             appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
             appState.Entities.Rooms.events.onItemsBuilt += OnRoomsBuilt;
             appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;

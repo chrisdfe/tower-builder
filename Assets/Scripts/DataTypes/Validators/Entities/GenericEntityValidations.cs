@@ -38,7 +38,8 @@ namespace TowerBuilder.DataTypes.Validators.Entities
         {
             foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.bottomRow.items)
             {
-                ListWrapper<Floor> floors = appState.Entities.Floors.queries.FindEntityTypesAtCell(cellCoordinates);
+                CellCoordinates cellBelow = CellCoordinates.Add(cellCoordinates, new CellCoordinates(0, -1));
+                ListWrapper<Floor> floors = appState.Entities.Floors.queries.FindEntityTypesAtCell(cellBelow);
 
                 if (floors.Count == 0)
                 {

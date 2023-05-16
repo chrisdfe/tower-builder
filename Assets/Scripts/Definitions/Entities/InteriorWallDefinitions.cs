@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.InteriorWalls;
 
 namespace TowerBuilder.Definitions
@@ -10,7 +11,7 @@ namespace TowerBuilder.Definitions
         {
             new InteriorWallDefinition() {
                 key = InteriorWall.Key.Default,
-                title = "Left",
+                title = "Basic",
                 category = "Basic",
 
                 blockCellsTemplate = new CellCoordinatesList(
@@ -19,18 +20,6 @@ namespace TowerBuilder.Definitions
                     }
                 ),
             },
-
-            new InteriorWallDefinition() {
-                key = InteriorWall.Key.Default,
-                title = "Right",
-                category = "Basic",
-
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                    }
-                ),
-            }
         };
 
         public InteriorWallDefinitionsList() : base() { }

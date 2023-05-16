@@ -22,10 +22,6 @@ namespace TowerBuilder.DataTypes.Entities
 {
     public class Entity : ISetupable
     {
-        public virtual string idKey { get => "entity"; }
-
-        public int id { get; }
-
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
                 { typeof(Room),               "Room" },
@@ -51,6 +47,10 @@ namespace TowerBuilder.DataTypes.Entities
             Flexible,
         }
 
+        public virtual string idKey { get => "entity"; }
+
+        public int id { get; }
+
         public int[] zLayers = new int[] { 0 };
 
         public int price => definition.pricePerCell * cellCoordinatesList.Count;
@@ -73,7 +73,6 @@ namespace TowerBuilder.DataTypes.Entities
 
         public Entity(EntityDefinition definition)
         {
-
             this.definition = definition;
             this.id = UIDGenerator.Generate(idKey);
 
@@ -134,6 +133,8 @@ namespace TowerBuilder.DataTypes.Entities
                     definition.staticBlockSize ? definition.blockCellsTemplate.width : 1,
                     definition.staticBlockSize ? definition.blockCellsTemplate.floorSpan : 1
                 );
+
+                Debug.Log(definition.resizability);
 
                 switch (definition.resizability)
                 {
