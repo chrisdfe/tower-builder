@@ -13,7 +13,6 @@ namespace TowerBuilder.ApplicationState.Entities
         {
             public Furnitures.State.Input Furnitures = new Furnitures.State.Input();
             public Residents.State.Input Residents = new Residents.State.Input();
-            public Rooms.State.Input Rooms;
             public Floors.State.Input Floors;
             public Windows.State.Input Windows;
             public InteriorWalls.State.Input InteriorWalls;
@@ -21,11 +20,9 @@ namespace TowerBuilder.ApplicationState.Entities
             public TransportationItems.State.Input TransportationItems;
             public Freight.State.Input Freight;
             public Wheels.State.Input Wheels;
-            public Vehicles.State.Input Vehicles;
 
             public Input()
             {
-                Rooms = new Rooms.State.Input();
                 Floors = new Floors.State.Input();
                 Windows = new Windows.State.Input();
                 InteriorWalls = new InteriorWalls.State.Input();
@@ -35,8 +32,6 @@ namespace TowerBuilder.ApplicationState.Entities
                 TransportationItems = new TransportationItems.State.Input();
                 Freight = new Freight.State.Input();
                 Wheels = new Wheels.State.Input();
-                Vehicles = new Vehicles.State.Input();
-                Windows = new Windows.State.Input();
             }
         }
 
@@ -47,7 +42,6 @@ namespace TowerBuilder.ApplicationState.Entities
             public ListEvent<Entity> onEntitiesBuilt;
         }
 
-        public Rooms.State Rooms { get; }
         public Floors.State Floors { get; }
         public Windows.State Windows { get; }
         public InteriorWalls.State InteriorWalls { get; }
@@ -58,7 +52,6 @@ namespace TowerBuilder.ApplicationState.Entities
         public TransportationItems.State TransportationItems { get; }
         public Freight.State Freight { get; }
         public Wheels.State Wheels { get; }
-        public Vehicles.State Vehicles { get; }
 
         public Events events { get; }
         public StateQueries Queries { get; }
@@ -74,7 +67,6 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public State(AppState appState, Input input) : base(appState)
         {
-            Rooms = new Rooms.State(appState, input.Rooms);
             Floors = new Floors.State(appState, input.Floors);
             Windows = new Windows.State(appState, input.Windows);
             InteriorWalls = new InteriorWalls.State(appState, input.InteriorWalls);
@@ -84,10 +76,8 @@ namespace TowerBuilder.ApplicationState.Entities
             TransportationItems = new TransportationItems.State(appState, input.TransportationItems);
             Freight = new Freight.State(appState, input.Freight);
             Wheels = new Wheels.State(appState, input.Wheels);
-            Vehicles = new Vehicles.State(appState, input.Vehicles);
 
             sliceList = new List<IEntityStateSlice>() {
-                Rooms,
                 Floors,
                 Windows,
                 InteriorWalls,
@@ -97,7 +87,6 @@ namespace TowerBuilder.ApplicationState.Entities
                 TransportationItems,
                 Freight,
                 Wheels,
-                Vehicles,
                 Windows
             };
 
@@ -107,41 +96,11 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public override void Setup()
         {
-            Rooms.Setup();
-            AddListeners(Rooms);
-
-            Floors.Setup();
-            AddListeners(Floors);
-
-            Windows.Setup();
-            AddListeners(Windows);
-
-            InteriorWalls.Setup();
-            AddListeners(InteriorWalls);
-
-            InteriorLights.Setup();
-            AddListeners(InteriorLights);
-
-            Furnitures.Setup();
-            AddListeners(Furnitures);
-
-            Residents.Setup();
-            AddListeners(Residents);
-
-            TransportationItems.Setup();
-            AddListeners(TransportationItems);
-
-            Freight.Setup();
-            AddListeners(Freight);
-
-            Wheels.Setup();
-            AddListeners(Wheels);
-
-            Vehicles.Setup();
-            AddListeners(Vehicles);
-
-            Windows.Setup();
-            AddListeners(Windows);
+            sliceList.ForEach(slice =>
+            {
+                slice.Setup();
+                AddListeners(slice);
+            });
 
             void AddListeners(IEntityStateSlice stateSlice)
             {
@@ -157,6 +116,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
             sliceList.ForEach((slice) =>
             {
+                slice.Teardown();
                 RemoveListeners(slice);
             });
 
@@ -186,7 +146,6 @@ namespace TowerBuilder.ApplicationState.Entities
         public IEntityStateSlice GetStateSlice(Entity entity) =>
             entity switch
             {
-                DataTypes.Entities.Rooms.Room => Rooms,
                 DataTypes.Entities.Floors.Floor => Floors,
                 DataTypes.Entities.InteriorWalls.InteriorWall => InteriorWalls,
                 DataTypes.Entities.InteriorLights.InteriorLight => InteriorLights,
@@ -195,8 +154,10 @@ namespace TowerBuilder.ApplicationState.Entities
                 DataTypes.Entities.TransportationItems.TransportationItem => TransportationItems,
                 DataTypes.Entities.Freights.FreightItem => Freight,
                 DataTypes.Entities.Wheels.Wheel => Wheels,
-                DataTypes.Entities.Vehicles.Vehicle => Vehicles,
                 DataTypes.Entities.Windows.Window => Windows,
+                // TODO - remove these entity groups from here
+                // DataTypes.Entities.Groups.Rooms.Room => Rooms,
+                // DataTypes.Entities.Groups.Vehicles.Vehicle => Vehicles,
                 _ => throw new NotSupportedException($"Entity type not handled: {entity.GetType()}")
             };
 

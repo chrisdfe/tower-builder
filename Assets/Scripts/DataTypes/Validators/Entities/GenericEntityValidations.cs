@@ -2,7 +2,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Entities;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Floors;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Validators.Entities
@@ -21,15 +21,15 @@ namespace TowerBuilder.DataTypes.Validators.Entities
 
         public static ListWrapper<ValidationError> ValidateIsInsideRoom(AppState appState, Entity entity)
         {
-            foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.items)
-            {
-                Room entityRoom = appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates);
+            // foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.items)
+            // {
+            //     Room entityRoom = appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates);
 
-                if (entityRoom == null)
-                {
-                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed inside.");
-                }
-            }
+            //     if (entityRoom == null)
+            //     {
+            //         return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed inside.");
+            //     }
+            // }
 
             return new ListWrapper<ValidationError>();
         }
@@ -134,7 +134,8 @@ namespace TowerBuilder.DataTypes.Validators.Entities
                 : IsValidOutsideEntityLocation(appState, cellCoordinates);
 
         public static bool IsInsideRoom(AppState appState, CellCoordinates cellCoordinates) =>
-            appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null;
+            // appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null;
+            true;
 
         // outside + on the ground
         public static bool IsValidOutsideEntityLocation(AppState appState, CellCoordinates cellCoordinates) =>
@@ -143,9 +144,10 @@ namespace TowerBuilder.DataTypes.Validators.Entities
 
         // inside + on a floor
         public static bool IsValidInsideEntityLocation(AppState appState, CellCoordinates cellCoordinates) =>
-            appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
-            appState.Entities.Floors.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
-            HasEnoughVerticalSpace(appState, cellCoordinates);
+            // appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
+            // appState.Entities.Floors.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
+            // HasEnoughVerticalSpace(appState, cellCoordinates);
+            true;
 
         public static bool HasEnoughVerticalSpace(AppState appState, CellCoordinates cellCoordinates) => true;
     }

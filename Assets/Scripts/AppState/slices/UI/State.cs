@@ -5,9 +5,9 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
-using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
-using TowerBuilder.DataTypes.Entities.Vehicles;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.UI
@@ -101,15 +101,15 @@ namespace TowerBuilder.ApplicationState.UI
         {
             this.currentSelectedCell = currentSelectedCell;
 
-            currentSelectedRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(currentSelectedCell);
+            // currentSelectedRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(currentSelectedCell);
 
-            currentSelectedRoomBlock = null;
-            if (currentSelectedRoom != null)
-            {
-                currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
+            // currentSelectedRoomBlock = null;
+            // if (currentSelectedRoom != null)
+            // {
+            //     currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
 
-                currentSelectedVehicle = Registry.appState.Entities.Vehicles.queries.FindVehicleByRoom(currentSelectedRoom);
-            }
+            //     currentSelectedVehicle = Registry.appState.Entities.Vehicles.queries.FindVehicleByRoom(currentSelectedRoom);
+            // }
 
             if (selectionIsActive)
             {
@@ -120,15 +120,12 @@ namespace TowerBuilder.ApplicationState.UI
                 selectionBox.SetStartAndEnd(currentSelectedCell);
             }
 
-            SetEntityList();
+            // SetEntityList();
 
             events.onCurrentSelectedCellUpdated?.Invoke(currentSelectedCell);
-
             events.onSelectionBoxUpdated?.Invoke(selectionBox);
-
-            events.onCurrentSelectedRoomUpdated?.Invoke(currentSelectedRoom);
-
-            events.onCurrentSelectedRoomBlockUpdated?.Invoke(currentSelectedRoomBlock);
+            // events.onCurrentSelectedRoomUpdated?.Invoke(currentSelectedRoom);
+            // events.onCurrentSelectedRoomBlockUpdated?.Invoke(currentSelectedRoomBlock);
         }
 
         public void SelectStart()

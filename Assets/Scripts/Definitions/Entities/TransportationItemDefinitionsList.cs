@@ -49,8 +49,7 @@ namespace TowerBuilder.Definitions
 
                 pricePerCell = 800,
 
-                resizability = TransportationItem.Resizability.Diagonal
-                // resizability = TransportationItem.Resizability.Flexible
+                resizability = Resizability.Diagonal
             },
 
             new TransportationItemDefinition()
@@ -91,7 +90,7 @@ namespace TowerBuilder.Definitions
 
                 pricePerCell = 400,
 
-                resizability = TransportationItem.Resizability.Vertical
+                resizability = Resizability.Vertical
             },
 
             new TransportationItemDefinition()
@@ -131,7 +130,7 @@ namespace TowerBuilder.Definitions
 
                 pricePerCell = 200,
 
-                resizability = TransportationItem.Resizability.Inflexible
+                resizability = Resizability.Inflexible
             }
     };
 

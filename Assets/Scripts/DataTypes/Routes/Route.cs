@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Routes
@@ -29,62 +29,62 @@ namespace TowerBuilder.DataTypes.Routes
         // Normalize segment sizes by breaking the multi-cell-width route attempt segments down into 1-cell-width segments
         public void CalculateCellSegments(AppState appState)
         {
-            List<RouteSegment> result = new List<RouteSegment>();
+            // List<RouteSegment> result = new List<RouteSegment>();
 
-            RouteSegment.Node CreateSegmentNode(CellCoordinates cellCoordinates) =>
-                new RouteSegment.Node(
-                    cellCoordinates,
-                    appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates)
-                );
+            // RouteSegment.Node CreateSegmentNode(CellCoordinates cellCoordinates) =>
+            //     new RouteSegment.Node(
+            //         cellCoordinates,
+            //         appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates)
+            //     );
 
-            CellCoordinates currentCellCoordinates;
+            // CellCoordinates currentCellCoordinates;
 
-            void CreateRouteSegment(CellCoordinates nextCellCoordinates, RouteSegment.Type type)
-            {
-                result.Add(
-                    new RouteSegment(
-                        CreateSegmentNode(currentCellCoordinates),
-                        CreateSegmentNode(nextCellCoordinates),
-                        type
-                    )
-                );
+            // void CreateRouteSegment(CellCoordinates nextCellCoordinates, RouteSegment.Type type)
+            // {
+            //     result.Add(
+            //         new RouteSegment(
+            //             CreateSegmentNode(currentCellCoordinates),
+            //             CreateSegmentNode(nextCellCoordinates),
+            //             type
+            //         )
+            //     );
 
-                currentCellCoordinates = nextCellCoordinates;
-            }
+            //     currentCellCoordinates = nextCellCoordinates;
+            // }
 
-            foreach (RouteSegment segment in rawSegments)
-            {
-                currentCellCoordinates = segment.startNode.cellCoordinates;
-                while (
-                    (currentCellCoordinates.x != segment.endNode.cellCoordinates.x) ||
-                    (currentCellCoordinates.floor != segment.endNode.cellCoordinates.floor)
-                )
-                {
-                    CellCoordinates nextCellCoordinates = currentCellCoordinates.Clone();
+            // foreach (RouteSegment segment in rawSegments)
+            // {
+            //     currentCellCoordinates = segment.startNode.cellCoordinates;
+            //     while (
+            //         (currentCellCoordinates.x != segment.endNode.cellCoordinates.x) ||
+            //         (currentCellCoordinates.floor != segment.endNode.cellCoordinates.floor)
+            //     )
+            //     {
+            //         CellCoordinates nextCellCoordinates = currentCellCoordinates.Clone();
 
-                    if (currentCellCoordinates.x > segment.endNode.cellCoordinates.x)
-                    {
-                        nextCellCoordinates.x--;
-                    }
-                    else if (currentCellCoordinates.x < segment.endNode.cellCoordinates.x)
-                    {
-                        nextCellCoordinates.x++;
-                    }
+            //         if (currentCellCoordinates.x > segment.endNode.cellCoordinates.x)
+            //         {
+            //             nextCellCoordinates.x--;
+            //         }
+            //         else if (currentCellCoordinates.x < segment.endNode.cellCoordinates.x)
+            //         {
+            //             nextCellCoordinates.x++;
+            //         }
 
-                    if (currentCellCoordinates.floor > segment.endNode.cellCoordinates.floor)
-                    {
-                        nextCellCoordinates.floor--;
-                    }
-                    else if (currentCellCoordinates.floor < segment.endNode.cellCoordinates.floor)
-                    {
-                        nextCellCoordinates.floor++;
-                    }
+            //         if (currentCellCoordinates.floor > segment.endNode.cellCoordinates.floor)
+            //         {
+            //             nextCellCoordinates.floor--;
+            //         }
+            //         else if (currentCellCoordinates.floor < segment.endNode.cellCoordinates.floor)
+            //         {
+            //             nextCellCoordinates.floor++;
+            //         }
 
-                    CreateRouteSegment(nextCellCoordinates, segment.type);
-                }
-            }
+            //         CreateRouteSegment(nextCellCoordinates, segment.type);
+            //     }
+            // }
 
-            segments = result;
+            // segments = result;
         }
     }
 }

@@ -27,11 +27,11 @@ namespace TowerBuilder.GameWorld.Entities
         {
             entityManagerMap = new Dictionary<Type, GameWorldEntityList>()
             {
-                {
-                    typeof(DataTypes.Entities.Rooms.Room),
-                    GameWorldRoomsManager.Find()
-                        .GetComponent<GameWorldEntityList>()
-                },
+                // {
+                //     typeof(DataTypes.Entities.Groups.Rooms.Room),
+                //     GameWorldRoomsManager.Find()
+                //         .GetComponent<GameWorldEntityList>()
+                // },
                 {
                     typeof(DataTypes.Entities.Floors.Floor),
                     GameWorldFloorsManager.Find()
@@ -72,11 +72,11 @@ namespace TowerBuilder.GameWorld.Entities
                     GameWorldWheelsManager.Find()
                         .GetComponent<GameWorldEntityList>()
                 },
-                {
-                    typeof(DataTypes.Entities.Vehicles.Vehicle),
-                    GameWorldVehiclesManager.Find()
-                        .GetComponent<GameWorldEntityList>()
-                },
+                // {
+                //     typeof(DataTypes.EntitGroups.Vehicles.Vehicle),
+                //     GameWorldVehiclesManager.Find()
+                //         .GetComponent<GameWorldEntityList>()
+                // },
                 {
                     typeof(DataTypes.Entities.Windows.Window),
                     GameWorldWindowsManager.Find()

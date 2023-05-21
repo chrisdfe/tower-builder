@@ -2,6 +2,18 @@
 
 ## Tasks
 
+- "EntityGroup"s - a wrapper around a list (group) of entities without its own cellCoordinatesList
+  - used for a things like room, vehicle
+  - the cost of the group would be the sum of all of the entities prices
+  - basic version could work like a stamp - could be called "static"
+  - the next iteration would be resizable - each entity type could have their own resiability definition/strategy
+- Convert room to an entity group
+  - walls/ceiling (figure out a name for this)
+  - floor
+- Different vehicle/building types
+  - stationary
+  - vehicle
+  - maybe I should rename vehicle back to Building for this
 - Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
 - 3 cells = 1 room cell? 5?
 - Entity categories
@@ -49,18 +61,6 @@
   - Make sure each cell between current + target cells have enough vertical clearance
 - For a first draft, every 1 mile of journey a random passer-by shows up
   - after that, encounters with other vehicles
-- "EntityGroup"s - a wrapper around a list (group) of entities without its own cellCoordinatesList
-  - used for a things like room, vehicle
-  - the cost of the group would be the sum of all of the entities prices
-  - basic version could work like a stamp - could be called "static"
-  - the next iteration would be resizable - each entity type could have their own resiability definition/strategy
-- Convert room to an entity group
-  - walls/ceiling (figure out a name for this)
-  - floor
-- Different vehicle/building types
-  - stationary
-  - vehicle
-  - maybe I should rename vehicle back to Building for this
 - Freight areas look different to home areas etc so you can tell the difference at a glance
 - Turret entity
 - 'entity' and 'entity group' buildToolState subStates

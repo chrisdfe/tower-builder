@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Entities.Rooms;
+// using TowerBuilder.ApplicationState.Entities.Rooms;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Routes

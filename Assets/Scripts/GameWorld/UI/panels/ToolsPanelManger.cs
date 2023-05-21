@@ -4,7 +4,7 @@ using System.Runtime;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 using UnityEngine.UI;
 

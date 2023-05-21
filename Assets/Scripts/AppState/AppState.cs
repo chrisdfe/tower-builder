@@ -12,6 +12,7 @@ namespace TowerBuilder.ApplicationState
             public Journeys.State.Input Journeys;
 
             public Entities.State.Input Entities;
+            public EntityGroups.State.Input EntityGroups;
             public Attributes.State.Input Attributes;
             public Relations.State.Input Relations;
             public Behaviors.State.Input Behaviors;
@@ -27,6 +28,7 @@ namespace TowerBuilder.ApplicationState
                 Journeys = new Journeys.State.Input();
 
                 Entities = new Entities.State.Input();
+                EntityGroups = new EntityGroups.State.Input();
                 Attributes = new Attributes.State.Input();
                 Relations = new Relations.State.Input();
                 Behaviors = new Behaviors.State.Input();
@@ -43,6 +45,7 @@ namespace TowerBuilder.ApplicationState
         public Journeys.State Journeys;
 
         public Entities.State Entities;
+        public EntityGroups.State EntityGroups;
         public Attributes.State Attributes;
         public Relations.State Relations;
         public Behaviors.State Behaviors;
@@ -80,6 +83,8 @@ namespace TowerBuilder.ApplicationState
             Journeys = new Journeys.State(this, input.Journeys);
 
             Entities = new Entities.State(this, input.Entities);
+            EntityGroups = new EntityGroups.State(this, input.EntityGroups);
+
             Attributes = new Attributes.State(this, input.Attributes);
             Relations = new Relations.State(this, input.Relations);
             Behaviors = new Behaviors.State(this, input.Behaviors);
@@ -101,6 +106,7 @@ namespace TowerBuilder.ApplicationState
             Journeys.Setup();
 
             Entities.Setup();
+            EntityGroups.Setup();
             Attributes.Setup();
             Relations.Setup();
             Behaviors.Setup();

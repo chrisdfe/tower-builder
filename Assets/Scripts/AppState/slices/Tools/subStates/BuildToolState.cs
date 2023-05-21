@@ -35,7 +35,8 @@ namespace TowerBuilder.ApplicationState.Tools
             public blueprintUpdateEvent onBlueprintEntityUpdated;
         }
 
-        public Type selectedEntityType { get; private set; } = typeof(DataTypes.Entities.Rooms.Room);
+        // public Type selectedEntityType { get; private set; } = typeof(DataTypes.EntityGroups.Rooms.Room);
+        public Type selectedEntityType { get; private set; } = typeof(DataTypes.Entities.Floors.Floor);
         public string selectedEntityCategory { get; private set; } = "";
         public EntityDefinition selectedEntityDefinition { get; private set; } = null;
         public Entity blueprintEntity { get; private set; } = null;

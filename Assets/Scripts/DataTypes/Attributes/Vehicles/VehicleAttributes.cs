@@ -3,8 +3,8 @@ using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Behaviors.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Entities.Rooms;
-using TowerBuilder.DataTypes.Entities.Vehicles;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Attributes.Vehicles
@@ -56,31 +56,31 @@ namespace TowerBuilder.DataTypes.Attributes.Vehicles
             float currentCurrentSpeed = currentSpeed;
             float newCurrentSpeed = currentCurrentSpeed;
 
-            if (vehicle.isPiloted)
-            {
-                Attribute enginePowerAttribute = FindByKey(VehicleAttributes.Key.EnginePower);
-                float enginePowerAmount = enginePowerAttribute.value;
+            // if (vehicle.isPiloted)
+            // {
+            //     Attribute enginePowerAttribute = FindByKey(VehicleAttributes.Key.EnginePower);
+            //     float enginePowerAmount = enginePowerAttribute.value;
 
-                // for now currentSpeed == enginePower
-                if (currentCurrentSpeed != enginePowerAmount)
-                {
-                    newCurrentSpeed = enginePowerAmount;
-                }
-            }
-            else
-            {
-                newCurrentSpeed = 0;
-            }
+            //     // for now currentSpeed == enginePower
+            //     if (currentCurrentSpeed != enginePowerAmount)
+            //     {
+            //         newCurrentSpeed = enginePowerAmount;
+            //     }
+            // }
+            // else
+            // {
+            //     newCurrentSpeed = 0;
+            // }
 
-            if (newCurrentSpeed != currentCurrentSpeed)
-            {
-                // AddOrUpdateStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.CurrentSpeed, "Calculated Engine Speed", newCurrentSpeed);
-                // For now vehicle alayws goes a
-                this.currentSpeed = newCurrentSpeed;
+            // if (newCurrentSpeed != currentCurrentSpeed)
+            // {
+            //     // AddOrUpdateStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.CurrentSpeed, "Calculated Engine Speed", newCurrentSpeed);
+            //     // For now vehicle alayws goes a
+            //     this.currentSpeed = newCurrentSpeed;
 
-                // TODO - max speed should remain the same whether or not it is piloted
-                this.maxSpeed = newCurrentSpeed;
-            }
+            //     // TODO - max speed should remain the same whether or not it is piloted
+            //     this.maxSpeed = newCurrentSpeed;
+            // }
         }
 
         /*        

@@ -7,8 +7,8 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Behaviors.Residents;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
-using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.GameWorld.UI.Components;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -82,9 +82,9 @@ namespace TowerBuilder.GameWorld.UI
 
             switch (inspectedEntity)
             {
-                case Room roomEntity:
-                    SetInspectedRoomEntityText(roomEntity);
-                    break;
+                // case Room roomEntity:
+                //     SetInspectedRoomEntityText(roomEntity);
+                //     break;
                 case Furniture furnitureEntity:
                     SetInspectedFurnitureText(furnitureEntity);
                     break;
@@ -106,14 +106,14 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectedRoomEntityText(Room room)
         {
-            string text =
-              $"    name: {room}\n"
-            + $"    title: {room.definition.title}\n"
-            + $"    price: {room.price}\n"
-            + $"    cells: {room.cellCoordinatesList.Count}\n"
-            + $"    blocks: {room.blocksList.Count}\n";
+            // string text =
+            //   $"    name: {room}\n"
+            // + $"    title: {room.definition.title}\n"
+            // + $"    price: {room.price}\n"
+            // + $"    cells: {room.cellCoordinatesList.Count}\n"
+            // + $"    blocks: {room.blocksList.Count}\n";
 
-            inspectText.text += text;
+            // inspectText.text += text;
         }
 
         void SetInspectedResidentText(Resident resident)
@@ -160,8 +160,8 @@ namespace TowerBuilder.GameWorld.UI
 
             switch (inspectedEntity)
             {
-                case Room roomEntity:
-                    break;
+                // case Room roomEntity:
+                //     break;
                 case Furniture furnitureEntity:
                     CreateFurnitureActionButtons(furnitureEntity as Furniture);
                     break;

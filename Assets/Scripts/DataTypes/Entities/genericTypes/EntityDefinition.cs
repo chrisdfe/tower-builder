@@ -10,7 +10,7 @@ namespace TowerBuilder.DataTypes.Entities
         public virtual string title { get; set; } = "None";
         public virtual string category { get; set; } = "None";
 
-        public virtual Entity.Resizability resizability { get; set; } = Entity.Resizability.Flexible;
+        public virtual Resizability resizability { get; set; } = Resizability.Flexible;
 
         public virtual CellCoordinatesList blockCellsTemplate { get; set; } = new CellCoordinatesList();
         public virtual bool staticBlockSize { get; set; } = true;

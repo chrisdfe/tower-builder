@@ -1,4 +1,4 @@
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Time;
 using TowerBuilder.Systems;
@@ -91,11 +91,11 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnTestSaveButtonClick()
         {
-            if (Registry.appState.Entities.Rooms.list.Count > 0)
-            {
-                Room room = Registry.appState.Entities.Rooms.list.items[0];
-                SaveLoadSystem.SaveToFile<Room>(room);
-            }
+            // if (Registry.appState.Entities.Rooms.list.Count > 0)
+            // {
+            //     Room room = Registry.appState.Entities.Rooms.list.items[0];
+            //     SaveLoadSystem.SaveToFile<Room>(room);
+            // }
         }
     }
 }

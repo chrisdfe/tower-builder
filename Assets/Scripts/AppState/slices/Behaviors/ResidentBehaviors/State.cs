@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes.Attributes.Residents;
 using TowerBuilder.DataTypes.Entities.Behaviors.Residents;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Routes;
 using TowerBuilder.DataTypes.Time;

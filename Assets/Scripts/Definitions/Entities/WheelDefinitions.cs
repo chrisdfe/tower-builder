@@ -14,7 +14,7 @@ namespace TowerBuilder.Definitions
                 title = "Small",
                 category = "Basic",
 
-                resizability = Entity.Resizability.Horizontal,
+                resizability = Resizability.Horizontal,
 
                 blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {

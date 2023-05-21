@@ -4,8 +4,8 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Attributes.Vehicles;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
-using TowerBuilder.DataTypes.Entities.Rooms;
-using TowerBuilder.DataTypes.Entities.Vehicles;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using TowerBuilder.DataTypes.Validators;
 using TowerBuilder.DataTypes.Validators.Behaviors.Furnitures;
 using UnityEngine;
@@ -18,8 +18,8 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
         public CockpitBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
 
-        Vehicle vehicle => appState.Entities.Vehicles.queries.FindVehicleByFurniture(furniture);
-        VehicleAttributes vehicleAttributesGroup => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
+        // Vehicle vehicle => appState.Entities.Vehicles.queries.FindVehicleByFurniture(furniture);
+        // VehicleAttributes vehicleAttributesGroup => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
         AttributeModifier modifier;
 
         protected override FurnitureBehaviorValidator createValidator() => new CockpitBehaviorValidator(this);
@@ -28,13 +28,13 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
         {
             // modifier = new BoolAttributeModifier("Piloting", 1f);
             // appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributesGroup, VehicleAttributes.Key.IsPiloted, modifier);
-            appState.Entities.Vehicles.SetVehicleIsPiloted(vehicle, true);
+            // appState.Entities.Vehicles.SetVehicleIsPiloted(vehicle, true);
         }
 
         protected override void OnInteractEnd(Resident resident)
         {
             // TODO - support multiple pilot seats by checking that other CockpitBehaviors exist first
-            appState.Entities.Vehicles.SetVehicleIsPiloted(vehicle, false);
+            // appState.Entities.Vehicles.SetVehicleIsPiloted(vehicle, false);
             modifier = null;
         }
 
@@ -49,17 +49,17 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
             static ListWrapper<ValidationError> ValidateEnginePowerIsNotZero(AppState appState, FurnitureBehavior furnitureBehavior)
             {
-                Furniture furniture = furnitureBehavior.furniture;
-                Room room = appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]);
-                Vehicle vehicle = appState.Entities.Vehicles.queries.FindVehicleByRoom(room);
-                VehicleAttributes vehicleAttributes = appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
+                // Furniture furniture = furnitureBehavior.furniture;
+                // Room room = appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]);
+                // Vehicle vehicle = appState.Entities.Vehicles.queries.FindVehicleByRoom(room);
+                // VehicleAttributes vehicleAttributes = appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
 
-                Attribute enginePower = vehicleAttributes.FindByKey(VehicleAttributes.Key.EnginePower);
+                // Attribute enginePower = vehicleAttributes.FindByKey(VehicleAttributes.Key.EnginePower);
 
-                if (enginePower.value == 0)
-                {
-                    return Validator.CreateSingleItemValidationErrorList("Vehicle requires engine power to be piloted.");
-                }
+                // if (enginePower.value == 0)
+                // {
+                //     return Validator.CreateSingleItemValidationErrorList("Vehicle requires engine power to be piloted.");
+                // }
 
                 return new ListWrapper<ValidationError>();
             }

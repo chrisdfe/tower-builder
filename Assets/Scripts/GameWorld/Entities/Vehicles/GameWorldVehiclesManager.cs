@@ -1,4 +1,4 @@
-using TowerBuilder.DataTypes.Entities.Vehicles;
+using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Vehicles
@@ -13,7 +13,7 @@ namespace TowerBuilder.GameWorld.Entities.Vehicles
 
         public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
 
-        public MeshAssetList<Vehicle.Key> meshAssets = new MeshAssetList<Vehicle.Key>();
+        // public MeshAssetList<Vehicle.Key> meshAssets = new MeshAssetList<Vehicle.Key>();
 
         /* 
             Static API

@@ -4,7 +4,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Attributes.Vehicles;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
-using TowerBuilder.DataTypes.Entities.Vehicles;
+using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Behaviors.Furnitures
@@ -15,8 +15,8 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
         public EngineBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
 
-        Vehicle vehicle => appState.Entities.Vehicles.queries.FindVehicleByFurniture(furniture);
-        VehicleAttributes vehicleAttributes => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
+        // Vehicle vehicle => appState.Entities.Vehicles.queries.FindVehicleByFurniture(furniture);
+        // VehicleAttributes vehicleAttributes => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
         AttributeModifier baseEnginePowerModifier;
         AttributeModifier mannedEngineModifier;
 
@@ -25,33 +25,33 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
             base.Setup();
 
             baseEnginePowerModifier = new AttributeModifier("Base Engine Power", 1f);
-            AddStaticModifier(baseEnginePowerModifier);
+            // AddStaticModifier(baseEnginePowerModifier);
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            RemoveStaticModifier(baseEnginePowerModifier);
+            // RemoveStaticModifier(baseEnginePowerModifier);
             baseEnginePowerModifier = null;
         }
 
         protected override void OnInteractStart(Resident resident)
         {
             mannedEngineModifier = new AttributeModifier("Manned Engine Power", 1f);
-            AddStaticModifier(mannedEngineModifier);
+            // AddStaticModifier(mannedEngineModifier);
         }
 
         protected override void OnInteractEnd(Resident resident)
         {
-            RemoveStaticModifier(mannedEngineModifier);
+            // RemoveStaticModifier(mannedEngineModifier);
             mannedEngineModifier = null;
         }
 
-        void AddStaticModifier(AttributeModifier modifier) =>
-            appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.EnginePower, modifier);
+        // void AddStaticModifier(AttributeModifier modifier) =>
+        //     appState.Attributes.Vehicles.AddStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.EnginePower, modifier);
 
-        void RemoveStaticModifier(AttributeModifier modifier) =>
-            appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.EnginePower, modifier);
+        // void RemoveStaticModifier(AttributeModifier modifier) =>
+        //     appState.Attributes.Vehicles.RemoveStaticAttributeModifier(vehicleAttributes, VehicleAttributes.Key.EnginePower, modifier);
     }
 }

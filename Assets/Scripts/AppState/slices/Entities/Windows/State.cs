@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.Windows;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 
@@ -28,16 +28,16 @@ namespace TowerBuilder.ApplicationState.Entities.Windows
         {
             base.Setup();
 
-            appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
-            appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
+            // appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
+            // appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
-            appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
+            // appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
+            // appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
         }
 
         /* 

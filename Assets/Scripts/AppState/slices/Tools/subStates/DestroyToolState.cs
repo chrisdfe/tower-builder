@@ -1,11 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using TowerBuilder.ApplicationState;
-using TowerBuilder.ApplicationState.Entities.Rooms;
-using TowerBuilder.ApplicationState.UI;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Rooms;
-using UnityEngine;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 
 namespace TowerBuilder.ApplicationState.Tools
 {
@@ -103,17 +99,17 @@ namespace TowerBuilder.ApplicationState.Tools
             destroyIsActive = false;
 
             // Restrict destroy to whichever room destroy started on
-            if (roomsToDeleteBlocksFrom.Count > 0 && blocksToDelete.Count > 0)
-            {
-                foreach (Room roomToDelete in roomsToDeleteBlocksFrom.items)
-                {
-                    CellCoordinatesBlockList roomBlocksToDelete =
-                        new CellCoordinatesBlockList(
-                            blocksToDelete.items.FindAll(roomBlock => roomToDelete.blocksList.Contains(roomBlock))
-                        );
-                    Registry.appState.Entities.Rooms.DestroyRoomBlocks(roomToDelete, roomBlocksToDelete);
-                }
-            }
+            // if (roomsToDeleteBlocksFrom.Count > 0 && blocksToDelete.Count > 0)
+            // {
+            //     foreach (Room roomToDelete in roomsToDeleteBlocksFrom.items)
+            //     {
+            //         CellCoordinatesBlockList roomBlocksToDelete =
+            //             new CellCoordinatesBlockList(
+            //                 blocksToDelete.items.FindAll(roomBlock => roomToDelete.blocksList.Contains(roomBlock))
+            //             );
+            //         Registry.appState.Entities.Rooms.DestroyRoomBlocks(roomToDelete, roomBlocksToDelete);
+            //     }
+            // }
 
             roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
@@ -129,17 +125,17 @@ namespace TowerBuilder.ApplicationState.Tools
             blocksToDelete = new CellCoordinatesBlockList();
             cellCoordinatesToDelete = new CellCoordinatesList();
 
-            foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
-            {
-                var (roomToDelete, roomBlockToDelete) = Registry.appState.Entities.Rooms.queries.FindRoomBlockAtCell(cellCoordinates);
+            // foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
+            // {
+            //     var (roomToDelete, roomBlockToDelete) = Registry.appState.Entities.Rooms.queries.FindRoomBlockAtCell(cellCoordinates);
 
-                if (roomToDelete != null && roomBlockToDelete != null)
-                {
-                    roomsToDeleteBlocksFrom.Add(roomToDelete);
-                    blocksToDelete.Add(roomBlockToDelete);
-                    cellCoordinatesToDelete.Add(roomBlockToDelete.items);
-                }
-            }
+            //     if (roomToDelete != null && roomBlockToDelete != null)
+            //     {
+            //         roomsToDeleteBlocksFrom.Add(roomToDelete);
+            //         blocksToDelete.Add(roomBlockToDelete);
+            //         cellCoordinatesToDelete.Add(roomBlockToDelete.items);
+            //     }
+            // }
         }
     }
 }

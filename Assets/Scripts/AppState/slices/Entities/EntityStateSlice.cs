@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities
 {
-    public interface IEntityStateSlice
+    public interface IEntityStateSlice : ISetupable
     {
         public ListWrapper<Entity> entityList { get; }
 

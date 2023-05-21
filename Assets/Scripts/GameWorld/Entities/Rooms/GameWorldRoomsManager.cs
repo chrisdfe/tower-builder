@@ -1,5 +1,5 @@
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Rooms
@@ -14,14 +14,14 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
         };
 
         public AssetList<AssetKey> prefabAssets = new AssetList<AssetKey>();
-        public MeshAssetList<Room.SkinKey> meshAssets = new MeshAssetList<Room.SkinKey>();
+        // public MeshAssetList<Room.SkinKey> meshAssets = new MeshAssetList<Room.SkinKey>();
 
         GameWorldEntityList gameWorldEntityList;
 
         void Awake()
         {
             gameWorldEntityList = GetComponent<GameWorldEntityList>();
-            meshAssets.ReplaceMaterials();
+            // meshAssets.ReplaceMaterials();
         }
 
         void Start()
@@ -36,14 +36,14 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         public void Setup()
         {
-            Registry.appState.Entities.Rooms.events.onRoomBlocksAdded += OnRoomBlocksAdded;
-            Registry.appState.Entities.Rooms.events.onRoomBlocksRemoved += OnRoomBlocksRemoved;
+            // Registry.appState.Entities.Rooms.events.onRoomBlocksAdded += OnRoomBlocksAdded;
+            // Registry.appState.Entities.Rooms.events.onRoomBlocksRemoved += OnRoomBlocksRemoved;
         }
 
         public void Teardown()
         {
-            Registry.appState.Entities.Rooms.events.onRoomBlocksAdded -= OnRoomBlocksAdded;
-            Registry.appState.Entities.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
+            // Registry.appState.Entities.Rooms.events.onRoomBlocksAdded -= OnRoomBlocksAdded;
+            // Registry.appState.Entities.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
         }
 
         /*
@@ -51,12 +51,12 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
         */
         void OnRoomBlocksAdded(Room room, CellCoordinatesBlockList blockList)
         {
-            gameWorldEntityList.ResetEntity(room);
+            // gameWorldEntityList.ResetEntity(room);
         }
 
         void OnRoomBlocksRemoved(Room room, CellCoordinatesBlockList blockList)
         {
-            gameWorldEntityList.ResetEntity(room);
+            // gameWorldEntityList.ResetEntity(room);
         }
 
 

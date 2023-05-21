@@ -1,6 +1,6 @@
 using System;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.Time;
 using TowerBuilder.Utils;
 using UnityEngine;

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using TowerBuilder.ApplicationState.Entities.Rooms;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 
 namespace TowerBuilder.ApplicationState.Tools
 {

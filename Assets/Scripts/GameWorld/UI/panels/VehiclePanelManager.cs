@@ -1,6 +1,6 @@
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Attributes.Vehicles;
-using TowerBuilder.DataTypes.Entities.Vehicles;
+using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,20 +28,20 @@ namespace TowerBuilder.GameWorld.UI
 
         void Setup()
         {
-            Registry.appState.Entities.Vehicles.events.onItemsAdded += OnVehiclesAdded;
-            Registry.appState.Entities.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
+            // Registry.appState.Entities.Vehicles.events.onItemsAdded += OnVehiclesAdded;
+            // Registry.appState.Entities.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
 
-            Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesUpdated;
-            Registry.appState.Attributes.Vehicles.events.onVehicleDerivedAttributesRecalculated += OnVehicleDerivedAttributesRecalculated;
+            // Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesUpdated;
+            // Registry.appState.Attributes.Vehicles.events.onVehicleDerivedAttributesRecalculated += OnVehicleDerivedAttributesRecalculated;
         }
 
         void Teardown()
         {
-            Registry.appState.Entities.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
-            Registry.appState.Entities.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
+            // Registry.appState.Entities.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
+            // Registry.appState.Entities.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
 
-            Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesUpdated;
-            Registry.appState.Attributes.Vehicles.events.onVehicleDerivedAttributesRecalculated -= OnVehicleDerivedAttributesRecalculated;
+            // Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesUpdated;
+            // Registry.appState.Attributes.Vehicles.events.onVehicleDerivedAttributesRecalculated -= OnVehicleDerivedAttributesRecalculated;
         }
 
         void UpdateText()

@@ -12,6 +12,7 @@ namespace TowerBuilder.DataTypes.Validators.Entities
             new List<ValidationFunc>() {
                 GenericEntityValidations.ValidateWalletHasEnoughMoney,
                 GenericEntityValidations.ValidateEntityIsNotOverlappingAnotherEntity,
+                // TODO - put this in a vehicle-specific validation set
                 GenericEntityValidations.ValidateEntityIsNotUnderground,
             };
 

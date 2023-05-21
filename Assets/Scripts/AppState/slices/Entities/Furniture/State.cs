@@ -4,7 +4,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 
@@ -26,22 +26,22 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
 
         public override void Setup()
         {
-            appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
-            appState.Entities.Rooms.events.onItemsBuilt += OnRoomsBuilt;
-            appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
+            // appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
+            // appState.Entities.Rooms.events.onItemsBuilt += OnRoomsBuilt;
+            // appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
 
-            appState.Entities.Rooms.events.onRoomBlocksAdded += OnRoomBlocksAdded;
-            appState.Entities.Rooms.events.onRoomBlocksRemoved += OnRoomBlocksRemoved;
+            // appState.Entities.Rooms.events.onRoomBlocksAdded += OnRoomBlocksAdded;
+            // appState.Entities.Rooms.events.onRoomBlocksRemoved += OnRoomBlocksRemoved;
         }
 
         public override void Teardown()
         {
-            appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
-            appState.Entities.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
-            appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
+            // appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
+            // appState.Entities.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
+            // appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
 
-            appState.Entities.Rooms.events.onRoomBlocksAdded -= OnRoomBlocksAdded;
-            appState.Entities.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
+            // appState.Entities.Rooms.events.onRoomBlocksAdded -= OnRoomBlocksAdded;
+            // appState.Entities.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
         }
 
         /* 
@@ -49,40 +49,40 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
         */
         void OnRoomsAdded(ListWrapper<Room> roomList)
         {
-            roomList.ForEach(room =>
-            {
-                ListWrapper<Furniture> roomFurnitures = room.furnitureBuilder.BuildFurniture(room.isInBlueprintMode);
-                Add(roomFurnitures);
-            });
+            // roomList.ForEach(room =>
+            // {
+            //     ListWrapper<Furniture> roomFurnitures = room.furnitureBuilder.BuildFurniture(room.isInBlueprintMode);
+            //     Add(roomFurnitures);
+            // });
         }
 
         void OnRoomsBuilt(ListWrapper<Room> roomList)
         {
-            roomList.ForEach(room =>
-            {
-                ListWrapper<Furniture> roomFurnitures = queries.FindFurnitureByRoom(room);
+            // roomList.ForEach(room =>
+            // {
+            //     ListWrapper<Furniture> roomFurnitures = queries.FindFurnitureByRoom(room);
 
-                ListWrapper<Furniture> blueprintFurnitures = new ListWrapper<Furniture>(
-                    roomFurnitures.items.FindAll(roomFurniture => roomFurniture.isInBlueprintMode == true).ToList()
-                );
+            //     ListWrapper<Furniture> blueprintFurnitures = new ListWrapper<Furniture>(
+            //         roomFurnitures.items.FindAll(roomFurniture => roomFurniture.isInBlueprintMode == true).ToList()
+            //     );
 
-                if (blueprintFurnitures.Count > 0)
-                {
-                    blueprintFurnitures.ForEach(furniture =>
-                    {
-                        Build(furniture);
-                    });
-                }
-            });
+            //     if (blueprintFurnitures.Count > 0)
+            //     {
+            //         blueprintFurnitures.ForEach(furniture =>
+            //         {
+            //             Build(furniture);
+            //         });
+            //     }
+            // });
         }
 
         void OnRoomsRemoved(ListWrapper<Room> roomList)
         {
-            roomList.ForEach(room =>
-            {
-                ListWrapper<Furniture> furnituresToRemove = queries.FindFurnitureByRoom(room);
-                Remove(furnituresToRemove);
-            });
+            // roomList.ForEach(room =>
+            // {
+            //     ListWrapper<Furniture> furnituresToRemove = queries.FindFurnitureByRoom(room);
+            //     Remove(furnituresToRemove);
+            // });
         }
 
         void OnRoomBlocksAdded(Room room, CellCoordinatesBlockList roomBlocks)
@@ -100,12 +100,12 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
         {
             public Queries(AppState appState, State state) : base(appState, state) { }
 
-            public ListWrapper<Furniture> FindFurnitureByRoom(Room room) =>
-                new ListWrapper<Furniture>(
-                    state.list.items.FindAll(furniture =>
-                        appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]) == room
-                    )
-                );
+            // public ListWrapper<Furniture> FindFurnitureByRoom(Room room) =>
+            //     new ListWrapper<Furniture>(
+            //         state.list.items.FindAll(furniture =>
+            //             appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]) == room
+            //         )
+            //     );
 
             public ListWrapper<Furniture> FindFurnituresAtCell(CellCoordinates cellCoordinates) =>
                 FindEntityTypesAtCell(cellCoordinates).ConvertAll<Furniture>();

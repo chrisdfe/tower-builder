@@ -4,7 +4,7 @@ using System.Linq;
 using TowerBuilder;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Routes

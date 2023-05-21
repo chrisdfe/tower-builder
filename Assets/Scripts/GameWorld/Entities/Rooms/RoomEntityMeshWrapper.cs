@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.Utils;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
     {
         protected Dictionary<string, Transform> segments = new Dictionary<string, Transform>();
 
-        public Room.SkinKey skinKey { get; set; }
+        // public Room.SkinKey skinKey { get; set; }
 
         protected override EntityMeshCellWrapper CreateEntityCellMeshWrapper(
             Transform parent,

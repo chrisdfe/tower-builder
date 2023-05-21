@@ -7,9 +7,9 @@ using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.InteriorLights;
 using TowerBuilder.DataTypes.Entities.InteriorWalls;
 using TowerBuilder.DataTypes.Entities.Residents;
-using TowerBuilder.DataTypes.Entities.Rooms;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
-using TowerBuilder.DataTypes.Entities.Vehicles;
+// using TowerBuilder.DataTypes.Entities.Rooms;
+// using TowerBuilder.DataTypes.Entities.Vehicles;
 using TowerBuilder.DataTypes.Entities.Wheels;
 using TowerBuilder.DataTypes.Entities.Windows;
 using TowerBuilder.DataTypes.Validators;
@@ -24,7 +24,7 @@ namespace TowerBuilder.DataTypes.Entities
     {
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
-                { typeof(Room),               "Room" },
+                // { typeof(Room),               "Room" },
                 { typeof(Floor),              "Floor" },
                 { typeof(InteriorWall),       "InteriorWall" },
                 { typeof(InteriorLight),      "InteriorLight" },
@@ -33,19 +33,10 @@ namespace TowerBuilder.DataTypes.Entities
                 { typeof(TransportationItem), "Transportation Item" },
                 { typeof(FreightItem),        "Freight" },
                 { typeof(Wheel),              "Wheel" },
-                { typeof(Vehicle),            "Vehicle" },
+                // { typeof(Vehicle),            "Vehicle" },
                 { typeof(Window),             "Window" }
             }
         );
-
-        public enum Resizability
-        {
-            Inflexible,
-            Horizontal,
-            Vertical,
-            Diagonal,
-            Flexible,
-        }
 
         public virtual string idKey { get => "entity"; }
 
@@ -235,8 +226,8 @@ namespace TowerBuilder.DataTypes.Entities
         public static string GetEntityDefinitionLabel(EntityDefinition definition) =>
             definition switch
             {
-                RoomDefinition roomDefinition =>
-                    Room.KeyLabelMap.ValueFromKey(roomDefinition.key),
+                // RoomDefinition roomDefinition =>
+                //     Room.KeyLabelMap.ValueFromKey(roomDefinition.key),
                 FloorDefinition floorDefinition =>
                     Floor.KeyLabelMap.ValueFromKey(floorDefinition.key),
                 InteriorWallDefinition interiorWallDefinition =>

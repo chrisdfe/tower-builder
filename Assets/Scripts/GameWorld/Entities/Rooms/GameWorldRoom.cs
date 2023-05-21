@@ -1,4 +1,4 @@
-using TowerBuilder.DataTypes.Entities.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Rooms
@@ -7,8 +7,8 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
     [RequireComponent(typeof(RoomEntityMeshWrapper))]
     public class GameWorldRoom : MonoBehaviour
     {
-        RoomEntityMeshWrapper roomEntityMeshWrapper;
-        Room room;
+        // RoomEntityMeshWrapper roomEntityMeshWrapper;
+        // Room room;
 
         /*
             Lifecycle Methods
@@ -20,7 +20,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         void Start()
         {
-            room = GetComponent<GameWorldEntity>().entity as Room;
+            // room = GetComponent<GameWorldEntity>().entity as Room;
 
             Setup();
         }
@@ -31,20 +31,20 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         public void Setup()
         {
-            AssetList<Room.SkinKey> meshAssets = GameWorldRoomsManager.Find().meshAssets;
+            // AssetList<Room.SkinKey> meshAssets = GameWorldRoomsManager.Find().meshAssets;
 
-            GameObject prefabMesh = meshAssets.FindByKey(room.skinKey);
+            // GameObject prefabMesh = meshAssets.FindByKey(room.skinKey);
 
-            roomEntityMeshWrapper = GetComponent<RoomEntityMeshWrapper>();
-            roomEntityMeshWrapper.prefabMesh = prefabMesh;
-            roomEntityMeshWrapper.cellCoordinatesList = room.cellCoordinatesList;
-            roomEntityMeshWrapper.Setup();
+            // roomEntityMeshWrapper = GetComponent<RoomEntityMeshWrapper>();
+            // roomEntityMeshWrapper.prefabMesh = prefabMesh;
+            // roomEntityMeshWrapper.cellCoordinatesList = room.cellCoordinatesList;
+            // roomEntityMeshWrapper.Setup();
 
-            UpdatePosition();
+            // UpdatePosition();
 
-            GameWorldEntity gameWorldEntity = GetComponent<GameWorldEntity>();
-            gameWorldEntity.customMeshWrapper = roomEntityMeshWrapper;
-            gameWorldEntity.Setup();
+            // GameWorldEntity gameWorldEntity = GetComponent<GameWorldEntity>();
+            // gameWorldEntity.customMeshWrapper = roomEntityMeshWrapper;
+            // gameWorldEntity.Setup();
         }
 
         public void Teardown()
@@ -53,7 +53,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         public void Reset()
         {
-            roomEntityMeshWrapper.Reset();
+            // roomEntityMeshWrapper.Reset();
         }
 
         public void UpdatePosition()
@@ -62,8 +62,8 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         public void SetRoom(Room room)
         {
-            this.room = room;
-            gameObject.name = $"Room {room.id}";
+            // this.room = room;
+            // gameObject.name = $"Room {room.id}";
         }
 
         /* 

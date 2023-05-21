@@ -5,8 +5,8 @@ using Newtonsoft.Json;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Entities.Rooms;
-using TowerBuilder.DataTypes.Entities.Vehicles;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
+using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using TowerBuilder.Systems;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -16,7 +16,6 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class DebugPanelManager : MonoBehaviour
     {
-
         Text currentSelectedCellText;
         Text vehicleCountText;
         Text roomCountText;
@@ -28,9 +27,9 @@ namespace TowerBuilder.GameWorld.UI
             Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
             Registry.appState.UI.events.onSelectionBoxUpdated += OnSelectionBoxUpdated;
 
-            Registry.appState.Entities.Vehicles.events.onListUpdated += OnVehicleListUpdated;
+            // Registry.appState.Entities.Vehicles.events.onListUpdated += OnVehicleListUpdated;
 
-            Registry.appState.Entities.Rooms.events.onListUpdated += OnRoomListUpdated;
+            // Registry.appState.Entities.Rooms.events.onListUpdated += OnRoomListUpdated;
 
             currentSelectedCellText = TransformUtils.FindDeepChild(transform, "CurrentSelectedCellText").GetComponent<Text>();
             currentSelectedCellText.text = "";
@@ -93,14 +92,14 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetVehicleCountText()
         {
-            ListWrapper<Vehicle> allVehicles = Registry.appState.Entities.Vehicles.list;
-            vehicleCountText.text = $"Vehicles: {allVehicles.Count}";
+            // ListWrapper<Vehicle> allVehicles = Registry.appState.Entities.Vehicles.list;
+            // vehicleCountText.text = $"Vehicles: {allVehicles.Count}";
         }
 
         void SetRoomCountText()
         {
-            ListWrapper<Room> roomsList = Registry.appState.Entities.Rooms.list;
-            roomCountText.text = $"Rooms: {roomsList.Count}";
+            // ListWrapper<Room> roomsList = Registry.appState.Entities.Rooms.list;
+            // roomCountText.text = $"Rooms: {roomsList.Count}";
         }
     }
 }
