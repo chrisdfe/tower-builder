@@ -8,8 +8,6 @@ using TowerBuilder.DataTypes.Entities.InteriorLights;
 using TowerBuilder.DataTypes.Entities.InteriorWalls;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
-// using TowerBuilder.DataTypes.Entities.Rooms;
-// using TowerBuilder.DataTypes.Entities.Vehicles;
 using TowerBuilder.DataTypes.Entities.Wheels;
 using TowerBuilder.DataTypes.Entities.Windows;
 using TowerBuilder.DataTypes.Validators;
@@ -22,9 +20,9 @@ namespace TowerBuilder.DataTypes.Entities
 {
     public class Entity : ISetupable
     {
+        // TODO - put elsewhere
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
-                // { typeof(Room),               "Room" },
                 { typeof(Floor),              "Floor" },
                 { typeof(InteriorWall),       "InteriorWall" },
                 { typeof(InteriorLight),      "InteriorLight" },
@@ -33,7 +31,6 @@ namespace TowerBuilder.DataTypes.Entities
                 { typeof(TransportationItem), "Transportation Item" },
                 { typeof(FreightItem),        "Freight" },
                 { typeof(Wheel),              "Wheel" },
-                // { typeof(Vehicle),            "Vehicle" },
                 { typeof(Window),             "Window" }
             }
         );
@@ -89,6 +86,7 @@ namespace TowerBuilder.DataTypes.Entities
             cellCoordinatesList.PositionAtCoordinates(cellCoordinates);
         }
 
+        // TODO - put elsewhere
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {
             CreateBlockCells();
@@ -124,8 +122,6 @@ namespace TowerBuilder.DataTypes.Entities
                     definition.staticBlockSize ? definition.blockCellsTemplate.width : 1,
                     definition.staticBlockSize ? definition.blockCellsTemplate.floorSpan : 1
                 );
-
-                Debug.Log(definition.resizability);
 
                 switch (definition.resizability)
                 {

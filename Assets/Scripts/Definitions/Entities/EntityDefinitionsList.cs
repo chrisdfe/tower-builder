@@ -6,32 +6,33 @@ using TowerBuilder.DataTypes.Entities;
 
 namespace TowerBuilder.Definitions
 {
-    public interface IEntityDefinitionsListQueries
-    {
-        public EntityDefinition FindByTitle(string title);
-
-        public List<string> FindAllCategories();
-
-        public string FindFirstCategory();
-
-        public ListWrapper<EntityDefinition> FindByCategory(string category);
-
-        public EntityDefinition FindByKey<DefinitionKeyType>(DefinitionKeyType key) where DefinitionKeyType : struct;
-
-        public EntityDefinition FindFirstInCategory(string category);
-    }
-
     public interface IEntityDefinitionsList
     {
         public List<EntityDefinition> EntityDefinitions { get; }
-        public IEntityDefinitionsListQueries Queries { get; }
+        public IQueries Queries { get; }
+
+        public interface IQueries
+        {
+            public EntityDefinition FindByTitle(string title);
+
+            public List<string> FindAllCategories();
+
+            public string FindFirstCategory();
+
+            public ListWrapper<EntityDefinition> FindByCategory(string category);
+
+            public EntityDefinition FindByKey<DefinitionKeyType>(DefinitionKeyType key) where DefinitionKeyType : struct;
+
+            public EntityDefinition FindFirstInCategory(string category);
+        }
     }
+
 
     public class EntityDefinitionsList<KeyType, DefinitionType> : IEntityDefinitionsList
         where KeyType : struct
         where DefinitionType : EntityDefinition<KeyType>
     {
-        public IEntityDefinitionsListQueries Queries { get; }
+        public IEntityDefinitionsList.IQueries Queries { get; }
 
         public virtual List<DefinitionType> Definitions { get; } = new List<DefinitionType>();
 
@@ -45,7 +46,7 @@ namespace TowerBuilder.Definitions
             Queries = new DefinitionQueries(Definitions);
         }
 
-        public class DefinitionQueries : IEntityDefinitionsListQueries
+        public class DefinitionQueries : IEntityDefinitionsList.IQueries
         {
             ListWrapper<DefinitionType> Definitions;
 
@@ -53,11 +54,6 @@ namespace TowerBuilder.Definitions
             {
                 this.Definitions = new ListWrapper<DefinitionType>(Definitions);
             }
-
-            // public EntityDefinition FindByKeyLabel<DefinitionKeyType>(string key)
-            // {
-
-            // }
 
             public EntityDefinition FindByKey<DefinitionKeyType>(DefinitionKeyType key)
                 where DefinitionKeyType : struct =>
