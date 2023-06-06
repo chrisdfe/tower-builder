@@ -11,7 +11,7 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
                 title = "Default",
                 category = "Default",
 
-                blockCellsTemplate = CellCoordinatesList.CreateRectangle(2),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(1),
 
                 staticBlockSize = false,
 

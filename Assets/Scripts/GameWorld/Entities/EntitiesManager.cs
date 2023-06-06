@@ -9,9 +9,7 @@ using TowerBuilder.GameWorld.Entities.Freight;
 using TowerBuilder.GameWorld.Entities.Furnitures;
 using TowerBuilder.GameWorld.Entities.InteriorLights;
 using TowerBuilder.GameWorld.Entities.Residents;
-using TowerBuilder.GameWorld.Entities.Rooms;
 using TowerBuilder.GameWorld.Entities.TransportationItems;
-using TowerBuilder.GameWorld.Entities.Vehicles;
 using TowerBuilder.GameWorld.Entities.Wheels;
 using TowerBuilder.GameWorld.Entities.Windows;
 using UnityEngine;
@@ -67,11 +65,6 @@ namespace TowerBuilder.GameWorld.Entities
                     GameWorldWheelsManager.Find()
                         .GetComponent<GameWorldEntityList>()
                 },
-                // {
-                //     typeof(DataTypes.EntitGroups.Vehicles.Vehicle),
-                //     GameWorldVehiclesManager.Find()
-                //         .GetComponent<GameWorldEntityList>()
-                // },
                 {
                     typeof(DataTypes.Entities.Windows.Window),
                     GameWorldWindowsManager.Find()
