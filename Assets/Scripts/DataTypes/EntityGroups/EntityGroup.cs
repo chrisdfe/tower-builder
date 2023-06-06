@@ -8,9 +8,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public ListWrapper<Entity> entitiesList { get; }
         public EntityListMap entityListMap { get; }
 
-        public EntityGroup()
-        {
-        }
+        public EntityGroup() { }
 
         public void Setup() { }
 

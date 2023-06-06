@@ -7,17 +7,12 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.EntityGroups
 {
-    public class EntityGroupBuilderBase<EntityGroupType>
+    public abstract class EntityGroupBuilderBase<EntityGroupType>
         where EntityGroupType : EntityGroup, new()
     {
-        public EntityGroupBuilderBase()
-        {
-        }
+        public EntityGroupBuilderBase() { }
 
-        public virtual EntityGroupType Build(bool isInBlueprintMode)
-        {
-            return new EntityGroupType();
-        }
+        public abstract EntityGroupType Build(SelectionBox selectionBox, bool isInBlueprintMode);
     }
 }
 

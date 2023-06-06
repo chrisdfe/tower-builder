@@ -61,10 +61,10 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
             }
         }
 
-        public override void PositionAtCoordinates(CellCoordinates cellCoordinates)
-        {
-            base.PositionAtCoordinates(cellCoordinates);
-        }
+        // public override void PositionAtCoordinates(CellCoordinates cellCoordinates)
+        // {
+        //     base.PositionAtCoordinates(cellCoordinates);
+        // }
 
         // public CellCoordinates GetEntranceOrExit(CellCoordinates cellCoordinates)
         // {

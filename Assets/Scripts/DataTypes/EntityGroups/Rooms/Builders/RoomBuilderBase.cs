@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.EntityGroups.Rooms.Builders
 {
-    public class BedroomRoomBuilder : EntityGroupBuilderBase<Room>
+    public class RoomBuilder : EntityGroupBuilderBase<Room>
     {
-        public BedroomRoomBuilder() : base() { }
+        public RoomBuilder() : base() { }
 
         public override Room Build(SelectionBox selectionBox, bool isInBlueprintMode)
         {

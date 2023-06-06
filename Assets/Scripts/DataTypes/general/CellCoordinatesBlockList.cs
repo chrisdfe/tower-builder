@@ -20,6 +20,14 @@ namespace TowerBuilder.DataTypes
                 acc.Add(cellCoordinatesBlock.items);
                 return acc;
             });
+
+        public void PositionAtCoordinates(CellCoordinates cellCoordinates)
+        {
+            foreach (var block in items)
+            {
+                block.PositionAtCoordinates(cellCoordinates);
+            }
+        }
     }
 }
 

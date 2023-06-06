@@ -186,6 +186,18 @@ namespace TowerBuilder.DataTypes
 
             return new CellCoordinatesList(list);
         }
+
+        public static CellCoordinatesList FromBlocksList(CellCoordinatesBlockList blockList)
+        {
+            CellCoordinatesList result = new CellCoordinatesList();
+
+            foreach (var block in blockList.items)
+            {
+                result.Add(block.items);
+            }
+
+            return result;
+        }
     }
 }
 
