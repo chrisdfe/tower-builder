@@ -5,7 +5,6 @@ using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.InteriorLights;
-using TowerBuilder.DataTypes.Entities.InteriorWalls;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.DataTypes.Entities.Wheels;
@@ -28,7 +27,6 @@ namespace TowerBuilder.DataTypes.Entities
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
                 { typeof(Floor),              "Floor" },
-                { typeof(InteriorWall),       "InteriorWall" },
                 { typeof(InteriorLight),      "InteriorLight" },
                 { typeof(Resident),           "Resident" },
                 { typeof(Furniture),          "Furniture" },
@@ -44,16 +42,20 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 FloorDefinition floorDefinition =>
                     Floor.KeyLabelMap.ValueFromKey(floorDefinition.key),
-                InteriorWallDefinition interiorWallDefinition =>
-                    InteriorWall.KeyLabelMap.ValueFromKey(interiorWallDefinition.key),
                 FurnitureDefinition furnitureDefinition =>
                     Furniture.KeyLabelMap.ValueFromKey(furnitureDefinition.key),
+                InteriorLightDefinition interiorLightDefinition =>
+                    InteriorLight.KeyLabelMap.ValueFromKey(interiorLightDefinition.key),
                 ResidentDefinition residentDefinition =>
                     Resident.KeyLabelMap.ValueFromKey(residentDefinition.key),
                 TransportationItemDefinition transportationItemDefinition =>
                     TransportationItem.KeyLabelMap.ValueFromKey(transportationItemDefinition.key),
                 FreightDefinition freightDefinition =>
                     FreightItem.KeyLabelMap.ValueFromKey(freightDefinition.key),
+                WheelDefinition wheelDefinition =>
+                    Wheel.KeyLabelMap.ValueFromKey(wheelDefinition.key),
+                WindowDefinition windowDefinition =>
+                    Window.KeyLabelMap.ValueFromKey(windowDefinition.key),
                 _ => null
             };
     }

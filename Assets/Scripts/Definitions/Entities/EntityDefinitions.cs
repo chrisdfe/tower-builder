@@ -6,7 +6,6 @@ using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.InteriorLights;
-using TowerBuilder.DataTypes.Entities.InteriorWalls;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.DataTypes.Entities.Wheels;
@@ -20,7 +19,6 @@ namespace TowerBuilder.Definitions
     public class EntityDefinitions
     {
         public static Dictionary<System.Type, System.Type> EntityDefinitionEntityTypeMap = new Dictionary<System.Type, System.Type>() {
-            { typeof(InteriorWallDefinition), typeof(InteriorWall) },
             { typeof(InteriorLightDefinition), typeof(InteriorLight) },
             { typeof(FloorDefinition), typeof(Floor) },
             { typeof(FurnitureDefinition), typeof(Furniture) },
@@ -34,7 +32,6 @@ namespace TowerBuilder.Definitions
         public DefinitionQueries Queries { get; }
 
         public FloorDefinitionsList Floors = new FloorDefinitionsList();
-        public InteriorWallDefinitionsList InteriorWalls = new InteriorWallDefinitionsList();
         public InteriorLightDefinitionsList InteriorLights = new InteriorLightDefinitionsList();
         public FurnitureDefinitionsList Furnitures = new FurnitureDefinitionsList();
         public ResidentDefinitionsList Residents = new ResidentDefinitionsList();
@@ -46,7 +43,6 @@ namespace TowerBuilder.Definitions
         public Dictionary<Type, IEntityDefinitionsList> entityDefinitionsMap =>
             new Dictionary<Type, IEntityDefinitionsList>() {
                 { typeof(Floor),              Floors },
-                { typeof(InteriorWall),       InteriorWalls },
                 { typeof(InteriorLight),      InteriorLights },
                 { typeof(Furniture),          Furnitures },
                 { typeof(Resident),           Residents },
@@ -91,8 +87,6 @@ namespace TowerBuilder.Definitions
             public EntityDefinition FindDefinitionByKeyLabel(EntityDefinition entityDefinition, string keyLabel) =>
                 entityDefinition switch
                 {
-                    InteriorWallDefinition =>
-                        Definitions.InteriorWalls.Queries.FindByKey(InteriorWall.KeyLabelMap.KeyFromValue(keyLabel)),
                     FloorDefinition =>
                         Definitions.Floors.Queries.FindByKey(Floor.KeyLabelMap.KeyFromValue(keyLabel)),
                     FurnitureDefinition =>

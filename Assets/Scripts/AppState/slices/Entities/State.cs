@@ -15,7 +15,6 @@ namespace TowerBuilder.ApplicationState.Entities
             public Residents.State.Input Residents = new Residents.State.Input();
             public Floors.State.Input Floors;
             public Windows.State.Input Windows;
-            public InteriorWalls.State.Input InteriorWalls;
             public InteriorLights.State.Input InteriorLights;
             public TransportationItems.State.Input TransportationItems;
             public Freight.State.Input Freight;
@@ -25,7 +24,6 @@ namespace TowerBuilder.ApplicationState.Entities
             {
                 Floors = new Floors.State.Input();
                 Windows = new Windows.State.Input();
-                InteriorWalls = new InteriorWalls.State.Input();
                 InteriorLights = new InteriorLights.State.Input();
                 Furnitures = new Furnitures.State.Input();
                 Residents = new Residents.State.Input();
@@ -44,7 +42,6 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public Floors.State Floors { get; }
         public Windows.State Windows { get; }
-        public InteriorWalls.State InteriorWalls { get; }
         public InteriorLights.State InteriorLights { get; }
 
         public Furnitures.State Furnitures { get; }
@@ -69,7 +66,6 @@ namespace TowerBuilder.ApplicationState.Entities
         {
             Floors = new Floors.State(appState, input.Floors);
             Windows = new Windows.State(appState, input.Windows);
-            InteriorWalls = new InteriorWalls.State(appState, input.InteriorWalls);
             InteriorLights = new InteriorLights.State(appState, input.InteriorLights);
             Furnitures = new Furnitures.State(appState, input.Furnitures);
             Residents = new Residents.State(appState, input.Residents);
@@ -80,7 +76,6 @@ namespace TowerBuilder.ApplicationState.Entities
             sliceList = new List<IEntityStateSlice>() {
                 Floors,
                 Windows,
-                InteriorWalls,
                 InteriorLights,
                 Furnitures,
                 Residents,
@@ -147,7 +142,6 @@ namespace TowerBuilder.ApplicationState.Entities
             entity switch
             {
                 DataTypes.Entities.Floors.Floor => Floors,
-                DataTypes.Entities.InteriorWalls.InteriorWall => InteriorWalls,
                 DataTypes.Entities.InteriorLights.InteriorLight => InteriorLights,
                 DataTypes.Entities.Furnitures.Furniture => Furnitures,
                 DataTypes.Entities.Residents.Resident => Residents,
@@ -155,9 +149,6 @@ namespace TowerBuilder.ApplicationState.Entities
                 DataTypes.Entities.Freights.FreightItem => Freight,
                 DataTypes.Entities.Wheels.Wheel => Wheels,
                 DataTypes.Entities.Windows.Window => Windows,
-                // TODO - remove these entity groups from here
-                // DataTypes.Entities.Groups.Rooms.Room => Rooms,
-                // DataTypes.Entities.Groups.Vehicles.Vehicle => Vehicles,
                 _ => throw new NotSupportedException($"Entity type not handled: {entity.GetType()}")
             };
 
