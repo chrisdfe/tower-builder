@@ -12,7 +12,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
 
         // public Room.SkinKey skinKey { get; set; }
 
-        protected override EntityMeshCellWrapper CreateEntityCellMeshWrapper(
+        public new EntityMeshCellWrapperFactory CreateEntityCellMeshWrapper = (
             Transform parent,
             GameObject prefabMesh,
             CellCoordinates cellCoordinates,
@@ -21,10 +21,5 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
             Tileable.CellPosition cellPosition
         ) =>
             new RoomCellEntityMeshWrapper(parent, prefabMesh, cellCoordinates, relatoveCellCoordinates, cellNeighbors, cellPosition);
-
-        public override void Setup()
-        {
-            base.Setup();
-        }
     }
 }

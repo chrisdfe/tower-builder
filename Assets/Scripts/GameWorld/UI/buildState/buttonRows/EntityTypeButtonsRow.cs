@@ -12,7 +12,7 @@ namespace TowerBuilder.GameWorld.UI
         public EntityTypeButtonsRow() : base() { }
 
         public override List<UISelectButton.Input> CreateButtonInputs() =>
-            DataTypes.Entities.Constants.TypeLabels.labels
+            DataTypes.Entities.Constants.TypeLabels.values
                 .Select(label =>
                     new UISelectButton.Input()
                     {

@@ -17,7 +17,7 @@ namespace TowerBuilder.GameWorld.Entities
         public CellCoordinates cellCoordinates { get; }
         public CellCoordinates relativeCellCoordinates { get; }
 
-        protected Transform tileabilityWrapper;
+        protected Transform tileabileWrapper;
         protected CellNeighbors cellNeighbors;
         protected Tileable.CellPosition cellPosition;
 
@@ -106,9 +106,9 @@ namespace TowerBuilder.GameWorld.Entities
             });
         }
 
-        protected void ProcessModel()
+        protected virtual void ProcessModel()
         {
-            Transform tileabileWrapper = TransformUtils.FindDeepChild(meshTransform, TILEABLE_WRAPPER_NODE_NAME);
+            tileabileWrapper = TransformUtils.FindDeepChild(meshTransform, TILEABLE_WRAPPER_NODE_NAME);
 
             if (tileabileWrapper == null) return;
 

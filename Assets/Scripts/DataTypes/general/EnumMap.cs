@@ -11,7 +11,7 @@ namespace TowerBuilder.DataTypes
 
         public List<EnumType> keys => map.Keys.ToList();
 
-        public List<ValueType> labels => map.Values.ToList();
+        public List<ValueType> values => map.Values.ToList();
 
         public EnumMap(Dictionary<EnumType, ValueType> map)
         {

@@ -35,6 +35,26 @@ namespace TowerBuilder.GameWorld.Entities
         public CellCoordinatesList cellCoordinatesList { get; set; }
         public List<EntityMeshCellWrapper> entityCellMeshWrapperList { get; private set; } = new List<EntityMeshCellWrapper>();
 
+        public delegate EntityMeshCellWrapper EntityMeshCellWrapperFactory(
+            Transform parent,
+            GameObject prefabMesh,
+            CellCoordinates cellCoordinates,
+            CellCoordinates relativeCellCoordinates,
+            CellNeighbors cellNeighbors,
+            Tileable.CellPosition cellPosition
+        );
+
+        public EntityMeshCellWrapperFactory CreateEntityMeshCellWrapper =
+            (
+               Transform parent,
+               GameObject prefabMesh,
+               CellCoordinates cellCoordinates,
+               CellCoordinates relativeCellCoordinates,
+               CellNeighbors cellNeighbors,
+               Tileable.CellPosition cellPosition
+            ) =>
+               new EntityMeshCellWrapper(parent, prefabMesh, cellCoordinates, relativeCellCoordinates, cellNeighbors, cellPosition);
+
         CellCoordinates originCellCoordinates => cellCoordinatesList.bottomLeftCoordinates;
 
         public virtual void Setup()
@@ -73,16 +93,6 @@ namespace TowerBuilder.GameWorld.Entities
             }
         }
 
-        protected virtual EntityMeshCellWrapper CreateEntityCellMeshWrapper(
-            Transform parent,
-            GameObject prefabMesh,
-            CellCoordinates cellCoordinates,
-            CellCoordinates relativeCellCoordinates,
-            CellNeighbors cellNeighbors,
-            Tileable.CellPosition cellPosition
-        ) =>
-            new EntityMeshCellWrapper(parent, prefabMesh, cellCoordinates, relativeCellCoordinates, cellNeighbors, cellPosition);
-
         void DestroyPlaceholder()
         {
             Transform placeholder = transform.Find(PLACEHOLDER_NODE_NAME);
@@ -105,7 +115,7 @@ namespace TowerBuilder.GameWorld.Entities
                     CellCoordinates relativeCellCoordiantes = cellCoordinatesList.AsRelativeCoordinates(cellCoordinates);
 
                     EntityMeshCellWrapper entityMeshCellWrapper =
-                        CreateEntityCellMeshWrapper(
+                        CreateEntityMeshCellWrapper(
                             transform,
                             prefabMesh,
                             cellCoordinates,

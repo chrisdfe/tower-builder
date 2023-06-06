@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
 - Entity type categories
 - Maybe this would make more sense:
   - "Room foundation" = box that makes up a room

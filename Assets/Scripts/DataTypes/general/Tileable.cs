@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    public partial class Tileable
+    public class Tileable
     {
         public enum Type
         {

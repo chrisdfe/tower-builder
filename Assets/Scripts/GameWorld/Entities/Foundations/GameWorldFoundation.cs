@@ -43,6 +43,17 @@ namespace TowerBuilder.GameWorld.Entities.Foundations
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
             entityMeshWrapper.cellCoordinatesList = foundation.cellCoordinatesList;
+
+            entityMeshWrapper.CreateEntityMeshCellWrapper = (
+               Transform parent,
+               GameObject prefabMesh,
+               CellCoordinates cellCoordinates,
+               CellCoordinates relativeCellCoordinates,
+               CellNeighbors cellNeighbors,
+               Tileable.CellPosition cellPosition
+            ) =>
+               new FoundationMeshCellWrapper(parent, prefabMesh, cellCoordinates, relativeCellCoordinates, cellNeighbors, cellPosition);
+
             entityMeshWrapper.Setup();
 
             GetComponent<GameWorldEntity>().Setup();
