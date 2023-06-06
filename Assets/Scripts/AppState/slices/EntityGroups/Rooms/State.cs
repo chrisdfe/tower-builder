@@ -10,7 +10,7 @@ using TowerBuilder.DataTypes.EntityGroups.Rooms.Validators;
 using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.Entities.Groups.Rooms
+namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
 {
     [Serializable]
     public class State : EntityGroupStateSlice<Room, State.Events>

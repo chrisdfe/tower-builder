@@ -6,9 +6,6 @@ using TowerBuilder.DataTypes.Behaviors.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Notifications;
-using TowerBuilder.DataTypes.Validators;
-using TowerBuilder.DataTypes.Validators.Behaviors.Furnitures;
-using TowerBuilder.DataTypes.Validators.Entities;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Behaviors.Furnitures
@@ -35,8 +32,8 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
         public bool isActive => interactingResidentsList.Count > 0;
 
-        public FurnitureBehaviorValidator validator;
-        protected virtual FurnitureBehaviorValidator createValidator() => new FurnitureBehaviorValidator(this);
+        public Validator<FurnitureBehavior> validator;
+        protected virtual Validator<FurnitureBehavior> createValidator() => new Validator<FurnitureBehavior>(this);
 
         protected AppState appState;
 

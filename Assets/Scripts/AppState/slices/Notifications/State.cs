@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Notifications;
-using TowerBuilder.DataTypes.Validators;
 
 namespace TowerBuilder.ApplicationState.Notifications
 {

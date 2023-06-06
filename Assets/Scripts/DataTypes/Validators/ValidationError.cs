@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TowerBuilder.DataTypes.Validators
+namespace TowerBuilder.DataTypes
 {
     public class ValidationError
     {

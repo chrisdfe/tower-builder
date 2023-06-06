@@ -6,8 +6,6 @@ using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.EntityGroups.Vehicles;
-using TowerBuilder.DataTypes.Validators;
-using TowerBuilder.DataTypes.Validators.Behaviors.Furnitures;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Behaviors.Furnitures
@@ -22,7 +20,7 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
         // VehicleAttributes vehicleAttributesGroup => appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
         AttributeModifier modifier;
 
-        protected override FurnitureBehaviorValidator createValidator() => new CockpitBehaviorValidator(this);
+        protected override Validator<FurnitureBehavior> createValidator() => new CockpitBehaviorValidator(this);
 
         protected override void OnInteractStart(Resident resident)
         {
@@ -38,7 +36,7 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
             modifier = null;
         }
 
-        public class CockpitBehaviorValidator : FurnitureBehaviorValidator
+        public class CockpitBehaviorValidator : Validator<FurnitureBehavior>
         {
             protected override List<ValidationFunc> customValidators => new List<ValidationFunc>()
             {

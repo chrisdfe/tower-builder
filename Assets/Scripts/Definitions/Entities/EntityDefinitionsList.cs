@@ -27,7 +27,6 @@ namespace TowerBuilder.Definitions
         }
     }
 
-
     public class EntityDefinitionsList<KeyType, DefinitionType> : IEntityDefinitionsList
         where KeyType : struct
         where DefinitionType : EntityDefinition<KeyType>

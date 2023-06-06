@@ -2,6 +2,14 @@
 
 ## Tasks
 
+- Entity type categories
+- Maybe this would make more sense:
+  - "Room foundation" = box that makes up a room
+  - "Platform" for floating floor
+  - You can't have interior walls, ceiling, back walls, or windows outside of a room
+- use "min size" instead of staticBlockSize, which is confusing
+  - block size can be smaller than min size, eg. escalators/stairs
+  - maybe alternatively "border" size could be defined, and "fill" size? for escalator border would be 1 (x2, so 2x2 at minimum) and then 1 on the inside
 - "EntityGroup"s - a wrapper around a list (group) of entities without its own cellCoordinatesList
   - used for a things like room, vehicle
   - the cost of the group would be the sum of all of the entities prices

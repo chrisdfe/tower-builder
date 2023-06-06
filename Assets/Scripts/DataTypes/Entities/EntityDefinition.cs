@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Validators;
-using TowerBuilder.DataTypes.Validators.Entities;
 
 namespace TowerBuilder.DataTypes.Entities
 {

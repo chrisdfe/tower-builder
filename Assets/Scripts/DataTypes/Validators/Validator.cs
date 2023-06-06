@@ -3,7 +3,7 @@ using System.Linq;
 using TowerBuilder.ApplicationState;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Validators
+namespace TowerBuilder.DataTypes
 {
     public class Validator
     {

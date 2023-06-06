@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities.Wheels;
-using TowerBuilder.DataTypes.Validators.Entities;
 
 namespace TowerBuilder.DataTypes.Entities.Wheels
 {

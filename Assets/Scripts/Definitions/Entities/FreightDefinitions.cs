@@ -25,11 +25,7 @@ namespace TowerBuilder.Definitions
                 title = "Medium",
                 category = "Basic",
 
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                    }
-                ),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(2, 2)
             },
 
             new FreightDefinition() {
@@ -37,11 +33,7 @@ namespace TowerBuilder.Definitions
                 title = "Large",
                 category = "Basic",
 
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                    }
-                ),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(4, 3)
             },
         };
 

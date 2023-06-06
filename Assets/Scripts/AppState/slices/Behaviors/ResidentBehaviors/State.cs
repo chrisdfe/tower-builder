@@ -9,7 +9,6 @@ using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.Notifications;
 using TowerBuilder.DataTypes.Routes;
 using TowerBuilder.DataTypes.Time;
-using TowerBuilder.DataTypes.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Behaviors.Residents

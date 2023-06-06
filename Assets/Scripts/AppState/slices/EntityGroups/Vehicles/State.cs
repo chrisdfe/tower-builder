@@ -8,7 +8,7 @@ using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.Entities.Groups.Vehicles
+namespace TowerBuilder.ApplicationState.EntityGroups.Vehicles
 {
     public class State : EntityGroupStateSlice<Vehicle, State.Events>
     {

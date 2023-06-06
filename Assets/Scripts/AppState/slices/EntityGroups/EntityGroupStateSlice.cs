@@ -4,10 +4,9 @@ using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.DataTypes.Notifications;
-using TowerBuilder.DataTypes.Validators;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.Entities
+namespace TowerBuilder.ApplicationState.EntityGroups
 {
     public interface IEntityGroupStateSlice
     {

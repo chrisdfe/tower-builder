@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using TowerBuilder.DataTypes.Validators.Entities;
 
 namespace TowerBuilder.DataTypes.Entities.Residents
 {

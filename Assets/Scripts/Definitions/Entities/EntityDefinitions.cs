@@ -33,7 +33,6 @@ namespace TowerBuilder.Definitions
 
         public DefinitionQueries Queries { get; }
 
-        // public RoomDefinitionsList Rooms = new RoomDefinitionsList();
         public FloorDefinitionsList Floors = new FloorDefinitionsList();
         public InteriorWallDefinitionsList InteriorWalls = new InteriorWallDefinitionsList();
         public InteriorLightDefinitionsList InteriorLights = new InteriorLightDefinitionsList();
@@ -44,13 +43,8 @@ namespace TowerBuilder.Definitions
         public WheelDefinitionsList Wheels = new WheelDefinitionsList();
         public WindowDefinitionsList Windows = new WindowDefinitionsList();
 
-        public Dictionary<Type, IEntityDefinitionsList> entityDefinitionsMap { get; }
-
-        public EntityDefinitions()
-        {
-            Queries = new DefinitionQueries(this);
-
-            entityDefinitionsMap = new Dictionary<Type, IEntityDefinitionsList>() {
+        public Dictionary<Type, IEntityDefinitionsList> entityDefinitionsMap =>
+            new Dictionary<Type, IEntityDefinitionsList>() {
                 { typeof(Floor),              Floors },
                 { typeof(InteriorWall),       InteriorWalls },
                 { typeof(InteriorLight),      InteriorLights },
@@ -61,6 +55,10 @@ namespace TowerBuilder.Definitions
                 { typeof(Wheel),              Wheels },
                 { typeof(Window),             Windows },
             };
+
+        public EntityDefinitions()
+        {
+            Queries = new DefinitionQueries(this);
         }
 
         IEntityDefinitionsList DefinitionFromEntityType(Type type) =>

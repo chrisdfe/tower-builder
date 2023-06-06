@@ -5,7 +5,6 @@ using TowerBuilder.DataTypes.Behaviors.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Routes;
-using TowerBuilder.DataTypes.Validators;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents

@@ -21,13 +21,13 @@ namespace TowerBuilder.GameWorld.UI
                     new UISelectButton.Input()
                     {
                         label = definition.title,
-                        value = Entity.GetEntityDefinitionLabel(definition)
+                        value = DataTypes.Entities.Constants.GetEntityDefinitionLabel(definition)
                     }
                 ).ToList();
         }
 
         public override bool ButtonShouldBeSelected(UISelectButton button) =>
-            button.value == Entity.GetEntityDefinitionLabel(Registry.appState.Tools.buildToolState.selectedEntityDefinition);
+            button.value == DataTypes.Entities.Constants.GetEntityDefinitionLabel(Registry.appState.Tools.buildToolState.selectedEntityDefinition);
 
         public override void OnButtonClick(string value)
         {

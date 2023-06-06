@@ -12,7 +12,7 @@ namespace TowerBuilder.GameWorld.UI
         public EntityTypeButtonsRow() : base() { }
 
         public override List<UISelectButton.Input> CreateButtonInputs() =>
-            Entity.TypeLabels.labels
+            DataTypes.Entities.Constants.TypeLabels.labels
                 .Select(label =>
                     new UISelectButton.Input()
                     {
@@ -23,11 +23,11 @@ namespace TowerBuilder.GameWorld.UI
                 .ToList();
 
         public override bool ButtonShouldBeSelected(UISelectButton button) =>
-            button.value == Entity.TypeLabels.ValueFromKey(Registry.appState.Tools.buildToolState.selectedEntityType);
+            button.value == DataTypes.Entities.Constants.TypeLabels.ValueFromKey(Registry.appState.Tools.buildToolState.selectedEntityType);
 
         public override void OnButtonClick(string value)
         {
-            Type newEntityType = Entity.TypeLabels.KeyFromValue(value);
+            Type newEntityType = DataTypes.Entities.Constants.TypeLabels.KeyFromValue(value);
             Registry.appState.Tools.buildToolState.SetSelectedEntityKey(newEntityType);
         }
     }

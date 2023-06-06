@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Notifications;
-using TowerBuilder.DataTypes.Validators;
-using TowerBuilder.DataTypes.Validators.Entities;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities

@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes.Entities.Floors;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Validators.Entities
+namespace TowerBuilder.DataTypes.Entities
 {
     public static class GenericEntityValidations
     {
