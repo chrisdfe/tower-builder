@@ -11,6 +11,7 @@ namespace TowerBuilder.ApplicationState.Entities
     {
         public class Input
         {
+            public Foundations.State.Input Foundations = new Foundations.State.Input();
             public Furnitures.State.Input Furnitures = new Furnitures.State.Input();
             public Residents.State.Input Residents = new Residents.State.Input();
             public Floors.State.Input Floors;
@@ -22,6 +23,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
             public Input()
             {
+                Foundations = new Foundations.State.Input();
                 Floors = new Floors.State.Input();
                 Windows = new Windows.State.Input();
                 InteriorLights = new InteriorLights.State.Input();
@@ -40,6 +42,7 @@ namespace TowerBuilder.ApplicationState.Entities
             public ListEvent<Entity> onEntitiesBuilt;
         }
 
+        public Foundations.State Foundations { get; }
         public Floors.State Floors { get; }
         public Windows.State Windows { get; }
         public InteriorLights.State InteriorLights { get; }
@@ -64,6 +67,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public State(AppState appState, Input input) : base(appState)
         {
+            Foundations = new Foundations.State(appState, input.Foundations);
             Floors = new Floors.State(appState, input.Floors);
             Windows = new Windows.State(appState, input.Windows);
             InteriorLights = new InteriorLights.State(appState, input.InteriorLights);
@@ -74,6 +78,7 @@ namespace TowerBuilder.ApplicationState.Entities
             Wheels = new Wheels.State(appState, input.Wheels);
 
             sliceList = new List<IEntityStateSlice>() {
+                Foundations,
                 Floors,
                 Windows,
                 InteriorLights,
@@ -141,6 +146,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public IEntityStateSlice GetStateSlice(Entity entity) =>
             entity switch
             {
+                DataTypes.Entities.Foundations.Foundation => Foundations,
                 DataTypes.Entities.Floors.Floor => Floors,
                 DataTypes.Entities.InteriorLights.InteriorLight => InteriorLights,
                 DataTypes.Entities.Furnitures.Furniture => Furnitures,

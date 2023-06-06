@@ -152,20 +152,6 @@ namespace TowerBuilder.DataTypes
         public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b) =>
             new CellCoordinates(a.x - b.x, a.floor - b.floor);
 
-        public static CellCoordinatesList CreateRectangle(int xWidth, int floors)
-        {
-            List<CellCoordinates> list = new List<CellCoordinates>();
-
-            for (int x = 0; x < xWidth; x++)
-            {
-                for (int floor = 0; floor < floors; floor++)
-                {
-                    list.Add(new CellCoordinates(x, floor));
-                }
-            }
-
-            return new CellCoordinatesList(list);
-        }
 
         public static CellCoordinatesList CreateRectangle(CellCoordinates a, CellCoordinates b)
         {
@@ -186,6 +172,14 @@ namespace TowerBuilder.DataTypes
 
             return new CellCoordinatesList(list);
         }
+
+        public static CellCoordinatesList CreateRectangle(int xWidth, int floors) =>
+            CreateRectangle(
+                CellCoordinates.zero,
+                new CellCoordinates(xWidth - 1, floors - 1)
+            );
+
+        public static CellCoordinatesList CreateRectangle(int size) => CreateRectangle(size, size);
 
         public static CellCoordinatesList FromBlocksList(CellCoordinatesBlockList blockList)
         {

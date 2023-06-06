@@ -4,6 +4,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.GameWorld.Entities.Floors;
+using TowerBuilder.GameWorld.Entities.Foundations;
 using TowerBuilder.GameWorld.Entities.Freight;
 using TowerBuilder.GameWorld.Entities.Furnitures;
 using TowerBuilder.GameWorld.Entities.InteriorLights;
@@ -26,11 +27,11 @@ namespace TowerBuilder.GameWorld.Entities
         {
             entityManagerMap = new Dictionary<Type, GameWorldEntityList>()
             {
-                // {
-                //     typeof(DataTypes.Entities.Groups.Rooms.Room),
-                //     GameWorldRoomsManager.Find()
-                //         .GetComponent<GameWorldEntityList>()
-                // },
+                {
+                    typeof(DataTypes.Entities.Foundations.Foundation),
+                    GameWorldFoundationsManager.Find()
+                        .GetComponent<GameWorldEntityList>()
+                },
                 {
                     typeof(DataTypes.Entities.Floors.Floor),
                     GameWorldFloorsManager.Find()

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-
 using TowerBuilder.DataTypes.Entities.Floors;
+using TowerBuilder.DataTypes.Entities.Foundations;
 using TowerBuilder.DataTypes.Entities.Freights;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.InteriorLights;
@@ -27,6 +27,7 @@ namespace TowerBuilder.DataTypes.Entities
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
                 { typeof(Floor),              "Floor" },
+                { typeof(Foundation),         "Foundation" },
                 { typeof(InteriorLight),      "InteriorLight" },
                 { typeof(Resident),           "Resident" },
                 { typeof(Furniture),          "Furniture" },
@@ -42,6 +43,8 @@ namespace TowerBuilder.DataTypes.Entities
             {
                 FloorDefinition floorDefinition =>
                     Floor.KeyLabelMap.ValueFromKey(floorDefinition.key),
+                FoundationDefinition foundationDefinition =>
+                    Foundation.KeyLabelMap.ValueFromKey(foundationDefinition.key),
                 FurnitureDefinition furnitureDefinition =>
                     Furniture.KeyLabelMap.ValueFromKey(furnitureDefinition.key),
                 InteriorLightDefinition interiorLightDefinition =>
