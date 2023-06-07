@@ -1059,7 +1059,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ddac35312fcf6a49898384204fe3096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityPrefab: {fileID: 3660516737605851494, guid: ec0ab1cf1a028b74496e55bd9c8d3a19, type: 3}
+  entityPrefab: {fileID: 5182047930108948829, guid: d1de9507371bb4c47b81f7ce862c86b5, type: 3}
   entities: []
 --- !u!114 &469930668
 MonoBehaviour:
@@ -1079,8 +1079,8 @@ MonoBehaviour:
       value: {fileID: 5182047930108948829, guid: d1de9507371bb4c47b81f7ce862c86b5, type: 3}
   meshAssets:
     list:
-    - key: 0
-      value: {fileID: 919132149155446097, guid: fd643c54428b9ba4db7b2d64833e80a3, type: 3}
+    - key: 1
+      value: {fileID: 3660516737605851494, guid: ec0ab1cf1a028b74496e55bd9c8d3a19, type: 3}
 --- !u!1 &471129952
 GameObject:
   m_ObjectHideFlags: 0

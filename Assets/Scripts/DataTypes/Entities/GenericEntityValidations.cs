@@ -36,24 +36,6 @@ namespace TowerBuilder.DataTypes.Entities
 
         }
 
-        public static ListWrapper<ValidationError> ValidateNotDirectlyNextToEntityOfSameType(AppState appState, Entity entity, CellCoordinates cellCoordinates)
-        {
-            // TODO - entity layers
-            // TODO - check above + to the left + right and below + to the left and right (not directly above or below, that's ok)
-            // Room leftRoom = allRooms.FindRoomAtCell(cellCoordinates.coordinatesLeft);
-            // Room rightRoom = allRooms.FindRoomAtCell(cellCoordinates.coordinatesRight);
-
-            // if (
-            //     (leftRoom != null && leftRoom.definition.category == entity.definition.category) ||
-            //     (rightRoom != null && rightRoom.definition.category == entity.definition.category)
-            // )
-            // {
-            //     return new ListWrapper<ValidationError>($"{entity.definition.title} cannot be placed directly next to each other.");
-            // }
-
-            return new ListWrapper<ValidationError>();
-        }
-
         public static ListWrapper<ValidationError> ValidateEntityIsNotOverlappingAnotherEntity(AppState appState, Entity entity)
         {
             IEntityStateSlice stateSlice = appState.Entities.GetStateSlice(entity);
@@ -132,8 +114,7 @@ namespace TowerBuilder.DataTypes.Entities
                 : IsValidOutsideEntityLocation(appState, cellCoordinates);
 
         public static bool IsInsideRoom(AppState appState, CellCoordinates cellCoordinates) =>
-            // appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null;
-            true;
+            appState.Entities.Foundations.queries.FindEntityTypeAtCell(cellCoordinates) != null;
 
         // outside + on the ground
         public static bool IsValidOutsideEntityLocation(AppState appState, CellCoordinates cellCoordinates) =>
@@ -142,10 +123,9 @@ namespace TowerBuilder.DataTypes.Entities
 
         // inside + on a floor
         public static bool IsValidInsideEntityLocation(AppState appState, CellCoordinates cellCoordinates) =>
-            // appState.Entities.Rooms.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
+            appState.Entities.Foundations.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
             // appState.Entities.Floors.queries.FindEntityTypeAtCell(cellCoordinates) != null &&
-            // HasEnoughVerticalSpace(appState, cellCoordinates);
-            true;
+            HasEnoughVerticalSpace(appState, cellCoordinates);
 
         public static bool HasEnoughVerticalSpace(AppState appState, CellCoordinates cellCoordinates) => true;
     }

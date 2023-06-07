@@ -6,19 +6,19 @@ namespace TowerBuilder.DataTypes.Entities
 {
     public static class EntityBlocksCalculator
     {
-        public static EntityBlocksCalculatorBase FromDefinition(EntityDefinition entityDefinition) =>
-            entityDefinition.resizability switch
+        public static EntityBlocksCalculatorBase FromDefinition(EntityDefinition definition) =>
+            definition.resizability switch
             {
                 Resizability.Horizontal =>
-                    new HorizontalResizabilityEntityBlocksCalculator(entityDefinition),
+                    new HorizontalResizabilityEntityBlocksCalculator(definition),
                 Resizability.Vertical =>
-                    new VerticalResizabilityEntityBlocksCalculator(entityDefinition),
+                    new VerticalResizabilityEntityBlocksCalculator(definition),
                 Resizability.Diagonal =>
-                    new DiagonalResizabilityEntityBlocksCalculator(entityDefinition),
+                    new DiagonalResizabilityEntityBlocksCalculator(definition),
                 Resizability.Flexible =>
-                    new FlexibleResizabilityEntityBlocksCalculator(entityDefinition),
+                    new FlexibleResizabilityEntityBlocksCalculator(definition),
                 Resizability.Inflexible =>
-                    new InflexibleResizabilityEntityBlocksCalculator(entityDefinition),
+                    new InflexibleResizabilityEntityBlocksCalculator(definition),
                 _ => null
             };
     }

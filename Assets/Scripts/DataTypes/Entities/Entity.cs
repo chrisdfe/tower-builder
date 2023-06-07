@@ -13,8 +13,6 @@ namespace TowerBuilder.DataTypes.Entities
 
         public int id { get; }
 
-        public int[] zLayers = new int[] { 0 };
-
         public int price => definition.pricePerCell * cellCoordinatesList.Count;
 
         public bool isInBlueprintMode { get; set; } = false;
@@ -23,13 +21,12 @@ namespace TowerBuilder.DataTypes.Entities
 
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 
-        // TODO - remove the set; accessors too
-        public CellCoordinatesList cellCoordinatesList { get; set; } = new CellCoordinatesList();
-        public CellCoordinatesBlockList blocksList { get; set; } = new CellCoordinatesBlockList();
+        public CellCoordinatesList cellCoordinatesList { get; private set; } = new CellCoordinatesList();
+
+        public CellCoordinatesBlockList blocksList { get; private set; } = new CellCoordinatesBlockList();
 
         public EntityDefinition definition { get; }
 
-        // TODO - remove this and put in seperate state - only have list of error messages or isValid
         public EntityValidator validator { get; }
 
         public string typeLabel => Constants.GetEntityDefinitionLabel(definition);

@@ -1,7 +1,7 @@
-namespace TowerBuilder.DataTypes.Entities
+namespace TowerBuilder.DataTypes.EntityGroups
 {
-    public class EntityGroupValidator
+    public class EntityGroupValidator : Validator<EntityGroup>
     {
-        public bool isValid = true;
+        public EntityGroupValidator(EntityGroup entityGroup) : base(entityGroup) { }
     }
 }

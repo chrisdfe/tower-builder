@@ -8,7 +8,7 @@ namespace TowerBuilder.DataTypes.Entities
     {
         public DiagonalResizabilityEntityBlocksCalculator(EntityDefinition definition) : base(definition) { }
 
-        public override CellCoordinatesBlockList CalculateFromSelectionBox(SelectionBox selectionBox)
+        protected override CellCoordinatesBlockList CalculateFromSelectionBox(SelectionBox selectionBox)
         {
             CellCoordinatesBlockList result = new CellCoordinatesBlockList();
 
