@@ -89,8 +89,6 @@ namespace TowerBuilder.ApplicationState
                 modifier.name == modifierName
             );
 
-            Debug.Log(modifier);
-
             if (modifier != null)
             {
                 // TODO - probably use an overloaded version of this to avoid re-querying everything

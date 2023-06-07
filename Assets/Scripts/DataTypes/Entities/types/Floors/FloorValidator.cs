@@ -8,7 +8,7 @@ namespace TowerBuilder.DataTypes.Entities.Floors
         protected override List<EntityValidator.ValidationFunc> customValidators =>
             new List<EntityValidator.ValidationFunc>()
             {
-                GenericEntityValidations.ValidateIsInsideRoom,
+                GenericEntityValidations.ValidateEntityIsInsideFoundation,
             };
 
         public FloorValidator(Floor floor) : base(floor) { }

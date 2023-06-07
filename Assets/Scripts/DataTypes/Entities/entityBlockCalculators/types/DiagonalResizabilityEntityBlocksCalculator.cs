@@ -24,7 +24,6 @@ namespace TowerBuilder.DataTypes.Entities
                 floor += incrementAmount.floors;
             }
 
-            Debug.Log(result.Count);
             return result;
         }
     }

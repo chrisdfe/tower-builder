@@ -14,16 +14,6 @@ namespace TowerBuilder.DataTypes.Entities
 {
     public static class Constants
     {
-        public static Dictionary<string, List<System.Type>> entityTypeCategoryMap =
-            new Dictionary<string, List<System.Type>>() {
-                {
-                    "Rooms",
-                    new List<System.Type>() {
-                        // Floors
-                    }
-                }
-            };
-
         public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
             new Dictionary<Type, string>() {
                 { typeof(Floor),              "Floor" },
@@ -37,6 +27,21 @@ namespace TowerBuilder.DataTypes.Entities
                 { typeof(Window),             "Window" }
             }
         );
+
+        public static EnumMap<Type, Type> EntityTypeEntityDefinitionMap =
+            new EnumMap<Type, Type>(
+                new Dictionary<Type, Type>() {
+                    { typeof(Foundation),         typeof(FoundationDefinition) },
+                    { typeof(InteriorLight),      typeof(InteriorLightDefinition) },
+                    { typeof(Floor),              typeof(FloorDefinition) },
+                    { typeof(Furniture),          typeof(FurnitureDefinition) },
+                    { typeof(Resident),           typeof(ResidentDefinition) },
+                    { typeof(TransportationItem), typeof(TransportationItemDefinition) },
+                    { typeof(FreightItem),        typeof(FreightDefinition) },
+                    { typeof(Wheel),              typeof(WheelDefinition) },
+                    { typeof(Window),             typeof(WindowDefinition) },
+                }
+            );
 
         public static string GetEntityDefinitionLabel(EntityDefinition definition) =>
             definition switch

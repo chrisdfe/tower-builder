@@ -231,9 +231,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         void BuildSegmentTransformMap()
         {
-            Debug.Log("tileabileWrapper");
-            Debug.Log(tileabileWrapper);
-
             Dictionary<Segment, Transform> input = new Dictionary<Segment, Transform>();
             foreach (Segment segment in Enum.GetValues(typeof(Segment)))
             {

@@ -8,7 +8,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
         protected override List<EntityValidator.ValidationFunc> customValidators =>
             new List<EntityValidator.ValidationFunc>()
             {
-                GenericEntityValidations.ValidateIsInsideRoom,
+                GenericEntityValidations.ValidateEntityIsInsideFoundation,
                 GenericEntityValidations.ValidateIsOnFloor
             };
 

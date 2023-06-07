@@ -19,21 +19,6 @@ namespace TowerBuilder.DataTypes.Entities
             return new ListWrapper<ValidationError>();
         }
 
-        public static ListWrapper<ValidationError> ValidateIsInsideRoom(AppState appState, Entity entity)
-        {
-            // foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.items)
-            // {
-            //     Room entityRoom = appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates);
-
-            //     if (entityRoom == null)
-            //     {
-            //         return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed inside.");
-            //     }
-            // }
-
-            return new ListWrapper<ValidationError>();
-        }
-
         public static ListWrapper<ValidationError> ValidateIsOnFloor(AppState appState, Entity entity)
         {
             foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.bottomRow.items)
@@ -97,6 +82,19 @@ namespace TowerBuilder.DataTypes.Entities
             }
 
             return new ListWrapper<ValidationError>();
+        }
+
+        public static ListWrapper<ValidationError> ValidateEntityIsInsideFoundation(AppState appState, Entity entity)
+        {
+            foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.items)
+            {
+                if (appState.Entities.Foundations.queries.FindEntitiesAtCell(cellCoordinates).Count == 0)
+                {
+                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be built inside of a room");
+                }
+            }
+
+            return Validator.CreateEmptyValidationErrorList();
         }
 
         /*

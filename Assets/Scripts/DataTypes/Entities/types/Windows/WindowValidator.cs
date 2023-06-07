@@ -8,7 +8,7 @@ namespace TowerBuilder.DataTypes.Entities.Windows
         protected override List<EntityValidator.ValidationFunc> customValidators =>
             new List<EntityValidator.ValidationFunc>()
             {
-                GenericEntityValidations.ValidateIsInsideRoom,
+                GenericEntityValidations.ValidateEntityIsInsideFoundation,
             };
 
         public WindowValidator(Window window) : base(window) { }

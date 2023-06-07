@@ -2,12 +2,9 @@
 
 ## Tasks
 
+- Limit
 - Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
 - Entity type categories
-- Maybe this would make more sense:
-  - "Room foundation" = box that makes up a room
-  - "Platform" for floating floor
-  - You can't have interior walls, ceiling, back walls, or windows outside of a room
 - use "min size" instead of staticBlockSize, which is confusing
   - block size can be smaller than min size, eg. escalators/stairs
   - maybe alternatively "border" size could be defined, and "fill" size? for escalator border would be 1 (x2, so 2x2 at minimum) and then 1 on the inside
@@ -34,7 +31,6 @@
   - for different vehicle types
     - building
     - vehicle
-- Refactor entity.CalculateCellsFromSelectionBox to allow for different "fill mode" - marquee, pencil
 - built in way of entities to add modifiers to related entities,
   - to avoid all the boilerplate of adding/removing modifiers in setup/teardown
   - to allow entities without behaviors to add modifiers to other entities
@@ -372,6 +368,11 @@
 
 # Done
 
+- Refactor entity.CalculateCellsFromSelectionBox to allow for different "fill mode" - marquee, pencil
+- Maybe this would make more sense:
+  - "Room foundation" = box that makes up a room
+  - "Platform" for floating floor
+  - You can't have interior walls, ceiling, back walls, or windows outside of a room
 - implement CalculateDerivedAttributes for vehicle attributes (calculate currentSpeed in there)
 - Ability for furniture behavior interaction to fail for some reason - validation?
   - use first for pilot seat -> without any engines then it will not work

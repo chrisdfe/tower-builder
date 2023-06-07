@@ -20,6 +20,7 @@ namespace TowerBuilder.DataTypes.Entities
         public bool isInBlueprintMode { get; set; } = false;
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
+
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 
         // TODO - remove the set; accessors too
@@ -57,16 +58,8 @@ namespace TowerBuilder.DataTypes.Entities
 
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {
-            EntityBlocksCalculatorBase blocksCalculator = EntityBlocksCalculator.FromDefinition(definition);
-
-            this.blocksList = blocksCalculator.CalculateFromSelectionBox(selectionBox);
-            // TODO 
-            // 1) put this somewhere not inside of Entity
-            // 2) use a different origin than bottomLeftCoordinates
-            this.blocksList.PositionAtCoordinates(selectionBox.cellCoordinatesList.bottomLeftCoordinates);
-
+            this.blocksList = EntityBlocksCalculator.FromDefinition(definition).Calculate(selectionBox);
             this.cellCoordinatesList = CellCoordinatesList.FromBlocksList(this.blocksList);
-
 
             CalculateTileableMap();
         }
@@ -94,7 +87,7 @@ namespace TowerBuilder.DataTypes.Entities
         */
         public static Entity CreateFromDefinition(EntityDefinition definition)
         {
-            System.Type EntityType = EntityDefinitions.EntityDefinitionEntityTypeMap[definition.GetType()];
+            System.Type EntityType = Constants.EntityTypeEntityDefinitionMap.KeyFromValue(definition.GetType());
 
             if (EntityType != null)
             {

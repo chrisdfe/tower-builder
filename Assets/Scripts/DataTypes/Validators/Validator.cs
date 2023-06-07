@@ -12,6 +12,9 @@ namespace TowerBuilder.DataTypes
         */
         public static ListWrapper<ValidationError> CreateSingleItemValidationErrorList(string message) =>
             new ListWrapper<ValidationError>(new ValidationError(message));
+
+        public static ListWrapper<ValidationError> CreateEmptyValidationErrorList() =>
+            new ListWrapper<ValidationError>();
     }
 
     public class Validator<ItemType> : Validator

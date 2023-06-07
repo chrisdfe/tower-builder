@@ -19,7 +19,16 @@ namespace TowerBuilder.DataTypes.Entities
             this.definition = definition;
         }
 
-        public abstract CellCoordinatesBlockList CalculateFromSelectionBox(SelectionBox selectionBox);
+        public CellCoordinatesBlockList Calculate(SelectionBox selectionBox)
+        {
+            CellCoordinatesBlockList blocksList = CalculateFromSelectionBox(selectionBox);
+            // TODO 
+            // 1) use a different origin than bottomLeftCoordinates
+            blocksList.PositionAtCoordinates(selectionBox.cellCoordinatesList.bottomLeftCoordinates);
+            return blocksList;
+        }
+
+        protected abstract CellCoordinatesBlockList CalculateFromSelectionBox(SelectionBox selectionBox);
 
         protected CellCoordinatesBlock CreateBlockAt(CellCoordinates cellCoordinates)
         {
