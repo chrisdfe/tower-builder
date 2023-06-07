@@ -14,6 +14,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
     public class EntityGroupDefinitionList<DefinitionType> : EntityGroupDefinitionList
         where DefinitionType : EntityGroupDefinition
     {
-        public List<DefinitionType> Definitions { get; }
+        public ListWrapper<DefinitionType> Definitions { get; }
     }
 }

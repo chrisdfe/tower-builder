@@ -2,7 +2,13 @@
 
 ## Tasks
 
-- Limit
+- Reorganize definitions
+  - Remove "Keys" from entities
+  - they don't need to be part of Registry
+- Remove journeys for now and focus on building?
+- Limit the number of buildings somehow
+  - arbitrarily?
+  - with money?
 - Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
 - Entity type categories
 - use "min size" instead of staticBlockSize, which is confusing
