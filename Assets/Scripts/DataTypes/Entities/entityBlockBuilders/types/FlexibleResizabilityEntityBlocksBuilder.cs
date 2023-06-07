@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public class FlexibleResizabilityEntityBlocksCalculator : EntityBlocksCalculatorBase
+    public class FlexibleResizabilityEntityBlocksBuilder : EntityBlocksBuilderBase
     {
-        public FlexibleResizabilityEntityBlocksCalculator(EntityDefinition definition) : base(definition) { }
+        public FlexibleResizabilityEntityBlocksBuilder(EntityDefinition definition) : base(definition) { }
 
         protected override CellCoordinatesBlockList CalculateFromSelectionBox(SelectionBox selectionBox)
         {

@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public class VerticalResizabilityEntityBlocksCalculator : EntityBlocksCalculatorBase
+    public class HorizontalResizabilityEntityBlocksBuilder : EntityBlocksBuilderBase
     {
-        public VerticalResizabilityEntityBlocksCalculator(EntityDefinition definition) : base(definition) { }
+        public HorizontalResizabilityEntityBlocksBuilder(EntityDefinition definition) : base(definition) { }
 
         protected override CellCoordinatesBlockList CalculateFromSelectionBox(SelectionBox selectionBox)
         {
             CellCoordinatesBlockList result = new CellCoordinatesBlockList();
 
-            for (int floor = 0; floor < selectionBox.cellCoordinatesList.floorSpan; floor += incrementAmount.floors)
+            for (int x = 0; x < selectionBox.cellCoordinatesList.width; x += incrementAmount.x)
             {
-                CellCoordinatesBlock block = CreateBlockAt(new CellCoordinates(0, floor));
+                CellCoordinatesBlock block = CreateBlockAt(new CellCoordinates(x, 0));
                 result.Add(block);
             }
 

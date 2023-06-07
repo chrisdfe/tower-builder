@@ -55,7 +55,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {
-            this.blocksList = EntityBlocksCalculator.FromDefinition(definition).Calculate(selectionBox);
+            this.blocksList = EntityBlocksBuilder.FromDefinition(definition).Calculate(selectionBox);
             this.cellCoordinatesList = CellCoordinatesList.FromBlocksList(this.blocksList);
 
             CalculateTileableMap();

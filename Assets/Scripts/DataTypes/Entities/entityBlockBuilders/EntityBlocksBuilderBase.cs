@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public abstract class EntityBlocksCalculatorBase
+    public abstract class EntityBlocksBuilderBase
     {
         protected EntityDefinition definition;
 
@@ -14,7 +14,7 @@ namespace TowerBuilder.DataTypes.Entities
                 definition.staticBlockSize ? definition.blockCellsTemplate.floorSpan : 1
             );
 
-        public EntityBlocksCalculatorBase(EntityDefinition definition)
+        public EntityBlocksBuilderBase(EntityDefinition definition)
         {
             this.definition = definition;
         }
