@@ -9,12 +9,12 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Residents
 {
-    public class ResidentDefinitionsList : EntityDefinitionsList<Resident.Key, ResidentDefinition>
+    public class ResidentDefinitionsList : EntityDefinitionsList
     {
-        public override List<ResidentDefinition> Definitions { get; } = new List<ResidentDefinition>()
+        public override List<EntityDefinition> Definitions { get; } = new List<EntityDefinition>()
         {
             new ResidentDefinition() {
-                key = Resident.Key.Default,
+                key = "Default",
                 title = "Default",
                 category = "Default",
 
@@ -27,7 +27,7 @@ namespace TowerBuilder.DataTypes.Entities.Residents
             },
 
             new ResidentDefinition() {
-                key = Resident.Key.OtherDefault,
+                key = "OtherDefault",
                 title = "OtherDefault",
                 category = "OtherDefault",
 

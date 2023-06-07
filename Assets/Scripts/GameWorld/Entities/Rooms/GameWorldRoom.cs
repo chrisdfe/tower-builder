@@ -72,7 +72,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
         public static GameWorldRoom Create(Transform parent)
         {
             GameWorldRoomsManager roomsManager = GameWorldRoomsManager.Find();
-            GameObject prefab = roomsManager.prefabAssets.FindByKey(GameWorldRoomsManager.AssetKey.Room);
+            GameObject prefab = roomsManager.prefabAssets.ValueFromKey("Room");
             GameObject roomGameObject = Instantiate<GameObject>(prefab);
 
             roomGameObject.transform.parent = parent;

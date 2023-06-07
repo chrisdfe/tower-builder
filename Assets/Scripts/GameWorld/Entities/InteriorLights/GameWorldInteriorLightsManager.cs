@@ -10,9 +10,9 @@ namespace TowerBuilder.GameWorld.Entities.InteriorLights
             Light
         }
 
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
+        public AssetList assetList = new AssetList();
 
-        public MeshAssetList<InteriorLight.Key> meshAssets = new MeshAssetList<InteriorLight.Key>();
+        public MeshAssetList meshAssets = new MeshAssetList();
 
         /* 
             Static API

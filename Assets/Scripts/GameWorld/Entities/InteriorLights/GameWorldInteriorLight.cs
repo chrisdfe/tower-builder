@@ -48,9 +48,9 @@ namespace TowerBuilder.GameWorld.Entities.InteriorLights
         {
             LightsManager.Find().interiorLights.Add(light);
 
-            AssetList<InteriorLight.Key> assetList = GameWorldInteriorLightsManager.Find().meshAssets;
+            AssetList assetList = GameWorldInteriorLightsManager.Find().meshAssets;
 
-            GameObject prefabMesh = assetList.FindByKey(interiorLight.key);
+            GameObject prefabMesh = assetList.ValueFromKey(interiorLight.definition.key);
 
             // entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
@@ -76,7 +76,7 @@ namespace TowerBuilder.GameWorld.Entities.InteriorLights
         public static GameWorldInteriorLight Create(Transform parent)
         {
             GameWorldInteriorLightsManager InteriorlightsManager = GameWorldInteriorLightsManager.Find();
-            GameObject prefab = InteriorlightsManager.assetList.FindByKey(GameWorldInteriorLightsManager.AssetKey.Light);
+            GameObject prefab = InteriorlightsManager.assetList.ValueFromKey("Light");
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;

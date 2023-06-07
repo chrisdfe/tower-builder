@@ -7,20 +7,8 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Foundations
 {
-    public class Foundation : Entity<Foundation.Key>
+    public class Foundation : Entity
     {
-        public enum Key
-        {
-            None,
-            Default,
-        }
-
-        public static EnumStringMap<Key> KeyLabelMap = new EnumStringMap<Key>(
-            new Dictionary<Key, string>() {
-                { Key.Default, "Default" }
-            }
-        );
-
         public override string idKey { get => "foundations"; }
 
         public Room room;

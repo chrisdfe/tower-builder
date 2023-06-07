@@ -2,9 +2,6 @@
 
 ## Tasks
 
-- Reorganize definitions
-  - Remove "Keys" from entities
-  - they don't need to be part of Registry
 - Remove journeys for now and focus on building?
 - Limit the number of buildings somehow
   - arbitrarily?
@@ -374,6 +371,9 @@
 
 # Done
 
+- Reorganize definitions
+  - Remove "Keys" from entities
+  - they don't need to be part of Registry
 - Refactor entity.CalculateCellsFromSelectionBox to allow for different "fill mode" - marquee, pencil
 - Maybe this would make more sense:
   - "Room foundation" = box that makes up a room

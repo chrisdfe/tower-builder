@@ -38,16 +38,17 @@ namespace TowerBuilder.GameWorld.Entities.Windows
 
         public void Setup()
         {
-            AssetList<Window.Key> assetList = GameWorldWindowsManager.Find().meshAssets;
+            AssetList assetList = GameWorldWindowsManager.Find().meshAssets;
 
-            GameObject prefabMesh = assetList.FindByKey(window.key);
+            GameObject prefabMesh = assetList.ValueFromKey(window.definition.key);
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
             entityMeshWrapper.cellCoordinatesList = window.cellCoordinatesList;
             entityMeshWrapper.Setup();
 
-            GetComponent<GameWorldEntity>().Setup();
+            GameWorldEntity gameWorldEntity = GetComponent<GameWorldEntity>();
+            gameWorldEntity.Setup();
         }
 
         public void Teardown() { }
@@ -58,7 +59,7 @@ namespace TowerBuilder.GameWorld.Entities.Windows
         public static GameWorldWindow Create(Transform parent)
         {
             GameWorldWindowsManager windowsManager = GameWorldWindowsManager.Find();
-            GameObject prefab = windowsManager.assetList.FindByKey(GameWorldWindowsManager.AssetKey.Window);
+            GameObject prefab = windowsManager.assetList.ValueFromKey("Window");
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;

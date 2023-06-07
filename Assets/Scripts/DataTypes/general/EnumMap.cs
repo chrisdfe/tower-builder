@@ -1,17 +1,20 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
+    [Serializable]
     public class EnumMap<EnumType, ValueType>
     {
-        public EnumType enumType;
-
-        public Dictionary<EnumType, ValueType> map { get; }
+        public Dictionary<EnumType, ValueType> map = new Dictionary<EnumType, ValueType>();
 
         public List<EnumType> keys => map.Keys.ToList();
 
         public List<ValueType> values => map.Values.ToList();
+
+        public EnumMap() { }
 
         public EnumMap(Dictionary<EnumType, ValueType> map)
         {

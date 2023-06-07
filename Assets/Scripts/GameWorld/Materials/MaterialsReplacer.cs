@@ -25,7 +25,11 @@ namespace TowerBuilder.GameWorld
             Material material = meshRenderer.sharedMaterial;
             string materialName = material.name;
             string cleanedName = materialName.Replace(" (Instance)", "").ToLower();
-            Material replacementMaterial = materialsManager.FindByName(cleanedName);
+            Debug.Log("cleanedName");
+            Debug.Log(cleanedName);
+            Material replacementMaterial = materialsManager.materialList.ValueFromKey(cleanedName);
+            Debug.Log("replacementMaterial");
+            Debug.Log(replacementMaterial);
 
             if (replacementMaterial != null)
             {

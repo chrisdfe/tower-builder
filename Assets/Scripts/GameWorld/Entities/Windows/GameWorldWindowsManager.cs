@@ -5,14 +5,9 @@ namespace TowerBuilder.GameWorld.Entities.Windows
 {
     public class GameWorldWindowsManager : MonoBehaviour, IFindable
     {
-        public enum AssetKey
-        {
-            Window
-        }
+        public AssetList assetList = new AssetList();
 
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
-
-        public MeshAssetList<Window.Key> meshAssets = new MeshAssetList<Window.Key>();
+        public MeshAssetList meshAssets = new MeshAssetList();
 
         /* 
             Static API

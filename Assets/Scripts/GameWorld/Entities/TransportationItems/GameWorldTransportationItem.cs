@@ -64,7 +64,7 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
         {
             // TransformUtils.DestroyChildren(transform);
             GameWorldTransportationManager transportationManager = GameWorldTransportationManager.Find();
-            GameObject prefabMesh = transportationManager.meshAssets.FindByKey(transportationItem.key);
+            GameObject prefabMesh = transportationManager.meshAssets.ValueFromKey(transportationItem.definition.key);
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
@@ -83,7 +83,7 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
         public static GameWorldTransportationItem Create(Transform parent)
         {
             GameWorldTransportationManager transportationManager = GameWorldTransportationManager.Find();
-            GameObject prefab = transportationManager.prefabAssets.FindByKey(GameWorldTransportationManager.AssetKey.TransportationItem);
+            GameObject prefab = transportationManager.prefabAssets.ValueFromKey("TransportationItem");
             GameObject transportationItemGameObject = Instantiate<GameObject>(prefab);
 
             transportationItemGameObject.transform.parent = parent;

@@ -5,14 +5,9 @@ namespace TowerBuilder.GameWorld.Entities.Wheels
 {
     public class GameWorldWheelsManager : MonoBehaviour, IFindable
     {
-        public enum AssetKey
-        {
-            Wheel
-        }
+        public AssetList assetList = new AssetList();
 
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
-
-        public MeshAssetList<Wheel.SkinKey> meshAssets = new MeshAssetList<Wheel.SkinKey>();
+        public MeshAssetList meshAssets = new MeshAssetList();
 
         /* 
             Static API

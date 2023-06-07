@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.DataTypes.Entities.Windows
 {
-    public class WindowDefinitionsList : EntityDefinitionsList<Window.Key, WindowDefinition>
+    public class WindowDefinitionsList : EntityDefinitionsList
     {
-        public override List<WindowDefinition> Definitions { get; } = new List<WindowDefinition>()
+        public override List<EntityDefinition> Definitions { get; } = new List<EntityDefinition>()
         {
             new WindowDefinition() {
-                key = Window.Key.Default,
+                key = "Default",
                 title = "Basic",
                 category = "Basic",
 

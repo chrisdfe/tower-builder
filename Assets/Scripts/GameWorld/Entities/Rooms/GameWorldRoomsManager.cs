@@ -13,7 +13,7 @@ namespace TowerBuilder.GameWorld.Entities.Rooms
             RoomCell
         };
 
-        public AssetList<AssetKey> prefabAssets = new AssetList<AssetKey>();
+        public AssetList prefabAssets = new AssetList();
         // public MeshAssetList<Room.SkinKey> meshAssets = new MeshAssetList<Room.SkinKey>();
 
         GameWorldEntityList gameWorldEntityList;

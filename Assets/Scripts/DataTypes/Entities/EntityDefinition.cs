@@ -5,6 +5,7 @@ namespace TowerBuilder.DataTypes.Entities
 {
     public class EntityDefinition
     {
+        public virtual string key { get; set; } = "None";
         public virtual string title { get; set; } = "None";
         public virtual string category { get; set; } = "None";
 
@@ -19,11 +20,5 @@ namespace TowerBuilder.DataTypes.Entities
 
         public delegate EntityValidator ValidatorFactory(Entity entity);
         public virtual ValidatorFactory validatorFactory => (Entity entity) => new EntityValidator(entity);
-    }
-
-    public class EntityDefinition<KeyType> : EntityDefinition
-        where KeyType : struct
-    {
-        public KeyType key;
     }
 }

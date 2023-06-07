@@ -6,26 +6,9 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.TransportationItems
 {
-    public class TransportationItem : Entity<TransportationItem.Key>
+    public class TransportationItem : Entity
     {
         public override string idKey => "TransportationItem";
-
-        public enum Key
-        {
-            None,
-            Ladder,
-            Escalator,
-            Doorway,
-        }
-
-        public static EnumStringMap<Key> KeyLabelMap = new EnumStringMap<Key>(
-            new Dictionary<Key, string>() {
-                { Key.None, "None" },
-                { Key.Ladder, "Ladder" },
-                { Key.Escalator, "Escalator" },
-                { Key.Doorway, "Doorway" },
-            }
-        );
 
         public CellCoordinatesList entranceCellCoordinatesList = new CellCoordinatesList();
         public CellCoordinatesList exitCellCoordinatesList = new CellCoordinatesList();
@@ -60,25 +43,5 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
                 exitCellCoordinatesList.Add(exitCellCoordinates);
             }
         }
-
-        // public override void PositionAtCoordinates(CellCoordinates cellCoordinates)
-        // {
-        //     base.PositionAtCoordinates(cellCoordinates);
-        // }
-
-        // public CellCoordinates GetEntranceOrExit(CellCoordinates cellCoordinates)
-        // {
-        //     if (cellCoordinates.Matches(entranceCellCoordinates))
-        //     {
-        //         return exitCellCoordinates;
-        //     }
-
-        //     if (cellCoordinates.Matches(exitCellCoordinates))
-        //     {
-        //         return entranceCellCoordinates;
-        //     }
-
-        //     return null;
-        // }
     }
 }

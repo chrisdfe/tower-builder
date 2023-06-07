@@ -38,9 +38,9 @@ namespace TowerBuilder.GameWorld.Entities.Freight
 
         public void Setup()
         {
-            AssetList<FreightItem.Key> assetList = GameWorldFreightManager.Find().meshAssets;
+            AssetList assetList = GameWorldFreightManager.Find().meshAssets;
 
-            GameObject prefabMesh = assetList.FindByKey(freightItem.key);
+            GameObject prefabMesh = assetList.ValueFromKey(freightItem.definition.key);
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
@@ -58,7 +58,7 @@ namespace TowerBuilder.GameWorld.Entities.Freight
         public static GameWorldFreight Create(Transform parent)
         {
             GameWorldFreightManager freightsManager = GameWorldFreightManager.Find();
-            GameObject prefab = freightsManager.assetList.FindByKey(GameWorldFreightManager.AssetKey.Freight);
+            GameObject prefab = freightsManager.assetList.ValueFromKey("Freight");
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;

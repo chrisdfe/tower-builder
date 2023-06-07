@@ -10,9 +10,9 @@ namespace TowerBuilder.GameWorld.Entities.Foundations
             Foundation
         }
 
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
+        public AssetList assetList = new AssetList();
 
-        public MeshAssetList<Foundation.Key> meshAssets = new MeshAssetList<Foundation.Key>();
+        public MeshAssetList meshAssets = new MeshAssetList();
 
         /* 
             Static API

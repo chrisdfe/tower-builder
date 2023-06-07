@@ -36,9 +36,9 @@ namespace TowerBuilder.GameWorld.Entities.Foundations
 
         public void Setup()
         {
-            AssetList<Foundation.Key> assetList = GameWorldFoundationsManager.Find().meshAssets;
+            AssetList assetList = GameWorldFoundationsManager.Find().meshAssets;
 
-            GameObject prefabMesh = assetList.FindByKey(foundation.key);
+            GameObject prefabMesh = assetList.ValueFromKey(foundation.definition.key);
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
@@ -67,7 +67,7 @@ namespace TowerBuilder.GameWorld.Entities.Foundations
         public static GameWorldFoundation Create(Transform parent)
         {
             GameWorldFoundationsManager foundationsManager = GameWorldFoundationsManager.Find();
-            GameObject prefab = foundationsManager.assetList.FindByKey(GameWorldFoundationsManager.AssetKey.Foundation);
+            GameObject prefab = foundationsManager.assetList.ValueFromKey("Foundation");
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;

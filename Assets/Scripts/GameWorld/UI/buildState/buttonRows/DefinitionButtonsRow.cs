@@ -16,18 +16,18 @@ namespace TowerBuilder.GameWorld.UI
             Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
             string currentCategory = Registry.appState.Tools.buildToolState.selectedEntityCategory;
 
-            return Registry.Definitions.Entities.Queries.FindByCategory(selectedEntityType, currentCategory)
+            return DataTypes.Entities.Definitions.FindByCategory(selectedEntityType, currentCategory)
                 .items.Select((definition) =>
                     new UISelectButton.Input()
                     {
                         label = definition.title,
-                        value = DataTypes.Entities.Constants.GetEntityDefinitionLabel(definition)
+                        value = definition.key
                     }
                 ).ToList();
         }
 
         public override bool ButtonShouldBeSelected(UISelectButton button) =>
-            button.value == DataTypes.Entities.Constants.GetEntityDefinitionLabel(Registry.appState.Tools.buildToolState.selectedEntityDefinition);
+            button.value == Registry.appState.Tools.buildToolState.selectedEntityDefinition.key;
 
         public override void OnButtonClick(string value)
         {

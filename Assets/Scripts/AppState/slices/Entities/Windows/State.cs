@@ -56,10 +56,10 @@ namespace TowerBuilder.ApplicationState.Entities.Windows
         {
             foreach (Room room in roomList.items)
             {
-                ListWrapper<Window> windowsInsideRoom =
-                    queries.GetWindowsInsideRoom(room);
+                // ListWrapper<Window> windowsInsideRoom =
+                //     queries.GetWindowsInsideRoom(room);
 
-                Remove(windowsInsideRoom);
+                // Remove(windowsInsideRoom);
             }
         }
 
@@ -67,8 +67,8 @@ namespace TowerBuilder.ApplicationState.Entities.Windows
         {
             public Queries(AppState appState, State state) : base(appState, state) { }
 
-            public ListWrapper<Window> GetWindowsInsideRoom(Room room) =>
-                state.list.FindAll((window) => window.room == room);
+            // public ListWrapper<Window> GetWindowsInsideRoom(Room room) =>
+            //     state.list.FindAll((window) => window.room == room);
         }
     }
 }

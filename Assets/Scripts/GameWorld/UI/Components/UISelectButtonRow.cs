@@ -73,7 +73,7 @@ namespace TowerBuilder.GameWorld.UI.Components
         {
             UIManager uiManager = GameWorldFindableCache.Find<UIManager>("UIManager");
 
-            GameObject prefab = uiManager.assetList.FindByKey(UIManager.AssetKey.SelectButton);
+            GameObject prefab = uiManager.assetList.ValueFromKey("UISelectButtonRow");
             GameObject selectButtonRowGameObject = Instantiate<GameObject>(prefab);
 
             selectButtonRowGameObject.transform.SetParent(parent, false);

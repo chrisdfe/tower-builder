@@ -4,22 +4,9 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
 {
     public class GameWorldFurnitureManager : MonoBehaviour, IFindable
     {
-        public enum AssetKey
-        {
-            Furniture,
-        }
+        public AssetList prefabAssets = new AssetList();
 
-        public AssetList<AssetKey> prefabAssets = new AssetList<AssetKey>();
-
-        public enum MeshAssetKey
-        {
-            Bed,
-            Engine,
-            PilotSeat,
-            MoneyMachine
-        };
-
-        public MeshAssetList<MeshAssetKey> meshAssets = new MeshAssetList<MeshAssetKey>();
+        public MeshAssetList meshAssets = new MeshAssetList();
 
         void Awake()
         {
@@ -28,9 +15,9 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
 
         void ReplaceMaterials()
         {
-            foreach (AssetList<MeshAssetKey>.ValueTypeWrapper wrapper in meshAssets.list)
+            foreach (MeshAssetList.ValueTypeWrapper valueTypeWrapper in meshAssets.list)
             {
-                GameObject gameObject = wrapper.value;
+                GameObject gameObject = valueTypeWrapper.value;
                 MaterialsReplacer.ReplaceMaterials(gameObject.transform);
             }
         }

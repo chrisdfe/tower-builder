@@ -12,13 +12,7 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class UIManager : MonoBehaviour, IFindable
     {
-        public enum AssetKey
-        {
-            SelectButton,
-            SelectButtonRow,
-        }
-
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
+        public AssetList assetList = new AssetList();
 
         public bool mouseIsOverUI { get; private set; }
 

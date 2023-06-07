@@ -10,9 +10,9 @@ namespace TowerBuilder.GameWorld.Entities.Freight
             Freight
         }
 
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
+        public AssetList assetList = new AssetList();
 
-        public MeshAssetList<FreightItem.Key> meshAssets = new MeshAssetList<FreightItem.Key>();
+        public MeshAssetList meshAssets = new MeshAssetList();
 
         /* 
             Static API

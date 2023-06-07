@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using TowerBuilder.DataTypes;
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld
 {
     [Serializable]
     public class SerializableKeyValueList<KeyType, ValueType>
-        where KeyType : struct
         where ValueType : class
     {
         [Serializable]
@@ -21,27 +21,27 @@ namespace TowerBuilder.GameWorld
 
         public int Count { get => list.Count; }
 
-        public ValueType FindByKey(KeyType key) =>
+        public ValueType ValueFromKey(KeyType key) =>
             list.Find(wrapper => wrapper.key.Equals(key))?.value;
+
+        public KeyType KeyFromValue(ValueType value) =>
+            list.Find(wrapper => wrapper.value.Equals(value)).key;
     }
 
     [Serializable]
-    public class AssetList<KeyType> : SerializableKeyValueList<KeyType, GameObject>
-        where KeyType : struct
+    public class AssetList : SerializableKeyValueList<string, GameObject>
     { }
 
     [Serializable]
-    public class MaterialsList<KeyType> : SerializableKeyValueList<KeyType, Material>
-        where KeyType : struct
+    public class MaterialsList : SerializableKeyValueList<string, Material>
     { }
 
     [Serializable]
-    public class MeshAssetList<KeyType> : AssetList<KeyType>
-        where KeyType : struct
+    public class MeshAssetList : AssetList
     {
         public void ReplaceMaterials()
         {
-            foreach (AssetList<KeyType>.ValueTypeWrapper wrapper in list)
+            foreach (AssetList.ValueTypeWrapper wrapper in list)
             {
                 GameObject gameObject = wrapper.value;
                 MaterialsReplacer.ReplaceMaterials(gameObject.transform);

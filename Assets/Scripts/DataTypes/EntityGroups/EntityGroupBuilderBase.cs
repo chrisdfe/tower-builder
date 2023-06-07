@@ -1,11 +1,10 @@
 namespace TowerBuilder.DataTypes.EntityGroups
 {
-    public abstract class EntityGroupBuilderBase<EntityGroupType>
-        where EntityGroupType : EntityGroup, new()
+    public abstract class EntityGroupBuilderBase
     {
         public EntityGroupBuilderBase() { }
 
-        public abstract EntityGroupType Build(SelectionBox selectionBox);
+        public abstract EntityGroup Build(SelectionBox selectionBox);
     }
 }
 

@@ -6,26 +6,8 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Furnitures
 {
-    public class Furniture : Entity<Furniture.Key>
+    public class Furniture : Entity
     {
-        public enum Key
-        {
-            None,
-            Bed,
-            Engine,
-            PilotSeat,
-            MoneyMachine
-        }
-
-        public static EnumStringMap<Key> KeyLabelMap = new EnumStringMap<Key>(
-            new Dictionary<Key, string>() {
-                { Key.Bed,          "Bed" },
-                { Key.Engine,       "Engine" },
-                { Key.PilotSeat,    "PilotSeat" },
-                { Key.MoneyMachine, "MoneyMachine" }
-            }
-        );
-
         public override string idKey { get => "furniture"; }
 
         public Furniture(FurnitureDefinition furnitureDefinition) : base(furnitureDefinition) { }

@@ -87,7 +87,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
         public static GameWorldResident Create(Transform parent)
         {
             GameWorldResidentsManager residentsManager = GameWorldResidentsManager.Find();
-            GameObject prefab = residentsManager.assetList.FindByKey(GameWorldResidentsManager.AssetKey.Resident);
+            GameObject prefab = residentsManager.assetList.ValueFromKey("Resident");
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;

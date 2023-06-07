@@ -103,7 +103,7 @@ namespace TowerBuilder.ApplicationState.Tools
         {
             this.selectedEntityCategory = entityCategory;
 
-            this.selectedEntityDefinition = Registry.Definitions.Entities.Queries.FindFirstInCategory(selectedEntityType, selectedEntityCategory);
+            this.selectedEntityDefinition = DataTypes.Entities.Definitions.FindFirstInCategory(selectedEntityType, selectedEntityCategory);
 
             ResetBlueprintEntity();
 
@@ -115,7 +115,7 @@ namespace TowerBuilder.ApplicationState.Tools
         // TODO - this should probably use key instead of title string
         public void SetSelectedEntityDefinition(string keyLabel)
         {
-            this.selectedEntityDefinition = Registry.Definitions.Entities.Queries.FindDefinitionByKeyLabel(selectedEntityDefinition, keyLabel);
+            this.selectedEntityDefinition = DataTypes.Entities.Definitions.FindByKey(this.selectedEntityType, keyLabel);
 
             ResetBlueprintEntity();
 
@@ -127,8 +127,8 @@ namespace TowerBuilder.ApplicationState.Tools
         */
         void ResetCategoryAndDefinition()
         {
-            selectedEntityCategory = Registry.Definitions.Entities.Queries.FindFirstCategory(selectedEntityType);
-            selectedEntityDefinition = Registry.Definitions.Entities.Queries.FindFirstInCategory(selectedEntityType, selectedEntityCategory);
+            selectedEntityCategory = DataTypes.Entities.Definitions.FindFirstCategory(selectedEntityType);
+            selectedEntityDefinition = DataTypes.Entities.Definitions.FindFirstInCategory(selectedEntityType, selectedEntityCategory);
         }
 
         void StartBuild()

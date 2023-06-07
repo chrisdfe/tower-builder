@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.DataTypes.Entities.InteriorLights
 {
-    public class InteriorLightDefinitionsList : EntityDefinitionsList<InteriorLight.Key, InteriorLightDefinition>
+    public class InteriorLightDefinitionsList : EntityDefinitionsList
     {
-        public override List<InteriorLightDefinition> Definitions { get; } = new List<InteriorLightDefinition>()
+        public override List<EntityDefinition> Definitions { get; } = new List<EntityDefinition>()
         {
             new InteriorLightDefinition() {
-                key = InteriorLight.Key.Default,
+                key = "Default",
                 title = "Top",
                 category = "Basic",
 

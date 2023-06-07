@@ -6,12 +6,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 {
     public class GameWorldSceneryManager : MonoBehaviour
     {
-        public enum ModelKey
-        {
-            Tree,
-        }
-
-        public AssetList<ModelKey> assetList = new AssetList<ModelKey>();
+        public AssetList assetList = new AssetList();
 
         Transform wrapper;
 

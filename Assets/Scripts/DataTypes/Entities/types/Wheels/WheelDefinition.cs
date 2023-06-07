@@ -4,9 +4,9 @@ using TowerBuilder.DataTypes.Entities.Wheels;
 
 namespace TowerBuilder.DataTypes.Entities.Wheels
 {
-    public class WheelDefinition : EntityDefinition<Wheel.Key>
+    public class WheelDefinition : EntityDefinition
     {
-        public Wheel.SkinKey skinKey;
+        public string skinKey;
 
         public override ValidatorFactory validatorFactory => (Entity entity) => new WheelValidator(entity);
     }

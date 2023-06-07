@@ -5,14 +5,9 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
 {
     public class GameWorldTransportationManager : MonoBehaviour, IFindable
     {
-        public enum AssetKey
-        {
-            TransportationItem
-        }
+        public AssetList prefabAssets = new AssetList();
 
-        public AssetList<AssetKey> prefabAssets = new AssetList<AssetKey>();
-
-        public MeshAssetList<TransportationItem.Key> meshAssets = new MeshAssetList<TransportationItem.Key>();
+        public MeshAssetList meshAssets = new MeshAssetList();
 
         void Awake()
         {

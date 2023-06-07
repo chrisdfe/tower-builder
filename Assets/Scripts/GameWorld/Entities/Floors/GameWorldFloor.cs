@@ -38,9 +38,9 @@ namespace TowerBuilder.GameWorld.Entities.Floors
 
         public void Setup()
         {
-            AssetList<Floor.Key> assetList = GameWorldFloorsManager.Find().meshAssets;
+            AssetList assetList = GameWorldFloorsManager.Find().meshAssets;
 
-            GameObject prefabMesh = assetList.FindByKey(floor.key);
+            GameObject prefabMesh = assetList.ValueFromKey(floor.definition.key);
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
@@ -58,7 +58,7 @@ namespace TowerBuilder.GameWorld.Entities.Floors
         public static GameWorldFloor Create(Transform parent)
         {
             GameWorldFloorsManager floorsManager = GameWorldFloorsManager.Find();
-            GameObject prefab = floorsManager.assetList.FindByKey(GameWorldFloorsManager.AssetKey.Floor);
+            GameObject prefab = floorsManager.assetList.ValueFromKey("Floor");
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;

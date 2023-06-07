@@ -3,13 +3,13 @@ using TowerBuilder.Definitions;
 
 namespace TowerBuilder.DataTypes.Entities.Freights
 {
-    public class FreightDefinitionsList : EntityDefinitionsList<FreightItem.Key, FreightDefinition>
+    public class FreightDefinitionsList : EntityDefinitionsList
     {
-        public override List<FreightDefinition> Definitions =>
-            new List<FreightDefinition>()
+        public override List<EntityDefinition> Definitions =>
+            new List<EntityDefinition>()
                 {
                     new FreightDefinition() {
-                        key = FreightItem.Key.Small,
+                        key = "Small",
                         title = "Small",
                         category = "Basic",
 
@@ -21,7 +21,7 @@ namespace TowerBuilder.DataTypes.Entities.Freights
                     },
 
                     new FreightDefinition() {
-                        key = FreightItem.Key.Medium,
+                        key = "Medium",
                         title = "Medium",
                         category = "Basic",
 
@@ -29,7 +29,7 @@ namespace TowerBuilder.DataTypes.Entities.Freights
                     },
 
                     new FreightDefinition() {
-                        key = FreightItem.Key.Large,
+                        key = "Large",
                         title = "Large",
                         category = "Basic",
 

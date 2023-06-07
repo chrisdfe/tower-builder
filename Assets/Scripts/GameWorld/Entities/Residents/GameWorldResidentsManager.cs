@@ -17,7 +17,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
             Resident
         }
 
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
+        public AssetList assetList = new AssetList();
 
         void Awake()
         {

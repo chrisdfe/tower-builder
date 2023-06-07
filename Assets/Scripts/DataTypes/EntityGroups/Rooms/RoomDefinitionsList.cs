@@ -1,6 +1,6 @@
 namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 {
-    public class RoomDefinitionsList : EntityGroupDefinitionList<RoomDefinition>
+    public class RoomDefinitionsList : EntityGroupDefinitionList
     {
 
     }

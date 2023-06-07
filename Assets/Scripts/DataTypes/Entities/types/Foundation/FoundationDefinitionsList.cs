@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.DataTypes.Entities.Foundations
 {
-    public class FoundationDefinitionsList : EntityDefinitionsList<Foundation.Key, FoundationDefinition>
+    public class FoundationDefinitionsList : EntityDefinitionsList
     {
-        public override List<FoundationDefinition> Definitions { get; } = new List<FoundationDefinition>()
+        public override List<EntityDefinition> Definitions { get; } = new List<EntityDefinition>()
         {
             new FoundationDefinition() {
-                key = Foundation.Key.Default,
+                key = "Default",
                 title = "Default",
                 category = "Default",
 

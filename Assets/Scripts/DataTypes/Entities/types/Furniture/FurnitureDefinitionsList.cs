@@ -9,12 +9,12 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Furnitures
 {
-    public class FurnitureDefinitionsList : EntityDefinitionsList<Furniture.Key, FurnitureDefinition>
+    public class FurnitureDefinitionsList : EntityDefinitionsList
     {
-        public override List<FurnitureDefinition> Definitions { get; } = new List<FurnitureDefinition>()
+        public override List<EntityDefinition> Definitions { get; } = new List<EntityDefinition>()
         {
             new FurnitureDefinition() {
-                key = Furniture.Key.PilotSeat,
+                key = "PilotSeat",
                 title = "Pilot Seat",
                 category = "PilotSeats",
 
@@ -28,7 +28,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
             },
 
             new FurnitureDefinition() {
-                key = Furniture.Key.Engine,
+                key = "Engine",
                 title = "Engine",
                 category = "Engines",
 
@@ -42,7 +42,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
             },
 
             new FurnitureDefinition() {
-                key = Furniture.Key.Bed,
+                key = "Bed",
                 title = "Bed",
                 category = "Beds",
                 homeSlotCount = 1,
@@ -57,7 +57,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
             },
 
             new FurnitureDefinition() {
-                key = Furniture.Key.MoneyMachine,
+                key = "MoneyMachine",
                 title = "Money Machine",
                 category = "Industry",
 

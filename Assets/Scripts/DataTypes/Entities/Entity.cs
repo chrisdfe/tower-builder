@@ -18,18 +18,16 @@ namespace TowerBuilder.DataTypes.Entities
         public bool isInBlueprintMode { get; set; } = false;
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
-
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 
         public CellCoordinatesList cellCoordinatesList { get; private set; } = new CellCoordinatesList();
-
         public CellCoordinatesBlockList blocksList { get; private set; } = new CellCoordinatesBlockList();
 
         public EntityDefinition definition { get; }
 
         public EntityValidator validator { get; }
 
-        public string typeLabel => Constants.GetEntityDefinitionLabel(definition);
+        public virtual string typeLabel => "Entity";
 
         public Entity(EntityDefinition definition)
         {
@@ -92,19 +90,6 @@ namespace TowerBuilder.DataTypes.Entities
             }
 
             return null;
-        }
-    }
-
-    public class Entity<KeyType> : Entity
-        where KeyType : struct
-    {
-        public KeyType key { get; protected set; }
-
-        // public static EnumStringMap<KeyType> KeyLabelMap;
-
-        public Entity(EntityDefinition<KeyType> definition) : base(definition as EntityDefinition)
-        {
-            this.key = definition.key;
         }
     }
 }

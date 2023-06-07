@@ -4,12 +4,12 @@ using TowerBuilder.DataTypes.Entities;
 
 namespace TowerBuilder.DataTypes.Entities.Wheels
 {
-    public class WheelDefinitionsList : EntityDefinitionsList<Wheel.Key, WheelDefinition>
+    public class WheelDefinitionsList : EntityDefinitionsList
     {
-        public override List<WheelDefinition> Definitions { get; } = new List<WheelDefinition>()
+        public override List<EntityDefinition> Definitions { get; } = new List<EntityDefinition>()
         {
             new WheelDefinition() {
-                key = Wheel.Key.Default,
+                key = "Default",
                 title = "Small",
                 category = "Basic",
 

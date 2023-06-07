@@ -36,9 +36,9 @@ namespace TowerBuilder.GameWorld.Entities.Wheels
 
         public void Setup()
         {
-            AssetList<Wheel.SkinKey> assetList = GameWorldWheelsManager.Find().meshAssets;
+            AssetList assetList = GameWorldWheelsManager.Find().meshAssets;
 
-            GameObject prefabMesh = assetList.FindByKey(wheel.skinKey);
+            GameObject prefabMesh = assetList.ValueFromKey(wheel.definition.key);
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
@@ -57,7 +57,7 @@ namespace TowerBuilder.GameWorld.Entities.Wheels
         public static GameWorldWheel Create(Transform parent)
         {
             GameWorldWheelsManager wheelsManager = GameWorldWheelsManager.Find();
-            GameObject prefab = wheelsManager.assetList.FindByKey(GameWorldWheelsManager.AssetKey.Wheel);
+            GameObject prefab = wheelsManager.assetList.ValueFromKey("Wheel");
             GameObject gameObject = Instantiate<GameObject>(prefab);
 
             gameObject.transform.parent = parent;

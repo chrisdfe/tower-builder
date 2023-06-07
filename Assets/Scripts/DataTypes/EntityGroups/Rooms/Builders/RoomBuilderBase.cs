@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 {
-    public class RoomBuilderBase : EntityGroupBuilderBase<Room>
+    public class RoomBuilderBase : EntityGroupBuilderBase
     {
         Room currentRoom;
 
         public RoomBuilderBase() : base() { }
 
-        public override Room Build(SelectionBox selectionBox)
+        public override EntityGroup Build(SelectionBox selectionBox)
         {
             currentRoom = new Room();
 

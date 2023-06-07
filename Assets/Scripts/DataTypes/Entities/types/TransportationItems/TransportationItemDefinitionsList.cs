@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace TowerBuilder.DataTypes.Entities.TransportationItems
 {
-    public class TransportationItemDefinitionsList : EntityDefinitionsList<TransportationItem.Key, TransportationItemDefinition>
+    public class TransportationItemDefinitionsList : EntityDefinitionsList
     {
-        public override List<TransportationItemDefinition> Definitions { get; } = new List<TransportationItemDefinition>()
+        public override List<EntityDefinition> Definitions { get; } = new List<EntityDefinition>()
         {
             new TransportationItemDefinition() {
-                key = TransportationItem.Key.Escalator,
+                key = "Escalator",
                 title = "Escalator",
                 category = "Escalators",
 
@@ -49,8 +49,8 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
             },
 
             new TransportationItemDefinition()
-        {
-            key = TransportationItem.Key.Ladder,
+            {
+                key = "Ladder",
                 title = "Ladder",
                 category = "Ladders",
 
@@ -90,8 +90,8 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
             },
 
             new TransportationItemDefinition()
-        {
-            key = TransportationItem.Key.Doorway,
+            {
+                key = "Doorway",
                 title = "Doorway",
                 category = "Doorways",
 
@@ -128,7 +128,7 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
 
                 resizability = Resizability.Inflexible
             }
-    };
+        };
 
         public TransportationItemDefinitionsList() : base() { }
     }

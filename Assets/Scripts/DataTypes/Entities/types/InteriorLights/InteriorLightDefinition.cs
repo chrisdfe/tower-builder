@@ -4,7 +4,7 @@ using TowerBuilder.DataTypes.Behaviors.Furnitures;
 
 namespace TowerBuilder.DataTypes.Entities.InteriorLights
 {
-    public class InteriorLightDefinition : EntityDefinition<InteriorLight.Key>
+    public class InteriorLightDefinition : EntityDefinition
     {
     }
 }

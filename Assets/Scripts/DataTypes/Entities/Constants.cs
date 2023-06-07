@@ -14,19 +14,20 @@ namespace TowerBuilder.DataTypes.Entities
 {
     public static class Constants
     {
-        public static EnumStringMap<Type> TypeLabels = new EnumStringMap<Type>(
-            new Dictionary<Type, string>() {
-                { typeof(Floor),              "Floor" },
-                { typeof(Foundation),         "Foundation" },
-                { typeof(InteriorLight),      "InteriorLight" },
-                { typeof(Resident),           "Resident" },
-                { typeof(Furniture),          "Furniture" },
-                { typeof(TransportationItem), "Transportation Item" },
-                { typeof(FreightItem),        "Freight" },
-                { typeof(Wheel),              "Wheel" },
-                { typeof(Window),             "Window" }
-            }
-        );
+        public static EnumStringMap<Type> TypeLabels =
+            new EnumStringMap<Type>(
+                new Dictionary<Type, string>() {
+                    { typeof(Floor),              "Floor" },
+                    { typeof(Foundation),         "Foundation" },
+                    { typeof(InteriorLight),      "InteriorLight" },
+                    { typeof(Resident),           "Resident" },
+                    { typeof(Furniture),          "Furniture" },
+                    { typeof(TransportationItem), "Transportation Item" },
+                    { typeof(FreightItem),        "Freight" },
+                    { typeof(Wheel),              "Wheel" },
+                    { typeof(Window),             "Window" }
+                }
+            );
 
         public static EnumMap<Type, Type> EntityTypeEntityDefinitionMap =
             new EnumMap<Type, Type>(
@@ -42,29 +43,5 @@ namespace TowerBuilder.DataTypes.Entities
                     { typeof(Window),             typeof(WindowDefinition) },
                 }
             );
-
-        public static string GetEntityDefinitionLabel(EntityDefinition definition) =>
-            definition switch
-            {
-                FloorDefinition floorDefinition =>
-                    Floor.KeyLabelMap.ValueFromKey(floorDefinition.key),
-                FoundationDefinition foundationDefinition =>
-                    Foundation.KeyLabelMap.ValueFromKey(foundationDefinition.key),
-                FurnitureDefinition furnitureDefinition =>
-                    Furniture.KeyLabelMap.ValueFromKey(furnitureDefinition.key),
-                InteriorLightDefinition interiorLightDefinition =>
-                    InteriorLight.KeyLabelMap.ValueFromKey(interiorLightDefinition.key),
-                ResidentDefinition residentDefinition =>
-                    Resident.KeyLabelMap.ValueFromKey(residentDefinition.key),
-                TransportationItemDefinition transportationItemDefinition =>
-                    TransportationItem.KeyLabelMap.ValueFromKey(transportationItemDefinition.key),
-                FreightDefinition freightDefinition =>
-                    FreightItem.KeyLabelMap.ValueFromKey(freightDefinition.key),
-                WheelDefinition wheelDefinition =>
-                    Wheel.KeyLabelMap.ValueFromKey(wheelDefinition.key),
-                WindowDefinition windowDefinition =>
-                    Window.KeyLabelMap.ValueFromKey(windowDefinition.key),
-                _ => null
-            };
     }
 }

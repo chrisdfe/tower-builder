@@ -5,14 +5,9 @@ namespace TowerBuilder.GameWorld.Entities.Floors
 {
     public class GameWorldFloorsManager : MonoBehaviour, IFindable
     {
-        public enum AssetKey
-        {
-            Floor
-        }
+        public AssetList assetList = new AssetList();
 
-        public AssetList<AssetKey> assetList = new AssetList<AssetKey>();
-
-        public MeshAssetList<Floor.Key> meshAssets = new MeshAssetList<Floor.Key>();
+        public MeshAssetList meshAssets = new MeshAssetList();
 
         /* 
             Static API

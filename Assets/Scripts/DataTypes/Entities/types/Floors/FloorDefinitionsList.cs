@@ -5,12 +5,12 @@ using TowerBuilder.Definitions;
 
 namespace TowerBuilder.DataTypes.Entities.Floors
 {
-    public class FloorDefinitionsList : EntityDefinitionsList<Floor.Key, FloorDefinition>
+    public class FloorDefinitionsList : EntityDefinitionsList
     {
-        public override List<FloorDefinition> Definitions { get; } = new List<FloorDefinition>()
+        public override List<EntityDefinition> Definitions { get; } = new List<EntityDefinition>()
         {
             new FloorDefinition() {
-                key = Floor.Key.Default,
+                key = "Default",
                 title = "Small",
                 category = "Basic",
 

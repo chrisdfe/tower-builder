@@ -15,7 +15,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
 
-            List<string> allEntityCategories = Registry.Definitions.Entities.Queries.FindAllCategories(selectedEntityType);
+            List<string> allEntityCategories = DataTypes.Entities.Definitions.FindAllCategories(selectedEntityType);
 
             return allEntityCategories
                 .Select(category =>
