@@ -5,7 +5,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
     {
         public EntityGroupBuilderBase() { }
 
-        public abstract EntityGroupType Build(SelectionBox selectionBox, bool isInBlueprintMode);
+        public abstract EntityGroupType Build(SelectionBox selectionBox);
     }
 }
 

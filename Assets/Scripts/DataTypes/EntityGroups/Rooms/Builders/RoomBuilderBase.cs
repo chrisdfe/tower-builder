@@ -5,28 +5,30 @@ using System.Runtime;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.EntityGroups.Rooms.Builders
+namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 {
-    public class RoomBuilder : EntityGroupBuilderBase<Room>
+    public class RoomBuilderBase : EntityGroupBuilderBase<Room>
     {
-        public RoomBuilder() : base() { }
+        Room currentRoom;
 
-        public override Room Build(SelectionBox selectionBox, bool isInBlueprintMode)
+        public RoomBuilderBase() : base() { }
+
+        public override Room Build(SelectionBox selectionBox)
         {
-            // List<Furniture> items = new List<Furniture>();
+            currentRoom = new Room();
 
-            // Furniture furniture = new Furniture(
-            //     Registry.Definitions.Entities.Furnitures.Queries
-            //         .FindByKey<Furniture.Key>(Furniture.Key.Bed) as FurnitureDefinition
-            // );
+            BuildFoundation(selectionBox);
+            BuildFurniture(selectionBox);
+            BuildWindows(selectionBox);
+            BuildTransportationItems(selectionBox);
 
-            // furniture.PositionAtCoordinates(room.cellCoordinatesList.bottomLeftCoordinates);
-            // furniture.isInBlueprintMode = isInBlueprintMode;
-            // items.Add(furniture);
-
-            // return new ListWrapper<Furniture>(items);
-            return new Room();
+            return currentRoom;
         }
+
+        protected virtual void BuildFoundation(SelectionBox selectionBox) { }
+        protected virtual void BuildFurniture(SelectionBox selectionBox) { }
+        protected virtual void BuildWindows(SelectionBox selectionBox) { }
+        protected virtual void BuildTransportationItems(SelectionBox selectionBox) { }
     }
 }
 

@@ -6,7 +6,6 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
-using TowerBuilder.DataTypes.EntityGroups.Rooms.Validators;
 using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 

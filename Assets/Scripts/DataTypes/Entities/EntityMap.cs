@@ -8,6 +8,8 @@ namespace TowerBuilder.DataTypes.Entities
     {
         public Dictionary<Type, ListWrapper<Entity>> map { get; } = new Dictionary<Type, ListWrapper<Entity>>();
 
+        public ListWrapper<Entity> Get(Type type) => map[type];
+
         public void Add(Entity entity)
         {
             Type entityType = entity.GetType();
@@ -19,6 +21,14 @@ namespace TowerBuilder.DataTypes.Entities
             map[entityType].Add(entity);
         }
 
+        public void Add(ListWrapper<Entity> entities)
+        {
+            foreach (Entity entity in entities.items)
+            {
+                Add(entity);
+            }
+        }
+
         public void Remove(Entity entity)
         {
             Type entityType = entity.GetType();
@@ -26,6 +36,14 @@ namespace TowerBuilder.DataTypes.Entities
             if (map.ContainsKey(entityType))
             {
                 map[entityType].Remove(entity);
+            }
+        }
+
+        public void Remove(ListWrapper<Entity> entities)
+        {
+            foreach (Entity entity in entities.items)
+            {
+                Remove(entity);
             }
         }
     }

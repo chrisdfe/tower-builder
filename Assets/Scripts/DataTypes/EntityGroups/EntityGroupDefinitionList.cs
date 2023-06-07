@@ -1,6 +1,6 @@
 namespace TowerBuilder.DataTypes.EntityGroups
 {
-    public class EntityGroupDefinition
+    public class EntityGroupDefinitionList
     {
         public virtual string title { get; set; } = "None";
         public virtual string category { get; set; } = "None";
@@ -11,9 +11,9 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public virtual ValidatorFactory validatorFactory => (EntityGroup entityGroup) => new EntityGroupValidator(entityGroup);
     }
 
-    public class EntityGroupDefinition<KeyType> : EntityGroupDefinition
-        where KeyType : struct
+    public class EntityGroupDefinitionList<DefinitionType> : EntityGroupDefinitionList
+        where DefinitionType : EntityGroupDefinition
     {
-        public KeyType key;
+        public List<DefinitionType> Definitions { get; }
     }
 }

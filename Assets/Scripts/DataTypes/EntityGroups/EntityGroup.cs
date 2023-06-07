@@ -20,10 +20,22 @@ namespace TowerBuilder.DataTypes.EntityGroups
             entityListMap.Add(entity);
         }
 
+        public void Add(ListWrapper<Entity> entitiesList)
+        {
+            entitiesList.Add(entitiesList);
+            entityListMap.Add(entitiesList);
+        }
+
         public void Remove(Entity entity)
         {
             entitiesList.Remove(entity);
             entityListMap.Remove(entity);
+        }
+
+        public void Remove(ListWrapper<Entity> entitiesList)
+        {
+            entitiesList.Remove(entitiesList);
+            entityListMap.Remove(entitiesList);
         }
 
         public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
