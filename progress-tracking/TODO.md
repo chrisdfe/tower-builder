@@ -2,6 +2,15 @@
 
 ## Tasks
 
+- Convert room to an entity group
+  - walls/ceiling (figure out a name for this)
+  - floor
+- Building entity group
+  - Rename "vehicle" to "building"
+  - Rooms should get added to buildings
+- Adding windows to a room should hide that portion of the foundation
+- "Empty floor" entity, for when a room has been deleted?
+- Verify that all specified assets actually exist
 - Remove journeys for now and focus on building?
 - Limit the number of buildings somehow
   - arbitrarily?
@@ -16,9 +25,6 @@
   - the cost of the group would be the sum of all of the entities prices
   - basic version could work like a stamp - could be called "static"
   - the next iteration would be resizable - each entity type could have their own resiability definition/strategy
-- Convert room to an entity group
-  - walls/ceiling (figure out a name for this)
-  - floor
 - Different vehicle/building types
   - stationary
   - vehicle

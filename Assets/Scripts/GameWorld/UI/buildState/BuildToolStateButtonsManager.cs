@@ -15,9 +15,13 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class BuildToolStateButtonsManager : MonoBehaviour
     {
+        public GameObject EntityButtons;
+        public GameObject EntityGroupButtons;
+
+        public EntityDefinitionButtonsRow entityDefinitionButtonsRow;
+        public EntityCategoryButtonsRow entityCategoryButtonsRow;
         public EntityTypeButtonsRow entityTypeButtonsRow;
-        public CategoryButtonsRow categoryButtonsRow;
-        public DefinitionButtonsRow definitionButtonsRow;
+        public BuildTypeButtonsRow buildTypeButtonsRow;
 
         void Awake()
         {
@@ -35,9 +39,10 @@ namespace TowerBuilder.GameWorld.UI
         {
             gameObject.SetActive(true);
 
+            buildTypeButtonsRow.HighlightSelectedButton();
             entityTypeButtonsRow.HighlightSelectedButton();
-            categoryButtonsRow.HighlightSelectedButton();
-            definitionButtonsRow.HighlightSelectedButton();
+            entityCategoryButtonsRow.HighlightSelectedButton();
+            entityDefinitionButtonsRow.HighlightSelectedButton();
         }
 
         public void Close()
@@ -47,16 +52,18 @@ namespace TowerBuilder.GameWorld.UI
 
         public void Setup()
         {
+            buildTypeButtonsRow.Setup();
             entityTypeButtonsRow.Setup();
-            categoryButtonsRow.Setup();
-            definitionButtonsRow.Setup();
+            entityCategoryButtonsRow.Setup();
+            entityDefinitionButtonsRow.Setup();
         }
 
         public void Teardown()
         {
+            buildTypeButtonsRow.Teardown();
             entityTypeButtonsRow.Teardown();
-            categoryButtonsRow.Teardown();
-            definitionButtonsRow.Teardown();
+            entityCategoryButtonsRow.Teardown();
+            entityDefinitionButtonsRow.Teardown();
         }
 
 
@@ -65,19 +72,19 @@ namespace TowerBuilder.GameWorld.UI
             if (entityType == previousEntityType) return;
 
             entityTypeButtonsRow.HighlightSelectedButton();
-            categoryButtonsRow.Reset();
-            definitionButtonsRow.Reset();
+            entityCategoryButtonsRow.Reset();
+            entityDefinitionButtonsRow.Reset();
         }
 
         void OnSelectedEntityCategoryUpdated(string newEntityCategory)
         {
-            categoryButtonsRow.HighlightSelectedButton();
-            definitionButtonsRow.Reset();
+            entityCategoryButtonsRow.HighlightSelectedButton();
+            entityDefinitionButtonsRow.Reset();
         }
 
         void OnSelectedEntityDefinitionUpdated(EntityDefinition entityDefinition)
         {
-            definitionButtonsRow.HighlightSelectedButton();
+            entityDefinitionButtonsRow.HighlightSelectedButton();
         }
     }
 }

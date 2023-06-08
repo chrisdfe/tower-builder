@@ -35,8 +35,7 @@ namespace TowerBuilder.ApplicationState.Tools
             public blueprintUpdateEvent onBlueprintEntityUpdated;
         }
 
-        // public Type selectedEntityType { get; private set; } = typeof(DataTypes.EntityGroups.Rooms.Room);
-        public Type selectedEntityType { get; private set; } = typeof(DataTypes.Entities.Floors.Floor);
+        public Type selectedEntityType { get; private set; } = typeof(DataTypes.Entities.Foundations.Foundation);
         public string selectedEntityCategory { get; private set; } = "";
         public EntityDefinition selectedEntityDefinition { get; private set; } = null;
         public Entity blueprintEntity { get; private set; } = null;
@@ -51,7 +50,6 @@ namespace TowerBuilder.ApplicationState.Tools
             events = new Events();
 
             ResetCategoryAndDefinition();
-
         }
 
         public override void Setup()

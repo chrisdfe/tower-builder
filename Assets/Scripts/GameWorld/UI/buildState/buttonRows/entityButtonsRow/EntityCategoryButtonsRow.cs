@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class CategoryButtonsRow : BuildToolStateButtonsRowBase
+    public class EntityCategoryButtonsRow : BuildToolStateButtonsRowBase
     {
-        public CategoryButtonsRow() : base() { }
+        public EntityCategoryButtonsRow() : base() { }
 
         public override List<UISelectButton.Input> CreateButtonInputs()
         {
