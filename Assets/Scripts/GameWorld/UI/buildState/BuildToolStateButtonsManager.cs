@@ -25,9 +25,9 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            Registry.appState.Tools.buildToolState.events.onSelectedEntityKeyUpdated += OnSelectedEntityKeyUpdated;
-            Registry.appState.Tools.buildToolState.events.onSelectedEntityCategoryUpdated += OnSelectedEntityCategoryUpdated;
-            Registry.appState.Tools.buildToolState.events.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
+            Registry.appState.Tools.Build.events.onSelectedEntityKeyUpdated += OnSelectedEntityKeyUpdated;
+            Registry.appState.Tools.Build.events.onSelectedEntityCategoryUpdated += OnSelectedEntityCategoryUpdated;
+            Registry.appState.Tools.Build.events.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
         }
 
         void Start()

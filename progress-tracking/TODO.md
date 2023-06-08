@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
 - Convert room to an entity group
   - walls/ceiling (figure out a name for this)
   - floor

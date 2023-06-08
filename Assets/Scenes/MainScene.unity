@@ -2447,9 +2447,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EntityButtons: {fileID: 1045502357}
   EntityGroupButtons: {fileID: 578120278}
-  entityTypeButtonsRow: {fileID: 511573584}
-  entityCategoryButtonsRow: {fileID: 1784830155176527944}
   entityDefinitionButtonsRow: {fileID: 6034343300272067211}
+  entityCategoryButtonsRow: {fileID: 1784830155176527944}
+  entityTypeButtonsRow: {fileID: 511573584}
+  buildTypeButtonsRow: {fileID: 1613368871}
 --- !u!1 &545152768 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2685122405614625592, guid: 78c7de069c7fc75458e3b08bcfced625, type: 3}

@@ -5,9 +5,9 @@ using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 
-namespace TowerBuilder.ApplicationState.Tools
+namespace TowerBuilder.ApplicationState.Tools.Inspect
 {
-    public class InspectToolState : ToolStateBase
+    public class State : ToolStateBase
     {
         public struct Input
         {
@@ -41,7 +41,7 @@ namespace TowerBuilder.ApplicationState.Tools
             }
         }
 
-        public InspectToolState(AppState appState, State state, Input input) : base(appState, state)
+        public State(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
             events = new Events();
         }

@@ -83,9 +83,9 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.events.onEntitiesRemoved += OnEntitiesRemoved;
             Registry.appState.Entities.events.onEntitiesBuilt += OnEntitiesBuilt;
 
-            Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated += OnDestroySelectionUpdated;
-            Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
-            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
+            Registry.appState.Tools.Destroy.events.onDestroySelectionUpdated += OnDestroySelectionUpdated;
+            Registry.appState.Tools.Inspect.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
+            Registry.appState.Tools.Inspect.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
         public void Teardown()
@@ -94,9 +94,9 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.events.onEntitiesRemoved -= OnEntitiesRemoved;
             Registry.appState.Entities.events.onEntitiesBuilt -= OnEntitiesBuilt;
 
-            Registry.appState.Tools.destroyToolState.events.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
-            Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
-            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
+            Registry.appState.Tools.Destroy.events.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
+            Registry.appState.Tools.Inspect.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
+            Registry.appState.Tools.Inspect.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
         void OnEntitiesAdded(ListWrapper<Entity> entityList)

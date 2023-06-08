@@ -21,7 +21,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         ToolStateInputHandlersBase currentToolStateHandler;
 
-        public Dictionary<ToolState, ToolStateInputHandlersBase> toolStateHandlerMap;
+        public Dictionary<ApplicationState.Tools.State.Key, ToolStateInputHandlersBase> toolStateHandlerMap;
 
         // Distance from the edge of the screen where the mapCursor will get disabled
         // TODO - this should perhaps be percentages instead
@@ -82,7 +82,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             }
 
             // Right click to exit out of current state?
-            if (Input.GetMouseButtonDown(1) && Registry.appState.Tools.toolState != ApplicationState.Tools.State.DEFAULT_TOOL_STATE)
+            if (Input.GetMouseButtonDown(1) && Registry.appState.Tools.currentKey != ApplicationState.Tools.State.DEFAULT_TOOL_STATE)
             {
                 Registry.appState.Tools.SetToolState(ApplicationState.Tools.State.DEFAULT_TOOL_STATE);
             }
@@ -124,21 +124,21 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void SetupToolStateHandlers()
         {
-            toolStateHandlerMap = new Dictionary<ToolState, ToolStateInputHandlersBase>()
+            toolStateHandlerMap = new Dictionary<ApplicationState.Tools.State.Key, ToolStateInputHandlersBase>()
             {
-                [ToolState.Inspect] = new InspectToolStateInputHandlers(this),
-                [ToolState.Build] = new BuildToolStateInputHandlers(this),
-                [ToolState.Destroy] = new DestroyToolStateInputHandlers(this),
+                [ApplicationState.Tools.State.Key.Inspect] = new InspectToolStateInputHandlers(this),
+                [ApplicationState.Tools.State.Key.Build] = new BuildToolStateInputHandlers(this),
+                [ApplicationState.Tools.State.Key.Destroy] = new DestroyToolStateInputHandlers(this),
             };
 
             SetCurrentToolStateHandlers();
             // Perform initialization of whatever tool state is the default
-            currentToolStateHandler.OnTransitionTo(Registry.appState.Tools.toolState);
+            currentToolStateHandler.OnTransitionTo(Registry.appState.Tools.currentKey);
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
         }
 
-        void OnToolStateUpdated(ToolState nextToolState, ToolState previousToolState)
+        void OnToolStateUpdated(ApplicationState.Tools.State.Key nextToolState, ApplicationState.Tools.State.Key previousToolState)
         {
             currentToolStateHandler.OnTransitionFrom(nextToolState);
             SetCurrentToolStateHandlers();
@@ -147,7 +147,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void SetCurrentToolStateHandlers()
         {
-            ToolState currentToolState = Registry.appState.Tools.toolState;
+            ApplicationState.Tools.State.Key currentToolState = Registry.appState.Tools.currentKey;
             currentToolStateHandler = toolStateHandlerMap[currentToolState];
         }
     }

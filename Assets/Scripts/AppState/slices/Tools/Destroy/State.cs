@@ -3,9 +3,9 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 
-namespace TowerBuilder.ApplicationState.Tools
+namespace TowerBuilder.ApplicationState.Tools.Destroy
 {
-    public class DestroyToolState : ToolStateBase
+    public class State : ToolStateBase
     {
         public struct Input { }
 
@@ -40,7 +40,7 @@ namespace TowerBuilder.ApplicationState.Tools
             }
         }
 
-        public DestroyToolState(AppState appState, Tools.State state, Input input) : base(appState, state)
+        public State(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
             events = new Events();
         }

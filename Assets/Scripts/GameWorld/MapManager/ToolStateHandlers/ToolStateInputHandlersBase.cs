@@ -17,9 +17,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public virtual void Update() { }
 
-        public virtual void OnTransitionFrom(ToolState nextToolState) { }
+        public virtual void OnTransitionFrom(ApplicationState.Tools.State.Key nextToolState) { }
 
-        public virtual void OnTransitionTo(ToolState previousToolState) { }
+        public virtual void OnTransitionTo(ApplicationState.Tools.State.Key previousToolState) { }
 
         public virtual void OnMouseDown() { }
 

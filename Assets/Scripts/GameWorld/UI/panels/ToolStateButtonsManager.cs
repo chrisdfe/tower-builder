@@ -39,7 +39,7 @@ namespace TowerBuilder.GameWorld.UI
             DestroyButton.onClick.AddListener(OnDestroyButtonClick);
             InspectButton.onClick.AddListener(OnInspectButtonClick);
 
-            currentButton = GetToolStateButton(Registry.appState.Tools.toolState);
+            currentButton = GetToolStateButton(Registry.appState.Tools.currentKey);
             buttons = new List<Button> { BuildButton, DestroyButton, InspectButton };
             HighlightCurrentButton();
 
@@ -48,32 +48,32 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnBuildButtonClick()
         {
-            OnToolButtonClick(ToolState.Build);
+            OnToolButtonClick(ApplicationState.Tools.State.Key.Build);
         }
 
         void OnDestroyButtonClick()
         {
-            OnToolButtonClick(ToolState.Destroy);
+            OnToolButtonClick(ApplicationState.Tools.State.Key.Destroy);
         }
 
         void OnInspectButtonClick()
         {
-            OnToolButtonClick(ToolState.Inspect);
+            OnToolButtonClick(ApplicationState.Tools.State.Key.Inspect);
         }
 
         void OnRoutesButtonClick()
         {
-            OnToolButtonClick(ToolState.Routes);
+            OnToolButtonClick(ApplicationState.Tools.State.Key.Routes);
         }
 
-        void OnToolButtonClick(ToolState toolState)
+        void OnToolButtonClick(ApplicationState.Tools.State.Key toolState)
         {
-            ToolState currentToolState = Registry.appState.Tools.toolState;
-            ToolState newToolState = (currentToolState == toolState) ? ApplicationState.Tools.State.DEFAULT_TOOL_STATE : toolState;
+            ApplicationState.Tools.State.Key currentToolState = Registry.appState.Tools.currentKey;
+            ApplicationState.Tools.State.Key newToolState = (currentToolState == toolState) ? ApplicationState.Tools.State.DEFAULT_TOOL_STATE : toolState;
             Registry.appState.Tools.SetToolState(newToolState);
         }
 
-        void OnToolStateUpdated(ToolState toolState, ToolState previousToolState)
+        void OnToolStateUpdated(ApplicationState.Tools.State.Key toolState, ApplicationState.Tools.State.Key previousToolState)
         {
             currentButton = GetToolStateButton(toolState);
 
@@ -107,19 +107,19 @@ namespace TowerBuilder.GameWorld.UI
             button.transform.Find("Text").GetComponent<Text>().color = PRESSED_TEXT_COLOR;
         }
 
-        Button GetToolStateButton(ToolState toolState)
+        Button GetToolStateButton(ApplicationState.Tools.State.Key toolState)
         {
-            if (toolState == ToolState.Build)
+            if (toolState == ApplicationState.Tools.State.Key.Build)
             {
                 return BuildButton;
             }
 
-            if (toolState == ToolState.Destroy)
+            if (toolState == ApplicationState.Tools.State.Key.Destroy)
             {
                 return DestroyButton;
             }
 
-            if (toolState == ToolState.Inspect)
+            if (toolState == ApplicationState.Tools.State.Key.Inspect)
             {
                 return InspectButton;
             }

@@ -1,4 +1,5 @@
 using System;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
@@ -17,9 +18,9 @@ namespace TowerBuilder.GameWorld.UI
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
 
-            Registry.appState.Tools.buildToolState.events.onBlueprintEntityUpdated += OnBlueprintEntityUpdated;
-            Registry.appState.Tools.buildToolState.events.onBuildStart += OnBuildStart;
-            Registry.appState.Tools.buildToolState.events.onBuildEnd += OnBuildEnd;
+            Registry.appState.Tools.Build.events.onBlueprintEntityUpdated += OnBlueprintEntityUpdated;
+            Registry.appState.Tools.Build.events.onBuildStart += OnBuildStart;
+            Registry.appState.Tools.Build.events.onBuildEnd += OnBuildEnd;
 
             Hide();
         }
@@ -27,14 +28,14 @@ namespace TowerBuilder.GameWorld.UI
         void OnDestroy()
         {
             Registry.appState.Tools.events.onToolStateUpdated -= OnToolStateUpdated;
-            Registry.appState.Tools.buildToolState.events.onBlueprintEntityUpdated -= OnBlueprintEntityUpdated;
-            Registry.appState.Tools.buildToolState.events.onBuildStart -= OnBuildStart;
-            Registry.appState.Tools.buildToolState.events.onBuildEnd -= OnBuildEnd;
+            Registry.appState.Tools.Build.events.onBlueprintEntityUpdated -= OnBlueprintEntityUpdated;
+            Registry.appState.Tools.Build.events.onBuildStart -= OnBuildStart;
+            Registry.appState.Tools.Build.events.onBuildEnd -= OnBuildEnd;
         }
 
-        void OnToolStateUpdated(ToolState newToolState, ToolState previousToolState)
+        void OnToolStateUpdated(ApplicationState.Tools.State.Key newToolState, ApplicationState.Tools.State.Key previousToolState)
         {
-            if (previousToolState == ToolState.Build)
+            if (previousToolState == ApplicationState.Tools.State.Key.Build)
             {
                 Hide();
             }
@@ -42,7 +43,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnBlueprintEntityUpdated(Entity blueprintEntity)
         {
-            if (Registry.appState.Tools.toolState == ToolState.Build)
+            if (Registry.appState.Tools.currentKey == ApplicationState.Tools.State.Key.Build)
             {
                 SetPosition();
                 SetText();
@@ -91,7 +92,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetText()
         {
-            Entity blueprintEntity = Registry.appState.Tools.buildToolState.blueprintEntity;
+            Entity blueprintEntity = Registry.appState.Tools.Build.blueprintEntity;
             int amount = blueprintEntity.price;
             text.text = String.Format("${0:n0}", amount);
 

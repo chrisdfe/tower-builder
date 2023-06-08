@@ -10,9 +10,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
     {
         public DestroyToolStateInputHandlers(GameWorldMapManager parentMapManager) : base(parentMapManager) { }
 
-        public override void OnTransitionTo(ToolState previousToolState) { }
+        public override void OnTransitionTo(ApplicationState.Tools.State.Key previousToolState) { }
 
-        public override void OnTransitionFrom(ToolState nextToolState) { }
+        public override void OnTransitionFrom(ApplicationState.Tools.State.Key nextToolState) { }
 
         public override void OnMouseUp()
         {

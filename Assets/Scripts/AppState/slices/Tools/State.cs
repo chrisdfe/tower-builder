@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
@@ -10,46 +11,52 @@ namespace TowerBuilder.ApplicationState.Tools
 {
     public class State : StateSlice
     {
-        public static ToolState DEFAULT_TOOL_STATE = ToolState.Inspect;
+        public enum Key
+        {
+            Inspect,
+            Build,
+            Destroy,
+            Routes,
+        }
+
+        public static Key DEFAULT_TOOL_STATE = Key.Inspect;
 
         public struct Input
         {
-            public ToolState? toolState;
+            public Key? key;
             public CellCoordinates currentSelectedCell;
 
-            public BuildToolState.Input buildToolState;
-            public DestroyToolState.Input destroyToolState;
-            public InspectToolState.Input inspectToolState;
-            public RoutesToolState.Input routesToolState;
+            public Build.State.Input Build;
+            public Destroy.State.Input Destroy;
+            public Inspect.State.Input Inspect;
+            public Routes.State.Input Routes;
         }
 
         public class Events
         {
-            public delegate void ToolStateUpdatedEvent(ToolState toolState, ToolState previousToolState);
+            public delegate void ToolStateUpdatedEvent(Key toolState, Key previousToolState);
             public ToolStateUpdatedEvent onToolStateUpdated;
         }
 
-        public ToolState toolState { get; private set; } = DEFAULT_TOOL_STATE;
+        public Key currentKey { get; private set; } = DEFAULT_TOOL_STATE;
 
-        // public NoneToolState noneToolState;
-        public BuildToolState buildToolState;
-        public DestroyToolState destroyToolState;
-        public InspectToolState inspectToolState;
-        public RoutesToolState routesToolState;
+        public Build.State Build;
+        public Destroy.State Destroy;
+        public Inspect.State Inspect;
+        public Routes.State Routes;
 
         public Events events;
 
-        ToolStateBase activeToolState { get { return GetToolState(toolState); } }
+        ToolStateBase activeToolState => GetToolState(currentKey);
 
         public State(AppState appState, Input input) : base(appState)
         {
-            toolState = input.toolState ?? DEFAULT_TOOL_STATE;
+            currentKey = input.key ?? DEFAULT_TOOL_STATE;
 
-            // noneToolState = new NoneToolState(this, input.noneToolState);
-            buildToolState = new BuildToolState(appState, this, input.buildToolState);
-            destroyToolState = new DestroyToolState(appState, this, input.destroyToolState);
-            inspectToolState = new InspectToolState(appState, this, input.inspectToolState);
-            routesToolState = new RoutesToolState(appState, this, input.routesToolState);
+            Build = new Build.State(appState, this, input.Build);
+            Destroy = new Destroy.State(appState, this, input.Destroy);
+            Inspect = new Inspect.State(appState, this, input.Inspect);
+            Routes = new Routes.State(appState, this, input.Routes);
 
             events = new State.Events();
 
@@ -62,22 +69,22 @@ namespace TowerBuilder.ApplicationState.Tools
             appState.UI.events.onCurrentSelectedEntityListUpdated += OnCurrentSelectedEntityListUpdated;
         }
 
-        public void SetToolState(ToolState newToolState)
+        public void SetToolState(Key newToolStateKey)
         {
-            if (newToolState != toolState)
+            if (newToolStateKey != currentKey)
             {
-                ToolState previousToolState = toolState;
-                TransitionToolState(newToolState, toolState);
+                Key previousToolState = newToolStateKey;
+                TransitionToolState(newToolStateKey, currentKey);
 
-                events.onToolStateUpdated?.Invoke(newToolState, previousToolState);
+                events.onToolStateUpdated?.Invoke(newToolStateKey, previousToolState);
             }
         }
 
-        public void TransitionToolState(ToolState toolState, ToolState previousToolState)
+        public void TransitionToolState(Key currentKey, Key previousKey)
         {
-            GetToolState(previousToolState).Teardown();
-            this.toolState = toolState;
-            GetToolState(toolState).Setup();
+            GetToolState(previousKey).Teardown();
+            this.currentKey = currentKey;
+            GetToolState(currentKey).Setup();
         }
 
         void OnSelectionBoxUpdated(SelectionBox selectionBox)
@@ -110,13 +117,14 @@ namespace TowerBuilder.ApplicationState.Tools
             activeToolState.OnCurrentSelectedEntityListUpdated(entityList);
         }
 
-        ToolStateBase GetToolState(ToolState toolState) =>
-            toolState switch
+        ToolStateBase GetToolState(Key key) =>
+            key switch
             {
-                ToolState.Build => buildToolState,
-                ToolState.Destroy => destroyToolState,
-                ToolState.Routes => routesToolState,
-                _ => inspectToolState
+                Key.Build => Build,
+                Key.Destroy => Destroy,
+                Key.Routes => Routes,
+                Key.Inspect => Inspect,
+                _ => throw new NotSupportedException("Unsupported tool state: " + key)
             };
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
@@ -44,16 +45,16 @@ namespace TowerBuilder.GameWorld.Entities
 
         void DefaultUpdateEntityColor()
         {
-            ToolState toolState = Registry.appState.Tools.toolState;
+            ApplicationState.Tools.State.Key currentKey = Registry.appState.Tools.currentKey;
 
             bool hasUpdated = false;
 
-            switch (toolState)
+            switch (currentKey)
             {
-                case (ToolState.Build):
+                case (ApplicationState.Tools.State.Key.Build):
                     SetBuildStateColor();
                     break;
-                case (ToolState.Destroy):
+                case (ApplicationState.Tools.State.Key.Destroy):
                     SetDestroyStateColor();
                     break;
                 default:
@@ -85,7 +86,7 @@ namespace TowerBuilder.GameWorld.Entities
 
             void SetDestroyStateColor()
             {
-                CellCoordinatesList cellCoordinatesToDestroyFrom = Registry.appState.Tools.destroyToolState.cellCoordinatesToDelete;
+                CellCoordinatesList cellCoordinatesToDestroyFrom = Registry.appState.Tools.Destroy.cellCoordinatesToDelete;
 
                 // TODO - highlight on a per-cell basis
                 if (entity.cellCoordinatesList.OverlapsWith(Registry.appState.UI.selectionBox.cellCoordinatesList))
@@ -104,7 +105,7 @@ namespace TowerBuilder.GameWorld.Entities
 
             void SetInspectStateColor()
             {
-                Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+                Entity inspectedEntity = Registry.appState.Tools.Inspect.inspectedEntity;
 
                 if (inspectedEntity == entity)
                 {

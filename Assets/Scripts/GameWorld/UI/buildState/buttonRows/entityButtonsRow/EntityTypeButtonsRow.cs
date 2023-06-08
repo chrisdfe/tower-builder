@@ -23,12 +23,12 @@ namespace TowerBuilder.GameWorld.UI
                 .ToList();
 
         public override bool ButtonShouldBeSelected(UISelectButton button) =>
-            button.value == DataTypes.Entities.Constants.TypeLabels.ValueFromKey(Registry.appState.Tools.buildToolState.selectedEntityType);
+            button.value == DataTypes.Entities.Constants.TypeLabels.ValueFromKey(Registry.appState.Tools.Build.selectedEntityType);
 
         public override void OnButtonClick(string value)
         {
             Type newEntityType = DataTypes.Entities.Constants.TypeLabels.KeyFromValue(value);
-            Registry.appState.Tools.buildToolState.SetSelectedEntityKey(newEntityType);
+            Registry.appState.Tools.Build.SetSelectedEntityKey(newEntityType);
         }
     }
 }

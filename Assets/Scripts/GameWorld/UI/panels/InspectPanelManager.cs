@@ -39,16 +39,16 @@ namespace TowerBuilder.GameWorld.UI
         {
             Registry.appState.Attributes.Residents.events.onItemsUpdated += OnResidentAttributesUpdated;
 
-            Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
-            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
+            Registry.appState.Tools.Inspect.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
+            Registry.appState.Tools.Inspect.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
         public void Teardown()
         {
             Registry.appState.Attributes.Residents.events.onItemsUpdated -= OnResidentAttributesUpdated;
 
-            Registry.appState.Tools.inspectToolState.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
-            Registry.appState.Tools.inspectToolState.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
+            Registry.appState.Tools.Inspect.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
+            Registry.appState.Tools.Inspect.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
         /* 
@@ -63,8 +63,8 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectIndexText()
         {
-            ListWrapper<Entity> inspectedEntityList = Registry.appState.Tools.inspectToolState.inspectedEntityList;
-            int index = Registry.appState.Tools.inspectToolState.inspectedEntityIndex;
+            ListWrapper<Entity> inspectedEntityList = Registry.appState.Tools.Inspect.inspectedEntityList;
+            int index = Registry.appState.Tools.Inspect.inspectedEntityIndex;
 
             string text = $"entityList: {inspectedEntityList.Count}\n"
                 + $"index: {index}";
@@ -74,7 +74,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectText()
         {
-            Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+            Entity inspectedEntity = Registry.appState.Tools.Inspect.inspectedEntity;
 
             if (inspectedEntity == null) return;
 
@@ -156,7 +156,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             DestroyActionButtons();
 
-            Entity inspectedEntity = Registry.appState.Tools.inspectToolState.inspectedEntity;
+            Entity inspectedEntity = Registry.appState.Tools.Inspect.inspectedEntity;
 
             switch (inspectedEntity)
             {
@@ -229,8 +229,8 @@ namespace TowerBuilder.GameWorld.UI
             foreach (ResidentAttributes residentAttributes in residentAttributess.items)
             {
                 if (
-                    (Registry.appState.Tools.inspectToolState.inspectedEntity is Resident) &&
-                    residentAttributes.resident == (Registry.appState.Tools.inspectToolState.inspectedEntity as Resident)
+                    (Registry.appState.Tools.Inspect.inspectedEntity is Resident) &&
+                    residentAttributes.resident == (Registry.appState.Tools.Inspect.inspectedEntity as Resident)
                 )
                 {
                     SetText();

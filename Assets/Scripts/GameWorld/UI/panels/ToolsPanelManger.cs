@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
@@ -28,16 +29,16 @@ namespace TowerBuilder.GameWorld.UI
             UpdateDescriptionText();
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
-            Registry.appState.Tools.buildToolState.events.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
+            Registry.appState.Tools.Build.events.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
         }
 
-        void OnToolStateUpdated(ToolState toolState, ToolState previousToolState)
+        void OnToolStateUpdated(ApplicationState.Tools.State.Key toolState, ApplicationState.Tools.State.Key previousToolState)
         {
             UpdateDescriptionText();
 
             switch (toolState)
             {
-                case ToolState.Build:
+                case ApplicationState.Tools.State.Key.Build:
                     ToggleBuildStateButtonsPanel(true);
                     break;
                 default:
@@ -53,11 +54,11 @@ namespace TowerBuilder.GameWorld.UI
 
         void UpdateDescriptionText()
         {
-            ToolState toolState = Registry.appState.Tools.toolState;
+            ApplicationState.Tools.State.Key toolState = Registry.appState.Tools.currentKey;
 
-            if (toolState == ToolState.Build)
+            if (toolState == ApplicationState.Tools.State.Key.Build)
             {
-                EntityDefinition selectedEntityDefinition = Registry.appState.Tools.buildToolState.selectedEntityDefinition;
+                EntityDefinition selectedEntityDefinition = Registry.appState.Tools.Build.selectedEntityDefinition;
 
                 if (selectedEntityDefinition == null)
                 {
@@ -65,8 +66,8 @@ namespace TowerBuilder.GameWorld.UI
                 }
                 else
                 {
-                    Type selectedEntityType = Registry.appState.Tools.buildToolState.selectedEntityType;
-                    Entity blueprintEntity = Registry.appState.Tools.buildToolState.blueprintEntity;
+                    Type selectedEntityType = Registry.appState.Tools.Build.selectedEntityType;
+                    Entity blueprintEntity = Registry.appState.Tools.Build.blueprintEntity;
 
                     if (blueprintEntity != null)
                     {

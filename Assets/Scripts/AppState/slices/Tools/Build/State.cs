@@ -7,12 +7,13 @@ using TowerBuilder.Definitions;
 using TowerBuilder.Utils;
 using UnityEngine;
 
-namespace TowerBuilder.ApplicationState.Tools
+namespace TowerBuilder.ApplicationState.Tools.Build
 {
-    public partial class BuildToolState : ToolStateBase
+    public partial class State : ToolStateBase
     {
         public struct Input
         {
+            public Type selectedEntityType;
             public string selectedEntityCategory;
         }
 
@@ -45,7 +46,7 @@ namespace TowerBuilder.ApplicationState.Tools
         public bool isLocked = false;
         bool buildIsActive = false;
 
-        public BuildToolState(AppState appState, Tools.State state, Input input) : base(appState, state)
+        public State(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
             events = new Events();
 
@@ -55,6 +56,7 @@ namespace TowerBuilder.ApplicationState.Tools
         public override void Setup()
         {
             base.Setup();
+
             ResetCategoryAndDefinition();
             CreateBlueprintEntity();
         }
@@ -62,6 +64,7 @@ namespace TowerBuilder.ApplicationState.Tools
         public override void Teardown()
         {
             base.Teardown();
+
             RemoveBlueprintEntity();
         }
 

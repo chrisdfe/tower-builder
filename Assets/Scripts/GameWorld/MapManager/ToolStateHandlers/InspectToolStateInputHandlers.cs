@@ -14,9 +14,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public InspectToolStateInputHandlers(GameWorldMapManager parentMapManager) : base(parentMapManager) { }
 
-        public override void OnTransitionTo(ToolState previousState) { }
+        public override void OnTransitionTo(ApplicationState.Tools.State.Key previousState) { }
 
-        public override void OnTransitionFrom(ToolState previousState) { }
+        public override void OnTransitionFrom(ApplicationState.Tools.State.Key previousState) { }
 
         public override void OnMouseUp()
         {

@@ -1,6 +1,6 @@
-namespace TowerBuilder.ApplicationState.Tools
+namespace TowerBuilder.ApplicationState.Tools.Routes
 {
-    public class RoutesToolState : ToolStateBase
+    public class State : ToolStateBase
     {
         public struct Input
         {
@@ -16,7 +16,7 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public ClickState currentClickState { get; private set; }
 
-        public RoutesToolState(AppState appState, Tools.State state, Input input) : base(appState, state)
+        public State(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
             currentClickState = input.currentClickState ?? ClickState.None;
         }
