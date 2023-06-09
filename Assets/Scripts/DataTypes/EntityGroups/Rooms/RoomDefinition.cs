@@ -4,8 +4,8 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
     {
         public override ValidatorFactory validatorFactory => (EntityGroup entityGroup) => new RoomValidator(entityGroup as Room);
 
-        public delegate RoomBuilderBase RoomBuilderFactory();
-        public virtual RoomBuilderFactory roomBuilderFactory => () => new RoomBuilderBase();
+        public delegate RoomBuilderBase RoomBuilderFactory(EntityGroupDefinition definition);
+        public virtual RoomBuilderFactory roomBuilderFactory => (EntityGroupDefinition definition) => new RoomBuilderBase(definition);
     }
 }
 

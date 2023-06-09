@@ -9,11 +9,15 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 {
     public class OfficeRoomBuilder : RoomBuilderBase
     {
-        public OfficeRoomBuilder() : base() { }
+        public OfficeRoomBuilder(EntityGroupDefinition definition) : base(definition) { }
 
         public override EntityGroup Build(SelectionBox selectionBox)
         {
-            return new Room();
+            Room room = new Room();
+
+            // TODO
+
+            return room;
         }
     }
 }

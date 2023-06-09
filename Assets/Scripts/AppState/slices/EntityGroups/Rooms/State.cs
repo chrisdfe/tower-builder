@@ -12,28 +12,22 @@ using UnityEngine;
 namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
 {
     [Serializable]
-    public class State : EntityGroupStateSlice<Room, State.Events>
+    public class State : EntityGroupStateSlice
     {
         public struct Input
         {
             public List<Room> roomList;
         }
 
-        public new class Events : EntityGroupStateSlice<Room, State.Events>.Events
-        {
-            public delegate void RoomBlocksEvent(Room room, CellCoordinatesBlockList roomBlocks);
-            public RoomBlocksEvent onRoomBlocksAdded { get; set; }
-            public RoomBlocksEvent onRoomBlocksRemoved { get; set; }
+        // public delegate void RoomBlocksEvent(Room room, CellCoordinatesBlockList roomBlocks);
+        // public RoomBlocksEvent onRoomBlocksAdded { get; set; }
+        // public RoomBlocksEvent onRoomBlocksRemoved { get; set; }
 
-            public delegate void RoomBlockUpdatedEvent(Room room);
-            public RoomBlocksEvent onRoomBlocksUpdated { get; set; }
-        }
-
-        public new Queries queries;
+        // public delegate void RoomBlockUpdatedEvent(Room room);
+        // public RoomBlocksEvent onRoomBlocksUpdated { get; set; }
 
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(appState, this);
         }
 
         /* 
@@ -96,47 +90,43 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
             // }
         }
 
-        public new class Queries : EntityGroupStateSlice<Room, State.Events>.Queries
-        {
-            public Queries(AppState appState, State state) : base(appState, state) { }
 
-            // public Room FindRoomAtCell(CellCoordinates cellCoordinates) =>
-            //     state.list.items
-            //         .Find(room => room.cellCoordinatesList.Contains(cellCoordinates));
+        // public Room FindRoomAtCell(CellCoordinates cellCoordinates) =>
+        //     state.list.items
+        //         .Find(room => room.cellCoordinatesList.Contains(cellCoordinates));
 
-            // public (Room, CellCoordinatesBlock) FindRoomBlockAtCell(CellCoordinates cellCoordinates)
-            // {
-            //     Room room = FindRoomAtCell(cellCoordinates);
+        // public (Room, CellCoordinatesBlock) FindRoomBlockAtCell(CellCoordinates cellCoordinates)
+        // {
+        //     Room room = FindRoomAtCell(cellCoordinates);
 
-            //     if (room != null)
-            //     {
-            //         CellCoordinatesBlock roomBlock = room.FindBlockByCellCoordinates(cellCoordinates);
+        //     if (room != null)
+        //     {
+        //         CellCoordinatesBlock roomBlock = room.FindBlockByCellCoordinates(cellCoordinates);
 
-            //         if (roomBlock != null)
-            //         {
-            //             return (room, roomBlock);
-            //         }
-            //     }
+        //         if (roomBlock != null)
+        //         {
+        //             return (room, roomBlock);
+        //         }
+        //     }
 
-            //     return (null, null);
-            // }
+        //     return (null, null);
+        // }
 
-            // public List<Room> FindPerimeterRooms(Room room)
-            // {
-            //     List<CellCoordinates> perimeterRoomCellCoordinates = room.cellCoordinatesList.GetPerimeterCellCoordinates();
-            //     List<Room> result = new List<Room>();
+        // public List<Room> FindPerimeterRooms(Room room)
+        // {
+        //     List<CellCoordinates> perimeterRoomCellCoordinates = room.cellCoordinatesList.GetPerimeterCellCoordinates();
+        //     List<Room> result = new List<Room>();
 
-            //     foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
-            //     {
-            //         Room perimeterRoom = FindRoomAtCell(coordinates);
-            //         if (perimeterRoom != null && perimeterRoom != room)
-            //         {
-            //             result.Add(perimeterRoom);
-            //         }
-            //     }
+        //     foreach (CellCoordinates coordinates in perimeterRoomCellCoordinates)
+        //     {
+        //         Room perimeterRoom = FindRoomAtCell(coordinates);
+        //         if (perimeterRoom != null && perimeterRoom != room)
+        //         {
+        //             result.Add(perimeterRoom);
+        //         }
+        //     }
 
-            //     return result;
-            // }
-        }
+        //     return result;
+        // }
     }
 }

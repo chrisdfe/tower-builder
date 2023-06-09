@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- Remove all the Events/Queries subclasses. They cause more trouble than they're worth
 - Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
 - Convert room to an entity group
   - walls/ceiling (figure out a name for this)

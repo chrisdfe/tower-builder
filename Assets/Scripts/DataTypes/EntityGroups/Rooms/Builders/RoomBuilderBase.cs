@@ -11,7 +11,7 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
     {
         Room currentRoom;
 
-        public RoomBuilderBase() : base() { }
+        public RoomBuilderBase(EntityGroupDefinition definition) : base(definition) { }
 
         public override EntityGroup Build(SelectionBox selectionBox)
         {

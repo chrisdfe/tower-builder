@@ -7,13 +7,13 @@ namespace TowerBuilder.DataTypes.EntityGroups
     {
         public ListWrapper<Entity> entities { get; }
 
-        public ListWrapper<EntityGroup> entitiyGroup { get; }
+        public ListWrapper<EntityGroup> entitiyGroups { get; }
 
         public EntityGroup() { }
 
-        public void Setup() { }
+        public virtual void Setup() { }
 
-        public void Teardown() { }
+        public virtual void Teardown() { }
 
         public void Add(Entity entity)
         {

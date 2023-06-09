@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.EntityGroups;
@@ -8,99 +9,41 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.EntityGroups
 {
-    public interface IEntityGroupStateSlice
+    public class EntityGroupStateSlice : StateSlice
     {
-        public ListWrapper<EntityGroup> entityGroupList { get; }
+        /*
+            Events
+        */
+        public ListEvent<EntityGroup> onEntityGroupsAdded { get; set; }
+        public ListEvent<EntityGroup> onEntityGroupsRemoved { get; set; }
+        public ListEvent<EntityGroup> onEntityGroupsBuilt { get; set; }
 
-        public void Add(ListWrapper<EntityGroup> newItemsList);
-        public void Add(EntityGroup item);
-        public void Remove(ListWrapper<EntityGroup> removedItemsList);
-        public void Remove(EntityGroup item);
-        // public void Build(EntityGroup item);
+        public ListEvent<EntityGroup> onListUpdated { get; set; }
 
-        public IQueries entityQueries { get; }
-        public IEvents entityEvents { get; }
-
-        public interface IQueries
-        {
-            // public ListWrapper<EntityGroup> FindEntitiesAtCell(CellCoordinates cellCoordinates);
-        }
-
-        public interface IEvents
-        {
-            // public ListEvent<EntityGroup> onEntitiesAdded { get; set; }
-            // public ListEvent<EntityGroup> onEntitiesRemoved { get; set; }
-            // public ListEvent<EntityGroup> onEntitiesBuilt { get; set; }
-        }
-    }
-
-    public class EntityGroupStateSlice<EntityGroupType, EventsType> : StateSlice, IEntityGroupStateSlice
-        where EventsType : EntityGroupStateSlice<EntityGroupType, EventsType>.Events, new()
-        where EntityGroupType : EntityGroup
-    {
-        public class Events : IEntityGroupStateSlice.IEvents
-        {
-            public ListEvent<EntityGroupType> onItemsAdded { get; set; }
-            public ListEvent<Entity> onEntitiesAdded { get; set; }
-
-            public ListEvent<EntityGroupType> onItemsRemoved { get; set; }
-            public ListEvent<Entity> onEntitiesRemoved { get; set; }
-
-            public ListEvent<EntityGroupType> onItemsBuilt { get; set; }
-            public ListEvent<Entity> onEntitiesBuilt { get; set; }
-
-            public ListEvent<EntityGroupType> onListUpdated { get; set; }
-        }
-
-        public ListWrapper<EntityGroupType> list { get; }
+        public ListWrapper<EntityGroup> list { get; }
         public ListWrapper<EntityGroup> entityGroupList => list.ConvertAll<EntityGroup>();
-
-        public EventsType events { get; }
-        public IEntityGroupStateSlice.IEvents entityEvents => events as IEntityGroupStateSlice.IEvents;
-
-        public Queries queries { get; protected set; }
-        public IEntityGroupStateSlice.IQueries entityQueries => queries as IEntityGroupStateSlice.IQueries;
 
         public EntityGroupStateSlice(AppState appState) : base(appState)
         {
-            list = new ListWrapper<EntityGroupType>();
-            events = new EventsType();
-            queries = new Queries(appState, this);
-        }
-
-        public void Add(ListWrapper<EntityGroupType> newItemsList)
-        {
-            list.Add(newItemsList);
-
-            events.onItemsAdded?.Invoke(newItemsList);
-            events.onEntitiesAdded?.Invoke(newItemsList.ConvertAll<Entity>());
-
-            events.onListUpdated?.Invoke(list);
+            list = new ListWrapper<EntityGroup>();
         }
 
         public void Add(ListWrapper<EntityGroup> newItemsList)
         {
-            Add(newItemsList.ConvertAll<EntityGroupType>());
-        }
+            list.Add(newItemsList);
 
-        public void Add(EntityGroupType entityGroup)
-        {
-            ListWrapper<EntityGroupType> newItemsList = new ListWrapper<EntityGroupType>();
-            newItemsList.Add(entityGroup);
-            Add(newItemsList);
+            onEntityGroupsAdded?.Invoke(newItemsList);
+            onListUpdated?.Invoke(list);
         }
 
         public void Add(EntityGroup entityGroup)
         {
-            Add(entityGroup as EntityGroupType);
+            ListWrapper<EntityGroup> newItemsList = new ListWrapper<EntityGroup>();
+            newItemsList.Add(entityGroup);
+            Add(newItemsList);
         }
 
-        public void Add(ListWrapper<Entity> newItemsList)
-        {
-            Add(newItemsList as ListWrapper<EntityGroupType>);
-        }
-
-        public void Remove(ListWrapper<EntityGroupType> removedItemsList)
+        public void Remove(ListWrapper<EntityGroup> removedItemsList)
         {
             removedItemsList.items.ForEach((entityGroup) =>
             {
@@ -114,29 +57,17 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
             list.Remove(removedItemsList);
 
-            events.onItemsRemoved?.Invoke(removedItemsList);
-            events.onEntitiesRemoved?.Invoke(removedItemsList.ConvertAll<Entity>());
-
-            events.onListUpdated?.Invoke(list);
-        }
-
-        public void Remove(EntityGroupType item)
-        {
-            ListWrapper<EntityGroupType> removedItemsList = new ListWrapper<EntityGroupType>(item);
-            Remove(removedItemsList);
-        }
-
-        public void Remove(ListWrapper<EntityGroup> entityGroupList)
-        {
-            Remove(entityGroupList as ListWrapper<EntityGroupType>);
+            onEntityGroupsRemoved?.Invoke(removedItemsList);
+            onListUpdated?.Invoke(list);
         }
 
         public void Remove(EntityGroup entityGroup)
         {
-            Remove(entityGroup as EntityGroupType);
+            ListWrapper<EntityGroup> removedItemsList = new ListWrapper<EntityGroup>(entityGroup);
+            Remove(removedItemsList);
         }
 
-        public void Build(EntityGroupType entityGroup)
+        public void Build(EntityGroup entityGroup)
         {
             // if (!entity.validator.isValid)
             // {
@@ -151,45 +82,32 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             // OnPreBuild(entityGroup);
             // entity.OnBuild();
 
-            ListWrapper<EntityGroupType> builtItemsList = new ListWrapper<EntityGroupType>();
+            ListWrapper<EntityGroup> builtItemsList = new ListWrapper<EntityGroup>();
             builtItemsList.Add(entityGroup);
 
-            events.onItemsBuilt?.Invoke(builtItemsList);
-            events.onEntitiesBuilt?.Invoke(builtItemsList.ConvertAll<Entity>());
+            onEntityGroupsBuilt?.Invoke(builtItemsList);
         }
 
-        public class Queries : IEntityGroupStateSlice.IQueries
-        {
-            protected AppState appState;
-            protected EntityGroupStateSlice<EntityGroupType, EventsType> state;
-
-            public Queries(AppState appState, EntityGroupStateSlice<EntityGroupType, EventsType> state)
-            {
-                this.appState = appState;
-                this.state = state;
-            }
-
-            // public EntityGroupType FindEntityGroupTypeAtCell(CellCoordinates cellCoordinates) =>
-            //     state.list.items
-            //         .Find(entity => entity.cellCoordinatesList.Contains(cellCoordinates));
+        // public EntityGroup FindEntityGroupAtCell(CellCoordinates cellCoordinates) =>
+        //     state.list.items
+        //         .Find(entity => entity.cellCoordinatesList.Contains(cellCoordinates));
 
 
-            // public Entity FindEntityAtCell(CellCoordinates cellCoordinates) =>
-            //     FindEntityGroupTypeAtCell(cellCoordinates) as Entity;
+        // public Entity FindEntityAtCell(CellCoordinates cellCoordinates) =>
+        //     FindEntityGroupAtCell(cellCoordinates) as Entity;
 
-            // public ListWrapper<EntityGroupType> FindEntityGroupTypesAtCell(CellCoordinates cellCoordinates) =>
-            //     new ListWrapper<EntityGroupType>(
-            //         state.list.items
-            //             .FindAll(entity => entity.cellCoordinatesList.Contains(cellCoordinates))
-            //     );
+        // public ListWrapper<EntityGroup> FindEntityGroupsAtCell(CellCoordinates cellCoordinates) =>
+        //     new ListWrapper<EntityGroup>(
+        //         state.list.items
+        //             .FindAll(entity => entity.cellCoordinatesList.Contains(cellCoordinates))
+        //     );
 
-            // public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
-            //     FindEntityGroupTypesAtCell(cellCoordinates).ConvertAll<Entity>();
+        // public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
+        //     FindEntityGroupsAtCell(cellCoordinates).ConvertAll<Entity>();
 
-            // public ListWrapper<Entity> FindEntityByType(Type type) =>
-            //     new ListWrapper<Entity>(
-            //         state.entityList.items.FindAll(entity => entity.GetType() == type)
-            //     );
-        }
+        // public ListWrapper<Entity> FindEntityByType(Type type) =>
+        //     new ListWrapper<Entity>(
+        //         state.entityList.items.FindAll(entity => entity.GetType() == type)
+        //     );
     }
 }

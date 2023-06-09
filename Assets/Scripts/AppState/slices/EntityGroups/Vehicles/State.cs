@@ -10,57 +10,35 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.EntityGroups.Vehicles
 {
-    public class State : EntityGroupStateSlice<Vehicle, State.Events>
+    public class State : EntityGroupStateSlice
     {
         public class Input
         {
             public ListWrapper<Vehicle> vehicleList;
         }
 
-        public new class Events : EntityGroupStateSlice<Vehicle, State.Events>.Events
-        {
-            public ItemEvent<Vehicle> onVehicleIsPilotedUpdated;
-
-            public delegate void VehicleRoomEvent(Vehicle vehicle, Room room);
-            public VehicleRoomEvent onVehicleRoomAdded;
-            public VehicleRoomEvent onVehicleRoomRemoved;
-        }
-
-        public new class Queries : EntityGroupStateSlice<Vehicle, State.Events>.Queries
-        {
-            public Queries(AppState appState, State state) : base(appState, state) { }
-
-            // public Vehicle FindVehicleByRoom(Room room) =>
-            //     state.list.items.Find(otherVehicle => otherVehicle.roomList.Contains(room));
-
-            // // TODO - don't use items[0] I think?
-            // public Vehicle FindVehicleByFurniture(Furniture furniture) =>
-            //     FindVehicleByRoom(appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]));
-        }
-
-        public new Queries queries;
+        public ItemEvent<Vehicle> onVehicleIsPilotedUpdated;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(appState, this);
         }
 
         public override void Setup()
         {
             base.Setup();
 
-            // appState.Entities.Rooms.events.onItemsAdded += OnRoomsAdded;
-            // appState.Entities.Rooms.events.onItemsBuilt += OnRoomsBuilt;
-            // appState.Entities.Rooms.events.onItemsRemoved += OnRoomsRemoved;
+            // appState.Entities.Rooms.onItemsAdded += OnRoomsAdded;
+            // appState.Entities.Rooms.onItemsBuilt += OnRoomsBuilt;
+            // appState.Entities.Rooms.onItemsRemoved += OnRoomsRemoved;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            // appState.Entities.Rooms.events.onItemsAdded -= OnRoomsAdded;
-            // appState.Entities.Rooms.events.onItemsBuilt -= OnRoomsBuilt;
-            // appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
+            // appState.Entities.Rooms.onItemsAdded -= OnRoomsAdded;
+            // appState.Entities.Rooms.onItemsBuilt -= OnRoomsBuilt;
+            // appState.Entities.Rooms.onItemsRemoved -= OnRoomsRemoved;
         }
 
         /* 
@@ -70,20 +48,20 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Vehicles
         {
             vehicle.roomList.Add(room);
 
-            events.onVehicleRoomAdded?.Invoke(vehicle, room);
+            // onVehicleRoomAdded?.Invoke(vehicle, room);
         }
 
         public void RemoveRoomFromVehicle(Vehicle vehicle, Room room)
         {
             vehicle.roomList.Remove(room);
 
-            events.onVehicleRoomRemoved?.Invoke(vehicle, room);
+            // onVehicleRoomRemoved?.Invoke(vehicle, room);
         }
 
         public void SetVehicleIsPiloted(Vehicle vehicle, bool isPiloted)
         {
             // vehicle.isPiloted = isPiloted;
-            // events.onVehicleIsPilotedUpdated?.Invoke(vehicle);
+            // onVehicleIsPilotedUpdated?.Invoke(vehicle);
         }
 
         /*
