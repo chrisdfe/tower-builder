@@ -33,6 +33,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         public Type selectedEntityType { get; private set; } = typeof(DataTypes.Entities.Foundations.Foundation);
         public string selectedEntityCategory { get; private set; } = "";
         public EntityDefinition selectedEntityDefinition { get; private set; } = null;
+
         public Entity blueprintEntity { get; private set; } = null;
 
         public Events events;
@@ -44,6 +45,9 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             ResetCategoryAndDefinition();
         }
 
+        /*
+            Lifecycle
+        */
         public override void Setup()
         {
             base.Setup();
@@ -68,6 +72,9 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             events.onBlueprintEntityUpdated?.Invoke(blueprintEntity);
         }
 
+        /*
+            Public API
+        */
         public void SetSelectedEntityKey(Type entityType)
         {
             isLocked = true;
@@ -103,19 +110,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             events.onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
         }
 
-        /*
-            Internals
-        */
-        void ResetCategoryAndDefinition()
-        {
-            selectedEntityCategory = DataTypes.Entities.Definitions.FindFirstCategory(selectedEntityType);
-            selectedEntityDefinition = DataTypes.Entities.Definitions.FindFirstInCategory(selectedEntityType, selectedEntityCategory);
-        }
-
-        public override void OnBuildStart()
-        {
-
-        }
+        public override void OnBuildStart() { }
 
         public override void OnBuildEnd()
         {
@@ -138,6 +133,15 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
                 ResetBlueprintEntity();
             }
+        }
+
+        /*
+            Internals
+        */
+        void ResetCategoryAndDefinition()
+        {
+            selectedEntityCategory = DataTypes.Entities.Definitions.FindFirstCategory(selectedEntityType);
+            selectedEntityDefinition = DataTypes.Entities.Definitions.FindFirstInCategory(selectedEntityType, selectedEntityCategory);
         }
 
         void CreateBlueprintEntity()

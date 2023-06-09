@@ -31,14 +31,12 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         public Vehicles.State Vehicles { get; }
 
         public Events events { get; }
-        public StateQueries Queries { get; }
 
         public State(AppState appState, Input input) : base(appState)
         {
             Rooms = new Rooms.State(appState, input.Rooms);
             Vehicles = new Vehicles.State(appState, input.Vehicles);
 
-            Queries = new StateQueries(this);
             events = new Events();
         }
 
@@ -58,14 +56,27 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             Vehicles.Teardown();
         }
 
-        public class StateQueries
+        public void Add(EntityGroup entityGroup)
         {
-            State state;
-
-            public StateQueries(State state)
-            {
-                this.state = state;
-            }
+            GetStateSlice(entityGroup)?.Add(entityGroup);
         }
+
+        public void Build(EntityGroup entityGroup)
+        {
+            GetStateSlice(entityGroup)?.Build(entityGroup);
+        }
+
+        public void Remove(EntityGroup entityGroup)
+        {
+            GetStateSlice(entityGroup)?.Remove(entityGroup);
+        }
+
+        public EntityGroupStateSlice GetStateSlice(EntityGroup entityGroup) =>
+            entityGroup switch
+            {
+                DataTypes.EntityGroups.Rooms.Room => Rooms,
+                DataTypes.EntityGroups.Vehicles.Vehicle => Vehicles,
+                _ => throw new NotSupportedException($"EntityGroup type not handled: {entityGroup.GetType()}")
+            };
     }
 }

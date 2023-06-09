@@ -6,11 +6,10 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 {
     public class Room : EntityGroup
     {
-        public enum Key
+        public Room() { }
+        public Room(RoomDefinition roomDefinition) : base(roomDefinition)
         {
-            None,
-            Cockpit,
-            Office
+
         }
     }
 }

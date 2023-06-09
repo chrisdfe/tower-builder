@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
+using TowerBuilder.DataTypes.Entities.Foundations;
 using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.Windows;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.EntityGroups.Rooms
@@ -11,13 +13,28 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
     {
         public OfficeRoomBuilder(EntityGroupDefinition definition) : base(definition) { }
 
-        public override EntityGroup Build(SelectionBox selectionBox)
+        protected override void BuildWindows(SelectionBox selectionBox)
         {
-            Room room = new Room();
+            base.BuildWindows(selectionBox);
 
-            // TODO
+            Window officeWindow = new Window(Entities.Definitions.Windows.defaultDefinition as WindowDefinition);
+            officeWindow.CalculateCellsFromSelectionBox(selectionBox);
 
-            return room;
+            currentRoom.Add(
+                officeWindow
+            );
+        }
+
+        protected override void BuildFoundation(SelectionBox selectionBox)
+        {
+            base.BuildFoundation(selectionBox);
+
+            Foundation officeFoundation = new Foundation(Entities.Definitions.Foundations.defaultDefinition as FoundationDefinition);
+            officeFoundation.CalculateCellsFromSelectionBox(selectionBox);
+
+            currentRoom.Add(
+                officeFoundation
+            );
         }
     }
 }

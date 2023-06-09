@@ -9,7 +9,7 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 {
     public class RoomBuilderBase : EntityGroupBuilderBase
     {
-        Room currentRoom;
+        protected Room currentRoom;
 
         public RoomBuilderBase(EntityGroupDefinition definition) : base(definition) { }
 

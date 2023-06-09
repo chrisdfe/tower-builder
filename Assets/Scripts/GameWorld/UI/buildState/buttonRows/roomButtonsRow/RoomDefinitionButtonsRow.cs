@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.GameWorld.UI.Components;
 using UnityEngine;
 
@@ -12,16 +13,13 @@ namespace TowerBuilder.GameWorld.UI
         public RoomDefinitionButtonsRow() : base() { }
 
         public override List<UISelectButton.Input> CreateButtonInputs() =>
-            new List<UISelectButton.Input>() {
-                new UISelectButton.Input() {
-                    label = "hello",
-                    value = "hello"
-                },
-                new UISelectButton.Input() {
-                    label = "another one",
-                    value = "another one"
+            DataTypes.EntityGroups.Definitions.Rooms.Definitions.items.Select(roomDefinition =>
+                new UISelectButton.Input()
+                {
+                    label = roomDefinition.title,
+                    value = roomDefinition.key
                 }
-            };
+            ).ToList();
 
         public override void Setup()
         {
@@ -42,8 +40,6 @@ namespace TowerBuilder.GameWorld.UI
 
         public override void OnButtonClick(string value)
         {
-            // Type newEntityType = DataTypes.Entities.Constants.TypeLabels.KeyFromValue(value);
-            Debug.Log("value: " + value);
             Registry.appState.Tools.Build.Rooms.SetSelectedRoomKey(value);
         }
 

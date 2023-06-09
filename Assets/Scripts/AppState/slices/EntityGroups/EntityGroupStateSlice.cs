@@ -14,25 +14,58 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         /*
             Events
         */
-        public ListEvent<EntityGroup> onEntityGroupsAdded { get; set; }
-        public ListEvent<EntityGroup> onEntityGroupsRemoved { get; set; }
-        public ListEvent<EntityGroup> onEntityGroupsBuilt { get; set; }
+        public ListEvent<EntityGroup> onItemsAdded { get; set; }
+        public ListEvent<EntityGroup> onItemsRemoved { get; set; }
+        public ListEvent<EntityGroup> onItemsBuilt { get; set; }
 
         public ListEvent<EntityGroup> onListUpdated { get; set; }
 
+        /*
+            State
+        */
         public ListWrapper<EntityGroup> list { get; }
-        public ListWrapper<EntityGroup> entityGroupList => list.ConvertAll<EntityGroup>();
+
+        bool isListeningForEvents = true;
 
         public EntityGroupStateSlice(AppState appState) : base(appState)
         {
             list = new ListWrapper<EntityGroup>();
         }
 
+        /*
+            Lifecycle
+        */
+        public override void Setup()
+        {
+            base.Setup();
+
+            appState.Entities.events.onEntitiesRemoved += OnEntitiesRemoved;
+        }
+
+        public override void Teardown()
+        {
+            base.Teardown();
+
+            appState.Entities.events.onEntitiesRemoved -= OnEntitiesRemoved;
+        }
+
+        /* 
+            Public API
+        */
         public void Add(ListWrapper<EntityGroup> newItemsList)
         {
             list.Add(newItemsList);
 
-            onEntityGroupsAdded?.Invoke(newItemsList);
+            newItemsList.items.ForEach(entityGroup =>
+            {
+                foreach (var entry in entityGroup.groupedEntities)
+                {
+                    var (entityType, entitiesOfType) = entry;
+                    appState.Entities.Add(entitiesOfType);
+                }
+            });
+
+            onItemsAdded?.Invoke(newItemsList);
             onListUpdated?.Invoke(list);
         }
 
@@ -45,6 +78,9 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
         public void Remove(ListWrapper<EntityGroup> removedItemsList)
         {
+            // Stop listening for events here to avoid an infinite loop
+            isListeningForEvents = false;
+
             removedItemsList.items.ForEach((entityGroup) =>
             {
                 // OnPreDestroy(entityGroup);
@@ -52,13 +88,21 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                 // TODO - validation
                 // TODO - add money back into wallet
 
-                // entityGroup.OnDestroy();
+                foreach (var entry in entityGroup.groupedEntities)
+                {
+                    var (entityType, entitiesOfType) = entry;
+                    appState.Entities.Remove(entitiesOfType);
+                }
+
+                entityGroup.OnDestroy();
             });
 
             list.Remove(removedItemsList);
 
-            onEntityGroupsRemoved?.Invoke(removedItemsList);
+            onItemsRemoved?.Invoke(removedItemsList);
             onListUpdated?.Invoke(list);
+
+            isListeningForEvents = true;
         }
 
         public void Remove(EntityGroup entityGroup)
@@ -79,35 +123,53 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             // 
             // appState.Wallet.SubtractBalance(entity.price);
 
-            // OnPreBuild(entityGroup);
-            // entity.OnBuild();
+            entityGroup.entities.items.ForEach(entity =>
+            {
+                appState.Entities.Build(entity);
+            });
+
+            entityGroup.OnBuild();
 
             ListWrapper<EntityGroup> builtItemsList = new ListWrapper<EntityGroup>();
             builtItemsList.Add(entityGroup);
 
-            onEntityGroupsBuilt?.Invoke(builtItemsList);
+            onItemsBuilt?.Invoke(builtItemsList);
         }
 
-        // public EntityGroup FindEntityGroupAtCell(CellCoordinates cellCoordinates) =>
-        //     state.list.items
-        //         .Find(entity => entity.cellCoordinatesList.Contains(cellCoordinates));
+        /*
+            Queries
+        */
+        public EntityGroup FindEntityGroupByEntity(Entity entity) =>
+            list.Find(entityGroup => entityGroup.entities.items.Contains(entity));
+
+        public ListWrapper<EntityGroup> FindEntityGroupsByEntities(ListWrapper<Entity> entities) =>
+            list.FindAll(entityGroup =>
+                entities.items.Find(entity => entityGroup.entities.Contains(entity)) != null
+            );
+
+        /*
+            Internals
+        */
 
 
-        // public Entity FindEntityAtCell(CellCoordinates cellCoordinates) =>
-        //     FindEntityGroupAtCell(cellCoordinates) as Entity;
+        /*
+            Event Handlers
+        */
+        void OnEntitiesRemoved(ListWrapper<Entity> removedEntities)
+        {
+            if (!isListeningForEvents) return;
 
-        // public ListWrapper<EntityGroup> FindEntityGroupsAtCell(CellCoordinates cellCoordinates) =>
-        //     new ListWrapper<EntityGroup>(
-        //         state.list.items
-        //             .FindAll(entity => entity.cellCoordinatesList.Contains(cellCoordinates))
-        //     );
+            foreach (Entity removedEntity in removedEntities.items)
+            {
+                EntityGroup entityGroup = FindEntityGroupByEntity(removedEntity);
 
-        // public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
-        //     FindEntityGroupsAtCell(cellCoordinates).ConvertAll<Entity>();
+                if (entityGroup != null)
+                {
+                    entityGroup.Remove(removedEntity);
 
-        // public ListWrapper<Entity> FindEntityByType(Type type) =>
-        //     new ListWrapper<Entity>(
-        //         state.entityList.items.FindAll(entity => entity.GetType() == type)
-        //     );
+                    // TODO here - check if 
+                }
+            }
+        }
     }
 }

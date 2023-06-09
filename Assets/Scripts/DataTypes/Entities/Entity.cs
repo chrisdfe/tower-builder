@@ -24,15 +24,16 @@ namespace TowerBuilder.DataTypes.Entities
         public CellCoordinatesBlockList blocksList { get; private set; } = new CellCoordinatesBlockList();
 
         public EntityDefinition definition { get; }
-
         public EntityValidator validator { get; }
+
+        public delegate EntityDefinition DefaultDefinitionGenerator();
 
         public virtual string typeLabel => "Entity";
 
         public Entity(EntityDefinition definition)
         {
-            this.definition = definition;
             this.id = UIDGenerator.Generate(idKey);
+            this.definition = definition;
 
             this.cellCoordinatesList = definition.blockCellsTemplate.Clone();
 

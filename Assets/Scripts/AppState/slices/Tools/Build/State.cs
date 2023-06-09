@@ -54,11 +54,15 @@ namespace TowerBuilder.ApplicationState.Tools.Build
         public override void Setup()
         {
             base.Setup();
+
+            GetCurrentMode().Setup();
         }
 
         public override void Teardown()
         {
             base.Teardown();
+
+            GetCurrentMode().Teardown();
         }
 
         public override void OnSelectionStart(SelectionBox selectionBox)

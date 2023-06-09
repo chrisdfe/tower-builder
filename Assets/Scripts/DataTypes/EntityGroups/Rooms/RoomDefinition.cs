@@ -1,11 +1,15 @@
+using UnityEngine;
+
 namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 {
-    public class RoomDefinition : EntityGroupDefinition<Room.Key>
+    public class RoomDefinition : EntityGroupDefinition
     {
         public override ValidatorFactory validatorFactory => (EntityGroup entityGroup) => new RoomValidator(entityGroup as Room);
 
-        public delegate RoomBuilderBase RoomBuilderFactory(EntityGroupDefinition definition);
-        public virtual RoomBuilderFactory roomBuilderFactory => (EntityGroupDefinition definition) => new RoomBuilderBase(definition);
+        public override BuilderFactory builderFactory => (EntityGroupDefinition definition) =>
+        {
+            return new RoomBuilderBase(definition);
+        };
     }
 }
 

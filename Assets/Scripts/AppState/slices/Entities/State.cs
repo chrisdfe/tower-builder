@@ -133,6 +133,18 @@ namespace TowerBuilder.ApplicationState.Entities
             GetStateSlice(entity)?.Add(entity);
         }
 
+        // This needs to be done individually because entities could include Entities
+        // of many different types
+        // Ideally I'd group entities by type first and then Add(entities), to cut down
+        // on the number of method calls potentially
+        public void Add(ListWrapper<Entity> entities)
+        {
+            foreach (Entity entity in entities.items)
+            {
+                GetStateSlice(entity)?.Add(entity);
+            }
+        }
+
         public void Build(Entity entity)
         {
             GetStateSlice(entity)?.Build(entity);
@@ -141,6 +153,12 @@ namespace TowerBuilder.ApplicationState.Entities
         public void Remove(Entity entity)
         {
             GetStateSlice(entity)?.Remove(entity);
+        }
+
+        public void Remove(ListWrapper<Entity> entities)
+        {
+            // Warning - this assumes all entities are of the same type
+            GetStateSlice(entities.items[0])?.Remove(entities);
         }
 
         public IEntityStateSlice GetStateSlice(Entity entity) =>

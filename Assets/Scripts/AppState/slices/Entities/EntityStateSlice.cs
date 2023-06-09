@@ -97,6 +97,10 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Remove(ListWrapper<EntityType> removedItemsList)
         {
+            // if (removedItemsList == null || removedItemsList.Count == 0) return;
+
+            Debug.Log("removedItemsList in Remove(ListWrapper<EntityType> removedItemsList)");
+            Debug.Log(removedItemsList);
             removedItemsList.items.ForEach((entity) =>
             {
                 OnPreDestroy(entity);
@@ -123,7 +127,9 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Remove(ListWrapper<Entity> entityList)
         {
-            Remove(entityList as ListWrapper<EntityType>);
+            Debug.Log("removedItemsList in Remove(ListWrapper<Entity> entityList)");
+            Debug.Log(entityList);
+            Remove(entityList.ConvertAll<EntityType>());
         }
 
         public void Remove(Entity entity)
