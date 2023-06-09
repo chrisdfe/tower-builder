@@ -8,6 +8,20 @@ namespace TowerBuilder.GameWorld.UI
     {
         public BuildModeSelectButtonsRow() : base() { }
 
+        public override void Setup()
+        {
+            base.Setup();
+
+            Registry.appState.Tools.Build.events.onModeUpdated += OnBuildModeUpdated;
+        }
+
+        public override void Teardown()
+        {
+            base.Teardown();
+
+            Registry.appState.Tools.Build.events.onModeUpdated -= OnBuildModeUpdated;
+        }
+
         public override List<UISelectButton.Input> CreateButtonInputs() =>
             new List<UISelectButton.Input>() {
                 new UISelectButton.Input() {
@@ -40,6 +54,11 @@ namespace TowerBuilder.GameWorld.UI
                     Registry.appState.Tools.Build.SetMode(ApplicationState.Tools.Build.State.Mode.Rooms);
                     break;
             }
+        }
+
+        void OnBuildModeUpdated(ApplicationState.Tools.Build.State.Mode newMode, ApplicationState.Tools.Build.State.Mode previousMode)
+        {
+            HighlightSelectedButton();
         }
     }
 }

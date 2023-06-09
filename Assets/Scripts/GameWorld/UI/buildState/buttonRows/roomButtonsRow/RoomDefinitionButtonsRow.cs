@@ -16,17 +16,40 @@ namespace TowerBuilder.GameWorld.UI
                 new UISelectButton.Input() {
                     label = "hello",
                     value = "hello"
+                },
+                new UISelectButton.Input() {
+                    label = "another one",
+                    value = "another one"
                 }
             };
 
+        public override void Setup()
+        {
+            base.Setup();
+
+            Registry.appState.Tools.Build.Rooms.events.onRoomKeyUpdated += OnRoomKeyUpdated;
+        }
+
+        public override void Teardown()
+        {
+            base.Teardown();
+
+            Registry.appState.Tools.Build.Rooms.events.onRoomKeyUpdated -= OnRoomKeyUpdated;
+        }
+
         public override bool ButtonShouldBeSelected(UISelectButton button) =>
-            button.value == DataTypes.Entities.Constants.TypeLabels.ValueFromKey(Registry.appState.Tools.Build.Entities.selectedEntityType);
+            button.value == Registry.appState.Tools.Build.Rooms.selectedRoomKey;
 
         public override void OnButtonClick(string value)
         {
             // Type newEntityType = DataTypes.Entities.Constants.TypeLabels.KeyFromValue(value);
             Debug.Log("value: " + value);
             Registry.appState.Tools.Build.Rooms.SetSelectedRoomKey(value);
+        }
+
+        void OnRoomKeyUpdated(string value)
+        {
+            HighlightSelectedButton();
         }
     }
 }

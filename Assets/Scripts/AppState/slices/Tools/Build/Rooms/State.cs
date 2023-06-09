@@ -12,7 +12,8 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
 
         public class Events
         {
-
+            public delegate void RoomKeyEvent(string roomKey);
+            public RoomKeyEvent onRoomKeyUpdated;
         }
 
         public Events events { get; private set; }
@@ -29,6 +30,9 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
             Debug.Log("here I am");
             Debug.Log("in state");
             Debug.Log(value);
+
+            this.selectedRoomKey = value;
+            events.onRoomKeyUpdated?.Invoke(this.selectedRoomKey);
         }
 
         public override void Setup()
