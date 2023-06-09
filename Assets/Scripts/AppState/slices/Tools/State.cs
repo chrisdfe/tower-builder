@@ -51,14 +51,14 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public State(AppState appState, Input input) : base(appState)
         {
+            events = new State.Events();
+
             currentKey = input.key ?? DEFAULT_TOOL_STATE;
 
             Build = new Build.State(appState, this, input.Build);
             Destroy = new Destroy.State(appState, this, input.Destroy);
             Inspect = new Inspect.State(appState, this, input.Inspect);
             Routes = new Routes.State(appState, this, input.Routes);
-
-            events = new State.Events();
 
             appState.UI.events.onSelectionStart += OnSelectionStart;
             appState.UI.events.onSelectionEnd += OnSelectionEnd;

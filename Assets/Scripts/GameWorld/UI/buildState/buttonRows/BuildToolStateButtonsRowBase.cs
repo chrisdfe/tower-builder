@@ -13,24 +13,24 @@ namespace TowerBuilder.GameWorld.UI
 
         public BuildToolStateButtonsRowBase() { }
 
-        public void Setup()
+        public virtual void Setup()
         {
             TransformUtils.DestroyChildren(transform);
             CreateButtons();
             HighlightSelectedButton();
         }
 
-        public void Teardown()
+        public virtual void Teardown()
         {
             DestroyButtons();
         }
 
-        public void Open()
+        public virtual void Open()
         {
             gameObject.SetActive(true);
         }
 
-        public void Close()
+        public virtual void Close()
         {
             gameObject.SetActive(false);
         }

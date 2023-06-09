@@ -7,30 +7,26 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class BuildTypeButtonsRow : BuildToolStateButtonsRowBase
+    public class RoomDefinitionButtonsRow : BuildToolStateButtonsRowBase
     {
-        public BuildTypeButtonsRow() : base() { }
+        public RoomDefinitionButtonsRow() : base() { }
 
         public override List<UISelectButton.Input> CreateButtonInputs() =>
             new List<UISelectButton.Input>() {
                 new UISelectButton.Input() {
-                    label = "Entities",
-                    value = "Entities",
-                },
-                new UISelectButton.Input() {
-                    label = "Rooms",
-                    value = "Rooms",
-                },
+                    label = "hello",
+                    value = "hello"
+                }
             };
 
         public override bool ButtonShouldBeSelected(UISelectButton button) =>
-            false;
-        // button.value == Registry.appState.Tools.buildToolState.selectedEntityCategory;
+            button.value == DataTypes.Entities.Constants.TypeLabels.ValueFromKey(Registry.appState.Tools.Build.Entities.selectedEntityType);
 
         public override void OnButtonClick(string value)
         {
-            // Registry.appState.Tools.buildToolState.SetSelectedEntityCategory(value);
+            // Type newEntityType = DataTypes.Entities.Constants.TypeLabels.KeyFromValue(value);
             Debug.Log("value: " + value);
+            Registry.appState.Tools.Build.Rooms.SetSelectedRoomKey(value);
         }
     }
 }

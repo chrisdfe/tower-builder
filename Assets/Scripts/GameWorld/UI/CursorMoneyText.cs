@@ -18,7 +18,7 @@ namespace TowerBuilder.GameWorld.UI
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
 
-            Registry.appState.Tools.Build.events.onBlueprintEntityUpdated += OnBlueprintEntityUpdated;
+            Registry.appState.Tools.Build.Entities.events.onBlueprintEntityUpdated += OnBlueprintEntityUpdated;
             Registry.appState.Tools.Build.events.onBuildStart += OnBuildStart;
             Registry.appState.Tools.Build.events.onBuildEnd += OnBuildEnd;
 
@@ -28,7 +28,7 @@ namespace TowerBuilder.GameWorld.UI
         void OnDestroy()
         {
             Registry.appState.Tools.events.onToolStateUpdated -= OnToolStateUpdated;
-            Registry.appState.Tools.Build.events.onBlueprintEntityUpdated -= OnBlueprintEntityUpdated;
+            Registry.appState.Tools.Build.Entities.events.onBlueprintEntityUpdated -= OnBlueprintEntityUpdated;
             Registry.appState.Tools.Build.events.onBuildStart -= OnBuildStart;
             Registry.appState.Tools.Build.events.onBuildEnd -= OnBuildEnd;
         }
@@ -92,7 +92,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetText()
         {
-            Entity blueprintEntity = Registry.appState.Tools.Build.blueprintEntity;
+            Entity blueprintEntity = Registry.appState.Tools.Build.Entities.blueprintEntity;
             int amount = blueprintEntity.price;
             text.text = String.Format("${0:n0}", amount);
 

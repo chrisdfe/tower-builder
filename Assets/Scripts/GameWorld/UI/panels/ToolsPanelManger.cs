@@ -29,7 +29,7 @@ namespace TowerBuilder.GameWorld.UI
             UpdateDescriptionText();
 
             Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
-            Registry.appState.Tools.Build.events.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
+            Registry.appState.Tools.Build.Entities.events.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
         }
 
         void OnToolStateUpdated(ApplicationState.Tools.State.Key toolState, ApplicationState.Tools.State.Key previousToolState)
@@ -58,7 +58,7 @@ namespace TowerBuilder.GameWorld.UI
 
             if (toolState == ApplicationState.Tools.State.Key.Build)
             {
-                EntityDefinition selectedEntityDefinition = Registry.appState.Tools.Build.selectedEntityDefinition;
+                EntityDefinition selectedEntityDefinition = Registry.appState.Tools.Build.Entities.selectedEntityDefinition;
 
                 if (selectedEntityDefinition == null)
                 {
@@ -66,8 +66,8 @@ namespace TowerBuilder.GameWorld.UI
                 }
                 else
                 {
-                    Type selectedEntityType = Registry.appState.Tools.Build.selectedEntityType;
-                    Entity blueprintEntity = Registry.appState.Tools.Build.blueprintEntity;
+                    Type selectedEntityType = Registry.appState.Tools.Build.Entities.selectedEntityType;
+                    Entity blueprintEntity = Registry.appState.Tools.Build.Entities.blueprintEntity;
 
                     if (blueprintEntity != null)
                     {

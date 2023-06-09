@@ -15,19 +15,15 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class BuildToolStateButtonsManager : MonoBehaviour
     {
-        public GameObject EntityButtons;
-        public GameObject EntityGroupButtons;
 
-        public EntityDefinitionButtonsRow entityDefinitionButtonsRow;
-        public EntityCategoryButtonsRow entityCategoryButtonsRow;
-        public EntityTypeButtonsRow entityTypeButtonsRow;
-        public BuildTypeButtonsRow buildTypeButtonsRow;
+        public EntitiesModeButtonsManager entityModeButtonsManager;
+        public RoomModeButtonsManager roomModeButtonsManager;
+
+        public BuildModeSelectButtonsRow buildModeButtonsRow;
 
         void Awake()
         {
-            Registry.appState.Tools.Build.events.onSelectedEntityKeyUpdated += OnSelectedEntityKeyUpdated;
-            Registry.appState.Tools.Build.events.onSelectedEntityCategoryUpdated += OnSelectedEntityCategoryUpdated;
-            Registry.appState.Tools.Build.events.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
+
         }
 
         void Start()
@@ -35,14 +31,29 @@ namespace TowerBuilder.GameWorld.UI
             Setup();
         }
 
+        public void Setup()
+        {
+            buildModeButtonsRow.Setup();
+            entityModeButtonsManager.Setup();
+            roomModeButtonsManager.Setup();
+
+            Registry.appState.Tools.Build.events.onModeUpdated += OnBuildModeUpdated;
+        }
+
+        public void Teardown()
+        {
+            buildModeButtonsRow.Teardown();
+            entityModeButtonsManager.Setup();
+            roomModeButtonsManager.Setup();
+
+            Registry.appState.Tools.Build.events.onModeUpdated -= OnBuildModeUpdated;
+        }
+
         public void Open()
         {
             gameObject.SetActive(true);
 
-            buildTypeButtonsRow.HighlightSelectedButton();
-            entityTypeButtonsRow.HighlightSelectedButton();
-            entityCategoryButtonsRow.HighlightSelectedButton();
-            entityDefinitionButtonsRow.HighlightSelectedButton();
+            buildModeButtonsRow.HighlightSelectedButton();
         }
 
         public void Close()
@@ -50,41 +61,19 @@ namespace TowerBuilder.GameWorld.UI
             gameObject.SetActive(false);
         }
 
-        public void Setup()
+        void OnBuildModeUpdated(ApplicationState.Tools.Build.State.Mode newMode, ApplicationState.Tools.Build.State.Mode previousMode)
         {
-            buildTypeButtonsRow.Setup();
-            entityTypeButtonsRow.Setup();
-            entityCategoryButtonsRow.Setup();
-            entityDefinitionButtonsRow.Setup();
-        }
-
-        public void Teardown()
-        {
-            buildTypeButtonsRow.Teardown();
-            entityTypeButtonsRow.Teardown();
-            entityCategoryButtonsRow.Teardown();
-            entityDefinitionButtonsRow.Teardown();
-        }
-
-
-        void OnSelectedEntityKeyUpdated(Type entityType, Type previousEntityType)
-        {
-            if (entityType == previousEntityType) return;
-
-            entityTypeButtonsRow.HighlightSelectedButton();
-            entityCategoryButtonsRow.Reset();
-            entityDefinitionButtonsRow.Reset();
-        }
-
-        void OnSelectedEntityCategoryUpdated(string newEntityCategory)
-        {
-            entityCategoryButtonsRow.HighlightSelectedButton();
-            entityDefinitionButtonsRow.Reset();
-        }
-
-        void OnSelectedEntityDefinitionUpdated(EntityDefinition entityDefinition)
-        {
-            entityDefinitionButtonsRow.HighlightSelectedButton();
+            switch (newMode)
+            {
+                case ApplicationState.Tools.Build.State.Mode.Entities:
+                    entityModeButtonsManager.Open();
+                    roomModeButtonsManager.Close();
+                    break;
+                case ApplicationState.Tools.Build.State.Mode.Rooms:
+                    entityModeButtonsManager.Close();
+                    roomModeButtonsManager.Open();
+                    break;
+            }
         }
     }
 }

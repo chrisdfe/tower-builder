@@ -13,8 +13,8 @@ namespace TowerBuilder.GameWorld.UI
 
         public override List<UISelectButton.Input> CreateButtonInputs()
         {
-            Type selectedEntityType = Registry.appState.Tools.Build.selectedEntityType;
-            string currentCategory = Registry.appState.Tools.Build.selectedEntityCategory;
+            Type selectedEntityType = Registry.appState.Tools.Build.Entities.selectedEntityType;
+            string currentCategory = Registry.appState.Tools.Build.Entities.selectedEntityCategory;
 
             return DataTypes.Entities.Definitions.FindByCategory(selectedEntityType, currentCategory)
                 .items.Select((definition) =>
@@ -27,11 +27,11 @@ namespace TowerBuilder.GameWorld.UI
         }
 
         public override bool ButtonShouldBeSelected(UISelectButton button) =>
-            button.value == Registry.appState.Tools.Build.selectedEntityDefinition.key;
+            button.value == Registry.appState.Tools.Build.Entities.selectedEntityDefinition.key;
 
         public override void OnButtonClick(string value)
         {
-            Registry.appState.Tools.Build.SetSelectedEntityDefinition(value);
+            Registry.appState.Tools.Build.Entities.SetSelectedEntityDefinition(value);
         }
     }
 }

@@ -9,63 +9,56 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools.Build
 {
-    public partial class State : ToolStateBase
+    public class State : ToolStateBase
     {
+        public enum Mode
+        {
+            Entities,
+            Rooms
+        }
+
         public struct Input
         {
-            public Type selectedEntityType;
-            public string selectedEntityCategory;
+            public Entities.State.Input Entities;
+            public Rooms.State.Input Rooms;
         }
 
         public class Events
         {
-            public delegate void SelectedEntityKeyEvent(Type entityKey, Type previousEntityType);
-            public SelectedEntityKeyEvent onSelectedEntityKeyUpdated;
+            public delegate void ModeEvent(Mode newMode, Mode previousMode);
+            public ModeEvent onModeUpdated;
 
-            public delegate void buildIsActiveEvent();
-            public buildIsActiveEvent onBuildStart;
-            public buildIsActiveEvent onBuildEnd;
-
-            public delegate void SelectedEntityCategoryEvent(string selectedEntityCategory);
-            public SelectedEntityCategoryEvent onSelectedEntityCategoryUpdated;
-
-            public delegate void SelectedEntityDefinitionEvent(EntityDefinition selectedEntityDefinition);
-            public SelectedEntityDefinitionEvent onSelectedEntityDefinitionUpdated;
-
-            public delegate void blueprintUpdateEvent(Entity blueprintEntity);
-            public blueprintUpdateEvent onBlueprintEntityUpdated;
+            public delegate void BuildIsActiveEvent();
+            public BuildIsActiveEvent onBuildStart;
+            public BuildIsActiveEvent onBuildEnd;
         }
 
-        public Type selectedEntityType { get; private set; } = typeof(DataTypes.Entities.Foundations.Foundation);
-        public string selectedEntityCategory { get; private set; } = "";
-        public EntityDefinition selectedEntityDefinition { get; private set; } = null;
-        public Entity blueprintEntity { get; private set; } = null;
+        public Events events { get; private set; }
 
-        public Events events;
+        public Entities.State Entities;
+        public Rooms.State Rooms;
 
-        public bool isLocked = false;
-        bool buildIsActive = false;
+        public Mode currentMode { get; private set; } = Mode.Entities;
+
+        public bool buildIsActive { get; private set; } = false;
+        bool isLocked = false;
 
         public State(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
             events = new Events();
 
-            ResetCategoryAndDefinition();
+            Entities = new Entities.State(appState, state, this, input.Entities);
+            Rooms = new Rooms.State(appState, state, this, input.Rooms);
         }
 
         public override void Setup()
         {
             base.Setup();
-
-            ResetCategoryAndDefinition();
-            CreateBlueprintEntity();
         }
 
         public override void Teardown()
         {
             base.Teardown();
-
-            RemoveBlueprintEntity();
         }
 
         public override void OnSelectionStart(SelectionBox selectionBox)
@@ -78,64 +71,58 @@ namespace TowerBuilder.ApplicationState.Tools.Build
             EndBuild();
         }
 
+        // Pass through to child
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
-            if (isLocked) return;
-
-            ResetBlueprintEntity();
-
-            events.onBlueprintEntityUpdated?.Invoke(blueprintEntity);
+            GetCurrentMode().OnSelectionBoxUpdated(selectionBox);
         }
 
-        public void SetSelectedEntityKey(Type entityType)
+        public override void OnCurrentSelectedRoomBlockUpdated(CellCoordinatesBlock roomBlock)
         {
-            isLocked = true;
-            Type previousEntityType = this.selectedEntityType;
-            this.selectedEntityType = entityType;
-
-            ResetCategoryAndDefinition();
-            ResetBlueprintEntity();
-
-            events.onSelectedEntityKeyUpdated?.Invoke(this.selectedEntityType, previousEntityType);
-            isLocked = false;
+            GetCurrentMode().OnCurrentSelectedRoomBlockUpdated(roomBlock);
         }
 
-        public void SetSelectedEntityCategory(string entityCategory)
+        public override void OnCurrentSelectedEntityListUpdated(ListWrapper<Entity> entityList)
         {
-            this.selectedEntityCategory = entityCategory;
-
-            this.selectedEntityDefinition = DataTypes.Entities.Definitions.FindFirstInCategory(selectedEntityType, selectedEntityCategory);
-
-            ResetBlueprintEntity();
-
-            events.onSelectedEntityCategoryUpdated?.Invoke(entityCategory);
-            events.onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
+            GetCurrentMode().OnCurrentSelectedEntityListUpdated(entityList);
         }
 
-
-        // TODO - this should probably use key instead of title string
-        public void SetSelectedEntityDefinition(string keyLabel)
+        public void SetMode(Mode newMode)
         {
-            this.selectedEntityDefinition = DataTypes.Entities.Definitions.FindByKey(this.selectedEntityType, keyLabel);
+            if (newMode == currentMode) return;
 
-            ResetBlueprintEntity();
+            Mode previousMode = currentMode;
+            TransitionToolState(newMode, previousMode);
 
-            events.onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
+            events.onModeUpdated?.Invoke(newMode, previousMode);
         }
 
-        /*
+        /* 
             Internals
         */
-        void ResetCategoryAndDefinition()
+        void TransitionToolState(Mode newMode, Mode previousMode)
         {
-            selectedEntityCategory = DataTypes.Entities.Definitions.FindFirstCategory(selectedEntityType);
-            selectedEntityDefinition = DataTypes.Entities.Definitions.FindFirstInCategory(selectedEntityType, selectedEntityCategory);
+            GetMode(previousMode).Teardown();
+            this.currentMode = newMode;
+            GetMode(currentMode).Setup();
         }
+
+        BuildModeStateBase GetMode(Mode mode) =>
+            mode switch
+            {
+                Mode.Entities => Entities,
+                Mode.Rooms => Rooms,
+                _ => throw new NotSupportedException("Unsupported build tool mode: " + mode)
+            };
+
+        BuildModeStateBase GetCurrentMode() => GetMode(currentMode);
 
         void StartBuild()
         {
             if (isLocked) return;
             buildIsActive = true;
+
+            GetCurrentMode().OnBuildStart();
 
             events.onBuildStart?.Invoke();
         }
@@ -144,66 +131,14 @@ namespace TowerBuilder.ApplicationState.Tools.Build
         {
             // EndBuild can be called when the mouse click up event happens outside the screen or over a UI element
             if (isLocked || !buildIsActive) return;
-            buildIsActive = false;
 
             isLocked = true;
 
-            blueprintEntity.validator.Validate(Registry.appState);
-
-            if (blueprintEntity.validator.isValid)
-            {
-                BuildBlueprintEntity();
-                CreateBlueprintEntity();
-            }
-            else
-            {
-                Registry.appState.Notifications.Add(
-                    new ListWrapper<Notification>(
-                        blueprintEntity.validator.errors.items
-                            .Select(error => new Notification(error.message))
-                            .ToList()
-                    )
-                );
-
-                ResetBlueprintEntity();
-            }
-
+            GetCurrentMode().OnBuildEnd();
             events.onBuildEnd?.Invoke();
 
             isLocked = false;
-        }
-
-        void CreateBlueprintEntity()
-        {
-            blueprintEntity = Entity.CreateFromDefinition(selectedEntityDefinition);
-
-            blueprintEntity.isInBlueprintMode = true;
-            blueprintEntity.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
-            blueprintEntity.validator.Validate(Registry.appState);
-
-            Registry.appState.Entities.Add(blueprintEntity);
-        }
-
-        void BuildBlueprintEntity()
-        {
-            Registry.appState.Entities.Build(blueprintEntity);
-
-            blueprintEntity = null;
-        }
-
-        void RemoveBlueprintEntity()
-        {
-            if (blueprintEntity == null) return;
-
-            Registry.appState.Entities.Remove(blueprintEntity);
-
-            blueprintEntity = null;
-        }
-
-        void ResetBlueprintEntity()
-        {
-            RemoveBlueprintEntity();
-            CreateBlueprintEntity();
+            buildIsActive = false;
         }
     }
 }
