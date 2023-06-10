@@ -29,7 +29,13 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
         {
             base.BuildFoundation(selectionBox);
 
-            Foundation officeFoundation = new Foundation(Entities.Definitions.Foundations.defaultDefinition as FoundationDefinition);
+            Foundation officeFoundation = new Foundation(
+                new FoundationDefinition()
+                {
+                    blockCellsTemplate = CellCoordinatesList.CreateRectangle(4, 2)
+                }
+            );
+
             officeFoundation.CalculateCellsFromSelectionBox(selectionBox);
 
             currentRoom.Add(

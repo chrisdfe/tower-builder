@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.Utils;
 using UnityEngine;
 
@@ -33,8 +34,6 @@ namespace TowerBuilder.GameWorld.Entities
                 { Segment.Floor,     FLOOR_NODE_NAME_BASE },
             }
         );
-
-        EnumMap<Segment, Transform> segmentTransformMap;
 
         static Dictionary<Tileable.CellPosition, Segment[]> SEGMENTS_FOR_CELL_POSITION_MAP =
             new Dictionary<Tileable.CellPosition, Segment[]>() {
@@ -210,6 +209,8 @@ namespace TowerBuilder.GameWorld.Entities
                 },
             };
 
+        EnumMap<Segment, Transform> segmentTransformMap;
+
         public FoundationMeshCellWrapper(
             Transform parent,
             GameObject prefabMesh,
@@ -224,6 +225,7 @@ namespace TowerBuilder.GameWorld.Entities
         protected override void ProcessModel()
         {
             base.ProcessModel();
+
 
             BuildSegmentTransformMap();
             ToggleSegmentsForCellPosition();
@@ -247,11 +249,20 @@ namespace TowerBuilder.GameWorld.Entities
             foreach (Segment segment in segmentTransformMap.keys)
             {
                 Transform segmentTransform = segmentTransformMap.ValueFromKey(segment);
-                segmentTransform.gameObject.SetActive(
-                    currentSegments.Contains(segment) ||
-                    // BackWalls are always rendered right now
-                    segment == Segment.BackWall
-                );
+
+                // Only render the back wall if there is no window there
+                // (for now)
+                if (segment == Segment.BackWall)
+                {
+                    Entity windowAtCell = Registry.appState.Entities.Windows.queries.FindEntityAtCell(cellCoordinates);
+
+                    segmentTransform.gameObject.SetActive(windowAtCell == null);
+                }
+                else
+                {
+                    segmentTransform.gameObject.SetActive(currentSegments.Contains(segment));
+                }
+
             }
         }
     }

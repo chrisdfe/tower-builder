@@ -2,11 +2,11 @@
 
 ## Tasks
 
-- Remove all the Events/Queries subclasses. They cause more trouble than they're worth
+- give default window a wall
+- Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
+- Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
+- Remove all of those Events/Queries subclasses. They cause more trouble than they're worth
 - Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
-- Convert room to an entity group
-  - walls/ceiling (figure out a name for this)
-  - floor
 - Building entity group
   - Rename "vehicle" to "building"
   - Rooms should get added to buildings
@@ -379,6 +379,9 @@
 
 # Done
 
+- Convert room to an entity group
+  - walls/ceiling (figure out a name for this)
+  - floor
 - Reorganize definitions
   - Remove "Keys" from entities
   - they don't need to be part of Registry

@@ -38,7 +38,8 @@ namespace TowerBuilder.GameWorld.Entities.Foundations
         {
             AssetList assetList = GameWorldFoundationsManager.Find().meshAssets;
 
-            GameObject prefabMesh = assetList.ValueFromKey(foundation.definition.key);
+            string assetKey = foundation.definition.key != null ? foundation.definition.key : "Default";
+            GameObject prefabMesh = assetList.ValueFromKey(assetKey);
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
