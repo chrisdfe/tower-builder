@@ -24,12 +24,12 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            Registry.appState.UI.events.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
-            Registry.appState.UI.events.onSelectionBoxUpdated += OnSelectionBoxUpdated;
+            Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            Registry.appState.UI.onSelectionBoxUpdated += OnSelectionBoxUpdated;
 
-            // Registry.appState.Entities.Vehicles.events.onListUpdated += OnVehicleListUpdated;
+            // Registry.appState.Entities.Vehicles.onListUpdated += OnVehicleListUpdated;
 
-            // Registry.appState.Entities.Rooms.events.onListUpdated += OnRoomListUpdated;
+            // Registry.appState.Entities.Rooms.onListUpdated += OnRoomListUpdated;
 
             currentSelectedCellText = TransformUtils.FindDeepChild(transform, "CurrentSelectedCellText").GetComponent<Text>();
             currentSelectedCellText.text = "";

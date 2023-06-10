@@ -138,7 +138,7 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
                 case TravelGoal:
                     break;
                 case InteractingWithFurnitureGoal interactingWithFurnitureGoal:
-                    FurnitureBehavior furnitureBehavior = appState.Behaviors.Furnitures.queries.FindByFurniture(interactingWithFurnitureGoal.furniture);
+                    FurnitureBehavior furnitureBehavior = appState.Behaviors.Furnitures.FindByFurniture(interactingWithFurnitureGoal.furniture);
                     furnitureBehavior.validator.Validate(appState);
                     return furnitureBehavior.validator.errors;
             }

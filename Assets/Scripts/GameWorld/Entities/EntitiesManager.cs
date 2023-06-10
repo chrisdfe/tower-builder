@@ -79,24 +79,24 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void Setup()
         {
-            Registry.appState.Entities.events.onEntitiesAdded += OnEntitiesAdded;
-            Registry.appState.Entities.events.onEntitiesRemoved += OnEntitiesRemoved;
-            Registry.appState.Entities.events.onEntitiesBuilt += OnEntitiesBuilt;
+            Registry.appState.Entities.onEntitiesAdded += OnEntitiesAdded;
+            Registry.appState.Entities.onEntitiesRemoved += OnEntitiesRemoved;
+            Registry.appState.Entities.onEntitiesBuilt += OnEntitiesBuilt;
 
-            Registry.appState.Tools.Destroy.events.onDestroySelectionUpdated += OnDestroySelectionUpdated;
-            Registry.appState.Tools.Inspect.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
-            Registry.appState.Tools.Inspect.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
+            Registry.appState.Tools.Destroy.onDestroySelectionUpdated += OnDestroySelectionUpdated;
+            Registry.appState.Tools.Inspect.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
+            Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
         public void Teardown()
         {
-            Registry.appState.Entities.events.onEntitiesAdded -= OnEntitiesAdded;
-            Registry.appState.Entities.events.onEntitiesRemoved -= OnEntitiesRemoved;
-            Registry.appState.Entities.events.onEntitiesBuilt -= OnEntitiesBuilt;
+            Registry.appState.Entities.onEntitiesAdded -= OnEntitiesAdded;
+            Registry.appState.Entities.onEntitiesRemoved -= OnEntitiesRemoved;
+            Registry.appState.Entities.onEntitiesBuilt -= OnEntitiesBuilt;
 
-            Registry.appState.Tools.Destroy.events.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
-            Registry.appState.Tools.Inspect.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
-            Registry.appState.Tools.Inspect.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
+            Registry.appState.Tools.Destroy.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
+            Registry.appState.Tools.Inspect.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
+            Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
         void OnEntitiesAdded(ListWrapper<Entity> entityList)

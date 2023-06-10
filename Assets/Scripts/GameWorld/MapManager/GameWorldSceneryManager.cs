@@ -31,18 +31,18 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public void Setup()
         {
-            Registry.appState.Attributes.Vehicles.events.onItemsAdded += OnVehicleAttributesAdded;
-            Registry.appState.Attributes.Vehicles.events.onItemsRemoved += OnVehicleAttributesRemoved;
+            Registry.appState.Attributes.Vehicles.onItemsAdded += OnVehicleAttributesAdded;
+            Registry.appState.Attributes.Vehicles.onItemsRemoved += OnVehicleAttributesRemoved;
 
-            Registry.appState.Attributes.Vehicles.events.onAttributeValueUpdated += OnVehicleAttributeValueUpdated;
+            Registry.appState.Attributes.Vehicles.onAttributeValueUpdated += OnVehicleAttributeValueUpdated;
         }
 
         public void Teardown()
         {
-            Registry.appState.Attributes.Vehicles.events.onItemsAdded -= OnVehicleAttributesAdded;
-            Registry.appState.Attributes.Vehicles.events.onItemsRemoved -= OnVehicleAttributesRemoved;
+            Registry.appState.Attributes.Vehicles.onItemsAdded -= OnVehicleAttributesAdded;
+            Registry.appState.Attributes.Vehicles.onItemsRemoved -= OnVehicleAttributesRemoved;
 
-            Registry.appState.Attributes.Vehicles.events.onAttributeValueUpdated -= OnVehicleAttributeValueUpdated;
+            Registry.appState.Attributes.Vehicles.onAttributeValueUpdated -= OnVehicleAttributeValueUpdated;
         }
 
         void Update()
@@ -54,7 +54,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         {
             if (vehicleAttributes == null) return;
 
-            float currentTickInterval = Registry.appState.Time.queries.currentTickInterval;
+            float currentTickInterval = Registry.appState.Time.currentTickInterval;
 
             if (vehicleAttributes.isMoving)
             {

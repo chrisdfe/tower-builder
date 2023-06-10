@@ -18,7 +18,7 @@ namespace TowerBuilder.GameWorld
             );
 
             float normalizedNextTickTime = MathUtils.NormalizeFloat(
-                Registry.appState.Time.queries.nextTickTimeValue.ToRelative().AsMinutes(),
+                Registry.appState.Time.nextTickTimeValue.ToRelative().AsMinutes(),
                 fromTime.AsMinutes(),
                 toTime.AsMinutes()
             );

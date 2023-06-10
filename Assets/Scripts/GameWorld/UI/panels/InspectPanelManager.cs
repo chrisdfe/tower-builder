@@ -37,18 +37,18 @@ namespace TowerBuilder.GameWorld.UI
 
         public void Setup()
         {
-            Registry.appState.Attributes.Residents.events.onItemsUpdated += OnResidentAttributesUpdated;
+            Registry.appState.Attributes.Residents.onItemsUpdated += OnResidentAttributesUpdated;
 
-            Registry.appState.Tools.Inspect.events.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
-            Registry.appState.Tools.Inspect.events.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
+            Registry.appState.Tools.Inspect.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
+            Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
         public void Teardown()
         {
-            Registry.appState.Attributes.Residents.events.onItemsUpdated -= OnResidentAttributesUpdated;
+            Registry.appState.Attributes.Residents.onItemsUpdated -= OnResidentAttributesUpdated;
 
-            Registry.appState.Tools.Inspect.events.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
-            Registry.appState.Tools.Inspect.events.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
+            Registry.appState.Tools.Inspect.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
+            Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
         /* 
@@ -118,9 +118,9 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectedResidentText(Resident resident)
         {
-            ResidentBehavior residentBehavior = Registry.appState.Behaviors.Residents.queries.FindByResident(resident);
+            ResidentBehavior residentBehavior = Registry.appState.Behaviors.Residents.FindByResident(resident);
 
-            ResidentAttributes residentAttributes = Registry.appState.Attributes.Residents.queries.FindByResident(resident);
+            ResidentAttributes residentAttributes = Registry.appState.Attributes.Residents.FindByResident(resident);
 
             string text =
               $"   name: {resident}\n";

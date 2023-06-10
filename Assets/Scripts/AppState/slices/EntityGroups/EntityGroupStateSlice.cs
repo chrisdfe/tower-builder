@@ -39,14 +39,14 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         {
             base.Setup();
 
-            appState.Entities.events.onEntitiesRemoved += OnEntitiesRemoved;
+            appState.Entities.onEntitiesRemoved += OnEntitiesRemoved;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            appState.Entities.events.onEntitiesRemoved -= OnEntitiesRemoved;
+            appState.Entities.onEntitiesRemoved -= OnEntitiesRemoved;
         }
 
         /* 

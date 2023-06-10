@@ -12,11 +12,7 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Attributes.Vehicles
 {
-    using VehicleAttributesStateSlice = AttributesStateSlice<
-        VehicleAttributes.Key,
-        VehicleAttributes,
-        State.Events
-    >;
+    using VehicleAttributesStateSlice = AttributesStateSlice<VehicleAttributes>;
 
     public class State : VehicleAttributesStateSlice
     {
@@ -25,42 +21,18 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
             public ListWrapper<Attribute> vehicleAttributesList;
         }
 
-        public new class Events : VehicleAttributesStateSlice.Events
-        {
-            public ItemEvent<VehicleAttributes> onVehicleDerivedAttributesRecalculated;
-        }
+        public ItemEvent<VehicleAttributes> onVehicleDerivedAttributesRecalculated;
 
-        public class Queries
-        {
-            AppState appState;
-            State state;
-
-            public Queries(AppState appState, State state)
-            {
-                this.appState = appState;
-                this.state = state;
-            }
-
-            public VehicleAttributes FindByVehicle(Vehicle vehicle) =>
-                state.list.Find(attributesGroup => attributesGroup.vehicle == vehicle);
-
-            public ListWrapper<Attribute> FindByKey(VehicleAttributes.Key key) =>
-                new ListWrapper<Attribute>(
-                    state.list.items
-                        .Select(attributesGroup => attributesGroup.FindByKey(key))
-                        .ToList()
-                );
-        }
-
-        public Queries queries;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(appState, this);
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
 
+        /*
+            Lifecycle
+        */
         public override void Setup()
         {
             base.Setup();
@@ -90,6 +62,19 @@ namespace TowerBuilder.ApplicationState.Attributes.Vehicles
         //     VehicleAttributes vehicleAttributes = queries.FindByVehicle(vehicle);
         //     Remove(vehicleAttributes);
         // }
+
+        /*
+            Queries
+        */
+        public VehicleAttributes FindByVehicle(Vehicle vehicle) =>
+            list.Find(attributesGroup => attributesGroup.vehicle == vehicle);
+
+        public ListWrapper<Attribute> FindByKey(string key) =>
+            new ListWrapper<Attribute>(
+                list.items
+                    .Select(attributesGroup => attributesGroup.FindByKey(key))
+                    .ToList()
+            );
 
         // protected override void OnPostTick(TimeValue time)
         // {

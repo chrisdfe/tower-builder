@@ -16,21 +16,21 @@ namespace TowerBuilder.GameWorld.UI
         {
             text = GetComponent<Text>();
 
-            Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
+            Registry.appState.Tools.onToolStateUpdated += OnToolStateUpdated;
 
-            Registry.appState.Tools.Build.Entities.events.onBlueprintEntityUpdated += OnBlueprintEntityUpdated;
-            Registry.appState.Tools.Build.events.onBuildStart += OnBuildStart;
-            Registry.appState.Tools.Build.events.onBuildEnd += OnBuildEnd;
+            Registry.appState.Tools.Build.Entities.onBlueprintEntityUpdated += OnBlueprintEntityUpdated;
+            Registry.appState.Tools.Build.onBuildStart += OnBuildStart;
+            Registry.appState.Tools.Build.onBuildEnd += OnBuildEnd;
 
             Hide();
         }
 
         void OnDestroy()
         {
-            Registry.appState.Tools.events.onToolStateUpdated -= OnToolStateUpdated;
-            Registry.appState.Tools.Build.Entities.events.onBlueprintEntityUpdated -= OnBlueprintEntityUpdated;
-            Registry.appState.Tools.Build.events.onBuildStart -= OnBuildStart;
-            Registry.appState.Tools.Build.events.onBuildEnd -= OnBuildEnd;
+            Registry.appState.Tools.onToolStateUpdated -= OnToolStateUpdated;
+            Registry.appState.Tools.Build.Entities.onBlueprintEntityUpdated -= OnBlueprintEntityUpdated;
+            Registry.appState.Tools.Build.onBuildStart -= OnBuildStart;
+            Registry.appState.Tools.Build.onBuildEnd -= OnBuildEnd;
         }
 
         void OnToolStateUpdated(ApplicationState.Tools.State.Key newToolState, ApplicationState.Tools.State.Key previousToolState)

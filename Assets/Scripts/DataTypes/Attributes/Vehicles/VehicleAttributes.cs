@@ -9,27 +9,16 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Attributes.Vehicles
 {
-    public class VehicleAttributes : AttributesGroup<VehicleAttributes.Key>
+    public class VehicleAttributes : AttributesGroup
     {
         public Vehicle vehicle { get; private set; }
 
-        public enum Key
-        {
-            // CurrentSpeed,
-            Fuel,
-            Weight,
-            EnginePower,
-            TargetSpeed,
-            // MaxSpeed,
-            // IsPiloted,
-        }
-
-        public override Dictionary<Key, Attribute> attributes { get; } = new Dictionary<Key, Attribute>() {
-            { Key.Weight,       new Attribute(0) },
-            { Key.Fuel,         new Attribute(0) },
-            { Key.EnginePower,  new Attribute(0) },
+        public override Dictionary<string, Attribute> attributes { get; } = new Dictionary<string, Attribute>() {
+            { "weight",       new Attribute(0) },
+            { "fuel",         new Attribute(0) },
+            { "enginePower",  new Attribute(0) },
             // { Key.MaxSpeed,     new Attribute(0) },
-            { Key.TargetSpeed,  new Attribute(0) },
+            { "targetSpeed",  new Attribute(0) },
             // { Key.CurrentSpeed, new Attribute(0) },
         };
 

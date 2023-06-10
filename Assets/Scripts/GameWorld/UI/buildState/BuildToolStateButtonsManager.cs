@@ -37,7 +37,7 @@ namespace TowerBuilder.GameWorld.UI
             entityModeButtonsManager.Setup();
             roomModeButtonsManager.Setup();
 
-            Registry.appState.Tools.Build.events.onModeUpdated += OnBuildModeUpdated;
+            Registry.appState.Tools.Build.onModeUpdated += OnBuildModeUpdated;
         }
 
         public void Teardown()
@@ -46,7 +46,7 @@ namespace TowerBuilder.GameWorld.UI
             entityModeButtonsManager.Setup();
             roomModeButtonsManager.Setup();
 
-            Registry.appState.Tools.Build.events.onModeUpdated -= OnBuildModeUpdated;
+            Registry.appState.Tools.Build.onModeUpdated -= OnBuildModeUpdated;
         }
 
         public void Open()

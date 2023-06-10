@@ -14,16 +14,12 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
             public Room currentInspectedRoom;
         }
 
-        public class Events
-        {
-            public delegate void InspectedEntityListEvent(ListWrapper<Entity> entityList);
-            public InspectedEntityListEvent onInspectedEntityListUpdated;
+        public delegate void InspectedEntityListEvent(ListWrapper<Entity> entityList);
+        public InspectedEntityListEvent onInspectedEntityListUpdated;
 
-            public delegate void CurrentSelectedEntityEvent(Entity entity);
-            public CurrentSelectedEntityEvent onCurrentSelectedEntityUpdated;
-        }
+        public delegate void CurrentSelectedEntityEvent(Entity entity);
+        public CurrentSelectedEntityEvent onCurrentSelectedEntityUpdated;
 
-        public Events events;
 
         public ListWrapper<Entity> inspectedEntityList { get; private set; } = new ListWrapper<Entity>();
         public int inspectedEntityIndex { get; private set; } = -1;
@@ -43,39 +39,38 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
 
         public State(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
-            events = new Events();
         }
 
         public override void Setup()
         {
             base.Setup();
 
-            appState.Entities.Furnitures.events.onItemsRemoved += OnFurnituresRemoved;
-            appState.Entities.Residents.events.onItemsRemoved += OnResidentsRemoved;
+            appState.Entities.Furnitures.onItemsRemoved += OnFurnituresRemoved;
+            appState.Entities.Residents.onItemsRemoved += OnResidentsRemoved;
 
-            appState.UI.events.onSecondaryActionPerformed += OnSecondaryActionPerformed;
+            appState.UI.onSecondaryActionPerformed += OnSecondaryActionPerformed;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            appState.Entities.Furnitures.events.onItemsRemoved -= OnFurnituresRemoved;
-            appState.Entities.Residents.events.onItemsRemoved -= OnResidentsRemoved;
+            appState.Entities.Furnitures.onItemsRemoved -= OnFurnituresRemoved;
+            appState.Entities.Residents.onItemsRemoved -= OnResidentsRemoved;
 
-            appState.UI.events.onSecondaryActionPerformed -= OnSecondaryActionPerformed;
+            appState.UI.onSecondaryActionPerformed -= OnSecondaryActionPerformed;
 
             inspectedEntityList = new ListWrapper<Entity>();
             inspectedEntityIndex = -1;
 
-            if (events.onInspectedEntityListUpdated != null)
+            if (onInspectedEntityListUpdated != null)
             {
-                events.onInspectedEntityListUpdated(inspectedEntityList);
+                onInspectedEntityListUpdated(inspectedEntityList);
             }
 
-            if (events.onCurrentSelectedEntityUpdated != null)
+            if (onCurrentSelectedEntityUpdated != null)
             {
-                events.onCurrentSelectedEntityUpdated(inspectedEntity);
+                onCurrentSelectedEntityUpdated(inspectedEntity);
             }
         }
 
@@ -110,28 +105,28 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
                 }
             }
 
-            if (events.onInspectedEntityListUpdated != null)
+            if (onInspectedEntityListUpdated != null)
             {
-                events.onInspectedEntityListUpdated(inspectedEntityList);
+                onInspectedEntityListUpdated(inspectedEntityList);
             }
 
-            if (events.onCurrentSelectedEntityUpdated != null)
+            if (onCurrentSelectedEntityUpdated != null)
             {
-                events.onCurrentSelectedEntityUpdated(inspectedEntity);
+                onCurrentSelectedEntityUpdated(inspectedEntity);
             }
         }
 
         /* 
             Event handlers
          */
-        void OnFurnituresRemoved(ListWrapper<Furniture> furnitureList)
+        void OnFurnituresRemoved(ListWrapper<Entity> furnitureList)
         {
-            OnEntitiesRemoved<Furniture>(furnitureList);
+            OnEntitiesRemoved<Entity>(furnitureList);
         }
 
-        void OnResidentsRemoved(ListWrapper<Resident> residentsList)
+        void OnResidentsRemoved(ListWrapper<Entity> residentsList)
         {
-            OnEntitiesRemoved<Resident>(residentsList);
+            OnEntitiesRemoved<Entity>(residentsList);
         }
 
         void OnEntitiesRemoved<EntityType>(ListWrapper<EntityType> entityList)
@@ -153,9 +148,9 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
                 // back up to the top
                 inspectedEntityIndex = inspectedEntityList.Count - 1;
 
-                if (events.onCurrentSelectedEntityUpdated != null)
+                if (onCurrentSelectedEntityUpdated != null)
                 {
-                    events.onCurrentSelectedEntityUpdated(inspectedEntity);
+                    onCurrentSelectedEntityUpdated(inspectedEntity);
                 }
             }
         }
@@ -166,7 +161,7 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
 
             Resident resident = (inspectedEntity as Resident);
             CellCoordinates targetCellCoordinates = appState.UI.currentSelectedCell;
-            ListWrapper<Furniture> furnituresAtTarget = appState.Entities.Furnitures.queries.FindFurnituresAtCell(targetCellCoordinates);
+            ListWrapper<Furniture> furnituresAtTarget = appState.Entities.Furnitures.FindFurnituresAtCell(targetCellCoordinates);
 
             if (furnituresAtTarget.Count > 0)
             {

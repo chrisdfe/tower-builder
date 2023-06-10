@@ -23,17 +23,12 @@ namespace TowerBuilder.ApplicationState.Tools.Build
             public Rooms.State.Input Rooms;
         }
 
-        public class Events
-        {
-            public delegate void ModeEvent(Mode newMode, Mode previousMode);
-            public ModeEvent onModeUpdated;
+        public delegate void ModeEvent(Mode newMode, Mode previousMode);
+        public ModeEvent onModeUpdated;
 
-            public delegate void BuildIsActiveEvent();
-            public BuildIsActiveEvent onBuildStart;
-            public BuildIsActiveEvent onBuildEnd;
-        }
-
-        public Events events { get; private set; }
+        public delegate void BuildIsActiveEvent();
+        public BuildIsActiveEvent onBuildStart;
+        public BuildIsActiveEvent onBuildEnd;
 
         public Entities.State Entities;
         public Rooms.State Rooms;
@@ -45,8 +40,6 @@ namespace TowerBuilder.ApplicationState.Tools.Build
 
         public State(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
-            events = new Events();
-
             Entities = new Entities.State(appState, state, this, input.Entities);
             Rooms = new Rooms.State(appState, state, this, input.Rooms);
         }
@@ -98,7 +91,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build
             Mode previousMode = currentMode;
             TransitionToolState(newMode, previousMode);
 
-            events.onModeUpdated?.Invoke(newMode, previousMode);
+            onModeUpdated?.Invoke(newMode, previousMode);
         }
 
         /* 
@@ -128,7 +121,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build
 
             GetCurrentMode().OnBuildStart();
 
-            events.onBuildStart?.Invoke();
+            onBuildStart?.Invoke();
         }
 
         void EndBuild()
@@ -139,7 +132,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build
             isLocked = true;
 
             GetCurrentMode().OnBuildEnd();
-            events.onBuildEnd?.Invoke();
+            onBuildEnd?.Invoke();
 
             isLocked = false;
             buildIsActive = false;

@@ -115,12 +115,12 @@ namespace TowerBuilder.GameWorld.Lights
 
         void Setup()
         {
-            Registry.appState.Time.events.onTimeOfDayUpdated += OnTimeOfDayUpdated;
+            Registry.appState.Time.onTimeOfDayUpdated += OnTimeOfDayUpdated;
         }
 
         void Teardown()
         {
-            Registry.appState.Time.events.onTimeOfDayUpdated -= OnTimeOfDayUpdated;
+            Registry.appState.Time.onTimeOfDayUpdated -= OnTimeOfDayUpdated;
         }
 
         void Update()

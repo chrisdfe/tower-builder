@@ -14,24 +14,18 @@ namespace TowerBuilder.ApplicationState.Time
             public TimeSpeed? speed;
         }
 
-        public class Events
-        {
-            public delegate void TimeUpdatedEvent(TimeValue newTime);
-            public TimeUpdatedEvent onTimeUpdated;
-            public TimeUpdatedEvent onTimeOfDayUpdated;
-            public TimeUpdatedEvent onTick;
+        public delegate void TimeUpdatedEvent(TimeValue newTime);
+        public TimeUpdatedEvent onTimeUpdated;
+        public TimeUpdatedEvent onTimeOfDayUpdated;
+        public TimeUpdatedEvent onTick;
 
-            public delegate void TimeSpeedUpdatedEvent(TimeSpeed newTimeSpeed);
-            public TimeSpeedUpdatedEvent onTimeSpeedUpdated;
-        }
+        public delegate void TimeSpeedUpdatedEvent(TimeSpeed newTimeSpeed);
+        public TimeSpeedUpdatedEvent onTimeSpeedUpdated;
 
         public bool isActive { get; private set; } = false;
         public int tick { get; private set; } = 0;
         public TimeValue time { get; private set; } = TimeValue.zero;
         public TimeSpeed speed { get; private set; } = TimeSpeed.Normal;
-
-        public Events events { get; private set; }
-        public Queries queries { get; private set; }
 
         public State(AppState appState, Input input) : base(appState)
         {
@@ -40,9 +34,6 @@ namespace TowerBuilder.ApplicationState.Time
             // time = input.time ?? TimeValue.zero;
             time = input.time ?? new TimeValue(new TimeValue.Input() { hour = 10 });
             speed = input.speed ?? TimeSpeed.Normal;
-
-            events = new Events();
-            queries = new Queries(this);
         }
 
         public void UpdateTime(TimeValue newTime)
@@ -53,15 +44,15 @@ namespace TowerBuilder.ApplicationState.Time
 
             if (previousTime.timeOfDay != time.timeOfDay)
             {
-                if (events.onTimeOfDayUpdated != null)
+                if (onTimeOfDayUpdated != null)
                 {
-                    events.onTimeOfDayUpdated(time);
+                    onTimeOfDayUpdated(time);
                 }
             }
 
-            if (events.onTimeUpdated != null)
+            if (onTimeUpdated != null)
             {
-                events.onTimeUpdated(time);
+                onTimeUpdated(time);
             }
         }
 
@@ -86,9 +77,9 @@ namespace TowerBuilder.ApplicationState.Time
 
             tick += 1;
 
-            if (events.onTick != null)
+            if (onTick != null)
             {
-                events.onTick(time);
+                onTick(time);
             }
         }
 
@@ -97,78 +88,68 @@ namespace TowerBuilder.ApplicationState.Time
             speed = newTimeSpeed;
         }
 
-        public class Queries
+        public float currentTickInterval
         {
-            State state;
-
-            public Queries(State state)
+            get
             {
-                this.state = state;
+                return Constants.TIME_SPEED_TICK_INTERVALS[speed];
             }
+        }
 
-            public float currentTickInterval
+        // "Relative" refers to a relative to the start of the current day
+        public TimeValue currentRelativeTimeValue
+        {
+            get
             {
-                get
+                return new TimeValue(new TimeValue.Input()
                 {
-                    return Constants.TIME_SPEED_TICK_INTERVALS[state.speed];
-                }
+                    hour = time.hour,
+                    minute = time.minute
+                });
             }
+        }
 
-            // "Relative" refers to a relative to the start of the current day
-            public TimeValue currentRelativeTimeValue
+        public int currentTickRelativeTimeValueAsMinutes
+        {
+            get
             {
-                get
-                {
-                    return new TimeValue(new TimeValue.Input()
+                return currentRelativeTimeValue.AsMinutes();
+            }
+        }
+
+        public TimeValue nextTickTimeValue
+        {
+            get
+            {
+                return TimeValue.Add(
+                    time,
+                    new TimeValue.Input()
                     {
-                        hour = state.time.hour,
-                        minute = state.time.minute
-                    });
-                }
+                        minute = Constants.MINUTES_ELAPSED_PER_TICK
+                    }
+                );
             }
+        }
 
-            public int currentTickRelativeTimeValueAsMinutes
+        public TimeValue nextTickRelativeTimeValue
+        {
+            get
             {
-                get
-                {
-                    return currentRelativeTimeValue.AsMinutes();
-                }
+                return TimeValue.Add(
+                    currentRelativeTimeValue,
+                    new TimeValue.Input()
+                    {
+                        minute = Constants.MINUTES_ELAPSED_PER_TICK
+                    }
+                );
             }
+        }
 
-            public TimeValue nextTickTimeValue
+        public int nextTickRelativeTimeValueAsMinutes
+        {
+            get
             {
-                get
-                {
-                    return TimeValue.Add(
-                        state.time,
-                        new TimeValue.Input()
-                        {
-                            minute = Constants.MINUTES_ELAPSED_PER_TICK
-                        }
-                    );
-                }
-            }
-
-            public TimeValue nextTickRelativeTimeValue
-            {
-                get
-                {
-                    return TimeValue.Add(
-                        currentRelativeTimeValue,
-                        new TimeValue.Input()
-                        {
-                            minute = Constants.MINUTES_ELAPSED_PER_TICK
-                        }
-                    );
-                }
-            }
-
-            public int nextTickRelativeTimeValueAsMinutes
-            {
-                get
-                {
-                    return nextTickRelativeTimeValue.AsMinutes();
-                }
+                return nextTickRelativeTimeValue.AsMinutes();
             }
         }
     }

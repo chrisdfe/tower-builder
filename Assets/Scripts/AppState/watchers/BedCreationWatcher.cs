@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using UnityEngine;
@@ -15,32 +16,32 @@ namespace TowerBuilder.ApplicationState
 
         public override void Setup()
         {
-            appState.Entities.Furnitures.events.onItemsAdded += OnFurnituresAdded;
-            appState.Entities.Furnitures.events.onItemsBuilt += OnFurnituresBuilt;
+            appState.Entities.Furnitures.onItemsAdded += OnFurnituresAdded;
+            appState.Entities.Furnitures.onItemsBuilt += OnFurnituresBuilt;
         }
 
         public override void Teardown()
         {
-            appState.Entities.Furnitures.events.onItemsAdded -= OnFurnituresAdded;
-            appState.Entities.Furnitures.events.onItemsBuilt -= OnFurnituresBuilt;
+            appState.Entities.Furnitures.onItemsAdded -= OnFurnituresAdded;
+            appState.Entities.Furnitures.onItemsBuilt -= OnFurnituresBuilt;
         }
 
-        void OnFurnituresAdded(ListWrapper<Furniture> furnitureList)
+        void OnFurnituresAdded(ListWrapper<Entity> furnitureList)
         {
             MoveNewResidentInIfThereIsRoom(furnitureList);
         }
 
-        void OnFurnituresBuilt(ListWrapper<Furniture> furnitureList)
+        void OnFurnituresBuilt(ListWrapper<Entity> furnitureList)
         {
             MoveNewResidentInIfThereIsRoom(furnitureList);
         }
 
-        void MoveNewResidentInIfThereIsRoom(ListWrapper<Furniture> furnitureList)
+        void MoveNewResidentInIfThereIsRoom(ListWrapper<Entity> furnitureList)
         {
             furnitureList.items.ForEach(furniture => MoveNewResidentInIfThereIsRoom(furniture));
         }
 
-        void MoveNewResidentInIfThereIsRoom(Furniture furniture)
+        void MoveNewResidentInIfThereIsRoom(Entity furniture)
         {
             /* 
             if (furniture.isInBlueprintMode || (furniture.definition as FurnitureDefinition).homeSlotCount == 0) return;

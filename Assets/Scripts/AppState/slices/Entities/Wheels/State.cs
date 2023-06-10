@@ -11,17 +11,14 @@ using UnityEngine;
 namespace TowerBuilder.ApplicationState.Entities.Wheels
 {
     [Serializable]
-    public class State : EntityStateSlice<Wheel, State.Events>
+    public class State : EntityStateSlice
     {
         public class Input { }
 
-        public new class Events : EntityStateSlice<Wheel, State.Events>.Events { }
-
-        public new Queries queries { get; }
 
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(appState, this);
+
         }
 
         public override void Setup()
@@ -32,11 +29,6 @@ namespace TowerBuilder.ApplicationState.Entities.Wheels
         public override void Teardown()
         {
             base.Teardown();
-        }
-
-        public new class Queries : EntityStateSlice<Wheel, State.Events>.Queries
-        {
-            public Queries(AppState appState, State state) : base(appState, state) { }
         }
     }
 }

@@ -11,17 +11,12 @@ using UnityEngine;
 namespace TowerBuilder.ApplicationState.Entities.Floors
 {
     [Serializable]
-    public class State : EntityStateSlice<Floor, State.Events>
+    public class State : EntityStateSlice
     {
         public class Input { }
 
-        public new class Events : EntityStateSlice<Floor, State.Events>.Events { }
-
-        public new Queries queries { get; }
-
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(appState, this);
         }
 
         public override void Setup()
@@ -42,35 +37,9 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
             // appState.Entities.Rooms.events.onItemsRemoved -= OnRoomsRemoved;
         }
 
-        /* 
-            Event Handlers
+        /*
+            Internals
         */
-        public void OnRoomsAdded(ListWrapper<Room> roomsList)
-        {
-            // AddFloorsForRooms(roomsList);
-        }
-
-        public void OnRoomsBuilt(ListWrapper<Room> roomsList)
-        {
-            // RemoveFloorsForRooms(roomsList);
-            // AddFloorsForRooms(roomsList);
-
-            // foreach (Room room in roomsList.items)
-            // {
-            //     ListWrapper<Floor> floorsInsideRoom = queries.GetFloorsInsideRoom(room);
-
-            //     foreach (Floor floor in floorsInsideRoom.items)
-            //     {
-            //         Build(floor);
-            //     }
-            // }
-        }
-
-        public void OnRoomsRemoved(ListWrapper<Room> roomsList)
-        {
-            // RemoveFloorsForRooms(roomsList);
-        }
-
         void AddFloorsForRooms(ListWrapper<Room> roomList)
         {
             // FloorDefinition defaultFloorDefinition =
@@ -104,23 +73,33 @@ namespace TowerBuilder.ApplicationState.Entities.Floors
             // }
         }
 
-        public new class Queries : EntityStateSlice<Floor, State.Events>.Queries
+        /*
+            Event Handlers
+        */
+        void OnRoomsAdded(ListWrapper<Room> roomsList)
         {
-            public Queries(AppState appState, State state) : base(appState, state) { }
+            // AddFloorsForRooms(roomsList);
+        }
 
-            // public ListWrapper<Floor> GetFloorsInsideRoom(Room room) =>
-            //     state.list.FindAll((floor) =>
-            //         floor.room == room
-            //     // floor.cellCoordinatesList.OverlapsWith(room.cellCoordinatesList)
-            //     );
+        void OnRoomsBuilt(ListWrapper<Room> roomsList)
+        {
+            // RemoveFloorsForRooms(roomsList);
+            // AddFloorsForRooms(roomsList);
 
-            // public ListWrapper<Floor> GetFloorsOnFloor(int floorNumber) =>
-            //     state.list.FindAll((floor) => floor.cellCoordinatesList.floorValues.Contains(floorNumber));
+            // foreach (Room room in roomsList.items)
+            // {
+            //     ListWrapper<Floor> floorsInsideRoom = queries.GetFloorsInsideRoom(room);
 
-            // public ListWrapper<Floor> GetFloorsInsideRoomOnFloor(Room room, int floorNumber) =>
-            //     GetFloorsInsideRoom(room).FindAll((floor) =>
-            //         floor.cellCoordinatesList.floorValues.Contains(floorNumber)
-            //     );
+            //     foreach (Floor floor in floorsInsideRoom.items)
+            //     {
+            //         Build(floor);
+            //     }
+            // }
+        }
+
+        void OnRoomsRemoved(ListWrapper<Room> roomsList)
+        {
+            // RemoveFloorsForRooms(roomsList);
         }
     }
 }

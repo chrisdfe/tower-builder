@@ -11,17 +11,12 @@ using UnityEngine;
 namespace TowerBuilder.ApplicationState.Entities.Furnitures
 {
     [Serializable]
-    public class State : EntityStateSlice<Furniture, State.Events>
+    public class State : EntityStateSlice
     {
         public class Input { }
 
-        public new class Events : EntityStateSlice<Furniture, State.Events>.Events { }
-
-        public new Queries queries;
-
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(appState, this);
         }
 
         public override void Setup()
@@ -92,42 +87,33 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
 
         void OnRoomBlocksRemoved(Room room, CellCoordinatesBlockList roomBlocks)
         {
-            ListWrapper<Furniture> furnituresInBlock = queries.FindFurnitureInBlocks(roomBlocks);
+            ListWrapper<Entity> furnituresInBlock = FindFurnitureInBlocks(roomBlocks).ConvertAll<Entity>();
             Remove(furnituresInBlock);
         }
 
-        public new class Queries : EntityStateSlice<Furniture, State.Events>.Queries
+        /*
+            Queries
+        */
+        public ListWrapper<Furniture> FindFurnituresAtCell(CellCoordinates cellCoordinates) =>
+            FindEntitiesAtCell(cellCoordinates).ConvertAll<Furniture>();
+
+        public ListWrapper<Furniture> FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
         {
-            public Queries(AppState appState, State state) : base(appState, state) { }
+            ListWrapper<Furniture> furnitureList = new ListWrapper<Furniture>();
 
-            // public ListWrapper<Furniture> FindFurnitureByRoom(Room room) =>
-            //     new ListWrapper<Furniture>(
-            //         state.list.items.FindAll(furniture =>
-            //             appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]) == room
-            //         )
-            //     );
-
-            public ListWrapper<Furniture> FindFurnituresAtCell(CellCoordinates cellCoordinates) =>
-                FindEntityTypesAtCell(cellCoordinates).ConvertAll<Furniture>();
-
-            public ListWrapper<Furniture> FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
+            foreach (CellCoordinatesBlock block in cellCoordinatesBlockList.items)
             {
-                ListWrapper<Furniture> furnitureList = new ListWrapper<Furniture>();
-
-                foreach (CellCoordinatesBlock block in cellCoordinatesBlockList.items)
+                foreach (CellCoordinates cellCoordinates in block.items)
                 {
-                    foreach (CellCoordinates cellCoordinates in block.items)
+                    ListWrapper<Furniture> furnituresAtCell = FindFurnituresAtCell(cellCoordinates);
+                    if (furnituresAtCell.Count > 0)
                     {
-                        ListWrapper<Furniture> furnituresAtCell = FindFurnituresAtCell(cellCoordinates);
-                        if (furnituresAtCell.Count > 0)
-                        {
-                            furnitureList.Add(furnituresAtCell);
-                        }
+                        furnitureList.Add(furnituresAtCell);
                     }
                 }
-
-                return furnitureList;
             }
+
+            return furnitureList;
         }
     }
 }

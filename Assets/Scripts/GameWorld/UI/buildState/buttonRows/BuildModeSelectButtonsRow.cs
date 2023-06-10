@@ -12,14 +12,14 @@ namespace TowerBuilder.GameWorld.UI
         {
             base.Setup();
 
-            Registry.appState.Tools.Build.events.onModeUpdated += OnBuildModeUpdated;
+            Registry.appState.Tools.Build.onModeUpdated += OnBuildModeUpdated;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            Registry.appState.Tools.Build.events.onModeUpdated -= OnBuildModeUpdated;
+            Registry.appState.Tools.Build.onModeUpdated -= OnBuildModeUpdated;
         }
 
         public override List<UISelectButton.Input> CreateButtonInputs() =>

@@ -2,15 +2,15 @@
 
 ## Tasks
 
-- give default window a wall
+- Entity group validation
+- Switching between room definitions doesn't work right
+  - EntityGroup buttons are visible from the start
 - Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
 - Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
-- Remove all of those Events/Queries subclasses. They cause more trouble than they're worth
 - Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
 - Building entity group
   - Rename "vehicle" to "building"
   - Rooms should get added to buildings
-- Adding windows to a room should hide that portion of the foundation
 - "Empty floor" entity, for when a room has been deleted?
 - Verify that all specified assets actually exist
 - Remove journeys for now and focus on building?
@@ -379,6 +379,9 @@
 
 # Done
 
+- Adding windows to a room should hide that portion of the foundation
+- use depth masking to hide wall where window is
+- Remove all of those Events/Queries subclasses. They cause more trouble than they're worth
 - Convert room to an entity group
   - walls/ceiling (figure out a name for this)
   - floor

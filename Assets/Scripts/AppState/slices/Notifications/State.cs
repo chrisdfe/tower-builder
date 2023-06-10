@@ -6,7 +6,7 @@ using TowerBuilder.DataTypes.Notifications;
 
 namespace TowerBuilder.ApplicationState.Notifications
 {
-    using NotificationsListStateSlice = ListStateSlice<Notification, State.Events>;
+    using NotificationsListStateSlice = ListStateSlice<Notification>;
 
     public class State : NotificationsListStateSlice
     {
@@ -14,8 +14,6 @@ namespace TowerBuilder.ApplicationState.Notifications
         {
             public ListWrapper<Notification> notificationsList;
         }
-
-        public new class Events : NotificationsListStateSlice.Events { }
 
         public State(AppState appState, Input input) : base(appState)
         {

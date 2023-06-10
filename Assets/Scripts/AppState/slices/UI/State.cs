@@ -19,31 +19,26 @@ namespace TowerBuilder.ApplicationState.UI
             public CellCoordinates currentSelectedCell;
         }
 
-        public class Events
-        {
-            public delegate void CellCoordinatesEvent(CellCoordinates currentSelectedCell);
-            public CellCoordinatesEvent onCurrentSelectedCellUpdated;
+        public delegate void CellCoordinatesEvent(CellCoordinates currentSelectedCell);
+        public CellCoordinatesEvent onCurrentSelectedCellUpdated;
 
-            public delegate void selectedRoomEvent(Room room);
-            public selectedRoomEvent onCurrentSelectedRoomUpdated;
+        public delegate void selectedRoomEvent(Room room);
+        public selectedRoomEvent onCurrentSelectedRoomUpdated;
 
-            public delegate void SelectedRoomBlockEvent(CellCoordinatesBlock cellCoordinatesBlock);
-            public SelectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
+        public delegate void SelectedRoomBlockEvent(CellCoordinatesBlock cellCoordinatesBlock);
+        public SelectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
 
-            public delegate void SelectionBoxEvent(SelectionBox selectionBox);
-            public SelectionBoxEvent onSelectionBoxUpdated;
-            public SelectionBoxEvent onSelectionBoxReset;
-            public SelectionBoxEvent onSelectionStart;
-            public SelectionBoxEvent onSelectionEnd;
+        public delegate void SelectionBoxEvent(SelectionBox selectionBox);
+        public SelectionBoxEvent onSelectionBoxUpdated;
+        public SelectionBoxEvent onSelectionBoxReset;
+        public SelectionBoxEvent onSelectionStart;
+        public SelectionBoxEvent onSelectionEnd;
 
-            public delegate void SelectedCellEntityListEvent(ListWrapper<Entity> entityList);
-            public SelectedCellEntityListEvent onCurrentSelectedEntityListUpdated;
+        public delegate void SelectedCellEntityListEvent(ListWrapper<Entity> entityList);
+        public SelectedCellEntityListEvent onCurrentSelectedEntityListUpdated;
 
-            public delegate void ActionEvent();
-            public ActionEvent onSecondaryActionPerformed;
-        }
-
-        public class Queries { }
+        public delegate void ActionEvent();
+        public ActionEvent onSecondaryActionPerformed;
 
         public CellCoordinates currentSelectedCell { get; private set; } = null;
         public Room currentSelectedRoom { get; private set; } = null;
@@ -55,9 +50,6 @@ namespace TowerBuilder.ApplicationState.UI
 
         public ListWrapper<Entity> currentSelectedCellEntityList { get; private set; } = new ListWrapper<Entity>();
 
-        public Events events;
-        public Queries queries;
-
         bool altActionIsActive = false;
 
         public State(AppState appState, Input input) : base(appState)
@@ -65,9 +57,6 @@ namespace TowerBuilder.ApplicationState.UI
             currentSelectedCell = input.currentSelectedCell ?? CellCoordinates.zero;
 
             selectionBox = new SelectionBox(currentSelectedCell);
-
-            events = new Events();
-            queries = new Queries();
         }
 
         public void LeftClickStart()
@@ -122,10 +111,10 @@ namespace TowerBuilder.ApplicationState.UI
 
             // SetEntityList();
 
-            events.onCurrentSelectedCellUpdated?.Invoke(currentSelectedCell);
-            events.onSelectionBoxUpdated?.Invoke(selectionBox);
-            // events.onCurrentSelectedRoomUpdated?.Invoke(currentSelectedRoom);
-            // events.onCurrentSelectedRoomBlockUpdated?.Invoke(currentSelectedRoomBlock);
+            onCurrentSelectedCellUpdated?.Invoke(currentSelectedCell);
+            onSelectionBoxUpdated?.Invoke(selectionBox);
+            // onCurrentSelectedRoomUpdated?.Invoke(currentSelectedRoom);
+            // onCurrentSelectedRoomBlockUpdated?.Invoke(currentSelectedRoomBlock);
         }
 
         public void SelectStart()
@@ -133,7 +122,7 @@ namespace TowerBuilder.ApplicationState.UI
             selectionIsActive = true;
             selectionBox.SetStartAndEnd(currentSelectedCell);
 
-            events.onSelectionStart?.Invoke(selectionBox);
+            onSelectionStart?.Invoke(selectionBox);
         }
 
         public void SelectEnd()
@@ -141,7 +130,7 @@ namespace TowerBuilder.ApplicationState.UI
             selectionIsActive = false;
             selectionBox.SetEnd(currentSelectedCell);
 
-            events.onSelectionEnd?.Invoke(selectionBox);
+            onSelectionEnd?.Invoke(selectionBox);
 
             ResetSelectionBox();
         }
@@ -150,21 +139,21 @@ namespace TowerBuilder.ApplicationState.UI
         {
             selectionBox = new SelectionBox(currentSelectedCell);
 
-            // events.onSelectionBoxUpdated?.Invoke(selectionBox);
-            events.onSelectionBoxReset?.Invoke(selectionBox);
+            // onSelectionBoxUpdated?.Invoke(selectionBox);
+            onSelectionBoxReset?.Invoke(selectionBox);
         }
 
         void PerformSecondaryAction()
         {
-            events.onSecondaryActionPerformed?.Invoke();
+            onSecondaryActionPerformed?.Invoke();
         }
 
         void SetEntityList()
         {
             if (currentSelectedCell != null)
             {
-                currentSelectedCellEntityList = appState.Entities.Queries.FindEntitiesAtCell(currentSelectedCell);
-                events.onCurrentSelectedEntityListUpdated?.Invoke(currentSelectedCellEntityList);
+                currentSelectedCellEntityList = appState.Entities.FindEntitiesAtCell(currentSelectedCell);
+                onCurrentSelectedEntityListUpdated?.Invoke(currentSelectedCellEntityList);
             }
         }
     }

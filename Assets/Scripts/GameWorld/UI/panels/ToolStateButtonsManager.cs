@@ -43,7 +43,7 @@ namespace TowerBuilder.GameWorld.UI
             buttons = new List<Button> { BuildButton, DestroyButton, InspectButton };
             HighlightCurrentButton();
 
-            Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
+            Registry.appState.Tools.onToolStateUpdated += OnToolStateUpdated;
         }
 
         void OnBuildButtonClick()

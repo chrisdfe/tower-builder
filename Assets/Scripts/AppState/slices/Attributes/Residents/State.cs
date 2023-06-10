@@ -1,14 +1,11 @@
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Attributes.Residents;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Residents;
 
 namespace TowerBuilder.ApplicationState.Attributes.Residents
 {
-    using ResidentAtributesStateSlice = AttributesStateSlice<
-        ResidentAttributes.Key,
-        ResidentAttributes,
-        State.Events
-    >;
+    using ResidentAtributesStateSlice = AttributesStateSlice<ResidentAttributes>;
 
     public class State : ResidentAtributesStateSlice
     {
@@ -17,28 +14,8 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
             ListWrapper<ResidentAttributes> list;
         }
 
-        public new class Events : ResidentAtributesStateSlice.Events { }
-
-        public class Queries
-        {
-            State state;
-            AppState appState;
-
-            public Queries(AppState appState, State state)
-            {
-                this.appState = appState;
-                this.state = state;
-            }
-
-            public ResidentAttributes FindByResident(Resident resident) =>
-                state.list.Find(attribute => attribute.resident == resident);
-        }
-
-        public Queries queries { get; private set; }
-
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(appState, this);
         }
 
         public State(AppState appState) : this(appState, new Input()) { }
@@ -47,18 +24,18 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
         {
             base.Setup();
 
-            appState.Entities.Residents.events.onItemsAdded += OnResidentsAdded;
-            appState.Entities.Residents.events.onItemsRemoved += OnResidentsRemoved;
-            appState.Entities.Residents.events.onItemsBuilt += OnResidentsBuilt;
+            appState.Entities.Residents.onItemsAdded += OnResidentsAdded;
+            appState.Entities.Residents.onItemsRemoved += OnResidentsRemoved;
+            appState.Entities.Residents.onItemsBuilt += OnResidentsBuilt;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            appState.Entities.Residents.events.onItemsAdded -= OnResidentsAdded;
-            appState.Entities.Residents.events.onItemsRemoved -= OnResidentsRemoved;
-            appState.Entities.Residents.events.onItemsBuilt -= OnResidentsBuilt;
+            appState.Entities.Residents.onItemsAdded -= OnResidentsAdded;
+            appState.Entities.Residents.onItemsRemoved -= OnResidentsRemoved;
+            appState.Entities.Residents.onItemsBuilt -= OnResidentsBuilt;
         }
 
         /* 
@@ -72,7 +49,7 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
 
         public void RemoveAttributesForResident(Resident resident)
         {
-            ResidentAttributes residentAttributes = queries.FindByResident(resident);
+            ResidentAttributes residentAttributes = FindByResident(resident);
 
             if (residentAttributes != null)
             {
@@ -80,33 +57,39 @@ namespace TowerBuilder.ApplicationState.Attributes.Residents
             }
         }
 
+        /*
+            Queries
+        */
+        public ResidentAttributes FindByResident(Resident resident) =>
+            list.Find(attribute => attribute.resident == resident);
+
         /* 
             Event handlers
          */
-        void OnResidentsAdded(ListWrapper<Resident> residentsList)
+        void OnResidentsAdded(ListWrapper<Entity> residentsList)
         {
-            foreach (Resident resident in residentsList.items)
+            foreach (Entity resident in residentsList.items)
             {
                 if (!resident.isInBlueprintMode)
                 {
-                    AddAttributesForResident(resident);
+                    AddAttributesForResident(resident as Resident);
                 }
             }
         }
 
-        void OnResidentsBuilt(ListWrapper<Resident> residentsList)
+        void OnResidentsBuilt(ListWrapper<Entity> residentsList)
         {
             foreach (Resident resident in residentsList.items)
             {
-                AddAttributesForResident(resident);
+                AddAttributesForResident(resident as Resident);
             }
         }
 
-        void OnResidentsRemoved(ListWrapper<Resident> residentsList)
+        void OnResidentsRemoved(ListWrapper<Entity> residentsList)
         {
             foreach (Resident resident in residentsList.items)
             {
-                RemoveAttributesForResident(resident);
+                RemoveAttributesForResident(resident as Resident);
             }
         }
     }

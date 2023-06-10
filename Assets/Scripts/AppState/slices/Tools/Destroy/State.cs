@@ -9,15 +9,10 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
     {
         public struct Input { }
 
-        public class Events
-        {
-            public delegate void DestroyEvent();
-            public DestroyEvent onDestroyStart;
-            public DestroyEvent onDestroyEnd;
-            public DestroyEvent onDestroySelectionUpdated;
-        }
-
-        public Events events { get; private set; }
+        public delegate void DestroyEvent();
+        public DestroyEvent onDestroyStart;
+        public DestroyEvent onDestroyEnd;
+        public DestroyEvent onDestroySelectionUpdated;
 
         public ListWrapper<Room> roomsToDeleteBlocksFrom { get; private set; } = new ListWrapper<Room>();
         public CellCoordinatesBlockList blocksToDelete { get; private set; } = new CellCoordinatesBlockList();
@@ -42,7 +37,6 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
 
         public State(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
-            events = new Events();
         }
 
         public override void Setup()
@@ -67,7 +61,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
         {
             CalculateDeleteCells();
 
-            events.onDestroySelectionUpdated?.Invoke();
+            onDestroySelectionUpdated?.Invoke();
         }
 
         public override void OnSelectionStart(SelectionBox selectionBox)
@@ -85,9 +79,9 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             destroyIsActive = true;
             CalculateDeleteCells();
 
-            if (events.onDestroyStart != null)
+            if (onDestroyStart != null)
             {
-                events.onDestroyStart();
+                onDestroyStart();
             }
         }
 
@@ -114,7 +108,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
 
-            events.onDestroyEnd?.Invoke();
+            onDestroyEnd?.Invoke();
         }
 
         void CalculateDeleteCells()

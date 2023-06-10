@@ -28,12 +28,12 @@ namespace TowerBuilder.GameWorld
 
         void Setup()
         {
-            Registry.appState.Time.events.onTick += OnTick;
+            Registry.appState.Time.onTick += OnTick;
         }
 
         void Teardown()
         {
-            Registry.appState.Time.events.onTick -= OnTick;
+            Registry.appState.Time.onTick -= OnTick;
         }
 
         void Start()
@@ -54,7 +54,7 @@ namespace TowerBuilder.GameWorld
 
         void UpdateTickProgress()
         {
-            float currentTickInterval = Registry.appState.Time.queries.currentTickInterval;
+            float currentTickInterval = Registry.appState.Time.currentTickInterval;
             float tickIncrement = Time.deltaTime / currentTickInterval;
 
             elapsedSinceLastTick += tickIncrement;
@@ -117,7 +117,7 @@ namespace TowerBuilder.GameWorld
         {
             while (true)
             {
-                float interval = Registry.appState.Time.queries.currentTickInterval;
+                float interval = Registry.appState.Time.currentTickInterval;
                 yield return new WaitForSeconds(interval);
                 Registry.appState.Time.Tick();
             }

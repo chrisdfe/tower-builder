@@ -1,5 +1,6 @@
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Behaviors.Furnitures;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
@@ -7,50 +8,31 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
 {
-    using FurnitureBehaviorsListStateSlice = ListStateSlice<FurnitureBehavior, State.Events>;
+    using FurnitureBehaviorsListStateSlice = ListStateSlice<FurnitureBehavior>;
 
     public class State : FurnitureBehaviorsListStateSlice
     {
         public class Input { }
 
-        public new class Events : FurnitureBehaviorsListStateSlice.Events
-        {
-            public FurnitureBehaviorsListStateSlice.Events.ItemEvent onInteractStart;
-            public FurnitureBehaviorsListStateSlice.Events.ItemEvent onInteractEnd;
-        }
-
-        public class Queries
-        {
-            State state;
-
-            public Queries(State state)
-            {
-                this.state = state;
-            }
-
-            public FurnitureBehavior FindByFurniture(Furniture furniture) =>
-                state.list.Find(behavior => behavior.furniture == furniture);
-        }
-
-        public Queries queries { get; private set; }
+        public FurnitureBehaviorsListStateSlice.ItemEvent onInteractStart;
+        public FurnitureBehaviorsListStateSlice.ItemEvent onInteractEnd;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(this);
         }
 
         public override void Setup()
         {
-            appState.Entities.Furnitures.events.onItemsAdded += OnFurnituresAdded;
-            appState.Entities.Furnitures.events.onItemsRemoved += OnFurnituresRemoved;
-            appState.Entities.Furnitures.events.onItemsBuilt += OnFurnituresBuilt;
+            appState.Entities.Furnitures.onItemsAdded += OnFurnituresAdded;
+            appState.Entities.Furnitures.onItemsRemoved += OnFurnituresRemoved;
+            appState.Entities.Furnitures.onItemsBuilt += OnFurnituresBuilt;
         }
 
         public override void Teardown()
         {
-            appState.Entities.Furnitures.events.onItemsAdded -= OnFurnituresAdded;
-            appState.Entities.Furnitures.events.onItemsRemoved -= OnFurnituresRemoved;
-            appState.Entities.Furnitures.events.onItemsBuilt -= OnFurnituresBuilt;
+            appState.Entities.Furnitures.onItemsAdded -= OnFurnituresAdded;
+            appState.Entities.Furnitures.onItemsRemoved -= OnFurnituresRemoved;
+            appState.Entities.Furnitures.onItemsBuilt -= OnFurnituresBuilt;
         }
 
         /* 
@@ -80,7 +62,7 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
 
         public void RemoveFurnitureBehaviorForFurniture(Furniture furniture)
         {
-            FurnitureBehavior furnitureBehavior = queries.FindByFurniture(furniture);
+            FurnitureBehavior furnitureBehavior = FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
@@ -90,7 +72,7 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
 
         public bool StartInteraction(Resident resident, Furniture furniture)
         {
-            FurnitureBehavior furnitureBehavior = queries.FindByFurniture(furniture);
+            FurnitureBehavior furnitureBehavior = FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
@@ -98,7 +80,7 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
 
                 if (wasSuccesful)
                 {
-                    events.onInteractStart?.Invoke(furnitureBehavior);
+                    onInteractStart?.Invoke(furnitureBehavior);
                 }
 
                 return wasSuccesful;
@@ -109,18 +91,18 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
 
         public void EndInteraction(Resident resident, Furniture furniture)
         {
-            FurnitureBehavior furnitureBehavior = queries.FindByFurniture(furniture);
+            FurnitureBehavior furnitureBehavior = FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
                 furnitureBehavior.EndInteraction(resident);
-                events.onInteractEnd?.Invoke(furnitureBehavior);
+                onInteractEnd?.Invoke(furnitureBehavior);
             }
         }
 
         public void InteractWithFurniture(Resident resident, Furniture furniture)
         {
-            FurnitureBehavior furnitureBehavior = queries.FindByFurniture(furniture);
+            FurnitureBehavior furnitureBehavior = FindByFurniture(furniture);
 
             if (furnitureBehavior != null)
             {
@@ -141,33 +123,39 @@ namespace TowerBuilder.ApplicationState.Behaviors.Furnitures
             }
         }
 
+        /*
+            Queries
+        */
+        public FurnitureBehavior FindByFurniture(Furniture furniture) =>
+            list.Find(behavior => behavior.furniture == furniture);
+
         /* 
             Event handlers
         */
-        void OnFurnituresAdded(ListWrapper<Furniture> furnitureList)
+        void OnFurnituresAdded(ListWrapper<Entity> furnitureList)
         {
-            foreach (Furniture furniture in furnitureList.items)
+            foreach (Entity furniture in furnitureList.items)
             {
                 if (!furniture.isInBlueprintMode)
                 {
-                    AddFurnitureBehaviorForFurniture(furniture);
+                    AddFurnitureBehaviorForFurniture(furniture as Furniture);
                 }
             }
         }
 
-        void OnFurnituresRemoved(ListWrapper<Furniture> furnitureList)
+        void OnFurnituresRemoved(ListWrapper<Entity> furnitureList)
         {
-            foreach (Furniture furniture in furnitureList.items)
+            foreach (Entity furniture in furnitureList.items)
             {
-                RemoveFurnitureBehaviorForFurniture(furniture);
+                RemoveFurnitureBehaviorForFurniture(furniture as Furniture);
             }
         }
 
-        void OnFurnituresBuilt(ListWrapper<Furniture> furnitureList)
+        void OnFurnituresBuilt(ListWrapper<Entity> furnitureList)
         {
-            foreach (Furniture furniture in furnitureList.items)
+            foreach (Entity furniture in furnitureList.items)
             {
-                AddFurnitureBehaviorForFurniture(furniture);
+                AddFurnitureBehaviorForFurniture(furniture as Furniture);
             }
         }
     }

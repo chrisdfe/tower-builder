@@ -57,8 +57,11 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void SetColor(EntityMeshWrapper.ColorKey key)
         {
+
             foreach (MeshRenderer meshRenderer in childrenMeshRenderers)
             {
+                if (!meshRenderer.material.HasProperty("_Color")) continue;
+
                 if (key == EntityMeshWrapper.ColorKey.Default)
                 {
                     Color defaultColor = defaultColorMap[meshRenderer];
@@ -101,7 +104,11 @@ namespace TowerBuilder.GameWorld.Entities
 
             defaultColorMap = childrenMeshRenderers.Aggregate(new Dictionary<MeshRenderer, Color>(), (acc, meshRenderer) =>
             {
-                acc[meshRenderer] = meshRenderer.material.color;
+                if (meshRenderer.material.HasProperty("_Color"))
+                {
+                    acc[meshRenderer] = meshRenderer.material.color;
+                }
+
                 return acc;
             });
         }

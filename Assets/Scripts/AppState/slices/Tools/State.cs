@@ -32,11 +32,8 @@ namespace TowerBuilder.ApplicationState.Tools
             public Routes.State.Input Routes;
         }
 
-        public class Events
-        {
-            public delegate void ToolStateUpdatedEvent(Key toolState, Key previousToolState);
-            public ToolStateUpdatedEvent onToolStateUpdated;
-        }
+        public delegate void ToolStateUpdatedEvent(Key toolState, Key previousToolState);
+        public ToolStateUpdatedEvent onToolStateUpdated;
 
         public Key currentKey { get; private set; } = DEFAULT_TOOL_STATE;
 
@@ -45,14 +42,10 @@ namespace TowerBuilder.ApplicationState.Tools
         public Inspect.State Inspect;
         public Routes.State Routes;
 
-        public Events events;
-
         ToolStateBase activeToolState => GetToolState(currentKey);
 
         public State(AppState appState, Input input) : base(appState)
         {
-            events = new State.Events();
-
             currentKey = input.key ?? DEFAULT_TOOL_STATE;
 
             Build = new Build.State(appState, this, input.Build);
@@ -60,13 +53,13 @@ namespace TowerBuilder.ApplicationState.Tools
             Inspect = new Inspect.State(appState, this, input.Inspect);
             Routes = new Routes.State(appState, this, input.Routes);
 
-            appState.UI.events.onSelectionStart += OnSelectionStart;
-            appState.UI.events.onSelectionEnd += OnSelectionEnd;
-            appState.UI.events.onSelectionBoxUpdated += OnSelectionBoxUpdated;
+            appState.UI.onSelectionStart += OnSelectionStart;
+            appState.UI.onSelectionEnd += OnSelectionEnd;
+            appState.UI.onSelectionBoxUpdated += OnSelectionBoxUpdated;
 
-            appState.UI.events.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
-            appState.UI.events.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
-            appState.UI.events.onCurrentSelectedEntityListUpdated += OnCurrentSelectedEntityListUpdated;
+            appState.UI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
+            appState.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
+            appState.UI.onCurrentSelectedEntityListUpdated += OnCurrentSelectedEntityListUpdated;
         }
 
         public void SetToolState(Key newToolStateKey)
@@ -76,7 +69,7 @@ namespace TowerBuilder.ApplicationState.Tools
                 Key previousToolState = newToolStateKey;
                 TransitionToolState(newToolStateKey, currentKey);
 
-                events.onToolStateUpdated?.Invoke(newToolStateKey, previousToolState);
+                onToolStateUpdated?.Invoke(newToolStateKey, previousToolState);
             }
         }
 

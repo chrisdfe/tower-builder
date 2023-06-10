@@ -28,8 +28,8 @@ namespace TowerBuilder.GameWorld.UI
             ToggleBuildStateButtonsPanel(false);
             UpdateDescriptionText();
 
-            Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
-            Registry.appState.Tools.Build.Entities.events.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
+            Registry.appState.Tools.onToolStateUpdated += OnToolStateUpdated;
+            Registry.appState.Tools.Build.Entities.onSelectedEntityDefinitionUpdated += OnSelectedEntityDefinitionUpdated;
         }
 
         void OnToolStateUpdated(ApplicationState.Tools.State.Key toolState, ApplicationState.Tools.State.Key previousToolState)

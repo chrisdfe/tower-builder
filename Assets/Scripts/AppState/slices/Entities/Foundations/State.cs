@@ -11,17 +11,12 @@ using UnityEngine;
 namespace TowerBuilder.ApplicationState.Entities.Foundations
 {
     [Serializable]
-    public class State : EntityStateSlice<Foundation, State.Events>
+    public class State : EntityStateSlice
     {
         public class Input { }
 
-        public new class Events : EntityStateSlice<Foundation, State.Events>.Events { }
-
-        public new Queries queries { get; }
-
         public State(AppState appState, Input input) : base(appState)
         {
-            queries = new Queries(appState, this);
         }
 
         public override void Setup()
@@ -32,11 +27,6 @@ namespace TowerBuilder.ApplicationState.Entities.Foundations
         public override void Teardown()
         {
             base.Teardown();
-        }
-
-        public new class Queries : EntityStateSlice<Foundation, State.Events>.Queries
-        {
-            public Queries(AppState appState, State state) : base(appState, state) { }
         }
     }
 }

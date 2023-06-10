@@ -8,21 +8,19 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    public class AttributesGroup<KeyType>
-        where KeyType : struct
+    public class AttributesGroup
     {
-
-        public virtual Dictionary<KeyType, Attribute> attributes { get; } = new Dictionary<KeyType, Attribute>();
+        public virtual Dictionary<string, Attribute> attributes { get; } = new Dictionary<string, Attribute>();
 
         public List<Attribute> list => attributes.Values.ToList();
 
-        public List<(KeyType, Attribute)> asTupleList
+        public List<(string, Attribute)> asTupleList
         {
             get
             {
-                List<(KeyType, Attribute)> result = new List<(KeyType, Attribute)>();
+                List<(string, Attribute)> result = new List<(string, Attribute)>();
 
-                foreach (KeyType key in attributes.Keys)
+                foreach (string key in attributes.Keys)
                 {
                     result.Add((key, attributes[key]));
                 }
@@ -42,7 +40,7 @@ namespace TowerBuilder.DataTypes
 
         public virtual void Teardown() { }
 
-        public Attribute FindByKey(KeyType key) => attributes.GetValueOrDefault(key);
+        public Attribute FindByKey(string key) => attributes.GetValueOrDefault(key);
 
         public virtual void CalculateDerivedAttributes(AppState appState) { }
     }

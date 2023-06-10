@@ -15,33 +15,32 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             public string selectedEntityCategory;
         }
 
-        public class Events
-        {
-            public delegate void SelectedEntityKeyEvent(Type entityKey, Type previousEntityType);
-            public SelectedEntityKeyEvent onSelectedEntityKeyUpdated;
+        /*
+            Events
+        */
+        public delegate void SelectedEntityKeyEvent(Type entityKey, Type previousEntityType);
+        public SelectedEntityKeyEvent onSelectedEntityKeyUpdated;
 
-            public delegate void SelectedEntityCategoryEvent(string selectedEntityCategory);
-            public SelectedEntityCategoryEvent onSelectedEntityCategoryUpdated;
+        public delegate void SelectedEntityCategoryEvent(string selectedEntityCategory);
+        public SelectedEntityCategoryEvent onSelectedEntityCategoryUpdated;
 
-            public delegate void SelectedEntityDefinitionEvent(EntityDefinition selectedEntityDefinition);
-            public SelectedEntityDefinitionEvent onSelectedEntityDefinitionUpdated;
+        public delegate void SelectedEntityDefinitionEvent(EntityDefinition selectedEntityDefinition);
+        public SelectedEntityDefinitionEvent onSelectedEntityDefinitionUpdated;
 
-            public delegate void blueprintUpdateEvent(Entity blueprintEntity);
-            public blueprintUpdateEvent onBlueprintEntityUpdated;
-        }
+        public delegate void blueprintUpdateEvent(Entity blueprintEntity);
+        public blueprintUpdateEvent onBlueprintEntityUpdated;
 
+        /*
+            State
+        */
         public Type selectedEntityType { get; private set; } = typeof(DataTypes.Entities.Foundations.Foundation);
         public string selectedEntityCategory { get; private set; } = "";
         public EntityDefinition selectedEntityDefinition { get; private set; } = null;
 
         public Entity blueprintEntity { get; private set; } = null;
 
-        public Events events;
-
         public State(AppState appState, Tools.State toolState, Build.State buildState, Input input) : base(appState, toolState, buildState)
         {
-            events = new Events();
-
             ResetCategoryAndDefinition();
         }
 
@@ -69,7 +68,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
             ResetBlueprintEntity();
 
-            events.onBlueprintEntityUpdated?.Invoke(blueprintEntity);
+            onBlueprintEntityUpdated?.Invoke(blueprintEntity);
         }
 
         /*
@@ -84,7 +83,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             ResetCategoryAndDefinition();
             ResetBlueprintEntity();
 
-            events.onSelectedEntityKeyUpdated?.Invoke(this.selectedEntityType, previousEntityType);
+            onSelectedEntityKeyUpdated?.Invoke(this.selectedEntityType, previousEntityType);
             isLocked = false;
         }
 
@@ -96,8 +95,8 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
             ResetBlueprintEntity();
 
-            events.onSelectedEntityCategoryUpdated?.Invoke(entityCategory);
-            events.onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
+            onSelectedEntityCategoryUpdated?.Invoke(entityCategory);
+            onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
         }
 
 
@@ -107,7 +106,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
             ResetBlueprintEntity();
 
-            events.onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
+            onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
         }
 
         public override void OnBuildStart() { }

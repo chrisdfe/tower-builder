@@ -36,12 +36,12 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
         public void Setup()
         {
-            Registry.appState.Time.events.onTick += OnTick;
+            Registry.appState.Time.onTick += OnTick;
         }
 
         public void Teardown()
         {
-            Registry.appState.Time.events.onTick -= OnTick;
+            Registry.appState.Time.onTick -= OnTick;
         }
 
         void OnTick(TimeValue time)
@@ -54,7 +54,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
                 GameWorldEntity gameWorldEntity = gameWorldEntityList.FindByEntity(resident);
                 GameWorldResident gameWorldResident = gameWorldEntity.GetComponent<GameWorldResident>();
 
-                TimeValue nextTickTimeValue = Registry.appState.Time.queries.nextTickTimeValue;
+                TimeValue nextTickTimeValue = Registry.appState.Time.nextTickTimeValue;
 
                 CellCoordinates currentCellCoordinates = resident.cellCoordinatesList.bottomLeftCoordinates;
                 CellCoordinates nextCellCoordinates = resident.cellCoordinatesList.bottomLeftCoordinates;

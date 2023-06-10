@@ -250,19 +250,15 @@ namespace TowerBuilder.GameWorld.Entities
             {
                 Transform segmentTransform = segmentTransformMap.ValueFromKey(segment);
 
-                // Only render the back wall if there is no window there
-                // (for now)
+                // Always show back wall
                 if (segment == Segment.BackWall)
                 {
-                    Entity windowAtCell = Registry.appState.Entities.Windows.queries.FindEntityAtCell(cellCoordinates);
-
-                    segmentTransform.gameObject.SetActive(windowAtCell == null);
+                    segmentTransform.gameObject.SetActive(true);
                 }
                 else
                 {
                     segmentTransform.gameObject.SetActive(currentSegments.Contains(segment));
                 }
-
             }
         }
     }

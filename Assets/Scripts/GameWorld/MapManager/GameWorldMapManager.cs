@@ -135,7 +135,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             // Perform initialization of whatever tool state is the default
             currentToolStateHandler.OnTransitionTo(Registry.appState.Tools.currentKey);
 
-            Registry.appState.Tools.events.onToolStateUpdated += OnToolStateUpdated;
+            Registry.appState.Tools.onToolStateUpdated += OnToolStateUpdated;
         }
 
         void OnToolStateUpdated(ApplicationState.Tools.State.Key nextToolState, ApplicationState.Tools.State.Key previousToolState)

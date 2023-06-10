@@ -31,8 +31,8 @@ namespace TowerBuilder.GameWorld.UI
             timeOfDayText = transform.Find("TimeOfDayText").GetComponent<Text>();
             UpdateTimeOfDayText();
 
-            Registry.appState.Time.events.onTimeUpdated += OnTimeStateUpdated;
-            Registry.appState.Time.events.onTimeSpeedUpdated += OnTimeSpeedUpdated;
+            Registry.appState.Time.onTimeUpdated += OnTimeStateUpdated;
+            Registry.appState.Time.onTimeSpeedUpdated += OnTimeSpeedUpdated;
         }
 
         void OnTimeStateUpdated(TimeValue time)

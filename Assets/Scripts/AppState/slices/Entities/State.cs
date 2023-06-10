@@ -35,12 +35,9 @@ namespace TowerBuilder.ApplicationState.Entities
             }
         }
 
-        public class Events
-        {
-            public ListEvent<Entity> onEntitiesAdded;
-            public ListEvent<Entity> onEntitiesRemoved;
-            public ListEvent<Entity> onEntitiesBuilt;
-        }
+        public ListEvent<Entity> onEntitiesAdded;
+        public ListEvent<Entity> onEntitiesRemoved;
+        public ListEvent<Entity> onEntitiesBuilt;
 
         public Foundations.State Foundations { get; }
         public Floors.State Floors { get; }
@@ -53,10 +50,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public Freight.State Freight { get; }
         public Wheels.State Wheels { get; }
 
-        public Events events { get; }
-        public StateQueries Queries { get; }
-
-        public List<IEntityStateSlice> sliceList { get; }
+        public List<EntityStateSlice> sliceList { get; }
 
         public ListWrapper<Entity> allEntities =>
             sliceList.Aggregate(new ListWrapper<Entity>(), (acc, stateSlice) =>
@@ -77,7 +71,7 @@ namespace TowerBuilder.ApplicationState.Entities
             Freight = new Freight.State(appState, input.Freight);
             Wheels = new Wheels.State(appState, input.Wheels);
 
-            sliceList = new List<IEntityStateSlice>() {
+            sliceList = new List<EntityStateSlice>() {
                 Foundations,
                 Floors,
                 Windows,
@@ -89,9 +83,6 @@ namespace TowerBuilder.ApplicationState.Entities
                 Wheels,
                 Windows
             };
-
-            Queries = new StateQueries(this);
-            events = new Events();
         }
 
         public override void Setup()
@@ -102,11 +93,11 @@ namespace TowerBuilder.ApplicationState.Entities
                 AddListeners(slice);
             });
 
-            void AddListeners(IEntityStateSlice stateSlice)
+            void AddListeners(EntityStateSlice stateSlice)
             {
-                stateSlice.entityEvents.onEntitiesAdded += OnEntitiesAdded;
-                stateSlice.entityEvents.onEntitiesRemoved += OnEntitiesRemoved;
-                stateSlice.entityEvents.onEntitiesBuilt += OnEntitiesBuilt;
+                stateSlice.onItemsAdded += OnEntitiesAdded;
+                stateSlice.onItemsRemoved += OnEntitiesRemoved;
+                stateSlice.onItemsBuilt += OnEntitiesBuilt;
             }
         }
 
@@ -120,11 +111,11 @@ namespace TowerBuilder.ApplicationState.Entities
                 RemoveListeners(slice);
             });
 
-            void RemoveListeners(IEntityStateSlice stateSlice)
+            void RemoveListeners(EntityStateSlice stateSlice)
             {
-                stateSlice.entityEvents.onEntitiesAdded -= OnEntitiesAdded;
-                stateSlice.entityEvents.onEntitiesRemoved -= OnEntitiesRemoved;
-                stateSlice.entityEvents.onEntitiesBuilt -= OnEntitiesBuilt;
+                stateSlice.onItemsAdded -= OnEntitiesAdded;
+                stateSlice.onItemsRemoved -= OnEntitiesRemoved;
+                stateSlice.onItemsBuilt -= OnEntitiesBuilt;
             }
         }
 
@@ -161,7 +152,20 @@ namespace TowerBuilder.ApplicationState.Entities
             GetStateSlice(entities.items[0])?.Remove(entities);
         }
 
-        public IEntityStateSlice GetStateSlice(Entity entity) =>
+        /*
+            Queries
+        */
+        public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
+            sliceList.Aggregate(new ListWrapper<Entity>(), (acc, slice) =>
+            {
+                acc.Add(slice.FindEntitiesAtCell(cellCoordinates));
+                return acc;
+            });
+
+        /*
+            Internals
+        */
+        public EntityStateSlice GetStateSlice(Entity entity) =>
             entity switch
             {
                 DataTypes.Entities.Foundations.Foundation => Foundations,
@@ -176,36 +180,22 @@ namespace TowerBuilder.ApplicationState.Entities
                 _ => throw new NotSupportedException($"Entity type not handled: {entity.GetType()}")
             };
 
+        /*
+            Event Handlers
+        */
         void OnEntitiesAdded(ListWrapper<Entity> entityList)
         {
-            events.onEntitiesAdded?.Invoke(entityList);
+            onEntitiesAdded?.Invoke(entityList);
         }
 
         void OnEntitiesRemoved(ListWrapper<Entity> entityList)
         {
-            events.onEntitiesRemoved?.Invoke(entityList);
+            onEntitiesRemoved?.Invoke(entityList);
         }
 
         void OnEntitiesBuilt(ListWrapper<Entity> entityList)
         {
-            events.onEntitiesBuilt?.Invoke(entityList);
-        }
-
-        public class StateQueries
-        {
-            State state;
-
-            public StateQueries(State state)
-            {
-                this.state = state;
-            }
-
-            public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
-                state.sliceList.Aggregate(new ListWrapper<Entity>(), (acc, slice) =>
-                {
-                    acc.Add(slice.entityQueries.FindEntitiesAtCell(cellCoordinates));
-                    return acc;
-                });
+            onEntitiesBuilt?.Invoke(entityList);
         }
     }
 }

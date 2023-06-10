@@ -17,7 +17,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            Registry.appState.Notifications.events.onItemsAdded += OnNotificationsAdded;
+            Registry.appState.Notifications.onItemsAdded += OnNotificationsAdded;
             text = transform.Find("NotificationsText").GetComponent<Text>();
             text.text = "";
         }

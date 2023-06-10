@@ -54,7 +54,7 @@ namespace TowerBuilder.GameWorld.UI
 
             string result = $"{vehicle}";
 
-            VehicleAttributes vehicleAttributes = Registry.appState.Attributes.Vehicles.queries.FindByVehicle(vehicle);
+            VehicleAttributes vehicleAttributes = Registry.appState.Attributes.Vehicles.FindByVehicle(vehicle);
 
             if (vehicleAttributes != null)
             {
