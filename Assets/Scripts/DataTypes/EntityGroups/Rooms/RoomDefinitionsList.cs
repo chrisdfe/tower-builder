@@ -8,16 +8,20 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
         public override ListWrapper<EntityGroupDefinition> Definitions =>
             new ListWrapper<EntityGroupDefinition>(
                 new List<EntityGroupDefinition>() {
-                    new OfficeRoomDefinition() {
+                    new RoomDefinition() {
                         key = "Office",
                         title = "Office",
                         category = "Office",
+
+                        builderFactory = (EntityGroupDefinition definition) => new OfficeRoomBuilder(definition)
                     },
 
                     new RoomDefinition() {
                         key = "Lobby",
                         title = "Lobby",
-                        category = "Lobby"
+                        category = "Lobby",
+
+                        builderFactory = (EntityGroupDefinition definition) => new LobbyRoomBuilder(definition)
                     }
                 }
             );

@@ -2,6 +2,11 @@
 
 ## Tasks
 
+- Floors should probably be taller
+- Add constants for floor height, wall width, etc
+  - not floor height like the height of a building floor, the floor that you stand on
+- Rename CellCoordinates.floor to y
+  - add "FLOOR_HEIGHT" constant (3 probably) and use that for floors instead
 - Entity group validation
 - Switching between room definitions doesn't work right
   - EntityGroup buttons are visible from the start

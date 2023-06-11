@@ -6,10 +6,8 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
     {
         public override ValidatorFactory validatorFactory => (EntityGroup entityGroup) => new RoomValidator(entityGroup as Room);
 
-        public override BuilderFactory builderFactory => (EntityGroupDefinition definition) =>
-        {
-            return new RoomBuilderBase(definition);
-        };
+        public override BuilderFactory builderFactory { get; set; } =
+            (EntityGroupDefinition definition) => new RoomBuilderBase(definition);
     }
 }
 

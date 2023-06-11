@@ -9933,7 +9933,7 @@ MonoBehaviour:
       value: {fileID: 2100000, guid: 23ac2b21e8db93543b19c1c88e886791, type: 2}
     - key: glass
       value: {fileID: 2100000, guid: 340d87034ea2d294e9b68cf45d10aa8e, type: 2}
-    - key: Window Mask
+    - key: window mask
       value: {fileID: 2100000, guid: 045d84c448bd3f44abf5b1a7f73a3433, type: 2}
 --- !u!1 &2005510992
 GameObject:

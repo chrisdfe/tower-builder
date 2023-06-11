@@ -9,9 +9,9 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 {
-    public class OfficeRoomBuilder : RoomBuilderBase
+    public class LobbyRoomBuilder : RoomBuilderBase
     {
-        public OfficeRoomBuilder(EntityGroupDefinition definition) : base(definition) { }
+        public LobbyRoomBuilder(EntityGroupDefinition definition) : base(definition) { }
 
         protected override void BuildWindows(SelectionBox selectionBox)
         {
@@ -32,7 +32,7 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
             Foundation officeFoundation = new Foundation(
                 new FoundationDefinition()
                 {
-                    blockCellsTemplate = CellCoordinatesList.CreateRectangle(7, 3)
+                    blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, 3 * 3)
                 }
             );
 

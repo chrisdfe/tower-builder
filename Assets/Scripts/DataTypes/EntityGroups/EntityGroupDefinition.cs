@@ -9,11 +9,11 @@ namespace TowerBuilder.DataTypes.EntityGroups
         // public virtual Resizability resizability { get; set; } = Resizability.Flexible;
 
         public delegate EntityGroupValidator ValidatorFactory(EntityGroup entityGroup);
-        public virtual ValidatorFactory validatorFactory =>
+        public virtual ValidatorFactory validatorFactory { get; set; } =
             (EntityGroup entityGroup) => new EntityGroupValidator(entityGroup);
 
         public delegate EntityGroupBuilderBase BuilderFactory(EntityGroupDefinition definition);
-        public virtual BuilderFactory builderFactory =>
+        public virtual BuilderFactory builderFactory { get; set; } =
             (EntityGroupDefinition definition) => new EmptyEntityGroupBuilder(definition);
     }
 }

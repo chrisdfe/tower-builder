@@ -39,6 +39,10 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
         public void SetSelectedRoomKey(string value)
         {
             this.selectedRoomKey = value;
+
+            ResetDefinition();
+            ResetBlueprintRoom();
+
             events.onRoomKeyUpdated?.Invoke(this.selectedRoomKey);
         }
 

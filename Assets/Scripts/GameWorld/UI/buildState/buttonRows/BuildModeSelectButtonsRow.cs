@@ -12,6 +12,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             base.Setup();
 
+            Registry.appState.Tools.onToolStateUpdated += OnToolStateUpdated;
             Registry.appState.Tools.Build.onModeUpdated += OnBuildModeUpdated;
         }
 
@@ -19,6 +20,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             base.Teardown();
 
+            Registry.appState.Tools.onToolStateUpdated += OnToolStateUpdated;
             Registry.appState.Tools.Build.onModeUpdated -= OnBuildModeUpdated;
         }
 
@@ -53,6 +55,22 @@ namespace TowerBuilder.GameWorld.UI
                 case "Rooms":
                     Registry.appState.Tools.Build.SetMode(ApplicationState.Tools.Build.State.Mode.Rooms);
                     break;
+            }
+        }
+
+        /* 
+            Event Handlers
+        */
+        void OnToolStateUpdated(ApplicationState.Tools.State.Key newKey, ApplicationState.Tools.State.Key previousKey)
+        {
+            if (newKey == ApplicationState.Tools.State.Key.Build)
+            {
+                gameObject.SetActive(true);
+                HighlightSelectedButton();
+            }
+            else
+            {
+                gameObject.SetActive(false);
             }
         }
 
