@@ -18,12 +18,7 @@ namespace TowerBuilder.DataTypes.Entities.Residents
                 title = "Default",
                 category = "Default",
 
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                        new CellCoordinates(0, 1),
-                    }
-                ),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, 2),
             },
 
             new ResidentDefinition() {
@@ -31,13 +26,7 @@ namespace TowerBuilder.DataTypes.Entities.Residents
                 title = "OtherDefault",
                 category = "OtherDefault",
 
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                        new CellCoordinates(0, 1),
-                        new CellCoordinates(0, 2),
-                    }
-                ),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(2, 3)
             },
         };
 

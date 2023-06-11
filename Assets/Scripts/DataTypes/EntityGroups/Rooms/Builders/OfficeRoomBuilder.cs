@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Foundations;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Windows;
@@ -32,7 +33,8 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
             Foundation officeFoundation = new Foundation(
                 new FoundationDefinition()
                 {
-                    blockCellsTemplate = CellCoordinatesList.CreateRectangle(7, 3)
+                    blockCellsTemplate = CellCoordinatesList.CreateRectangle(7, Entities.Constants.FLOOR_HEIGHT),
+                    resizability = Resizability.Inflexible
                 }
             );
 

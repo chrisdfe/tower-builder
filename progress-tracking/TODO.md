@@ -2,14 +2,15 @@
 
 ## Tasks
 
-- Floors should probably be taller
+- Rename "floors" to "platforms" to prevent confusion?
+  - Or rename "floors" to "story"?
+- Floors/platforms should probably be taller
 - Add constants for floor height, wall width, etc
   - not floor height like the height of a building floor, the floor that you stand on
 - Rename CellCoordinates.floor to y
-  - add "FLOOR_HEIGHT" constant (3 probably) and use that for floors instead
+  - add "FLOOR_HEIGHT" constant (2 or 3 probably) and use that for floors instead
 - Entity group validation
 - Switching between room definitions doesn't work right
-  - EntityGroup buttons are visible from the start
 - Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
 - Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
 - Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
@@ -38,15 +39,6 @@
   - maybe I should rename vehicle back to Building for this
 - Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
 - 3 cells = 1 room cell? 5?
-- Entity categories
-  - Basic
-    - structure
-    - furniture
-    - cargo?
-    - living beings
-  - for different vehicle types
-    - building
-    - vehicle
 - built in way of entities to add modifiers to related entities,
   - to avoid all the boilerplate of adding/removing modifiers in setup/teardown
   - to allow entities without behaviors to add modifiers to other entities
@@ -84,7 +76,6 @@
   - after that, encounters with other vehicles
 - Freight areas look different to home areas etc so you can tell the difference at a glance
 - Turret entity
-- 'entity' and 'entity group' buildToolState subStates
 - Rename "LightsManager" to "AtmosphereManager"
 - Room lights that turn off + window blinds/curtains that shut when the resident goes to sleep
   - Only if there isn't another resident in the room at the same time
@@ -164,7 +155,6 @@
 - Ability for residents to walk around on the ground
 - When new resident slots open up (beds built) residents should arrive via ground, not just appear
 - Stronger chassis should be able to have longer overhangs
-- "Hunger" resident attribute
 - SelectionBox should span the default size of transportation items instead of just the current cell
 - Pull out a lot of the logic in these static Create() method
 - UI element that displays current resident's goals
@@ -217,9 +207,6 @@
 - Moonlight
 - destroy validation (cannot delete room with another room above it)
 - tank treads wheels type
-- proper room 'templates' prepopulated with furniture
-  - bedroom
-  - cockpit
 - furniture that occupys different # of tiles
 - dynamically rendered "Outer walls" of vehicle
 - furniture that requires floor/does not require floor
@@ -315,6 +302,10 @@
 
 ## Ideas
 
+- Medieval music but with weird synths - disco project/katamari
+- Gahan wilson's the ultimate haunted house style
+  - intentional dark/flourescent color palette
+  - bizarre sound effects palette
 - slopes/diagonal walls of arbitrary heights (1 wide by 4 high, 1x3, 1x1, etc)
 - "coverings" - carpet, wallpaper, other decorative stuff
 - Front wall segments to give more of a feeling of peering through into a building
@@ -384,6 +375,20 @@
 
 # Done
 
+- 'entity' and 'entity group' buildToolState subStates
+- EntityGroup buttons are visible from the start
+- Entity categories
+  - Basic
+    - structure
+    - furniture
+    - cargo?
+    - living beings
+  - for different vehicle types
+    - building
+    - vehicle
+- proper room 'templates' prepopulated with furniture
+  - bedroom
+  - cockpit
 - Adding windows to a room should hide that portion of the foundation
 - use depth masking to hide wall where window is
 - Remove all of those Events/Queries subclasses. They cause more trouble than they're worth

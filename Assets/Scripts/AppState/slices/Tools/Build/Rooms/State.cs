@@ -131,7 +131,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
             RoomBuilderBase roomBuilder = selectedRoomDefinition.builderFactory(selectedRoomDefinition) as RoomBuilderBase;
             blueprintRoom = roomBuilder.Build(Registry.appState.UI.selectionBox) as Room;
 
-            blueprintRoom.isInBlueprintMode = true;
+            blueprintRoom.SetBlueprintMode(true);
             // blueprintRoom.validator.Validate(Registry.appState);
 
             Registry.appState.EntityGroups.Rooms.Add(blueprintRoom);

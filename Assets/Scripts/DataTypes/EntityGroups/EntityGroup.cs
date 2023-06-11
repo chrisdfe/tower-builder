@@ -13,7 +13,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public EntityGroup() { }
         public EntityGroup(EntityGroupDefinition definition) { }
 
-        public bool isInBlueprintMode = false;
+        public bool isInBlueprintMode { get; private set; } = false;
 
         public Dictionary<Type, ListWrapper<Entity>> groupedEntities
         {
@@ -34,18 +34,37 @@ namespace TowerBuilder.DataTypes.EntityGroups
             }
         }
 
+
+        /*
+            Lifecycle
+        */
         public virtual void Setup() { }
 
         public virtual void Teardown() { }
 
+        public virtual void OnBuild()
+        {
+            SetBlueprintMode(false);
+        }
+
+        public virtual void OnDestroy() { }
+
+        /*
+            Public API
+        */
         public void Add(Entity entity)
         {
             entities.Add(entity);
+            entity.isInBlueprintMode = isInBlueprintMode;
         }
 
         public void Add(ListWrapper<Entity> entitiesList)
         {
             entities.Add(entitiesList);
+            entitiesList.ForEach(entity =>
+            {
+                entity.isInBlueprintMode = isInBlueprintMode;
+            });
         }
 
         public void Remove(Entity entity)
@@ -58,13 +77,19 @@ namespace TowerBuilder.DataTypes.EntityGroups
             entities.Remove(entitiesList);
         }
 
-        public virtual void OnBuild()
+        public void SetBlueprintMode(bool isInBlueprintMode)
         {
-            isInBlueprintMode = false;
+            this.isInBlueprintMode = isInBlueprintMode;
+            entities.ForEach(entity =>
+            {
+                entity.isInBlueprintMode = isInBlueprintMode;
+            });
         }
 
-        public virtual void OnDestroy() { }
 
+        /*
+            Queries
+        */
         public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
             new ListWrapper<Entity>();
 

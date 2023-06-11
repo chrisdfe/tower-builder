@@ -32,7 +32,7 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
             Foundation officeFoundation = new Foundation(
                 new FoundationDefinition()
                 {
-                    blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, 3 * 3)
+                    blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, Entities.Constants.FLOOR_HEIGHT * 3)
                 }
             );
 

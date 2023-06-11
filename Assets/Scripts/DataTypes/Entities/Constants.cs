@@ -14,6 +14,9 @@ namespace TowerBuilder.DataTypes.Entities
 {
     public static class Constants
     {
+        // In cells
+        public const int FLOOR_HEIGHT = 3;
+
         public static EnumStringMap<Type> TypeLabels =
             new EnumStringMap<Type>(
                 new Dictionary<Type, string>() {
