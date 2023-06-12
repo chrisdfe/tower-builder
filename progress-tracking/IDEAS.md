@@ -1,0 +1,78 @@
+# Ideas
+
+## General
+
+- Medieval music but with weird synths - disco project/katamari
+- Gahan wilson's the ultimate haunted house style
+  - intentional dark/flourescent color palette
+  - bizarre sound effects palette
+- slopes/diagonal walls of arbitrary heights (1 wide by 4 high, 1x3, 1x1, etc)
+- "coverings" - carpet, wallpaper, other decorative stuff
+- Front wall segments to give more of a feeling of peering through into a building
+- Change to perspective with a really high (or low?) FOV
+- Turrets
+  - manned and auto turrets
+- Crops
+  - different benefits from different types of plant
+  - you can grow plants that give you stuff other than food
+- long series of glowy patterned lights, star wars style
+- little vehicles with only room for 1 resident
+  - swoop bike
+  - buggy
+  - comfort and energy go down slower
+- star wars pew pew laser volleys that get quicker and quicker as the vehicles get closer (like in star tours)
+- ability to customize Tileability strategy for x/floor seperately
+  - caps (static corners/ends)
+  - repeat-block
+  - a stretchy middle that is just a repeating block of 1
+- Idea for organizing entities:
+  - Atoms (lights, furniture)
+  - Molecules (groups of atoms - rooms, etc)
+  - Cells (groups of molecules - vehicles, buildings)
+- Finding broken things in the countryside + breaking them down for scrap (at a piece of furniture)
+  - they take up cargo space until they're broken down
+- cozy and warm inside glow, cold and forboding exterior
+- star wars laser guns. pew pew
+- headlights
+- optional exterior walls - without them your vehicle looks bare and industrial, like a star wars/eve online spaceship
+- more resizable entity configuration - "caps" (corners that are static sizes) and "extendible parts" (bits that repeat to fill up the SelectionBox shape)
+- Upgrades to exterior or wheels need to be done at a mechanic
+- 3 layers - main, lower, and absolute bottom (wheel areas)
+- warm fire orange with a neutral grey/blue shadow to accentuate the warmth of the light
+- The feeling of going on a journey
+  - A home base that you gradually build up, along with vehciles that you can send on excursions that you can improve along the way - the resources you gather during this journey can contriute torwards your overall coloy resources
+- Vehicles that fit inside of other vehicles and vice versa
+- An exterior shape that doesn't conform to the tile system
+- 'front hallway' that stairs/escalators live in; front hallway doors
+- right click dropdown contextual menu
+  - generic "dropdown" component
+- "dirty sci-fi"
+  - borderlands 3
+  - warhammer
+  - jedi fallen order (beginning)
+- ability to skew certain types of rooms?
+- battle formation of vehicles - side-by-side, single file, etc
+- with multiple vehicles all vehicles need to be piloted at the same time to go/stop. when one of them stops they are all signalled to stop
+- Electrical plugs? for furniture to plug into?
+- Residents can join your convoy and walk along side of the vehicle if you don't have enough beds.
+  - They sleep outside in tents?
+- Lots of non-player vehicles:
+  - merchants
+  - random passers-by
+  - mercenaries
+  - all of these you can attack if you want
+- New state slices:
+  - weather
+  - temperature
+  - freight/cargo
+  - passengers/passenger seat
+- this game loop:
+  - Vehicles (moving vehicles) need fuel
+  - You need scrap (currency) to buy fuel
+  - You get scrap by traveling and looting/farming/gathering
+  - You also need residents using the "engine" furniture
+- Periodic supplies delivery? big old quarry trucks, helicopers, pack mule, etc
+
+## Optimization Ideas
+
+- Cache entity.cellCoordinatesList - it only needs to be recalculated when cells get set, not whenever when get
