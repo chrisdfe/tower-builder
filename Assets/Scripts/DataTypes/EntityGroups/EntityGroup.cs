@@ -10,6 +10,8 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public ListWrapper<Entity> entities { get; } = new ListWrapper<Entity>();
         public ListWrapper<EntityGroup> entityGroups { get; } = new ListWrapper<EntityGroup>();
 
+        public EntityGroup parent { get; set; } = null;
+
         public bool isInBlueprintMode { get; private set; } = false;
 
         public bool isValid => validationErrors.Count == 0;
@@ -22,6 +24,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
             get
             {
                 Dictionary<Type, ListWrapper<Entity>> groupedEntities = new Dictionary<Type, ListWrapper<Entity>>();
+
                 foreach (Entity entity in entities.items)
                 {
                     if (!groupedEntities.ContainsKey(entity.GetType()))
@@ -65,7 +68,11 @@ namespace TowerBuilder.DataTypes.EntityGroups
                 errors.Add(entity.validationErrors);
             }
 
-            // TODO - same for entitygroups
+            foreach (EntityGroup entityGroup in entityGroups.items)
+            {
+                entityGroup.Validate(appState);
+                errors.Add(entityGroup.validationErrors);
+            }
 
             this.validationErrors = errors;
         }
@@ -76,6 +83,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public void Add(Entity entity)
         {
             entities.Add(entity);
+            entity.parent = this;
             entity.isInBlueprintMode = isInBlueprintMode;
         }
 
@@ -84,6 +92,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
             entities.Add(entitiesList);
             entitiesList.ForEach(entity =>
             {
+                entity.parent = this;
                 entity.isInBlueprintMode = isInBlueprintMode;
             });
         }
@@ -91,6 +100,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public void Add(EntityGroup entityGroup)
         {
             entityGroups.Add(entityGroup);
+            entityGroup.parent = this;
             entityGroup.SetBlueprintMode(isInBlueprintMode);
         }
 
@@ -99,6 +109,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
             entityGroups.Add(entityGroupList);
             entityGroupList.ForEach(entityGroup =>
             {
+                entityGroup.parent = this;
                 entityGroup.SetBlueprintMode(isInBlueprintMode);
             });
         }

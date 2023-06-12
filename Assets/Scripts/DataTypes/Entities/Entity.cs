@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
+using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.Definitions;
 using TowerBuilder.Utils;
 using UnityEngine;
@@ -18,12 +19,13 @@ namespace TowerBuilder.DataTypes.Entities
 
         public bool isInBlueprintMode { get; set; } = false;
 
+        public EntityGroup parent { get; set; } = null;
+
         public CellCoordinatesList cellCoordinatesList { get; private set; } = new CellCoordinatesList();
         public CellCoordinatesBlockList blocksList { get; private set; } = new CellCoordinatesBlockList();
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
-
 
         public EntityDefinition definition { get; }
         protected EntityValidator validator { get; }

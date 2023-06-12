@@ -2,17 +2,15 @@
 
 ## Current
 
-- Destroy tool is broken again
+- Rename CellCoordinates.floor to y
 
 ## After
 
-- different "destroy" types - entity, room, building, etc
-- entities/entitygroups should keep a reference to their parent
-- Resident+resident interaction
-  - shopkeepers could eventually use this
 - Foundation not built inside an already existing room should create one
 - EntityGroup should have "offsetCoordinates" field
 - Add "building" EntityGroups
+- reimplement destroy tool to work with entities/entitygroups
+  - different "destroy" types - entity, room, building, etc
 - buildings & vehicles should have different validation sets
 - Rooms should get added to buildings or vehicles
 - When starting out there should be a "blueprint building" that entities/entity groups get added to.
@@ -22,13 +20,14 @@
   - brightness
   - color
   - etc
+- Resident+resident interaction
+  - shopkeepers could eventually use this
 - Convoy - EntityGroup of vehicles
 - Rename "floors" to "platforms" to prevent confusion?
   - Or rename "floors" to "story"?
 - Floors/platforms should probably be taller
 - Add constants for floor height, wall width, etc
   - not floor height like the height of a building floor, the floor that you stand on
-- Rename CellCoordinates.floor to y
   - add "FLOOR_HEIGHT" constant (2 or 3 probably) and use that for floors instead
 - Entity group validation
 - Switching between room definitions doesn't work right
@@ -320,6 +319,7 @@
 
 # Done
 
+- entity/entitygroups should keep a reference to their parent
 - when placing a room windows are not valid (red) but room can still be placed
 - 'entity' and 'entity group' buildToolState subStates
 - EntityGroup buttons are visible from the start
