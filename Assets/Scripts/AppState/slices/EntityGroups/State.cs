@@ -14,11 +14,13 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         {
             public Rooms.State.Input Rooms = new Rooms.State.Input();
             public Vehicles.State.Input Vehicles = new Vehicles.State.Input();
+            public Buildings.State.Input Buildings = new Buildings.State.Input();
 
             public Input()
             {
                 Rooms = new Rooms.State.Input();
                 Vehicles = new Vehicles.State.Input();
+                Buildings = new Buildings.State.Input();
             }
         }
 
@@ -29,6 +31,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
         public Rooms.State Rooms { get; }
         public Vehicles.State Vehicles { get; }
+        public Buildings.State Buildings { get; }
 
         public Events events { get; }
 
@@ -36,6 +39,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         {
             Rooms = new Rooms.State(appState, input.Rooms);
             Vehicles = new Vehicles.State(appState, input.Vehicles);
+            Buildings = new Buildings.State(appState, input.Buildings);
 
             events = new Events();
         }
@@ -46,6 +50,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
             Rooms.Setup();
             Vehicles.Setup();
+            Buildings.Setup();
         }
 
         public override void Teardown()
@@ -54,6 +59,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
             Rooms.Teardown();
             Vehicles.Teardown();
+            Buildings.Teardown();
         }
 
         public void Add(EntityGroup entityGroup)
@@ -76,6 +82,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             {
                 DataTypes.EntityGroups.Rooms.Room => Rooms,
                 DataTypes.EntityGroups.Vehicles.Vehicle => Vehicles,
+                DataTypes.EntityGroups.Buildings.Building => Buildings,
                 _ => throw new NotSupportedException($"EntityGroup type not handled: {entityGroup.GetType()}")
             };
     }

@@ -26,41 +26,16 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Vehicles
         public override void Setup()
         {
             base.Setup();
-
-            // appState.Entities.Rooms.onItemsAdded += OnRoomsAdded;
-            // appState.Entities.Rooms.onItemsBuilt += OnRoomsBuilt;
-            // appState.Entities.Rooms.onItemsRemoved += OnRoomsRemoved;
         }
 
         public override void Teardown()
         {
             base.Teardown();
-
-            // appState.Entities.Rooms.onItemsAdded -= OnRoomsAdded;
-            // appState.Entities.Rooms.onItemsBuilt -= OnRoomsBuilt;
-            // appState.Entities.Rooms.onItemsRemoved -= OnRoomsRemoved;
         }
 
         /* 
             Public Interface
         */
-        public void AddRoomToVehicle(Vehicle vehicle, Room room)
-        {
-            vehicle.Add(room);
-
-            // onVehicleRoomAdded?.Invoke(vehicle, room);
-        }
-
-        public void RemoveRoomFromVehicle(Vehicle vehicle, Room room)
-        {
-            vehicle.Remove(room);
-
-            // onVehicleRoomRemoved?.Invoke(vehicle, room);
-        }
-
-        public void SetVehicleIsPiloted(Vehicle vehicle, bool isPiloted)
-        {
-        }
 
         /*
             Event Handlers

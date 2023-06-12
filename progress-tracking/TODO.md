@@ -2,8 +2,11 @@
 
 ## Current
 
+- Destroy tool is broken again
+
 ## After
 
+- different "destroy" types - entity, room, building, etc
 - entities/entitygroups should keep a reference to their parent
 - Resident+resident interaction
   - shopkeepers could eventually use this
@@ -15,7 +18,6 @@
 - When starting out there should be a "blueprint building" that entities/entity groups get added to.
 - Add "baseCoordinates" & "offsetCoordinates" to entity - "absoluteCoordinate" = sum of both of these
 - Option to turn day/night off and just have a single color for ground/background
-- Destroy tool is broken again
 - Interior lights features
   - brightness
   - color
