@@ -25,7 +25,7 @@ namespace TowerBuilder.DataTypes
             {
                 return new Dimensions(
                     (cellCoordinatesList.topRightCoordinates.x - cellCoordinatesList.bottomLeftCoordinates.x) + 1,
-                    (cellCoordinatesList.topRightCoordinates.floor - cellCoordinatesList.bottomLeftCoordinates.floor) + 1
+                    (cellCoordinatesList.topRightCoordinates.y - cellCoordinatesList.bottomLeftCoordinates.y) + 1
                 );
             }
         }

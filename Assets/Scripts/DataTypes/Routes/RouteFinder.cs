@@ -162,7 +162,7 @@ namespace TowerBuilder.DataTypes.Routes
         }
 
         // bool IsOnLatestSegmentFloor(RouteAttempt routeAttempt, CellCoordinates cellCoordinates) =>
-        //     cellCoordinates.floor == routeAttempt.latestSegmentNode.cellCoordinates.floor;
+        //     cellCoordinates.y == routeAttempt.latestSegmentNode.cellCoordinates.y;
 
         // bool IsInCurrentRoom(RouteAttempt routeAttempt, CellCoordinates cellCoordinates) =>
         //         Registry.appState.Entities.Rooms.queries
@@ -190,7 +190,7 @@ namespace TowerBuilder.DataTypes.Routes
             //         currentX++;
             //     }
 
-            //     CellCoordinates currentCoordinates = new CellCoordinates(currentX, targetCellCoordinates.floor);
+            //     CellCoordinates currentCoordinates = new CellCoordinates(currentX, targetCellCoordinates.y);
 
             //     if (!GenericEntityValidations.IsValidStandardLocation(appState, currentCoordinates))
             //     {

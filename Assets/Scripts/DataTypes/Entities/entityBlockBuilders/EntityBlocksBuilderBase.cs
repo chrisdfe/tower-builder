@@ -11,7 +11,7 @@ namespace TowerBuilder.DataTypes.Entities
         protected Distance incrementAmount =>
             new Distance(
                 definition.staticBlockSize ? definition.blockCellsTemplate.width : 1,
-                definition.staticBlockSize ? definition.blockCellsTemplate.floorSpan : 1
+                definition.staticBlockSize ? definition.blockCellsTemplate.height : 1
             );
 
         public EntityBlocksBuilderBase(EntityDefinition definition)

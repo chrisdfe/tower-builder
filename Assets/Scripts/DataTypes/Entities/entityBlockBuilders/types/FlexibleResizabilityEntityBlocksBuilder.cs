@@ -14,9 +14,9 @@ namespace TowerBuilder.DataTypes.Entities
 
             for (int x = 0; x < selectionBox.cellCoordinatesList.width; x += incrementAmount.x)
             {
-                for (int floor = 0; floor < selectionBox.cellCoordinatesList.floorSpan; floor += incrementAmount.floors)
+                for (int y = 0; y < selectionBox.cellCoordinatesList.height; y += incrementAmount.y)
                 {
-                    CellCoordinatesBlock block = CreateBlockAt(new CellCoordinates(x, floor));
+                    CellCoordinatesBlock block = CreateBlockAt(new CellCoordinates(x, y));
                     result.Add(block);
                 }
             }

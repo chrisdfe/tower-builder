@@ -33,12 +33,12 @@ namespace TowerBuilder.GameWorld.UI
         {
             SelectionBox selectionBox = Registry.appState.UI.selectionBox;
             float width = selectionBox.cellCoordinatesList.width;
-            float height = selectionBox.cellCoordinatesList.floorSpan;
+            float height = selectionBox.cellCoordinatesList.height;
             CellCoordinates bottomLeftCoordinates = selectionBox.cellCoordinatesList.bottomLeftCoordinates;
 
             transform.position = new Vector3(
                 (bottomLeftCoordinates.x * Entities.Constants.CELL_WIDTH) + (width / 2) - (Entities.Constants.CELL_WIDTH / 2),
-                (bottomLeftCoordinates.floor * Entities.Constants.CELL_HEIGHT) + (height / 2) - (Entities.Constants.CELL_HEIGHT / 2),
+                (bottomLeftCoordinates.y * Entities.Constants.CELL_HEIGHT) + (height / 2) - (Entities.Constants.CELL_HEIGHT / 2),
                 Z_INDEX
             );
 

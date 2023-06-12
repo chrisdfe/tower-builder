@@ -56,9 +56,9 @@ namespace TowerBuilder.DataTypes.Entities
 
         public static ListWrapper<ValidationError> ValidateEntityIsNotUnderground(AppState appState, Entity entity)
         {
-            foreach (int floor in entity.cellCoordinatesList.floorValues)
+            foreach (int y in entity.cellCoordinatesList.yValues)
             {
-                if (floor < 0)
+                if (y < 0)
                 {
                     return Validator.CreateSingleItemValidationErrorList($"You cannot build {entity.typeLabel} underground.");
                 }
@@ -95,23 +95,23 @@ namespace TowerBuilder.DataTypes.Entities
         /*
             Validation creators
         */
-        public static EntityValidator.ValidationFunc CreateValidateEntityIsOnFloor(int floor) =>
+        public static EntityValidator.ValidationFunc CreateValidateEntityIsAtYCoordinate(int y) =>
             (AppState appState, Entity entity) =>
             {
-                if (entity.cellCoordinatesList.lowestFloor != floor)
+                if (entity.cellCoordinatesList.lowestY != y)
                 {
-                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed on floor {floor + 1}");
+                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed on y {y + 1}");
                 }
 
                 return new ListWrapper<ValidationError>();
             };
 
-        public static EntityValidator.ValidationFunc CreateValidateEntityCellIsNotOnFloor(int floor) =>
+        public static EntityValidator.ValidationFunc CreateValidateEntityCellIsNotAtYCoordinate(int y) =>
             (AppState appState, Entity entity) =>
             {
-                if (entity.cellCoordinatesList.lowestFloor == floor)
+                if (entity.cellCoordinatesList.lowestY == y)
                 {
-                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must not be placed on floor {floor + 1}");
+                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must not be placed on y {y + 1}");
                 }
 
                 return new ListWrapper<ValidationError>();
@@ -131,7 +131,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         // outside + on the ground
         public static bool IsValidOutsideEntityLocation(AppState appState, CellCoordinates cellCoordinates) =>
-            cellCoordinates.floor == 0 &&
+            cellCoordinates.y == 0 &&
             HasEnoughVerticalSpace(appState, cellCoordinates);
 
         // inside + on a floor

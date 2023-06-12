@@ -42,7 +42,7 @@ namespace TowerBuilder.GameWorld
         {
             return new Vector3(
                 cellCoordinates.x * Entities.Constants.CELL_WIDTH,
-                cellCoordinates.floor * Entities.Constants.CELL_HEIGHT,
+                cellCoordinates.y * Entities.Constants.CELL_HEIGHT,
                 zIndex
             );
         }

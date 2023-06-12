@@ -2,8 +2,6 @@
 
 ## Current
 
-- Rename CellCoordinates.floor to y
-
 ## After
 
 - Foundation not built inside an already existing room should create one
@@ -319,6 +317,7 @@
 
 # Done
 
+- Rename CellCoordinates.floor to y
 - entity/entitygroups should keep a reference to their parent
 - when placing a room windows are not valid (red) but room can still be placed
 - 'entity' and 'entity group' buildToolState subStates

@@ -12,9 +12,9 @@ namespace TowerBuilder.DataTypes.Entities
         {
             CellCoordinatesBlockList result = new CellCoordinatesBlockList();
 
-            for (int floor = 0; floor < selectionBox.cellCoordinatesList.floorSpan; floor += incrementAmount.floors)
+            for (int y = 0; y < selectionBox.cellCoordinatesList.height; y += incrementAmount.y)
             {
-                CellCoordinatesBlock block = CreateBlockAt(new CellCoordinates(0, floor));
+                CellCoordinatesBlock block = CreateBlockAt(new CellCoordinates(0, y));
                 result.Add(block);
             }
 

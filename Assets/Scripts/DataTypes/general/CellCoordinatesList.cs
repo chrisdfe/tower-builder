@@ -19,28 +19,28 @@ namespace TowerBuilder.DataTypes
                 (coordinates.x > highestX) ? coordinates.x : highestX
             );
 
-        public int lowestFloor =>
-            items.Aggregate(int.MaxValue, (lowestFloor, coordinates) =>
-                (coordinates.floor < lowestFloor) ? coordinates.floor : lowestFloor
+        public int lowestY =>
+            items.Aggregate(int.MaxValue, (lowestY, coordinates) =>
+                (coordinates.y < lowestY) ? coordinates.y : lowestY
             );
 
 
-        public int highestFloor =>
-            items.Aggregate(int.MinValue, (highestFloor, coordinates) =>
-                (coordinates.floor > highestFloor) ? coordinates.floor : highestFloor
+        public int highestY =>
+            items.Aggregate(int.MinValue, (highestY, coordinates) =>
+                (coordinates.y > highestY) ? coordinates.y : highestY
             );
 
         public int width => (highestX - lowestX) + 1;
 
-        public int floorSpan => (highestFloor - lowestFloor) + 1;
+        public int height => (highestY - lowestY) + 1;
 
-        public CellCoordinates bottomLeftCoordinates => new CellCoordinates(lowestX, lowestFloor);
+        public CellCoordinates bottomLeftCoordinates => new CellCoordinates(lowestX, lowestY);
 
-        public CellCoordinates bottomRightCoordinates => new CellCoordinates(highestX, lowestFloor);
+        public CellCoordinates bottomRightCoordinates => new CellCoordinates(highestX, lowestY);
 
-        public CellCoordinates topLeftCoordinates => new CellCoordinates(lowestX, highestFloor);
+        public CellCoordinates topLeftCoordinates => new CellCoordinates(lowestX, highestY);
 
-        public CellCoordinates topRightCoordinates => new CellCoordinates(highestX, highestFloor);
+        public CellCoordinates topRightCoordinates => new CellCoordinates(highestX, highestY);
 
         public List<int> xValues =>
             items.Aggregate(new List<int>(), (acc, cellCoordinates) =>
@@ -53,12 +53,12 @@ namespace TowerBuilder.DataTypes
                 return acc;
             });
 
-        public List<int> floorValues =>
+        public List<int> yValues =>
             items.Aggregate(new List<int>(), (acc, cellCoordinates) =>
             {
-                if (!acc.Contains(cellCoordinates.floor))
+                if (!acc.Contains(cellCoordinates.y))
                 {
-                    acc.Add(cellCoordinates.floor);
+                    acc.Add(cellCoordinates.y);
                 }
 
                 return acc;
@@ -71,7 +71,7 @@ namespace TowerBuilder.DataTypes
 
         public CellCoordinatesList bottomRow =>
             new CellCoordinatesList(
-                items.FindAll(cellCoordinates => cellCoordinates.floor == lowestFloor)
+                items.FindAll(cellCoordinates => cellCoordinates.y == lowestY)
             );
 
         public CellCoordinatesList() { }
@@ -146,11 +146,11 @@ namespace TowerBuilder.DataTypes
 
         // TODO - this should be in cellcoordates
         public static CellCoordinates Add(CellCoordinates a, CellCoordinates b) =>
-            new CellCoordinates(a.x + b.x, a.floor + b.floor);
+            new CellCoordinates(a.x + b.x, a.y + b.y);
 
         // TODO - this should be in cellcoordates
         public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b) =>
-            new CellCoordinates(a.x - b.x, a.floor - b.floor);
+            new CellCoordinates(a.x - b.x, a.y - b.y);
 
 
         public static CellCoordinatesList CreateRectangle(CellCoordinates a, CellCoordinates b)
@@ -159,24 +159,24 @@ namespace TowerBuilder.DataTypes
 
             // startCoordinates = top left room
             // endCoordinates = bottom right room
-            CellCoordinates startCoordinates = new CellCoordinates(Mathf.Min(a.x, b.x), Mathf.Min(a.floor, b.floor));
-            CellCoordinates endCoordinates = new CellCoordinates(Mathf.Max(a.x, b.x), Mathf.Max(a.floor, b.floor));
+            CellCoordinates startCoordinates = new CellCoordinates(Mathf.Min(a.x, b.x), Mathf.Min(a.y, b.y));
+            CellCoordinates endCoordinates = new CellCoordinates(Mathf.Max(a.x, b.x), Mathf.Max(a.y, b.y));
 
-            for (int floor = startCoordinates.floor; floor <= endCoordinates.floor; floor++)
+            for (int y = startCoordinates.y; y <= endCoordinates.y; y++)
             {
                 for (int x = startCoordinates.x; x <= endCoordinates.x; x++)
                 {
-                    list.Add(new CellCoordinates(x, floor));
+                    list.Add(new CellCoordinates(x, y));
                 }
             }
 
             return new CellCoordinatesList(list);
         }
 
-        public static CellCoordinatesList CreateRectangle(int xWidth, int floors) =>
+        public static CellCoordinatesList CreateRectangle(int xWidth, int ys) =>
             CreateRectangle(
                 CellCoordinates.zero,
-                new CellCoordinates(xWidth - 1, floors - 1)
+                new CellCoordinates(xWidth - 1, ys - 1)
             );
 
         public static CellCoordinatesList CreateRectangle(int size) => CreateRectangle(size, size);

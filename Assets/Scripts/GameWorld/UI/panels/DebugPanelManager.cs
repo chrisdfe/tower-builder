@@ -75,7 +75,7 @@ namespace TowerBuilder.GameWorld.UI
         void SetCurrentSelectedCellText()
         {
             CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
-            currentSelectedCellText.text = $"x: {currentSelectedCell.x}, floor: {currentSelectedCell.floor}\n"
+            currentSelectedCellText.text = $"x: {currentSelectedCell.x}, y: {currentSelectedCell.y}\n"
                 + $"entityStack: {Registry.appState.UI.currentSelectedCellEntityList.Count}";
         }
 

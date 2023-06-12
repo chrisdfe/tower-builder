@@ -57,7 +57,7 @@ namespace TowerBuilder.DataTypes.Routes
             //     currentCellCoordinates = segment.startNode.cellCoordinates;
             //     while (
             //         (currentCellCoordinates.x != segment.endNode.cellCoordinates.x) ||
-            //         (currentCellCoordinates.floor != segment.endNode.cellCoordinates.floor)
+            //         (currentCellCoordinates.y != segment.endNode.cellCoordinates.y)
             //     )
             //     {
             //         CellCoordinates nextCellCoordinates = currentCellCoordinates.Clone();
@@ -71,13 +71,13 @@ namespace TowerBuilder.DataTypes.Routes
             //             nextCellCoordinates.x++;
             //         }
 
-            //         if (currentCellCoordinates.floor > segment.endNode.cellCoordinates.floor)
+            //         if (currentCellCoordinates.y > segment.endNode.cellCoordinates.y)
             //         {
-            //             nextCellCoordinates.floor--;
+            //             nextCellCoordinates.y--;
             //         }
-            //         else if (currentCellCoordinates.floor < segment.endNode.cellCoordinates.floor)
+            //         else if (currentCellCoordinates.y < segment.endNode.cellCoordinates.y)
             //         {
-            //             nextCellCoordinates.floor++;
+            //             nextCellCoordinates.y++;
             //         }
 
             //         CreateRouteSegment(nextCellCoordinates, segment.type);

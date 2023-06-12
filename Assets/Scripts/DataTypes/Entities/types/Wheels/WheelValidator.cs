@@ -8,7 +8,7 @@ namespace TowerBuilder.DataTypes.Entities.Wheels
     {
         protected override List<EntityValidator.ValidationFunc> customValidators =>
             new List<EntityValidator.ValidationFunc>() {
-                GenericEntityValidations.CreateValidateEntityIsOnFloor(0)
+                GenericEntityValidations.CreateValidateEntityIsAtYCoordinate(0)
             };
 
         public WheelValidator(Entity entity) : base(entity) { }

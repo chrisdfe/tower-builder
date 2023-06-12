@@ -9,31 +9,31 @@ namespace TowerBuilder.DataTypes
     public class CellCoordinates
     {
         public int x;
-        public int floor;
+        public int y;
 
-        public CellCoordinates coordinatesAbove => new CellCoordinates(x, floor + 1);
+        public CellCoordinates coordinatesAbove => new CellCoordinates(x, y + 1);
 
-        public CellCoordinates coordinatesAboveRight => new CellCoordinates(x + 1, floor + 1);
+        public CellCoordinates coordinatesAboveRight => new CellCoordinates(x + 1, y + 1);
 
-        public CellCoordinates coordinatesRight => new CellCoordinates(x + 1, floor);
+        public CellCoordinates coordinatesRight => new CellCoordinates(x + 1, y);
 
-        public CellCoordinates coordinatesBelowRight => new CellCoordinates(x + 1, floor - 1);
+        public CellCoordinates coordinatesBelowRight => new CellCoordinates(x + 1, y - 1);
 
-        public CellCoordinates coordinatesBelow => new CellCoordinates(x, floor - 1);
+        public CellCoordinates coordinatesBelow => new CellCoordinates(x, y - 1);
 
-        public CellCoordinates coordinatesBelowLeft => new CellCoordinates(x - 1, floor - 1);
+        public CellCoordinates coordinatesBelowLeft => new CellCoordinates(x - 1, y - 1);
 
-        public CellCoordinates coordinatesLeft => new CellCoordinates(x - 1, floor);
+        public CellCoordinates coordinatesLeft => new CellCoordinates(x - 1, y);
 
-        public CellCoordinates coordinatesAboveLeft => new CellCoordinates(x - 1, floor + 1);
+        public CellCoordinates coordinatesAboveLeft => new CellCoordinates(x - 1, y + 1);
 
-        public CellCoordinates(int x, int floor)
+        public CellCoordinates(int x, int y)
         {
             this.x = x;
-            this.floor = floor;
+            this.y = y;
         }
 
-        public override string ToString() => $"x: {x}, floor: {floor}";
+        public override string ToString() => $"x: {x}, y: {y}";
 
         public CellCoordinates Add(CellCoordinates b) => CellCoordinates.Add(this, b);
 
@@ -41,21 +41,21 @@ namespace TowerBuilder.DataTypes
 
         public bool Matches(CellCoordinates b) => CellCoordinates.Matches(this, b);
 
-        public CellCoordinates Clone() => new CellCoordinates(x, floor);
+        public CellCoordinates Clone() => new CellCoordinates(x, y);
 
         /* 
             Static API
         */
         public static CellCoordinates Add(CellCoordinates a, CellCoordinates b) =>
-            new CellCoordinates(a.x + b.x, a.floor + b.floor);
+            new CellCoordinates(a.x + b.x, a.y + b.y);
 
         public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b) =>
-            new CellCoordinates(a.x - b.x, a.floor - b.floor);
+            new CellCoordinates(a.x - b.x, a.y - b.y);
 
         public static bool Matches(CellCoordinates a, CellCoordinates b) =>
             (
                 a.x == b.x &&
-                a.floor == b.floor
+                a.y == b.y
             );
 
         public static CellCoordinates zero => new CellCoordinates(0, 0);

@@ -9,18 +9,18 @@ namespace TowerBuilder.DataTypes
     public class Distance
     {
         public int x;
-        public int floors;
+        public int y;
 
-        public Distance(int x, int floors)
+        public Distance(int x, int y)
         {
             this.x = x;
-            this.floors = floors;
+            this.y = y;
         }
 
-        public override string ToString() => $"x: {x}, floors: {floors}";
+        public override string ToString() => $"x: {x}, y: {y}";
 
         public bool Matches(Distance otherDistance) =>
-            x == otherDistance.x && floors == otherDistance.floors;
+            x == otherDistance.x && y == otherDistance.y;
 
         /*
             Static API

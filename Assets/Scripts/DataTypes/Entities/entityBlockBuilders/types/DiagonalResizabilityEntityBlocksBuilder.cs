@@ -13,15 +13,15 @@ namespace TowerBuilder.DataTypes.Entities
             CellCoordinatesBlockList result = new CellCoordinatesBlockList();
 
             int x = 0;
-            int floor = 0;
+            int y = 0;
 
-            while (x < selectionBox.cellCoordinatesList.width && floor < selectionBox.cellCoordinatesList.floorSpan)
+            while (x < selectionBox.cellCoordinatesList.width && y < selectionBox.cellCoordinatesList.height)
             {
-                CellCoordinatesBlock block = CreateBlockAt(new CellCoordinates(x, floor));
+                CellCoordinatesBlock block = CreateBlockAt(new CellCoordinates(x, y));
                 result.Add(block);
 
                 x += incrementAmount.x;
-                floor += incrementAmount.floors;
+                y += incrementAmount.y;
             }
 
             return result;
