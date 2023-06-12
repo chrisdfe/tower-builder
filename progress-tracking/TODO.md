@@ -2,6 +2,8 @@
 
 ## Tasks
 
+- Rename "vehicle" to "building"
+- Rooms should get added to buildings
 - Add "baseCoordinates" & "offsetCoordinates" to entity - "absoluteCoordinate" = sum of both of these
 - Option to turn day/night off and just have a single color for ground/background
 - when placing a room windows are not valid (red) but room can still be placed
@@ -23,9 +25,6 @@
 - Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
 - Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
 - Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
-- Building entity group
-  - Rename "vehicle" to "building"
-  - Rooms should get added to buildings
 - "Empty floor" entity, for when a room has been deleted?
 - Verify that all specified assets actually exist
 - Remove journeys for now and focus on building?
@@ -309,7 +308,9 @@
 - A "UI settings" object I can tweak a bunch of stuff in the unity editor with, instead of public serializable fields on each script?
 - Awkward naming conflict between ToolState + tool sub states
 
-## Ideas
+# Ideas
+
+## General
 
 - Medieval music but with weird synths - disco project/katamari
 - Gahan wilson's the ultimate haunted house style
@@ -381,6 +382,10 @@
   - You get scrap by traveling and looting/farming/gathering
   - You also need residents using the "engine" furniture
 - Periodic supplies delivery? big old quarry trucks, helicopers, pack mule, etc
+
+## Optimization Ideas
+
+- Cache entity.cellCoordinatesList - it only needs to be recalculated when cells get set, not whenever when get
 
 # Done
 
