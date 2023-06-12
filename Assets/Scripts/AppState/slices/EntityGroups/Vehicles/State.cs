@@ -46,22 +46,20 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Vehicles
         */
         public void AddRoomToVehicle(Vehicle vehicle, Room room)
         {
-            vehicle.roomList.Add(room);
+            vehicle.Add(room);
 
             // onVehicleRoomAdded?.Invoke(vehicle, room);
         }
 
         public void RemoveRoomFromVehicle(Vehicle vehicle, Room room)
         {
-            vehicle.roomList.Remove(room);
+            vehicle.Remove(room);
 
             // onVehicleRoomRemoved?.Invoke(vehicle, room);
         }
 
         public void SetVehicleIsPiloted(Vehicle vehicle, bool isPiloted)
         {
-            // vehicle.isPiloted = isPiloted;
-            // onVehicleIsPilotedUpdated?.Invoke(vehicle);
         }
 
         /*

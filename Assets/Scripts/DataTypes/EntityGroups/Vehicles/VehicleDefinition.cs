@@ -9,8 +9,8 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.EntityGroups.Vehicles
 {
-    // public class VehicleDefinition : EntityDefinition<Vehicle.Key>
-    // {
-
-    // }
+    public class VehicleDefinition : EntityGroupDefinition
+    {
+        public VehicleDefinition() { }
+    }
 }

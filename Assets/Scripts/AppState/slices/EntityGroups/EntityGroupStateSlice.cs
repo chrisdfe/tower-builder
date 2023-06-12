@@ -136,6 +136,46 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             onItemsBuilt?.Invoke(builtItemsList);
         }
 
+        public void AddToEntityGroup(EntityGroup entityGroup, Entity entityToAdd)
+        {
+            throw new System.NotImplementedException("I haven't imlemented this yet");
+        }
+
+        public void AddToEntityGroup(EntityGroup entityGroup, ListWrapper<Entity> entitiesToAdd)
+        {
+            throw new System.NotImplementedException("I haven't imlemented this yet");
+        }
+
+        public void AddToEntityGroup(EntityGroup entityGroup, EntityGroup entityGroupToAdd)
+        {
+            throw new System.NotImplementedException("I haven't imlemented this yet");
+        }
+
+        public void AddToEntityGroup(EntityGroup entityGroup, ListWrapper<EntityGroup> entityGroupsToAdd)
+        {
+            throw new System.NotImplementedException("I haven't imlemented this yet");
+        }
+
+        public void RemoveFromEntityGroup(EntityGroup entityGroup, Entity entityToRemove)
+        {
+            throw new System.NotImplementedException("I haven't imlemented this yet");
+        }
+
+        public void RemoveFromEntityGroup(EntityGroup entityGroup, ListWrapper<Entity> entitiesToRemove)
+        {
+            throw new System.NotImplementedException("I haven't imlemented this yet");
+        }
+
+        public void RemoveFromEntityGroup(EntityGroup entityGroup, EntityGroup entityGroupToRemove)
+        {
+            throw new System.NotImplementedException("I haven't imlemented this yet");
+        }
+
+        public void RemoveFromEntityGroup(EntityGroup entityGroup, ListWrapper<EntityGroup> entityGroupsToRemove)
+        {
+            throw new System.NotImplementedException("I haven't imlemented this yet");
+        }
+
         /*
             Queries
         */

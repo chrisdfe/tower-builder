@@ -15,6 +15,8 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public bool isValid => validationErrors.Count == 0;
         public ListWrapper<ValidationError> validationErrors { get; private set; } = new ListWrapper<ValidationError>();
 
+        public virtual string typeLabel => "EntityGroup";
+
         public Dictionary<Type, ListWrapper<Entity>> groupedEntities
         {
             get
@@ -86,6 +88,21 @@ namespace TowerBuilder.DataTypes.EntityGroups
             });
         }
 
+        public void Add(EntityGroup entityGroup)
+        {
+            entityGroups.Add(entityGroup);
+            entityGroup.SetBlueprintMode(isInBlueprintMode);
+        }
+
+        public void Add(ListWrapper<EntityGroup> entityGroupList)
+        {
+            entityGroups.Add(entityGroupList);
+            entityGroupList.ForEach(entityGroup =>
+            {
+                entityGroup.SetBlueprintMode(isInBlueprintMode);
+            });
+        }
+
         public void Remove(Entity entity)
         {
             entities.Remove(entity);
@@ -96,12 +113,28 @@ namespace TowerBuilder.DataTypes.EntityGroups
             entities.Remove(entitiesList);
         }
 
+        public void Remove(EntityGroup entityGroup)
+        {
+            entityGroups.Remove(entityGroup);
+        }
+
+        public void Remove(ListWrapper<EntityGroup> entityGroups)
+        {
+            entityGroups.Remove(entityGroups);
+        }
+
         public void SetBlueprintMode(bool isInBlueprintMode)
         {
             this.isInBlueprintMode = isInBlueprintMode;
+
             entities.ForEach(entity =>
             {
                 entity.isInBlueprintMode = isInBlueprintMode;
+            });
+
+            entityGroups.ForEach(entityGroup =>
+            {
+                entityGroup.SetBlueprintMode(isInBlueprintMode);
             });
         }
 

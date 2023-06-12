@@ -2,8 +2,12 @@
 
 ## Tasks
 
-- Rename "vehicle" to "building"
-- Rooms should get added to buildings
+- Foundation should create Room
+- EntityGroup should have "offsetCoordinates" field
+- Add "building" EntityGroups
+- buildings & vehicles should have different validation sets
+- Rooms should get added to buildings or vehicles
+- When starting out there should be a "blueprint building" that entities/entity groups get added to
 - Add "baseCoordinates" & "offsetCoordinates" to entity - "absoluteCoordinate" = sum of both of these
 - Option to turn day/night off and just have a single color for ground/background
 - when placing a room windows are not valid (red) but room can still be placed
