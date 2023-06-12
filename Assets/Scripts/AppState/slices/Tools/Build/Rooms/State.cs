@@ -3,6 +3,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
+using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
@@ -95,27 +96,25 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
         {
             base.OnBuildEnd();
 
-            // blueprintEntity.validator.Validate(Registry.appState);
+            blueprintRoom.Validate(Registry.appState);
 
-            // if (blueprintEntity.validator.isValid)
-            // {
+            if (blueprintRoom.isValid)
+            {
+                BuildBlueprintRoom();
+                CreateBlueprintRoom();
+            }
+            else
+            {
+                Registry.appState.Notifications.Add(
+                    new ListWrapper<Notification>(
+                        blueprintRoom.validationErrors.items
+                            .Select(error => new Notification(error.message))
+                            .ToList()
+                    )
+                );
 
-            BuildBlueprintRoom();
-            CreateBlueprintRoom();
-
-            // }
-            // else
-            // {
-            //     Registry.appState.Notifications.Add(
-            //         new ListWrapper<Notification>(
-            //             blueprintEntity.validator.errors.items
-            //                 .Select(error => new Notification(error.message))
-            //                 .ToList()
-            //         )
-            //     );
-
-            //     ResetBlueprintEntity();
-            // }
+                ResetBlueprintRoom();
+            }
         }
 
         /*
@@ -132,9 +131,10 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
             blueprintRoom = roomBuilder.Build(Registry.appState.UI.selectionBox) as Room;
 
             blueprintRoom.SetBlueprintMode(true);
-            // blueprintRoom.validator.Validate(Registry.appState);
 
             Registry.appState.EntityGroups.Rooms.Add(blueprintRoom);
+
+            blueprintRoom.Validate(appState);
         }
 
         void BuildBlueprintRoom()

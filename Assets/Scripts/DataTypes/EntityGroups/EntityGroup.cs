@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities;
 
 namespace TowerBuilder.DataTypes.EntityGroups
 {
-    public class EntityGroup : ISetupable
+    public class EntityGroup : ISetupable, IValidatable
     {
         public ListWrapper<Entity> entities { get; } = new ListWrapper<Entity>();
-
-        // public ListWrapper<EntityGroup> entityGroups { get; } new ListWrapper<EntityGroup>();
-
-        public EntityGroup() { }
-        public EntityGroup(EntityGroupDefinition definition) { }
+        public ListWrapper<EntityGroup> entityGroups { get; } = new ListWrapper<EntityGroup>();
 
         public bool isInBlueprintMode { get; private set; } = false;
+
+        public bool isValid => validationErrors.Count == 0;
+        public ListWrapper<ValidationError> validationErrors { get; private set; } = new ListWrapper<ValidationError>();
 
         public Dictionary<Type, ListWrapper<Entity>> groupedEntities
         {
@@ -34,6 +34,10 @@ namespace TowerBuilder.DataTypes.EntityGroups
             }
         }
 
+        public EntityGroup() { }
+
+        public EntityGroup(EntityGroupDefinition definition) { }
+
 
         /*
             Lifecycle
@@ -48,6 +52,21 @@ namespace TowerBuilder.DataTypes.EntityGroups
         }
 
         public virtual void OnDestroy() { }
+
+        public void Validate(AppState appState)
+        {
+            ListWrapper<ValidationError> errors = new ListWrapper<ValidationError>();
+
+            foreach (Entity entity in entities.items)
+            {
+                entity.Validate(appState);
+                errors.Add(entity.validationErrors);
+            }
+
+            // TODO - same for entitygroups
+
+            this.validationErrors = errors;
+        }
 
         /*
             Public API
@@ -85,7 +104,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
                 entity.isInBlueprintMode = isInBlueprintMode;
             });
         }
-
 
         /*
             Queries

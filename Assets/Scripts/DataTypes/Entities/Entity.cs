@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.Definitions;
 using TowerBuilder.Utils;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public class Entity : ISetupable
+    public class Entity : ISetupable, IValidatable
     {
         public virtual string idKey { get => "entity"; }
 
@@ -24,11 +25,14 @@ namespace TowerBuilder.DataTypes.Entities
         public CellCoordinatesBlockList blocksList { get; private set; } = new CellCoordinatesBlockList();
 
         public EntityDefinition definition { get; }
-        public EntityValidator validator { get; }
+        protected EntityValidator validator { get; }
 
         public delegate EntityDefinition DefaultDefinitionGenerator();
 
         public virtual string typeLabel => "Entity";
+
+        public bool isValid => validator.isValid;
+        public ListWrapper<ValidationError> validationErrors => validator.errors;
 
         public Entity(EntityDefinition definition)
         {
@@ -48,9 +52,20 @@ namespace TowerBuilder.DataTypes.Entities
         }
 
         public virtual void OnDestroy() { }
-
         public virtual void Setup() { }
         public virtual void Teardown() { }
+
+        public void Validate(AppState appState)
+        {
+            Debug.Log("validating: ");
+            validator.Validate(appState);
+            Debug.Log(validationErrors.Count);
+
+            validationErrors.items.ForEach(error =>
+            {
+                Debug.Log(error.message);
+            });
+        }
 
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {

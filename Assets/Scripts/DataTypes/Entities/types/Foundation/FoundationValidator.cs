@@ -8,6 +8,8 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
         protected override List<EntityValidator.ValidationFunc> customValidators =>
             new List<EntityValidator.ValidationFunc>()
             {
+                // TODO - this should go in EntityValidator
+                GenericEntityValidations.ValidateEntityIsNotOverlappingAnotherEntityOfSameType
             };
 
         public FoundationValidator(Foundation foundation) : base(foundation) { }

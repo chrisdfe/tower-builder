@@ -2,6 +2,15 @@
 
 ## Tasks
 
+- Add "baseCoordinates" & "offsetCoordinates" to entity - "absoluteCoordinate" = sum of both of these
+- Option to turn day/night off and just have a single color for ground/background
+- when placing a room windows are not valid (red) but room can still be placed
+- Destroy tool is broken again
+- Interior lights features
+  - brightness
+  - color
+  - etc
+- Convoy - EntityGroup of vehicles
 - Rename "floors" to "platforms" to prevent confusion?
   - Or rename "floors" to "story"?
 - Floors/platforms should probably be taller

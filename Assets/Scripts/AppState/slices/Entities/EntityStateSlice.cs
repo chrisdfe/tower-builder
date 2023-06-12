@@ -76,10 +76,10 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Build(Entity entity)
         {
-            if (!entity.validator.isValid)
+            if (!entity.isValid)
             {
                 // TODO - these should be unique messages - right now they are not
-                appState.Notifications.Add(entity.validator.errors);
+                appState.Notifications.Add(entity.validationErrors);
                 return;
             }
 

@@ -71,7 +71,7 @@ namespace TowerBuilder.GameWorld.Entities
             {
                 if (entity.isInBlueprintMode)
                 {
-                    if (entity.validator.isValid)
+                    if (entity.isValid)
                     {
                         entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
                     }

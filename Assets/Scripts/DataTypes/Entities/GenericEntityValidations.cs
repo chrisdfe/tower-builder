@@ -2,6 +2,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Entities;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Floors;
+using TowerBuilder.DataTypes.Entities.Foundations;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         }
 
-        public static ListWrapper<ValidationError> ValidateEntityIsNotOverlappingAnotherEntity(AppState appState, Entity entity)
+        public static ListWrapper<ValidationError> ValidateEntityIsNotOverlappingAnotherEntityOfSameType(AppState appState, Entity entity)
         {
             EntityStateSlice stateSlice = appState.Entities.GetStateSlice(entity);
 
@@ -68,11 +69,23 @@ namespace TowerBuilder.DataTypes.Entities
 
         public static ListWrapper<ValidationError> ValidateEntityIsInsideFoundation(AppState appState, Entity entity)
         {
+            string errorMessage = $"{entity.typeLabel} must be built inside of a valid foundation";
+
             foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.items)
             {
-                if (appState.Entities.Foundations.FindEntitiesAtCell(cellCoordinates).Count == 0)
+                ListWrapper<Entity> foundationsAtCell = appState.Entities.Foundations.FindEntitiesAtCell(cellCoordinates);
+
+                if (foundationsAtCell.Count == 0)
                 {
-                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be built inside of a room");
+                    return Validator.CreateSingleItemValidationErrorList(errorMessage);
+                }
+
+                foreach (Entity foundationEntity in foundationsAtCell.items)
+                {
+                    if (!foundationEntity.isValid)
+                    {
+                        return Validator.CreateSingleItemValidationErrorList(errorMessage);
+                    }
                 }
             }
 

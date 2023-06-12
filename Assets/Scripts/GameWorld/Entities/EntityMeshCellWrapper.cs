@@ -57,7 +57,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void SetColor(EntityMeshWrapper.ColorKey key)
         {
-
             foreach (MeshRenderer meshRenderer in childrenMeshRenderers)
             {
                 if (!meshRenderer.material.HasProperty("_Color")) continue;

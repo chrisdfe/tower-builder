@@ -113,9 +113,9 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
         public override void OnBuildEnd()
         {
-            blueprintEntity.validator.Validate(Registry.appState);
+            blueprintEntity.Validate(Registry.appState);
 
-            if (blueprintEntity.validator.isValid)
+            if (blueprintEntity.isValid)
             {
                 BuildBlueprintEntity();
                 CreateBlueprintEntity();
@@ -124,7 +124,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             {
                 Registry.appState.Notifications.Add(
                     new ListWrapper<Notification>(
-                        blueprintEntity.validator.errors.items
+                        blueprintEntity.validationErrors.items
                             .Select(error => new Notification(error.message))
                             .ToList()
                     )
@@ -149,7 +149,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
             blueprintEntity.isInBlueprintMode = true;
             blueprintEntity.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
-            blueprintEntity.validator.Validate(Registry.appState);
+            blueprintEntity.Validate(Registry.appState);
 
             Registry.appState.Entities.Add(blueprintEntity);
         }

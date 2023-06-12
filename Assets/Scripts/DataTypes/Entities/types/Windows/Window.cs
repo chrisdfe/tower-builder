@@ -8,7 +8,9 @@ namespace TowerBuilder.DataTypes.Entities.Windows
 {
     public class Window : Entity
     {
-        public override string idKey { get => "windows"; }
+        public override string idKey => "windows";
+
+        public override string typeLabel => "Window";
 
         public Window(WindowDefinition windowDefinition) : base(windowDefinition) { }
     }
