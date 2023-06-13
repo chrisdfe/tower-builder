@@ -2,12 +2,15 @@
 
 ## Current
 
+- Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
 - EntityGroup should have "offsetCoordinates" field
 - Entity absoluteCellCoordinates should take parent offsetCoordinates into account
 
 ## After
 
+- BUG: two windows still get created
 - BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
+- Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
 - Foundation not built inside an already existing room should create one
 - buildings & vehicles should have different validation sets
 - Rooms should get added to buildings or vehicles
@@ -16,6 +19,7 @@
   - UI
   - game elements
 - experiment with overlays
+  - connected to/disconnected from transport
 - experiment with light culling
   - different room types
 - Save system
@@ -28,6 +32,9 @@
   - brightness
   - color
   - etc
+- Limit the number of buildings/vehicles somehow
+  - arbitrarily?
+  - with money?
 - Resident+resident interaction
   - shopkeepers could eventually use this
 - Convoy - EntityGroup of vehicles
@@ -37,31 +44,21 @@
 - Add constants for floor height, wall width, etc
   - not floor height like the height of a building floor, the floor that you stand on
   - add "FLOOR_HEIGHT" constant (2 or 3 probably) and use that for floors instead
-- Entity group validation
 - Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
 - Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
 - Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
 - "Empty floor" entity, for when a room has been deleted?
 - Verify that all specified assets actually exist
 - Remove journeys for now and focus on building?
-- Limit the number of buildings somehow
-  - arbitrarily?
-  - with money?
 - Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
 - Entity type categories
 - use "min size" instead of staticBlockSize, which is confusing
   - block size can be smaller than min size, eg. escalators/stairs
   - maybe alternatively "border" size could be defined, and "fill" size? for escalator border would be 1 (x2, so 2x2 at minimum) and then 1 on the inside
-- "EntityGroup"s - a wrapper around a list (group) of entities without its own cellCoordinatesList
-  - used for a things like room, vehicle
-  - the cost of the group would be the sum of all of the entities prices
-  - basic version could work like a stamp - could be called "static"
-  - the next iteration would be resizable - each entity type could have their own resiability definition/strategy
 - Different vehicle/building types
   - stationary
   - vehicle
   - maybe I should rename vehicle back to Building for this
-- Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
 - 3 cells = 1 room cell? 5?
 - built in way of entities to add modifiers to related entities,
   - to avoid all the boilerplate of adding/removing modifiers in setup/teardown
@@ -126,7 +123,7 @@
 - ability to save/load different chunks of the game world to a file
   - day time atmosphere effects
   - vehicles
-- a hard-to-follow series of entity add/deletes happens after builtToolState.EndBuild happens - the entity is built and then the selection box in UI/state is reset and buildToolState calls ResetBlueprintEntity and removes/adds a new entity. Ideally this only happens as many times as it needs to, there's some redundancy it seems like.
+- CLEANUP: a hard-to-follow series of entity add/deletes happens after builtToolState.EndBuild happens - the entity is built and then the selection box in UI/state is reset and buildToolState calls ResetBlueprintEntity and removes/adds a new entity. Ideally this only happens as many times as it needs to, there's some redundancy it seems like.
 - chassis that can expand vertically really high without needing support but can't support anything above it
   - tent, for freight
   - spectrum between this (can only expand 1 high) and be able to have lots of weight
@@ -148,8 +145,6 @@
 - Transportation item capacity - residents queue up when it's at capacity
 - Clean up UI padding/spacing, right now it's pretty inconsistent
   - Panel should be a prefab
-- Room should just be a collection of walls/floor, in a similar way relationship to vehicles -> rooms
-- Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
 - Make cells 1x1.5 or 1x2 as in my sketchbook - floors/ceilings/walls are part of the Inside of box
 - TransportationItemDefinition/entranceExitBuilder should probably return 2 lists (1 for entrances and 2 for exits) instead of entrance/exit tuples of single coordinates
 - BuildValidators/DestroyValidators?
@@ -234,7 +229,7 @@
   - eg resident going from one cell to the other
   - this probably means reorganizing things to calculate the next tick every tick (for the animation to know where to lerp from/to)
 - Make residents 2 tiles tall 1 tile wide
-- Vehicle connections
+- Vehicle/building connections
 - Debug resident path/goal gameworld display things
 - furniture interaction slots
   - direction (left, center, right)
@@ -270,27 +265,27 @@
 - "Path" constants for paths used in Resource.Load - refactoring/moving things around would be easier
   if they're all in one place
 - should the destroy tool replace the room with an empty floor, at least on floors 0 and above? otherwise, certain rooms would be undestroyable?
+- Make ResidentBehavior.Goals a bit higher level - e.g instead of Dequeue() maybe Complete()
 
 ## Bugs
 
-- Clicking into build state -> selecting an entity definition other than the default -> switching to a different tool -> switching back to build state => the default definition is shown as selected in the UI again even though the other definition is selected in the appState.
-- Adding new engines too quickly causes the new attributes not to get registered correctly?
+- BUG: Clicking into build state -> selecting an entity definition other than the default -> switching to a different tool -> switching back to build state => the default definition is shown as selected in the UI again even though the other definition is selected in the appState.
+- BUG: Adding new engines too quickly causes the new attributes not to get registered correctly?
   - why aren't things getting registered until the next tick? Is it just the UI?
-- expanding a room with furnitures inside of it crashes the game
-- Vehicle stops when you add to a room
-- Make ResidentBehavior.Goals a bit higher level - e.g instead of Dequeue() maybe Complete()
-- 'lock' route progress to stop those out of bounds errors from happening when a resident is in the process of traveling
-- Increasing the size of a room into a different room has weird results - they sort of combine but then there's a phantom room
-- I'm already running into performance issues when making large rooms
-  - investigate the number of nested objects inside of each roomcell mesh
-  - also investigate how every roomcell/entity gets removed/created instead of moved
-- Sometimes when sending a resident back and forth between cells there's an out of bounds exception with RouteProgress
-- Entity doesn't update when an entity is built
-- Individual cells should know if they are valid again (right now it's just the room)
-- Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
-- RoomEntrances in the blueprint room aren't getting highlighted
-- Input.GetMouseButtonDown(0) does not work consistently on macos
-- UI is way too big on my laptop
+- BUG: expanding a room with furnitures inside of it crashes the game
+- BUG: Vehicle stops when you add to a room
+- BUG: 'lock' route progress to stop those out of bounds errors from happening when a resident is in the process of traveling
+- BUG: Increasing the size of a room into a different room has weird results - they sort of combine but then there's a phantom room
+- BUG: I'm already running into performance issues when making large rooms
+  - BUG: investigate the number of nested objects inside of each roomcell mesh
+  - BUG: also investigate how every roomcell/entity gets removed/created instead of moved
+- BUG: Sometimes when sending a resident back and forth between cells there's an out of bounds exception with RouteProgress
+- BUG: Entity doesn't update when an entity is built
+- BUG: Individual cells should know if they are valid again (right now it's just the room)
+- BUG: Fix that NullReferenceArea in MapManager that shows up when defocusing/refocusing on the window again
+- BUG: RoomEntrances in the blueprint room aren't getting highlighted
+- BUG: Input.GetMouseButtonDown(0) does not work consistently on macos
+- BUG: UI is way too big on my laptop
 
 ## Furniture ideas
 
@@ -310,18 +305,25 @@
 
 ## Cleanup
 
-- Some kind of namespace to put all of the other stuff at the top of AppState - time, wallet, journey, etc.
-- "Derived" attributes? the way I'm setting current speed dynamically feels kind of messy
-- Switch the order of ListType and ItemType in ListItemStateSlice generic (ItemType should be first)
-- RouteFinder creates too many branches
-- RoomCells -> RoomCellList OR RoomList -> Rooms
-- FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor
-- ListWrapper should implememnt IEnumerable
-- A "UI settings" object I can tweak a bunch of stuff in the unity editor with, instead of public serializable fields on each script?
-- Awkward naming conflict between ToolState + tool sub states
+- CLEANUP: Some kind of namespace to put all of the other stuff at the top of AppState - time, wallet, journey, etc.
+- CLEANUP: "Derived" attributes? the way I'm setting current speed dynamically feels kind of messy
+- CLEANUP: Switch the order of ListType and ItemType in ListItemStateSlice generic (ItemType should be first)
+- CLEANUP: RouteFinder creates too many branches
+- CLEANUP: RoomCells -> RoomCellList OR RoomList -> Rooms
+- CLEANUP: FloorPlane is confusingly named - it is actually just the collider that watches for the current mouse position, not the floor
+- CLEANUP: ListWrapper should implememnt IEnumerable
+- CLEANUP: A "UI settings" object I can tweak a bunch of stuff in the unity editor with, instead of public serializable fields on each script?
+- CLEANUP: Awkward naming conflict between ToolState + tool sub states
 
 # Done
 
+- Room should just be a collection of walls/floor, in a similar way relationship to vehicles -> rooms
+- Entity group validation
+- "EntityGroup"s - a wrapper around a list (group) of entities without its own cellCoordinatesList
+  - used for a things like room, vehicle
+  - the cost of the group would be the sum of all of the entities prices
+  - basic version could work like a stamp - could be called "static"
+  - the next iteration would be resizable - each entity type could have their own resiability definition/strategy
 - Add "baseCoordinates" & "offsetCoordinates" to entity - "absoluteCoordinate" = sum of both of these
 - Windows entity - new state slice/entity type
 - Add "building" EntityGroups
