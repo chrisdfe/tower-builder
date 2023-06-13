@@ -22,7 +22,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public static ListWrapper<ValidationError> ValidateIsOnFloor(AppState appState, Entity entity)
         {
-            foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.bottomRow.items)
+            foreach (CellCoordinates cellCoordinates in entity.absoluteCellCoordinatesList.bottomRow.items)
             {
                 CellCoordinates cellBelow = CellCoordinates.Add(cellCoordinates, new CellCoordinates(0, -1));
                 ListWrapper<Entity> floors = appState.Entities.Floors.FindEntitiesAtCell(cellBelow);
@@ -43,7 +43,7 @@ namespace TowerBuilder.DataTypes.Entities
 
             Entity overlappingEntity = stateSlice.entityList.Find((otherEntity) =>
                 otherEntity != entity &&
-                otherEntity.cellCoordinatesList.OverlapsWith(entity.cellCoordinatesList)
+                otherEntity.absoluteCellCoordinatesList.OverlapsWith(entity.absoluteCellCoordinatesList)
             );
 
             if (overlappingEntity != null)
@@ -56,7 +56,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public static ListWrapper<ValidationError> ValidateEntityIsNotUnderground(AppState appState, Entity entity)
         {
-            foreach (int y in entity.cellCoordinatesList.yValues)
+            foreach (int y in entity.absoluteCellCoordinatesList.yValues)
             {
                 if (y < 0)
                 {
@@ -71,7 +71,7 @@ namespace TowerBuilder.DataTypes.Entities
         {
             string errorMessage = $"{entity.typeLabel} must be built inside of a valid foundation";
 
-            foreach (CellCoordinates cellCoordinates in entity.cellCoordinatesList.items)
+            foreach (CellCoordinates cellCoordinates in entity.absoluteCellCoordinatesList.items)
             {
                 ListWrapper<Entity> foundationsAtCell = appState.Entities.Foundations.FindEntitiesAtCell(cellCoordinates);
 
@@ -98,7 +98,7 @@ namespace TowerBuilder.DataTypes.Entities
         public static EntityValidator.ValidationFunc CreateValidateEntityIsAtYCoordinate(int y) =>
             (AppState appState, Entity entity) =>
             {
-                if (entity.cellCoordinatesList.lowestY != y)
+                if (entity.absoluteCellCoordinatesList.lowestY != y)
                 {
                     return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed on y {y + 1}");
                 }
@@ -109,7 +109,7 @@ namespace TowerBuilder.DataTypes.Entities
         public static EntityValidator.ValidationFunc CreateValidateEntityCellIsNotAtYCoordinate(int y) =>
             (AppState appState, Entity entity) =>
             {
-                if (entity.cellCoordinatesList.lowestY == y)
+                if (entity.absoluteCellCoordinatesList.lowestY == y)
                 {
                     return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must not be placed on y {y + 1}");
                 }

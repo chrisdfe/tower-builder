@@ -42,7 +42,7 @@ namespace TowerBuilder.GameWorld.Entities.Wheels
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
-            entityMeshWrapper.cellCoordinatesList = wheel.cellCoordinatesList;
+            entityMeshWrapper.cellCoordinatesList = wheel.absoluteCellCoordinatesList;
             entityMeshWrapper.Setup();
 
             GameWorldEntity gameWorldEntity = GetComponent<GameWorldEntity>();

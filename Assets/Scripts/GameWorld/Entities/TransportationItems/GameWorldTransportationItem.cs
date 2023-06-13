@@ -68,7 +68,7 @@ namespace TowerBuilder.GameWorld.Entities.TransportationItems
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
-            entityMeshWrapper.cellCoordinatesList = transportationItem.cellCoordinatesList;
+            entityMeshWrapper.cellCoordinatesList = transportationItem.absoluteCellCoordinatesList;
             entityMeshWrapper.Setup();
         }
 

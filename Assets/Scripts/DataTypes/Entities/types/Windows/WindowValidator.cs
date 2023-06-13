@@ -9,6 +9,7 @@ namespace TowerBuilder.DataTypes.Entities.Windows
             new List<EntityValidator.ValidationFunc>()
             {
                 GenericEntityValidations.ValidateEntityIsInsideFoundation,
+                GenericEntityValidations.ValidateEntityIsNotUnderground
             };
 
         public WindowValidator(Window window) : base(window) { }

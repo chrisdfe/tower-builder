@@ -111,7 +111,7 @@ namespace TowerBuilder.ApplicationState.Behaviors.Residents
 
         public void SendResidentTo(Resident resident, Furniture furniture)
         {
-            Route route = FindRouteTo(resident.cellCoordinatesList.items[0], furniture.cellCoordinatesList.items[0]);
+            Route route = FindRouteTo(resident.absoluteCellCoordinatesList.items[0], furniture.absoluteCellCoordinatesList.items[0]);
 
             if (route != null)
             {
@@ -130,7 +130,7 @@ namespace TowerBuilder.ApplicationState.Behaviors.Residents
 
         public void SendResidentTo(Resident resident, CellCoordinates cellCoordinates)
         {
-            Route route = FindRouteTo(resident.cellCoordinatesList.items[0], cellCoordinates);
+            Route route = FindRouteTo(resident.absoluteCellCoordinatesList.items[0], cellCoordinates);
 
             if (route != null)
             {

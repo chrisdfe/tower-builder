@@ -2,17 +2,27 @@
 
 ## Current
 
+- EntityGroup should have "offsetCoordinates" field
+- Entity absoluteCellCoordinates should take parent offsetCoordinates into account
+
 ## After
 
+- BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
 - Foundation not built inside an already existing room should create one
-- EntityGroup should have "offsetCoordinates" field
-- Add "building" EntityGroups
-- reimplement destroy tool to work with entities/entitygroups
-  - different "destroy" types - entity, room, building, etc
 - buildings & vehicles should have different validation sets
 - Rooms should get added to buildings or vehicles
 - When starting out there should be a "blueprint building" that entities/entity groups get added to.
-- Add "baseCoordinates" & "offsetCoordinates" to entity - "absoluteCoordinate" = sum of both of these
+- Tooltips
+  - UI
+  - game elements
+- experiment with overlays
+- experiment with light culling
+  - different room types
+- Save system
+  - save file versioning
+  - migrations between save file versions - add stuff to the json to make it serialize correctly with current codebase
+- reimplement destroy tool to work with entities/entitygroups
+  - different "destroy" types - entity, room, building, etc
 - Option to turn day/night off and just have a single color for ground/background
 - Interior lights features
   - brightness
@@ -28,7 +38,6 @@
   - not floor height like the height of a building floor, the floor that you stand on
   - add "FLOOR_HEIGHT" constant (2 or 3 probably) and use that for floors instead
 - Entity group validation
-- Switching between room definitions doesn't work right
 - Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
 - Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
 - Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
@@ -62,7 +71,6 @@
 - maybe residents could be 1 1/2 tiles tall - they could fit comfortably in 2 but have to crouch for 1 (bedrooms, cockpits etc could be that small)
 - Change standard room cell size
   - 1x5? 1x8? tall and skinny
-- Windows entity - new state slice/entity type
 - blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
 - Bring back selectionbox resetting on mouse up
 - entity layers (determines the z-index the entity is rendered at)
@@ -78,9 +86,6 @@
   - orthogonal, diagonal, or both
   - just repeat the block template over and over again to fill up the selection box (e.g 2x2, 1x2) (e.g large wheels)
 - Exterior walls that form around outer perimeter of rooms
-- Tooltips
-  - UI
-  - game elements
 - World position will need to be tracked too, for buildings/residents to scroll by as the vehicle passes
 - Handle (or disallow) a furniture being removed when a resident is using it
 - Validate that either transportation entranae or exit is inside (or both)
@@ -317,6 +322,9 @@
 
 # Done
 
+- Add "baseCoordinates" & "offsetCoordinates" to entity - "absoluteCoordinate" = sum of both of these
+- Windows entity - new state slice/entity type
+- Add "building" EntityGroups
 - Rename CellCoordinates.floor to y
 - entity/entitygroups should keep a reference to their parent
 - when placing a room windows are not valid (red) but room can still be placed

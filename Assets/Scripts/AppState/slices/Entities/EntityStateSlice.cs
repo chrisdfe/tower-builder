@@ -104,12 +104,12 @@ namespace TowerBuilder.ApplicationState.Entities
         */
         public Entity FindEntityAtCell(CellCoordinates cellCoordinates) =>
             list.items
-                .Find(entity => entity.cellCoordinatesList.Contains(cellCoordinates));
+                .Find(entity => entity.absoluteCellCoordinatesList.Contains(cellCoordinates));
 
         public ListWrapper<Entity> FindEntitysAtCell(CellCoordinates cellCoordinates) =>
             new ListWrapper<Entity>(
                 list.items
-                    .FindAll(entity => entity.cellCoordinatesList.Contains(cellCoordinates))
+                    .FindAll(entity => entity.absoluteCellCoordinatesList.Contains(cellCoordinates))
             );
 
         public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>

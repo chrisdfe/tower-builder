@@ -89,7 +89,7 @@ namespace TowerBuilder.GameWorld.Entities
                 CellCoordinatesList cellCoordinatesToDestroyFrom = Registry.appState.Tools.Destroy.cellCoordinatesToDelete;
 
                 // TODO - highlight on a per-cell basis
-                if (entity.cellCoordinatesList.OverlapsWith(Registry.appState.UI.selectionBox.cellCoordinatesList))
+                if (entity.absoluteCellCoordinatesList.OverlapsWith(Registry.appState.UI.selectionBox.cellCoordinatesList))
                 {
                     foreach (EntityMeshCellWrapper entityMeshCellWrapper in entityMeshWrapper.entityCellMeshWrapperList)
                     {
@@ -113,7 +113,6 @@ namespace TowerBuilder.GameWorld.Entities
                     hasUpdated = true;
                 }
             }
-
         }
     }
 }

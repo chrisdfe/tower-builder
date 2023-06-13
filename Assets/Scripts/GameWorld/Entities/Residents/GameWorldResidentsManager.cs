@@ -56,8 +56,8 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
                 TimeValue nextTickTimeValue = Registry.appState.Time.nextTickTimeValue;
 
-                CellCoordinates currentCellCoordinates = resident.cellCoordinatesList.bottomLeftCoordinates;
-                CellCoordinates nextCellCoordinates = resident.cellCoordinatesList.bottomLeftCoordinates;
+                CellCoordinates currentCellCoordinates = resident.absoluteCellCoordinatesList.bottomLeftCoordinates;
+                CellCoordinates nextCellCoordinates = resident.absoluteCellCoordinatesList.bottomLeftCoordinates;
 
                 if (residentBehavior.currentState == ResidentBehavior.StateKey.Traveling)
                 {

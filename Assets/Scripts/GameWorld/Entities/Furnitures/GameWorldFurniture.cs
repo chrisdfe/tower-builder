@@ -26,7 +26,7 @@ namespace TowerBuilder.GameWorld.Entities.Furnitures
         {
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = cube.gameObject;
-            entityMeshWrapper.cellCoordinatesList = furniture.cellCoordinatesList;
+            entityMeshWrapper.cellCoordinatesList = furniture.absoluteCellCoordinatesList;
             entityMeshWrapper.Setup();
 
             GetComponent<GameWorldEntity>().Setup();

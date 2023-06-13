@@ -25,16 +25,16 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
                     // bottom to top
                     result.Add(
                         (
-                            transporationItem.cellCoordinatesList.bottomLeftCoordinates,
-                            transporationItem.cellCoordinatesList.topRightCoordinates
+                            transporationItem.relativeCellCoordinatesList.bottomLeftCoordinates,
+                            transporationItem.relativeCellCoordinatesList.topRightCoordinates
                         )
                     );
 
                     // top to bottom
                     result.Add(
                         (
-                            transporationItem.cellCoordinatesList.topRightCoordinates,
-                            transporationItem.cellCoordinatesList.bottomLeftCoordinates
+                            transporationItem.relativeCellCoordinatesList.topRightCoordinates,
+                            transporationItem.relativeCellCoordinatesList.bottomLeftCoordinates
                         )
                     );
 
@@ -67,16 +67,16 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
                     // bottom to top
                     result.Add(
                         (
-                            transporationItem.cellCoordinatesList.bottomLeftCoordinates,
-                            transporationItem.cellCoordinatesList.topLeftCoordinates
+                            transporationItem.relativeCellCoordinatesList.bottomLeftCoordinates,
+                            transporationItem.relativeCellCoordinatesList.topLeftCoordinates
                         )
                     );
 
                     // top to bottom
                     result.Add(
                         (
-                            transporationItem.cellCoordinatesList.topLeftCoordinates,
-                            transporationItem.cellCoordinatesList.bottomLeftCoordinates
+                            transporationItem.relativeCellCoordinatesList.topLeftCoordinates,
+                            transporationItem.relativeCellCoordinatesList.bottomLeftCoordinates
                         )
                     );
 
@@ -108,16 +108,16 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
                     // left to right
                     result.Add(
                         (
-                            transporationItem.cellCoordinatesList.bottomLeftCoordinates,
-                            transporationItem.cellCoordinatesList.bottomRightCoordinates
+                            transporationItem.relativeCellCoordinatesList.bottomLeftCoordinates,
+                            transporationItem.relativeCellCoordinatesList.bottomRightCoordinates
                         )
                     );
 
                     // right to left
                     result.Add(
                         (
-                            transporationItem.cellCoordinatesList.bottomRightCoordinates,
-                            transporationItem.cellCoordinatesList.bottomLeftCoordinates
+                            transporationItem.relativeCellCoordinatesList.bottomRightCoordinates,
+                            transporationItem.relativeCellCoordinatesList.bottomLeftCoordinates
                         )
                     );
 

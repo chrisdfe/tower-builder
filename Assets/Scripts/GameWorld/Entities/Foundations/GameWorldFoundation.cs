@@ -43,7 +43,7 @@ namespace TowerBuilder.GameWorld.Entities.Foundations
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
-            entityMeshWrapper.cellCoordinatesList = foundation.cellCoordinatesList;
+            entityMeshWrapper.cellCoordinatesList = foundation.absoluteCellCoordinatesList;
 
             entityMeshWrapper.CreateEntityMeshCellWrapper = (
                Transform parent,

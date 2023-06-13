@@ -49,7 +49,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
         {
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = cube.gameObject;
-            entityMeshWrapper.cellCoordinatesList = resident.cellCoordinatesList;
+            entityMeshWrapper.cellCoordinatesList = resident.absoluteCellCoordinatesList;
             entityMeshWrapper.Setup();
 
             GetComponent<GameWorldEntity>().Setup();
@@ -59,7 +59,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
         public void UpdatePosition()
         {
-            entityMeshWrapper.cellCoordinatesList = resident.cellCoordinatesList;
+            entityMeshWrapper.cellCoordinatesList = resident.absoluteCellCoordinatesList;
             entityMeshWrapper.UpdatePosition();
         }
 

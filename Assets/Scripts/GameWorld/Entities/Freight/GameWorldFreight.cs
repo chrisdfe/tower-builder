@@ -44,7 +44,7 @@ namespace TowerBuilder.GameWorld.Entities.Freight
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
-            entityMeshWrapper.cellCoordinatesList = freightItem.cellCoordinatesList;
+            entityMeshWrapper.cellCoordinatesList = freightItem.absoluteCellCoordinatesList;
             entityMeshWrapper.Setup();
 
             GetComponent<GameWorldEntity>().Setup();

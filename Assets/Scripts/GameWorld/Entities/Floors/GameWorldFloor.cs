@@ -44,7 +44,7 @@ namespace TowerBuilder.GameWorld.Entities.Floors
 
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
-            entityMeshWrapper.cellCoordinatesList = floor.cellCoordinatesList;
+            entityMeshWrapper.cellCoordinatesList = floor.absoluteCellCoordinatesList;
             entityMeshWrapper.Setup();
 
             GetComponent<GameWorldEntity>().Setup();

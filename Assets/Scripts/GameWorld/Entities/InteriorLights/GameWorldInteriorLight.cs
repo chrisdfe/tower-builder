@@ -55,7 +55,7 @@ namespace TowerBuilder.GameWorld.Entities.InteriorLights
             // entityMeshWrapper = new EntityMeshWrapper(transform, cube.gameObject, resident.cellCoordinatesList);
             entityMeshWrapper = GetComponent<EntityMeshWrapper>();
             entityMeshWrapper.prefabMesh = prefabMesh;
-            entityMeshWrapper.cellCoordinatesList = interiorLight.cellCoordinatesList;
+            entityMeshWrapper.cellCoordinatesList = interiorLight.absoluteCellCoordinatesList;
             entityMeshWrapper.Setup();
 
             GameWorldEntity gameWorldEntity = GetComponent<GameWorldEntity>();

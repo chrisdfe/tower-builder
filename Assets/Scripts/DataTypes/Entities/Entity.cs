@@ -15,14 +15,23 @@ namespace TowerBuilder.DataTypes.Entities
 
         public int id { get; }
 
-        public int price => definition.pricePerCell * cellCoordinatesList.Count;
+        public int price => definition.pricePerCell * relativeCellCoordinatesList.Count;
 
         public bool isInBlueprintMode { get; set; } = false;
 
         public EntityGroup parent { get; set; } = null;
 
-        public CellCoordinatesList cellCoordinatesList { get; private set; } = new CellCoordinatesList();
+        public CellCoordinatesList relativeCellCoordinatesList { get; private set; } = new CellCoordinatesList();
         public CellCoordinatesBlockList blocksList { get; private set; } = new CellCoordinatesBlockList();
+        public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
+
+        public CellCoordinatesList absoluteCellCoordinatesList =>
+            new CellCoordinatesList(
+                relativeCellCoordinatesList.items
+                    .Select(cellCoordinates =>
+                        cellCoordinates.Add(offsetCoordinates)
+                    ).ToList()
+            );
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
@@ -42,7 +51,7 @@ namespace TowerBuilder.DataTypes.Entities
             this.id = UIDGenerator.Generate(idKey);
             this.definition = definition;
 
-            this.cellCoordinatesList = definition.blockCellsTemplate.Clone();
+            this.relativeCellCoordinatesList = definition.blockCellsTemplate.Clone();
 
             this.validator = definition.validatorFactory(this);
         }
@@ -60,20 +69,13 @@ namespace TowerBuilder.DataTypes.Entities
 
         public void Validate(AppState appState)
         {
-            Debug.Log("validating: ");
             validator.Validate(appState);
-            Debug.Log(validationErrors.Count);
-
-            validationErrors.items.ForEach(error =>
-            {
-                Debug.Log(error.message);
-            });
         }
 
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {
             this.blocksList = EntityBlocksBuilder.FromDefinition(definition).Calculate(selectionBox);
-            this.cellCoordinatesList = CellCoordinatesList.FromBlocksList(this.blocksList);
+            this.relativeCellCoordinatesList = CellCoordinatesList.FromBlocksList(this.blocksList);
 
             CalculateTileableMap();
         }
@@ -83,9 +85,9 @@ namespace TowerBuilder.DataTypes.Entities
             cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
             cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 
-            cellCoordinatesList.ForEach((cellCoordinates) =>
+            relativeCellCoordinatesList.ForEach((cellCoordinates) =>
             {
-                CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);
+                CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, relativeCellCoordinatesList);
                 cellNeighborsMap.Add(cellCoordinates, cellNeighbors);
 
                 Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
