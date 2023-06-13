@@ -35,9 +35,11 @@ namespace TowerBuilder.ApplicationState.Entities
             }
         }
 
-        public ListEvent<Entity> onEntitiesAdded;
-        public ListEvent<Entity> onEntitiesRemoved;
-        public ListEvent<Entity> onEntitiesBuilt;
+        public ListEvent<Entity> onEntitiesAdded { get; set; }
+        public ListEvent<Entity> onEntitiesRemoved { get; set; }
+        public ListEvent<Entity> onEntitiesBuilt { get; set; }
+
+        public ItemEvent<Entity> onEntityOffsetCoordinatesUpdated { get; set; }
 
         public Foundations.State Foundations { get; }
         public Floors.State Floors { get; }
@@ -98,6 +100,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 stateSlice.onItemsAdded += OnEntitiesAdded;
                 stateSlice.onItemsRemoved += OnEntitiesRemoved;
                 stateSlice.onItemsBuilt += OnEntitiesBuilt;
+                stateSlice.onEntityOffsetCoordinatesUpdated += OnEntityOffsetCoordinatesUpdated;
             }
         }
 
@@ -116,6 +119,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 stateSlice.onItemsAdded -= OnEntitiesAdded;
                 stateSlice.onItemsRemoved -= OnEntitiesRemoved;
                 stateSlice.onItemsBuilt -= OnEntitiesBuilt;
+                stateSlice.onEntityOffsetCoordinatesUpdated -= OnEntityOffsetCoordinatesUpdated;
             }
         }
 
@@ -150,6 +154,11 @@ namespace TowerBuilder.ApplicationState.Entities
         {
             // Warning - this assumes all entities are of the same type
             GetStateSlice(entities.items[0])?.Remove(entities);
+        }
+
+        public void UpdateEntityOffsetCoordinates(Entity entity, CellCoordinates offsetCoordinates)
+        {
+            GetStateSlice(entity)?.UpdateEntityOffsetCoordinates(entity, offsetCoordinates);
         }
 
         /*
@@ -196,6 +205,11 @@ namespace TowerBuilder.ApplicationState.Entities
         void OnEntitiesBuilt(ListWrapper<Entity> entityList)
         {
             onEntitiesBuilt?.Invoke(entityList);
+        }
+
+        void OnEntityOffsetCoordinatesUpdated(Entity entity)
+        {
+            onEntityOffsetCoordinatesUpdated?.Invoke(entity);
         }
     }
 }

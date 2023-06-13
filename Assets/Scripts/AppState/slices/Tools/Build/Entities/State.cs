@@ -66,7 +66,8 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         {
             if (isLocked) return;
 
-            ResetBlueprintEntity();
+            // ResetBlueprintEntity();  
+            appState.Entities.UpdateEntityOffsetCoordinates(blueprintEntity, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
 
             onBlueprintEntityUpdated?.Invoke(blueprintEntity);
         }

@@ -3,17 +3,11 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.TransportationItems
 {
-    public class GameWorldTransportationManager : MonoBehaviour, IFindable
+    public class GameWorldTransportationManager : EntityTypeManager, IFindable
     {
-        public AssetList prefabAssets = new AssetList();
-
-        public MeshAssetList meshAssets = new MeshAssetList();
-
-        void Awake()
-        {
-            meshAssets.ReplaceMaterials();
-        }
-
+        /*
+            Statics
+        */
         public static GameWorldTransportationManager Find() =>
             GameWorldFindableCache.Find<GameWorldTransportationManager>("TransportationManager");
     }

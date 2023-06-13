@@ -3,17 +3,8 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Freight
 {
-    public class GameWorldFreightManager : MonoBehaviour, IFindable
+    public class GameWorldFreightManager : EntityTypeManager, IFindable
     {
-        public enum AssetKey
-        {
-            Freight
-        }
-
-        public AssetList assetList = new AssetList();
-
-        public MeshAssetList meshAssets = new MeshAssetList();
-
         /* 
             Static API
         */

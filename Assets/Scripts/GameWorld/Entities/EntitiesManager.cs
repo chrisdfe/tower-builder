@@ -18,57 +18,48 @@ namespace TowerBuilder.GameWorld.Entities
 {
     public class EntitiesManager : MonoBehaviour
     {
-        public Dictionary<Type, GameWorldEntityList> entityManagerMap { get; private set; }
-        public List<GameWorldEntityList> entityManagerList { get; private set; }
+        public Dictionary<Type, EntityTypeManager> entityManagerMap { get; private set; }
+        public List<EntityTypeManager> entityManagerList { get; private set; }
 
         void Awake()
         {
-            entityManagerMap = new Dictionary<Type, GameWorldEntityList>()
+            entityManagerMap = new Dictionary<Type, EntityTypeManager>()
             {
                 {
                     typeof(DataTypes.Entities.Foundations.Foundation),
                     GameWorldFoundationsManager.Find()
-                        .GetComponent<GameWorldEntityList>()
                 },
                 {
                     typeof(DataTypes.Entities.Floors.Floor),
                     GameWorldFloorsManager.Find()
-                        .GetComponent<GameWorldEntityList>()
                 },
                 {
                     typeof(DataTypes.Entities.InteriorLights.InteriorLight),
                     GameWorldInteriorLightsManager.Find()
-                        .GetComponent<GameWorldEntityList>()
                 },
                 {
                     typeof(DataTypes.Entities.Residents.Resident),
                     GameWorldResidentsManager.Find()
-                        .GetComponent<GameWorldEntityList>()
                 },
                 {
                     typeof(DataTypes.Entities.Furnitures.Furniture),
                     GameWorldFurnitureManager.Find()
-                        .GetComponent<GameWorldEntityList>()
                 },
                 {
                     typeof(DataTypes.Entities.TransportationItems.TransportationItem),
                     GameWorldTransportationManager.Find()
-                        .GetComponent<GameWorldEntityList>()
                 },
                 {
                     typeof(DataTypes.Entities.Freights.FreightItem),
                     GameWorldFreightManager.Find()
-                        .GetComponent<GameWorldEntityList>()
                 },
                 {
                     typeof(DataTypes.Entities.Wheels.Wheel),
                     GameWorldWheelsManager.Find()
-                        .GetComponent<GameWorldEntityList>()
                 },
                 {
                     typeof(DataTypes.Entities.Windows.Window),
                     GameWorldWindowsManager.Find()
-                        .GetComponent<GameWorldEntityList>()
                 }
             };
 
@@ -82,6 +73,7 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.onEntitiesAdded += OnEntitiesAdded;
             Registry.appState.Entities.onEntitiesRemoved += OnEntitiesRemoved;
             Registry.appState.Entities.onEntitiesBuilt += OnEntitiesBuilt;
+            Registry.appState.Entities.onEntityOffsetCoordinatesUpdated += OnEntityOffsetCoordinatesUpdated;
 
             Registry.appState.Tools.Destroy.onDestroySelectionUpdated += OnDestroySelectionUpdated;
             Registry.appState.Tools.Inspect.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
@@ -99,6 +91,9 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
+        /*
+            Event Handlers
+        */
         void OnEntitiesAdded(ListWrapper<Entity> entityList)
         {
             entityList.items.ForEach((entity) =>
@@ -123,30 +118,35 @@ namespace TowerBuilder.GameWorld.Entities
             });
         }
 
+        void OnEntityOffsetCoordinatesUpdated(Entity entity)
+        {
+            GetListByType(entity.GetType())?.UpdateEntityPosition(entity);
+        }
+
         void OnInspectedEntityListUpdated(ListWrapper<Entity> entitiesList)
         {
-            foreach (GameWorldEntityList entityList in entityManagerList)
+            foreach (EntityTypeManager entityList in entityManagerList)
             {
-                entityList.UpdateEntityColors();
+                entityList.UpdateAllEntityColors();
             }
         }
 
         void OnCurrentSelectedEntityUpdated(Entity entity)
         {
-            foreach (GameWorldEntityList entityList in entityManagerList)
+            foreach (EntityTypeManager entityList in entityManagerList)
             {
-                entityList.UpdateEntityColors();
+                entityList.UpdateAllEntityColors();
             }
         }
 
         void OnDestroySelectionUpdated()
         {
-            foreach (GameWorldEntityList entityList in entityManagerList)
+            foreach (EntityTypeManager entityList in entityManagerList)
             {
-                entityList.UpdateEntityColors();
+                entityList.UpdateAllEntityColors();
             }
         }
 
-        GameWorldEntityList GetListByType(Type EntityType) => entityManagerMap[EntityType];
+        EntityTypeManager GetListByType(Type EntityType) => entityManagerMap[EntityType];
     }
 }

@@ -2,26 +2,11 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Furnitures
 {
-    public class GameWorldFurnitureManager : MonoBehaviour, IFindable
+    public class GameWorldFurnitureManager : EntityTypeManager, IFindable
     {
-        public AssetList prefabAssets = new AssetList();
-
-        public MeshAssetList meshAssets = new MeshAssetList();
-
-        void Awake()
-        {
-            ReplaceMaterials();
-        }
-
-        void ReplaceMaterials()
-        {
-            foreach (MeshAssetList.ValueTypeWrapper valueTypeWrapper in meshAssets.list)
-            {
-                GameObject gameObject = valueTypeWrapper.value;
-                MaterialsReplacer.ReplaceMaterials(gameObject.transform);
-            }
-        }
-
+        /* 
+            Static API
+        */
         public static GameWorldFurnitureManager Find() =>
             GameWorldFindableCache.Find<GameWorldFurnitureManager>("FurnitureManager");
     }

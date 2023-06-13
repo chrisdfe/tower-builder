@@ -3,12 +3,8 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Floors
 {
-    public class GameWorldFloorsManager : MonoBehaviour, IFindable
+    public class GameWorldFloorsManager : EntityTypeManager, IFindable
     {
-        public AssetList assetList = new AssetList();
-
-        public MeshAssetList meshAssets = new MeshAssetList();
-
         /* 
             Static API
         */

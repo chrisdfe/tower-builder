@@ -2,14 +2,22 @@
 
 ## Current
 
+- Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
 - Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
 - EntityGroup should have "offsetCoordinates" field
 - Entity absoluteCellCoordinates should take parent offsetCoordinates into account
+- replace "public API" annotations with "public interface" (since API is obvs the wrong word for that)
+- Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
+- EntityManager classes (FurnitureManager etc) should derive from a base class
 
 ## After
 
+- Use entity.definition.skinKey to decide which meshasset to use, not entity.definition.key
+- blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
+- Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
 - BUG: two windows still get created
 - BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
+- right click dropdown
 - Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
 - Foundation not built inside an already existing room should create one
 - buildings & vehicles should have different validation sets
@@ -44,13 +52,10 @@
 - Add constants for floor height, wall width, etc
   - not floor height like the height of a building floor, the floor that you stand on
   - add "FLOOR_HEIGHT" constant (2 or 3 probably) and use that for floors instead
-- Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
-- Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
-- Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
+- CLEANUP: Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
 - "Empty floor" entity, for when a room has been deleted?
 - Verify that all specified assets actually exist
 - Remove journeys for now and focus on building?
-- Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
 - Entity type categories
 - use "min size" instead of staticBlockSize, which is confusing
   - block size can be smaller than min size, eg. escalators/stairs
@@ -68,7 +73,6 @@
 - maybe residents could be 1 1/2 tiles tall - they could fit comfortably in 2 but have to crouch for 1 (bedrooms, cockpits etc could be that small)
 - Change standard room cell size
   - 1x5? 1x8? tall and skinny
-- blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
 - Bring back selectionbox resetting on mouse up
 - entity layers (determines the z-index the entity is rendered at)
   - entities should default to the a constant value for that type of entity, and have the ability to be customized on a per definition/entity basis (e.g transportation items go in the front, except for ladders that connect two rooms should go inside)
@@ -139,7 +143,6 @@
   - FindDefinitionByKeyLabel
   - Entity.CreateFromDefinition
   - Entity.GetEntityDefinitionLabel
-- AssetManager classes (FurnitureAssetManager etc) should derive from a base class
 - Delete Scratchboard transform
 - Stairs transportation item
 - Transportation item capacity - residents queue up when it's at capacity

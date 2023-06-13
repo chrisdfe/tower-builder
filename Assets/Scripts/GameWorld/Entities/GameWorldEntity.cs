@@ -8,7 +8,7 @@ using UnityEngine;
 namespace TowerBuilder.GameWorld.Entities
 {
     [RequireComponent(typeof(EntityMeshWrapper))]
-    public class GameWorldEntity : MonoBehaviour
+    public class GameWorldEntity : MonoBehaviour, ISetupable
     {
         [HideInInspector]
         public Entity entity { get; set; }
@@ -22,16 +22,56 @@ namespace TowerBuilder.GameWorld.Entities
         [HideInInspector]
         public Action<GameWorldEntity> customColorUpdater = null;
 
-        EntityMeshWrapper entityMeshWrapper => customMeshWrapper ?? GetComponent<EntityMeshWrapper>();
+        [HideInInspector]
+        public EntityTypeManager manager = null;
 
-        public void Setup()
+        protected EntityMeshWrapper entityMeshWrapper => customMeshWrapper ?? GetComponent<EntityMeshWrapper>();
+
+        protected virtual string meshAssetKey => "Default";
+
+        protected Transform placeholder;
+
+        protected virtual EntityMeshWrapper.EntityMeshCellWrapperFactory CreateEntityMeshCellWrapper =>
+            (
+               Transform parent,
+               GameObject prefabMesh,
+               CellCoordinates cellCoordinates,
+               CellCoordinates relativeCellCoordinates,
+               CellNeighbors cellNeighbors,
+               Tileable.CellPosition cellPosition
+            ) =>
+               new EntityMeshCellWrapper(parent, prefabMesh, cellCoordinates, relativeCellCoordinates, cellNeighbors, cellPosition);
+
+        void Awake()
         {
-            UpdateEntityColor();
         }
 
-        public void Teardown() { }
+        void Start()
+        {
+            Setup();
+        }
 
-        public void UpdateEntityColor()
+        void OnDestroy()
+        {
+            Teardown();
+        }
+
+        public virtual void Setup()
+        {
+            placeholder = transform.Find("Placeholder");
+
+            SetupMeshWrapper();
+            UpdateColor();
+        }
+
+        public virtual void Teardown() { }
+
+        public void UpdatePosition()
+        {
+            entityMeshWrapper.UpdatePosition();
+        }
+
+        public void UpdateColor()
         {
             if (customColorUpdater != null)
             {
@@ -41,6 +81,20 @@ namespace TowerBuilder.GameWorld.Entities
             {
                 DefaultUpdateEntityColor();
             }
+        }
+
+        /*
+            Internals
+        */
+        protected virtual void SetupMeshWrapper()
+        {
+            GameObject prefabMesh = manager.entityPrefab;
+
+            entityMeshWrapper.prefabMesh = prefabMesh;
+            entityMeshWrapper.cellCoordinatesList = entity.absoluteCellCoordinatesList;
+            entityMeshWrapper.CreateEntityMeshCellWrapper = CreateEntityMeshCellWrapper;
+
+            entityMeshWrapper.Setup();
         }
 
         void DefaultUpdateEntityColor()

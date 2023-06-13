@@ -7,40 +7,17 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Residents
 {
-    [RequireComponent(typeof(GameWorldEntityList))]
-    public class GameWorldResidentsManager : MonoBehaviour, IFindable
+    public class GameWorldResidentsManager : EntityTypeManager, IFindable
     {
-        GameWorldEntityList gameWorldEntityList;
-
-        public enum AssetKey
+        public override void Setup()
         {
-            Resident
-        }
-
-        public AssetList assetList = new AssetList();
-
-        void Awake()
-        {
-            gameWorldEntityList = GetComponent<GameWorldEntityList>();
-        }
-
-        void Start()
-        {
-            Setup();
-        }
-
-        void OnDestroy()
-        {
-
-        }
-
-        public void Setup()
-        {
+            base.Setup();
             Registry.appState.Time.onTick += OnTick;
         }
 
-        public void Teardown()
+        public override void Teardown()
         {
+            base.Teardown();
             Registry.appState.Time.onTick -= OnTick;
         }
 
@@ -51,7 +28,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
             foreach (ResidentBehavior residentBehavior in residentBehaviorsList.items)
             {
                 Resident resident = residentBehavior.resident;
-                GameWorldEntity gameWorldEntity = gameWorldEntityList.FindByEntity(resident);
+                GameWorldEntity gameWorldEntity = FindByEntity(resident);
                 GameWorldResident gameWorldResident = gameWorldEntity.GetComponent<GameWorldResident>();
 
                 TimeValue nextTickTimeValue = Registry.appState.Time.nextTickTimeValue;

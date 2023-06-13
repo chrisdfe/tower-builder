@@ -3,17 +3,8 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Foundations
 {
-    public class GameWorldFoundationsManager : MonoBehaviour, IFindable
+    public class GameWorldFoundationsManager : EntityTypeManager, IFindable
     {
-        public enum AssetKey
-        {
-            Foundation
-        }
-
-        public AssetList assetList = new AssetList();
-
-        public MeshAssetList meshAssets = new MeshAssetList();
-
         /* 
             Static API
         */

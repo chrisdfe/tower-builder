@@ -3,17 +3,8 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.InteriorLights
 {
-    public class GameWorldInteriorLightsManager : MonoBehaviour, IFindable
+    public class GameWorldInteriorLightsManager : EntityTypeManager, IFindable
     {
-        public enum AssetKey
-        {
-            Light
-        }
-
-        public AssetList assetList = new AssetList();
-
-        public MeshAssetList meshAssets = new MeshAssetList();
-
         /* 
             Static API
         */
