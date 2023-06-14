@@ -22,9 +22,11 @@ namespace TowerBuilder.DataTypes.Entities
         public CellCoordinatesBlockList Calculate(SelectionBox selectionBox)
         {
             CellCoordinatesBlockList blocksList = CalculateFromSelectionBox(selectionBox);
+
             // TODO 
-            // 1) use a different origin than bottomLeftCoordinates
-            blocksList.PositionAtCoordinates(selectionBox.cellCoordinatesList.bottomLeftCoordinates);
+            // 1) re-implement this to use relative coordinates
+            // 2) use a different origin than bottomLeftCoordinates
+            // blocksList.PositionAtCoordinates(selectionBox.cellCoordinatesList.bottomLeftCoordinates);
             return blocksList;
         }
 

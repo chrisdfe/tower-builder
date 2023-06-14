@@ -2,8 +2,7 @@
 
 ## Current
 
-- Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
-- Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
+- BUG: blueprint entity doesn't resize properly
 - EntityGroup should have "offsetCoordinates" field
 - Entity absoluteCellCoordinates should take parent offsetCoordinates into account
 - replace "public API" annotations with "public interface" (since API is obvs the wrong word for that)
@@ -320,6 +319,8 @@
 
 # Done
 
+- Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
+- Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
 - Room should just be a collection of walls/floor, in a similar way relationship to vehicles -> rooms
 - Entity group validation
 - "EntityGroup"s - a wrapper around a list (group) of entities without its own cellCoordinatesList

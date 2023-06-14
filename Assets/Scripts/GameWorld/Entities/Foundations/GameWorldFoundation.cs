@@ -16,9 +16,10 @@ namespace TowerBuilder.GameWorld.Entities.Foundations
                 Transform parent,
                 GameObject prefabMesh,
                 Entity entity,
+                CellCoordinates cellCoordinates,
                 CellNeighbors cellNeighbors,
                 Tileable.CellPosition cellPosition
             ) =>
-                new FoundationMeshCellWrapper(parent, prefabMesh, entity, cellNeighbors, cellPosition);
+                new FoundationMeshCellWrapper(parent, prefabMesh, entity, cellCoordinates, cellNeighbors, cellPosition);
     }
 }

@@ -23,7 +23,8 @@ namespace TowerBuilder.GameWorld.Entities.Residents
                 var ((startTick, startCoordinates), (endTick, endCoordinates)) = currentAndNextPosition;
                 float normalizedTickProgress = GameWorldTimeSystemManager.Find().normalizedTickProgress;
 
-                entityMeshWrapper.SetPosition(Vector3.Lerp(
+                // TODO - these coordinates need to be relative not absolute now
+                entityMeshWrapper.positionOffset = (Vector3.Lerp(
                     GameWorldUtils.CellCoordinatesToPosition(startCoordinates),
                     GameWorldUtils.CellCoordinatesToPosition(endCoordinates),
                     normalizedTickProgress

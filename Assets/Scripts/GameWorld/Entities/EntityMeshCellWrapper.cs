@@ -16,6 +16,7 @@ namespace TowerBuilder.GameWorld.Entities
         public Transform parent { get; private set; }
 
         protected Entity entity;
+        protected CellCoordinates cellCoordinates;
         protected Transform tileabileWrapper;
         protected CellNeighbors cellNeighbors;
         protected Tileable.CellPosition cellPosition;
@@ -27,6 +28,7 @@ namespace TowerBuilder.GameWorld.Entities
             Transform parent,
             GameObject prefabMesh,
             Entity entity,
+            CellCoordinates cellCoordinates,
             CellNeighbors cellNeighbors,
             Tileable.CellPosition cellPosition
         )
@@ -36,6 +38,7 @@ namespace TowerBuilder.GameWorld.Entities
             this.prefabMesh = prefabMesh;
 
             this.entity = entity;
+            this.cellCoordinates = cellCoordinates;
             this.cellNeighbors = cellNeighbors;
             this.cellPosition = cellPosition;
         }
@@ -89,10 +92,9 @@ namespace TowerBuilder.GameWorld.Entities
             meshTransform.localPosition = Vector3.zero;
 
             // TODO here - use entity layer instead of 1f
-            meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(
-                entity.absoluteCellCoordinatesList.bottomLeftCoordinates,
-                1f
-            );
+            Debug.Log("cellCoordinates");
+            Debug.Log(cellCoordinates);
+            meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
             meshTransform.Translate(new Vector3(0, 0, -2f));
 
             childrenMeshRenderers =

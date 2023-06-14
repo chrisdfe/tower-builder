@@ -36,11 +36,13 @@ namespace TowerBuilder.GameWorld.Entities
         public GameObject prefabMesh { get; set; }
         public Entity entity { get; set; }
         public List<EntityMeshCellWrapper> entityCellMeshWrapperList { get; private set; } = new List<EntityMeshCellWrapper>();
+        public Vector3 positionOffset = Vector3.zero;
 
         public delegate EntityMeshCellWrapper EntityMeshCellWrapperFactory(
             Transform parent,
             GameObject prefabMesh,
             Entity entity,
+            CellCoordinates cellCoordinates,
             CellNeighbors cellNeighbors,
             Tileable.CellPosition cellPosition
         );
@@ -50,10 +52,11 @@ namespace TowerBuilder.GameWorld.Entities
                 Transform parent,
                 GameObject prefabMesh,
                 Entity entity,
+                CellCoordinates cellCoordinates,
                 CellNeighbors cellNeighbors,
                 Tileable.CellPosition cellPosition
             ) =>
-               new EntityMeshCellWrapper(parent, prefabMesh, entity, cellNeighbors, cellPosition);
+               new EntityMeshCellWrapper(parent, prefabMesh, entity, cellCoordinates, cellNeighbors, cellPosition);
 
         public virtual void Setup()
         {
@@ -75,15 +78,14 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void UpdatePosition()
         {
+            // Debug.Log("position b4 UpdatePosition");
+            // Debug.Log(transform.localPosition);
             transform.localPosition = GameWorldUtils.CellCoordinatesToPosition(
                 entity.absoluteCellCoordinatesList.bottomLeftCoordinates,
                 1f
-            );
-        }
-
-        public void SetPosition(Vector3 position)
-        {
-            transform.position = position;
+            ) + positionOffset;
+            // Debug.Log("position after UpdatePosition");
+            // Debug.Log(transform.localPosition);
         }
 
         public void SetColor(ColorKey key)
@@ -111,6 +113,9 @@ namespace TowerBuilder.GameWorld.Entities
             entityCellMeshWrapperList = entity.relativeCellCoordinatesList.items
                 .Select((cellCoordinates) =>
                 {
+                    Debug.Log("creating entity cell mesh wrapper at: ");
+                    Debug.Log(cellCoordinates);
+
                     CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, entity.relativeCellCoordinatesList);
 
                     Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
@@ -120,6 +125,7 @@ namespace TowerBuilder.GameWorld.Entities
                             transform,
                             prefabMesh,
                             entity,
+                            cellCoordinates,
                             cellNeighbors,
                             cellPosition
                         );

@@ -215,9 +215,10 @@ namespace TowerBuilder.GameWorld.Entities
             Transform parent,
             GameObject prefabMesh,
             Entity entity,
+            CellCoordinates cellCoordinates,
             CellNeighbors cellNeighbors,
             Tileable.CellPosition cellPosition
-        ) : base(parent, prefabMesh, entity, cellNeighbors, cellPosition) { }
+        ) : base(parent, prefabMesh, entity, cellCoordinates, cellNeighbors, cellPosition) { }
 
         protected override void ProcessModel()
         {

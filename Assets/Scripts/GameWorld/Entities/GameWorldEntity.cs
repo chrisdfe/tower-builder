@@ -36,10 +36,11 @@ namespace TowerBuilder.GameWorld.Entities
                 Transform parent,
                 GameObject prefabMesh,
                 Entity entity,
+                CellCoordinates cellCoordinates,
                 CellNeighbors cellNeighbors,
                 Tileable.CellPosition cellPosition
             ) =>
-               new EntityMeshCellWrapper(parent, prefabMesh, entity, cellNeighbors, cellPosition);
+               new EntityMeshCellWrapper(parent, prefabMesh, entity, cellCoordinates, cellNeighbors, cellPosition);
 
         void OnDestroy()
         {
@@ -82,6 +83,9 @@ namespace TowerBuilder.GameWorld.Entities
             entityMeshWrapper.entity = entity;
             entityMeshWrapper.prefabMesh = prefabMesh;
             entityMeshWrapper.CreateEntityMeshCellWrapper = CreateEntityMeshCellWrapper;
+
+            Debug.Log("position");
+            Debug.Log(transform.localPosition);
 
             entityMeshWrapper.Setup();
         }

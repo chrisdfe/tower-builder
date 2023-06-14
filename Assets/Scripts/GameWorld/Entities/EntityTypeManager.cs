@@ -60,6 +60,7 @@ namespace TowerBuilder.GameWorld.Entities
 
             gameWorldEntity.entity = entity;
             gameWorldEntity.transform.SetParent(entitiesInstanceWrapper, false);
+            gameWorldEntity.transform.localPosition = Vector3.zero;
             gameWorldEntity.manager = this;
 
             entities.Add(gameWorldEntity);
