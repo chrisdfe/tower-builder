@@ -2,7 +2,7 @@
 
 ## Current
 
-- BUG: blueprint entity doesn't resize properly
+- BUG: blueprint entity still doesn't resize properly
 - EntityGroup should have "offsetCoordinates" field
 - Entity absoluteCellCoordinates should take parent offsetCoordinates into account
 

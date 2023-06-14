@@ -27,8 +27,9 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         public delegate void SelectedEntityDefinitionEvent(EntityDefinition selectedEntityDefinition);
         public SelectedEntityDefinitionEvent onSelectedEntityDefinitionUpdated;
 
-        public delegate void blueprintUpdateEvent(Entity blueprintEntity);
-        public blueprintUpdateEvent onBlueprintEntityUpdated;
+        public delegate void BlueprintEvent(Entity blueprintEntity);
+        public BlueprintEvent onBlueprintEntityUpdated;
+        public BlueprintEvent onBlueprintEntityPositionUpdated;
 
         /*
             State
@@ -62,19 +63,25 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             RemoveBlueprintEntity();
         }
 
+        /*
+            Public Interface
+        */
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
             if (isLocked) return;
 
-            // ResetBlueprintEntity();  
-            appState.Entities.UpdateEntityOffsetCoordinates(blueprintEntity, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
-
-            onBlueprintEntityUpdated?.Invoke(blueprintEntity);
+            if (buildState.buildIsActive)
+            {
+                ResetBlueprintEntity();
+                onBlueprintEntityUpdated?.Invoke(blueprintEntity);
+            }
+            else
+            {
+                appState.Entities.UpdateEntityOffsetCoordinates(blueprintEntity, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
+                onBlueprintEntityPositionUpdated?.Invoke(blueprintEntity);
+            }
         }
 
-        /*
-            Public Interface
-        */
         public void SetSelectedEntityKey(Type entityType)
         {
             isLocked = true;
@@ -99,7 +106,6 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             onSelectedEntityCategoryUpdated?.Invoke(entityCategory);
             onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
         }
-
 
         public void SetSelectedEntityDefinition(string keyLabel)
         {

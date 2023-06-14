@@ -85,6 +85,7 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.onEntitiesAdded -= OnEntitiesAdded;
             Registry.appState.Entities.onEntitiesRemoved -= OnEntitiesRemoved;
             Registry.appState.Entities.onEntitiesBuilt -= OnEntitiesBuilt;
+            Registry.appState.Entities.onEntityOffsetCoordinatesUpdated -= OnEntityOffsetCoordinatesUpdated;
 
             Registry.appState.Tools.Destroy.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
             Registry.appState.Tools.Inspect.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
