@@ -64,6 +64,8 @@ namespace TowerBuilder.GameWorld.Entities
 
             entities.Add(gameWorldEntity);
 
+            gameWorldEntity.Setup();
+
             return gameWorldEntity;
         }
 

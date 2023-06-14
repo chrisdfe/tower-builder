@@ -214,21 +214,20 @@ namespace TowerBuilder.GameWorld.Entities
         public FoundationMeshCellWrapper(
             Transform parent,
             GameObject prefabMesh,
-            CellCoordinates cellCoordinates,
-            CellCoordinates relativeCellCoordinates,
+            Entity entity,
             CellNeighbors cellNeighbors,
             Tileable.CellPosition cellPosition
-        ) : base(parent, prefabMesh, cellCoordinates, relativeCellCoordinates, cellNeighbors, cellPosition)
-        {
-        }
+        ) : base(parent, prefabMesh, entity, cellNeighbors, cellPosition) { }
 
         protected override void ProcessModel()
         {
             base.ProcessModel();
 
-
-            BuildSegmentTransformMap();
-            ToggleSegmentsForCellPosition();
+            if (tileabileWrapper != null)
+            {
+                BuildSegmentTransformMap();
+                ToggleSegmentsForCellPosition();
+            }
         }
 
         void BuildSegmentTransformMap()

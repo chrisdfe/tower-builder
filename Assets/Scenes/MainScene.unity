@@ -4693,7 +4693,7 @@ MonoBehaviour:
   entityPrefab: {fileID: 5182047930108948829, guid: a4a0c73b689cb9e42b02558a0da413fc, type: 3}
   meshAssets:
     list:
-    - key: Small
+    - key: Default
       value: {fileID: 5182047930108948829, guid: ac756e925f889ed47994931e5ee5ac2d, type: 3}
     - key: Medium
       value: {fileID: 5182047930108948829, guid: ac756e925f889ed47994931e5ee5ac2d, type: 3}
@@ -6270,7 +6270,7 @@ MonoBehaviour:
   entityPrefab: {fileID: 5182047930108948829, guid: 99d2c7620c5d21c4296d2811f532ac93, type: 3}
   meshAssets:
     list:
-    - key: Bed
+    - key: Default
       value: {fileID: 919132149155446097, guid: 8054665c123af9b489aa4caf4edee4f4, type: 3}
   entities: []
 --- !u!1 &1073614886
@@ -8649,7 +8649,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1759828679}
-  - component: {fileID: 1759828681}
   - component: {fileID: 1759828680}
   m_Layer: 0
   m_Name: WindowsManager
@@ -8685,27 +8684,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d346f0c7641077f4caf57c9b57fe90d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assetList:
-    list:
-    - key: Window
-      value: {fileID: 5182047930108948829, guid: 52a5e2cf09694454a9a905650ac96b4a, type: 3}
+  entityPrefab: {fileID: 5182047930108948829, guid: 52a5e2cf09694454a9a905650ac96b4a, type: 3}
   meshAssets:
     list:
     - key: Default
       value: {fileID: 3660516737605851494, guid: cf6b67019e95cda47bbff3f0d28a315b, type: 3}
---- !u!114 &1759828681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759828678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ddac35312fcf6a49898384204fe3096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entityPrefab: {fileID: 5182047930108948829, guid: 52a5e2cf09694454a9a905650ac96b4a, type: 3}
   entities: []
 --- !u!1 &1764562421
 GameObject:
@@ -9246,7 +9229,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1862236470}
   - component: {fileID: 1862236471}
-  - component: {fileID: 1862236472}
   m_Layer: 0
   m_Name: WheelsManager
   m_TagString: Untagged
@@ -9281,27 +9263,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edf2c28504225c4a8ad649f22e28845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assetList:
-    list:
-    - key: Wheel
-      value: {fileID: 4185967679265192584, guid: b07f63211bb1c2b4c9a9d44107e032e5, type: 3}
+  entityPrefab: {fileID: 4185967679265192584, guid: b07f63211bb1c2b4c9a9d44107e032e5, type: 3}
   meshAssets:
     list:
     - key: Default
-      value: {fileID: 8283885108830141180, guid: df074394ef904ee4f8719aba358d9692, type: 3}
---- !u!114 &1862236472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1862236469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ddac35312fcf6a49898384204fe3096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entityPrefab: {fileID: 4185967679265192584, guid: b07f63211bb1c2b4c9a9d44107e032e5, type: 3}
+      value: {fileID: 919132149155446097, guid: 6fff9c25485fddf45afae0a94874e4ce, type: 3}
   entities: []
 --- !u!1 &1863251082
 GameObject:

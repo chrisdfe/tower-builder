@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.Utils;
 using UnityEngine;
 
@@ -31,31 +32,28 @@ namespace TowerBuilder.GameWorld.Entities
 
         public const string PLACEHOLDER_NODE_NAME = "Placeholder";
 
+        public Transform parent { get; set; }
         public GameObject prefabMesh { get; set; }
-        public CellCoordinatesList cellCoordinatesList { get; set; }
+        public Entity entity { get; set; }
         public List<EntityMeshCellWrapper> entityCellMeshWrapperList { get; private set; } = new List<EntityMeshCellWrapper>();
 
         public delegate EntityMeshCellWrapper EntityMeshCellWrapperFactory(
             Transform parent,
             GameObject prefabMesh,
-            CellCoordinates cellCoordinates,
-            CellCoordinates relativeCellCoordinates,
+            Entity entity,
             CellNeighbors cellNeighbors,
             Tileable.CellPosition cellPosition
         );
 
         public EntityMeshCellWrapperFactory CreateEntityMeshCellWrapper =
             (
-               Transform parent,
-               GameObject prefabMesh,
-               CellCoordinates cellCoordinates,
-               CellCoordinates relativeCellCoordinates,
-               CellNeighbors cellNeighbors,
-               Tileable.CellPosition cellPosition
+                Transform parent,
+                GameObject prefabMesh,
+                Entity entity,
+                CellNeighbors cellNeighbors,
+                Tileable.CellPosition cellPosition
             ) =>
-               new EntityMeshCellWrapper(parent, prefabMesh, cellCoordinates, relativeCellCoordinates, cellNeighbors, cellPosition);
-
-        CellCoordinates originCellCoordinates => cellCoordinatesList.bottomLeftCoordinates;
+               new EntityMeshCellWrapper(parent, prefabMesh, entity, cellNeighbors, cellPosition);
 
         public virtual void Setup()
         {
@@ -77,7 +75,10 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void UpdatePosition()
         {
-            transform.localPosition = GameWorldUtils.CellCoordinatesToPosition(originCellCoordinates, 1f);
+            transform.localPosition = GameWorldUtils.CellCoordinatesToPosition(
+                entity.absoluteCellCoordinatesList.bottomLeftCoordinates,
+                1f
+            );
         }
 
         public void SetPosition(Vector3 position)
@@ -95,6 +96,8 @@ namespace TowerBuilder.GameWorld.Entities
 
         void DestroyPlaceholder()
         {
+            TransformUtils.DestroyChildren(parent);
+
             Transform placeholder = transform.Find(PLACEHOLDER_NODE_NAME);
 
             if (placeholder != null)
@@ -105,21 +108,18 @@ namespace TowerBuilder.GameWorld.Entities
 
         void CreateEntityCellWrappers()
         {
-            entityCellMeshWrapperList = cellCoordinatesList.items
+            entityCellMeshWrapperList = entity.relativeCellCoordinatesList.items
                 .Select((cellCoordinates) =>
                 {
-                    CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, cellCoordinatesList);
+                    CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, entity.relativeCellCoordinatesList);
 
                     Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);
-
-                    CellCoordinates relativeCellCoordiantes = cellCoordinatesList.AsRelativeCoordinates(cellCoordinates);
 
                     EntityMeshCellWrapper entityMeshCellWrapper =
                         CreateEntityMeshCellWrapper(
                             transform,
                             prefabMesh,
-                            cellCoordinates,
-                            relativeCellCoordiantes,
+                            entity,
                             cellNeighbors,
                             cellPosition
                         );

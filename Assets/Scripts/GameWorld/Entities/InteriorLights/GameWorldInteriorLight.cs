@@ -21,17 +21,22 @@ namespace TowerBuilder.GameWorld.Entities.InteriorLights
         public override void Setup()
         {
             base.Setup();
-            // Temporary fix until things get z indecies
-            entityLight.transform.position = new Vector3(0, 0, -1f);
+
+            if (entityLight != null)
+            {
+                // Temporary fix until things get z indecies
+                entityLight.transform.position = new Vector3(0, 0, -1f);
+            }
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            LightsManager.Find().interiorLights.Remove(entityLight);
+            if (entityLight != null)
+            {
+                LightsManager.Find().interiorLights.Remove(entityLight);
+            }
         }
-
-        // void UpdateColor(GameWorldEntity gameWorldEntity) { }
     }
 }

@@ -8,6 +8,7 @@ namespace TowerBuilder.DataTypes.Entities
         public virtual string key { get; set; } = null;
         public virtual string title { get; set; } = "None";
         public virtual string category { get; set; } = "None";
+        public virtual string meshKey { get; set; } = "Default";
 
         public virtual Resizability resizability { get; set; } = Resizability.Flexible;
 

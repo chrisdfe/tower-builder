@@ -33,23 +33,13 @@ namespace TowerBuilder.GameWorld.Entities
 
         protected virtual EntityMeshWrapper.EntityMeshCellWrapperFactory CreateEntityMeshCellWrapper =>
             (
-               Transform parent,
-               GameObject prefabMesh,
-               CellCoordinates cellCoordinates,
-               CellCoordinates relativeCellCoordinates,
-               CellNeighbors cellNeighbors,
-               Tileable.CellPosition cellPosition
+                Transform parent,
+                GameObject prefabMesh,
+                Entity entity,
+                CellNeighbors cellNeighbors,
+                Tileable.CellPosition cellPosition
             ) =>
-               new EntityMeshCellWrapper(parent, prefabMesh, cellCoordinates, relativeCellCoordinates, cellNeighbors, cellPosition);
-
-        void Awake()
-        {
-        }
-
-        void Start()
-        {
-            Setup();
-        }
+               new EntityMeshCellWrapper(parent, prefabMesh, entity, cellNeighbors, cellPosition);
 
         void OnDestroy()
         {
@@ -58,8 +48,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         public virtual void Setup()
         {
-            placeholder = transform.Find("Placeholder");
-
             SetupMeshWrapper();
             UpdateColor();
         }
@@ -88,10 +76,11 @@ namespace TowerBuilder.GameWorld.Entities
         */
         protected virtual void SetupMeshWrapper()
         {
-            GameObject prefabMesh = manager.entityPrefab;
+            GameObject prefabMesh = manager.meshAssets.ValueFromKey(entity.definition.meshKey != null ? entity.definition.meshKey : "Default");
 
+            entityMeshWrapper.parent = transform;
+            entityMeshWrapper.entity = entity;
             entityMeshWrapper.prefabMesh = prefabMesh;
-            entityMeshWrapper.cellCoordinatesList = entity.absoluteCellCoordinatesList;
             entityMeshWrapper.CreateEntityMeshCellWrapper = CreateEntityMeshCellWrapper;
 
             entityMeshWrapper.Setup();
@@ -147,7 +136,7 @@ namespace TowerBuilder.GameWorld.Entities
                 {
                     foreach (EntityMeshCellWrapper entityMeshCellWrapper in entityMeshWrapper.entityCellMeshWrapperList)
                     {
-                        if (cellCoordinatesToDestroyFrom.Contains(entityMeshCellWrapper.cellCoordinates))
+                        if (cellCoordinatesToDestroyFrom.OverlapsWith(entity.absoluteCellCoordinatesList))
                         {
                             entityMeshCellWrapper.SetColor(EntityMeshWrapper.ColorKey.Destroy);
                         }

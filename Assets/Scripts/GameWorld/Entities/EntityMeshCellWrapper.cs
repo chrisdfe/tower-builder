@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.Utils;
 using UnityEngine;
 
@@ -14,9 +15,7 @@ namespace TowerBuilder.GameWorld.Entities
         public Transform meshTransform { get; private set; }
         public Transform parent { get; private set; }
 
-        public CellCoordinates cellCoordinates { get; }
-        public CellCoordinates relativeCellCoordinates { get; }
-
+        protected Entity entity;
         protected Transform tileabileWrapper;
         protected CellNeighbors cellNeighbors;
         protected Tileable.CellPosition cellPosition;
@@ -27,8 +26,7 @@ namespace TowerBuilder.GameWorld.Entities
         public EntityMeshCellWrapper(
             Transform parent,
             GameObject prefabMesh,
-            CellCoordinates cellCoordinates,
-            CellCoordinates relativeCellCoordinates,
+            Entity entity,
             CellNeighbors cellNeighbors,
             Tileable.CellPosition cellPosition
         )
@@ -37,8 +35,7 @@ namespace TowerBuilder.GameWorld.Entities
 
             this.prefabMesh = prefabMesh;
 
-            this.cellCoordinates = cellCoordinates;
-            this.relativeCellCoordinates = relativeCellCoordinates;
+            this.entity = entity;
             this.cellNeighbors = cellNeighbors;
             this.cellPosition = cellPosition;
         }
@@ -91,8 +88,11 @@ namespace TowerBuilder.GameWorld.Entities
             meshTransform.SetParent(parent, false);
             meshTransform.localPosition = Vector3.zero;
 
-            // TODO here - use entity layer instead
-            meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(relativeCellCoordinates, 1f);
+            // TODO here - use entity layer instead of 1f
+            meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(
+                entity.absoluteCellCoordinatesList.bottomLeftCoordinates,
+                1f
+            );
             meshTransform.Translate(new Vector3(0, 0, -2f));
 
             childrenMeshRenderers =
