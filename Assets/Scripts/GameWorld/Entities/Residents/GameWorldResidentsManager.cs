@@ -52,7 +52,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
         }
 
         /* 
-            Static API
+            Static Interface
         */
         public static GameWorldResidentsManager Find() =>
             GameWorldFindableCache.Find<GameWorldResidentsManager>("ResidentsManager");

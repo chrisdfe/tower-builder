@@ -71,7 +71,7 @@ namespace TowerBuilder.DataTypes
             cellOrientation == CellOrientation.Left;
 
         /*
-            Static API
+            Static Interface
         */
         public static CellNeighbors FromCellCoordinatesList(CellCoordinates cellCoordinates, CellCoordinatesList cellCoordinatesList) =>
             new CellNeighbors(

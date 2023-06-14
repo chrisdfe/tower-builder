@@ -6,7 +6,7 @@ namespace TowerBuilder.GameWorld.Entities.Floors
     public class GameWorldFloorsManager : EntityTypeManager, IFindable
     {
         /* 
-            Static API
+            Static Interface
         */
         public static GameWorldFloorsManager Find() =>
             GameWorldFindableCache.Find<GameWorldFloorsManager>("FloorsManager");

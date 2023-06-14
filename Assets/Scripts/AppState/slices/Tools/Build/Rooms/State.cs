@@ -35,7 +35,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
         }
 
         /*
-            Public API
+            Public Interface
         */
         public void SetSelectedRoomKey(string value)
         {

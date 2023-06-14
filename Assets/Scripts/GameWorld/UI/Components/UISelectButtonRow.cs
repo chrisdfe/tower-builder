@@ -67,7 +67,7 @@ namespace TowerBuilder.GameWorld.UI.Components
         }
 
         /* 
-            Static API
+            Static Interface
         */
         public static UISelectButtonRow Create(Transform parent, Input input)
         {

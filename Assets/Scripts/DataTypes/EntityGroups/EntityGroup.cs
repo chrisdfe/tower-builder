@@ -78,7 +78,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
         }
 
         /*
-            Public API
+            Public Interface
         */
         public void Add(Entity entity)
         {
@@ -156,7 +156,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
             new ListWrapper<Entity>();
 
         /*
-            Static API
+            Static Interface
         */
         public static EntityGroup CreateFromDefinition(EntityGroupDefinition entityGroupDefinition)
         {

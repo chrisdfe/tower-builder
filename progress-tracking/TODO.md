@@ -5,8 +5,6 @@
 - BUG: blueprint entity doesn't resize properly
 - EntityGroup should have "offsetCoordinates" field
 - Entity absoluteCellCoordinates should take parent offsetCoordinates into account
-- replace "public API" annotations with "public interface" (since API is obvs the wrong word for that)
-- Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
 - EntityManager classes (FurnitureManager etc) should derive from a base class
 
 ## After
@@ -319,6 +317,8 @@
 
 # Done
 
+- replace "Public Interface" annotations with "public interface" (since API is obvs the wrong word for that)
+- Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
 - Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
 - Replace "\_\_Manager" assetList field with just a single "prefabAsset" field. assetList/meshList is confusing.
 - Room should just be a collection of walls/floor, in a similar way relationship to vehicles -> rooms

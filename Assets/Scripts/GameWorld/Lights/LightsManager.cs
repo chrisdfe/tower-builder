@@ -344,7 +344,7 @@ namespace TowerBuilder.GameWorld.Lights
         }
 
         /*
-            Static API 
+            Static Interface 
         */
         public static LightsManager Find() =>
             GameWorldFindableCache.Find<LightsManager>("LightsManager");

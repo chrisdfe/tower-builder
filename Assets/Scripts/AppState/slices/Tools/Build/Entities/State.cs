@@ -73,7 +73,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         }
 
         /*
-            Public API
+            Public Interface
         */
         public void SetSelectedEntityKey(Type entityType)
         {

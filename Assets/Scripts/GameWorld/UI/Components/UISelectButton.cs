@@ -66,7 +66,7 @@ namespace TowerBuilder.GameWorld.UI.Components
         }
 
         /* 
-            Static API
+            Static Interface
         */
         public static UISelectButton Create(Transform parent, Input input)
         {

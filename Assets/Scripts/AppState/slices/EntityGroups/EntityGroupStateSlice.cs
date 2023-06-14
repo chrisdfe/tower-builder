@@ -50,7 +50,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         }
 
         /* 
-            Public API
+            Public Interface
         */
         public void Add(ListWrapper<EntityGroup> newItemsList)
         {

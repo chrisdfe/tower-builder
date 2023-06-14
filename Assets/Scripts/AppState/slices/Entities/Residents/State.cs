@@ -28,7 +28,7 @@ namespace TowerBuilder.ApplicationState.Entities.Residents
         public State(AppState appState) : this(appState, new Input()) { }
 
         /*
-            Public API
+            Public Interface
         */
         public void SetResidentPosition(Resident resident, CellCoordinates cellCoordinates)
         {

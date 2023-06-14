@@ -8,7 +8,7 @@ namespace TowerBuilder.DataTypes
     public class Validator
     {
         /* 
-            Static API
+            Static Interface
         */
         public static ListWrapper<ValidationError> CreateSingleItemValidationErrorList(string message) =>
             new ListWrapper<ValidationError>(new ValidationError(message));

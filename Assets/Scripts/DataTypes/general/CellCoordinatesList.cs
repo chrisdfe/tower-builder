@@ -140,7 +140,7 @@ namespace TowerBuilder.DataTypes
         public void ForEach(Predicate<CellCoordinates> predicate) => items.ForEach(cellCoordinates => predicate(cellCoordinates));
 
         /*
-            Static API
+            Static Interface
         */
         public static CellCoordinatesList one => new CellCoordinatesList(CellCoordinates.zero);
 

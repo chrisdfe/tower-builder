@@ -33,7 +33,7 @@ namespace TowerBuilder.ApplicationState.Entities
         }
 
         /* 
-            Public API
+            Public Interface
         */
         public void Add(ListWrapper<Entity> newItemsList)
         {

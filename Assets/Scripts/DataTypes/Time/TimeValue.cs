@@ -182,7 +182,7 @@ namespace TowerBuilder.DataTypes.Time
         }
 
         /* 
-            Static API
+            Static Interface
         */
         public static TimeValue zero
         {

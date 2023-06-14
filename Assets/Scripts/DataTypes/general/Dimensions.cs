@@ -23,7 +23,7 @@ namespace TowerBuilder.DataTypes
             width == otherDimensions.width && height == otherDimensions.height;
 
         /*
-            Static API
+            Static Interface
         */
         public static Dimensions one
         {

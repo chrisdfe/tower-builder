@@ -6,7 +6,7 @@ namespace TowerBuilder.GameWorld.Entities.Windows
     public class GameWorldWindowsManager : EntityTypeManager, IFindable
     {
         /* 
-            Static API
+            Static Interface
         */
         public static GameWorldWindowsManager Find() =>
             GameWorldFindableCache.Find<GameWorldWindowsManager>("WindowsManager");

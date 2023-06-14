@@ -44,7 +44,7 @@ namespace TowerBuilder.DataTypes
         public CellCoordinates Clone() => new CellCoordinates(x, y);
 
         /* 
-            Static API
+            Static Interface
         */
         public static CellCoordinates Add(CellCoordinates a, CellCoordinates b) =>
             new CellCoordinates(a.x + b.x, a.y + b.y);

@@ -23,7 +23,7 @@ namespace TowerBuilder.DataTypes
             x == otherDistance.x && y == otherDistance.y;
 
         /*
-            Static API
+            Static Interface
         */
         public static Distance one
         {

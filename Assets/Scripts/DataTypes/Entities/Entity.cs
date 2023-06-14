@@ -99,7 +99,7 @@ namespace TowerBuilder.DataTypes.Entities
             blocksList.items.Find(cellCoordinatesBlock => cellCoordinatesBlock.Contains(cellCoordinates));
 
         /*
-            Static API
+            Static Interface
         */
         public static Entity CreateFromDefinition(EntityDefinition definition)
         {

@@ -6,7 +6,7 @@ namespace TowerBuilder.GameWorld.Entities.InteriorLights
     public class GameWorldInteriorLightsManager : EntityTypeManager, IFindable
     {
         /* 
-            Static API
+            Static Interface
         */
         public static GameWorldInteriorLightsManager Find() =>
             GameWorldFindableCache.Find<GameWorldInteriorLightsManager>("InteriorLightsManager");
