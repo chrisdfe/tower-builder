@@ -5,7 +5,6 @@
 - BUG: blueprint entity doesn't resize properly
 - EntityGroup should have "offsetCoordinates" field
 - Entity absoluteCellCoordinates should take parent offsetCoordinates into account
-- EntityManager classes (FurnitureManager etc) should derive from a base class
 
 ## After
 
@@ -317,6 +316,7 @@
 
 # Done
 
+- EntityManager classes (FurnitureManager etc) should derive from a base class
 - replace "Public Interface" annotations with "public interface" (since API is obvs the wrong word for that)
 - Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity
 - Pull resident.SetResidentPosition out into Entity as a starting point for moving entities instead of just destroying/creating new ones
