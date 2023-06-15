@@ -3,9 +3,9 @@
 ## Current
 
 - PROJECT: move entities/entityGroups instead of destroying/creating new ones in build mode
-- EntityGroup should have "offsetCoordinates" field
-- Entity absoluteCellCoordinates should take parent offsetCoordinates into account
-- FoundationValidator ValidateIsOnGroundFloorOrAboveAnotherFoundation
+- BUG: EntityGroup position gets reset back to 0,0 after attempting to build in an invalid location
+- BUG: 2 windows get created instead of 1
+- BUG: entityGroup entity valid/invalid colors are 1 onSelectionBoxUpdated behind where they should be at. i.e whatever the "isValid" value was of the last position
 
 ## After
 
@@ -319,6 +319,9 @@
 
 # Done
 
+- FoundationValidator ValidateIsOnGroundFloorOrAboveAnotherFoundation
+- EntityGroup should have "offsetCoordinates" field
+- Entity absoluteCellCoordinates should take parent offsetCoordinates into account
 - BUG: blueprint entity still doesn't resize properly
 - EntityManager classes (FurnitureManager etc) should derive from a base class
 - replace "Public Interface" annotations with "public interface" (since API is obvs the wrong word for that)
