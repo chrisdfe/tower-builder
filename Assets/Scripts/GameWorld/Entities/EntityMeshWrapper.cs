@@ -23,7 +23,7 @@ namespace TowerBuilder.GameWorld.Entities
 
         public static Dictionary<ColorKey, Color> ColorMap = new Dictionary<ColorKey, Color>() {
             { ColorKey.Base, Color.grey },
-            { ColorKey.Hover, Color.green },
+            { ColorKey.Hover, Color.white },
             { ColorKey.Inspected, Color.cyan },
             { ColorKey.Destroy, Color.red },
             { ColorKey.ValidBlueprint, Color.blue },

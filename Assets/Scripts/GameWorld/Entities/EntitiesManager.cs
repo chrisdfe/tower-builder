@@ -79,6 +79,8 @@ namespace TowerBuilder.GameWorld.Entities
 
             Registry.appState.EntityGroups.onPositionUpdated += OnEntityGroupPositionUpdated;
 
+            Registry.appState.UI.onCurrentSelectedEntityListUpdated += OnCurrentSelectedEntityListUpdated;
+
             Registry.appState.Tools.Destroy.onDestroySelectionUpdated += OnDestroySelectionUpdated;
             Registry.appState.Tools.Inspect.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
             Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
@@ -93,6 +95,8 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.onEntityPositionUpdated -= OnEntityPositionUpdated;
 
             Registry.appState.EntityGroups.onPositionUpdated -= OnEntityGroupPositionUpdated;
+
+            Registry.appState.UI.onCurrentSelectedEntityListUpdated -= OnCurrentSelectedEntityListUpdated;
 
             Registry.appState.Tools.Destroy.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
             Registry.appState.Tools.Inspect.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
@@ -141,6 +145,14 @@ namespace TowerBuilder.GameWorld.Entities
             }
         }
 
+        void OnCurrentSelectedEntityListUpdated(ListWrapper<Entity> _)
+        {
+            foreach (EntityTypeManager entityList in entityManagerList)
+            {
+                entityList.UpdateAllEntityColors();
+            }
+        }
+
         void OnInspectedEntityListUpdated(ListWrapper<Entity> entitiesList)
         {
             foreach (EntityTypeManager entityList in entityManagerList)
@@ -151,9 +163,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         void OnCurrentSelectedEntityUpdated(Entity entity)
         {
-            Debug.Log("on current selected entity updated");
-            Debug.Log(entity);
-
             foreach (EntityTypeManager entityList in entityManagerList)
             {
                 entityList.UpdateAllEntityColors();

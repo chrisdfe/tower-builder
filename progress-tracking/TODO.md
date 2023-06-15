@@ -2,15 +2,15 @@
 
 ## Current
 
+- TASK: New type of materials (made with shadergraph?) that take in an "overlay" (or whatever) color used for Entity
+
 ## After
 
 - There might need to be a couple more Tileable "Center" types - e.g "IsolatedCenter" (only top, right, left, bottom). corners? etc.
-  - Maybe combinations of various mesh pieces
+  - Maybe combinations of various mesh pieces? for a future iteration maybe
 - EntityMeshCellWrapper fallbacks - if the mesh should be BottomIsolated but only Bottom exists, then use Bottom
 - EntityMeshCellWrapper should probably delete mesh segments that don't get used instead of gameObject.SetActive(false)
 - Entity meshes should be oriented to the bottom of the cell, then repositioned up by FLOOR_HEIGHT amount
-- Default flexible entity mesh
-- "highlighted" entity as well, not just selected
 - PROJECT: Default building/more entity group integration
   - Foundation not built inside an already existing room should create one
   - Rooms should get added to buildings or vehicles
@@ -321,6 +321,8 @@
 
 # Done
 
+- "highlighted" entity as well, not just selected
+- Default flexible entity mesh
 - PROJECT: bring back "selected entity"
 - BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
 - BUG: two windows still get created

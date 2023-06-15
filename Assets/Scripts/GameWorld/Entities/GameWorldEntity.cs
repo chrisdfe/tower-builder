@@ -156,6 +156,12 @@ namespace TowerBuilder.GameWorld.Entities
                 {
                     entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Inspected);
                     hasUpdated = true;
+                    return;
+                }
+                else if (Registry.appState.UI.currentSelectedCellEntityList.Contains(entity))
+                {
+                    entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Hover);
+                    hasUpdated = true;
                 }
             }
         }
