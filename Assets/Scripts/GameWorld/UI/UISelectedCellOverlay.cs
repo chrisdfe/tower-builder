@@ -17,18 +17,31 @@ namespace TowerBuilder.GameWorld.UI
         public void Awake()
         {
             Registry.appState.UI.onSelectionBoxUpdated += OnSelectionBoxUpdated;
+            Registry.appState.UI.onSelectionBoxReset += OnSelectionBoxReset;
         }
 
         public void OnDestroy()
         {
             Registry.appState.UI.onSelectionBoxUpdated -= OnSelectionBoxUpdated;
+            Registry.appState.UI.onSelectionBoxReset -= OnSelectionBoxReset;
         }
 
+        /* 
+            Event Handlers
+        */
         void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
             ResizeAndSetPosition();
         }
 
+        void OnSelectionBoxReset(SelectionBox selectionBox)
+        {
+            ResizeAndSetPosition();
+        }
+
+        /*
+            Internals
+        */
         void ResizeAndSetPosition()
         {
             SelectionBox selectionBox = Registry.appState.UI.selectionBox;

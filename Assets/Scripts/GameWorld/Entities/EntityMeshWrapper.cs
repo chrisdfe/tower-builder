@@ -78,14 +78,10 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void UpdatePosition()
         {
-            // Debug.Log("position b4 UpdatePosition");
-            // Debug.Log(transform.localPosition);
             transform.localPosition = GameWorldUtils.CellCoordinatesToPosition(
                 entity.absoluteCellCoordinatesList.bottomLeftCoordinates,
                 1f
             ) + positionOffset;
-            // Debug.Log("position after UpdatePosition");
-            // Debug.Log(transform.localPosition);
         }
 
         public void SetColor(ColorKey key)
@@ -113,9 +109,6 @@ namespace TowerBuilder.GameWorld.Entities
             entityCellMeshWrapperList = entity.relativeCellCoordinatesList.items
                 .Select((cellCoordinates) =>
                 {
-                    Debug.Log("creating entity cell mesh wrapper at: ");
-                    Debug.Log(cellCoordinates);
-
                     CellNeighbors cellNeighbors = CellNeighbors.FromCellCoordinatesList(cellCoordinates, entity.relativeCellCoordinatesList);
 
                     Tileable.CellPosition cellPosition = Tileable.GetCellPosition(cellNeighbors);

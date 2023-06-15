@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Entities.Residents;
-using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using UnityEngine;
@@ -90,16 +87,6 @@ namespace TowerBuilder.ApplicationState.UI
         {
             this.currentSelectedCell = currentSelectedCell;
 
-            // currentSelectedRoom = Registry.appState.Entities.Rooms.queries.FindRoomAtCell(currentSelectedCell);
-
-            // currentSelectedRoomBlock = null;
-            // if (currentSelectedRoom != null)
-            // {
-            //     currentSelectedRoomBlock = currentSelectedRoom.FindBlockByCellCoordinates(currentSelectedCell);
-
-            //     currentSelectedVehicle = Registry.appState.Entities.Vehicles.queries.FindVehicleByRoom(currentSelectedRoom);
-            // }
-
             if (selectionIsActive)
             {
                 selectionBox.SetEnd(currentSelectedCell);
@@ -109,12 +96,9 @@ namespace TowerBuilder.ApplicationState.UI
                 selectionBox.SetStartAndEnd(currentSelectedCell);
             }
 
-            // SetEntityList();
 
             onCurrentSelectedCellUpdated?.Invoke(currentSelectedCell);
             onSelectionBoxUpdated?.Invoke(selectionBox);
-            // onCurrentSelectedRoomUpdated?.Invoke(currentSelectedRoom);
-            // onCurrentSelectedRoomBlockUpdated?.Invoke(currentSelectedRoomBlock);
         }
 
         public void SelectStart()
@@ -139,7 +123,6 @@ namespace TowerBuilder.ApplicationState.UI
         {
             selectionBox = new SelectionBox(currentSelectedCell);
 
-            // onSelectionBoxUpdated?.Invoke(selectionBox);
             onSelectionBoxReset?.Invoke(selectionBox);
         }
 

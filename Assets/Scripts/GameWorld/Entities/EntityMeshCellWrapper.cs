@@ -92,8 +92,6 @@ namespace TowerBuilder.GameWorld.Entities
             meshTransform.localPosition = Vector3.zero;
 
             // TODO here - use entity layer instead of 1f
-            Debug.Log("cellCoordinates");
-            Debug.Log(cellCoordinates);
             meshTransform.localPosition = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates, 1f);
             meshTransform.Translate(new Vector3(0, 0, -2f));
 

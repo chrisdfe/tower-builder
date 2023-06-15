@@ -78,6 +78,8 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Build(Entity entity)
         {
+            entity.Validate(appState);
+
             if (!entity.isValid)
             {
                 // TODO - these should be unique messages - right now they are not
@@ -100,6 +102,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public void UpdateEntityOffsetCoordinates(Entity entity, CellCoordinates offsetCoordinates)
         {
             entity.offsetCoordinates = offsetCoordinates;
+            entity.Validate(appState);
 
             onEntityOffsetCoordinatesUpdated?.Invoke(entity);
         }

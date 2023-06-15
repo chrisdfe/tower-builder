@@ -56,6 +56,7 @@ namespace TowerBuilder.ApplicationState.Tools
             appState.UI.onSelectionStart += OnSelectionStart;
             appState.UI.onSelectionEnd += OnSelectionEnd;
             appState.UI.onSelectionBoxUpdated += OnSelectionBoxUpdated;
+            appState.UI.onSelectionBoxReset += OnSelectionBoxReset;
 
             appState.UI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
             appState.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
@@ -103,6 +104,11 @@ namespace TowerBuilder.ApplicationState.Tools
         void OnSelectionEnd(SelectionBox selectionBox)
         {
             activeToolState.OnSelectionEnd(selectionBox);
+        }
+
+        void OnSelectionBoxReset(SelectionBox selectionBox)
+        {
+            activeToolState.OnSelectionBoxReset(selectionBox);
         }
 
         void OnCurrentSelectedEntityListUpdated(ListWrapper<Entity> entityList)

@@ -84,9 +84,6 @@ namespace TowerBuilder.GameWorld.Entities
             entityMeshWrapper.prefabMesh = prefabMesh;
             entityMeshWrapper.CreateEntityMeshCellWrapper = CreateEntityMeshCellWrapper;
 
-            Debug.Log("position");
-            Debug.Log(transform.localPosition);
-
             entityMeshWrapper.Setup();
         }
 
@@ -114,6 +111,7 @@ namespace TowerBuilder.GameWorld.Entities
                 entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Default);
             }
 
+            // TODO - pull these out into the class body + make them protected/overrideable
             void SetBuildStateColor()
             {
                 if (entity.isInBlueprintMode)

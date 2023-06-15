@@ -122,6 +122,7 @@ namespace TowerBuilder.GameWorld.Entities
         void OnEntityOffsetCoordinatesUpdated(Entity entity)
         {
             GetListByType(entity.GetType())?.UpdateEntityPosition(entity);
+            GetListByType(entity.GetType())?.UpdateEntityColor(entity);
         }
 
         void OnInspectedEntityListUpdated(ListWrapper<Entity> entitiesList)

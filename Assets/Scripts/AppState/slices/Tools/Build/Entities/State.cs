@@ -4,6 +4,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Notifications;
+using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 {
@@ -34,11 +35,13 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         /*
             State
         */
-        public Type selectedEntityType { get; private set; } = typeof(DataTypes.Entities.Foundations.Foundation);
+        public Type selectedEntityType { get; private set; } = DEFAULT_TYPE;
         public string selectedEntityCategory { get; private set; } = "";
         public EntityDefinition selectedEntityDefinition { get; private set; } = null;
 
         public Entity blueprintEntity { get; private set; } = null;
+
+        static Type DEFAULT_TYPE = typeof(DataTypes.Entities.Foundations.Foundation);
 
         public State(AppState appState, Tools.State toolState, Build.State buildState, Input input) : base(appState, toolState, buildState)
         {
@@ -73,11 +76,12 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             if (buildState.buildIsActive)
             {
                 ResetBlueprintEntity();
-                onBlueprintEntityUpdated?.Invoke(blueprintEntity);
             }
             else
             {
                 appState.Entities.UpdateEntityOffsetCoordinates(blueprintEntity, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
+                blueprintEntity.Validate(appState);
+                onBlueprintEntityUpdated?.Invoke(blueprintEntity);
                 onBlueprintEntityPositionUpdated?.Invoke(blueprintEntity);
             }
         }
@@ -141,6 +145,11 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             }
         }
 
+        public override void OnSelectionBoxReset(SelectionBox selectionBox)
+        {
+            ResetBlueprintEntity();
+        }
+
         /*
             Internals
         */
@@ -156,9 +165,11 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
             blueprintEntity.isInBlueprintMode = true;
             blueprintEntity.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
+            blueprintEntity.offsetCoordinates = Registry.appState.UI.selectionBox.cellCoordinatesList.bottomLeftCoordinates;
             blueprintEntity.Validate(Registry.appState);
 
             Registry.appState.Entities.Add(blueprintEntity);
+            onBlueprintEntityUpdated?.Invoke(blueprintEntity);
         }
 
         void BuildBlueprintEntity()

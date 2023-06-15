@@ -2,12 +2,14 @@
 
 ## Current
 
-- BUG: blueprint entity still doesn't resize properly
+- PROJECT: move entities/entityGroups instead of destroying/creating new ones in build mode
 - EntityGroup should have "offsetCoordinates" field
 - Entity absoluteCellCoordinates should take parent offsetCoordinates into account
+- FoundationValidator ValidateIsOnGroundFloorOrAboveAnotherFoundation
 
 ## After
 
+- CLEANUP: You should be able to pass a list of validation errors straight into Notifications.State.Add instead of mapping them all to a string
 - Use entity.definition.skinKey to decide which meshasset to use, not entity.definition.key
 - blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
 - Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
@@ -26,7 +28,7 @@
   - connected to/disconnected from transport
 - experiment with light culling
   - different room types
-- Save system
+- PROJECT: Save system
   - save file versioning
   - migrations between save file versions - add stuff to the json to make it serialize correctly with current codebase
 - reimplement destroy tool to work with entities/entitygroups
@@ -316,6 +318,7 @@
 
 # Done
 
+- BUG: blueprint entity still doesn't resize properly
 - EntityManager classes (FurnitureManager etc) should derive from a base class
 - replace "Public Interface" annotations with "public interface" (since API is obvs the wrong word for that)
 - Extend the logic on line 41/42 in GameWorldFoundation to the rest of the GameWorld entities. Definitions should be able to be basically be null and still render a entity

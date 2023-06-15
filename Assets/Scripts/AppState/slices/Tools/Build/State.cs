@@ -74,6 +74,11 @@ namespace TowerBuilder.ApplicationState.Tools.Build
             GetCurrentMode().OnSelectionBoxUpdated(selectionBox);
         }
 
+        public override void OnSelectionBoxReset(SelectionBox selectionBox)
+        {
+            GetCurrentMode().OnSelectionBoxReset(selectionBox);
+        }
+
         public override void OnCurrentSelectedRoomBlockUpdated(CellCoordinatesBlock roomBlock)
         {
             GetCurrentMode().OnCurrentSelectedRoomBlockUpdated(roomBlock);

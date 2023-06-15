@@ -34,7 +34,6 @@ namespace TowerBuilder.DataTypes.Entities
             }
 
             return new ListWrapper<ValidationError>();
-
         }
 
         public static ListWrapper<ValidationError> ValidateEntityIsNotOverlappingAnotherEntityOfSameType(AppState appState, Entity entity)

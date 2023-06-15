@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using TowerBuilder.ApplicationState;
+using TowerBuilder.DataTypes;
 
 namespace TowerBuilder.DataTypes.Entities.Foundations
 {
@@ -8,11 +10,14 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
         protected override List<EntityValidator.ValidationFunc> customValidators =>
             new List<EntityValidator.ValidationFunc>()
             {
-                // TODO - this should go in EntityValidator
-                GenericEntityValidations.ValidateEntityIsNotOverlappingAnotherEntityOfSameType
+                ValidateIsOnGroundFloorOrAboveAnotherFoundation
             };
 
         public FoundationValidator(Foundation foundation) : base(foundation) { }
 
+        static ListWrapper<ValidationError> ValidateIsOnGroundFloorOrAboveAnotherFoundation(AppState appState, Entity entity)
+        {
+            return new ListWrapper<ValidationError>();
+        }
     }
 }

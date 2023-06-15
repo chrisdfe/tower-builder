@@ -11,24 +11,14 @@ namespace TowerBuilder.DataTypes
         public CellCoordinates start { get; private set; }
         public CellCoordinates end { get; private set; }
 
-        public CellCoordinatesList cellCoordinatesList
-        {
-            get
-            {
-                return CellCoordinatesList.CreateRectangle(start, end);
-            }
-        }
+        public CellCoordinatesList cellCoordinatesList =>
+            CellCoordinatesList.CreateRectangle(start, end);
 
-        public Dimensions dimensions
-        {
-            get
-            {
-                return new Dimensions(
-                    (cellCoordinatesList.topRightCoordinates.x - cellCoordinatesList.bottomLeftCoordinates.x) + 1,
-                    (cellCoordinatesList.topRightCoordinates.y - cellCoordinatesList.bottomLeftCoordinates.y) + 1
-                );
-            }
-        }
+        public Dimensions dimensions =>
+            new Dimensions(
+                (cellCoordinatesList.topRightCoordinates.x - cellCoordinatesList.bottomLeftCoordinates.x) + 1,
+                (cellCoordinatesList.topRightCoordinates.y - cellCoordinatesList.bottomLeftCoordinates.y) + 1
+            );
 
         public SelectionBox(CellCoordinates start, CellCoordinates end)
         {

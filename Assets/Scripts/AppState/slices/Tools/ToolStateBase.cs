@@ -31,5 +31,7 @@ namespace TowerBuilder.ApplicationState.Tools
         public virtual void OnSelectionStart(SelectionBox selectionBox) { }
 
         public virtual void OnSelectionEnd(SelectionBox selectionBox) { }
+
+        public virtual void OnSelectionBoxReset(SelectionBox selectionBox) { }
     }
 }
