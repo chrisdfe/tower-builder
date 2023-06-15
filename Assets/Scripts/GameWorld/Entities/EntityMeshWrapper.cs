@@ -106,6 +106,7 @@ namespace TowerBuilder.GameWorld.Entities
 
         void CreateEntityCellWrappers()
         {
+            // TODO here - replace this with "absoluteCellCoordinatesList"?
             entityCellMeshWrapperList = entity.relativeCellCoordinatesList.items
                 .Select((cellCoordinates) =>
                 {

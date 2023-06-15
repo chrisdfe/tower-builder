@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.GameWorld.Entities.Floors;
 using TowerBuilder.GameWorld.Entities.Foundations;
 using TowerBuilder.GameWorld.Entities.Freight;
@@ -76,6 +77,8 @@ namespace TowerBuilder.GameWorld.Entities
 
             Registry.appState.Entities.onEntityPositionUpdated += OnEntityPositionUpdated;
 
+            Registry.appState.EntityGroups.onPositionUpdated += OnEntityGroupPositionUpdated;
+
             Registry.appState.Tools.Destroy.onDestroySelectionUpdated += OnDestroySelectionUpdated;
             Registry.appState.Tools.Inspect.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
             Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
@@ -125,6 +128,15 @@ namespace TowerBuilder.GameWorld.Entities
         {
             GetListByType(entity.GetType())?.UpdateEntityPosition(entity);
             GetListByType(entity.GetType())?.UpdateEntityColor(entity);
+        }
+
+        void OnEntityGroupPositionUpdated(EntityGroup entityGroup)
+        {
+            foreach (Entity entity in entityGroup.entities.items)
+            {
+                GetListByType(entity.GetType())?.UpdateEntityPosition(entity);
+                GetListByType(entity.GetType())?.UpdateEntityColor(entity);
+            }
         }
 
         void OnInspectedEntityListUpdated(ListWrapper<Entity> entitiesList)
