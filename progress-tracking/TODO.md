@@ -7,13 +7,17 @@
   - Rooms should get added to buildings or vehicles
   - When starting out there should be a "blueprint building" that entities/entity groups get added to.
   - buildings & vehicles should have different validation sets
+  - Limit the number of buildings/vehicles somehow
+    - arbitrarily?
+    - with money?
 
 ## After
 
-- right click dropdown
+- PROJECT: bring back "selected entity"
+- PROJECT right click dropdown menu
 - PROJECT: Entity.CalculateCellsFromSelectionBox improvements
-  - Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
-  - blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
+  - [ ] Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
+  - [ ] blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
 - PROJECT: Tooltips
   - name/id when you hover over an entity?
   - bring back cursor money text
@@ -22,13 +26,15 @@
   - connected to/disconnected from transport
 - EXPERIMENT: with light culling
   - different room types
-- PROJECT: bring back "selected entity" in a more meaningful way
 - CLEANUP: it feels weird that RoomBuilder.Build returns an EntityGroup, not a Room
 - CLEANUP: CellCoordinates Add/Subtract api.
 - CLEANUP: Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
-- PROJECT: Save system
-  - save file versioning
-  - migrations between save file versions - add stuff to the json to make it serialize correctly with current codebase
+- PROJECT: Get save system working again
+  - [ ] Make sure state inputs are working
+  - [ ] get json save/load working properly
+- PROJECT: Save system improvements
+  - [ ] save file versioning
+  - [ ] migrations between save file versions - add stuff to the json to make it serialize correctly with current codebase
 - PROJECT: reimplement destroy tool
   - get it working again to just destroy entities
   - different "destroy" types - entity, room, building, etc
@@ -37,9 +43,6 @@
   - brightness
   - color
   - etc
-- Limit the number of buildings/vehicles somehow
-  - arbitrarily?
-  - with money?
 - PROJECT: Resident+resident interaction
   - this will require "selected entity" functionality to be present again
   - shopkeepers could eventually use this
@@ -51,17 +54,13 @@
   - not floor height like the height of a building floor, the floor that you stand on
   - add "FLOOR_HEIGHT" constant (2 or 3 probably) and use that for floors instead
 - CLEANUP: Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
-- "Empty floor" entity, for when a room has been deleted?
+- Foundation should be un-deletable if there is another room on top
 - Verify that all specified assets actually exist
 - Remove journeys for now and focus on building?
 - Entity type categories
 - use "min size" instead of staticBlockSize, which is confusing
   - block size can be smaller than min size, eg. escalators/stairs
   - maybe alternatively "border" size could be defined, and "fill" size? for escalator border would be 1 (x2, so 2x2 at minimum) and then 1 on the inside
-- Different vehicle/building types
-  - stationary
-  - vehicle
-  - maybe I should rename vehicle back to Building for this
 - 3 cells = 1 room cell? 5?
 - built in way of entities to add modifiers to related entities,
   - to avoid all the boilerplate of adding/removing modifiers in setup/teardown
