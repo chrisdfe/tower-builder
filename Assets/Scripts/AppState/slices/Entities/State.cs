@@ -35,12 +35,18 @@ namespace TowerBuilder.ApplicationState.Entities
             }
         }
 
+        /*
+            Events
+        */
         public ListEvent<Entity> onEntitiesAdded { get; set; }
         public ListEvent<Entity> onEntitiesRemoved { get; set; }
         public ListEvent<Entity> onEntitiesBuilt { get; set; }
 
-        public ItemEvent<Entity> onEntityOffsetCoordinatesUpdated { get; set; }
+        public ItemEvent<Entity> onEntityPositionUpdated { get; set; }
 
+        /*
+            State
+        */
         public Foundations.State Foundations { get; }
         public Floors.State Floors { get; }
         public Windows.State Windows { get; }
@@ -87,6 +93,9 @@ namespace TowerBuilder.ApplicationState.Entities
             };
         }
 
+        /*
+            Lifecycle
+        */
         public override void Setup()
         {
             sliceList.ForEach(slice =>
@@ -100,7 +109,8 @@ namespace TowerBuilder.ApplicationState.Entities
                 stateSlice.onItemsAdded += OnEntitiesAdded;
                 stateSlice.onItemsRemoved += OnEntitiesRemoved;
                 stateSlice.onItemsBuilt += OnEntitiesBuilt;
-                stateSlice.onEntityOffsetCoordinatesUpdated += OnEntityOffsetCoordinatesUpdated;
+
+                stateSlice.onEntityPositionUpdated += OnEntityPositionUpdated;
             }
         }
 
@@ -119,15 +129,22 @@ namespace TowerBuilder.ApplicationState.Entities
                 stateSlice.onItemsAdded -= OnEntitiesAdded;
                 stateSlice.onItemsRemoved -= OnEntitiesRemoved;
                 stateSlice.onItemsBuilt -= OnEntitiesBuilt;
-                stateSlice.onEntityOffsetCoordinatesUpdated -= OnEntityOffsetCoordinatesUpdated;
+
+                stateSlice.onEntityPositionUpdated -= OnEntityPositionUpdated;
             }
         }
 
+        /*
+            Public Interface
+        */
         public void Add(Entity entity)
         {
             GetStateSlice(entity)?.Add(entity);
         }
 
+        /*
+            TODO
+        */
         // This needs to be done individually because entities could include Entities
         // of many different types
         // Ideally I'd group entities by type first and then Add(entities), to cut down
@@ -161,19 +178,6 @@ namespace TowerBuilder.ApplicationState.Entities
             GetStateSlice(entity)?.UpdateEntityOffsetCoordinates(entity, offsetCoordinates);
         }
 
-        /*
-            Queries
-        */
-        public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
-            sliceList.Aggregate(new ListWrapper<Entity>(), (acc, slice) =>
-            {
-                acc.Add(slice.FindEntitiesAtCell(cellCoordinates));
-                return acc;
-            });
-
-        /*
-            Internals
-        */
         public EntityStateSlice GetStateSlice(Entity entity) =>
             entity switch
             {
@@ -188,6 +192,16 @@ namespace TowerBuilder.ApplicationState.Entities
                 DataTypes.Entities.Windows.Window => Windows,
                 _ => throw new NotSupportedException($"Entity type not handled: {entity.GetType()}")
             };
+
+        /*
+            Queries
+        */
+        public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
+            sliceList.Aggregate(new ListWrapper<Entity>(), (acc, slice) =>
+            {
+                acc.Add(slice.FindEntitiesAtCell(cellCoordinates));
+                return acc;
+            });
 
         /*
             Event Handlers
@@ -207,9 +221,9 @@ namespace TowerBuilder.ApplicationState.Entities
             onEntitiesBuilt?.Invoke(entityList);
         }
 
-        void OnEntityOffsetCoordinatesUpdated(Entity entity)
+        void OnEntityPositionUpdated(Entity entity)
         {
-            onEntityOffsetCoordinatesUpdated?.Invoke(entity);
+            onEntityPositionUpdated?.Invoke(entity);
         }
     }
 }

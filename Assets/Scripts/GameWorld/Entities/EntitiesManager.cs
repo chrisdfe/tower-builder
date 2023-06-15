@@ -73,7 +73,8 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.onEntitiesAdded += OnEntitiesAdded;
             Registry.appState.Entities.onEntitiesRemoved += OnEntitiesRemoved;
             Registry.appState.Entities.onEntitiesBuilt += OnEntitiesBuilt;
-            Registry.appState.Entities.onEntityOffsetCoordinatesUpdated += OnEntityOffsetCoordinatesUpdated;
+
+            Registry.appState.Entities.onEntityPositionUpdated += OnEntityPositionUpdated;
 
             Registry.appState.Tools.Destroy.onDestroySelectionUpdated += OnDestroySelectionUpdated;
             Registry.appState.Tools.Inspect.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
@@ -85,7 +86,8 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.onEntitiesAdded -= OnEntitiesAdded;
             Registry.appState.Entities.onEntitiesRemoved -= OnEntitiesRemoved;
             Registry.appState.Entities.onEntitiesBuilt -= OnEntitiesBuilt;
-            Registry.appState.Entities.onEntityOffsetCoordinatesUpdated -= OnEntityOffsetCoordinatesUpdated;
+
+            Registry.appState.Entities.onEntityPositionUpdated -= OnEntityPositionUpdated;
 
             Registry.appState.Tools.Destroy.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
             Registry.appState.Tools.Inspect.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
@@ -119,7 +121,7 @@ namespace TowerBuilder.GameWorld.Entities
             });
         }
 
-        void OnEntityOffsetCoordinatesUpdated(Entity entity)
+        void OnEntityPositionUpdated(Entity entity)
         {
             GetListByType(entity.GetType())?.UpdateEntityPosition(entity);
             GetListByType(entity.GetType())?.UpdateEntityColor(entity);

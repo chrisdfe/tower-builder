@@ -18,7 +18,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public ListEvent<Entity> onListUpdated { get; set; }
 
-        public ItemEvent<Entity> onEntityOffsetCoordinatesUpdated { get; set; }
+        public ItemEvent<Entity> onEntityPositionUpdated { get; set; }
 
         /*
             State
@@ -104,7 +104,7 @@ namespace TowerBuilder.ApplicationState.Entities
             entity.offsetCoordinates = offsetCoordinates;
             entity.Validate(appState);
 
-            onEntityOffsetCoordinatesUpdated?.Invoke(entity);
+            onEntityPositionUpdated?.Invoke(entity);
         }
 
         protected virtual void OnPreBuild(Entity entity) { }

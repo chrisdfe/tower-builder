@@ -19,6 +19,25 @@ namespace TowerBuilder.DataTypes.EntityGroups
 
         public virtual string typeLabel => "EntityGroup";
 
+        public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
+
+        public CellCoordinates absoluteCellCoordinates
+        {
+            get
+            {
+                CellCoordinates result = offsetCoordinates;
+                EntityGroup currentParent = parent;
+
+                while (currentParent != null)
+                {
+                    result = CellCoordinates.Add(result, currentParent.offsetCoordinates);
+                    currentParent = currentParent.parent;
+                }
+
+                return result;
+            }
+        }
+
         public Dictionary<Type, ListWrapper<Entity>> groupedEntities
         {
             get

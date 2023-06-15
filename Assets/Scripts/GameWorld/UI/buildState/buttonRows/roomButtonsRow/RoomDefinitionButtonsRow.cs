@@ -25,14 +25,14 @@ namespace TowerBuilder.GameWorld.UI
         {
             base.Setup();
 
-            Registry.appState.Tools.Build.Rooms.events.onRoomKeyUpdated += OnRoomKeyUpdated;
+            Registry.appState.Tools.Build.Rooms.onRoomKeyUpdated += OnRoomKeyUpdated;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            Registry.appState.Tools.Build.Rooms.events.onRoomKeyUpdated -= OnRoomKeyUpdated;
+            Registry.appState.Tools.Build.Rooms.onRoomKeyUpdated -= OnRoomKeyUpdated;
         }
 
         public override bool ButtonShouldBeSelected(UISelectButton button) =>

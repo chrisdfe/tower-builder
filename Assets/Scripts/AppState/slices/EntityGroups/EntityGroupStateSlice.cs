@@ -20,6 +20,8 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
         public ListEvent<EntityGroup> onListUpdated { get; set; }
 
+        public ItemEvent<EntityGroup> onPositionUpdated { get; set; }
+
         /*
             State
         */
@@ -134,6 +136,13 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             builtItemsList.Add(entityGroup);
 
             onItemsBuilt?.Invoke(builtItemsList);
+        }
+
+        public void UpdateOffsetCoordinates(EntityGroup entityGroup, CellCoordinates newOffsetCoordinates)
+        {
+            entityGroup.offsetCoordinates = newOffsetCoordinates;
+
+            onPositionUpdated?.Invoke(entityGroup);
         }
 
         public void AddToEntityGroup(EntityGroup entityGroup, Entity entityToAdd)

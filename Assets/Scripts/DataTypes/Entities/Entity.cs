@@ -21,16 +21,26 @@ namespace TowerBuilder.DataTypes.Entities
 
         public EntityGroup parent { get; set; } = null;
 
-        public CellCoordinatesList relativeCellCoordinatesList { get; private set; } = new CellCoordinatesList();
         public CellCoordinatesBlockList blocksList { get; private set; } = new CellCoordinatesBlockList();
-        public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
 
+        public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
+        // TODO - absolute offset coordiantes?
+
+        public CellCoordinatesList relativeCellCoordinatesList { get; private set; } = new CellCoordinatesList();
+
+        // TODO - take parent into account
         public CellCoordinatesList absoluteCellCoordinatesList =>
             new CellCoordinatesList(
                 relativeCellCoordinatesList.items
                     .Select(cellCoordinates =>
-                        cellCoordinates.Add(offsetCoordinates)
-                    ).ToList()
+                    {
+                        CellCoordinates result = cellCoordinates.Add(offsetCoordinates);
+                        if (parent != null)
+                        {
+                            result = CellCoordinates.Add(result, parent.absoluteCellCoordinates);
+                        }
+                        return result;
+                    }).ToList()
             );
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();

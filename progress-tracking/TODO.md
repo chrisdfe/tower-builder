@@ -9,6 +9,7 @@
 
 ## After
 
+- CLEANUP: CellCoordinates Add/Subtract api.
 - CLEANUP: You should be able to pass a list of validation errors straight into Notifications.State.Add instead of mapping them all to a string
 - Use entity.definition.skinKey to decide which meshasset to use, not entity.definition.key
 - blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is

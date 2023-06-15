@@ -12,16 +12,12 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
     {
         public struct Input { }
 
-        public class Events
-        {
-            public delegate void RoomKeyEvent(string roomKey);
-            public RoomKeyEvent onRoomKeyUpdated;
+        public delegate void RoomKeyEvent(string roomKey);
+        public RoomKeyEvent onRoomKeyUpdated;
 
-            public delegate void blueprintUpdateEvent(Room blueprintRoom);
-            public blueprintUpdateEvent onBlueprintRoomUpdated;
-        }
-
-        public Events events { get; private set; }
+        public delegate void BlueprintEvent(Room blueprintRoom);
+        public BlueprintEvent onBlueprintUpdated;
+        public BlueprintEvent onBlueprintPositionUpdated;
 
         public string selectedRoomKey { get; private set; } = "Office";
 
@@ -31,7 +27,6 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
 
         public State(AppState appState, Tools.State state, Build.State buildState, Input input) : base(appState, state, buildState)
         {
-            events = new Events();
         }
 
         /*
@@ -44,7 +39,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
             ResetDefinition();
             ResetBlueprintRoom();
 
-            events.onRoomKeyUpdated?.Invoke(this.selectedRoomKey);
+            onRoomKeyUpdated?.Invoke(this.selectedRoomKey);
         }
 
         /*
@@ -82,9 +77,18 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
         {
             if (isLocked) return;
 
-            ResetBlueprintRoom();
 
-            events.onBlueprintRoomUpdated?.Invoke(blueprintRoom);
+            if (buildState.buildIsActive)
+            {
+                ResetBlueprintRoom();
+            }
+            else
+            {
+                appState.EntityGroups.UpdateOffsetCoordinates(blueprintRoom, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
+                blueprintRoom.Validate(appState);
+                onBlueprintUpdated?.Invoke(blueprintRoom);
+                onBlueprintPositionUpdated?.Invoke(blueprintRoom);
+            }
         }
 
         public override void OnBuildStart()
