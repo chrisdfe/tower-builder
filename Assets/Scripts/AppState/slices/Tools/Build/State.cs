@@ -68,6 +68,12 @@ namespace TowerBuilder.ApplicationState.Tools.Build
             EndBuild();
         }
 
+        public override void OnSecondaryActionEnd()
+        {
+            base.OnSecondaryActionEnd();
+            toolsState.SetToolState(ApplicationState.Tools.State.Key.Inspect);
+        }
+
         // Pass through to child
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {

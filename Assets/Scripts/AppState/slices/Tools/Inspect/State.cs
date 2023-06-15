@@ -4,6 +4,7 @@ using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
+using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools.Inspect
 {
@@ -37,18 +38,17 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
             }
         }
 
-        public State(AppState appState, Tools.State state, Input input) : base(appState, state)
-        {
-        }
+        public State(AppState appState, Tools.State state, Input input) : base(appState, state) { }
 
+        /*
+            Lifecycle
+        */
         public override void Setup()
         {
             base.Setup();
 
             appState.Entities.Furnitures.onItemsRemoved += OnFurnituresRemoved;
             appState.Entities.Residents.onItemsRemoved += OnResidentsRemoved;
-
-            appState.UI.onSecondaryActionPerformed += OnSecondaryActionPerformed;
         }
 
         public override void Teardown()
@@ -58,35 +58,28 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
             appState.Entities.Furnitures.onItemsRemoved -= OnFurnituresRemoved;
             appState.Entities.Residents.onItemsRemoved -= OnResidentsRemoved;
 
-            appState.UI.onSecondaryActionPerformed -= OnSecondaryActionPerformed;
-
+            // de-select selected entities
             inspectedEntityList = new ListWrapper<Entity>();
             inspectedEntityIndex = -1;
 
-            if (onInspectedEntityListUpdated != null)
-            {
-                onInspectedEntityListUpdated(inspectedEntityList);
-            }
-
-            if (onCurrentSelectedEntityUpdated != null)
-            {
-                onCurrentSelectedEntityUpdated(inspectedEntity);
-            }
+            onInspectedEntityListUpdated?.Invoke(inspectedEntityList);
+            onCurrentSelectedEntityUpdated?.Invoke(inspectedEntity);
         }
 
-        public override void OnSelectionStart(SelectionBox selectionBox)
+        public override void OnSelectionEnd(SelectionBox selectionBox)
         {
+            base.OnSelectionEnd(selectionBox);
+
             if (appState.UI.currentSelectedCellEntityList != inspectedEntityList)
             {
+                inspectedEntityList = appState.UI.currentSelectedCellEntityList;
                 inspectedEntityIndex = -1;
             }
-
-            inspectedEntityList = appState.UI.currentSelectedCellEntityList;
 
             if (inspectedEntityList.Count > 0)
             {
                 // Start at the top and work down as the user clicks
-                if (inspectedEntityIndex > 0)
+                if (inspectedEntityIndex > -1)
                 {
                     // move down the list
                     inspectedEntityIndex = inspectedEntityIndex - 1;
@@ -105,20 +98,13 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
                 }
             }
 
-            if (onInspectedEntityListUpdated != null)
-            {
-                onInspectedEntityListUpdated(inspectedEntityList);
-            }
-
-            if (onCurrentSelectedEntityUpdated != null)
-            {
-                onCurrentSelectedEntityUpdated(inspectedEntity);
-            }
+            onInspectedEntityListUpdated?.Invoke(inspectedEntityList);
+            onCurrentSelectedEntityUpdated?.Invoke(inspectedEntity);
         }
 
         /* 
             Event handlers
-         */
+        */
         void OnFurnituresRemoved(ListWrapper<Entity> furnitureList)
         {
             OnEntitiesRemoved<Entity>(furnitureList);
@@ -155,6 +141,7 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
             }
         }
 
+        /*
         void OnSecondaryActionPerformed()
         {
             if (!(inspectedEntity is Resident)) return;
@@ -174,5 +161,6 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
                 appState.Behaviors.Residents.SendResidentTo(resident, targetCellCoordinates);
             }
         }
+        */
     }
 }

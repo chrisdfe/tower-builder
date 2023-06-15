@@ -52,17 +52,43 @@ namespace TowerBuilder.ApplicationState.Tools
             Destroy = new Destroy.State(appState, this, input.Destroy);
             Inspect = new Inspect.State(appState, this, input.Inspect);
             Routes = new Routes.State(appState, this, input.Routes);
+        }
+
+        public override void Setup()
+        {
+            base.Setup();
 
             appState.UI.onSelectionStart += OnSelectionStart;
             appState.UI.onSelectionEnd += OnSelectionEnd;
             appState.UI.onSelectionBoxUpdated += OnSelectionBoxUpdated;
             appState.UI.onSelectionBoxReset += OnSelectionBoxReset;
 
-            appState.UI.onCurrentSelectedRoomUpdated += OnCurrentSelectedRoomUpdated;
+            appState.UI.onSecondaryActionStart += OnSecondaryActionStart;
+            appState.UI.onSecondaryActionEnd += OnSecondaryActionEnd;
+
             appState.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
             appState.UI.onCurrentSelectedEntityListUpdated += OnCurrentSelectedEntityListUpdated;
         }
 
+        public override void Teardown()
+        {
+            base.Teardown();
+
+            appState.UI.onSelectionStart -= OnSelectionStart;
+            appState.UI.onSelectionEnd -= OnSelectionEnd;
+            appState.UI.onSelectionBoxUpdated -= OnSelectionBoxUpdated;
+            appState.UI.onSelectionBoxReset -= OnSelectionBoxReset;
+
+            appState.UI.onSecondaryActionStart -= OnSecondaryActionStart;
+            appState.UI.onSecondaryActionEnd -= OnSecondaryActionEnd;
+
+            appState.UI.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
+            appState.UI.onCurrentSelectedEntityListUpdated -= OnCurrentSelectedEntityListUpdated;
+        }
+
+        /*
+            Public Interface
+        */
         public void SetToolState(Key newToolStateKey)
         {
             if (newToolStateKey != currentKey)
@@ -81,6 +107,9 @@ namespace TowerBuilder.ApplicationState.Tools
             GetToolState(currentKey).Setup();
         }
 
+        /*
+            Event Handlers
+        */
         void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
             activeToolState.OnSelectionBoxUpdated(selectionBox);
@@ -116,6 +145,19 @@ namespace TowerBuilder.ApplicationState.Tools
             activeToolState.OnCurrentSelectedEntityListUpdated(entityList);
         }
 
+        void OnSecondaryActionStart()
+        {
+            activeToolState.OnSecondaryActionStart();
+        }
+
+        void OnSecondaryActionEnd()
+        {
+            activeToolState.OnSecondaryActionEnd();
+        }
+
+        /*
+            Internals
+        */
         ToolStateBase GetToolState(Key key) =>
             key switch
             {

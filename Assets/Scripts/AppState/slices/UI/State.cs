@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.EntityGroups.Rooms;
-using TowerBuilder.DataTypes.EntityGroups.Vehicles;
+using TowerBuilder.DataTypes.EntityGroups;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.UI
@@ -16,14 +15,17 @@ namespace TowerBuilder.ApplicationState.UI
             public CellCoordinates currentSelectedCell;
         }
 
+        /*
+            Events
+        */
         public delegate void CellCoordinatesEvent(CellCoordinates currentSelectedCell);
         public CellCoordinatesEvent onCurrentSelectedCellUpdated;
 
-        public delegate void selectedRoomEvent(Room room);
-        public selectedRoomEvent onCurrentSelectedRoomUpdated;
-
         public delegate void SelectedRoomBlockEvent(CellCoordinatesBlock cellCoordinatesBlock);
         public SelectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
+
+        public delegate void SelectedCellEntityListEvent(ListWrapper<Entity> entityList);
+        public SelectedCellEntityListEvent onCurrentSelectedEntityListUpdated;
 
         public delegate void SelectionBoxEvent(SelectionBox selectionBox);
         public SelectionBoxEvent onSelectionBoxUpdated;
@@ -31,16 +33,19 @@ namespace TowerBuilder.ApplicationState.UI
         public SelectionBoxEvent onSelectionStart;
         public SelectionBoxEvent onSelectionEnd;
 
-        public delegate void SelectedCellEntityListEvent(ListWrapper<Entity> entityList);
-        public SelectedCellEntityListEvent onCurrentSelectedEntityListUpdated;
-
         public delegate void ActionEvent();
-        public ActionEvent onSecondaryActionPerformed;
+        public ActionEvent onPrimaryActionStart;
+        public ActionEvent onPrimaryActionEnd;
+        public ActionEvent onSecondaryActionStart;
+        public ActionEvent onSecondaryActionEnd;
 
+        /*
+            State
+        */
         public CellCoordinates currentSelectedCell { get; private set; } = null;
-        public Room currentSelectedRoom { get; private set; } = null;
         public CellCoordinatesBlock currentSelectedRoomBlock { get; private set; } = null;
-        public Vehicle currentSelectedVehicle { get; private set; } = null;
+        public Entity currentSelectedEntity { get; private set; } = null;
+        public EntityGroup currentSelectedEntityGroup { get; private set; } = null;
 
         public SelectionBox selectionBox { get; private set; }
         public bool selectionIsActive { get; private set; } = false;
@@ -56,16 +61,12 @@ namespace TowerBuilder.ApplicationState.UI
             selectionBox = new SelectionBox(currentSelectedCell);
         }
 
+        /*
+            Public Interface
+        */
         public void LeftClickStart()
         {
-            if (altActionIsActive)
-            {
-                PerformSecondaryAction();
-            }
-            else
-            {
-                SelectStart();
-            }
+            SelectStart();
         }
 
         public void LeftClickEnd()
@@ -73,19 +74,21 @@ namespace TowerBuilder.ApplicationState.UI
             SelectEnd();
         }
 
-        public void AltActionStart()
+        public void RightClickStart()
         {
-            altActionIsActive = true;
+            SetEntityList();
+            onSecondaryActionStart?.Invoke();
         }
 
-        public void AltActionEnd()
+        public void RightClickEnd()
         {
-            altActionIsActive = false;
+            onSecondaryActionEnd?.Invoke();
         }
 
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedCell)
         {
             this.currentSelectedCell = currentSelectedCell;
+            SetEntityList();
 
             if (selectionIsActive)
             {
@@ -103,6 +106,8 @@ namespace TowerBuilder.ApplicationState.UI
 
         public void SelectStart()
         {
+            // SetEntityList();
+
             selectionIsActive = true;
             selectionBox.SetStartAndEnd(currentSelectedCell);
 
@@ -119,16 +124,14 @@ namespace TowerBuilder.ApplicationState.UI
             ResetSelectionBox();
         }
 
+        /*
+            Internals
+        */
         void ResetSelectionBox()
         {
             selectionBox = new SelectionBox(currentSelectedCell);
 
             onSelectionBoxReset?.Invoke(selectionBox);
-        }
-
-        void PerformSecondaryAction()
-        {
-            onSecondaryActionPerformed?.Invoke();
         }
 
         void SetEntityList()

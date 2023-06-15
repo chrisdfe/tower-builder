@@ -74,6 +74,15 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             EndDestroy();
         }
 
+        public override void OnSecondaryActionEnd()
+        {
+            base.OnSecondaryActionEnd();
+            toolsState.SetToolState(ApplicationState.Tools.State.Key.Inspect);
+        }
+
+        /*
+            Internals
+        */
         void StartDestroy()
         {
             destroyIsActive = true;

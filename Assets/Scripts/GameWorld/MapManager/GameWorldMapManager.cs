@@ -53,14 +53,14 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             // UpdateSelectableEntityStack();
             UpdateCurrentSelectedCell();
 
-            if (Input.GetButtonDown("Alt Action"))
-            {
-                Registry.appState.UI.AltActionStart();
-            }
-            else if (Input.GetButtonUp("Alt Action"))
-            {
-                Registry.appState.UI.AltActionEnd();
-            }
+            // if (Input.GetButtonDown("Alt Action"))
+            // {
+            //     Registry.appState.UI.AltActionStart();
+            // }
+            // else if (Input.GetButtonUp("Alt Action"))
+            // {
+            //     Registry.appState.UI.AltActionEnd();
+            // }
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -81,11 +81,23 @@ namespace TowerBuilder.GameWorld.Map.MapManager
                 // }
             }
 
-            // Right click to exit out of current state?
-            if (Input.GetMouseButtonDown(1) && Registry.appState.Tools.currentKey != ApplicationState.Tools.State.DEFAULT_TOOL_STATE)
+            if (Input.GetMouseButtonDown(1))
             {
-                Registry.appState.Tools.SetToolState(ApplicationState.Tools.State.DEFAULT_TOOL_STATE);
+
+                Registry.appState.UI.RightClickStart();
             }
+
+
+            if (Input.GetMouseButtonUp(1))
+            {
+                Registry.appState.UI.RightClickEnd();
+            }
+
+            // Right click to exit out of current state?
+            // if (Input.GetMouseButtonDown(1) && Registry.appState.Tools.currentKey != ApplicationState.Tools.State.DEFAULT_TOOL_STATE)
+            // {
+            //     Registry.appState.Tools.SetToolState(ApplicationState.Tools.State.DEFAULT_TOOL_STATE);
+            // }
 
             currentToolStateHandler.Update();
         }

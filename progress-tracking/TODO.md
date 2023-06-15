@@ -2,6 +2,9 @@
 
 ## Current
 
+## After
+
+- Default flexible entity mesh
 - PROJECT: Default building/more entity group integration
   - Foundation not built inside an already existing room should create one
   - Rooms should get added to buildings or vehicles
@@ -10,10 +13,6 @@
   - Limit the number of buildings/vehicles somehow
     - arbitrarily?
     - with money?
-
-## After
-
-- PROJECT: bring back "selected entity"
 - PROJECT right click dropdown menu
 - PROJECT: Entity.CalculateCellsFromSelectionBox improvements
   - [ ] Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
@@ -316,6 +315,7 @@
 
 # Done
 
+- PROJECT: bring back "selected entity"
 - BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
 - BUG: two windows still get created
 - Use entity.definition.skinKey to decide which meshasset to use, not entity.definition.key

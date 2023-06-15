@@ -151,6 +151,9 @@ namespace TowerBuilder.GameWorld.Entities
 
         void OnCurrentSelectedEntityUpdated(Entity entity)
         {
+            Debug.Log("on current selected entity updated");
+            Debug.Log(entity);
+
             foreach (EntityTypeManager entityList in entityManagerList)
             {
                 entityList.UpdateAllEntityColors();
