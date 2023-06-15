@@ -2,30 +2,30 @@
 
 ## Current
 
-- CLEANUP in EntityStateSlice and EntityGroupStateSlice see if I can clean up the passthrough events like onEntitiesRemoved by passing delegates in as the event handler
-- CLEANUP: it feels weird that RoomBuilder.Build returns an EntityGroup, not a Room
+- BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
+- PROJECT: Default building/more entity group integration
+  - Foundation not built inside an already existing room should create one
+  - Rooms should get added to buildings or vehicles
+  - When starting out there should be a "blueprint building" that entities/entity groups get added to.
+  - buildings & vehicles should have different validation sets
 
 ## After
 
-- CLEANUP: CellCoordinates Add/Subtract api.
-- Use entity.definition.skinKey to decide which meshasset to use, not entity.definition.key
-- blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
-- Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
-- BUG: two windows still get created
-- BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
 - right click dropdown
-- Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
-- Foundation not built inside an already existing room should create one
-- buildings & vehicles should have different validation sets
-- Rooms should get added to buildings or vehicles
-- When starting out there should be a "blueprint building" that entities/entity groups get added to.
-- Tooltips
-  - UI
-  - game elements
+- PROJECT: Entity.CalculateCellsFromSelectionBox improvements
+  - Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
+  - blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
+- PROJECT: Tooltips
+  - name/id when you hover over an entity?
+  - bring back cursor money text
+  - validation errors that show up
 - experiment with overlays
   - connected to/disconnected from transport
 - experiment with light culling
   - different room types
+- CLEANUP: it feels weird that RoomBuilder.Build returns an EntityGroup, not a Room
+- CLEANUP: CellCoordinates Add/Subtract api.
+- CLEANUP: Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
 - PROJECT: Save system
   - save file versioning
   - migrations between save file versions - add stuff to the json to make it serialize correctly with current codebase
@@ -315,6 +315,9 @@
 
 # Done
 
+- BUG: two windows still get created
+- Use entity.definition.skinKey to decide which meshasset to use, not entity.definition.key
+- CLEANUP in EntityStateSlice and EntityGroupStateSlice see if I can clean up the passthrough events like onEntitiesRemoved by passing delegates in as the event handler
 - PROJECT: move entities/entityGroups instead of destroying/creating new ones in build mode
 - BUG: EntityGroup position gets reset back to 0,0 after attempting to build in an invalid location
 - BUG: entityGroup entity valid/invalid colors are 1 onSelectionBoxUpdated behind where they should be at. i.e whatever the "isValid" value was of the last position
