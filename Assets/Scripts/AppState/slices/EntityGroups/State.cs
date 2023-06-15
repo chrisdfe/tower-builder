@@ -119,8 +119,6 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         public void UpdateOffsetCoordinates(EntityGroup entityGroup, CellCoordinates newOffsetCoordinates)
         {
             GetStateSlice(entityGroup)?.UpdateOffsetCoordinates(entityGroup, newOffsetCoordinates);
-            Debug.Log("entitygroup offset coordinates updated: ");
-            Debug.Log(entityGroup.offsetCoordinates);
         }
 
         public EntityGroupStateSlice GetStateSlice(EntityGroup entityGroup) =>

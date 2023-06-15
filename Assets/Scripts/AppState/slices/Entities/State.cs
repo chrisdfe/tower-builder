@@ -88,8 +88,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 Residents,
                 TransportationItems,
                 Freight,
-                Wheels,
-                Windows
+                Wheels
             };
         }
 

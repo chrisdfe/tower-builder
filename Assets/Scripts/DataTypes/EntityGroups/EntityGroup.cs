@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities;
 
@@ -18,6 +19,9 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public ListWrapper<ValidationError> validationErrors { get; private set; } = new ListWrapper<ValidationError>();
 
         public virtual string typeLabel => "EntityGroup";
+
+        public int price =>
+            entities.items.Aggregate(0, ((acc, entity) => acc + entity.price));
 
         public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
 

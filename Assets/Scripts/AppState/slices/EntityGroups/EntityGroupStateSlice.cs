@@ -115,15 +115,16 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
         public void Build(EntityGroup entityGroup)
         {
-            // if (!entity.validator.isValid)
-            // {
-            //     // TODO - these should be unique messages - right now they are not
-            //     appState.Notifications.Add(entity.validator.errors);
-            //     return;
-            // }
+            entityGroup.Validate(appState);
 
-            // 
-            // appState.Wallet.SubtractBalance(entity.price);
+            if (!entityGroup.isValid)
+            {
+                appState.Notifications.Add(entityGroup.validationErrors);
+                return;
+            }
+
+
+            appState.Wallet.SubtractBalance(entityGroup.price);
 
             entityGroup.entities.items.ForEach(entity =>
             {

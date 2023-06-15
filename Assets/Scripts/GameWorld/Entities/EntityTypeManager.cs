@@ -20,17 +20,17 @@ namespace TowerBuilder.GameWorld.Entities
         /*
             Lifecycle
         */
-        void Awake()
+        public void Awake()
         {
             entitiesInstanceWrapper = GameObject.Find("EntitiesInstanceWrapper").transform;
         }
 
-        void Start()
+        public void Start()
         {
             Setup();
         }
 
-        void OnDestroy()
+        public void OnDestroy()
         {
             Teardown();
         }

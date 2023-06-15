@@ -4,7 +4,6 @@
 
 - PROJECT: move entities/entityGroups instead of destroying/creating new ones in build mode
 - BUG: EntityGroup position gets reset back to 0,0 after attempting to build in an invalid location
-- BUG: 2 windows get created instead of 1
 - BUG: entityGroup entity valid/invalid colors are 1 onSelectionBoxUpdated behind where they should be at. i.e whatever the "isValid" value was of the last position
 
 ## After
@@ -307,7 +306,6 @@
 
 ## Cleanup
 
-- CLEANUP: Some kind of namespace to put all of the other stuff at the top of AppState - time, wallet, journey, etc.
 - CLEANUP: "Derived" attributes? the way I'm setting current speed dynamically feels kind of messy
 - CLEANUP: Switch the order of ListType and ItemType in ListItemStateSlice generic (ItemType should be first)
 - CLEANUP: RouteFinder creates too many branches
@@ -319,6 +317,7 @@
 
 # Done
 
+- BUG: 2 windows get created instead of 1
 - FoundationValidator ValidateIsOnGroundFloorOrAboveAnotherFoundation
 - EntityGroup should have "offsetCoordinates" field
 - Entity absoluteCellCoordinates should take parent offsetCoordinates into account

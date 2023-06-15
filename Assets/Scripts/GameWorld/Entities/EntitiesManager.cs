@@ -92,6 +92,8 @@ namespace TowerBuilder.GameWorld.Entities
 
             Registry.appState.Entities.onEntityPositionUpdated -= OnEntityPositionUpdated;
 
+            Registry.appState.EntityGroups.onPositionUpdated -= OnEntityGroupPositionUpdated;
+
             Registry.appState.Tools.Destroy.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
             Registry.appState.Tools.Inspect.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
             Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
