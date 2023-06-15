@@ -85,7 +85,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
             else
             {
                 appState.EntityGroups.UpdateOffsetCoordinates(blueprintRoom, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
-                blueprintRoom.Validate(appState);
+
                 onBlueprintUpdated?.Invoke(blueprintRoom);
                 onBlueprintPositionUpdated?.Invoke(blueprintRoom);
             }
@@ -109,13 +109,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
             }
             else
             {
-                Registry.appState.Notifications.Add(
-                    new ListWrapper<Notification>(
-                        blueprintRoom.validationErrors.items
-                            .Select(error => new Notification(error.message))
-                            .ToList()
-                    )
-                );
+                Registry.appState.Notifications.Add(blueprintRoom.validationErrors);
 
                 ResetBlueprintRoom();
             }
@@ -135,10 +129,10 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
             blueprintRoom = roomBuilder.Build(Registry.appState.UI.selectionBox) as Room;
 
             blueprintRoom.SetBlueprintMode(true);
+            blueprintRoom.offsetCoordinates = Registry.appState.UI.selectionBox.cellCoordinatesList.bottomLeftCoordinates;
+            blueprintRoom.Validate(appState);
 
             Registry.appState.EntityGroups.Rooms.Add(blueprintRoom);
-
-            blueprintRoom.Validate(appState);
         }
 
         void BuildBlueprintRoom()

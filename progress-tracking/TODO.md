@@ -2,14 +2,12 @@
 
 ## Current
 
-- PROJECT: move entities/entityGroups instead of destroying/creating new ones in build mode
-- BUG: EntityGroup position gets reset back to 0,0 after attempting to build in an invalid location
-- BUG: entityGroup entity valid/invalid colors are 1 onSelectionBoxUpdated behind where they should be at. i.e whatever the "isValid" value was of the last position
+- CLEANUP in EntityStateSlice and EntityGroupStateSlice see if I can clean up the passthrough events like onEntitiesRemoved by passing delegates in as the event handler
+- CLEANUP: it feels weird that RoomBuilder.Build returns an EntityGroup, not a Room
 
 ## After
 
 - CLEANUP: CellCoordinates Add/Subtract api.
-- CLEANUP: You should be able to pass a list of validation errors straight into Notifications.State.Add instead of mapping them all to a string
 - Use entity.definition.skinKey to decide which meshasset to use, not entity.definition.key
 - blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
 - Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
@@ -317,6 +315,10 @@
 
 # Done
 
+- PROJECT: move entities/entityGroups instead of destroying/creating new ones in build mode
+- BUG: EntityGroup position gets reset back to 0,0 after attempting to build in an invalid location
+- BUG: entityGroup entity valid/invalid colors are 1 onSelectionBoxUpdated behind where they should be at. i.e whatever the "isValid" value was of the last position
+- CLEANUP: You should be able to pass a list of validation errors straight into Notifications.State.Add instead of mapping them all to a string
 - BUG: 2 windows get created instead of 1
 - FoundationValidator ValidateIsOnGroundFloorOrAboveAnotherFoundation
 - EntityGroup should have "offsetCoordinates" field

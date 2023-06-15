@@ -123,9 +123,9 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                 return;
             }
 
-
             appState.Wallet.SubtractBalance(entityGroup.price);
 
+            // TODO - use groupedEntities for this instead
             entityGroup.entities.items.ForEach(entity =>
             {
                 appState.Entities.Build(entity);
@@ -142,6 +142,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         public void UpdateOffsetCoordinates(EntityGroup entityGroup, CellCoordinates newOffsetCoordinates)
         {
             entityGroup.offsetCoordinates = newOffsetCoordinates;
+            entityGroup.Validate(appState);
 
             onPositionUpdated?.Invoke(entityGroup);
         }
@@ -198,11 +199,6 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             );
 
         /*
-            Internals
-        */
-
-
-        /*
             Event Handlers
         */
         void OnEntitiesRemoved(ListWrapper<Entity> removedEntities)
@@ -217,7 +213,8 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                 {
                     entityGroup.Remove(removedEntity);
 
-                    // TODO here - check if 
+                    // TODO here - check if there are any entities left in entityGroup
+                    // if not then remove the entityGroup as well
                 }
             }
         }
