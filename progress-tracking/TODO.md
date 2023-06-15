@@ -2,7 +2,6 @@
 
 ## Current
 
-- BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
 - PROJECT: Default building/more entity group integration
   - Foundation not built inside an already existing room should create one
   - Rooms should get added to buildings or vehicles
@@ -19,27 +18,30 @@
   - name/id when you hover over an entity?
   - bring back cursor money text
   - validation errors that show up
-- experiment with overlays
+- EXPERIMENT: with overlays
   - connected to/disconnected from transport
-- experiment with light culling
+- EXPERIMENT: with light culling
   - different room types
+- PROJECT: bring back "selected entity" in a more meaningful way
 - CLEANUP: it feels weird that RoomBuilder.Build returns an EntityGroup, not a Room
 - CLEANUP: CellCoordinates Add/Subtract api.
 - CLEANUP: Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
 - PROJECT: Save system
   - save file versioning
   - migrations between save file versions - add stuff to the json to make it serialize correctly with current codebase
-- reimplement destroy tool to work with entities/entitygroups
+- PROJECT: reimplement destroy tool
+  - get it working again to just destroy entities
   - different "destroy" types - entity, room, building, etc
 - Option to turn day/night off and just have a single color for ground/background
-- Interior lights features
+- PROJECT: Interior lights features
   - brightness
   - color
   - etc
 - Limit the number of buildings/vehicles somehow
   - arbitrarily?
   - with money?
-- Resident+resident interaction
+- PROJECT: Resident+resident interaction
+  - this will require "selected entity" functionality to be present again
   - shopkeepers could eventually use this
 - Convoy - EntityGroup of vehicles
 - Rename "floors" to "platforms" to prevent confusion?
@@ -315,6 +317,7 @@
 
 # Done
 
+- BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
 - BUG: two windows still get created
 - Use entity.definition.skinKey to decide which meshasset to use, not entity.definition.key
 - CLEANUP in EntityStateSlice and EntityGroupStateSlice see if I can clean up the passthrough events like onEntitiesRemoved by passing delegates in as the event handler

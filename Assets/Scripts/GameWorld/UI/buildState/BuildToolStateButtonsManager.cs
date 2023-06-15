@@ -43,8 +43,8 @@ namespace TowerBuilder.GameWorld.UI
         public void Teardown()
         {
             buildModeButtonsRow.Teardown();
-            entityModeButtonsManager.Setup();
-            roomModeButtonsManager.Setup();
+            entityModeButtonsManager.Teardown();
+            roomModeButtonsManager.Teardown();
 
             Registry.appState.Tools.Build.onModeUpdated -= OnBuildModeUpdated;
         }
@@ -53,6 +53,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             gameObject.SetActive(true);
 
+            ShowCurrentBuildModeButtons();
             buildModeButtonsRow.HighlightSelectedButton();
         }
 
@@ -61,9 +62,20 @@ namespace TowerBuilder.GameWorld.UI
             gameObject.SetActive(false);
         }
 
+        /*
+            Event Handlers
+        */
         void OnBuildModeUpdated(ApplicationState.Tools.Build.State.Mode newMode, ApplicationState.Tools.Build.State.Mode previousMode)
         {
-            switch (newMode)
+            ShowCurrentBuildModeButtons();
+        }
+
+        /*
+            Internals
+        */
+        void ShowCurrentBuildModeButtons()
+        {
+            switch (Registry.appState.Tools.Build.currentMode)
             {
                 case ApplicationState.Tools.Build.State.Mode.Entities:
                     entityModeButtonsManager.Open();
