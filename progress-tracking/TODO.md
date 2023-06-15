@@ -4,7 +4,13 @@
 
 ## After
 
+- There might need to be a couple more Tileable "Center" types - e.g "IsolatedCenter" (only top, right, left, bottom). corners? etc.
+  - Maybe combinations of various mesh pieces
+- EntityMeshCellWrapper fallbacks - if the mesh should be BottomIsolated but only Bottom exists, then use Bottom
+- EntityMeshCellWrapper should probably delete mesh segments that don't get used instead of gameObject.SetActive(false)
+- Entity meshes should be oriented to the bottom of the cell, then repositioned up by FLOOR_HEIGHT amount
 - Default flexible entity mesh
+- "highlighted" entity as well, not just selected
 - PROJECT: Default building/more entity group integration
   - Foundation not built inside an already existing room should create one
   - Rooms should get added to buildings or vehicles

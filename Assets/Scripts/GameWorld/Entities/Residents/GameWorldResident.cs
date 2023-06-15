@@ -10,7 +10,7 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
         void Update()
         {
-            UpdateMovement();
+            // UpdateMovement();
         }
 
         /* 

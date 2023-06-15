@@ -124,6 +124,8 @@ namespace TowerBuilder.GameWorld.Entities
             {
                 foreach (Transform node in child)
                 {
+                    // TODO - support nested children
+                    // TODO - support fallthroughs
                     Tileable.CellPosition nodeCellPosition = Tileable.CellPositionLabelMap.KeyFromValue(node.name);
 
                     node.localPosition = Vector3.zero;

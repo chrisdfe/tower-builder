@@ -5466,7 +5466,7 @@ MonoBehaviour:
   meshAssets:
     list:
     - key: Default
-      value: {fileID: 7424465455510061565, guid: 03a6fe7fc0d3d314882cea96c7e19d99, type: 3}
+      value: {fileID: 919132149155446097, guid: 66b694f7eba593948af61049a1e02f0d, type: 3}
   entities: []
 --- !u!1 &982874682
 GameObject:

@@ -18,11 +18,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
                 title = "Pilot Seat",
                 category = "PilotSeats",
 
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                    }
-                ),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, 1),
 
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new CockpitBehavior(appState, furniture),
             },
@@ -32,11 +28,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
                 title = "Engine",
                 category = "Engines",
 
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                    }
-                ),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, 1),
 
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new EngineBehavior(appState, furniture),
             },
@@ -47,11 +39,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
                 category = "Beds",
                 homeSlotCount = 1,
 
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                    }
-                ),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(2, 1),
 
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new BedBehavior(appState, furniture),
             },
@@ -61,11 +49,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
                 title = "Money Machine",
                 category = "Industry",
 
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                    }
-                ),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, 1),
 
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new MoneyMachineBehavior(appState, furniture),
             },

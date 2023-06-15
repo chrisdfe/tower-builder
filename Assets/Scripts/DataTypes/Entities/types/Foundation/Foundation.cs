@@ -9,7 +9,8 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
 {
     public class Foundation : Entity
     {
-        public override string idKey { get => "foundations"; }
+        public override string idKey => "foundations";
+        public override string typeLabel => "Foundation";
 
         public Room room;
 
