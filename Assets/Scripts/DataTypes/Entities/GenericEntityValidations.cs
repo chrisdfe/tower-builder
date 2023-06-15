@@ -24,12 +24,18 @@ namespace TowerBuilder.DataTypes.Entities
         {
             foreach (CellCoordinates cellCoordinates in entity.absoluteCellCoordinatesList.bottomRow.items)
             {
-                CellCoordinates cellBelow = CellCoordinates.Add(cellCoordinates, new CellCoordinates(0, -1));
-                ListWrapper<Entity> floors = appState.Entities.Floors.FindEntitiesAtCell(cellBelow);
+                Entity foundation = appState.Entities.Foundations.FindEntityAtCell(cellCoordinates);
 
-                if (floors.Count == 0)
+                // If this entity is not in a foundation that is outside of the scope of this validator
+                if (foundation != null)
                 {
-                    return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed on floor.");
+                    int bottomFloorOfFoundation = foundation.absoluteCellCoordinatesList.lowestY;
+                    ListWrapper<Entity> floors = appState.Entities.Floors.FindEntitiesAtCell(cellCoordinates.coordinatesBelow);
+
+                    if (cellCoordinates.y != bottomFloorOfFoundation && floors.Count == 0)
+                    {
+                        return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed on floor.");
+                    }
                 }
             }
 
