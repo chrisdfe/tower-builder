@@ -55,36 +55,19 @@ namespace TowerBuilder.GameWorld.Entities
             GameObject.Destroy(meshTransform.gameObject);
         }
 
-        public void SetColor(EntityMeshWrapper.ColorKey key)
+        public void SetMainColor(EntityMeshWrapper.OverlayColorKey key)
         {
-            foreach (MeshRenderer meshRenderer in childrenMeshRenderers)
-            {
-                if (!meshRenderer.material.HasProperty("_Color")) continue;
-
-                if (key == EntityMeshWrapper.ColorKey.Default)
-                {
-                    Color defaultColor = defaultColorMap[meshRenderer];
-                    SetColor(meshRenderer, defaultColor);
-                }
-                else
-                {
-                    Color color = EntityMeshWrapper.ColorMap[key];
-
-                    if (color != null)
-                    {
-                        SetColor(meshRenderer, color);
-                    }
-                }
-            }
-
-            // TODO - something more extensible than this
-            void SetColor(MeshRenderer meshRenderer, Color color)
-            {
-                Color defaultColor = defaultColorMap[meshRenderer];
-                meshRenderer.material.color = new Color(color.r, color.g, color.b, defaultColor.a);
-            }
+            SetColorProperty("_Color", key);
         }
 
+        public void SetOverlayColor(EntityMeshWrapper.OverlayColorKey key)
+        {
+            SetColorProperty("_OverlayColor", key);
+        }
+
+        /*
+            Internals
+        */
         protected void InstantiateModel()
         {
             meshTransform = GameObject.Instantiate(prefabMesh).GetComponent<Transform>();
@@ -137,6 +120,36 @@ namespace TowerBuilder.GameWorld.Entities
         protected void SetPosition()
         {
             // meshTransform.position = GameWorldUtils.CellCoordinatesToPosition(cellCoordinates);
+        }
+
+        void SetColorProperty(string property, EntityMeshWrapper.OverlayColorKey key)
+        {
+            foreach (MeshRenderer meshRenderer in childrenMeshRenderers)
+            {
+                if (!meshRenderer.material.HasProperty(property)) continue;
+
+                if (key == EntityMeshWrapper.OverlayColorKey.Default)
+                {
+                    Color defaultColor = defaultColorMap[meshRenderer];
+                    SetColor(meshRenderer, defaultColor);
+                }
+                else
+                {
+                    Color color = EntityMeshWrapper.OverlayColorMap[key];
+
+                    if (color != null)
+                    {
+                        SetColor(meshRenderer, color);
+                    }
+                }
+            }
+
+            // TODO - something more extensible than this
+            void SetColor(MeshRenderer meshRenderer, Color color)
+            {
+                Color defaultColor = defaultColorMap[meshRenderer];
+                meshRenderer.material.SetColor("_OverlayColor", new Color(color.r, color.g, color.b, defaultColor.a));
+            }
         }
     }
 }

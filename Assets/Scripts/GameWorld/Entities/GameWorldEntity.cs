@@ -108,7 +108,7 @@ namespace TowerBuilder.GameWorld.Entities
 
             if (!hasUpdated)
             {
-                entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Default);
+                entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Default);
             }
 
             // TODO - pull these out into the class body + make them protected/overrideable
@@ -118,11 +118,11 @@ namespace TowerBuilder.GameWorld.Entities
                 {
                     if (entity.isValid)
                     {
-                        entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.ValidBlueprint);
+                        entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.ValidBlueprint);
                     }
                     else
                     {
-                        entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.InvalidBlueprint);
+                        entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.InvalidBlueprint);
                     }
 
                     hasUpdated = true;
@@ -140,7 +140,7 @@ namespace TowerBuilder.GameWorld.Entities
                     {
                         if (cellCoordinatesToDestroyFrom.OverlapsWith(entity.absoluteCellCoordinatesList))
                         {
-                            entityMeshCellWrapper.SetColor(EntityMeshWrapper.ColorKey.Destroy);
+                            entityMeshCellWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Destroy);
                         }
                     }
 
@@ -154,13 +154,13 @@ namespace TowerBuilder.GameWorld.Entities
 
                 if (inspectedEntity == entity)
                 {
-                    entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Inspected);
+                    entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Inspected);
                     hasUpdated = true;
                     return;
                 }
                 else if (Registry.appState.UI.currentSelectedCellEntityList.Contains(entity))
                 {
-                    entityMeshWrapper.SetColor(EntityMeshWrapper.ColorKey.Hover);
+                    entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Hover);
                     hasUpdated = true;
                 }
             }

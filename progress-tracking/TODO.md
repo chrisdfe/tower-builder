@@ -2,7 +2,7 @@
 
 ## Current
 
-- TASK: New type of materials (made with shadergraph?) that take in an "overlay" (or whatever) color used for Entity
+- BUG: all entities are using the default entity mesh now
 
 ## After
 
@@ -321,6 +321,7 @@
 
 # Done
 
+- TASK: New type of materials (made with shadergraph?) that take in an "overlay" (or whatever) color used for Entity
 - "highlighted" entity as well, not just selected
 - Default flexible entity mesh
 - PROJECT: bring back "selected entity"

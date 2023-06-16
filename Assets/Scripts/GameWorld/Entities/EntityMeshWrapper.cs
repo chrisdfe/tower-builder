@@ -10,7 +10,7 @@ namespace TowerBuilder.GameWorld.Entities
 {
     public class EntityMeshWrapper : MonoBehaviour, ISetupable
     {
-        public enum ColorKey
+        public enum OverlayColorKey
         {
             Base,
             Default,
@@ -21,13 +21,13 @@ namespace TowerBuilder.GameWorld.Entities
             InvalidBlueprint
         }
 
-        public static Dictionary<ColorKey, Color> ColorMap = new Dictionary<ColorKey, Color>() {
-            { ColorKey.Base, Color.grey },
-            { ColorKey.Hover, Color.white },
-            { ColorKey.Inspected, Color.cyan },
-            { ColorKey.Destroy, Color.red },
-            { ColorKey.ValidBlueprint, Color.blue },
-            { ColorKey.InvalidBlueprint, Color.red },
+        public static Dictionary<OverlayColorKey, Color> OverlayColorMap = new Dictionary<OverlayColorKey, Color>() {
+            { OverlayColorKey.Base, Color.black },
+            { OverlayColorKey.Hover, Color.white },
+            { OverlayColorKey.Inspected, Color.cyan },
+            { OverlayColorKey.Destroy, Color.red },
+            { OverlayColorKey.ValidBlueprint, Color.blue },
+            { OverlayColorKey.InvalidBlueprint, Color.red },
         };
 
         public const string PLACEHOLDER_NODE_NAME = "Placeholder";
@@ -84,11 +84,11 @@ namespace TowerBuilder.GameWorld.Entities
             ) + positionOffset;
         }
 
-        public void SetColor(ColorKey key)
+        public void SetOverlayColor(OverlayColorKey key)
         {
             foreach (var child in entityCellMeshWrapperList)
             {
-                child.SetColor(key);
+                child.SetOverlayColor(key);
             }
         }
 
