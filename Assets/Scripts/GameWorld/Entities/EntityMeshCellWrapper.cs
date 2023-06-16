@@ -43,6 +43,9 @@ namespace TowerBuilder.GameWorld.Entities
             this.cellPosition = cellPosition;
         }
 
+        /*
+            Lifecycle
+        */
         public virtual void Setup()
         {
             InstantiateModel();
@@ -55,6 +58,9 @@ namespace TowerBuilder.GameWorld.Entities
             GameObject.Destroy(meshTransform.gameObject);
         }
 
+        /*
+            Public Interface
+        */
         public void SetMainColor(EntityMeshWrapper.OverlayColorKey key)
         {
             SetColorProperty("_Color", key);

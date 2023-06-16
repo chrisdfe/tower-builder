@@ -26,9 +26,9 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            inspectText = transform.Find("InspectText").GetComponent<Text>();
-            inspectIndexText = transform.Find("InspectIndexText").GetComponent<Text>();
-            actionButtonsWrapper = transform.Find("ActionButtonsWrapper");
+            inspectText = TransformUtils.FindDeepChild(transform, "InspectText").GetComponent<Text>();
+            inspectIndexText = TransformUtils.FindDeepChild(transform, "InspectIndexText").GetComponent<Text>();
+            actionButtonsWrapper = TransformUtils.FindDeepChild(transform, "ActionButtonsWrapper");
 
             SetText();
 

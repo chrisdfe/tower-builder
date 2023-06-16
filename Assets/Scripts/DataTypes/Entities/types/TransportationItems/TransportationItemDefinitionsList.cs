@@ -17,6 +17,9 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
                         new CellCoordinates(1, 1)
                     }
                 ),
+
+                meshKey = "Escalator",
+
                 staticBlockSize = false,
 
                 entranceExitBuilder = (TransportationItem transporationItem) => {
@@ -54,12 +57,9 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
                 title = "Ladder",
                 category = "Ladders",
 
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                        new CellCoordinates(0, 1)
-                    }
-                ),
+                meshKey = "Ladder",
+
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, 2),
 
                 entranceExitBuilder = (TransportationItem transporationItem) => {
                     List<(CellCoordinates, CellCoordinates)> result = new List<(CellCoordinates, CellCoordinates)>();
@@ -94,6 +94,8 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
                 key = "Doorway",
                 title = "Doorway",
                 category = "Doorways",
+
+                meshKey = "Doorway",
 
                 blockCellsTemplate = new CellCoordinatesList(
                     new List<CellCoordinates>() {

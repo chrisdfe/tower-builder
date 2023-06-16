@@ -5,6 +5,7 @@ using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Notifications;
 using TowerBuilder.ApplicationState.Wallet;
+using TowerBuilder.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ namespace TowerBuilder.GameWorld.UI
         {
             Registry.appState.Wallet.onBalanceUpdated += OnBalanceUpdated;
 
-            balanceText = transform.Find("BalanceText").GetComponent<Text>();
+            balanceText = TransformUtils.FindDeepChild(transform, "Text").GetComponent<Text>();
             UpdateBalanceText();
         }
 

@@ -2,11 +2,13 @@
 
 ## Current
 
-- TASK: add meshKeys to definitions again
+- PROJECT right click dropdown menu
 
 ## After
 
+- BUG: Wheels shouldn't be able to be built inside of foundations
 - Maybe some assets shouldn't be selcatable?
+  - windows
 - There might need to be a couple more Tileable "Center" types - e.g "IsolatedCenter" (only top, right, left, bottom). corners? etc.
   - Maybe combinations of various mesh pieces? for a future iteration maybe
 - EntityMeshCellWrapper fallbacks - if the mesh should be BottomIsolated but only Bottom exists, then use Bottom
@@ -17,10 +19,10 @@
   - Rooms should get added to buildings or vehicles
   - When starting out there should be a "blueprint building" that entities/entity groups get added to.
   - buildings & vehicles should have different validation sets
+    - a 'entityGroupType' field on entity definitions
   - Limit the number of buildings/vehicles somehow
     - arbitrarily?
     - with money?
-- PROJECT right click dropdown menu
 - PROJECT: Entity.CalculateCellsFromSelectionBox improvements
   - [ ] Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
   - [ ] blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
@@ -324,6 +326,8 @@
 
 # Done
 
+- TASK: add meshKeys to definitions again
+- BUG: game shouldn't crash if meshKey doesn't exist
 - TASK: New type of materials (made with shadergraph?) that take in an "overlay" (or whatever) color used for Entity
 - "highlighted" entity as well, not just selected
 - Default flexible entity mesh

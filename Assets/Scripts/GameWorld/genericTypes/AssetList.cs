@@ -26,6 +26,8 @@ namespace TowerBuilder.GameWorld
 
         public KeyType KeyFromValue(ValueType value) =>
             list.Find(wrapper => wrapper.value.Equals(value)).key;
+
+        public bool HasKey(KeyType key) => list.Find(wrapper => wrapper.key.Equals(key)) != null;
     }
 
     [Serializable]

@@ -39,6 +39,8 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
                 category = "Beds",
                 homeSlotCount = 1,
 
+                meshKey = "Bed",
+
                 blockCellsTemplate = CellCoordinatesList.CreateRectangle(2, 1),
 
                 furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new BedBehavior(appState, furniture),

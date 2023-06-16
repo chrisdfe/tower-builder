@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Notifications;
+using TowerBuilder.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ namespace TowerBuilder.GameWorld.UI
         void Awake()
         {
             Registry.appState.Notifications.onItemsAdded += OnNotificationsAdded;
-            text = transform.Find("NotificationsText").GetComponent<Text>();
+            text = TransformUtils.FindDeepChild(transform, "NotificationsText").GetComponent<Text>();
             text.text = "";
         }
 
@@ -36,11 +37,11 @@ namespace TowerBuilder.GameWorld.UI
                         .ToList()
             );
 
-            string newText = "";
-            foreach (Notification notification in displayNotifications.items)
-            {
-                newText += notification.message + "\n\n";
-            }
+            string newText = String.Join(
+                "\n\n",
+                displayNotifications.items
+                    .Select(notification => $"{notification.message}")
+            );
 
             text.text = newText;
         }

@@ -77,7 +77,15 @@ namespace TowerBuilder.GameWorld.Entities
         */
         protected virtual void SetupMeshWrapper()
         {
-            GameObject prefabMesh = manager.meshAssets.ValueFromKey(entity.definition.meshKey != null ? entity.definition.meshKey : "Default");
+            string meshKey = entity.definition.meshKey;
+
+            if (!manager.meshAssets.HasKey(meshKey))
+            {
+                Debug.LogWarning($"Key '{meshKey}' not found in {entity.typeLabel} mesh assets");
+                meshKey = "Default";
+            }
+            // if (manager.meshAssets)
+            GameObject prefabMesh = manager.meshAssets.ValueFromKey(meshKey);
 
             entityMeshWrapper.parent = transform;
             entityMeshWrapper.entity = entity;
