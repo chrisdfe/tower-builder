@@ -2,10 +2,11 @@
 
 ## Current
 
-- BUG: all entities are using the default entity mesh now
+- TASK: add meshKeys to definitions again
 
 ## After
 
+- Maybe some assets shouldn't be selcatable?
 - There might need to be a couple more Tileable "Center" types - e.g "IsolatedCenter" (only top, right, left, bottom). corners? etc.
   - Maybe combinations of various mesh pieces? for a future iteration maybe
 - EntityMeshCellWrapper fallbacks - if the mesh should be BottomIsolated but only Bottom exists, then use Bottom
@@ -43,7 +44,7 @@
 - PROJECT: reimplement destroy tool
   - get it working again to just destroy entities
   - different "destroy" types - entity, room, building, etc
-- Option to turn day/night off and just have a single color for ground/background
+- TASK: Option to turn day/night off and just have a single color for ground/background
 - PROJECT: Interior lights features
   - brightness
   - color
@@ -51,7 +52,7 @@
 - PROJECT: Resident+resident interaction
   - this will require "selected entity" functionality to be present again
   - shopkeepers could eventually use this
-- Convoy - EntityGroup of vehicles
+- TASK: Convoy - EntityGroup of vehicles
 - Rename "floors" to "platforms" to prevent confusion?
   - Or rename "floors" to "story"?
 - Floors/platforms should probably be taller
@@ -59,9 +60,12 @@
   - not floor height like the height of a building floor, the floor that you stand on
   - add "FLOOR_HEIGHT" constant (2 or 3 probably) and use that for floors instead
 - CLEANUP: Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
-- Foundation should be un-deletable if there is another room on top
+- PROJECT: Destroy validation
+  - EITHER:
+    - Specific set of validators that run when you are about to destroy an entity
+    - A way of marking an entity for deletion and then trial-run validate every neighbor around the entity about to be deleted
+  - Foundation should be un-deletable if there is another room on top
 - Verify that all specified assets actually exist
-- Remove journeys for now and focus on building?
 - Entity type categories
 - use "min size" instead of staticBlockSize, which is confusing
   - block size can be smaller than min size, eg. escalators/stairs
@@ -152,7 +156,6 @@
   - Panel should be a prefab
 - Make cells 1x1.5 or 1x2 as in my sketchbook - floors/ceilings/walls are part of the Inside of box
 - TransportationItemDefinition/entranceExitBuilder should probably return 2 lists (1 for entrances and 2 for exits) instead of entrance/exit tuples of single coordinates
-- BuildValidators/DestroyValidators?
 - EntityStateSlice build should fire onItemsBuilt event as well - currently it's just singular
 - same as with how I made an entities appState slice:
   - Validators appState slice group
