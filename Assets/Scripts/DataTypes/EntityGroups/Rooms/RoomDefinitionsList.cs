@@ -9,6 +9,14 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
             new ListWrapper<EntityGroupDefinition>(
                 new List<EntityGroupDefinition>() {
                     new RoomDefinition() {
+                        key = "Empty",
+                        title = "Empty",
+                        category = "Empty",
+
+                        builderFactory = (EntityGroupDefinition definition) => new EmptyEntityGroupBuilder(definition)
+                    },
+
+                    new RoomDefinition() {
                         key = "Office",
                         title = "Office",
                         category = "Office",

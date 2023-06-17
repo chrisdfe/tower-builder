@@ -2,18 +2,7 @@
 
 ## Current
 
-- PROJECT right click dropdown menu
-
-## After
-
-- BUG: Wheels shouldn't be able to be built inside of foundations
-- Maybe some assets shouldn't be selcatable?
-  - windows
-- There might need to be a couple more Tileable "Center" types - e.g "IsolatedCenter" (only top, right, left, bottom). corners? etc.
-  - Maybe combinations of various mesh pieces? for a future iteration maybe
-- EntityMeshCellWrapper fallbacks - if the mesh should be BottomIsolated but only Bottom exists, then use Bottom
-- EntityMeshCellWrapper should probably delete mesh segments that don't get used instead of gameObject.SetActive(false)
-- Entity meshes should be oriented to the bottom of the cell, then repositioned up by FLOOR_HEIGHT amount
+- Make sure entityGroups get removed when there are no more entities in them
 - PROJECT: Default building/more entity group integration
   - Foundation not built inside an already existing room should create one
   - Rooms should get added to buildings or vehicles
@@ -23,6 +12,22 @@
   - Limit the number of buildings/vehicles somehow
     - arbitrarily?
     - with money?
+
+## After
+
+- PROJECT: exterior walls built around building/vehicle
+- PROJECT: selecting multiple entities with the selection box
+- PROJECT: Elevator transportation item
+- "EntityGroup" should be the default build mode?
+- BUG: Wheels shouldn't be able to be built inside of foundations
+- Maybe some assets shouldn't be selcatable?
+  - windows
+- There might need to be a couple more Tileable "Center" types - e.g "IsolatedCenter" (only top, right, left, bottom). corners? etc.
+  - Maybe combinations of various mesh pieces? for a future iteration maybe
+- EntityMeshCellWrapper fallbacks - if the mesh should be BottomIsolated but only Bottom exists, then use Bottom
+- EntityMeshCellWrapper should probably delete mesh segments that don't get used instead of gameObject.SetActive(false)
+- Entity meshes should be oriented to the bottom of the cell, then repositioned up by FLOOR_HEIGHT amount
+- PROJECT right click dropdown menu
 - PROJECT: Entity.CalculateCellsFromSelectionBox improvements
   - [ ] Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
   - [ ] blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is

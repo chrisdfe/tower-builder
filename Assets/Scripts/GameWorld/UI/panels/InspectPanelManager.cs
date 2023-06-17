@@ -78,7 +78,8 @@ namespace TowerBuilder.GameWorld.UI
 
             if (inspectedEntity == null) return;
 
-            inspectText.text = $"{inspectedEntity.typeLabel} - {inspectedEntity.ToString()}\n";
+            inspectText.text = $"{inspectedEntity.typeLabel} - {inspectedEntity}\n";
+            inspectText.text = $"parent - {inspectedEntity.parent}\n";
 
             switch (inspectedEntity)
             {

@@ -33,6 +33,7 @@ namespace TowerBuilder.ApplicationState
         public virtual void Add(ItemType item)
         {
             ListWrapper<ItemType> newItemsList = new ListWrapper<ItemType>();
+
             newItemsList.Add(item);
             Add(newItemsList);
         }
@@ -47,6 +48,7 @@ namespace TowerBuilder.ApplicationState
         public virtual void Remove(ItemType item)
         {
             ListWrapper<ItemType> removedItemsList = new ListWrapper<ItemType>();
+
             removedItemsList.Add(item);
             Remove(removedItemsList);
         }

@@ -71,10 +71,9 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void Setup()
         {
-            Registry.appState.Entities.onEntitiesAdded += OnEntitiesAdded;
-            Registry.appState.Entities.onEntitiesRemoved += OnEntitiesRemoved;
-            Registry.appState.Entities.onEntitiesBuilt += OnEntitiesBuilt;
-
+            Registry.appState.Entities.onItemsAdded += OnEntitiesAdded;
+            Registry.appState.Entities.onItemsRemoved += OnEntitiesRemoved;
+            Registry.appState.Entities.onItemsBuilt += OnEntitiesBuilt;
             Registry.appState.Entities.onEntityPositionUpdated += OnEntityPositionUpdated;
 
             Registry.appState.EntityGroups.onPositionUpdated += OnEntityGroupPositionUpdated;
@@ -88,10 +87,9 @@ namespace TowerBuilder.GameWorld.Entities
 
         public void Teardown()
         {
-            Registry.appState.Entities.onEntitiesAdded -= OnEntitiesAdded;
-            Registry.appState.Entities.onEntitiesRemoved -= OnEntitiesRemoved;
-            Registry.appState.Entities.onEntitiesBuilt -= OnEntitiesBuilt;
-
+            Registry.appState.Entities.onItemsAdded -= OnEntitiesAdded;
+            Registry.appState.Entities.onItemsRemoved -= OnEntitiesRemoved;
+            Registry.appState.Entities.onItemsBuilt -= OnEntitiesBuilt;
             Registry.appState.Entities.onEntityPositionUpdated -= OnEntityPositionUpdated;
 
             Registry.appState.EntityGroups.onPositionUpdated -= OnEntityGroupPositionUpdated;

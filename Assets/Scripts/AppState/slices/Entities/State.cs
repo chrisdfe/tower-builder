@@ -38,9 +38,9 @@ namespace TowerBuilder.ApplicationState.Entities
         /*
             Events
         */
-        public ListEvent<Entity> onEntitiesAdded { get; set; }
-        public ListEvent<Entity> onEntitiesRemoved { get; set; }
-        public ListEvent<Entity> onEntitiesBuilt { get; set; }
+        public ListEvent<Entity> onItemsAdded { get; set; }
+        public ListEvent<Entity> onItemsRemoved { get; set; }
+        public ListEvent<Entity> onItemsBuilt { get; set; }
 
         public ItemEvent<Entity> onEntityPositionUpdated { get; set; }
 
@@ -105,9 +105,9 @@ namespace TowerBuilder.ApplicationState.Entities
 
             void AddListeners(EntityStateSlice stateSlice)
             {
-                stateSlice.onItemsAdded += OnEntitiesAdded;
-                stateSlice.onItemsRemoved += OnEntitiesRemoved;
-                stateSlice.onItemsBuilt += OnEntitiesBuilt;
+                stateSlice.onItemsAdded += OnItemsAdded;
+                stateSlice.onItemsRemoved += OnItemsRemoved;
+                stateSlice.onItemsBuilt += OnItemsBuilt;
 
                 stateSlice.onEntityPositionUpdated += OnEntityPositionUpdated;
             }
@@ -125,9 +125,9 @@ namespace TowerBuilder.ApplicationState.Entities
 
             void RemoveListeners(EntityStateSlice stateSlice)
             {
-                stateSlice.onItemsAdded -= OnEntitiesAdded;
-                stateSlice.onItemsRemoved -= OnEntitiesRemoved;
-                stateSlice.onItemsBuilt -= OnEntitiesBuilt;
+                stateSlice.onItemsAdded -= OnItemsAdded;
+                stateSlice.onItemsRemoved -= OnItemsRemoved;
+                stateSlice.onItemsBuilt -= OnItemsBuilt;
 
                 stateSlice.onEntityPositionUpdated -= OnEntityPositionUpdated;
             }
@@ -205,19 +205,19 @@ namespace TowerBuilder.ApplicationState.Entities
         /*
             Event Handlers
         */
-        void OnEntitiesAdded(ListWrapper<Entity> entityList)
+        void OnItemsAdded(ListWrapper<Entity> entityList)
         {
-            onEntitiesAdded?.Invoke(entityList);
+            onItemsAdded?.Invoke(entityList);
         }
 
-        void OnEntitiesRemoved(ListWrapper<Entity> entityList)
+        void OnItemsRemoved(ListWrapper<Entity> entityList)
         {
-            onEntitiesRemoved?.Invoke(entityList);
+            onItemsRemoved?.Invoke(entityList);
         }
 
-        void OnEntitiesBuilt(ListWrapper<Entity> entityList)
+        void OnItemsBuilt(ListWrapper<Entity> entityList)
         {
-            onEntitiesBuilt?.Invoke(entityList);
+            onItemsBuilt?.Invoke(entityList);
         }
 
         void OnEntityPositionUpdated(Entity entity)

@@ -11,7 +11,7 @@ namespace TowerBuilder.DataTypes.Entities
 {
     public class Entity : ISetupable, IValidatable
     {
-        public virtual string idKey { get => "entity"; }
+        public virtual string idKey => "entity";
 
         public int id { get; }
 

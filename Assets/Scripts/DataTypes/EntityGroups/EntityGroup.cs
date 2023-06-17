@@ -13,6 +13,8 @@ namespace TowerBuilder.DataTypes.EntityGroups
 
         public EntityGroup parent { get; set; } = null;
 
+        public int id { get; }
+
         public bool isInBlueprintMode { get; private set; } = false;
 
         public bool isValid => validationErrors.Count == 0;
@@ -62,9 +64,14 @@ namespace TowerBuilder.DataTypes.EntityGroups
             }
         }
 
-        public EntityGroup() { }
+        public override string ToString() => $"{typeLabel} #{id}";
 
-        public EntityGroup(EntityGroupDefinition definition) { }
+        public EntityGroup()
+        {
+            id = UIDGenerator.Generate(typeLabel);
+        }
+
+        public EntityGroup(EntityGroupDefinition definition) : this() { }
 
 
         /*
@@ -176,7 +183,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
             Queries
         */
         public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
-            new ListWrapper<Entity>();
+            entities.FindAll(entity => entity.absoluteCellCoordinatesList.Contains(cellCoordinates));
 
         /*
             Static Interface
