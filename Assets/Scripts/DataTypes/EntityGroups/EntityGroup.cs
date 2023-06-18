@@ -8,8 +8,8 @@ namespace TowerBuilder.DataTypes.EntityGroups
 {
     public class EntityGroup : ISetupable, IValidatable
     {
-        public ListWrapper<Entity> entities { get; } = new ListWrapper<Entity>();
-        public ListWrapper<EntityGroup> entityGroups { get; } = new ListWrapper<EntityGroup>();
+        public ListWrapper<Entity> childEntities { get; } = new ListWrapper<Entity>();
+        public ListWrapper<EntityGroup> childEntityGroups { get; } = new ListWrapper<EntityGroup>();
 
         public EntityGroup parent { get; set; } = null;
 
@@ -23,11 +23,33 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public virtual string typeLabel => "EntityGroup";
 
         public int price =>
-            entities.items.Aggregate(0, ((acc, entity) => acc + entity.price));
+            descendantEntities.items.Aggregate(0, ((acc, entity) => acc + entity.price));
+
+        public ListWrapper<Entity> descendantEntities
+        {
+            get
+            {
+                ListWrapper<Entity> result = new ListWrapper<Entity>();
+
+                AddEntityGroup(this);
+
+                return result;
+
+                void AddEntityGroup(EntityGroup entityGroup)
+                {
+                    result.Add(entityGroup.childEntities);
+
+                    foreach (EntityGroup childEntityGroup in entityGroup.childEntityGroups.items)
+                    {
+                        AddEntityGroup(childEntityGroup);
+                    }
+                }
+            }
+        }
 
         public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
 
-        public CellCoordinates absoluteCellCoordinates
+        public CellCoordinates absoluteOffsetCellCoordinates
         {
             get
             {
@@ -50,7 +72,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
             {
                 Dictionary<Type, ListWrapper<Entity>> groupedEntities = new Dictionary<Type, ListWrapper<Entity>>();
 
-                foreach (Entity entity in entities.items)
+                foreach (Entity entity in descendantEntities.items)
                 {
                     if (!groupedEntities.ContainsKey(entity.GetType()))
                     {
@@ -61,6 +83,21 @@ namespace TowerBuilder.DataTypes.EntityGroups
                 }
 
                 return groupedEntities;
+            }
+        }
+
+        public CellCoordinatesList absoluteCellCoordinatesList
+        {
+            get
+            {
+                CellCoordinatesList result = new CellCoordinatesList();
+
+                foreach (Entity entity in descendantEntities.items)
+                {
+                    result.Add(entity.absoluteCellCoordinatesList.items);
+                }
+
+                return result;
             }
         }
 
@@ -92,13 +129,13 @@ namespace TowerBuilder.DataTypes.EntityGroups
         {
             ListWrapper<ValidationError> errors = new ListWrapper<ValidationError>();
 
-            foreach (Entity entity in entities.items)
+            foreach (Entity entity in childEntities.items)
             {
                 entity.Validate(appState);
                 errors.Add(entity.validationErrors);
             }
 
-            foreach (EntityGroup entityGroup in entityGroups.items)
+            foreach (EntityGroup entityGroup in childEntityGroups.items)
             {
                 entityGroup.Validate(appState);
                 errors.Add(entityGroup.validationErrors);
@@ -112,14 +149,14 @@ namespace TowerBuilder.DataTypes.EntityGroups
         */
         public void Add(Entity entity)
         {
-            entities.Add(entity);
+            childEntities.Add(entity);
             entity.parent = this;
             entity.isInBlueprintMode = isInBlueprintMode;
         }
 
         public void Add(ListWrapper<Entity> entitiesList)
         {
-            entities.Add(entitiesList);
+            childEntities.Add(entitiesList);
             entitiesList.ForEach(entity =>
             {
                 entity.parent = this;
@@ -129,14 +166,14 @@ namespace TowerBuilder.DataTypes.EntityGroups
 
         public void Add(EntityGroup entityGroup)
         {
-            entityGroups.Add(entityGroup);
+            childEntityGroups.Add(entityGroup);
             entityGroup.parent = this;
             entityGroup.SetBlueprintMode(isInBlueprintMode);
         }
 
         public void Add(ListWrapper<EntityGroup> entityGroupList)
         {
-            entityGroups.Add(entityGroupList);
+            childEntityGroups.Add(entityGroupList);
             entityGroupList.ForEach(entityGroup =>
             {
                 entityGroup.parent = this;
@@ -146,34 +183,34 @@ namespace TowerBuilder.DataTypes.EntityGroups
 
         public void Remove(Entity entity)
         {
-            entities.Remove(entity);
+            childEntities.Remove(entity);
         }
 
         public void Remove(ListWrapper<Entity> entitiesList)
         {
-            entities.Remove(entitiesList);
+            childEntities.Remove(entitiesList);
         }
 
         public void Remove(EntityGroup entityGroup)
         {
-            entityGroups.Remove(entityGroup);
+            childEntityGroups.Remove(entityGroup);
         }
 
         public void Remove(ListWrapper<EntityGroup> entityGroups)
         {
-            entityGroups.Remove(entityGroups);
+            childEntityGroups.Remove(entityGroups);
         }
 
         public void SetBlueprintMode(bool isInBlueprintMode)
         {
             this.isInBlueprintMode = isInBlueprintMode;
 
-            entities.ForEach(entity =>
+            childEntities.ForEach(entity =>
             {
                 entity.isInBlueprintMode = isInBlueprintMode;
             });
 
-            entityGroups.ForEach(entityGroup =>
+            childEntityGroups.ForEach(entityGroup =>
             {
                 entityGroup.SetBlueprintMode(isInBlueprintMode);
             });
@@ -183,7 +220,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
             Queries
         */
         public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
-            entities.FindAll(entity => entity.absoluteCellCoordinatesList.Contains(cellCoordinates));
+            childEntities.FindAll(entity => entity.absoluteCellCoordinatesList.Contains(cellCoordinates));
 
         /*
             Static Interface

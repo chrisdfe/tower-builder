@@ -20,19 +20,69 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Buildings
         {
             base.Setup();
 
-            appState.EntityGroups.Rooms.onItemsAdded += OnRoomsAdded;
+            appState.EntityGroups.Rooms.onItemsBuilt += OnRoomsBuilt;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            appState.EntityGroups.Rooms.onItemsAdded -= OnRoomsAdded;
+            appState.EntityGroups.Rooms.onItemsBuilt -= OnRoomsBuilt;
         }
 
-        void OnRoomsAdded(ListWrapper<EntityGroup> rooms)
+
+        void OnRoomsBuilt(ListWrapper<EntityGroup> rooms)
         {
-            Debug.Log("a room has been addded and now I will check if it should be added to a building");
+            foreach (EntityGroup room in rooms.items)
+            {
+                if (room.parent == null)
+                {
+                    CreateNewOrAddToExistingBuilding(room);
+                }
+            }
+        }
+
+        void CreateNewOrAddToExistingBuilding(EntityGroup room)
+        {
+
+            ListWrapper<EntityGroup> neighborRooms = FindNeighborRooms(room);
+
+            // TODO - something has gone wrong if these rooms don't have a parent building
+            EntityGroup entityGroupWithParent = neighborRooms.Find(neighborRoom => neighborRoom.parent != null);
+
+            if (entityGroupWithParent != null)
+            {
+                AddToEntityGroup(entityGroupWithParent.parent, room);
+            }
+            else
+            {
+                // TODO - validate here that player hasn't reached their building limit
+                // Room is the first in the building
+                Building newBuilding = new Building(new BuildingDefinition());
+                Add(newBuilding);
+                AddToEntityGroup(newBuilding, room);
+            }
+        }
+
+        ListWrapper<EntityGroup> FindNeighborRooms(EntityGroup room)
+        {
+
+            CellCoordinatesList perimeterCellCoordinatesList =
+                room.absoluteCellCoordinatesList.GetPerimeterCellCoordinates();
+
+            ListWrapper<EntityGroup> result = new ListWrapper<EntityGroup>();
+
+            foreach (CellCoordinates cellCoordinates in perimeterCellCoordinatesList.items)
+            {
+                EntityGroup neighborRoom = appState.EntityGroups.Rooms.FindEntityGroupWithCellsOverlapping(perimeterCellCoordinatesList);
+
+                if (neighborRoom != null)
+                {
+                    result.Add(neighborRoom);
+                }
+            }
+
+            return result;
         }
     }
 }

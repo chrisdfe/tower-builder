@@ -37,7 +37,7 @@ namespace TowerBuilder.DataTypes.Entities
                         CellCoordinates result = cellCoordinates.Add(offsetCoordinates);
                         if (parent != null)
                         {
-                            result = CellCoordinates.Add(result, parent.absoluteCellCoordinates);
+                            result = CellCoordinates.Add(result, parent.absoluteOffsetCellCoordinates);
                         }
                         return result;
                     }).ToList()

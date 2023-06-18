@@ -104,9 +104,9 @@ namespace TowerBuilder.DataTypes
                 otherCellCoordinatesList.items.FindAll((cellCoordinates) => Contains(cellCoordinates)).ToList()
             );
 
-        public List<CellCoordinates> GetPerimeterCellCoordinates()
+        public CellCoordinatesList GetPerimeterCellCoordinates()
         {
-            List<CellCoordinates> result = new List<CellCoordinates>();
+            CellCoordinatesList result = new CellCoordinatesList();
 
             foreach (CellCoordinates cellCoordinates in items)
             {
@@ -119,7 +119,7 @@ namespace TowerBuilder.DataTypes
 
                 foreach (CellCoordinates adjacentCellCoordinates in adjacentCellCoordinatesList)
                 {
-                    if (!result.Contains(adjacentCellCoordinates))
+                    if (!result.Contains(adjacentCellCoordinates) && !Contains(adjacentCellCoordinates))
                     {
                         result.Add(adjacentCellCoordinates);
                     }

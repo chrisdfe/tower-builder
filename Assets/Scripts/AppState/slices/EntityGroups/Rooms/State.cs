@@ -25,17 +25,20 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
         {
             base.Setup();
 
-            appState.Entities.onItemsAdded += OnFoundationAdded;
+            appState.Entities.onItemsBuilt += OnEntitiesBuilt;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            appState.Entities.onItemsAdded -= OnFoundationAdded;
+            appState.Entities.onItemsBuilt -= OnEntitiesBuilt;
         }
 
-        void OnFoundationAdded(ListWrapper<Entity> entities)
+        /*
+            Internals
+        */
+        void OnEntitiesBuilt(ListWrapper<Entity> entities)
         {
             foreach (Entity entity in entities.items)
             {
@@ -67,13 +70,12 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
                 }
             }
 
-            Debug.Log("number of rooms now: " + list.Count);
-
             void AddRoom()
             {
                 Room room = new Room(new RoomDefinition());
                 Add(room);
                 AddToEntityGroup(room, entity);
+                Build(room);
             }
         }
     }

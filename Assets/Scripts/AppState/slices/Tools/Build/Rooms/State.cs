@@ -100,7 +100,11 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
         {
             base.OnBuildEnd();
 
+            Debug.Log("OnBuildEnd");
+
             blueprintRoom.Validate(Registry.appState);
+
+            Debug.Log("blueprintRoom.isValid: " + blueprintRoom.isValid);
 
             if (blueprintRoom.isValid)
             {

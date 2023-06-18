@@ -95,6 +95,8 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
         public void Build(EntityGroup entityGroup)
         {
+            Debug.Log("buidling entityGroup:");
+
             entityGroup.Validate(appState);
 
             if (!entityGroup.isValid)
@@ -106,12 +108,21 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             appState.Wallet.SubtractBalance(entityGroup.price);
 
             // TODO - use groupedEntities for this instead
-            entityGroup.entities.items.ForEach(entity =>
+            // TODO - this might cause bugs, doing all descendantEntities first then groups
+            entityGroup.descendantEntities.items.ForEach(entity =>
             {
                 appState.Entities.Build(entity);
             });
 
+            entityGroup.childEntityGroups.items.ForEach(entity =>
+            {
+                entityGroup.OnBuild();
+            });
+
             entityGroup.OnBuild();
+
+            Debug.Log("entityGroup built");
+            Debug.Log(entityGroup.isInBlueprintMode);
 
             ListWrapper<EntityGroup> builtItemsList = new ListWrapper<EntityGroup>();
             builtItemsList.Add(entityGroup);
@@ -194,7 +205,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         */
         public EntityGroup FindEntityGroupWithCellsOverlapping(CellCoordinatesList cellCoordinatesList) =>
             list.Find((entityGroup) => (
-                entityGroup.entities.Find((entity) => (
+                entityGroup.descendantEntities.Find((entity) => (
                     entity.absoluteCellCoordinatesList.OverlapsWith(cellCoordinatesList)
                 )) != null
             ));
@@ -203,11 +214,11 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             list.Find(entityGroup => entityGroup.FindEntitiesAtCell(cellCoordinates) != null);
 
         public EntityGroup FindEntityGroupByEntity(Entity entity) =>
-            list.Find(entityGroup => entityGroup.entities.items.Contains(entity));
+            list.Find(entityGroup => entityGroup.childEntities.items.Contains(entity));
 
         public ListWrapper<EntityGroup> FindEntityGroupsByEntities(ListWrapper<Entity> entities) =>
             list.FindAll(entityGroup =>
-                entities.items.Find(entity => entityGroup.entities.Contains(entity)) != null
+                entities.items.Find(entity => entityGroup.childEntities.Contains(entity)) != null
             );
 
         /*
@@ -224,19 +235,17 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                 if (entityGroup != null)
                 {
                     entityGroup.Remove(removedEntity);
-
-                    // TODO here - check if there are any entities left in entityGroup
-                    // if not then remove the entityGroup as well
+                    RemoveEntityGroupIfEmpty(entityGroup);
                 }
             }
         }
 
         /*
-            Entities
+            Internals
         */
         void RemoveEntityGroupIfEmpty(EntityGroup entityGroup)
         {
-            if (entityGroup.entities.Count == 0)
+            if (entityGroup.descendantEntities.Count == 0)
             {
                 Remove(entityGroup);
             }

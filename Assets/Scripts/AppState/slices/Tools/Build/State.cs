@@ -128,6 +128,10 @@ namespace TowerBuilder.ApplicationState.Tools.Build
         void StartBuild()
         {
             if (isLocked) return;
+
+            Debug.Log("StartBuild");
+            Debug.Log("GetCurrentMode");
+            Debug.Log(GetCurrentMode());
             buildIsActive = true;
 
             GetCurrentMode().OnBuildStart();
@@ -141,8 +145,12 @@ namespace TowerBuilder.ApplicationState.Tools.Build
             if (isLocked || !buildIsActive) return;
 
             isLocked = true;
+            Debug.Log("EndBuild");
+            Debug.Log("GetCurrentMode");
+            Debug.Log(GetCurrentMode());
 
             GetCurrentMode().OnBuildEnd();
+
             onBuildEnd?.Invoke();
 
             isLocked = false;

@@ -4,17 +4,18 @@
 
 - Make sure entityGroups get removed when there are no more entities in them
 - PROJECT: Default building/more entity group integration
-  - Foundation not built inside an already existing room should create one
-  - Rooms should get added to buildings or vehicles
-  - When starting out there should be a "blueprint building" that entities/entity groups get added to.
-  - buildings & vehicles should have different validation sets
-    - a 'entityGroupType' field on entity definitions
-  - Limit the number of buildings/vehicles somehow
+  - [x] Foundation not built inside an already existing room should create one
+  - [x] Rooms should get added to buildings or vehicles
+  - [ ] buildings & vehicles should have different validation sets
+    - A dictionary of EntityGroup: Validator list in EntityValidator?
+    - a 'entityGroupType' field on entity definitions?
+  - [ ] Limit the number of buildings/vehicles somehow
     - arbitrarily?
     - with money?
 
 ## After
 
+- CLEANUP: Think about removing (entity/entityGroup).parent. It seems messy
 - PROJECT: exterior walls built around building/vehicle
 - PROJECT: selecting multiple entities with the selection box
 - PROJECT: Elevator transportation item

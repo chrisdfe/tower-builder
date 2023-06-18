@@ -124,6 +124,8 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
         public override void OnBuildEnd()
         {
+            Debug.Log("onBuildEnd - entities");
+
             blueprintEntity.Validate(Registry.appState);
 
             if (blueprintEntity.isValid)
@@ -133,13 +135,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             }
             else
             {
-                Registry.appState.Notifications.Add(
-                    new ListWrapper<Notification>(
-                        blueprintEntity.validationErrors.items
-                            .Select(error => new Notification(error.message))
-                            .ToList()
-                    )
-                );
+                Registry.appState.Notifications.Add(blueprintEntity.validationErrors);
 
                 ResetBlueprintEntity();
             }

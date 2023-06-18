@@ -136,7 +136,7 @@ namespace TowerBuilder.GameWorld.Entities
 
         void OnEntityGroupPositionUpdated(EntityGroup entityGroup)
         {
-            foreach (Entity entity in entityGroup.entities.items)
+            foreach (Entity entity in entityGroup.childEntities.items)
             {
                 GetListByType(entity.GetType())?.UpdateEntityPosition(entity);
                 GetListByType(entity.GetType())?.UpdateEntityColor(entity);
