@@ -20,6 +20,7 @@
 
 - TASK: Option to turn day/night off and just have a single color for ground/background
 - PROJECT: exterior walls built around building/vehicle
+  - [ ] basic algorithm (line between 2 cells + 2 cells ahead = 4 cells per iteration)
 - CLEANUP: Think about removing (entity/entityGroup).parent. It seems messy but convenient
 - PROJECT: selecting multiple entities with the selection box
   - which entities to default to? probably residents, then furniture, etc
@@ -46,6 +47,7 @@
   - rain
   - fog
   - sun
+- PROJECT: building/vehicle/room generators
 - EXPERIMENT: with overlays
   - connected to/disconnected from transport
 - EXPERIMENT: with light culling
@@ -66,6 +68,8 @@
 - PROJECT: Resident+resident interaction
   - this will require "selected entity" functionality to be present again
   - shopkeepers could eventually use this
+- Decorative chassis exterior that breaks out of the tile-based geometry
+- PROJECT: algorithm for bisecting cells with a diagonal
 - TASK: Convoy - EntityGroup of vehicles
 - Rename "floors" to "platforms" to prevent confusion?
   - Or rename "floors" to "story"?

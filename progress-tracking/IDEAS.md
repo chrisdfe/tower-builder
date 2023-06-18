@@ -76,3 +76,6 @@
 ## Optimization Ideas
 
 - Cache entity.cellCoordinatesList - it only needs to be recalculated when cells get set, not whenever when get
+- CellCoordinatesList - a lot of getters that should be cached
+- Entity/entityGroup getters
+- CellCoordinatesList could use a lookup table instead of "Find" everywhere?
