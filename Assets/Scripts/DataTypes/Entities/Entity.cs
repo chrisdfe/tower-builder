@@ -49,8 +49,6 @@ namespace TowerBuilder.DataTypes.Entities
         public EntityDefinition definition { get; }
         protected EntityValidator validator { get; }
 
-        public delegate EntityDefinition DefaultDefinitionGenerator();
-
         public virtual string typeLabel => "Entity";
 
         public bool isValid => validator.isValid;
@@ -113,7 +111,7 @@ namespace TowerBuilder.DataTypes.Entities
         */
         public static Entity CreateFromDefinition(EntityDefinition definition)
         {
-            System.Type EntityType = Constants.EntityTypeEntityDefinitionMap.KeyFromValue(definition.GetType());
+            Type EntityType = Constants.EntityTypeEntityDefinitionMap.KeyFromValue(definition.GetType());
 
             if (EntityType != null)
             {

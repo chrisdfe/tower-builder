@@ -65,9 +65,7 @@ namespace TowerBuilder.DataTypes
             });
 
         public CellCoordinatesList asRelativeCoordinates =>
-            new CellCoordinatesList(
-                items.Select(cellCoordinates => AsRelativeCoordinates(cellCoordinates)).ToList()
-            );
+            Subtract(this, bottomLeftCoordinates);
 
         public CellCoordinatesList bottomRow =>
             new CellCoordinatesList(
@@ -89,7 +87,7 @@ namespace TowerBuilder.DataTypes
 
             foreach (CellCoordinates cellCoordinates in items)
             {
-                result.Add(Add(newBaseCoordinates, cellCoordinates));
+                result.Add(CellCoordinates.Add(newBaseCoordinates, cellCoordinates));
             }
 
             items = result;
@@ -129,9 +127,6 @@ namespace TowerBuilder.DataTypes
             return result;
         }
 
-        public CellCoordinates AsRelativeCoordinates(CellCoordinates cellCoordinates) =>
-            Subtract(cellCoordinates, bottomLeftCoordinates);
-
         public CellCoordinatesList Clone() =>
             new CellCoordinatesList(
                 items.Select(cellCoordinates => cellCoordinates.Clone()).ToList()
@@ -144,14 +139,19 @@ namespace TowerBuilder.DataTypes
         */
         public static CellCoordinatesList one => new CellCoordinatesList(CellCoordinates.zero);
 
-        // TODO - this should be in cellcoordates
-        public static CellCoordinates Add(CellCoordinates a, CellCoordinates b) =>
-            new CellCoordinates(a.x + b.x, a.y + b.y);
+        public static CellCoordinatesList Add(CellCoordinatesList list, CellCoordinates offset) =>
+            new CellCoordinatesList(
+                list.items
+                    .Select(cellCoordinates => CellCoordinates.Add(cellCoordinates, offset))
+                    .ToList()
+            );
 
-        // TODO - this should be in cellcoordates
-        public static CellCoordinates Subtract(CellCoordinates a, CellCoordinates b) =>
-            new CellCoordinates(a.x - b.x, a.y - b.y);
-
+        public static CellCoordinatesList Subtract(CellCoordinatesList list, CellCoordinates offset) =>
+            new CellCoordinatesList(
+                list.items
+                    .Select(cellCoordinates => CellCoordinates.Subtract(cellCoordinates, offset))
+                    .ToList()
+            );
 
         public static CellCoordinatesList CreateRectangle(CellCoordinates a, CellCoordinates b)
         {
@@ -173,10 +173,10 @@ namespace TowerBuilder.DataTypes
             return new CellCoordinatesList(list);
         }
 
-        public static CellCoordinatesList CreateRectangle(int xWidth, int ys) =>
+        public static CellCoordinatesList CreateRectangle(int width, int height) =>
             CreateRectangle(
                 CellCoordinates.zero,
-                new CellCoordinates(xWidth - 1, ys - 1)
+                new CellCoordinates(width - 1, height - 1)
             );
 
         public static CellCoordinatesList CreateRectangle(int size) => CreateRectangle(size, size);

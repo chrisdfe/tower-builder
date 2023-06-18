@@ -14,11 +14,7 @@ namespace TowerBuilder.DataTypes.Entities.Floors
                 title = "Small",
                 category = "Basic",
 
-                blockCellsTemplate = new CellCoordinatesList(
-                    new List<CellCoordinates>() {
-                        new CellCoordinates(0, 0),
-                    }
-                ),
+                blockCellsTemplate = CellCoordinatesList.CreateRectangle(1, 1),
             }
         };
 
