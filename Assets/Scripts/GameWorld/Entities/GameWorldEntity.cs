@@ -84,7 +84,7 @@ namespace TowerBuilder.GameWorld.Entities
                 Debug.LogWarning($"Key '{meshKey}' not found in {entity.typeLabel} mesh assets");
                 meshKey = "Default";
             }
-            // if (manager.meshAssets)
+
             GameObject prefabMesh = manager.meshAssets.ValueFromKey(meshKey);
 
             entityMeshWrapper.parent = transform;
@@ -139,7 +139,7 @@ namespace TowerBuilder.GameWorld.Entities
 
             void SetDestroyStateColor()
             {
-                CellCoordinatesList cellCoordinatesToDestroyFrom = Registry.appState.Tools.Destroy.cellCoordinatesToDelete;
+                CellCoordinatesList cellCoordinatesToDestroyFrom = Registry.appState.Tools.Destroy.cellCoordinatesToDestroyList;
 
                 // TODO - highlight on a per-cell basis
                 if (entity.absoluteCellCoordinatesList.OverlapsWith(Registry.appState.UI.selectionBox.cellCoordinatesList))

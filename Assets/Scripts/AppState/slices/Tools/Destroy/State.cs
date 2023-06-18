@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
+using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Tools.Destroy
 {
@@ -16,7 +17,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
 
         public ListWrapper<Room> roomsToDeleteBlocksFrom { get; private set; } = new ListWrapper<Room>();
         public CellCoordinatesBlockList blocksToDelete { get; private set; } = new CellCoordinatesBlockList();
-        public CellCoordinatesList cellCoordinatesToDelete { get; private set; } = new CellCoordinatesList();
+        public CellCoordinatesList cellCoordinatesToDestroyList { get; private set; } = new CellCoordinatesList();
 
         bool destroyIsActive = false;
 
@@ -43,18 +44,18 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
         {
             base.Setup();
 
-            roomsToDeleteBlocksFrom = new ListWrapper<Room>();
-            blocksToDelete = new CellCoordinatesBlockList();
-            cellCoordinatesToDelete = new CellCoordinatesList();
+            // roomsToDeleteBlocksFrom = new ListWrapper<Room>();
+            // blocksToDelete = new CellCoordinatesBlockList();
+            cellCoordinatesToDestroyList = new CellCoordinatesList();
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            roomsToDeleteBlocksFrom = new ListWrapper<Room>();
-            blocksToDelete = new CellCoordinatesBlockList();
-            cellCoordinatesToDelete = new CellCoordinatesList();
+            // roomsToDeleteBlocksFrom = new ListWrapper<Room>();
+            // blocksToDelete = new CellCoordinatesBlockList();
+            cellCoordinatesToDestroyList = new CellCoordinatesList();
         }
 
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
@@ -80,13 +81,16 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             toolsState.SetToolState(ApplicationState.Tools.State.Key.Inspect);
         }
 
+
         /*
-            Internals
+            Event Handlers
         */
         void StartDestroy()
         {
             destroyIsActive = true;
             CalculateDeleteCells();
+            // Debug.Log("Delete cells:");
+
 
             if (onDestroyStart != null)
             {
@@ -120,13 +124,16 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             onDestroyEnd?.Invoke();
         }
 
+        /*
+            Internals
+        */
         void CalculateDeleteCells()
         {
             SelectionBox selectionBox = Registry.appState.UI.selectionBox;
 
             roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             blocksToDelete = new CellCoordinatesBlockList();
-            cellCoordinatesToDelete = new CellCoordinatesList();
+            cellCoordinatesToDestroyList = new CellCoordinatesList();
 
             // foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
             // {
@@ -136,7 +143,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             //     {
             //         roomsToDeleteBlocksFrom.Add(roomToDelete);
             //         blocksToDelete.Add(roomBlockToDelete);
-            //         cellCoordinatesToDelete.Add(roomBlockToDelete.items);
+            //         cellCoordinatesToDestroyList.Add(roomBlockToDelete.items);
             //     }
             // }
         }

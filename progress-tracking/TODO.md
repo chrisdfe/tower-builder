@@ -2,6 +2,7 @@
 
 ## Current
 
+- PROJECT: Reimplement "room blocks" as EntityGroups
 - PROJECT: reimplement destroy tool
   - [ ] get it working again to just destroy entities
   - [ ] different "destroy" types - entity, room, building, etc
