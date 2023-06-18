@@ -2,6 +2,9 @@
 
 ## Current
 
+- PROJECT: reimplement destroy tool
+  - [ ] get it working again to just destroy entities
+  - [ ] different "destroy" types - entity, room, building, etc
 - Make sure entityGroups get removed when there are no more entities in them
 - PROJECT: Default building/more entity group integration
   - [x] Foundation not built inside an already existing room should create one
@@ -9,20 +12,23 @@
   - [ ] buildings & vehicles should have different validation sets
     - A dictionary of EntityGroup: Validator list in EntityValidator?
     - a 'entityGroupType' field on entity definitions?
-  - [ ] Limit the number of buildings/vehicles somehow
+  - [ ] Limit the number of buildings/vehicles
     - arbitrarily?
     - with money?
 
 ## After
 
-- CLEANUP: Think about removing (entity/entityGroup).parent. It seems messy
+- TASK: Option to turn day/night off and just have a single color for ground/background
 - PROJECT: exterior walls built around building/vehicle
+- CLEANUP: Think about removing (entity/entityGroup).parent. It seems messy but convenient
 - PROJECT: selecting multiple entities with the selection box
+  - which entities to default to? probably residents, then furniture, etc
 - PROJECT: Elevator transportation item
 - "EntityGroup" should be the default build mode?
 - BUG: Wheels shouldn't be able to be built inside of foundations
 - Maybe some assets shouldn't be selcatable?
   - windows
+  - decoration
 - There might need to be a couple more Tileable "Center" types - e.g "IsolatedCenter" (only top, right, left, bottom). corners? etc.
   - Maybe combinations of various mesh pieces? for a future iteration maybe
 - EntityMeshCellWrapper fallbacks - if the mesh should be BottomIsolated but only Bottom exists, then use Bottom
@@ -36,6 +42,10 @@
   - name/id when you hover over an entity?
   - bring back cursor money text
   - validation errors that show up
+- PROJECT: weather
+  - rain
+  - fog
+  - sun
 - EXPERIMENT: with overlays
   - connected to/disconnected from transport
 - EXPERIMENT: with light culling
@@ -49,10 +59,6 @@
 - PROJECT: Save system improvements
   - [ ] save file versioning
   - [ ] migrations between save file versions - add stuff to the json to make it serialize correctly with current codebase
-- PROJECT: reimplement destroy tool
-  - get it working again to just destroy entities
-  - different "destroy" types - entity, room, building, etc
-- TASK: Option to turn day/night off and just have a single color for ground/background
 - PROJECT: Interior lights features
   - brightness
   - color
