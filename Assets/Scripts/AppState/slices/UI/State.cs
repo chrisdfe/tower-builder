@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
@@ -21,8 +22,8 @@ namespace TowerBuilder.ApplicationState.UI
         public delegate void CellCoordinatesEvent(CellCoordinates currentSelectedCell);
         public CellCoordinatesEvent onCurrentSelectedCellUpdated;
 
-        public delegate void SelectedRoomBlockEvent(CellCoordinatesBlock cellCoordinatesBlock);
-        public SelectedRoomBlockEvent onCurrentSelectedRoomBlockUpdated;
+        public delegate void SelectedEntityBlockEvent(CellCoordinatesBlockList selectedBlockList);
+        public SelectedEntityBlockEvent onSelectedEntityBlocksUpdated;
 
         public delegate void SelectedCellEntityListEvent(ListWrapper<Entity> entityList);
         public SelectedCellEntityListEvent onCurrentSelectedEntityListUpdated;
@@ -43,7 +44,7 @@ namespace TowerBuilder.ApplicationState.UI
             State
         */
         public CellCoordinates currentSelectedCell { get; private set; } = null;
-        public CellCoordinatesBlock currentSelectedRoomBlock { get; private set; } = null;
+        public CellCoordinatesBlockList currentSelectedBlockList { get; private set; } = null;
         public Entity currentSelectedEntity { get; private set; } = null;
         public EntityGroup currentSelectedEntityGroup { get; private set; } = null;
 
@@ -139,7 +140,16 @@ namespace TowerBuilder.ApplicationState.UI
             if (currentSelectedCell != null)
             {
                 currentSelectedCellEntityList = appState.Entities.FindEntitiesAtCell(currentSelectedCell);
+
+                currentSelectedBlockList = new CellCoordinatesBlockList(
+                    currentSelectedCellEntityList.items
+                        .Select(entity => entity.FindBlockByCellCoordinates(currentSelectedCell))
+                        .ToList()
+                        .FindAll(block => block != null)
+                );
+
                 onCurrentSelectedEntityListUpdated?.Invoke(currentSelectedCellEntityList);
+                onSelectedEntityBlocksUpdated?.Invoke(currentSelectedBlockList);
             }
         }
     }

@@ -22,11 +22,11 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public virtual void OnSelectionBoxUpdated(SelectionBox selectionBox) { }
 
-        public virtual void OnCurrentSelectedRoomUpdated(Room room) { }
-
-        public virtual void OnCurrentSelectedRoomBlockUpdated(CellCoordinatesBlock roomBlock) { }
-
         public virtual void OnCurrentSelectedEntityListUpdated(ListWrapper<Entity> entityList) { }
+
+        public virtual void OnSelectedEntityBlocksUpdated(CellCoordinatesBlockList selectedBlocksList) { }
+
+        public virtual void OnCurrentSelectedRoomUpdated(Room room) { }
 
         public virtual void OnSelectionStart(SelectionBox selectionBox) { }
 

@@ -9,10 +9,12 @@ namespace TowerBuilder.DataTypes
     [System.Serializable]
     public class CellCoordinatesBlock : CellCoordinatesList
     {
-        public CellCoordinatesBlock(CellCoordinatesList cellCoordinatesList)
+        public CellCoordinatesBlock(List<CellCoordinates> cellCoordinatesList)
         {
-            items = cellCoordinatesList.items;
+            items = cellCoordinatesList;
         }
+
+        public CellCoordinatesBlock(CellCoordinatesList cellCoordinatesList) : this(cellCoordinatesList.items) { }
 
         public CellCoordinatesBlock(CellCoordinates cellCoordinates)
         {

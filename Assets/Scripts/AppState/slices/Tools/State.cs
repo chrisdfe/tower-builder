@@ -66,8 +66,8 @@ namespace TowerBuilder.ApplicationState.Tools
             appState.UI.onSecondaryActionStart += OnSecondaryActionStart;
             appState.UI.onSecondaryActionEnd += OnSecondaryActionEnd;
 
-            appState.UI.onCurrentSelectedRoomBlockUpdated += OnCurrentSelectedRoomBlockUpdated;
             appState.UI.onCurrentSelectedEntityListUpdated += OnCurrentSelectedEntityListUpdated;
+            appState.UI.onSelectedEntityBlocksUpdated += OnSelectedEntityBlocksUpdated;
         }
 
         public override void Teardown()
@@ -82,8 +82,8 @@ namespace TowerBuilder.ApplicationState.Tools
             appState.UI.onSecondaryActionStart -= OnSecondaryActionStart;
             appState.UI.onSecondaryActionEnd -= OnSecondaryActionEnd;
 
-            appState.UI.onCurrentSelectedRoomBlockUpdated -= OnCurrentSelectedRoomBlockUpdated;
             appState.UI.onCurrentSelectedEntityListUpdated -= OnCurrentSelectedEntityListUpdated;
+            appState.UI.onSelectedEntityBlocksUpdated -= OnSelectedEntityBlocksUpdated;
         }
 
         /*
@@ -120,11 +120,6 @@ namespace TowerBuilder.ApplicationState.Tools
             activeToolState.OnCurrentSelectedRoomUpdated(room);
         }
 
-        void OnCurrentSelectedRoomBlockUpdated(CellCoordinatesBlock cellCoordinatesBlock)
-        {
-            activeToolState.OnCurrentSelectedRoomBlockUpdated(cellCoordinatesBlock);
-        }
-
         void OnSelectionStart(SelectionBox selectionBox)
         {
             activeToolState.OnSelectionStart(selectionBox);
@@ -143,6 +138,11 @@ namespace TowerBuilder.ApplicationState.Tools
         void OnCurrentSelectedEntityListUpdated(ListWrapper<Entity> entityList)
         {
             activeToolState.OnCurrentSelectedEntityListUpdated(entityList);
+        }
+
+        void OnSelectedEntityBlocksUpdated(CellCoordinatesBlockList selectedBlocksList)
+        {
+            activeToolState.OnSelectedEntityBlocksUpdated(selectedBlocksList);
         }
 
         void OnSecondaryActionStart()

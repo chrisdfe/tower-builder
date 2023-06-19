@@ -2,7 +2,6 @@
 
 ## Current
 
-- PROJECT: Reimplement "room blocks" as EntityGroups
 - PROJECT: reimplement destroy tool
   - [ ] get it working again to just destroy entities
   - [ ] different "destroy" types - entity, room, building, etc
@@ -19,6 +18,13 @@
 
 ## After
 
+- CLEANUP: Get rid of "current" from the beginning of the selected\_\_List fields in UI/State
+- TASK: Entity types should have z indexes, which can be sorted to determine which is in front (also visually )
+- ability to
+  - [ ] select a building/vehicle/ship to focus on building that
+  - [ ] filter buttons in the build tool mode for the current building type (e.g no wheels for buildings)
+  - [ ] building wheels creates a vehicle, building a "space engine" creates a new ship, etc
+- Maybe "building" should have a Type instead - Ground, Vehicle, or Ship?
 - TASK: Option to turn day/night off and just have a single color for ground/background
 - PROJECT: exterior walls built around building/vehicle
   - [ ] basic algorithm (line between 2 cells + 2 cells ahead = 4 cells per iteration)

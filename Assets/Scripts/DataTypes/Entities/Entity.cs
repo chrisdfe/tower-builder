@@ -21,27 +21,43 @@ namespace TowerBuilder.DataTypes.Entities
 
         public EntityGroup parent { get; set; } = null;
 
-        public CellCoordinatesBlockList blocksList { get; private set; } = new CellCoordinatesBlockList();
 
         public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
-        // TODO - absolute offset coordiantes?
 
-        public CellCoordinatesList relativeCellCoordinatesList { get; private set; } = new CellCoordinatesList();
+        public CellCoordinatesBlockList relativeBlocksList { get; private set; } = new CellCoordinatesBlockList();
 
-        // TODO - take parent into account
+        public CellCoordinatesBlockList absoluteBlocksList
+        {
+            get
+            {
+                return new CellCoordinatesBlockList(
+                    relativeBlocksList.items
+                        .Select(relativeBlock =>
+                            new CellCoordinatesBlock(
+                                relativeBlock.items
+                                    .Select((relativeCellCoordinates) =>
+                                    {
+                                        CellCoordinates absoluteCellCoordinates = relativeCellCoordinates.Add(offsetCoordinates);
+
+                                        if (parent != null)
+                                        {
+                                            absoluteCellCoordinates = CellCoordinates.Add(absoluteCellCoordinates, parent.absoluteOffsetCellCoordinates);
+                                        }
+
+                                        return absoluteCellCoordinates;
+                                    })
+                                    .ToList()
+                            )
+                        ).ToList()
+                );
+            }
+        }
+
+        public CellCoordinatesList relativeCellCoordinatesList =>
+            CellCoordinatesList.FromBlocksList(this.relativeBlocksList);
+
         public CellCoordinatesList absoluteCellCoordinatesList =>
-            new CellCoordinatesList(
-                relativeCellCoordinatesList.items
-                    .Select(cellCoordinates =>
-                    {
-                        CellCoordinates result = cellCoordinates.Add(offsetCoordinates);
-                        if (parent != null)
-                        {
-                            result = CellCoordinates.Add(result, parent.absoluteOffsetCellCoordinates);
-                        }
-                        return result;
-                    }).ToList()
-            );
+            CellCoordinatesList.FromBlocksList(this.absoluteBlocksList);
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
@@ -58,8 +74,6 @@ namespace TowerBuilder.DataTypes.Entities
         {
             this.id = UIDGenerator.Generate(idKey);
             this.definition = definition;
-
-            this.relativeCellCoordinatesList = definition.blockCellsTemplate.Clone();
 
             this.validator = definition.validatorFactory(this);
         }
@@ -82,8 +96,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {
-            this.blocksList = EntityBlocksBuilder.FromDefinition(definition).Calculate(selectionBox);
-            this.relativeCellCoordinatesList = CellCoordinatesList.FromBlocksList(this.blocksList);
+            this.relativeBlocksList = EntityBlocksBuilder.FromDefinition(definition).Calculate(selectionBox);
 
             CalculateTileableMap();
         }
@@ -104,7 +117,7 @@ namespace TowerBuilder.DataTypes.Entities
         }
 
         public CellCoordinatesBlock FindBlockByCellCoordinates(CellCoordinates cellCoordinates) =>
-            blocksList.items.Find(cellCoordinatesBlock => cellCoordinatesBlock.Contains(cellCoordinates));
+            absoluteBlocksList.items.Find(cellCoordinatesBlock => cellCoordinatesBlock.Contains(cellCoordinates));
 
         /*
             Static Interface

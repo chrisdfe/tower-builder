@@ -139,21 +139,36 @@ namespace TowerBuilder.GameWorld.Entities
 
             void SetDestroyStateColor()
             {
-                CellCoordinatesList cellCoordinatesToDestroyFrom = Registry.appState.Tools.Destroy.cellCoordinatesToDestroyList;
+                CellCoordinatesBlockList selectedBlocks = Registry.appState.UI.currentSelectedBlockList;
 
-                // TODO - highlight on a per-cell basis
-                if (entity.absoluteCellCoordinatesList.OverlapsWith(Registry.appState.UI.selectionBox.cellCoordinatesList))
+                if (selectedBlocks == null) return;
+
+                foreach (CellCoordinatesBlock block in selectedBlocks.items)
                 {
-                    foreach (EntityMeshCellWrapper entityMeshCellWrapper in entityMeshWrapper.entityCellMeshWrapperList)
-                    {
-                        if (cellCoordinatesToDestroyFrom.OverlapsWith(entity.absoluteCellCoordinatesList))
-                        {
-                            entityMeshCellWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Destroy);
-                        }
-                    }
+                    Debug.Log("block");
+                    Debug.Log(block);
 
-                    hasUpdated = true;
+                    if (entity.absoluteCellCoordinatesList.OverlapsWith(new CellCoordinatesList(block.items)))
+                    {
+                        entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Destroy);
+                        hasUpdated = true;
+                    }
                 }
+                // CellCoordinatesList cellCoordinatesToDestroyFrom = Registry.appState.Tools.Destroy.cellCoordinatesToDestroyList;
+
+                // // TODO - highlight on a per-cell basis
+                // if (entity.absoluteCellCoordinatesList.OverlapsWith(Registry.appState.UI.selectionBox.cellCoordinatesList))
+                // {
+                //     foreach (EntityMeshCellWrapper entityMeshCellWrapper in entityMeshWrapper.entityCellMeshWrapperList)
+                //     {
+                //         if (cellCoordinatesToDestroyFrom.OverlapsWith(entity.absoluteCellCoordinatesList))
+                //         {
+                //             entityMeshCellWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Destroy);
+                //         }
+                //     }
+
+                //     hasUpdated = true;
+                // }
             }
 
             void SetInspectStateColor()

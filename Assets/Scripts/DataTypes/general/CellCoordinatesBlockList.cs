@@ -13,22 +13,5 @@ namespace TowerBuilder.DataTypes
         public CellCoordinatesBlockList(CellCoordinatesBlock cellCoordinatesBlock) : base(cellCoordinatesBlock) { }
         public CellCoordinatesBlockList(List<CellCoordinatesBlock> cellCoordinatesBlocks) : base(cellCoordinatesBlocks) { }
         public CellCoordinatesBlockList(CellCoordinatesBlockList cellCoordinatesBlockList) : base(cellCoordinatesBlockList) { }
-
-        public CellCoordinatesList Flatten() =>
-        items.Aggregate(new CellCoordinatesList(), (acc, cellCoordinatesBlock) =>
-            {
-                acc.Add(cellCoordinatesBlock.items);
-                return acc;
-            });
-
-        public void PositionAtCoordinates(CellCoordinates cellCoordinates)
-        {
-            foreach (var block in items)
-            {
-                block.PositionAtCoordinates(cellCoordinates);
-            }
-        }
     }
 }
-
-
