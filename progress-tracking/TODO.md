@@ -2,6 +2,10 @@
 
 ## Current
 
+- PROJECT: Entity z indexes, which can be sorted to determine which is in front (also visually)
+  - [ ] default z indexes (i.e on an entity type level)
+  - [ ] "sub" z-indexes (1-10)
+  - [ ] both types are overrideable
 - PROJECT: reimplement destroy tool
   - [ ] get it working again to just destroy entities
   - [ ] different "destroy" types - entity, room, building, etc
@@ -18,8 +22,11 @@
 
 ## After
 
+- Scaffolding/latticed wood stilts entity (for buildings)
+- PROJECT: "exterior" (front) view
+  - like the sims - none, partial (goes away under cursor), full
+  - options to show residents through front?
 - CLEANUP: Get rid of "current" from the beginning of the selected\_\_List fields in UI/State
-- TASK: Entity types should have z indexes, which can be sorted to determine which is in front (also visually )
 - ability to
   - [ ] select a building/vehicle/ship to focus on building that
   - [ ] filter buttons in the build tool mode for the current building type (e.g no wheels for buildings)
