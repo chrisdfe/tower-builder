@@ -40,6 +40,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         {
             base.Setup();
 
+            appState.Entities.onItemsAdded += OnEntitiesAdded;
             appState.Entities.onItemsRemoved += OnEntitiesRemoved;
         }
 
@@ -47,6 +48,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         {
             base.Teardown();
 
+            appState.Entities.onItemsAdded += OnEntitiesAdded;
             appState.Entities.onItemsRemoved -= OnEntitiesRemoved;
         }
 
@@ -73,16 +75,21 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             // since we're listening for onEntitiesRemoved
             isListeningForEvents = false;
 
+            // TODO - flatten child list of entity groups into single list of entity groups to delete
+
             removedItemsList.items.ForEach((entityGroup) =>
             {
                 // TODO - validation
                 // TODO - add money back into wallet
 
+                // Remove child entities
                 foreach (var entry in entityGroup.groupedEntities)
                 {
                     var (entityType, entitiesOfType) = entry;
                     appState.Entities.Remove(entitiesOfType);
                 }
+
+                // TODO - Remove child entityGroups
 
                 entityGroup.OnDestroy();
             });
@@ -138,30 +145,30 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             onPositionUpdated?.Invoke(entityGroup);
         }
 
-        public void AddToEntityGroup(EntityGroup entityGroup, ListWrapper<Entity> entitiesToAdd)
+        public void AddChildren(EntityGroup entityGroup, ListWrapper<Entity> entitiesToAdd)
         {
             entityGroup.Add(entitiesToAdd);
 
             onEntitiesAddedToEntityGroup?.Invoke(entityGroup, entitiesToAdd);
         }
 
-        public void AddToEntityGroup(EntityGroup entityGroup, Entity entityToAdd)
-        {
-            ListWrapper<Entity> entitiesToAdd = new ListWrapper<Entity>(new List<Entity>() { entityToAdd });
-            AddToEntityGroup(entityGroup, entitiesToAdd);
-        }
-
-        public void AddToEntityGroup(EntityGroup entityGroup, ListWrapper<EntityGroup> entityGroupsToAdd)
+        public void AddChildren(EntityGroup entityGroup, ListWrapper<EntityGroup> entityGroupsToAdd)
         {
             entityGroup.Add(entityGroupsToAdd);
 
             onEntityGroupsAddedToEntityGroup?.Invoke(entityGroup, entityGroupsToAdd);
         }
 
-        public void AddToEntityGroup(EntityGroup entityGroup, EntityGroup entityGroupToAdd)
+        public void AddChild(EntityGroup entityGroup, Entity entityToAdd)
+        {
+            ListWrapper<Entity> entitiesToAdd = new ListWrapper<Entity>(new List<Entity>() { entityToAdd });
+            AddChildren(entityGroup, entitiesToAdd);
+        }
+
+        public void AddChild(EntityGroup entityGroup, EntityGroup entityGroupToAdd)
         {
             ListWrapper<EntityGroup> entityGroupsToAdd = new ListWrapper<EntityGroup>(new List<EntityGroup>() { entityGroupToAdd });
-            AddToEntityGroup(entityGroup, entityGroupsToAdd);
+            AddChildren(entityGroup, entityGroupsToAdd);
         }
 
         public void RemoveFromEntityGroup(EntityGroup entityGroup, ListWrapper<Entity> entitiesToRemove)
@@ -200,37 +207,44 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             RemoveEntityGroupIfEmpty(entityGroup);
         }
 
+
         /*
             Queries
         */
         public EntityGroup FindEntityGroupWithCellsOverlapping(CellCoordinatesList cellCoordinatesList) =>
             list.Find((entityGroup) => (
                 entityGroup.descendantEntities.Find((entity) => (
-                    entity.absoluteCellCoordinatesList.OverlapsWith(cellCoordinatesList)
+                    appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).OverlapsWith(cellCoordinatesList)
                 )) != null
             ));
 
-        public EntityGroup FindEntityGroupAtCell(CellCoordinates cellCoordinates) =>
-            list.Find(entityGroup => entityGroup.FindEntitiesAtCell(cellCoordinates) != null);
 
-        public EntityGroup FindEntityGroupByEntity(Entity entity) =>
+        public EntityGroup FindEntityGroupAtCell(CellCoordinates cellCoordinates) =>
+            list.Find(entityGroup => appState.EntityGroups.FindChildEntitiesAtCell(entityGroup, cellCoordinates) != null);
+
+        public EntityGroup FindEntityParent(Entity entity) =>
             list.Find(entityGroup => entityGroup.childEntities.items.Contains(entity));
 
-        public ListWrapper<EntityGroup> FindEntityGroupsByEntities(ListWrapper<Entity> entities) =>
-            list.FindAll(entityGroup =>
-                entities.items.Find(entity => entityGroup.childEntities.Contains(entity)) != null
-            );
+        public EntityGroup FindEntityGroupParent(EntityGroup targetEntityGroup) =>
+            list.Find(entityGroup => entityGroup.childEntityGroups.Contains(targetEntityGroup));
 
         /*
             Event Handlers
         */
+        void OnEntitiesAdded(ListWrapper<Entity> addedEntities)
+        {
+            if (!isListeningForEvents) return;
+
+
+        }
+
         void OnEntitiesRemoved(ListWrapper<Entity> removedEntities)
         {
             if (!isListeningForEvents) return;
 
             foreach (Entity removedEntity in removedEntities.items)
             {
-                EntityGroup entityGroup = FindEntityGroupByEntity(removedEntity);
+                EntityGroup entityGroup = FindEntityParent(removedEntity);
 
                 if (entityGroup != null)
                 {

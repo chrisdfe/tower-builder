@@ -11,7 +11,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public ListWrapper<Entity> childEntities { get; } = new ListWrapper<Entity>();
         public ListWrapper<EntityGroup> childEntityGroups { get; } = new ListWrapper<EntityGroup>();
 
-        public EntityGroup parent { get; set; } = null;
+        // public EntityGroup parent { get; set; } = null;
 
         public int id { get; }
 
@@ -49,23 +49,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
 
         public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
 
-        public CellCoordinates absoluteOffsetCellCoordinates
-        {
-            get
-            {
-                CellCoordinates result = offsetCoordinates;
-                EntityGroup currentParent = parent;
-
-                while (currentParent != null)
-                {
-                    result = CellCoordinates.Add(result, currentParent.offsetCoordinates);
-                    currentParent = currentParent.parent;
-                }
-
-                return result;
-            }
-        }
-
         public Dictionary<Type, ListWrapper<Entity>> groupedEntities
         {
             get
@@ -83,21 +66,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
                 }
 
                 return groupedEntities;
-            }
-        }
-
-        public CellCoordinatesList absoluteCellCoordinatesList
-        {
-            get
-            {
-                CellCoordinatesList result = new CellCoordinatesList();
-
-                foreach (Entity entity in descendantEntities.items)
-                {
-                    result.Add(entity.absoluteCellCoordinatesList.items);
-                }
-
-                return result;
             }
         }
 
@@ -150,7 +118,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public void Add(Entity entity)
         {
             childEntities.Add(entity);
-            entity.parent = this;
             entity.isInBlueprintMode = isInBlueprintMode;
         }
 
@@ -159,7 +126,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
             childEntities.Add(entitiesList);
             entitiesList.ForEach(entity =>
             {
-                entity.parent = this;
                 entity.isInBlueprintMode = isInBlueprintMode;
             });
         }
@@ -167,7 +133,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public void Add(EntityGroup entityGroup)
         {
             childEntityGroups.Add(entityGroup);
-            entityGroup.parent = this;
             entityGroup.SetBlueprintMode(isInBlueprintMode);
         }
 
@@ -176,7 +141,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
             childEntityGroups.Add(entityGroupList);
             entityGroupList.ForEach(entityGroup =>
             {
-                entityGroup.parent = this;
                 entityGroup.SetBlueprintMode(isInBlueprintMode);
             });
         }
@@ -215,12 +179,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
                 entityGroup.SetBlueprintMode(isInBlueprintMode);
             });
         }
-
-        /*
-            Queries
-        */
-        public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>
-            childEntities.FindAll(entity => entity.absoluteCellCoordinatesList.Contains(cellCoordinates));
 
         /*
             Static Interface

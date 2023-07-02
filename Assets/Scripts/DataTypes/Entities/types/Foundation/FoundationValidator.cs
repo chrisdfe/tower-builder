@@ -17,11 +17,12 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
 
         static ListWrapper<ValidationError> ValidateIsOnGroundFloorOrAboveAnotherFoundation(AppState appState, Entity entity)
         {
-            int bottomFloor = entity.absoluteCellCoordinatesList.lowestY;
+            CellCoordinatesList absoluteCellCoordinatesList = appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity);
+            int bottomFloor = absoluteCellCoordinatesList.lowestY;
 
             if (bottomFloor > 0)
             {
-                foreach (CellCoordinates bottomRowCellCoordinates in entity.absoluteCellCoordinatesList.bottomRow.items)
+                foreach (CellCoordinates bottomRowCellCoordinates in absoluteCellCoordinatesList.bottomRow.items)
                 {
                     Entity foundationBelow = appState.Entities.Foundations.FindEntityAtCell(
                         bottomRowCellCoordinates.coordinatesBelow

@@ -42,7 +42,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
         {
             foreach (Entity entity in entities.items)
             {
-                if (entity.parent == null)
+                if (appState.EntityGroups.FindEntityParent(entity) == null)
                 {
                     CreateNewOrAddToExistingRoom(entity);
                 }
@@ -53,16 +53,17 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
         {
             if (entity.GetType() == typeof(Foundation))
             {
-                // Foundations always create a new room
+                // Foundations always create a new room (for now)
                 AddRoom();
             }
             else
             {
-                EntityGroup existingRoom = FindEntityGroupWithCellsOverlapping(entity.absoluteCellCoordinatesList);
+                CellCoordinatesList absoluteCellCoordinatesList = appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity);
+                EntityGroup existingRoom = FindEntityGroupWithCellsOverlapping(absoluteCellCoordinatesList);
 
                 if (existingRoom != null)
                 {
-                    AddToEntityGroup(existingRoom, entity);
+                    AddChild(existingRoom, entity);
                 }
                 else
                 {
@@ -74,7 +75,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
             {
                 Room room = new Room(new RoomDefinition());
                 Add(room);
-                AddToEntityGroup(room, entity);
+                AddChild(room, entity);
                 Build(room);
             }
         }

@@ -79,7 +79,7 @@ namespace TowerBuilder.GameWorld.Entities
         public void UpdatePosition()
         {
             transform.localPosition = GameWorldUtils.CellCoordinatesToPosition(
-                entity.absoluteCellCoordinatesList.bottomLeftCoordinates,
+                Registry.appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).bottomLeftCoordinates,
                 1f
             ) + positionOffset;
         }

@@ -2,13 +2,14 @@
 
 ## Current
 
+- Make sure building gets destroyed when there are no more rooms left
+- PROJECT: reimplement destroy tool
+  - [x] get it working again to just destroy entities
+  - [ ] different "destroy" types - entity, room, building, etc
 - PROJECT: Entity z indexes, which can be sorted to determine which is in front (also visually)
   - [ ] default z indexes (i.e on an entity type level)
   - [ ] "sub" z-indexes (1-10)
   - [ ] both types are overrideable
-- PROJECT: reimplement destroy tool
-  - [ ] get it working again to just destroy entities
-  - [ ] different "destroy" types - entity, room, building, etc
 - Make sure entityGroups get removed when there are no more entities in them
 - PROJECT: Default building/more entity group integration
   - [x] Foundation not built inside an already existing room should create one
@@ -22,6 +23,8 @@
 
 ## After
 
+- EntityGroup parent "allowedTypes" - an array of types to match against entityGroup.parent when it gets set
+  - e.g Room should only have a Building parent
 - Scaffolding/latticed wood stilts entity (for buildings)
 - PROJECT: "exterior" (front) view
   - like the sims - none, partial (goes away under cursor), full
@@ -41,6 +44,15 @@
 - PROJECT: Elevator transportation item
 - "EntityGroup" should be the default build mode?
 - BUG: Wheels shouldn't be able to be built inside of foundations
+- Shop "templates" - places that sell different types of things
+  - furniture
+  - decoration
+  - plants
+  - etc
+- Vehicle types:
+  - submarine (propellors)
+  - spaceship (booster?)
+  -
 - Maybe some assets shouldn't be selcatable?
   - windows
   - decoration

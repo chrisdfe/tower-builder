@@ -116,12 +116,12 @@ namespace TowerBuilder.ApplicationState.Entities
         */
         public Entity FindEntityAtCell(CellCoordinates cellCoordinates) =>
             list.items
-                .Find(entity => entity.absoluteCellCoordinatesList.Contains(cellCoordinates));
+                .Find(entity => appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).Contains(cellCoordinates));
 
         public ListWrapper<Entity> FindEntitysAtCell(CellCoordinates cellCoordinates) =>
             new ListWrapper<Entity>(
                 list.items
-                    .FindAll(entity => entity.absoluteCellCoordinatesList.Contains(cellCoordinates))
+                    .FindAll(entity => appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).Contains(cellCoordinates))
             );
 
         public ListWrapper<Entity> FindEntitiesAtCell(CellCoordinates cellCoordinates) =>

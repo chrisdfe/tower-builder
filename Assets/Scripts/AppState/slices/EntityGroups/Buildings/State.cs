@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.DataTypes.EntityGroups.Buildings;
+using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.EntityGroups.Buildings
@@ -21,6 +24,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Buildings
             base.Setup();
 
             appState.EntityGroups.Rooms.onItemsBuilt += OnRoomsBuilt;
+            appState.EntityGroups.Rooms.onItemsRemoved += OnRoomsRemoved;
         }
 
         public override void Teardown()
@@ -28,47 +32,80 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Buildings
             base.Teardown();
 
             appState.EntityGroups.Rooms.onItemsBuilt -= OnRoomsBuilt;
+            appState.EntityGroups.Rooms.onItemsRemoved -= OnRoomsRemoved;
         }
 
-
+        /*
+            Event Handlers
+        */
         void OnRoomsBuilt(ListWrapper<EntityGroup> rooms)
         {
             foreach (EntityGroup room in rooms.items)
             {
-                if (room.parent == null)
+                EntityGroup parent = FindEntityGroupParent(room);
+
+                if (parent == null)
                 {
-                    CreateNewOrAddToExistingBuilding(room);
+                    CreateNewBuildingForOrAddToExistingBuilding(room);
                 }
             }
         }
 
-        void CreateNewOrAddToExistingBuilding(EntityGroup room)
+        void OnRoomsRemoved(ListWrapper<EntityGroup> deletedRooms)
         {
+            ListWrapper<EntityGroup> buildingsToDelete = new ListWrapper<EntityGroup>();
 
+            foreach (EntityGroup room in deletedRooms.items)
+            {
+                EntityGroup roomParentBuilding = appState.EntityGroups.FindEntityGroupParent(room);
+
+                if (roomParentBuilding != null)
+                {
+                    roomParentBuilding.childEntityGroups.Remove(room);
+
+                    ListWrapper<EntityGroup> buildingRooms = roomParentBuilding.childEntityGroups;
+
+                    if (buildingRooms.Count == 0 && !buildingsToDelete.Contains(roomParentBuilding))
+                    {
+                        buildingsToDelete.Add(roomParentBuilding);
+                    }
+                }
+            }
+
+            Remove(buildingsToDelete);
+        }
+
+        /*
+            Internals
+        */
+        void CreateNewBuildingForOrAddToExistingBuilding(EntityGroup room)
+        {
             ListWrapper<EntityGroup> neighborRooms = FindNeighborRooms(room);
 
             // TODO - something has gone wrong if these rooms don't have a parent building
-            EntityGroup entityGroupWithParent = neighborRooms.Find(neighborRoom => neighborRoom.parent != null);
+            EntityGroup entityGroupWithParent = neighborRooms.Find(neighborRoom => appState.EntityGroups.FindEntityGroupParent(neighborRoom) != null);
 
             if (entityGroupWithParent != null)
             {
-                AddToEntityGroup(entityGroupWithParent.parent, room);
+                EntityGroup parentBuilding = appState.EntityGroups.FindEntityGroupParent(entityGroupWithParent);
+
+                AddChild(parentBuilding, room);
             }
             else
             {
                 // TODO - validate here that player hasn't reached their building limit
                 // Room is the first in the building
                 Building newBuilding = new Building(new BuildingDefinition());
+
                 Add(newBuilding);
-                AddToEntityGroup(newBuilding, room);
+                AddChild(newBuilding, room);
             }
         }
 
         ListWrapper<EntityGroup> FindNeighborRooms(EntityGroup room)
         {
-
             CellCoordinatesList perimeterCellCoordinatesList =
-                room.absoluteCellCoordinatesList.GetPerimeterCellCoordinates();
+                appState.EntityGroups.GetAbsoluteCellCoordinatesList(room).GetPerimeterCellCoordinates();
 
             ListWrapper<EntityGroup> result = new ListWrapper<EntityGroup>();
 

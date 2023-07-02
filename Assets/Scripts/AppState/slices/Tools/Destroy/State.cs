@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
@@ -10,31 +11,40 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
     {
         public struct Input { }
 
+        public enum DestroyMode
+        {
+            EntityBlocks,
+            Entities,
+            EntityGroups
+        }
+
         public delegate void DestroyEvent();
         public DestroyEvent onDestroyStart;
         public DestroyEvent onDestroyEnd;
         public DestroyEvent onDestroySelectionUpdated;
 
-        public ListWrapper<Room> roomsToDeleteBlocksFrom { get; private set; } = new ListWrapper<Room>();
-        public CellCoordinatesBlockList blocksToDelete { get; private set; } = new CellCoordinatesBlockList();
-        public CellCoordinatesList cellCoordinatesToDestroyList { get; private set; } = new CellCoordinatesList();
+        // public ListWrapper<Room> roomsToDeleteBlocksFrom { get; private set; } = new ListWrapper<Room>();
+        // public CellCoordinatesBlockList blocksToDelete { get; private set; } = new CellCoordinatesBlockList();
+        // public CellCoordinatesList cellCoordinatesToDestroy { get; private set; } = new CellCoordinatesList();
+
+        public ListWrapper<Entity> entitiesToDelete = new ListWrapper<Entity>();
 
         bool destroyIsActive = false;
 
-        public CellCoordinatesList cellsToDelete
-        {
-            get
-            {
-                List<CellCoordinates> list = new List<CellCoordinates>();
+        // public CellCoordinatesList cellsToDelete
+        // {
+        //     get
+        //     {
+        //         List<CellCoordinates> list = new List<CellCoordinates>();
 
-                foreach (CellCoordinatesBlock roomBlock in blocksToDelete.items)
-                {
-                    list = list.Concat(roomBlock.items).ToList();
-                }
+        //         foreach (CellCoordinatesBlock roomBlock in blocksToDelete.items)
+        //         {
+        //             list = list.Concat(roomBlock.items).ToList();
+        //         }
 
-                return new CellCoordinatesList(list);
-            }
-        }
+        //         return new CellCoordinatesList(list);
+        //     }
+        // }
 
         public State(AppState appState, Tools.State state, Input input) : base(appState, state)
         {
@@ -46,7 +56,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
 
             // roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             // blocksToDelete = new CellCoordinatesBlockList();
-            cellCoordinatesToDestroyList = new CellCoordinatesList();
+            // cellCoordinatesToDestroyList = new CellCoordinatesList();
         }
 
         public override void Teardown()
@@ -55,12 +65,12 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
 
             // roomsToDeleteBlocksFrom = new ListWrapper<Room>();
             // blocksToDelete = new CellCoordinatesBlockList();
-            cellCoordinatesToDestroyList = new CellCoordinatesList();
+            // cellCoordinatesToDestroyList = new CellCoordinatesList();
         }
 
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
-            CalculateDeleteCells();
+            CalculateDeletion();
 
             onDestroySelectionUpdated?.Invoke();
         }
@@ -88,9 +98,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
         void StartDestroy()
         {
             destroyIsActive = true;
-            CalculateDeleteCells();
-            // Debug.Log("Delete cells:");
-
+            CalculateDeletion();
 
             if (onDestroyStart != null)
             {
@@ -102,6 +110,12 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
         {
             // This happens when the mouse click up happens outside the screen or over a UI element
             if (!destroyIsActive) return;
+
+            foreach (var entity in entitiesToDelete.items)
+            {
+                // TODO - just pass entitiesToDelete in here instead
+                appState.Entities.Remove(entity);
+            }
 
             destroyIsActive = false;
 
@@ -118,8 +132,8 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             //     }
             // }
 
-            roomsToDeleteBlocksFrom = new ListWrapper<Room>();
-            blocksToDelete = new CellCoordinatesBlockList();
+            // roomsToDeleteBlocksFrom = new ListWrapper<Room>();
+            // blocksToDelete = new CellCoordinatesBlockList();
 
             onDestroyEnd?.Invoke();
         }
@@ -127,25 +141,41 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
         /*
             Internals
         */
-        void CalculateDeleteCells()
+        void CalculateDeletion()
         {
             SelectionBox selectionBox = Registry.appState.UI.selectionBox;
 
-            roomsToDeleteBlocksFrom = new ListWrapper<Room>();
-            blocksToDelete = new CellCoordinatesBlockList();
-            cellCoordinatesToDestroyList = new CellCoordinatesList();
+            HashSet<Entity> entities = new HashSet<Entity>();
 
-            // foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
-            // {
-            //     var (roomToDelete, roomBlockToDelete) = Registry.appState.Entities.Rooms.queries.FindRoomBlockAtCell(cellCoordinates);
+            // roomsToDeleteBlocksFrom = new ListWrapper<Room>();
+            // blocksToDelete = new CellCoordinatesBlockList();
+            // cellCoordinatesToDestroyList = new CellCoordinatesList();
+            // This will eventually be split up by "DestroyMode" 
+            // Lets only deal with Entities for now
+            foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
+            {
+                ListWrapper<Entity> entitiesAtCell = Registry.appState.Entities.FindEntitiesAtCell(cellCoordinates);
 
-            //     if (roomToDelete != null && roomBlockToDelete != null)
-            //     {
-            //         roomsToDeleteBlocksFrom.Add(roomToDelete);
-            //         blocksToDelete.Add(roomBlockToDelete);
-            //         cellCoordinatesToDestroyList.Add(roomBlockToDelete.items);
-            //     }
-            // }
+                foreach (Entity entity in entitiesAtCell.items)
+                {
+                    entities.Add(entity);
+                }
+            }
+
+
+            if (entities.Count > 0)
+            {
+                // TODO - sort entities here by z index
+
+                Entity firstEntity = entities.ToList()[0];
+
+                // TODO here "single" or "multiple" mode? for now only delete the first entity in the list
+                entitiesToDelete = new ListWrapper<Entity>(firstEntity);
+            }
+            else
+            {
+                entitiesToDelete = new ListWrapper<Entity>();
+            }
         }
     }
 }

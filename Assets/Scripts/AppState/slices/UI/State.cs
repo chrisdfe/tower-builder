@@ -143,7 +143,7 @@ namespace TowerBuilder.ApplicationState.UI
 
                 currentSelectedBlockList = new CellCoordinatesBlockList(
                     currentSelectedCellEntityList.items
-                        .Select(entity => entity.FindBlockByCellCoordinates(currentSelectedCell))
+                        .Select(entity => appState.EntityGroups.FindEntityBlockByCellCoordinates(entity, currentSelectedCell))
                         .ToList()
                         .FindAll(block => block != null)
                 );

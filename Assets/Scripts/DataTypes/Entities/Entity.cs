@@ -19,45 +19,12 @@ namespace TowerBuilder.DataTypes.Entities
 
         public bool isInBlueprintMode { get; set; } = false;
 
-        public EntityGroup parent { get; set; } = null;
-
-
         public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
 
         public CellCoordinatesBlockList relativeBlocksList { get; private set; } = new CellCoordinatesBlockList();
 
-        public CellCoordinatesBlockList absoluteBlocksList
-        {
-            get
-            {
-                return new CellCoordinatesBlockList(
-                    relativeBlocksList.items
-                        .Select(relativeBlock =>
-                            new CellCoordinatesBlock(
-                                relativeBlock.items
-                                    .Select((relativeCellCoordinates) =>
-                                    {
-                                        CellCoordinates absoluteCellCoordinates = relativeCellCoordinates.Add(offsetCoordinates);
-
-                                        if (parent != null)
-                                        {
-                                            absoluteCellCoordinates = CellCoordinates.Add(absoluteCellCoordinates, parent.absoluteOffsetCellCoordinates);
-                                        }
-
-                                        return absoluteCellCoordinates;
-                                    })
-                                    .ToList()
-                            )
-                        ).ToList()
-                );
-            }
-        }
-
         public CellCoordinatesList relativeCellCoordinatesList =>
             CellCoordinatesList.FromBlocksList(this.relativeBlocksList);
-
-        public CellCoordinatesList absoluteCellCoordinatesList =>
-            CellCoordinatesList.FromBlocksList(this.absoluteBlocksList);
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
@@ -115,9 +82,6 @@ namespace TowerBuilder.DataTypes.Entities
                 cellPositionMap.Add(cellCoordinates, cellPosition);
             });
         }
-
-        public CellCoordinatesBlock FindBlockByCellCoordinates(CellCoordinates cellCoordinates) =>
-            absoluteBlocksList.items.Find(cellCoordinatesBlock => cellCoordinatesBlock.Contains(cellCoordinates));
 
         /*
             Static Interface

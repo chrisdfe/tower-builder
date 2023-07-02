@@ -139,22 +139,20 @@ namespace TowerBuilder.GameWorld.Entities
 
             void SetDestroyStateColor()
             {
-                CellCoordinatesBlockList selectedBlocks = Registry.appState.UI.currentSelectedBlockList;
+                // CellCoordinatesBlockList selectedBlocks = Registry.appState.UI.currentSelectedBlockList;
+                ListWrapper<Entity> entitiesToDelete = Registry.appState.Tools.Destroy.entitiesToDelete;
 
-                if (selectedBlocks == null) return;
+                // if (entitiesToDelete.Count == null) return;
 
-                foreach (CellCoordinatesBlock block in selectedBlocks.items)
+                foreach (Entity entityToDelete in entitiesToDelete.items)
                 {
-                    Debug.Log("block");
-                    Debug.Log(block);
-
-                    if (entity.absoluteCellCoordinatesList.OverlapsWith(new CellCoordinatesList(block.items)))
+                    if (entityToDelete == entity)
                     {
                         entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Destroy);
                         hasUpdated = true;
+                        break;
                     }
                 }
-                // CellCoordinatesList cellCoordinatesToDestroyFrom = Registry.appState.Tools.Destroy.cellCoordinatesToDestroyList;
 
                 // // TODO - highlight on a per-cell basis
                 // if (entity.absoluteCellCoordinatesList.OverlapsWith(Registry.appState.UI.selectionBox.cellCoordinatesList))

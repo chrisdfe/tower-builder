@@ -40,7 +40,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         public Vehicles.State Vehicles { get; }
         public Buildings.State Buildings { get; }
 
-        List<EntityGroupStateSlice> sliceList;
+        List<EntityGroupStateSlice> allSlices;
 
         public State(AppState appState, Input input) : base(appState)
         {
@@ -48,7 +48,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             Vehicles = new Vehicles.State(appState, input.Vehicles);
             Buildings = new Buildings.State(appState, input.Buildings);
 
-            sliceList = new List<EntityGroupStateSlice>() {
+            allSlices = new List<EntityGroupStateSlice>() {
                 Rooms,
                 Vehicles,
                 Buildings
@@ -62,7 +62,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         {
             base.Setup();
 
-            sliceList.ForEach(slice =>
+            allSlices.ForEach(slice =>
             {
                 slice.Setup();
                 AddListeners(slice);
@@ -82,7 +82,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         {
             base.Teardown();
 
-            sliceList.ForEach(slice =>
+            allSlices.ForEach(slice =>
             {
                 slice.Teardown();
                 RemoveListeners(slice);
@@ -99,7 +99,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         }
 
         /*
-            Public Interface
+            Mutations
         */
         public void Add(EntityGroup entityGroup)
         {
@@ -121,6 +121,9 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             GetStateSlice(entityGroup)?.UpdateOffsetCoordinates(entityGroup, newOffsetCoordinates);
         }
 
+        /*
+            Queries
+        */
         public EntityGroupStateSlice GetStateSlice(EntityGroup entityGroup) =>
             entityGroup switch
             {
@@ -129,6 +132,103 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                 DataTypes.EntityGroups.Buildings.Building => Buildings,
                 _ => throw new NotSupportedException($"EntityGroup type not handled: {entityGroup.GetType()}")
             };
+
+
+        public EntityGroup FindEntityGroupParent(EntityGroup entityGroup)
+        {
+            foreach (EntityGroupStateSlice slice in allSlices)
+            {
+                EntityGroup parent = slice.list.items.Find(parentCandidate => parentCandidate.childEntityGroups.items.Contains(entityGroup));
+
+                if (parent != null)
+                {
+                    return parent;
+                }
+            }
+
+            return null;
+        }
+
+        public EntityGroup FindEntityParent(Entity entity)
+        {
+            foreach (EntityGroupStateSlice slice in allSlices)
+            {
+                EntityGroup parent = slice.list.items.Find(parentCandidate => parentCandidate.childEntities.items.Contains(entity));
+
+                if (parent != null)
+                {
+                    return parent;
+                }
+            }
+
+            return null;
+        }
+
+        public CellCoordinatesBlockList GetAbsoluteBlocksList(Entity entity)
+        {
+            return new CellCoordinatesBlockList(
+                entity.relativeBlocksList.items
+                    .Select(relativeBlock =>
+                        new CellCoordinatesBlock(
+                            relativeBlock.items
+                                .Select((relativeCellCoordinates) =>
+                                {
+                                    CellCoordinates absoluteCellCoordinates = relativeCellCoordinates.Add(entity.offsetCoordinates);
+
+                                    EntityGroup parent = FindEntityParent(entity);
+
+                                    if (parent != null)
+                                    {
+                                        absoluteCellCoordinates = CellCoordinates.Add(absoluteCellCoordinates, GetAbsoluteOffsetCellCoordinates(parent));
+                                    }
+
+                                    return absoluteCellCoordinates;
+                                })
+                                .ToList()
+                        )
+                    ).ToList()
+            );
+        }
+
+        public CellCoordinates GetAbsoluteOffsetCellCoordinates(EntityGroup entityGroup)
+        {
+            CellCoordinates result = entityGroup.offsetCoordinates;
+            EntityGroup currentParent = FindEntityGroupParent(entityGroup);
+
+            while (currentParent != null)
+            {
+                result = CellCoordinates.Add(result, currentParent.offsetCoordinates);
+                currentParent = FindEntityGroupParent(currentParent);
+            }
+
+            return result;
+        }
+
+
+        public CellCoordinatesList GetAbsoluteCellCoordinatesList(Entity entity) =>
+            CellCoordinatesList.FromBlocksList(GetAbsoluteBlocksList(entity));
+
+        public CellCoordinatesList GetAbsoluteCellCoordinatesList(EntityGroup entityGroup)
+        {
+            CellCoordinatesList result = new CellCoordinatesList();
+
+            foreach (Entity entity in entityGroup.descendantEntities.items)
+            {
+                result.Add(appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).items);
+            }
+
+            return result;
+        }
+
+        public CellCoordinatesBlock FindEntityBlockByCellCoordinates(Entity entity, CellCoordinates cellCoordinates)
+        {
+            CellCoordinatesBlockList absoluteBlocksList = GetAbsoluteBlocksList(entity);
+            return absoluteBlocksList.items.Find(cellCoordinatesBlock => cellCoordinatesBlock.Contains(cellCoordinates));
+        }
+
+
+        public ListWrapper<Entity> FindChildEntitiesAtCell(EntityGroup entityGroup, CellCoordinates cellCoordinates) =>
+            entityGroup.childEntities.FindAll(entity => GetAbsoluteCellCoordinatesList(entity).Contains(cellCoordinates));
 
         /*
             Event Handlers
