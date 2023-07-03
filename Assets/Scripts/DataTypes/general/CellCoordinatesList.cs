@@ -72,6 +72,11 @@ namespace TowerBuilder.DataTypes
                 items.FindAll(cellCoordinates => cellCoordinates.y == lowestY)
             );
 
+        public CellCoordinatesList topRow =>
+            new CellCoordinatesList(
+                items.FindAll(cellCoordinates => cellCoordinates.y == highestY)
+            );
+
         public CellCoordinatesList() { }
 
         public CellCoordinatesList(CellCoordinates cellCoordinates) : base(cellCoordinates) { }

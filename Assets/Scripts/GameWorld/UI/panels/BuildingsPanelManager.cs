@@ -32,13 +32,8 @@ namespace TowerBuilder.GameWorld.UI
         {
             string text = "";
             text += $"# Buildings: {Registry.appState.EntityGroups.Buildings.list.Count}\n";
-            text += $"# Rooms: {Registry.appState.EntityGroups.Rooms.list.Count}";
-
-            if (Registry.appState.EntityGroups.Rooms.list.Count > 0)
-            {
-                text += "\n";
-                text += Registry.appState.EntityGroups.Rooms.list.items[0].isInBlueprintMode;
-            }
+            text += $"# Rooms: {Registry.appState.EntityGroups.Rooms.list.Count}\n";
+            text += $"# entities: {Registry.appState.Entities.allEntities.Count}";
 
             descriptionText.text = text;
         }

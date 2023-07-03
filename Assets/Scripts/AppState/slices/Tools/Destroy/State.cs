@@ -114,14 +114,17 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             if (!destroyIsActive || isLocked) return;
 
             ValidateEntitiesToDelete();
+            Debug.Log("GetAllValidationErrors()");
+            Debug.Log(GetAllValidationErrors());
+            Debug.Log(GetAllValidationErrors().Count);
 
-            if (CanDeleteAllEntitiesMarkedForDeletion())
+            if (GetAllValidationErrors().Count == 0)
             {
                 DeleteEntitiesMarkedForDeletion();
             }
             else
             {
-                appState.Notifications.Add("Errors.");
+                appState.Notifications.Add(GetAllValidationErrors());
             }
 
             destroyIsActive = false;
@@ -146,8 +149,19 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             }
         }
 
-        bool CanDeleteAllEntitiesMarkedForDeletion() =>
-            entitiesToDelete.Find(entity => !entity.canDestroy) == null;
+        ListWrapper<ValidationError> GetAllValidationErrors() =>
+            entitiesToDelete.items
+                .Aggregate(
+                    new ListWrapper<ValidationError>(),
+                    (acc, entity) =>
+                    {
+                        Debug.Log("entity");
+                        Debug.Log(entity);
+
+                        acc.Add(entity.destroyValidationErrors);
+                        return acc;
+                    }
+                );
 
         DestroyModeStateBase GetMode(Mode mode) =>
             mode switch

@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes;
 
 namespace TowerBuilder.DataTypes.Entities.Foundations
 {
-    public class FoundationValidator : EntityValidator
+    public class FoundationBuildValidator : EntityValidator
     {
         protected override List<EntityValidator.ValidationFunc> customValidators =>
             new List<EntityValidator.ValidationFunc>()
@@ -13,7 +13,7 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
                 ValidateIsOnGroundFloorOrAboveAnotherFoundation
             };
 
-        public FoundationValidator(Foundation foundation) : base(foundation) { }
+        public FoundationBuildValidator(Foundation foundation) : base(foundation) { }
 
         static ListWrapper<ValidationError> ValidateIsOnGroundFloorOrAboveAnotherFoundation(AppState appState, Entity entity)
         {
