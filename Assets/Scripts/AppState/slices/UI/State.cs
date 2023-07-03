@@ -45,7 +45,6 @@ namespace TowerBuilder.ApplicationState.UI
         */
         public CellCoordinates currentSelectedCell { get; private set; } = null;
         public CellCoordinatesBlockList currentSelectedBlockList { get; private set; } = null;
-        public Entity currentSelectedEntity { get; private set; } = null;
         public EntityGroup currentSelectedEntityGroup { get; private set; } = null;
 
         public SelectionBox selectionBox { get; private set; }
@@ -89,6 +88,7 @@ namespace TowerBuilder.ApplicationState.UI
         public void SetCurrentSelectedCell(CellCoordinates currentSelectedCell)
         {
             this.currentSelectedCell = currentSelectedCell;
+
             SetEntityList();
 
             if (selectionIsActive)

@@ -114,9 +114,6 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             if (!destroyIsActive || isLocked) return;
 
             ValidateEntitiesToDelete();
-            Debug.Log("GetAllValidationErrors()");
-            Debug.Log(GetAllValidationErrors());
-            Debug.Log(GetAllValidationErrors().Count);
 
             if (GetAllValidationErrors().Count == 0)
             {
@@ -155,10 +152,8 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
                     new ListWrapper<ValidationError>(),
                     (acc, entity) =>
                     {
-                        Debug.Log("entity");
-                        Debug.Log(entity);
-
-                        acc.Add(entity.destroyValidationErrors);
+                        entity.ValidateDestroy(appState);
+                        acc.Add(entity.destroyValidator.errors);
                         return acc;
                     }
                 );

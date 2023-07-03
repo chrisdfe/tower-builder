@@ -30,16 +30,13 @@ namespace TowerBuilder.DataTypes.Entities
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 
         public EntityDefinition definition { get; }
-        protected EntityValidator buildValidator { get; }
-        protected EntityValidator destroyValidator { get; }
+        public EntityValidator buildValidator { get; }
+        public EntityValidator destroyValidator { get; }
 
         public virtual string typeLabel => "Entity";
 
         public bool canBuild => buildValidator.isValid;
-        public ListWrapper<ValidationError> buildValidationErrors => buildValidator.errors;
-
         public bool canDestroy => destroyValidator.isValid;
-        public ListWrapper<ValidationError> destroyValidationErrors => buildValidator.errors;
 
         public Entity(EntityDefinition definition)
         {
@@ -50,7 +47,7 @@ namespace TowerBuilder.DataTypes.Entities
             this.destroyValidator = definition.destroyValidatorFactory(this);
         }
 
-        public override string ToString() => $"{definition.title} #{id}";
+        public override string ToString() => $"{typeLabel}/{definition.title} {id}";
 
         public virtual void OnBuild()
         {

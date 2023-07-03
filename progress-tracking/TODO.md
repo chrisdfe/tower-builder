@@ -20,11 +20,12 @@
     - arbitrarily?
     - with money?
 - PROJECT: Destroy validation
-  - [ ] Specific set of validators that run when you are about to destroy an entity
-  - [ ] Foundation should be un-deletable if there is another room on top
+  - [x] Specific set of validators that run when you are about to destroy an entity
+  - [x] Foundation should be un-deletable if there is another room on top
 
 ## After
 
+- CLEANUP: in BuildState look into using the same entitiesToBuild/entityGroupsToBuild pattern as in DestroyState
 - CLEANUP: sort out this remove/destroy/delete naming convention situation
 - Move EntityGroups state into Entities state - having queries for Entities in EntityGroups feels weird otherwise
 - EntityGroup parent "allowedTypes" - an array of types to match against entityGroup.parent when it gets set

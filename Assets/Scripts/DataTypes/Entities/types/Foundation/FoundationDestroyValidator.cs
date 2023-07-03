@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
+using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Foundations
 {
@@ -21,7 +22,9 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
 
             foreach (CellCoordinates cellCoordinates in topRow.items)
             {
-                Entity foundationAbove = appState.Entities.Foundations.FindEntityAtCell(cellCoordinates);
+                Entity foundationAbove = appState.Entities.Foundations.FindEntityAtCell(
+                    CellCoordinates.Add(cellCoordinates, new CellCoordinates(0, 1))
+                );
 
                 if (foundationAbove != null)
                 {

@@ -83,7 +83,7 @@ namespace TowerBuilder.ApplicationState.Entities
             if (!entity.canBuild)
             {
                 // TODO - these should be unique messages - right now they are not
-                appState.Notifications.Add(entity.buildValidationErrors);
+                appState.Notifications.Add(entity.buildValidator.errors);
                 return;
             }
 

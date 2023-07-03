@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
@@ -23,6 +24,7 @@ namespace TowerBuilder.GameWorld.UI
         Transform actionButtonsWrapper;
 
         List<UISelectButton> actionButtons = new List<UISelectButton>();
+        List<string> textBuffer = new List<string>();
 
         void Awake()
         {
@@ -37,18 +39,26 @@ namespace TowerBuilder.GameWorld.UI
 
         public void Setup()
         {
-            Registry.appState.Attributes.Residents.onItemsUpdated += OnResidentAttributesUpdated;
+            // Registry.appState.Attributes.Residents.onItemsUpdated += OnResidentAttributesUpdated;
 
-            Registry.appState.Tools.Inspect.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
-            Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
+            // Registry.appState.Tools.Inspect.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
+            // Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
         public void Teardown()
         {
-            Registry.appState.Attributes.Residents.onItemsUpdated -= OnResidentAttributesUpdated;
+            // Registry.appState.Attributes.Residents.onItemsUpdated -= OnResidentAttributesUpdated;
 
-            Registry.appState.Tools.Inspect.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
-            Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
+            // Registry.appState.Tools.Inspect.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
+            // Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
+        }
+
+        public void Update()
+        {
+            SetText();
+
+            inspectText.text = String.Join("\n", textBuffer);
+            textBuffer = new List<string>();
         }
 
         /* 
@@ -56,65 +66,66 @@ namespace TowerBuilder.GameWorld.UI
         */
         void SetText()
         {
-            SetInspectIndexText();
+            // SetInspectIndexText();
             SetInspectText();
             SetActionButtons();
         }
 
+        /*
         void SetInspectIndexText()
         {
             ListWrapper<Entity> inspectedEntityList = Registry.appState.Tools.Inspect.inspectedEntityList;
             int index = Registry.appState.Tools.Inspect.inspectedEntityIndex;
+            Entity inspectedEntity = Registry.appState.Tools.Inspect.inspectedEntity;
 
             string text = $"entityList: {inspectedEntityList.Count}\n"
-                + $"index: {index}";
+                + $"index: {index}\n"
+                + $"inspectedEntity: {inspectedEntity}";
 
             inspectIndexText.text = text;
         }
+        */
 
         void SetInspectText()
         {
-            Entity inspectedEntity = Registry.appState.Tools.Inspect.inspectedEntity;
+            Entity targetEntity = null;
 
-            if (inspectedEntity == null) return;
-
-            inspectText.text = $"{inspectedEntity.typeLabel} - {inspectedEntity}\n";
-            inspectText.text = $"parent - {Registry.appState.EntityGroups.FindEntityParent(inspectedEntity)}\n";
-
-            switch (inspectedEntity)
+            if (Registry.appState.Tools.Inspect.inspectedEntity != null)
             {
-                // case Room roomEntity:
-                //     SetInspectedRoomEntityText(roomEntity);
-                //     break;
-                case Furniture furnitureEntity:
-                    SetInspectedFurnitureText(furnitureEntity);
-                    break;
-                case Resident residentEntity:
-                    SetInspectedResidentText(residentEntity);
-                    break;
-                case TransportationItem transportationItemEntity:
-                    SetInspectedTransportationItemText(transportationItemEntity);
-                    break;
+                targetEntity = Registry.appState.Tools.Inspect.inspectedEntity;
+            }
+            else if (Registry.appState.UI.currentSelectedCellEntityList.Count > 0)
+            {
+                targetEntity = Registry.appState.UI.currentSelectedCellEntityList.items[0];
+            }
+
+            if (targetEntity == null)
+            {
+                textBuffer.Add("None");
+            }
+            else
+            {
+                textBuffer.Add($"{targetEntity}");
+                textBuffer.Add($"parent - {Registry.appState.EntityGroups.FindEntityParent(targetEntity)}");
+
+                switch (targetEntity)
+                {
+                    case Furniture furnitureEntity:
+                        SetInspectedFurnitureText(furnitureEntity);
+                        break;
+                    case Resident residentEntity:
+                        SetInspectedResidentText(residentEntity);
+                        break;
+                    case TransportationItem transportationItemEntity:
+                        SetInspectedTransportationItemText(transportationItemEntity);
+                        break;
+                }
             }
         }
 
         void SetInspectedFurnitureText(Furniture furniture)
         {
-            string text = $"   name: {furniture}\n";
-
-            inspectText.text += text;
-        }
-
-        void SetInspectedRoomEntityText(Room room)
-        {
-            // string text =
-            //   $"    name: {room}\n"
-            // + $"    title: {room.definition.title}\n"
-            // + $"    price: {room.price}\n"
-            // + $"    cells: {room.cellCoordinatesList.Count}\n"
-            // + $"    blocks: {room.blocksList.Count}\n";
-
-            // inspectText.text += text;
+            textBuffer.Add($"   name: {furniture}");
         }
 
         void SetInspectedResidentText(Resident resident)
@@ -123,34 +134,30 @@ namespace TowerBuilder.GameWorld.UI
 
             ResidentAttributes residentAttributes = Registry.appState.Attributes.Residents.FindByResident(resident);
 
-            string text =
-              $"   name: {resident}\n";
+            textBuffer.Add($"   name: {resident}");
 
             if (residentBehavior != null)
             {
-                text += $"   state: {residentBehavior.currentState}\n";
+                textBuffer.Add($"   state: {residentBehavior.currentState}");
             }
 
             if (residentAttributes != null)
             {
-                text += "    attributes:\n";
+                textBuffer.Add("    attributes:");
                 residentAttributes.asTupleList.ForEach(tuple =>
                 {
                     var (key, attribute) = tuple;
-                    text += $"{key}: {attribute.value}\n";
+                    textBuffer.Add($"{key}: {attribute.value}");
                 });
             }
-
-            inspectText.text += text;
         }
 
         void SetInspectedTransportationItemText(TransportationItem transportationItem)
         {
-            if (transportationItem == null) return;
-
-            string text = $"   name: {transportationItem}\n";
-
-            inspectText.text += text;
+            if (transportationItem != null)
+            {
+                textBuffer.Add($"   name: {transportationItem}");
+            }
         }
 
         void SetActionButtons()
@@ -161,8 +168,6 @@ namespace TowerBuilder.GameWorld.UI
 
             switch (inspectedEntity)
             {
-                // case Room roomEntity:
-                //     break;
                 case Furniture furnitureEntity:
                     CreateFurnitureActionButtons(furnitureEntity as Furniture);
                     break;
@@ -210,33 +215,6 @@ namespace TowerBuilder.GameWorld.UI
                 removeButtonRectTransform.rect.width,
                 wrapperHeight
             );
-        }
-
-        /* 
-            Event Handlers
-        */
-        void OnInspectedEntityListUpdated(ListWrapper<Entity> entityList)
-        {
-            SetText();
-        }
-
-        void OnCurrentSelectedEntityUpdated(Entity entity)
-        {
-            SetText();
-        }
-
-        void OnResidentAttributesUpdated(ListWrapper<ResidentAttributes> residentAttributess)
-        {
-            foreach (ResidentAttributes residentAttributes in residentAttributess.items)
-            {
-                if (
-                    (Registry.appState.Tools.Inspect.inspectedEntity is Resident) &&
-                    residentAttributes.resident == (Registry.appState.Tools.Inspect.inspectedEntity as Resident)
-                )
-                {
-                    SetText();
-                }
-            }
         }
     }
 }

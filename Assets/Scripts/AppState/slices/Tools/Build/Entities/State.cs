@@ -135,7 +135,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             }
             else
             {
-                Registry.appState.Notifications.Add(blueprintEntity.buildValidationErrors);
+                Registry.appState.Notifications.Add(blueprintEntity.buildValidator.errors);
 
                 ResetBlueprintEntity();
             }
