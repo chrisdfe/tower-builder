@@ -33,7 +33,7 @@ namespace TowerBuilder.DataTypes.Entities
         public EntityValidator buildValidator { get; }
         public EntityValidator destroyValidator { get; }
 
-        public virtual string typeLabel => "Entity";
+        public string typeLabel => Constants.TypeLabels.ValueFromKey(this.GetType());
 
         public bool canBuild => buildValidator.isValid;
         public bool canDestroy => destroyValidator.isValid;
