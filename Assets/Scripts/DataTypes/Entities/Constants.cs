@@ -16,35 +16,5 @@ namespace TowerBuilder.DataTypes.Entities
     {
         // In cells
         public const int FLOOR_HEIGHT = 3;
-
-        public static EnumStringMap<Type> TypeLabels =
-            new EnumStringMap<Type>(
-                new Dictionary<Type, string>() {
-                    { typeof(Floor),              "Floor" },
-                    { typeof(Foundation),         "Foundation" },
-                    { typeof(InteriorLight),      "InteriorLight" },
-                    { typeof(Resident),           "Resident" },
-                    { typeof(Furniture),          "Furniture" },
-                    { typeof(TransportationItem), "Transportation Item" },
-                    { typeof(FreightItem),        "Freight" },
-                    { typeof(Wheel),              "Wheel" },
-                    { typeof(Window),             "Window" }
-                }
-            );
-
-        public static EnumMap<Type, Type> EntityTypeEntityDefinitionMap =
-            new EnumMap<Type, Type>(
-                new Dictionary<Type, Type>() {
-                    { typeof(Foundation),         typeof(FoundationDefinition) },
-                    { typeof(InteriorLight),      typeof(InteriorLightDefinition) },
-                    { typeof(Floor),              typeof(FloorDefinition) },
-                    { typeof(Furniture),          typeof(FurnitureDefinition) },
-                    { typeof(Resident),           typeof(ResidentDefinition) },
-                    { typeof(TransportationItem), typeof(TransportationItemDefinition) },
-                    { typeof(FreightItem),        typeof(FreightDefinition) },
-                    { typeof(Wheel),              typeof(WheelDefinition) },
-                    { typeof(Window),             typeof(WindowDefinition) },
-                }
-            );
     }
 }

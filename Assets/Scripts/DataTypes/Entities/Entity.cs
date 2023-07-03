@@ -33,7 +33,7 @@ namespace TowerBuilder.DataTypes.Entities
         public EntityValidator buildValidator { get; }
         public EntityValidator destroyValidator { get; }
 
-        public string typeLabel => Constants.TypeLabels.ValueFromKey(this.GetType());
+        public string typeLabel => EntityTypeData.Get(this.GetType()).label;
 
         public bool canBuild => buildValidator.isValid;
         public bool canDestroy => destroyValidator.isValid;
@@ -85,7 +85,8 @@ namespace TowerBuilder.DataTypes.Entities
         */
         public static Entity CreateFromDefinition(EntityDefinition definition)
         {
-            Type EntityType = Constants.EntityTypeEntityDefinitionMap.KeyFromValue(definition.GetType());
+            EntityTypeData entityTypeData = EntityTypeData.FindByDefinition(definition);
+            Type EntityType = entityTypeData.EntityType;
 
             if (EntityType != null)
             {
