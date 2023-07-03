@@ -6,7 +6,7 @@ using TowerBuilder.DataTypes.Entities;
 
 namespace TowerBuilder.DataTypes.EntityGroups
 {
-    public class EntityGroup : ISetupable, IValidatable
+    public class EntityGroup : ISetupable
     {
         public ListWrapper<Entity> childEntities { get; } = new ListWrapper<Entity>();
         public ListWrapper<EntityGroup> childEntityGroups { get; } = new ListWrapper<EntityGroup>();
@@ -17,8 +17,11 @@ namespace TowerBuilder.DataTypes.EntityGroups
 
         public bool isInBlueprintMode { get; private set; } = false;
 
-        public bool isValid => validationErrors.Count == 0;
-        public ListWrapper<ValidationError> validationErrors { get; private set; } = new ListWrapper<ValidationError>();
+        public bool canBuild => buildValidationErrors.Count == 0;
+        public ListWrapper<ValidationError> buildValidationErrors { get; private set; } = new ListWrapper<ValidationError>();
+
+        public bool canDestroy => destroyValidationErrors.Count == 0;
+        public ListWrapper<ValidationError> destroyValidationErrors { get; private set; } = new ListWrapper<ValidationError>();
 
         public virtual string typeLabel => "EntityGroup";
 
@@ -93,23 +96,23 @@ namespace TowerBuilder.DataTypes.EntityGroups
 
         public virtual void OnDestroy() { }
 
-        public void Validate(AppState appState)
+        public void ValidateBuild(AppState appState)
         {
             ListWrapper<ValidationError> errors = new ListWrapper<ValidationError>();
 
             foreach (Entity entity in childEntities.items)
             {
-                entity.Validate(appState);
-                errors.Add(entity.validationErrors);
+                entity.ValidateBuild(appState);
+                errors.Add(entity.buildValidationErrors);
             }
 
             foreach (EntityGroup entityGroup in childEntityGroups.items)
             {
-                entityGroup.Validate(appState);
-                errors.Add(entityGroup.validationErrors);
+                entityGroup.ValidateBuild(appState);
+                errors.Add(entityGroup.buildValidationErrors);
             }
 
-            this.validationErrors = errors;
+            this.buildValidationErrors = errors;
         }
 
         /*

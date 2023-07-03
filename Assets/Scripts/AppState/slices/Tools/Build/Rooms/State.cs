@@ -100,21 +100,16 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
         {
             base.OnBuildEnd();
 
-            Debug.Log("OnBuildEnd");
+            blueprintRoom.ValidateBuild(Registry.appState);
 
-            blueprintRoom.Validate(Registry.appState);
-
-            Debug.Log("blueprintRoom.isValid: " + blueprintRoom.isValid);
-
-            if (blueprintRoom.isValid)
+            if (blueprintRoom.canBuild)
             {
                 BuildBlueprintRoom();
                 CreateBlueprintRoom();
             }
             else
             {
-                Registry.appState.Notifications.Add(blueprintRoom.validationErrors);
-
+                Registry.appState.Notifications.Add(blueprintRoom.buildValidationErrors);
                 ResetBlueprintRoom();
             }
         }
@@ -134,7 +129,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
 
             blueprintRoom.SetBlueprintMode(true);
             blueprintRoom.offsetCoordinates = Registry.appState.UI.selectionBox.cellCoordinatesList.bottomLeftCoordinates;
-            blueprintRoom.Validate(appState);
+            blueprintRoom.ValidateBuild(appState);
 
             Registry.appState.EntityGroups.Rooms.Add(blueprintRoom);
         }

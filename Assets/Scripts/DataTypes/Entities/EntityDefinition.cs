@@ -20,6 +20,7 @@ namespace TowerBuilder.DataTypes.Entities
         public virtual int[] zLayers { get; set; } = new[] { 0 };
 
         public delegate EntityValidator ValidatorFactory(Entity entity);
-        public virtual ValidatorFactory validatorFactory => (Entity entity) => new EntityValidator(entity);
+        public virtual ValidatorFactory buildValidatorFactory => (Entity entity) => new EmptyEntityValidator(entity);
+        public virtual ValidatorFactory destroyValidatorFactory => (Entity entity) => new EmptyEntityValidator(entity);
     }
 }

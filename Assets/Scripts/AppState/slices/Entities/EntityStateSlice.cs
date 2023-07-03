@@ -78,12 +78,12 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Build(Entity entity)
         {
-            entity.Validate(appState);
+            entity.ValidateBuild(appState);
 
-            if (!entity.isValid)
+            if (!entity.canBuild)
             {
                 // TODO - these should be unique messages - right now they are not
-                appState.Notifications.Add(entity.validationErrors);
+                appState.Notifications.Add(entity.buildValidationErrors);
                 return;
             }
 
@@ -102,7 +102,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public void UpdateEntityOffsetCoordinates(Entity entity, CellCoordinates offsetCoordinates)
         {
             entity.offsetCoordinates = offsetCoordinates;
-            entity.Validate(appState);
+            entity.ValidateBuild(appState);
 
             onEntityPositionUpdated?.Invoke(entity);
         }

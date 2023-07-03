@@ -5,6 +5,6 @@ namespace TowerBuilder.DataTypes.Entities.Freights
 {
     public class FreightDefinition : EntityDefinition
     {
-        public override ValidatorFactory validatorFactory => (Entity entity) => new FreightValidator(entity as FreightItem);
+        public override ValidatorFactory buildValidatorFactory => (Entity entity) => new FreightValidator(entity as FreightItem);
     }
 }

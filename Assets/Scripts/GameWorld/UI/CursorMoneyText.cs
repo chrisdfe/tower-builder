@@ -96,7 +96,7 @@ namespace TowerBuilder.GameWorld.UI
             int amount = blueprintEntity.price;
             text.text = String.Format("${0:n0}", amount);
 
-            if (blueprintEntity.isValid)
+            if (blueprintEntity.canBuild)
             {
                 text.color = Color.white;
             }

@@ -104,11 +104,11 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         {
             Debug.Log("buidling entityGroup:");
 
-            entityGroup.Validate(appState);
+            entityGroup.ValidateBuild(appState);
 
-            if (!entityGroup.isValid)
+            if (!entityGroup.canBuild)
             {
-                appState.Notifications.Add(entityGroup.validationErrors);
+                appState.Notifications.Add(entityGroup.buildValidationErrors);
                 return;
             }
 
@@ -140,7 +140,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         public void UpdateOffsetCoordinates(EntityGroup entityGroup, CellCoordinates newOffsetCoordinates)
         {
             entityGroup.offsetCoordinates = newOffsetCoordinates;
-            entityGroup.Validate(appState);
+            entityGroup.ValidateBuild(appState);
 
             onPositionUpdated?.Invoke(entityGroup);
         }

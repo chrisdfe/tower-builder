@@ -124,7 +124,7 @@ namespace TowerBuilder.GameWorld.Entities
             {
                 if (entity.isInBlueprintMode)
                 {
-                    if (entity.isValid)
+                    if (entity.canBuild)
                     {
                         entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.ValidBlueprint);
                     }

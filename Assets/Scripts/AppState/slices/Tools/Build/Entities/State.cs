@@ -80,7 +80,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             else
             {
                 appState.Entities.UpdateEntityOffsetCoordinates(blueprintEntity, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
-                blueprintEntity.Validate(appState);
+                blueprintEntity.ValidateBuild(appState);
                 onBlueprintEntityUpdated?.Invoke(blueprintEntity);
                 onBlueprintEntityPositionUpdated?.Invoke(blueprintEntity);
             }
@@ -126,16 +126,16 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         {
             Debug.Log("onBuildEnd - entities");
 
-            blueprintEntity.Validate(Registry.appState);
+            blueprintEntity.ValidateBuild(Registry.appState);
 
-            if (blueprintEntity.isValid)
+            if (blueprintEntity.canBuild)
             {
                 BuildBlueprintEntity();
                 CreateBlueprintEntity();
             }
             else
             {
-                Registry.appState.Notifications.Add(blueprintEntity.validationErrors);
+                Registry.appState.Notifications.Add(blueprintEntity.buildValidationErrors);
 
                 ResetBlueprintEntity();
             }
@@ -162,7 +162,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             blueprintEntity.isInBlueprintMode = true;
             blueprintEntity.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
             blueprintEntity.offsetCoordinates = Registry.appState.UI.selectionBox.cellCoordinatesList.bottomLeftCoordinates;
-            blueprintEntity.Validate(Registry.appState);
+            blueprintEntity.ValidateBuild(Registry.appState);
 
             Registry.appState.Entities.Add(blueprintEntity);
             onBlueprintEntityUpdated?.Invoke(blueprintEntity);
@@ -177,11 +177,12 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
         void RemoveBlueprintEntity()
         {
-            if (blueprintEntity == null) return;
+            if (blueprintEntity != null)
+            {
+                Registry.appState.Entities.Remove(blueprintEntity);
 
-            Registry.appState.Entities.Remove(blueprintEntity);
-
-            blueprintEntity = null;
+                blueprintEntity = null;
+            }
         }
 
         void ResetBlueprintEntity()

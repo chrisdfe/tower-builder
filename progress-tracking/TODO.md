@@ -10,7 +10,6 @@
   - [ ] default z indexes (i.e on an entity type level)
   - [ ] "sub" z-indexes (1-10)
   - [ ] both types are overrideable
-- Make sure entityGroups get removed when there are no more entities in them
 - PROJECT: Default building/more entity group integration
   - [x] Foundation not built inside an already existing room should create one
   - [x] Rooms should get added to buildings or vehicles
@@ -20,9 +19,13 @@
   - [ ] Limit the number of buildings/vehicles
     - arbitrarily?
     - with money?
+- PROJECT: Destroy validation
+  - [ ] Specific set of validators that run when you are about to destroy an entity
+  - [ ] Foundation should be un-deletable if there is another room on top
 
 ## After
 
+- Move EntityGroups state into Entities state - having queries for Entities in EntityGroups feels weird otherwise
 - EntityGroup parent "allowedTypes" - an array of types to match against entityGroup.parent when it gets set
   - e.g Room should only have a Building parent
 - Scaffolding/latticed wood stilts entity (for buildings)
@@ -104,11 +107,6 @@
   - not floor height like the height of a building floor, the floor that you stand on
   - add "FLOOR_HEIGHT" constant (2 or 3 probably) and use that for floors instead
 - CLEANUP: Why do I need to prefix "Tools.State.Key" with "ApplicationState"? namespace issues.
-- PROJECT: Destroy validation
-  - EITHER:
-    - Specific set of validators that run when you are about to destroy an entity
-    - A way of marking an entity for deletion and then trial-run validate every neighbor around the entity about to be deleted
-  - Foundation should be un-deletable if there is another room on top
 - Verify that all specified assets actually exist
 - Entity type categories
 - use "min size" instead of staticBlockSize, which is confusing
@@ -368,6 +366,7 @@
 
 # Done
 
+- Make sure entityGroups get removed when there are no more entities in them
 - TASK: add meshKeys to definitions again
 - BUG: game shouldn't crash if meshKey doesn't exist
 - TASK: New type of materials (made with shadergraph?) that take in an "overlay" (or whatever) color used for Entity

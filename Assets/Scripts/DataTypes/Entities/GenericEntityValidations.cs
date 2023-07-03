@@ -92,7 +92,7 @@ namespace TowerBuilder.DataTypes.Entities
 
                 foreach (Entity foundationEntity in foundationsAtCell.items)
                 {
-                    if (!foundationEntity.isValid)
+                    if (!foundationEntity.canBuild)
                     {
                         return Validator.CreateSingleItemValidationErrorList(errorMessage);
                     }

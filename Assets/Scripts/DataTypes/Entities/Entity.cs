@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public class Entity : ISetupable, IValidatable
+    public class Entity : ISetupable
     {
         public virtual string idKey => "entity";
 
@@ -30,19 +30,24 @@ namespace TowerBuilder.DataTypes.Entities
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 
         public EntityDefinition definition { get; }
-        protected EntityValidator validator { get; }
+        protected EntityValidator buildValidator { get; }
+        protected EntityValidator destroyValidator { get; }
 
         public virtual string typeLabel => "Entity";
 
-        public bool isValid => validator.isValid;
-        public ListWrapper<ValidationError> validationErrors => validator.errors;
+        public bool canBuild => buildValidator.isValid;
+        public ListWrapper<ValidationError> buildValidationErrors => buildValidator.errors;
+
+        public bool canDestroy => destroyValidator.isValid;
+        public ListWrapper<ValidationError> destroyValidationErrors => buildValidator.errors;
 
         public Entity(EntityDefinition definition)
         {
             this.id = UIDGenerator.Generate(idKey);
             this.definition = definition;
 
-            this.validator = definition.validatorFactory(this);
+            this.buildValidator = definition.buildValidatorFactory(this);
+            this.destroyValidator = definition.destroyValidatorFactory(this);
         }
 
         public override string ToString() => $"{definition.title} #{id}";
@@ -56,9 +61,14 @@ namespace TowerBuilder.DataTypes.Entities
         public virtual void Setup() { }
         public virtual void Teardown() { }
 
-        public void Validate(AppState appState)
+        public void ValidateBuild(AppState appState)
         {
-            validator.Validate(appState);
+            buildValidator.Validate(appState);
+        }
+
+        public void ValidateDestroy(AppState appState)
+        {
+            destroyValidator.Validate(appState);
         }
 
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)

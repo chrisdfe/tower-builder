@@ -6,6 +6,6 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
 {
     public class FoundationDefinition : EntityDefinition
     {
-        public override ValidatorFactory validatorFactory => (Entity entity) => new FoundationValidator(entity as Foundation);
+        public override ValidatorFactory buildValidatorFactory => (Entity entity) => new FoundationValidator(entity as Foundation);
     }
 }

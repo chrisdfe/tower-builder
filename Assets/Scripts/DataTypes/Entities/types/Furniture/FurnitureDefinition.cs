@@ -12,6 +12,6 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
         public delegate FurnitureBehavior FurnitureBehaviorFactory(AppState appState, Furniture furniture);
         public FurnitureBehaviorFactory furnitureBehaviorFactory = (AppState appState, Furniture furniture) => new DefaultBehavior(appState, furniture);
 
-        public override ValidatorFactory validatorFactory => (Entity entity) => new FurnitureValidator(entity as Furniture);
+        public override ValidatorFactory buildValidatorFactory => (Entity entity) => new FurnitureValidator(entity as Furniture);
     }
 }

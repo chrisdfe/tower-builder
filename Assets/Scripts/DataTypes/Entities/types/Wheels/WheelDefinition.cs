@@ -8,6 +8,6 @@ namespace TowerBuilder.DataTypes.Entities.Wheels
     {
         public string skinKey;
 
-        public override ValidatorFactory validatorFactory => (Entity entity) => new WheelValidator(entity);
+        public override ValidatorFactory buildValidatorFactory => (Entity entity) => new WheelValidator(entity);
     }
 }
