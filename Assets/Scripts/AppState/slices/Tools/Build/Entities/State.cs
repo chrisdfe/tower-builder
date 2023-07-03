@@ -116,7 +116,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             else
             {
                 appState.Entities.UpdateEntityOffsetCoordinates(blueprintEntity, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
-                blueprintEntity.ValidateBuild(appState);
+                blueprintEntity.buildValidator.Validate(appState);
                 onBlueprintEntityUpdated?.Invoke(blueprintEntity);
                 onBlueprintEntityPositionUpdated?.Invoke(blueprintEntity);
             }
@@ -126,7 +126,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         {
             base.OnBuildEnd();
 
-            blueprintEntity.ValidateBuild(Registry.appState);
+            blueprintEntity.buildValidator.Validate(Registry.appState);
 
             if (blueprintEntity.canBuild)
             {
@@ -162,7 +162,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             blueprintEntity.isInBlueprintMode = true;
             blueprintEntity.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
             blueprintEntity.offsetCoordinates = Registry.appState.UI.selectionBox.cellCoordinatesList.bottomLeftCoordinates;
-            blueprintEntity.ValidateBuild(Registry.appState);
+            blueprintEntity.buildValidator.Validate(Registry.appState);
 
             Registry.appState.Entities.Add(blueprintEntity);
             onBlueprintEntityUpdated?.Invoke(blueprintEntity);

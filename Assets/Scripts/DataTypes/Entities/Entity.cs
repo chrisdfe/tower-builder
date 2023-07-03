@@ -58,16 +58,6 @@ namespace TowerBuilder.DataTypes.Entities
         public virtual void Setup() { }
         public virtual void Teardown() { }
 
-        public void ValidateBuild(AppState appState)
-        {
-            buildValidator.Validate(appState);
-        }
-
-        public void ValidateDestroy(AppState appState)
-        {
-            destroyValidator.Validate(appState);
-        }
-
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {
             this.relativeBlocksList = EntityBlocksBuilder.FromDefinition(definition).Calculate(selectionBox);

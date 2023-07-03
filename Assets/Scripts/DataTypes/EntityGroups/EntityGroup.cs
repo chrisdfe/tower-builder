@@ -102,7 +102,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
 
             foreach (Entity entity in childEntities.items)
             {
-                entity.ValidateBuild(appState);
+                entity.buildValidator.Validate(appState);
                 errors.Add(entity.buildValidator.errors);
             }
 

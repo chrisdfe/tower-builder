@@ -78,7 +78,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Build(Entity entity)
         {
-            entity.ValidateBuild(appState);
+            entity.buildValidator.Validate(appState);
 
             if (!entity.canBuild)
             {
@@ -102,7 +102,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public void UpdateEntityOffsetCoordinates(Entity entity, CellCoordinates offsetCoordinates)
         {
             entity.offsetCoordinates = offsetCoordinates;
-            entity.ValidateBuild(appState);
+            entity.buildValidator.Validate(appState);
 
             onEntityPositionUpdated?.Invoke(entity);
         }

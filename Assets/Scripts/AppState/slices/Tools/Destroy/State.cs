@@ -133,7 +133,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
         {
             foreach (Entity entity in entitiesToDelete.items)
             {
-                entity.ValidateDestroy(appState);
+                entity.destroyValidator.Validate(appState);
             }
         }
 
@@ -152,7 +152,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
                     new ListWrapper<ValidationError>(),
                     (acc, entity) =>
                     {
-                        entity.ValidateDestroy(appState);
+                        entity.destroyValidator.Validate(appState);
                         acc.Add(entity.destroyValidator.errors);
                         return acc;
                     }
