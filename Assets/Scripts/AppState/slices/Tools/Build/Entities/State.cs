@@ -43,7 +43,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
         static Type DEFAULT_TYPE = typeof(DataTypes.Entities.Foundations.Foundation);
 
-        public State(AppState appState, Tools.State toolState, Build.State buildState, Input input) : base(appState, toolState, buildState)
+        public State(AppState appState, Input input) : base(appState)
         {
             ResetCategoryAndDefinition();
         }
@@ -69,23 +69,6 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         /*
             Public Interface
         */
-        public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
-        {
-            if (isLocked) return;
-
-            if (buildState.buildIsActive)
-            {
-                ResetBlueprintEntity();
-            }
-            else
-            {
-                appState.Entities.UpdateEntityOffsetCoordinates(blueprintEntity, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
-                blueprintEntity.ValidateBuild(appState);
-                onBlueprintEntityUpdated?.Invoke(blueprintEntity);
-                onBlueprintEntityPositionUpdated?.Invoke(blueprintEntity);
-            }
-        }
-
         public void SetSelectedEntityKey(Type entityType)
         {
             isLocked = true;
@@ -120,11 +103,28 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
         }
 
-        public override void OnBuildStart() { }
+        public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
+        {
+            base.OnSelectionBoxUpdated(selectionBox);
+
+            if (isLocked) return;
+
+            if (appState.Tools.Build.buildIsActive)
+            {
+                ResetBlueprintEntity();
+            }
+            else
+            {
+                appState.Entities.UpdateEntityOffsetCoordinates(blueprintEntity, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
+                blueprintEntity.ValidateBuild(appState);
+                onBlueprintEntityUpdated?.Invoke(blueprintEntity);
+                onBlueprintEntityPositionUpdated?.Invoke(blueprintEntity);
+            }
+        }
 
         public override void OnBuildEnd()
         {
-            Debug.Log("onBuildEnd - entities");
+            base.OnBuildEnd();
 
             blueprintEntity.ValidateBuild(Registry.appState);
 
@@ -171,7 +171,6 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         void BuildBlueprintEntity()
         {
             Registry.appState.Entities.Build(blueprintEntity);
-
             blueprintEntity = null;
         }
 
@@ -180,7 +179,6 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             if (blueprintEntity != null)
             {
                 Registry.appState.Entities.Remove(blueprintEntity);
-
                 blueprintEntity = null;
             }
         }

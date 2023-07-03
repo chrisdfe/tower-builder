@@ -7,13 +7,9 @@ namespace TowerBuilder.ApplicationState.Tools
 {
     public abstract class BuildModeStateBase : ToolStateBase
     {
-        protected Build.State buildState;
         protected bool isLocked;
 
-        public BuildModeStateBase(AppState appState, Tools.State toolsState, Build.State buildState) : base(appState, toolsState)
-        {
-            this.buildState = buildState;
-        }
+        public BuildModeStateBase(AppState appState) : base(appState) { }
 
         public virtual void OnBuildStart() { }
 

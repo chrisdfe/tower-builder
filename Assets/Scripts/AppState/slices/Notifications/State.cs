@@ -32,5 +32,17 @@ namespace TowerBuilder.ApplicationState.Notifications
                 )
             );
         }
+
+        public void Add(ValidationError validationError)
+        {
+            Add(
+                new ListWrapper<ValidationError>(new List<ValidationError>() { validationError })
+            );
+        }
+
+        public void Add(string errorMessage)
+        {
+            Add(new ValidationError(errorMessage));
+        }
     }
 }

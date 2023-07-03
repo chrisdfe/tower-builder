@@ -38,7 +38,7 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
             }
         }
 
-        public State(AppState appState, Tools.State state, Input input) : base(appState, state) { }
+        public State(AppState appState, Input input) : base(appState) { }
 
         /*
             Lifecycle

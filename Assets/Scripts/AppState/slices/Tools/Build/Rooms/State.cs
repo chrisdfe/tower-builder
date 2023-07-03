@@ -25,7 +25,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
 
         public Room blueprintRoom { get; private set; } = null;
 
-        public State(AppState appState, Tools.State state, Build.State buildState, Input input) : base(appState, state, buildState)
+        public State(AppState appState, Input input) : base(appState)
         {
         }
 
@@ -63,22 +63,11 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
         /*
             Inherited event handlers
         */
-        public override void OnSelectionStart(SelectionBox selectionBox)
-        {
-
-        }
-
-        public override void OnSelectionEnd(SelectionBox selectionBox)
-        {
-
-        }
-
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
             if (isLocked) return;
 
-
-            if (buildState.buildIsActive)
+            if (appState.Tools.Build.buildIsActive)
             {
                 ResetBlueprintRoom();
             }
@@ -89,11 +78,6 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
                 onBlueprintUpdated?.Invoke(blueprintRoom);
                 onBlueprintPositionUpdated?.Invoke(blueprintRoom);
             }
-        }
-
-        public override void OnBuildStart()
-        {
-            base.OnBuildStart();
         }
 
         public override void OnBuildEnd()

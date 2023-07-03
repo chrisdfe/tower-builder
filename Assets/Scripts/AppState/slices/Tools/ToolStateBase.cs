@@ -8,12 +8,10 @@ namespace TowerBuilder.ApplicationState.Tools
     public abstract class ToolStateBase
     {
         protected AppState appState;
-        protected Tools.State toolsState;
 
-        public ToolStateBase(AppState appState, Tools.State toolsState)
+        public ToolStateBase(AppState appState)
         {
             this.appState = appState;
-            this.toolsState = toolsState;
         }
 
         public virtual void Setup() { }

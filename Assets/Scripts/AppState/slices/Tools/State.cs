@@ -48,10 +48,10 @@ namespace TowerBuilder.ApplicationState.Tools
         {
             currentKey = input.key ?? DEFAULT_TOOL_STATE;
 
-            Build = new Build.State(appState, this, input.Build);
-            Destroy = new Destroy.State(appState, this, input.Destroy);
-            Inspect = new Inspect.State(appState, this, input.Inspect);
-            Routes = new Routes.State(appState, this, input.Routes);
+            Build = new Build.State(appState, input.Build);
+            Destroy = new Destroy.State(appState, input.Destroy);
+            Inspect = new Inspect.State(appState, input.Inspect);
+            Routes = new Routes.State(appState, input.Routes);
         }
 
         public override void Setup()

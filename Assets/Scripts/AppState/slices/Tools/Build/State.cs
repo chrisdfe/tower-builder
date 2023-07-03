@@ -38,10 +38,10 @@ namespace TowerBuilder.ApplicationState.Tools.Build
         public bool buildIsActive { get; private set; } = false;
         bool isLocked = false;
 
-        public State(AppState appState, Tools.State state, Input input) : base(appState, state)
+        public State(AppState appState, Input input) : base(appState)
         {
-            Entities = new Entities.State(appState, state, this, input.Entities);
-            Rooms = new Rooms.State(appState, state, this, input.Rooms);
+            Entities = new Entities.State(appState, input.Entities);
+            Rooms = new Rooms.State(appState, input.Rooms);
         }
 
         public override void Setup()
@@ -71,7 +71,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build
         public override void OnSecondaryActionEnd()
         {
             base.OnSecondaryActionEnd();
-            toolsState.SetToolState(ApplicationState.Tools.State.Key.Inspect);
+            appState.Tools.SetToolState(ApplicationState.Tools.State.Key.Inspect);
         }
 
         // Pass through to child

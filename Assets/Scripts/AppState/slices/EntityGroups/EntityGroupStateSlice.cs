@@ -102,8 +102,6 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
         public void Build(EntityGroup entityGroup)
         {
-            Debug.Log("buidling entityGroup:");
-
             entityGroup.ValidateBuild(appState);
 
             if (!entityGroup.canBuild)
@@ -127,9 +125,6 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             });
 
             entityGroup.OnBuild();
-
-            Debug.Log("entityGroup built");
-            Debug.Log(entityGroup.isInBlueprintMode);
 
             ListWrapper<EntityGroup> builtItemsList = new ListWrapper<EntityGroup>();
             builtItemsList.Add(entityGroup);

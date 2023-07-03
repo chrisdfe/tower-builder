@@ -25,6 +25,7 @@
 
 ## After
 
+- CLEANUP: sort out this remove/destroy/delete naming convention situation
 - Move EntityGroups state into Entities state - having queries for Entities in EntityGroups feels weird otherwise
 - EntityGroup parent "allowedTypes" - an array of types to match against entityGroup.parent when it gets set
   - e.g Room should only have a Building parent

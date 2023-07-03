@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
@@ -9,69 +10,49 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
 {
     public class State : ToolStateBase
     {
-        public struct Input { }
-
-        public enum DestroyMode
+        public enum Mode
         {
-            EntityBlocks,
             Entities,
-            EntityGroups
+            Rooms
         }
+
+        public struct Input
+        {
+            public Entities.State.Input Entities;
+            public Rooms.State.Input Rooms;
+        }
+
+        public delegate void ModeEvent(Mode newMode, Mode previousMode);
+        public ModeEvent onModeUpdated;
+
+        public delegate void BuildIsActiveEvent();
+        public BuildIsActiveEvent onBuildStart;
+        public BuildIsActiveEvent onBuildEnd;
+
+        public Entities.State Entities;
+        public Rooms.State Rooms;
+
+        public Mode currentMode { get; private set; } = Mode.Entities;
 
         public delegate void DestroyEvent();
         public DestroyEvent onDestroyStart;
         public DestroyEvent onDestroyEnd;
         public DestroyEvent onDestroySelectionUpdated;
 
-        // public ListWrapper<Room> roomsToDeleteBlocksFrom { get; private set; } = new ListWrapper<Room>();
-        // public CellCoordinatesBlockList blocksToDelete { get; private set; } = new CellCoordinatesBlockList();
-        // public CellCoordinatesList cellCoordinatesToDestroy { get; private set; } = new CellCoordinatesList();
+        public ListWrapper<Entity> entitiesToDelete { get; private set; } = new ListWrapper<Entity>();
 
-        public ListWrapper<Entity> entitiesToDelete = new ListWrapper<Entity>();
+        public bool destroyIsActive { get; private set; } = false;
+        bool isLocked = false;
 
-        bool destroyIsActive = false;
-
-        // public CellCoordinatesList cellsToDelete
-        // {
-        //     get
-        //     {
-        //         List<CellCoordinates> list = new List<CellCoordinates>();
-
-        //         foreach (CellCoordinatesBlock roomBlock in blocksToDelete.items)
-        //         {
-        //             list = list.Concat(roomBlock.items).ToList();
-        //         }
-
-        //         return new CellCoordinatesList(list);
-        //     }
-        // }
-
-        public State(AppState appState, Tools.State state, Input input) : base(appState, state)
+        public State(AppState appState, Input input) : base(appState)
         {
-        }
-
-        public override void Setup()
-        {
-            base.Setup();
-
-            // roomsToDeleteBlocksFrom = new ListWrapper<Room>();
-            // blocksToDelete = new CellCoordinatesBlockList();
-            // cellCoordinatesToDestroyList = new CellCoordinatesList();
-        }
-
-        public override void Teardown()
-        {
-            base.Teardown();
-
-            // roomsToDeleteBlocksFrom = new ListWrapper<Room>();
-            // blocksToDelete = new CellCoordinatesBlockList();
-            // cellCoordinatesToDestroyList = new CellCoordinatesList();
+            Entities = new Entities.State(appState, input.Entities);
+            Rooms = new Rooms.State(appState, input.Rooms);
         }
 
         public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
         {
-            CalculateDeletion();
-
+            entitiesToDelete = GetCurrentMode().CalculateEntitiesToDelete();
             onDestroySelectionUpdated?.Invoke();
         }
 
@@ -88,94 +69,94 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
         public override void OnSecondaryActionEnd()
         {
             base.OnSecondaryActionEnd();
-            toolsState.SetToolState(ApplicationState.Tools.State.Key.Inspect);
+
+            appState.Tools.SetToolState(ApplicationState.Tools.State.Key.Inspect);
         }
 
-
-        /*
-            Event Handlers
-        */
-        void StartDestroy()
+        public void SetMode(Mode newMode)
         {
-            destroyIsActive = true;
-            CalculateDeletion();
+            if (newMode == currentMode) return;
 
-            if (onDestroyStart != null)
-            {
-                onDestroyStart();
-            }
-        }
+            Mode previousMode = currentMode;
+            TransitionToolState(newMode, previousMode);
 
-        void EndDestroy()
-        {
-            // This happens when the mouse click up happens outside the screen or over a UI element
-            if (!destroyIsActive) return;
-
-            foreach (var entity in entitiesToDelete.items)
-            {
-                // TODO - just pass entitiesToDelete in here instead
-                appState.Entities.Remove(entity);
-            }
-
-            destroyIsActive = false;
-
-            // Restrict destroy to whichever room destroy started on
-            // if (roomsToDeleteBlocksFrom.Count > 0 && blocksToDelete.Count > 0)
-            // {
-            //     foreach (Room roomToDelete in roomsToDeleteBlocksFrom.items)
-            //     {
-            //         CellCoordinatesBlockList roomBlocksToDelete =
-            //             new CellCoordinatesBlockList(
-            //                 blocksToDelete.items.FindAll(roomBlock => roomToDelete.blocksList.Contains(roomBlock))
-            //             );
-            //         Registry.appState.Entities.Rooms.DestroyRoomBlocks(roomToDelete, roomBlocksToDelete);
-            //     }
-            // }
-
-            // roomsToDeleteBlocksFrom = new ListWrapper<Room>();
-            // blocksToDelete = new CellCoordinatesBlockList();
-
-            onDestroyEnd?.Invoke();
+            onModeUpdated?.Invoke(newMode, previousMode);
         }
 
         /*
             Internals
         */
-        void CalculateDeletion()
+        void TransitionToolState(Mode newMode, Mode previousMode)
         {
-            SelectionBox selectionBox = Registry.appState.UI.selectionBox;
+            GetMode(previousMode).Teardown();
+            this.currentMode = newMode;
+            GetMode(currentMode).Setup();
+        }
 
-            HashSet<Entity> entities = new HashSet<Entity>();
+        void StartDestroy()
+        {
+            if (isLocked) return;
 
-            // roomsToDeleteBlocksFrom = new ListWrapper<Room>();
-            // blocksToDelete = new CellCoordinatesBlockList();
-            // cellCoordinatesToDestroyList = new CellCoordinatesList();
-            // This will eventually be split up by "DestroyMode" 
-            // Lets only deal with Entities for now
-            foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
+            destroyIsActive = true;
+
+            GetCurrentMode().OnDestroyStart();
+
+            entitiesToDelete = GetCurrentMode().CalculateEntitiesToDelete();
+
+            ValidateEntitiesToDelete();
+
+            onDestroyStart?.Invoke();
+        }
+
+        void EndDestroy()
+        {
+            // This happens when the mouse click up happens outside the screen or over a UI element
+            if (!destroyIsActive || isLocked) return;
+
+            ValidateEntitiesToDelete();
+
+            if (CanDeleteAllEntitiesMarkedForDeletion())
             {
-                ListWrapper<Entity> entitiesAtCell = Registry.appState.Entities.FindEntitiesAtCell(cellCoordinates);
-
-                foreach (Entity entity in entitiesAtCell.items)
-                {
-                    entities.Add(entity);
-                }
-            }
-
-
-            if (entities.Count > 0)
-            {
-                // TODO - sort entities here by z index
-
-                Entity firstEntity = entities.ToList()[0];
-
-                // TODO here "single" or "multiple" mode? for now only delete the first entity in the list
-                entitiesToDelete = new ListWrapper<Entity>(firstEntity);
+                DeleteEntitiesMarkedForDeletion();
             }
             else
             {
-                entitiesToDelete = new ListWrapper<Entity>();
+                appState.Notifications.Add("Errors.");
+            }
+
+            destroyIsActive = false;
+
+            onDestroyEnd?.Invoke();
+        }
+
+        void ValidateEntitiesToDelete()
+        {
+            foreach (Entity entity in entitiesToDelete.items)
+            {
+                entity.ValidateDestroy(appState);
             }
         }
+
+        void DeleteEntitiesMarkedForDeletion()
+        {
+            foreach (Entity entity in entitiesToDelete.items)
+            {
+                // TODO - just pass entitiesToDelete in here instead
+                appState.Entities.Remove(entity);
+            }
+        }
+
+        bool CanDeleteAllEntitiesMarkedForDeletion() =>
+            entitiesToDelete.Find(entity => !entity.canDestroy) == null;
+
+        DestroyModeStateBase GetMode(Mode mode) =>
+            mode switch
+            {
+                Mode.Entities => Entities,
+                Mode.Rooms => Rooms,
+                _ => throw new NotSupportedException("Unsupported destroy tool mode: " + mode)
+            };
+
+        DestroyModeStateBase GetCurrentMode() => GetMode(currentMode);
     }
 }
