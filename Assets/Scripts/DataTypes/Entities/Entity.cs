@@ -37,8 +37,8 @@ namespace TowerBuilder.DataTypes.Entities
         // TODO - add "custom z Index"
         public int zIndex => entityTypeData.zIndex;
 
-        public bool canBuild => buildValidator.isValid;
-        public bool canDestroy => destroyValidator.isValid;
+        public bool canBuild => isInBlueprintMode && buildValidator.isValid;
+        public bool canDestroy => isMarkedForDeletion && destroyValidator.isValid;
 
         public bool isInBlueprintMode { get; set; } = false;
         public bool isMarkedForDeletion { get; set; } = false;

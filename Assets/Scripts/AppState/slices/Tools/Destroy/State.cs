@@ -134,11 +134,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             foreach (Entity entity in entitiesToDelete.items)
             {
                 entity.destroyValidator.Validate(appState);
-
-                if (entity.destroyValidator.isValid)
-                {
-                    entity.isMarkedForDeletion = true;
-                }
+                entity.isMarkedForDeletion = true;
             }
         }
 
