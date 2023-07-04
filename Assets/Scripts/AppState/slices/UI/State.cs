@@ -187,14 +187,6 @@ namespace TowerBuilder.ApplicationState.UI
                     })
                     .ToList();
 
-            Debug.Log("entityGroupsInSelection");
-            Debug.Log(roomsInSelection.Count);
-            if (roomsInSelection.Count > 0)
-            {
-                Debug.Log("yeps");
-                Debug.Log(roomsInSelection[0]);
-            }
-
             onEntitiesInSelectionUpdated?.Invoke(entitiesInSelection);
             onEntityBlocksInSelectionUpdated?.Invoke(entityBlocksInSelection);
             onRoomsInSelectionUpdated?.Invoke(roomsInSelection);

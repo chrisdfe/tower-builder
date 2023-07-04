@@ -37,9 +37,6 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnToolStateUpdated(ApplicationState.Tools.State.Key toolState, ApplicationState.Tools.State.Key previousToolState)
         {
-            Debug.Log("OnToolStateUpdated");
-            Debug.Log(toolState);
-
             UpdateDescriptionText();
 
             switch (toolState)

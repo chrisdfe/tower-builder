@@ -71,8 +71,6 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnDestroyModeUpdated(ApplicationState.Tools.Destroy.State.Mode newMode, ApplicationState.Tools.Destroy.State.Mode previousMode)
         {
-            Debug.Log("OnDestroyModeUpdated");
-            Debug.Log(newMode);
             HighlightSelectedButton();
         }
     }

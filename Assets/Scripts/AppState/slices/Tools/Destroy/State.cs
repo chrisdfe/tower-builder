@@ -103,9 +103,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
 
             UnmarkCurrentEntitiesMarkedForDeletion();
             entitiesToDelete = GetCurrentMode().CalculateEntitiesToDelete();
-            MarkCurrentEntitiesForDeletion();
-
-            ValidateEntitiesToDelete();
+            ValidateAndMarkEntitiesToDelete();
 
             onDestroyStart?.Invoke();
         }
@@ -115,7 +113,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             // This happens when the mouse click up happens outside the screen or over a UI element
             if (!destroyIsActive || isLocked) return;
 
-            ValidateEntitiesToDelete();
+            ValidateAndMarkEntitiesToDelete();
 
             if (GetAllValidationErrors().Count == 0)
             {
@@ -127,16 +125,20 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             }
 
             destroyIsActive = false;
-            MarkCurrentEntitiesForDeletion();
 
             onDestroyEnd?.Invoke();
         }
 
-        void ValidateEntitiesToDelete()
+        void ValidateAndMarkEntitiesToDelete()
         {
             foreach (Entity entity in entitiesToDelete.items)
             {
                 entity.destroyValidator.Validate(appState);
+
+                if (entity.destroyValidator.isValid)
+                {
+                    entity.isMarkedForDeletion = true;
+                }
             }
         }
 
@@ -154,14 +156,6 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
             entitiesToDelete.ForEach(entity =>
             {
                 entity.isMarkedForDeletion = false;
-            });
-        }
-
-        void MarkCurrentEntitiesForDeletion()
-        {
-            entitiesToDelete.ForEach(entity =>
-            {
-                entity.isMarkedForDeletion = true;
             });
         }
 
