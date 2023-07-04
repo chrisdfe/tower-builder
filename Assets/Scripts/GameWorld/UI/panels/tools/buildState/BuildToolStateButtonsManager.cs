@@ -15,18 +15,12 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class BuildToolStateButtonsManager : MonoBehaviour
     {
-
         public EntitiesModeButtonsManager entityModeButtonsManager;
         public RoomModeButtonsManager roomModeButtonsManager;
 
         public BuildModeSelectButtonsRow buildModeButtonsRow;
 
-        void Awake()
-        {
-
-        }
-
-        void Start()
+        public void Start()
         {
             Setup();
         }

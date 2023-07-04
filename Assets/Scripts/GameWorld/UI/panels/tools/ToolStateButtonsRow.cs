@@ -8,7 +8,8 @@ using UnityEngine.UI;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class ToolStateButtonsManager : MonoBehaviour
+    // TODO - use UIButtonRow
+    public class ToolStateButtonsRow : MonoBehaviour
     {
         // TODO - put this in a more centralized place
         static Color DEFAULT_BG_COLOR = Color.white;
@@ -17,7 +18,6 @@ namespace TowerBuilder.GameWorld.UI
         static Color PRESSED_BG_COLOR = ColorUtils.ColorFromHex("#033A34");
         static Color PRESSED_TEXT_COLOR = Color.white;
 
-        // Button NoneButton;
         Button BuildButton;
         Button DestroyButton;
         Button InspectButton;
@@ -29,12 +29,10 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            // NoneButton = transform.Find("NoneButton").GetComponent<Button>();
             BuildButton = transform.Find("BuildButton").GetComponent<Button>();
             DestroyButton = transform.Find("DestroyButton").GetComponent<Button>();
             InspectButton = transform.Find("InspectButton").GetComponent<Button>();
 
-            // NoneButton.onClick.AddListener(OnNoneButtonClick);
             BuildButton.onClick.AddListener(OnBuildButtonClick);
             DestroyButton.onClick.AddListener(OnDestroyButtonClick);
             InspectButton.onClick.AddListener(OnInspectButtonClick);

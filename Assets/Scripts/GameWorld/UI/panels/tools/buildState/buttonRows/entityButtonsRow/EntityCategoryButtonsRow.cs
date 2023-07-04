@@ -7,31 +7,32 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class EntityDefinitionButtonsRow : BuildToolStateButtonsRowBase
+    public class EntityCategoryButtonsRow : UIButtonsRowBase
     {
-        public EntityDefinitionButtonsRow() : base() { }
+        public EntityCategoryButtonsRow() : base() { }
 
         public override List<UISelectButton.Input> CreateButtonInputs()
         {
             Type selectedEntityType = Registry.appState.Tools.Build.Entities.selectedEntityType;
-            string currentCategory = Registry.appState.Tools.Build.Entities.selectedEntityCategory;
 
-            return DataTypes.Entities.Definitions.FindByCategory(selectedEntityType, currentCategory)
-                .items.Select((definition) =>
+            List<string> allEntityCategories = DataTypes.Entities.Definitions.FindAllCategories(selectedEntityType);
+
+            return allEntityCategories
+                .Select(category =>
                     new UISelectButton.Input()
                     {
-                        label = definition.title,
-                        value = definition.key
+                        label = category,
+                        value = category
                     }
                 ).ToList();
         }
 
         public override bool ButtonShouldBeSelected(UISelectButton button) =>
-            button.value == Registry.appState.Tools.Build.Entities.selectedEntityDefinition.key;
+            button.value == Registry.appState.Tools.Build.Entities.selectedEntityCategory;
 
         public override void OnButtonClick(string value)
         {
-            Registry.appState.Tools.Build.Entities.SetSelectedEntityDefinition(value);
+            Registry.appState.Tools.Build.Entities.SetSelectedEntityCategory(value);
         }
     }
 }

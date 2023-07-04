@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class EntityTypeButtonsRow : BuildToolStateButtonsRowBase
+    public class EntityTypeButtonsRow : UIButtonsRowBase
     {
         public EntityTypeButtonsRow() : base() { }
 

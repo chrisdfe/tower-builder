@@ -13,19 +13,22 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class ToolsPanelManger : MonoBehaviour
     {
-        ToolStateButtonsManager toolStateButtonsManager;
+        ToolStateButtonsRow toolStateButtonsRow;
         BuildToolStateButtonsManager buildToolStateButtonsManager;
+        DestroyToolStateButtonsManager destroyToolStateButtonsManager;
 
         Text descriptionText;
 
         void Awake()
         {
-            toolStateButtonsManager = transform.Find("ToolStateButtons").GetComponent<ToolStateButtonsManager>();
+            toolStateButtonsRow = transform.Find("ToolStateButtons").GetComponent<ToolStateButtonsRow>();
             buildToolStateButtonsManager = transform.Find("BuildToolStateButtons").GetComponent<BuildToolStateButtonsManager>();
+            destroyToolStateButtonsManager = transform.Find("DestroyToolStateButtons").GetComponent<DestroyToolStateButtonsManager>();
 
             descriptionText = transform.Find("DescriptionText").GetComponent<Text>();
 
-            ToggleBuildStateButtonsPanel(false);
+            buildToolStateButtonsManager.Close();
+            destroyToolStateButtonsManager.Close();
             UpdateDescriptionText();
 
             Registry.appState.Tools.onToolStateUpdated += OnToolStateUpdated;
@@ -34,15 +37,24 @@ namespace TowerBuilder.GameWorld.UI
 
         void OnToolStateUpdated(ApplicationState.Tools.State.Key toolState, ApplicationState.Tools.State.Key previousToolState)
         {
+            Debug.Log("OnToolStateUpdated");
+            Debug.Log(toolState);
+
             UpdateDescriptionText();
 
             switch (toolState)
             {
                 case ApplicationState.Tools.State.Key.Build:
-                    ToggleBuildStateButtonsPanel(true);
+                    buildToolStateButtonsManager.Open();
+                    destroyToolStateButtonsManager.Close();
+                    break;
+                case ApplicationState.Tools.State.Key.Destroy:
+                    buildToolStateButtonsManager.Close();
+                    destroyToolStateButtonsManager.Open();
                     break;
                 default:
-                    ToggleBuildStateButtonsPanel(false);
+                    buildToolStateButtonsManager.Close();
+                    destroyToolStateButtonsManager.Close();
                     break;
             }
         }
@@ -83,18 +95,6 @@ namespace TowerBuilder.GameWorld.UI
             else
             {
                 descriptionText.text = $"{toolState}";
-            }
-        }
-
-        void ToggleBuildStateButtonsPanel(bool show)
-        {
-            if (show)
-            {
-                buildToolStateButtonsManager.Open();
-            }
-            else
-            {
-                buildToolStateButtonsManager.Close();
             }
         }
     }

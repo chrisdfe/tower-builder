@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class RoomDefinitionButtonsRow : BuildToolStateButtonsRowBase
+    public class RoomDefinitionButtonsRow : UIButtonsRowBase
     {
         public RoomDefinitionButtonsRow() : base() { }
 

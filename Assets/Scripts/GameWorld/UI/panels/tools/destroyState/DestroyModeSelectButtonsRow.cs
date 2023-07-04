@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class BuildModeSelectButtonsRow : BuildToolStateButtonsRowBase
+    public class DestroyModeSelectButtonsRow : UIButtonsRowBase
     {
-        public BuildModeSelectButtonsRow() : base() { }
+        public DestroyModeSelectButtonsRow() : base() { }
 
         public override void Setup()
         {
             base.Setup();
 
             Registry.appState.Tools.onToolStateUpdated += OnToolStateUpdated;
-            Registry.appState.Tools.Build.onModeUpdated += OnBuildModeUpdated;
+            Registry.appState.Tools.Destroy.onModeUpdated += OnDestroyModeUpdated;
         }
 
         public override void Teardown()
@@ -21,7 +21,7 @@ namespace TowerBuilder.GameWorld.UI
             base.Teardown();
 
             Registry.appState.Tools.onToolStateUpdated += OnToolStateUpdated;
-            Registry.appState.Tools.Build.onModeUpdated -= OnBuildModeUpdated;
+            Registry.appState.Tools.Destroy.onModeUpdated -= OnDestroyModeUpdated;
         }
 
         public override List<UISelectButton.Input> CreateButtonInputs() =>
@@ -37,10 +37,10 @@ namespace TowerBuilder.GameWorld.UI
             };
 
         public override bool ButtonShouldBeSelected(UISelectButton button) =>
-            Registry.appState.Tools.Build.currentMode switch
+            Registry.appState.Tools.Destroy.currentMode switch
             {
-                ApplicationState.Tools.Build.State.Mode.Entities => button.value == "Entities",
-                ApplicationState.Tools.Build.State.Mode.Rooms => button.value == "Rooms",
+                ApplicationState.Tools.Destroy.State.Mode.Entities => button.value == "Entities",
+                ApplicationState.Tools.Destroy.State.Mode.Rooms => button.value == "Rooms",
                 _ => false
             };
 
@@ -50,10 +50,10 @@ namespace TowerBuilder.GameWorld.UI
             switch (value)
             {
                 case "Entities":
-                    Registry.appState.Tools.Build.SetMode(ApplicationState.Tools.Build.State.Mode.Entities);
+                    Registry.appState.Tools.Destroy.SetMode(ApplicationState.Tools.Destroy.State.Mode.Entities);
                     break;
                 case "Rooms":
-                    Registry.appState.Tools.Build.SetMode(ApplicationState.Tools.Build.State.Mode.Rooms);
+                    Registry.appState.Tools.Destroy.SetMode(ApplicationState.Tools.Destroy.State.Mode.Rooms);
                     break;
             }
         }
@@ -63,19 +63,16 @@ namespace TowerBuilder.GameWorld.UI
         */
         void OnToolStateUpdated(ApplicationState.Tools.State.Key newKey, ApplicationState.Tools.State.Key previousKey)
         {
-            if (newKey == ApplicationState.Tools.State.Key.Build)
+            if (newKey == ApplicationState.Tools.State.Key.Destroy)
             {
-                gameObject.SetActive(true);
                 HighlightSelectedButton();
-            }
-            else
-            {
-                gameObject.SetActive(false);
             }
         }
 
-        void OnBuildModeUpdated(ApplicationState.Tools.Build.State.Mode newMode, ApplicationState.Tools.Build.State.Mode previousMode)
+        void OnDestroyModeUpdated(ApplicationState.Tools.Destroy.State.Mode newMode, ApplicationState.Tools.Destroy.State.Mode previousMode)
         {
+            Debug.Log("OnDestroyModeUpdated");
+            Debug.Log(newMode);
             HighlightSelectedButton();
         }
     }

@@ -2,24 +2,20 @@
 
 ## Current
 
-- CLEANUP: Look into getting rid of ListWrapper and replacing it with just List
+- PROJECT: reimplement destroy tool
+  - [x] get it working again to just destroy entities
+  - [x] different "destroy" types - entity, room, building, etc
+    - [ ] Add "isMarkedForDeletion"? Like "isInBlueprintMode" but for destroy
+    - [ ] Use "isMarkedForDeletion" in destroy validation i.e allow foundations to be deleted with things inside of it if isMarkedForDeletion is true
 
 ## After
 
+- CLEANUP: implement IEnumerable in ListWrapper
 - PROJECT: UI themes
   - [ ] customizable from the editor
   - [ ] updates automatically when changed in the editor
   - [ ] ability to save/load from JSON file
-- PROJECT: Entity z indexes, which can be sorted to determine which is in front (also visually)
-  - [x] default z indexes (i.e on an entity type level)
-  - [ ] "sub" z-indexes (1-10)
-  - [ ] both types are overrideable
-- PROJECT: reimplement destroy tool
-  - [x] get it working again to just destroy entities
-  - [ ] different "destroy" types - entity, room, building, etc
-    - [ ] figure out how to deal with the fact that foundations don't want to be deleted until everything inside it is deleted
-      - "isMarkedForDeletion"? Like "isInBlueprintMode" but for destroy
-      - Remove things in a particular order?
+    - Probably makes sense to implement save/load system first before this & use the same pattern
 - PROJECT: Default building/more entity group integration
   - [x] Foundation not built inside an already existing room should create one
   - [x] Rooms should get added to buildings or vehicles
@@ -31,10 +27,10 @@
     - with money?
 - CLEANUP: in BuildState look into using the same entitiesToBuild/entityGroupsToBuild pattern as in DestroyState
 - CLEANUP: sort out this remove/destroy/delete naming convention situation
-- Move EntityGroups state into Entities state - having queries for Entities in EntityGroups feels weird otherwise
+- CLEANUP: Move EntityGroups state into Entities state - having queries for Entities in EntityGroups feels weird otherwise
 - EntityGroup parent "allowedTypes" - an array of types to match against entityGroup.parent when it gets set
   - e.g Room should only have a Building parent
-- Scaffolding/latticed wood stilts entity (for buildings)
+- GFX: Scaffolding/latticed wood stilts entity (for buildings)
 - PROJECT: "exterior" (front) view
   - like the sims - none, partial (goes away under cursor), full
   - options to show residents through front?
@@ -46,7 +42,6 @@
 - TASK: Option to turn day/night off and just have a single color for ground/background
 - PROJECT: exterior walls built around building/vehicle
   - [ ] basic algorithm (line between 2 cells + 2 cells ahead = 4 cells per iteration)
-- CLEANUP: Think about removing (entity/entityGroup).parent. It seems messy but convenient
 - PROJECT: selecting multiple entities with the selection box
   - which entities to default to? probably residents, then furniture, etc
 - PROJECT: Elevator transportation item
@@ -371,6 +366,9 @@
 
 # Done
 
+- PROJECT: Entity z indexes, which can be sorted to determine which is in front (also visually)
+  - [x] default z indexes (i.e on an entity type level)
+- CLEANUP: Think about removing (entity/entityGroup).parent. It seems messy but convenient
 - CLEANUP: Get rid of "current" from the beginning of the selected\_\_List fields in UI/State
 - Make sure building gets destroyed when there are no more rooms left
 - PROJECT: Destroy validation

@@ -6,12 +6,11 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    // TODO - this is basically the same thing as UIButtonRow
-    public abstract class BuildToolStateButtonsRowBase : MonoBehaviour, ISetupable
+    public abstract class UIButtonsRowBase : MonoBehaviour, ISetupable
     {
         protected List<UISelectButton> buttons = new List<UISelectButton>();
 
-        public BuildToolStateButtonsRowBase() { }
+        public UIButtonsRowBase() { }
 
         public virtual void Setup()
         {
@@ -35,6 +34,18 @@ namespace TowerBuilder.GameWorld.UI
             gameObject.SetActive(false);
         }
 
+        public void Toggle(bool shouldBeOpen)
+        {
+            if (shouldBeOpen)
+            {
+                Open();
+            }
+            else
+            {
+                Close();
+            }
+        }
+
         public void Reset()
         {
             DestroyButtons();
@@ -55,6 +66,9 @@ namespace TowerBuilder.GameWorld.UI
 
         public abstract void OnButtonClick(string value);
 
+        /*
+            Internals
+        */
         void CreateButtons()
         {
             List<UISelectButton.Input> inputs = CreateButtonInputs();
