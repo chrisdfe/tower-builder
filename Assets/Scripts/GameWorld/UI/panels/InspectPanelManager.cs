@@ -94,9 +94,9 @@ namespace TowerBuilder.GameWorld.UI
             {
                 targetEntity = Registry.appState.Tools.Inspect.inspectedEntity;
             }
-            else if (Registry.appState.UI.currentSelectedCellEntityList.Count > 0)
+            else if (Registry.appState.UI.entitiesInSelection.Count > 0)
             {
-                targetEntity = Registry.appState.UI.currentSelectedCellEntityList.items[0];
+                targetEntity = Registry.appState.UI.entitiesInSelection[0];
             }
 
             if (targetEntity == null)

@@ -66,8 +66,8 @@ namespace TowerBuilder.ApplicationState.Tools
             appState.UI.onSecondaryActionStart += OnSecondaryActionStart;
             appState.UI.onSecondaryActionEnd += OnSecondaryActionEnd;
 
-            appState.UI.onCurrentSelectedEntityListUpdated += OnCurrentSelectedEntityListUpdated;
-            appState.UI.onSelectedEntityBlocksUpdated += OnSelectedEntityBlocksUpdated;
+            appState.UI.onEntitiesInSelectionUpdated += OnEntitiesInSelectionUpdated;
+            appState.UI.onEntityBlocksInSelectionUpdated += OnEntityBlocksInSelectionUpdated;
         }
 
         public override void Teardown()
@@ -82,8 +82,8 @@ namespace TowerBuilder.ApplicationState.Tools
             appState.UI.onSecondaryActionStart -= OnSecondaryActionStart;
             appState.UI.onSecondaryActionEnd -= OnSecondaryActionEnd;
 
-            appState.UI.onCurrentSelectedEntityListUpdated -= OnCurrentSelectedEntityListUpdated;
-            appState.UI.onSelectedEntityBlocksUpdated -= OnSelectedEntityBlocksUpdated;
+            appState.UI.onEntitiesInSelectionUpdated -= OnEntitiesInSelectionUpdated;
+            appState.UI.onEntityBlocksInSelectionUpdated -= OnEntityBlocksInSelectionUpdated;
         }
 
         /*
@@ -135,14 +135,14 @@ namespace TowerBuilder.ApplicationState.Tools
             activeToolState.OnSelectionBoxReset(selectionBox);
         }
 
-        void OnCurrentSelectedEntityListUpdated(ListWrapper<Entity> entityList)
+        void OnEntitiesInSelectionUpdated(List<Entity> entitiesInSelection)
         {
-            activeToolState.OnCurrentSelectedEntityListUpdated(entityList);
+            activeToolState.OnEntitiesInSelectionUpdated(entitiesInSelection);
         }
 
-        void OnSelectedEntityBlocksUpdated(CellCoordinatesBlockList selectedBlocksList)
+        void OnEntityBlocksInSelectionUpdated(List<CellCoordinatesBlock> selectedBlocksList)
         {
-            activeToolState.OnSelectedEntityBlocksUpdated(selectedBlocksList);
+            activeToolState.OnEntityBlocksInSelectionUpdated(selectedBlocksList);
         }
 
         void OnSecondaryActionStart()

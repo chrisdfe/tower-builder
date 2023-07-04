@@ -7,7 +7,7 @@
   - [x] get it working again to just destroy entities
   - [ ] different "destroy" types - entity, room, building, etc
 - PROJECT: Entity z indexes, which can be sorted to determine which is in front (also visually)
-  - [ ] default z indexes (i.e on an entity type level)
+  - [x] default z indexes (i.e on an entity type level)
   - [ ] "sub" z-indexes (1-10)
   - [ ] both types are overrideable
 - PROJECT: Default building/more entity group integration
@@ -22,9 +22,15 @@
 - PROJECT: Destroy validation
   - [x] Specific set of validators that run when you are about to destroy an entity
   - [x] Foundation should be un-deletable if there is another room on top
+  - [ ] Foundation should be un-deletable if there is anything else in the room
 
 ## After
 
+- PROJECT: UI themes
+  - [ ] customizable from the editor
+  - [ ] updates automatically when changed in the editor
+  - [ ] ability to save/load from JSON file
+- CLEANUP: Look into getting rid of ListWrapper and replacing it with just List
 - CLEANUP: in BuildState look into using the same entitiesToBuild/entityGroupsToBuild pattern as in DestroyState
 - CLEANUP: sort out this remove/destroy/delete naming convention situation
 - Move EntityGroups state into Entities state - having queries for Entities in EntityGroups feels weird otherwise

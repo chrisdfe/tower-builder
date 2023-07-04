@@ -33,7 +33,10 @@ namespace TowerBuilder.DataTypes.Entities
         public EntityValidator buildValidator { get; }
         public EntityValidator destroyValidator { get; }
 
-        public string typeLabel => EntityTypeData.Get(this.GetType()).label;
+        public EntityTypeData entityTypeData => EntityTypeData.Get(this.GetType());
+        public string typeLabel => entityTypeData.label;
+        // TODO - add "custom z Index"
+        public int zIndex => entityTypeData.zIndex;
 
         public bool canBuild => buildValidator.isValid;
         public bool canDestroy => destroyValidator.isValid;

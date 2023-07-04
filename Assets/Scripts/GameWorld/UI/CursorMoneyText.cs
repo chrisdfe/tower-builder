@@ -73,7 +73,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetPosition()
         {
-            CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
+            CellCoordinates currentSelectedCell = Registry.appState.UI.selectedCell;
             Vector3 worldPosition = GameWorldUtils.CellCoordinatesToPosition(currentSelectedCell);
             Vector3 adjustedWorldPosition = new Vector3(
                 worldPosition.x,

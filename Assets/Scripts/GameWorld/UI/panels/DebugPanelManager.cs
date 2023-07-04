@@ -24,7 +24,7 @@ namespace TowerBuilder.GameWorld.UI
 
         void Awake()
         {
-            Registry.appState.UI.onCurrentSelectedCellUpdated += OnCurrentSelectedCellUpdated;
+            Registry.appState.UI.onSelectedCellUpdated += OnCurrentSelectedCellUpdated;
             Registry.appState.UI.onSelectionBoxUpdated += OnSelectionBoxUpdated;
 
             // Registry.appState.Entities.Vehicles.onListUpdated += OnVehicleListUpdated;
@@ -74,9 +74,9 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetCurrentSelectedCellText()
         {
-            CellCoordinates currentSelectedCell = Registry.appState.UI.currentSelectedCell;
+            CellCoordinates currentSelectedCell = Registry.appState.UI.selectedCell;
             currentSelectedCellText.text = $"x: {currentSelectedCell.x}, y: {currentSelectedCell.y}\n"
-                + $"entityStack: {Registry.appState.UI.currentSelectedCellEntityList.Count}";
+                + $"entityStack: {Registry.appState.UI.entitiesInSelection}";
         }
 
         void SetSelectionBoxText()

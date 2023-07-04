@@ -19,7 +19,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy.Entities
         {
             ListWrapper<Entity> result = new ListWrapper<Entity>();
             SelectionBox selectionBox = Registry.appState.UI.selectionBox;
-            HashSet<Entity> allEntitiesBeneathCursor = new HashSet<Entity>();
+            HashSet<Entity> allEntitiesInSelectionBox = new HashSet<Entity>();
 
             foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
             {
@@ -27,17 +27,19 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy.Entities
 
                 foreach (Entity entity in entitiesAtCell.items)
                 {
-                    allEntitiesBeneathCursor.Add(entity);
+                    allEntitiesInSelectionBox.Add(entity);
                 }
             }
 
-            if (allEntitiesBeneathCursor.Count > 0)
+            if (allEntitiesInSelectionBox.Count > 0)
             {
-                // TODO - sort entities here by z index
-                Entity firstEntity = allEntitiesBeneathCursor.ToList()[0];
+                List<Entity> sortedEntities = allEntitiesInSelectionBox.OrderBy(entity => entity.zIndex).ToList();
 
                 // TODO here "single" or "multiple" mode? for now only delete the first entity in the list
-                result = new ListWrapper<Entity>(firstEntity);
+                // TODO - [0] or last item?
+                Entity entityToDelete = allEntitiesInSelectionBox.ToList()[0];
+
+                result = new ListWrapper<Entity>(entityToDelete);
             }
             else
             {

@@ -226,9 +226,23 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             return absoluteBlocksList.items.Find(cellCoordinatesBlock => cellCoordinatesBlock.Contains(cellCoordinates));
         }
 
-
         public ListWrapper<Entity> FindChildEntitiesAtCell(EntityGroup entityGroup, CellCoordinates cellCoordinates) =>
             entityGroup.childEntities.FindAll(entity => GetAbsoluteCellCoordinatesList(entity).Contains(cellCoordinates));
+
+        public EntityGroup FindEntityGroupAtCell(CellCoordinates cellCoordinates)
+        {
+            foreach (EntityGroupStateSlice slice in allSlices)
+            {
+                EntityGroup entityGroup = slice.FindEntityGroupAtCell(cellCoordinates);
+
+                if (entityGroup != null)
+                {
+                    return entityGroup;
+                }
+            }
+
+            return null;
+        }
 
         /*
             Event Handlers

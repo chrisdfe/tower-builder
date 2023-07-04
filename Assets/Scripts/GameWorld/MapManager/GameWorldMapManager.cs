@@ -116,7 +116,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
                     new Vector2(hit.point.x, hit.point.y)
                 );
 
-                if (!hoveredCell.Matches(Registry.appState.UI.currentSelectedCell))
+                if (!hoveredCell.Matches(Registry.appState.UI.selectedCell))
                 {
                     Registry.appState.UI.SetCurrentSelectedCell(hoveredCell);
                 }

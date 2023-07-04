@@ -153,20 +153,6 @@ namespace TowerBuilder.GameWorld.Entities
                         break;
                     }
                 }
-
-                // // TODO - highlight on a per-cell basis
-                // if (entity.absoluteCellCoordinatesList.OverlapsWith(Registry.appState.UI.selectionBox.cellCoordinatesList))
-                // {
-                //     foreach (EntityMeshCellWrapper entityMeshCellWrapper in entityMeshWrapper.entityCellMeshWrapperList)
-                //     {
-                //         if (cellCoordinatesToDestroyFrom.OverlapsWith(entity.absoluteCellCoordinatesList))
-                //         {
-                //             entityMeshCellWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Destroy);
-                //         }
-                //     }
-
-                //     hasUpdated = true;
-                // }
             }
 
             void SetInspectStateColor()
@@ -179,7 +165,7 @@ namespace TowerBuilder.GameWorld.Entities
                     hasUpdated = true;
                     return;
                 }
-                else if (Registry.appState.UI.currentSelectedCellEntityList.Contains(entity))
+                else if (Registry.appState.UI.entitiesInSelection.Contains(entity))
                 {
                     entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Hover);
                     hasUpdated = true;

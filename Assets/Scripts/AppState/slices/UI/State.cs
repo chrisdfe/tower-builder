@@ -19,14 +19,17 @@ namespace TowerBuilder.ApplicationState.UI
         /*
             Events
         */
-        public delegate void CellCoordinatesEvent(CellCoordinates currentSelectedCell);
-        public CellCoordinatesEvent onCurrentSelectedCellUpdated;
+        public delegate void CellCoordinatesEvent(CellCoordinates selectedCell);
+        public CellCoordinatesEvent onSelectedCellUpdated;
 
-        public delegate void SelectedEntityBlockEvent(CellCoordinatesBlockList selectedBlockList);
-        public SelectedEntityBlockEvent onSelectedEntityBlocksUpdated;
+        public delegate void EntityBlocksInSelectionEvent(List<CellCoordinatesBlock> blocksList);
+        public EntityBlocksInSelectionEvent onEntityBlocksInSelectionUpdated;
 
-        public delegate void SelectedCellEntityListEvent(ListWrapper<Entity> entityList);
-        public SelectedCellEntityListEvent onCurrentSelectedEntityListUpdated;
+        public delegate void EntitiesInSelectionEvent(List<Entity> entityList);
+        public EntitiesInSelectionEvent onEntitiesInSelectionUpdated;
+
+        public delegate void EntityGroupsInSelectionEvent(List<EntityGroup> entityGroupList);
+        public EntityGroupsInSelectionEvent onEntityGroupsInSelectionUpdated;
 
         public delegate void SelectionBoxEvent(SelectionBox selectionBox);
         public SelectionBoxEvent onSelectionBoxUpdated;
@@ -43,22 +46,22 @@ namespace TowerBuilder.ApplicationState.UI
         /*
             State
         */
-        public CellCoordinates currentSelectedCell { get; private set; } = null;
-        public CellCoordinatesBlockList currentSelectedBlockList { get; private set; } = null;
-        public EntityGroup currentSelectedEntityGroup { get; private set; } = null;
+        public CellCoordinates selectedCell { get; private set; } = null;
+        public EntityGroup selectedEntityGroup { get; private set; } = null;
 
-        public SelectionBox selectionBox { get; private set; }
+        public SelectionBox selectionBox { get; private set; } = new SelectionBox();
+        public List<Entity> entitiesInSelection { get; private set; } = new List<Entity>();
+        public List<EntityGroup> entityGroupsInSelection { get; private set; } = new List<EntityGroup>();
+        public List<CellCoordinatesBlock> entityBlocksInSelection { get; private set; } = new List<CellCoordinatesBlock>();
+
         public bool selectionIsActive { get; private set; } = false;
-
-        public ListWrapper<Entity> currentSelectedCellEntityList { get; private set; } = new ListWrapper<Entity>();
 
         bool altActionIsActive = false;
 
         public State(AppState appState, Input input) : base(appState)
         {
-            currentSelectedCell = input.currentSelectedCell ?? CellCoordinates.zero;
-
-            selectionBox = new SelectionBox(currentSelectedCell);
+            selectedCell = input.currentSelectedCell ?? CellCoordinates.zero;
+            selectionBox = new SelectionBox(selectedCell);
         }
 
         /*
@@ -76,7 +79,6 @@ namespace TowerBuilder.ApplicationState.UI
 
         public void RightClickStart()
         {
-            SetEntityList();
             onSecondaryActionStart?.Invoke();
         }
 
@@ -85,32 +87,31 @@ namespace TowerBuilder.ApplicationState.UI
             onSecondaryActionEnd?.Invoke();
         }
 
-        public void SetCurrentSelectedCell(CellCoordinates currentSelectedCell)
+        public void SetCurrentSelectedCell(CellCoordinates newSelectedCell)
         {
-            this.currentSelectedCell = currentSelectedCell;
-
-            SetEntityList();
+            this.selectedCell = newSelectedCell;
 
             if (selectionIsActive)
             {
-                selectionBox.SetEnd(currentSelectedCell);
+                selectionBox.SetEnd(selectedCell);
             }
             else
             {
-                selectionBox.SetStartAndEnd(currentSelectedCell);
+                selectionBox.SetStartAndEnd(selectedCell);
             }
 
+            SetEntityList();
 
-            onCurrentSelectedCellUpdated?.Invoke(currentSelectedCell);
+            onSelectedCellUpdated?.Invoke(selectedCell);
             onSelectionBoxUpdated?.Invoke(selectionBox);
         }
 
         public void SelectStart()
         {
-            // SetEntityList();
-
             selectionIsActive = true;
-            selectionBox.SetStartAndEnd(currentSelectedCell);
+
+            selectionBox.SetStartAndEnd(selectedCell);
+            SetEntityList();
 
             onSelectionStart?.Invoke(selectionBox);
         }
@@ -118,7 +119,8 @@ namespace TowerBuilder.ApplicationState.UI
         public void SelectEnd()
         {
             selectionIsActive = false;
-            selectionBox.SetEnd(currentSelectedCell);
+            selectionBox.SetEnd(selectedCell);
+            SetEntityList();
 
             onSelectionEnd?.Invoke(selectionBox);
 
@@ -130,27 +132,64 @@ namespace TowerBuilder.ApplicationState.UI
         */
         void ResetSelectionBox()
         {
-            selectionBox = new SelectionBox(currentSelectedCell);
+            selectionBox = new SelectionBox(selectedCell);
 
             onSelectionBoxReset?.Invoke(selectionBox);
         }
 
         void SetEntityList()
         {
-            if (currentSelectedCell != null)
-            {
-                currentSelectedCellEntityList = appState.Entities.FindEntitiesAtCell(currentSelectedCell);
+            // TODO - when is this ever null?
+            if (selectedCell == null) return;
 
-                currentSelectedBlockList = new CellCoordinatesBlockList(
-                    currentSelectedCellEntityList.items
-                        .Select(entity => appState.EntityGroups.FindEntityBlockByCellCoordinates(entity, currentSelectedCell))
-                        .ToList()
-                        .FindAll(block => block != null)
-                );
+            entitiesInSelection =
+                selectionBox.cellCoordinatesList.items
+                    .Aggregate(new HashSet<Entity>(), (acc, cellCoordinates) =>
+                    {
+                        ListWrapper<Entity> entitiesAtCell = Registry.appState.Entities.FindEntitiesAtCell(cellCoordinates);
 
-                onCurrentSelectedEntityListUpdated?.Invoke(currentSelectedCellEntityList);
-                onSelectedEntityBlocksUpdated?.Invoke(currentSelectedBlockList);
-            }
+                        foreach (Entity entity in entitiesAtCell.items)
+                        {
+                            acc.Add(entity);
+                        }
+
+                        return acc;
+                    })
+                    .ToList();
+
+            entityBlocksInSelection =
+                entitiesInSelection
+                    .Aggregate(new HashSet<CellCoordinatesBlock>(), (acc, entity) =>
+                    {
+                        CellCoordinatesBlock block = appState.EntityGroups.FindEntityBlockByCellCoordinates(entity, selectedCell);
+
+                        if (block != null)
+                        {
+                            acc.Add(block);
+                        }
+
+                        return acc;
+                    })
+                    .ToList();
+
+            entityGroupsInSelection =
+                entitiesInSelection
+                    .Aggregate(new HashSet<EntityGroup>(), (acc, entity) =>
+                    {
+                        EntityGroup entityGroup = appState.EntityGroups.FindEntityGroupAtCell(selectedCell);
+
+                        if (entityGroup != null)
+                        {
+                            acc.Add(entityGroup);
+                        }
+
+                        return acc;
+                    })
+                    .ToList();
+
+            onEntitiesInSelectionUpdated?.Invoke(entitiesInSelection);
+            onEntityBlocksInSelectionUpdated?.Invoke(entityBlocksInSelection);
+            onEntityGroupsInSelectionUpdated?.Invoke(entityGroupsInSelection);
         }
     }
 }

@@ -98,7 +98,6 @@ namespace TowerBuilder.DataTypes
             items = result;
         }
 
-
         public bool OverlapsWith(CellCoordinatesList otherCellCoordinatesList) =>
             GetOverlapBetween(otherCellCoordinatesList).Count != 0;
 

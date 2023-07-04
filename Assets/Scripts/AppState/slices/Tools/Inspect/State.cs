@@ -15,14 +15,14 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
             public Room currentInspectedRoom;
         }
 
-        public delegate void InspectedEntityListEvent(ListWrapper<Entity> entityList);
+        public delegate void InspectedEntityListEvent(List<Entity> entityList);
         public InspectedEntityListEvent onInspectedEntityListUpdated;
 
         public delegate void CurrentSelectedEntityEvent(Entity entity);
         public CurrentSelectedEntityEvent onCurrentSelectedEntityUpdated;
 
 
-        public ListWrapper<Entity> inspectedEntityList { get; private set; } = new ListWrapper<Entity>();
+        public List<Entity> inspectedEntityList { get; private set; } = new List<Entity>();
         public int inspectedEntityIndex { get; private set; } = -1;
 
         public Entity inspectedEntity
@@ -34,7 +34,7 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
                     return null;
                 }
 
-                return inspectedEntityList.items[inspectedEntityIndex];
+                return inspectedEntityList[inspectedEntityIndex];
             }
         }
 
@@ -59,7 +59,7 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
             appState.Entities.Residents.onItemsRemoved -= OnResidentsRemoved;
 
             // de-select selected entities
-            inspectedEntityList = new ListWrapper<Entity>();
+            inspectedEntityList = new List<Entity>();
             inspectedEntityIndex = -1;
 
             onInspectedEntityListUpdated?.Invoke(inspectedEntityList);
@@ -70,9 +70,9 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
         {
             base.OnSelectionEnd(selectionBox);
 
-            if (appState.UI.currentSelectedCellEntityList != inspectedEntityList)
+            if (appState.UI.entitiesInSelection != inspectedEntityList)
             {
-                inspectedEntityList = appState.UI.currentSelectedCellEntityList;
+                inspectedEntityList = appState.UI.entitiesInSelection;
                 inspectedEntityIndex = -1;
             }
 

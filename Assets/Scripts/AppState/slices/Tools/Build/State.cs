@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
@@ -85,14 +86,14 @@ namespace TowerBuilder.ApplicationState.Tools.Build
             GetCurrentMode().OnSelectionBoxReset(selectionBox);
         }
 
-        public override void OnSelectedEntityBlocksUpdated(CellCoordinatesBlockList roomBlockList)
+        public override void OnEntitiesInSelectionUpdated(List<Entity> entityList)
         {
-            GetCurrentMode().OnSelectedEntityBlocksUpdated(roomBlockList);
+            GetCurrentMode().OnEntitiesInSelectionUpdated(entityList);
         }
 
-        public override void OnCurrentSelectedEntityListUpdated(ListWrapper<Entity> entityList)
+        public override void OnEntityBlocksInSelectionUpdated(List<CellCoordinatesBlock> roomBlockList)
         {
-            GetCurrentMode().OnCurrentSelectedEntityListUpdated(entityList);
+            GetCurrentMode().OnEntityBlocksInSelectionUpdated(roomBlockList);
         }
 
         public void SetMode(Mode newMode)
