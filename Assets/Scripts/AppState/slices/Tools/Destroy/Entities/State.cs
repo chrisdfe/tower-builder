@@ -17,36 +17,17 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy.Entities
 
         public override ListWrapper<Entity> CalculateEntitiesToDelete()
         {
-            ListWrapper<Entity> result = new ListWrapper<Entity>();
-            SelectionBox selectionBox = Registry.appState.UI.selectionBox;
-            HashSet<Entity> allEntitiesInSelectionBox = new HashSet<Entity>();
-
-            foreach (CellCoordinates cellCoordinates in selectionBox.cellCoordinatesList.items)
+            if (appState.UI.entitiesInSelection.Count > 0)
             {
-                ListWrapper<Entity> entitiesAtCell = Registry.appState.Entities.FindEntitiesAtCell(cellCoordinates);
+                List<Entity> sortedEntities = appState.UI.entitiesInSelection.OrderBy(entity => entity.zIndex).ToList();
 
-                foreach (Entity entity in entitiesAtCell.items)
-                {
-                    allEntitiesInSelectionBox.Add(entity);
-                }
+                // TODO here "single" or "multiple" mode? for now only delete the last entity in the list/closest to the camera
+                Entity entityToDelete = sortedEntities.ToList().Last();
+
+                return new ListWrapper<Entity>(entityToDelete);
             }
 
-            if (allEntitiesInSelectionBox.Count > 0)
-            {
-                List<Entity> sortedEntities = allEntitiesInSelectionBox.OrderBy(entity => entity.zIndex).ToList();
-
-                // TODO here "single" or "multiple" mode? for now only delete the first entity in the list
-                // TODO - [0] or last item?
-                Entity entityToDelete = allEntitiesInSelectionBox.ToList().Last();
-
-                result = new ListWrapper<Entity>(entityToDelete);
-            }
-            else
-            {
-                result = new ListWrapper<Entity>();
-            }
-
-            return result;
+            return new ListWrapper<Entity>();
         }
     }
 }

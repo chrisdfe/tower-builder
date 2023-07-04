@@ -133,6 +133,18 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                 _ => throw new NotSupportedException($"EntityGroup type not handled: {entityGroup.GetType()}")
             };
 
+        public ListWrapper<EntityGroup> GetAllEntityGroups() =>
+            new ListWrapper<EntityGroup>(
+                allSlices.Aggregate(new HashSet<EntityGroup>(), (acc, slice) =>
+                {
+                    foreach (EntityGroup entityGroup in slice.list.items)
+                    {
+                        acc.Add(entityGroup);
+                    }
+
+                    return acc;
+                }).ToList()
+            );
 
         public EntityGroup FindEntityGroupParent(EntityGroup entityGroup)
         {
@@ -229,20 +241,10 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         public ListWrapper<Entity> FindChildEntitiesAtCell(EntityGroup entityGroup, CellCoordinates cellCoordinates) =>
             entityGroup.childEntities.FindAll(entity => GetAbsoluteCellCoordinatesList(entity).Contains(cellCoordinates));
 
-        public EntityGroup FindEntityGroupAtCell(CellCoordinates cellCoordinates)
-        {
-            foreach (EntityGroupStateSlice slice in allSlices)
-            {
-                EntityGroup entityGroup = slice.FindEntityGroupAtCell(cellCoordinates);
+        public EntityGroup FindRoomAtCell(CellCoordinates cellCoordinates) => FindEntityGroupAtCell(cellCoordinates, Rooms);
+        public EntityGroup FindBuildingAtCell(CellCoordinates cellCoordinates) => FindEntityGroupAtCell(cellCoordinates, Buildings);
+        public EntityGroup FindVehiclesAtCell(CellCoordinates cellCoordinates) => FindEntityGroupAtCell(cellCoordinates, Vehicles);
 
-                if (entityGroup != null)
-                {
-                    return entityGroup;
-                }
-            }
-
-            return null;
-        }
 
         /*
             Event Handlers
@@ -265,6 +267,27 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         void OnEntityGroupPositionUpdated(EntityGroup entityGroup)
         {
             onPositionUpdated?.Invoke(entityGroup);
+        }
+
+        /*
+            Internals
+        */
+        EntityGroup FindEntityGroupAtCell(CellCoordinates cellCoordinates, EntityGroupStateSlice slice)
+        {
+            ListWrapper<EntityGroup> entityGroupList = new ListWrapper<EntityGroup>();
+
+            foreach (EntityGroup entityGroup in slice.list.items)
+            {
+                ListWrapper<Entity> entitiesAtCell = FindChildEntitiesAtCell(entityGroup, cellCoordinates);
+
+                if (entitiesAtCell.Count > 0)
+                {
+                    return entityGroup;
+                }
+            }
+
+
+            return null;
         }
     }
 }

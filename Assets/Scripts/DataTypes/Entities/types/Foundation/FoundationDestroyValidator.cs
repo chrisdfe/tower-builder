@@ -42,7 +42,13 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
             EntityGroup parentRoom = appState.EntityGroups.Rooms.FindEntityParent(entity);
 
             // Filter out current foundation
-            List<Entity> entitiesInRoom = parentRoom.childEntities.items.FindAll(entity => entity.GetType() != typeof(Foundation));
+            List<Entity> entitiesInRoom =
+                parentRoom.childEntities.items.FindAll(entity => (
+                    // Filter out Foundations
+                    entity.GetType() != typeof(Foundation) &&
+                    // Ignore entities marked for deletion
+                    !entity.isMarkedForDeletion
+                ));
             if (entitiesInRoom.Count > 0)
             {
                 return EntityValidator.CreateSingleItemValidationErrorList("Cannot remove room with things inside of it.");

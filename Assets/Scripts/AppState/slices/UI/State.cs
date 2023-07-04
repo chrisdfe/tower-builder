@@ -29,7 +29,7 @@ namespace TowerBuilder.ApplicationState.UI
         public EntitiesInSelectionEvent onEntitiesInSelectionUpdated;
 
         public delegate void EntityGroupsInSelectionEvent(List<EntityGroup> entityGroupList);
-        public EntityGroupsInSelectionEvent onEntityGroupsInSelectionUpdated;
+        public EntityGroupsInSelectionEvent onRoomsInSelectionUpdated;
 
         public delegate void SelectionBoxEvent(SelectionBox selectionBox);
         public SelectionBoxEvent onSelectionBoxUpdated;
@@ -51,8 +51,8 @@ namespace TowerBuilder.ApplicationState.UI
 
         public SelectionBox selectionBox { get; private set; } = new SelectionBox();
         public List<Entity> entitiesInSelection { get; private set; } = new List<Entity>();
-        public List<EntityGroup> entityGroupsInSelection { get; private set; } = new List<EntityGroup>();
         public List<CellCoordinatesBlock> entityBlocksInSelection { get; private set; } = new List<CellCoordinatesBlock>();
+        public List<EntityGroup> roomsInSelection { get; private set; } = new List<EntityGroup>();
 
         public bool selectionIsActive { get; private set; } = false;
 
@@ -172,11 +172,11 @@ namespace TowerBuilder.ApplicationState.UI
                     })
                     .ToList();
 
-            entityGroupsInSelection =
+            roomsInSelection =
                 entitiesInSelection
                     .Aggregate(new HashSet<EntityGroup>(), (acc, entity) =>
                     {
-                        EntityGroup entityGroup = appState.EntityGroups.FindEntityGroupAtCell(selectedCell);
+                        EntityGroup entityGroup = appState.EntityGroups.FindRoomAtCell(selectedCell);
 
                         if (entityGroup != null)
                         {
@@ -187,9 +187,17 @@ namespace TowerBuilder.ApplicationState.UI
                     })
                     .ToList();
 
+            Debug.Log("entityGroupsInSelection");
+            Debug.Log(roomsInSelection.Count);
+            if (roomsInSelection.Count > 0)
+            {
+                Debug.Log("yeps");
+                Debug.Log(roomsInSelection[0]);
+            }
+
             onEntitiesInSelectionUpdated?.Invoke(entitiesInSelection);
             onEntityBlocksInSelectionUpdated?.Invoke(entityBlocksInSelection);
-            onEntityGroupsInSelectionUpdated?.Invoke(entityGroupsInSelection);
+            onRoomsInSelectionUpdated?.Invoke(roomsInSelection);
         }
     }
 }

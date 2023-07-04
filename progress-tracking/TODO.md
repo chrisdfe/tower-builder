@@ -2,14 +2,9 @@
 
 ## Current
 
-- PROJECT: reimplement destroy tool
-  - [x] get it working again to just destroy entities
-  - [x] different "destroy" types - entity, room, building, etc
-    - [ ] Add "isMarkedForDeletion"? Like "isInBlueprintMode" but for destroy
-    - [ ] Use "isMarkedForDeletion" in destroy validation i.e allow foundations to be deleted with things inside of it if isMarkedForDeletion is true
-
 ## After
 
+- BUG: selecting interior light entity in build tool crashes game
 - CLEANUP: implement IEnumerable in ListWrapper
 - PROJECT: UI themes
   - [ ] customizable from the editor
@@ -365,6 +360,14 @@
 - CLEANUP: Awkward naming conflict between ToolState + tool sub states
 
 # Done
+
+- PROJECT: reimplement destroy tool
+
+  - [x] get it working again to just destroy entities
+  - [x] different "destroy" types - entity, room, building, etc
+    - [x] Implement "room" mode
+    - [x] Add "isMarkedForDeletion"? Like "isInBlueprintMode" but for destroy
+    - [x] Use "isMarkedForDeletion" in destroy validation i.e allow foundations to be deleted with things inside of it if isMarkedForDeletion is true
 
 - PROJECT: Entity z indexes, which can be sorted to determine which is in front (also visually)
   - [x] default z indexes (i.e on an entity type level)

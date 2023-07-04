@@ -17,7 +17,6 @@ namespace TowerBuilder.DataTypes.Entities
 
         public int price => definition.pricePerCell * relativeCellCoordinatesList.Count;
 
-        public bool isInBlueprintMode { get; set; } = false;
 
         public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
 
@@ -40,6 +39,9 @@ namespace TowerBuilder.DataTypes.Entities
 
         public bool canBuild => buildValidator.isValid;
         public bool canDestroy => destroyValidator.isValid;
+
+        public bool isInBlueprintMode { get; set; } = false;
+        public bool isMarkedForDeletion { get; set; } = false;
 
         public Entity(EntityDefinition definition)
         {
