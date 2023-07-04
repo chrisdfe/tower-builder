@@ -50,17 +50,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void Update()
         {
-            // UpdateSelectableEntityStack();
             UpdateCurrentSelectedCell();
-
-            // if (Input.GetButtonDown("Alt Action"))
-            // {
-            //     Registry.appState.UI.AltActionStart();
-            // }
-            // else if (Input.GetButtonUp("Alt Action"))
-            // {
-            //     Registry.appState.UI.AltActionEnd();
-            // }
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -92,12 +82,6 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             {
                 Registry.appState.UI.RightClickEnd();
             }
-
-            // Right click to exit out of current state?
-            // if (Input.GetMouseButtonDown(1) && Registry.appState.Tools.currentKey != ApplicationState.Tools.State.DEFAULT_TOOL_STATE)
-            // {
-            //     Registry.appState.Tools.SetToolState(ApplicationState.Tools.State.DEFAULT_TOOL_STATE);
-            // }
 
             currentToolStateHandler.Update();
         }

@@ -110,9 +110,6 @@ namespace TowerBuilder.GameWorld.UI
 
                 switch (targetEntity)
                 {
-                    case Furniture furnitureEntity:
-                        SetInspectedFurnitureText(furnitureEntity);
-                        break;
                     case Resident residentEntity:
                         SetInspectedResidentText(residentEntity);
                         break;
@@ -121,11 +118,6 @@ namespace TowerBuilder.GameWorld.UI
                         break;
                 }
             }
-        }
-
-        void SetInspectedFurnitureText(Furniture furniture)
-        {
-            textBuffer.Add($"   name: {furniture}");
         }
 
         void SetInspectedResidentText(Resident resident)

@@ -37,7 +37,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy.Entities
 
                 // TODO here "single" or "multiple" mode? for now only delete the first entity in the list
                 // TODO - [0] or last item?
-                Entity entityToDelete = allEntitiesInSelectionBox.ToList()[0];
+                Entity entityToDelete = allEntitiesInSelectionBox.ToList().Last();
 
                 result = new ListWrapper<Entity>(entityToDelete);
             }
