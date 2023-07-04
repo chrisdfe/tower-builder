@@ -2,14 +2,24 @@
 
 ## Current
 
-- Make sure building gets destroyed when there are no more rooms left
-- PROJECT: reimplement destroy tool
-  - [x] get it working again to just destroy entities
-  - [ ] different "destroy" types - entity, room, building, etc
+- CLEANUP: Look into getting rid of ListWrapper and replacing it with just List
+
+## After
+
+- PROJECT: UI themes
+  - [ ] customizable from the editor
+  - [ ] updates automatically when changed in the editor
+  - [ ] ability to save/load from JSON file
 - PROJECT: Entity z indexes, which can be sorted to determine which is in front (also visually)
   - [x] default z indexes (i.e on an entity type level)
   - [ ] "sub" z-indexes (1-10)
   - [ ] both types are overrideable
+- PROJECT: reimplement destroy tool
+  - [x] get it working again to just destroy entities
+  - [ ] different "destroy" types - entity, room, building, etc
+    - [ ] figure out how to deal with the fact that foundations don't want to be deleted until everything inside it is deleted
+      - "isMarkedForDeletion"? Like "isInBlueprintMode" but for destroy
+      - Remove things in a particular order?
 - PROJECT: Default building/more entity group integration
   - [x] Foundation not built inside an already existing room should create one
   - [x] Rooms should get added to buildings or vehicles
@@ -19,18 +29,6 @@
   - [ ] Limit the number of buildings/vehicles
     - arbitrarily?
     - with money?
-- PROJECT: Destroy validation
-  - [x] Specific set of validators that run when you are about to destroy an entity
-  - [x] Foundation should be un-deletable if there is another room on top
-  - [ ] Foundation should be un-deletable if there is anything else in the room
-
-## After
-
-- PROJECT: UI themes
-  - [ ] customizable from the editor
-  - [ ] updates automatically when changed in the editor
-  - [ ] ability to save/load from JSON file
-- CLEANUP: Look into getting rid of ListWrapper and replacing it with just List
 - CLEANUP: in BuildState look into using the same entitiesToBuild/entityGroupsToBuild pattern as in DestroyState
 - CLEANUP: sort out this remove/destroy/delete naming convention situation
 - Move EntityGroups state into Entities state - having queries for Entities in EntityGroups feels weird otherwise
@@ -40,7 +38,6 @@
 - PROJECT: "exterior" (front) view
   - like the sims - none, partial (goes away under cursor), full
   - options to show residents through front?
-- CLEANUP: Get rid of "current" from the beginning of the selected\_\_List fields in UI/State
 - ability to
   - [ ] select a building/vehicle/ship to focus on building that
   - [ ] filter buttons in the build tool mode for the current building type (e.g no wheels for buildings)
@@ -63,7 +60,7 @@
 - Vehicle types:
   - submarine (propellors)
   - spaceship (booster?)
-  -
+  - discworld bubble world
 - Maybe some assets shouldn't be selcatable?
   - windows
   - decoration
@@ -374,6 +371,12 @@
 
 # Done
 
+- CLEANUP: Get rid of "current" from the beginning of the selected\_\_List fields in UI/State
+- Make sure building gets destroyed when there are no more rooms left
+- PROJECT: Destroy validation
+  - [x] Specific set of validators that run when you are about to destroy an entity
+  - [x] Foundation should be un-deletable if there is another room on top
+  - [x] Foundation should be un-deletable if there is anything else in the room
 - Make sure entityGroups get removed when there are no more entities in them
 - TASK: add meshKeys to definitions again
 - BUG: game shouldn't crash if meshKey doesn't exist
