@@ -110,23 +110,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
             this.isInBlueprintMode = isInBlueprintMode;
         }
 
-        public void UpdateOffsetCoordinatesAndChildren(CellCoordinates relativeOffsetCoordinatesToAdd)
-        {
-            // this.offsetCoordinates = offsetCoordinates;
-            // UpdateChildEntityOffsets(this, offsetCoordinates);
-            // UpdateChildEntityGroupOffsets(this, offsetCoordinates);
-
-            // childEntities.ForEach((entity) =>
-            // {
-            //     entity.relativeOffsetCoordinates = CellCoordinates.Add(entity.relativeOffsetCoordinates, relativeOffsetCoordinatesToAdd);
-            // });
-
-            // childEntityGroups.ForEach((entityGroup) =>
-            // {
-            //     CellCoordinates newEntityGroupOffsetCoordinates = CellCoordinates.Add(entityGroup.offsetCoordinates, relativeOffsetCoordinatesToAdd);
-            //     entityGroup.offsetCoordinates = newEntityGroupOffsetCoordinates;
-            // });
-        }
         /*
             Mutations 
         */

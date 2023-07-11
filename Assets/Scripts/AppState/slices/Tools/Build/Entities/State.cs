@@ -61,8 +61,11 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             EntityGroup blueprint = new EntityGroup();
 
             Entity blueprintEntity = Entity.CreateFromDefinition(selectedEntityDefinition);
-            blueprintEntity.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox.asRelativeSelectionBox);
+            blueprintEntity.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
             blueprint.Add(blueprintEntity);
+            blueprint.UpdateChildrenAfterNewParentAdd();
+            Debug.Log("blueprintEntity");
+            Debug.Log(blueprintEntity.relativeCellCoordinatesList.bottomLeftCoordinates + " | " + blueprintEntity.relativeCellCoordinatesList.topRightCoordinates);
 
             return blueprint;
         }

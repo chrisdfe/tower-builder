@@ -2,13 +2,14 @@
 
 ## Current
 
-- Entities should always belong to an EntityGroup
-- build mode needs to validate the cumulative price of everything being built
+- TASK: refactor entityBlockBuilders to use absolute selection box values - right now it silently/confusingly uses relative coordinates (i.e starting at 0 and ending at selectionBox.width/height or whatever);
+- task: build mode needs to validate the cumulative price of everything being built
 - BUG: selecting interior light entity in build tool crashes game
 - BUG: buildValidator validation highlighting isn't working anymore
 
 ## After
 
+- TASK: Entities should always belong to an EntityGroup
 - PROJECT: "ResidentGroup"? For grouping residents in different buildigns
   - probably for down the road
 - CLEANUP: should EntityStateSlice inherit ListStateSlice?
