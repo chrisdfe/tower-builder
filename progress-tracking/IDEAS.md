@@ -2,6 +2,22 @@
 
 ## General
 
+- Chaos/funny unpredicability from lots of overlapping/interacting AIs
+- For a lot of these new ideas it will make sense to rework the grid system - currently it is global, but it should
+  only be per Room/Building.
+  - This will give flexibility to attaching rooms to each other in a way that doesn't conform to a global grid
+  - This will also help with having multiple vehicles/buildings in a scene - they'll each be part of their own grid
+  - A modular structure (like a space station or truck/cab) will need to be primarily stored as a tree? this room is connected to these other rooms, etc.
+    GameWorld positions will be determined from that.
+- Inventories
+  - entities can have them - residents, furniture, freight, etc
+  - InventoryItems - things that go into the inventory
+  - wardrobe - residents put their things in their wardrobe
+  - fridge - food InventoryItems go in the fridge Inventory
+  - Inventory filter - only allow things of certain types
+- Building/vehicle "sections"? conjoined by a tunnel or something. like a truck/cab situation
+  - Modifiers for having a "residential" section without other stuff in it, for example
+- Residents earn salary, tax gives "colony" some of that money
 - Medieval music but with weird synths - disco project/katamari
 - Gahan wilson's the ultimate haunted house style
   - intentional dark/flourescent color palette

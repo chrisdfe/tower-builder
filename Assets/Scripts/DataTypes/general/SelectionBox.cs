@@ -20,6 +20,15 @@ namespace TowerBuilder.DataTypes
                 (cellCoordinatesList.topRightCoordinates.y - cellCoordinatesList.bottomLeftCoordinates.y) + 1
             );
 
+        public SelectionBox asRelativeSelectionBox =>
+            new SelectionBox(
+                CellCoordinates.zero,
+                CellCoordinates.Subtract(
+                    this.cellCoordinatesList.topRightCoordinates,
+                    this.cellCoordinatesList.bottomLeftCoordinates
+                )
+            );
+
         public SelectionBox(CellCoordinates start, CellCoordinates end)
         {
             this.start = start;
@@ -29,6 +38,8 @@ namespace TowerBuilder.DataTypes
         public SelectionBox(CellCoordinates coordinates) : this(coordinates, coordinates) { }
 
         public SelectionBox() : this(CellCoordinates.zero, CellCoordinates.zero) { }
+
+        public override string ToString() => $"SelectionBox: {cellCoordinatesList.bottomLeftCoordinates} & {cellCoordinatesList.topRightCoordinates}";
 
         public void SetStart(CellCoordinates start)
         {

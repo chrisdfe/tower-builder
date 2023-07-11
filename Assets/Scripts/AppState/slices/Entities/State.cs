@@ -20,6 +20,7 @@ namespace TowerBuilder.ApplicationState.Entities
             public TransportationItems.State.Input TransportationItems;
             public Freight.State.Input Freight;
             public Wheels.State.Input Wheels;
+            public Misc.State.Input Misc;
 
             public Input()
             {
@@ -32,6 +33,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 TransportationItems = new TransportationItems.State.Input();
                 Freight = new Freight.State.Input();
                 Wheels = new Wheels.State.Input();
+                Misc = new Misc.State.Input();
             }
         }
 
@@ -57,6 +59,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public TransportationItems.State TransportationItems { get; }
         public Freight.State Freight { get; }
         public Wheels.State Wheels { get; }
+        public Misc.State Misc { get; }
 
         public List<EntityStateSlice> sliceList { get; }
 
@@ -78,6 +81,7 @@ namespace TowerBuilder.ApplicationState.Entities
             TransportationItems = new TransportationItems.State(appState, input.TransportationItems);
             Freight = new Freight.State(appState, input.Freight);
             Wheels = new Wheels.State(appState, input.Wheels);
+            Misc = new Misc.State(appState, input.Misc);
 
             sliceList = new List<EntityStateSlice>() {
                 Foundations,
@@ -88,7 +92,8 @@ namespace TowerBuilder.ApplicationState.Entities
                 Residents,
                 TransportationItems,
                 Freight,
-                Wheels
+                Wheels,
+                Misc
             };
         }
 
@@ -97,6 +102,8 @@ namespace TowerBuilder.ApplicationState.Entities
         */
         public override void Setup()
         {
+            base.Setup();
+
             sliceList.ForEach(slice =>
             {
                 slice.Setup();
@@ -141,18 +148,12 @@ namespace TowerBuilder.ApplicationState.Entities
             GetStateSlice(entity)?.Add(entity);
         }
 
-        /*
-            TODO
-        */
-        // This needs to be done individually because entities could include Entities
-        // of many different types
-        // Ideally I'd group entities by type first and then Add(entities), to cut down
-        // on the number of method calls potentially
+        // TODO: Use grouped entities
         public void Add(ListWrapper<Entity> entities)
         {
             foreach (Entity entity in entities.items)
             {
-                GetStateSlice(entity)?.Add(entity);
+                Add(entity);
             }
         }
 
@@ -161,18 +162,45 @@ namespace TowerBuilder.ApplicationState.Entities
             GetStateSlice(entity)?.Build(entity);
         }
 
+        // TODO: Use gropued entities
+        public void Build(ListWrapper<Entity> entities)
+        {
+            Debug.Log("Building " + entities.Count + " entities");
+
+            foreach (Entity entity in entities.items)
+            {
+                Build(entity);
+            }
+        }
+
         public void Remove(Entity entity)
         {
             GetStateSlice(entity)?.Remove(entity);
         }
 
+        // TODO: use grouped entiites
         public void Remove(ListWrapper<Entity> entities)
         {
-            // Warning - this assumes all entities are of the same type
-            GetStateSlice(entities.items[0])?.Remove(entities);
+            foreach (Entity entity in entities.items)
+            {
+                Remove(entity);
+            }
         }
 
-        public void UpdateEntityOffsetCoordinates(Entity entity, CellCoordinates offsetCoordinates)
+        public void SetBlueprintMode(Entity entity, bool isInBlueprintMode)
+        {
+            entity.isInBlueprintMode = isInBlueprintMode;
+        }
+
+        public void SetBlueprintMode(ListWrapper<Entity> entities, bool isInBlueprintMode)
+        {
+            foreach (Entity entity in entities.items)
+            {
+                SetBlueprintMode(entity, isInBlueprintMode);
+            }
+        }
+
+        public void UpdateOffsetCoordinates(Entity entity, CellCoordinates offsetCoordinates)
         {
             GetStateSlice(entity)?.UpdateEntityOffsetCoordinates(entity, offsetCoordinates);
         }
@@ -189,7 +217,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 DataTypes.Entities.Freights.FreightItem => Freight,
                 DataTypes.Entities.Wheels.Wheel => Wheels,
                 DataTypes.Entities.Windows.Window => Windows,
-                _ => throw new NotSupportedException($"Entity type not handled: {entity.GetType()}")
+                _ => Misc
             };
 
         /*
@@ -217,6 +245,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
         void OnItemsBuilt(ListWrapper<Entity> entityList)
         {
+            Debug.Log("Entities/State OnItemsBuilt: " + entityList.Count);
             onItemsBuilt?.Invoke(entityList);
         }
 

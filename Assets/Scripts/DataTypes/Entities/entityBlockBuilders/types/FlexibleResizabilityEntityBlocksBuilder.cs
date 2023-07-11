@@ -8,7 +8,7 @@ namespace TowerBuilder.DataTypes.Entities
     {
         public FlexibleResizabilityEntityBlocksBuilder(EntityDefinition definition) : base(definition) { }
 
-        protected override CellCoordinatesBlockList CalculateFromSelectionBox(SelectionBox selectionBox)
+        public override CellCoordinatesBlockList CalculateFromSelectionBox(SelectionBox selectionBox)
         {
             CellCoordinatesBlockList result = new CellCoordinatesBlockList();
 

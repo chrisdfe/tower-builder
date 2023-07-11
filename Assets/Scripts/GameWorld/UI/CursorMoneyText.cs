@@ -3,6 +3,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.EntityGroups;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ namespace TowerBuilder.GameWorld.UI
 
             Registry.appState.Tools.onToolStateUpdated += OnToolStateUpdated;
 
-            Registry.appState.Tools.Build.Entities.onBlueprintEntityUpdated += OnBlueprintEntityUpdated;
+            Registry.appState.Tools.Build.onBlueprintUpdated += OnBlueprintUpdated;
             Registry.appState.Tools.Build.onBuildStart += OnBuildStart;
             Registry.appState.Tools.Build.onBuildEnd += OnBuildEnd;
 
@@ -28,7 +29,7 @@ namespace TowerBuilder.GameWorld.UI
         void OnDestroy()
         {
             Registry.appState.Tools.onToolStateUpdated -= OnToolStateUpdated;
-            Registry.appState.Tools.Build.Entities.onBlueprintEntityUpdated -= OnBlueprintEntityUpdated;
+            Registry.appState.Tools.Build.onBlueprintUpdated -= OnBlueprintUpdated;
             Registry.appState.Tools.Build.onBuildStart -= OnBuildStart;
             Registry.appState.Tools.Build.onBuildEnd -= OnBuildEnd;
         }
@@ -41,7 +42,7 @@ namespace TowerBuilder.GameWorld.UI
             }
         }
 
-        void OnBlueprintEntityUpdated(Entity blueprintEntity)
+        void OnBlueprintUpdated(EntityGroup blueprint)
         {
             if (Registry.appState.Tools.currentKey == ApplicationState.Tools.State.Key.Build)
             {
@@ -92,11 +93,11 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetText()
         {
-            Entity blueprintEntity = Registry.appState.Tools.Build.Entities.blueprintEntity;
-            int amount = blueprintEntity.price;
+            EntityGroup blueprint = Registry.appState.Tools.Build.blueprint;
+            int amount = blueprint.price;
             text.text = String.Format("${0:n0}", amount);
 
-            if (blueprintEntity.canBuild)
+            if (blueprint.buildValidator.isValid)
             {
                 text.color = Color.white;
             }

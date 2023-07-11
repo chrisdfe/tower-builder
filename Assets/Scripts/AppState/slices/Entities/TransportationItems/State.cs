@@ -15,9 +15,7 @@ namespace TowerBuilder.ApplicationState.Entities.TransportationItems
             public ListWrapper<TransportationItem> transportationItemsList;
         }
 
-        public State(AppState appState, Input input) : base(appState)
-        {
-        }
+        public State(AppState appState, Input input) : base(appState) { }
 
         public State(AppState appState) : this(appState, new Input()) { }
     }

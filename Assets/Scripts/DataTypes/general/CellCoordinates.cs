@@ -35,8 +35,10 @@ namespace TowerBuilder.DataTypes
 
         public override string ToString() => $"x: {x}, y: {y}";
 
+        // TODO - this should mutate
         public CellCoordinates Add(CellCoordinates b) => CellCoordinates.Add(this, b);
 
+        // TODO - this should mutate
         public CellCoordinates Subtract(CellCoordinates b) => CellCoordinates.Subtract(this, b);
 
         public bool Matches(CellCoordinates b) => CellCoordinates.Matches(this, b);

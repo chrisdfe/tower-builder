@@ -6,10 +6,12 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public virtual string title { get; set; } = "None";
         public virtual string category { get; set; } = "None";
 
-        // public virtual Resizability resizability { get; set; } = Resizability.Flexible;
-
         public delegate EntityGroupValidator ValidatorFactory(EntityGroup entityGroup);
-        public virtual ValidatorFactory validatorFactory { get; set; } =
+
+        public virtual ValidatorFactory buildValidatorFactory { get; set; } =
+            (EntityGroup entityGroup) => new EntityGroupValidator(entityGroup);
+
+        public virtual ValidatorFactory destroyValidatorFactory { get; set; } =
             (EntityGroup entityGroup) => new EntityGroupValidator(entityGroup);
 
         public delegate EntityGroupBuilderBase BuilderFactory(EntityGroupDefinition definition);

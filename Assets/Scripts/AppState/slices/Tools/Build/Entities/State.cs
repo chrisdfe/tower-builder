@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
 
@@ -28,18 +29,12 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         public delegate void SelectedEntityDefinitionEvent(EntityDefinition selectedEntityDefinition);
         public SelectedEntityDefinitionEvent onSelectedEntityDefinitionUpdated;
 
-        public delegate void BlueprintEvent(Entity blueprintEntity);
-        public BlueprintEvent onBlueprintEntityUpdated;
-        public BlueprintEvent onBlueprintEntityPositionUpdated;
-
         /*
             State
         */
         public Type selectedEntityType { get; private set; } = DEFAULT_TYPE;
         public string selectedEntityCategory { get; private set; } = "";
         public EntityDefinition selectedEntityDefinition { get; private set; } = null;
-
-        public Entity blueprintEntity { get; private set; } = null;
 
         static Type DEFAULT_TYPE = typeof(DataTypes.Entities.Foundations.Foundation);
 
@@ -56,19 +51,22 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             base.Setup();
 
             ResetCategoryAndDefinition();
-            CreateBlueprintEntity();
-        }
-
-        public override void Teardown()
-        {
-            base.Teardown();
-
-            RemoveBlueprintEntity();
         }
 
         /*
             Public Interface
         */
+        public override EntityGroup CalculateBlueprintEntityGroup()
+        {
+            EntityGroup blueprint = new EntityGroup();
+
+            Entity blueprintEntity = Entity.CreateFromDefinition(selectedEntityDefinition);
+            blueprintEntity.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox.asRelativeSelectionBox);
+            blueprint.Add(blueprintEntity);
+
+            return blueprint;
+        }
+
         public void SetSelectedEntityKey(Type entityType)
         {
             isLocked = true;
@@ -76,8 +74,8 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
             this.selectedEntityType = entityType;
 
             ResetCategoryAndDefinition();
-            ResetBlueprintEntity();
 
+            onResetRequested?.Invoke();
             onSelectedEntityKeyUpdated?.Invoke(this.selectedEntityType, previousEntityType);
             isLocked = false;
         }
@@ -88,8 +86,7 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
 
             this.selectedEntityDefinition = DataTypes.Entities.Definitions.FindFirstInCategory(selectedEntityType, selectedEntityCategory);
 
-            ResetBlueprintEntity();
-
+            onResetRequested?.Invoke();
             onSelectedEntityCategoryUpdated?.Invoke(entityCategory);
             onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
         }
@@ -98,52 +95,8 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         {
             this.selectedEntityDefinition = DataTypes.Entities.Definitions.FindByKey(this.selectedEntityType, keyLabel);
 
-            ResetBlueprintEntity();
-
+            onResetRequested?.Invoke();
             onSelectedEntityDefinitionUpdated?.Invoke(selectedEntityDefinition);
-        }
-
-        public override void OnSelectionBoxUpdated(SelectionBox selectionBox)
-        {
-            base.OnSelectionBoxUpdated(selectionBox);
-
-            if (isLocked) return;
-
-            if (appState.Tools.Build.buildIsActive)
-            {
-                ResetBlueprintEntity();
-            }
-            else
-            {
-                appState.Entities.UpdateEntityOffsetCoordinates(blueprintEntity, selectionBox.cellCoordinatesList.bottomLeftCoordinates);
-                blueprintEntity.buildValidator.Validate(appState);
-                onBlueprintEntityUpdated?.Invoke(blueprintEntity);
-                onBlueprintEntityPositionUpdated?.Invoke(blueprintEntity);
-            }
-        }
-
-        public override void OnBuildEnd()
-        {
-            base.OnBuildEnd();
-
-            blueprintEntity.buildValidator.Validate(Registry.appState);
-
-            if (blueprintEntity.canBuild)
-            {
-                BuildBlueprintEntity();
-                CreateBlueprintEntity();
-            }
-            else
-            {
-                Registry.appState.Notifications.Add(blueprintEntity.buildValidator.errors);
-
-                ResetBlueprintEntity();
-            }
-        }
-
-        public override void OnSelectionBoxReset(SelectionBox selectionBox)
-        {
-            ResetBlueprintEntity();
         }
 
         /*
@@ -153,40 +106,6 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Entities
         {
             selectedEntityCategory = DataTypes.Entities.Definitions.FindFirstCategory(selectedEntityType);
             selectedEntityDefinition = DataTypes.Entities.Definitions.FindFirstInCategory(selectedEntityType, selectedEntityCategory);
-        }
-
-        void CreateBlueprintEntity()
-        {
-            blueprintEntity = Entity.CreateFromDefinition(selectedEntityDefinition);
-
-            blueprintEntity.isInBlueprintMode = true;
-            blueprintEntity.CalculateCellsFromSelectionBox(Registry.appState.UI.selectionBox);
-            blueprintEntity.offsetCoordinates = Registry.appState.UI.selectionBox.cellCoordinatesList.bottomLeftCoordinates;
-            blueprintEntity.buildValidator.Validate(Registry.appState);
-
-            Registry.appState.Entities.Add(blueprintEntity);
-            onBlueprintEntityUpdated?.Invoke(blueprintEntity);
-        }
-
-        void BuildBlueprintEntity()
-        {
-            Registry.appState.Entities.Build(blueprintEntity);
-            blueprintEntity = null;
-        }
-
-        void RemoveBlueprintEntity()
-        {
-            if (blueprintEntity != null)
-            {
-                Registry.appState.Entities.Remove(blueprintEntity);
-                blueprintEntity = null;
-            }
-        }
-
-        void ResetBlueprintEntity()
-        {
-            RemoveBlueprintEntity();
-            CreateBlueprintEntity();
         }
     }
 }

@@ -9,10 +9,7 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
         public override string typeLabel => "Room";
 
         public Room() { }
-        public Room(RoomDefinition roomDefinition) : base(roomDefinition)
-        {
-
-        }
+        public Room(RoomDefinition roomDefinition) : base(roomDefinition) { }
     }
 }
 

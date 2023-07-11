@@ -21,7 +21,7 @@ namespace TowerBuilder.DataTypes
     {
         public delegate ListWrapper<ValidationError> ValidationFunc(AppState appState, ItemType itemType);
 
-        public ListWrapper<ValidationError> errors { get; private set; } = new ListWrapper<ValidationError>();
+        public ListWrapper<ValidationError> errors { get; protected set; } = new ListWrapper<ValidationError>();
 
         public bool isValid => errors.Count == 0;
 
@@ -46,7 +46,7 @@ namespace TowerBuilder.DataTypes
             this.validationItem = validationItem;
         }
 
-        public void Validate(AppState appState)
+        public virtual void Validate(AppState appState)
         {
             errors = CreateValidationErrors(appState);
         }

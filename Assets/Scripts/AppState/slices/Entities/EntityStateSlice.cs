@@ -45,18 +45,15 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public void Add(Entity entity)
         {
-            ListWrapper<Entity> newItemsList = new ListWrapper<Entity>();
-            newItemsList.Add(entity);
+            ListWrapper<Entity> newItemsList = new ListWrapper<Entity>(entity);
             Add(newItemsList);
         }
 
         public void Remove(ListWrapper<Entity> removedItemsList)
         {
+            // TODO - validation
             removedItemsList.items.ForEach((entity) =>
             {
-                OnPreDestroy(entity);
-
-                // TODO - validation
                 // TODO - add money back into wallet
 
                 entity.OnDestroy();
@@ -65,7 +62,6 @@ namespace TowerBuilder.ApplicationState.Entities
             list.Remove(removedItemsList);
 
             onItemsRemoved?.Invoke(removedItemsList);
-
             onListUpdated?.Invoke(list);
         }
 
@@ -75,41 +71,34 @@ namespace TowerBuilder.ApplicationState.Entities
             Remove(removedItemsList);
         }
 
-
         public void Build(Entity entity)
         {
             entity.buildValidator.Validate(appState);
 
-            if (!entity.canBuild)
+            if (entity.buildValidator.isValid)
+            {
+                // 
+                appState.Wallet.SubtractBalance(entity.price);
+
+                entity.OnBuild();
+
+                ListWrapper<Entity> builtItemsList = new ListWrapper<Entity>(entity);
+                onItemsBuilt?.Invoke(builtItemsList);
+            }
+            else
             {
                 // TODO - these should be unique messages - right now they are not
                 appState.Notifications.Add(entity.buildValidator.errors);
-                return;
             }
-
-            // 
-            appState.Wallet.SubtractBalance(entity.price);
-
-            OnPreBuild(entity);
-            entity.OnBuild();
-
-            ListWrapper<Entity> builtItemsList = new ListWrapper<Entity>();
-            builtItemsList.Add(entity);
-
-            onItemsBuilt?.Invoke(builtItemsList);
         }
 
         public void UpdateEntityOffsetCoordinates(Entity entity, CellCoordinates offsetCoordinates)
         {
-            entity.offsetCoordinates = offsetCoordinates;
+            entity.relativeOffsetCoordinates = offsetCoordinates;
             entity.buildValidator.Validate(appState);
 
             onEntityPositionUpdated?.Invoke(entity);
         }
-
-        protected virtual void OnPreBuild(Entity entity) { }
-
-        protected virtual void OnPreDestroy(Entity entity) { }
 
         /*
             Queries

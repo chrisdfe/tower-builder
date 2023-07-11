@@ -92,7 +92,9 @@ namespace TowerBuilder.DataTypes.Entities
 
                 foreach (Entity foundationEntity in foundationsAtCell.items)
                 {
-                    if (!foundationEntity.canBuild)
+                    Debug.Log("foundationEntity.isInBlueprintMode");
+                    Debug.Log(foundationEntity.isInBlueprintMode);
+                    if (!foundationEntity.isInBlueprintMode && !foundationEntity.buildValidator.isValid)
                     {
                         return Validator.CreateSingleItemValidationErrorList(errorMessage);
                     }

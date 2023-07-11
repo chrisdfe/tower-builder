@@ -74,6 +74,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
             void AddRoom()
             {
                 Room room = new Room(new RoomDefinition());
+                room.relativeOffsetCoordinates = entity.relativeCellCoordinatesList.bottomLeftCoordinates;
                 Add(room);
                 AddChild(room, entity);
                 Build(room);

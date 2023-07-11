@@ -99,8 +99,6 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
 
             destroyIsActive = true;
 
-            GetCurrentMode().OnDestroyStart();
-
             UnmarkCurrentEntitiesMarkedForDeletion();
             entitiesToDelete = GetCurrentMode().CalculateEntitiesToDelete();
             ValidateAndMarkEntitiesToDelete();
@@ -115,13 +113,14 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
 
             ValidateAndMarkEntitiesToDelete();
 
-            if (GetAllValidationErrors().Count == 0)
+            ListWrapper<ValidationError> validationErrors = GetAllValidationErrors();
+            if (validationErrors.Count == 0)
             {
                 DeleteEntitiesMarkedForDeletion();
             }
             else
             {
-                appState.Notifications.Add(GetAllValidationErrors());
+                appState.Notifications.Add(validationErrors);
             }
 
             destroyIsActive = false;
@@ -142,7 +141,7 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy
         {
             foreach (Entity entity in entitiesToDelete.items)
             {
-                // TODO - just pass entitiesToDelete in here instead
+                // TODO - just pass entitiesToDelete in here as list instead
                 appState.Entities.Remove(entity);
             }
         }

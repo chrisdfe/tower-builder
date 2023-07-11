@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities;
+using UnityEngine;
 
 namespace TowerBuilder.DataTypes.EntityGroups
 {
@@ -11,76 +12,31 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public ListWrapper<Entity> childEntities { get; } = new ListWrapper<Entity>();
         public ListWrapper<EntityGroup> childEntityGroups { get; } = new ListWrapper<EntityGroup>();
 
-        // public EntityGroup parent { get; set; } = null;
-
         public int id { get; }
 
         public bool isInBlueprintMode { get; private set; } = false;
 
-        public bool canBuild => buildValidationErrors.Count == 0;
-        public ListWrapper<ValidationError> buildValidationErrors { get; private set; } = new ListWrapper<ValidationError>();
-
-        public bool canDestroy => destroyValidationErrors.Count == 0;
-        public ListWrapper<ValidationError> destroyValidationErrors { get; private set; } = new ListWrapper<ValidationError>();
+        public EntityGroupBuildValidator buildValidator;
+        public EntityGroupDestroyValidator destroyValidator;
 
         public virtual string typeLabel => "EntityGroup";
 
         public int price =>
-            descendantEntities.items.Aggregate(0, ((acc, entity) => acc + entity.price));
+            GetDescendantEntities().items.Aggregate(0, ((acc, entity) => acc + entity.price));
 
-        public ListWrapper<Entity> descendantEntities
-        {
-            get
-            {
-                ListWrapper<Entity> result = new ListWrapper<Entity>();
-
-                AddEntityGroup(this);
-
-                return result;
-
-                void AddEntityGroup(EntityGroup entityGroup)
-                {
-                    result.Add(entityGroup.childEntities);
-
-                    foreach (EntityGroup childEntityGroup in entityGroup.childEntityGroups.items)
-                    {
-                        AddEntityGroup(childEntityGroup);
-                    }
-                }
-            }
-        }
-
-        public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
-
-        public Dictionary<Type, ListWrapper<Entity>> groupedEntities
-        {
-            get
-            {
-                Dictionary<Type, ListWrapper<Entity>> groupedEntities = new Dictionary<Type, ListWrapper<Entity>>();
-
-                foreach (Entity entity in descendantEntities.items)
-                {
-                    if (!groupedEntities.ContainsKey(entity.GetType()))
-                    {
-                        groupedEntities[entity.GetType()] = new ListWrapper<Entity>();
-                    }
-
-                    groupedEntities[entity.GetType()].Add(entity);
-                }
-
-                return groupedEntities;
-            }
-        }
+        public CellCoordinates relativeOffsetCoordinates { get; set; } = CellCoordinates.zero;
 
         public override string ToString() => $"{typeLabel} #{id}";
 
         public EntityGroup()
         {
             id = UIDGenerator.Generate(typeLabel);
+
+            buildValidator = new EntityGroupBuildValidator(this);
+            destroyValidator = new EntityGroupDestroyValidator(this);
         }
 
         public EntityGroup(EntityGroupDefinition definition) : this() { }
-
 
         /*
             Lifecycle
@@ -95,25 +51,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
         }
 
         public virtual void OnDestroy() { }
-
-        public void ValidateBuild(AppState appState)
-        {
-            ListWrapper<ValidationError> errors = new ListWrapper<ValidationError>();
-
-            foreach (Entity entity in childEntities.items)
-            {
-                entity.buildValidator.Validate(appState);
-                errors.Add(entity.buildValidator.errors);
-            }
-
-            foreach (EntityGroup entityGroup in childEntityGroups.items)
-            {
-                entityGroup.ValidateBuild(appState);
-                errors.Add(entityGroup.buildValidationErrors);
-            }
-
-            this.buildValidationErrors = errors;
-        }
 
         /*
             Public Interface
@@ -142,7 +79,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public void Add(ListWrapper<EntityGroup> entityGroupList)
         {
             childEntityGroups.Add(entityGroupList);
-            entityGroupList.ForEach(entityGroup =>
+            entityGroupList.ForEach((entityGroup) =>
             {
                 entityGroup.SetBlueprintMode(isInBlueprintMode);
             });
@@ -171,24 +108,133 @@ namespace TowerBuilder.DataTypes.EntityGroups
         public void SetBlueprintMode(bool isInBlueprintMode)
         {
             this.isInBlueprintMode = isInBlueprintMode;
+        }
 
-            childEntities.ForEach(entity =>
-            {
-                entity.isInBlueprintMode = isInBlueprintMode;
-            });
+        public void UpdateOffsetCoordinatesAndChildren(CellCoordinates relativeOffsetCoordinatesToAdd)
+        {
+            // this.offsetCoordinates = offsetCoordinates;
+            // UpdateChildEntityOffsets(this, offsetCoordinates);
+            // UpdateChildEntityGroupOffsets(this, offsetCoordinates);
 
-            childEntityGroups.ForEach(entityGroup =>
+            // childEntities.ForEach((entity) =>
+            // {
+            //     entity.relativeOffsetCoordinates = CellCoordinates.Add(entity.relativeOffsetCoordinates, relativeOffsetCoordinatesToAdd);
+            // });
+
+            // childEntityGroups.ForEach((entityGroup) =>
+            // {
+            //     CellCoordinates newEntityGroupOffsetCoordinates = CellCoordinates.Add(entityGroup.offsetCoordinates, relativeOffsetCoordinatesToAdd);
+            //     entityGroup.offsetCoordinates = newEntityGroupOffsetCoordinates;
+            // });
+        }
+        /*
+            Mutations 
+        */
+        // Call this after adding this entityGroup as a parent to already-existing entities/entityGroups
+        public void UpdateChildrenAfterNewParentAdd()
+        {
+            // Adjust child offsets to be relative to their new parent
+            foreach (Entity entity in childEntities.items)
             {
-                entityGroup.SetBlueprintMode(isInBlueprintMode);
-            });
+                entity.relativeOffsetCoordinates = CellCoordinates.Subtract(
+                    entity.relativeOffsetCoordinates,
+                    this.relativeOffsetCoordinates
+                );
+            }
+
+            foreach (EntityGroup childEntityGroup in childEntityGroups.items)
+            {
+                childEntityGroup.relativeOffsetCoordinates = CellCoordinates.Subtract(
+                    childEntityGroup.relativeOffsetCoordinates,
+                    this.relativeOffsetCoordinates
+                );
+            }
+        }
+
+        // Call this before removing this entityGroup as a parent but preserving children 
+        public void UpdateChildrenBeforeParentRemove()
+        {
+            // Adjust child offsets to be relative to their new parent
+            foreach (Entity entity in childEntities.items)
+            {
+                entity.relativeOffsetCoordinates = CellCoordinates.Add(
+                    entity.relativeOffsetCoordinates,
+                    this.relativeOffsetCoordinates
+                );
+            }
+
+            foreach (EntityGroup childEntityGroup in childEntityGroups.items)
+            {
+                childEntityGroup.relativeOffsetCoordinates = CellCoordinates.Add(
+                    childEntityGroup.relativeOffsetCoordinates,
+                    this.relativeOffsetCoordinates
+                );
+            }
+        }
+
+        public ListWrapper<Entity> GetDescendantEntities()
+        {
+            ListWrapper<Entity> result = new ListWrapper<Entity>();
+
+            AddEntityGroupChildEntities(this);
+
+            return result;
+
+            void AddEntityGroupChildEntities(EntityGroup entityGroup)
+            {
+                result.Add(entityGroup.childEntities);
+
+                foreach (EntityGroup childEntityGroup in entityGroup.childEntityGroups.items)
+                {
+                    AddEntityGroupChildEntities(childEntityGroup);
+                }
+            }
+        }
+
+        public ListWrapper<EntityGroup> GetDescendantEntityGroups()
+        {
+            ListWrapper<EntityGroup> result = new ListWrapper<EntityGroup>();
+
+            AddEntityGroup(this);
+
+            return result;
+
+            void AddEntityGroup(EntityGroup entityGroup)
+            {
+                result.Add(entityGroup);
+
+                foreach (EntityGroup childEntityGroup in entityGroup.childEntityGroups.items)
+                {
+                    AddEntityGroup(childEntityGroup);
+                }
+            }
+        }
+
+        public Dictionary<Type, ListWrapper<Entity>> GetGroupedEntities()
+        {
+            Dictionary<Type, ListWrapper<Entity>> groupedEntities = new Dictionary<Type, ListWrapper<Entity>>();
+
+            foreach (Entity entity in GetDescendantEntities().items)
+            {
+                if (!groupedEntities.ContainsKey(entity.GetType()))
+                {
+                    groupedEntities[entity.GetType()] = new ListWrapper<Entity>();
+                }
+
+                groupedEntities[entity.GetType()].Add(entity);
+            }
+
+            return groupedEntities;
         }
 
         /*
             Static Interface
         */
-        public static EntityGroup CreateFromDefinition(EntityGroupDefinition entityGroupDefinition)
+        public static EntityGroup CreateFromDefinition(EntityGroupDefinition entityGroupDefinition, AppState appState)
         {
-            return new EntityGroup(entityGroupDefinition);
+            EntityGroupBuilderBase newEntityGroupBuilder = entityGroupDefinition.builderFactory(entityGroupDefinition);
+            EntityGroup newEntityGroup = newEntityGroupBuilder.Build(appState);
+            return newEntityGroup;
         }
     }
 }

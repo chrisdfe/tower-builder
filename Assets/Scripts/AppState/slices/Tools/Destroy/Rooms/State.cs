@@ -18,23 +18,23 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy.Rooms
 
         public override ListWrapper<Entity> CalculateEntitiesToDelete()
         {
-            if (appState.UI.roomsInSelection.Count > 0)
+            if (appState.UI.roomsInSelection.Count == 0)
             {
-                List<Entity> entitiesToDelete =
-                    appState.UI.roomsInSelection.Aggregate(new HashSet<Entity>(), (acc, entityGroup) =>
-                    {
-                        foreach (Entity entity in entityGroup.descendantEntities.items)
-                        {
-                            acc.Add(entity);
-                        }
-
-                        return acc;
-                    }).ToList();
-
-                return new ListWrapper<Entity>(entitiesToDelete);
+                return new ListWrapper<Entity>();
             }
 
-            return new ListWrapper<Entity>();
+            List<Entity> entitiesToDelete =
+                appState.UI.roomsInSelection.Aggregate(new HashSet<Entity>(), (acc, entityGroup) =>
+                {
+                    foreach (Entity entity in entityGroup.GetDescendantEntities().items)
+                    {
+                        acc.Add(entity);
+                    }
+
+                    return acc;
+                }).ToList();
+
+            return new ListWrapper<Entity>(entitiesToDelete);
         }
     }
 }

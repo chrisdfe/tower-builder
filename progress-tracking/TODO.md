@@ -2,13 +2,20 @@
 
 ## Current
 
+- Entities should always belong to an EntityGroup
+- build mode needs to validate the cumulative price of everything being built
+- BUG: selecting interior light entity in build tool crashes game
+- BUG: buildValidator validation highlighting isn't working anymore
+
 ## After
 
-- BUG: selecting interior light entity in build tool crashes game
+- PROJECT: "ResidentGroup"? For grouping residents in different buildigns
+  - probably for down the road
+- CLEANUP: should EntityStateSlice inherit ListStateSlice?
 - CLEANUP: implement IEnumerable in ListWrapper
 - PROJECT: UI themes
   - [ ] customizable from the editor
-  - [ ] updates automatically when changed in the editor
+  - [ ] updates automatically when changed in the editorr
   - [ ] ability to save/load from JSON file
     - Probably makes sense to implement save/load system first before this & use the same pattern
 - PROJECT: Default building/more entity group integration
@@ -20,7 +27,6 @@
   - [ ] Limit the number of buildings/vehicles
     - arbitrarily?
     - with money?
-- CLEANUP: in BuildState look into using the same entitiesToBuild/entityGroupsToBuild pattern as in DestroyState
 - CLEANUP: sort out this remove/destroy/delete naming convention situation
 - CLEANUP: Move EntityGroups state into Entities state - having queries for Entities in EntityGroups feels weird otherwise
 - EntityGroup parent "allowedTypes" - an array of types to match against entityGroup.parent when it gets set
@@ -51,6 +57,7 @@
   - submarine (propellors)
   - spaceship (booster?)
   - discworld bubble world
+  - Trucks (cozy bedroom/living space + freight area)
 - Maybe some assets shouldn't be selcatable?
   - windows
   - decoration
@@ -361,14 +368,18 @@
 
 # Done
 
+- PROJECT: refactoring buildState
+  - [x] in BuildState look into using the same entitiesToBuild/entityGroupsToBuild pattern as in DestroyState
+  - [x] it feels like the recursive things EntityGroup does should be in state (ValidateBuild, ValidateDestroy, etc);
+  - [x] recursive entityGroup adding needs to live in EntityGroups/State, not EntityGroupStateSlice because children
+        can be of different types to their parents
+  - [x] wrap everything in a "BlueprintEntityGroup"? this will reuse the same logic as for EntityGroups
 - PROJECT: reimplement destroy tool
-
   - [x] get it working again to just destroy entities
   - [x] different "destroy" types - entity, room, building, etc
     - [x] Implement "room" mode
     - [x] Add "isMarkedForDeletion"? Like "isInBlueprintMode" but for destroy
     - [x] Use "isMarkedForDeletion" in destroy validation i.e allow foundations to be deleted with things inside of it if isMarkedForDeletion is true
-
 - PROJECT: Entity z indexes, which can be sorted to determine which is in front (also visually)
   - [x] default z indexes (i.e on an entity type level)
 - CLEANUP: Think about removing (entity/entityGroup).parent. It seems messy but convenient

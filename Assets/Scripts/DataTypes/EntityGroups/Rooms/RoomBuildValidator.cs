@@ -4,17 +4,17 @@ using TowerBuilder.DataTypes.Entities.Wheels;
 
 namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 {
-    public class RoomValidator : EntityGroupValidator
+    public class RoomBuildValidator : EntityGroupValidator
     {
-        protected override List<RoomValidator.ValidationFunc> customValidators =>
-            new List<RoomValidator.ValidationFunc>()
+        protected override List<EntityGroupValidator.ValidationFunc> customValidators =>
+            new List<EntityGroupValidator.ValidationFunc>()
             {
                 // GenericEntityValidations.CreateValidateEntityCellIsNotOnFloor(0),
-                // ValidateRoomAboveOtherRoomOrWheels,
+                // ValidateRoomIsAboveOtherRoomOrWheels,
                 // ValidateAcceptableOverhang,
             };
 
 
-        public RoomValidator(Room room) : base(room) { }
+        public RoomBuildValidator(Room room) : base(room) { }
     }
 }

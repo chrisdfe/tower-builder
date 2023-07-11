@@ -33,14 +33,17 @@ namespace TowerBuilder.ApplicationState
         public virtual void Add(ItemType item)
         {
             ListWrapper<ItemType> newItemsList = new ListWrapper<ItemType>();
-
             newItemsList.Add(item);
-            Add(newItemsList);
+
+            list.Add(newItemsList);
+            onItemsAdded?.Invoke(newItemsList);
+            onListUpdated?.Invoke(list);
         }
 
         public virtual void Remove(ListWrapper<ItemType> removedItemsList)
         {
             list.Remove(removedItemsList);
+
             onItemsRemoved?.Invoke(removedItemsList);
             onListUpdated?.Invoke(list);
         }
@@ -48,9 +51,11 @@ namespace TowerBuilder.ApplicationState
         public virtual void Remove(ItemType item)
         {
             ListWrapper<ItemType> removedItemsList = new ListWrapper<ItemType>();
-
             removedItemsList.Add(item);
-            Remove(removedItemsList);
+
+            list.Remove(removedItemsList);
+            onItemsRemoved?.Invoke(removedItemsList);
+            onListUpdated?.Invoke(list);
         }
     }
 }

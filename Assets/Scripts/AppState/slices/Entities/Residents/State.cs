@@ -21,21 +21,19 @@ namespace TowerBuilder.ApplicationState.Entities.Residents
         */
         public ItemEvent<Resident> onItemPositionUpdated;
 
-        public State(AppState appState, Input input) : base(appState)
-        {
-        }
+        public State(AppState appState, Input input) : base(appState) { }
 
         public State(AppState appState) : this(appState, new Input()) { }
 
         /*
             Public Interface
         */
-        public void SetResidentPosition(Resident resident, CellCoordinates cellCoordinates)
-        {
-            // resident.cellCoordinatesList = resident.definition.blockCellsTemplate.Clone();
-            resident.offsetCoordinates = cellCoordinates;
+        // public void SetResidentPosition(Resident resident, CellCoordinates cellCoordinates)
+        // {
+        //     // resident.cellCoordinatesList = resident.definition.blockCellsTemplate.Clone();
+        //     resident.offsetCoordinates = cellCoordinates;
 
-            onItemPositionUpdated?.Invoke(resident);
-        }
+        //     onItemPositionUpdated?.Invoke(resident);
+        // }
     }
 }

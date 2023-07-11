@@ -1,3 +1,5 @@
+using TowerBuilder.ApplicationState;
+
 namespace TowerBuilder.DataTypes.EntityGroups
 {
     public abstract class EntityGroupBuilderBase
@@ -9,7 +11,7 @@ namespace TowerBuilder.DataTypes.EntityGroups
             this.definition = definition;
         }
 
-        public abstract EntityGroup Build(SelectionBox selectionBox);
+        public abstract EntityGroup Build(AppState appState);
     }
 }
 

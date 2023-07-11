@@ -17,8 +17,8 @@ namespace TowerBuilder.DataTypes.Entities
 
         public int price => definition.pricePerCell * relativeCellCoordinatesList.Count;
 
-
-        public CellCoordinates offsetCoordinates { get; set; } = CellCoordinates.zero;
+        // Relative to parent's bottomLeftCoordinates
+        public CellCoordinates relativeOffsetCoordinates { get; set; } = CellCoordinates.zero;
 
         public CellCoordinatesBlockList relativeBlocksList { get; private set; } = new CellCoordinatesBlockList();
 
@@ -37,8 +37,8 @@ namespace TowerBuilder.DataTypes.Entities
         // TODO - add "custom z Index"
         public int zIndex => entityTypeData.zIndex;
 
-        public bool canBuild => isInBlueprintMode && buildValidator.isValid;
-        public bool canDestroy => isMarkedForDeletion && destroyValidator.isValid;
+        // public bool canBuild => isInBlueprintMode && buildValidator.isValid;
+        // public bool canDestroy => isMarkedForDeletion && destroyValidator.isValid;
 
         public bool isInBlueprintMode { get; set; } = false;
         public bool isMarkedForDeletion { get; set; } = false;
@@ -65,7 +65,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {
-            this.relativeBlocksList = EntityBlocksBuilder.FromDefinition(definition).Calculate(selectionBox);
+            relativeBlocksList = EntityBlocksBuilderBase.FromDefinition(definition).CalculateFromSelectionBox(selectionBox);
 
             CalculateTileableMap();
         }

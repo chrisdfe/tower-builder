@@ -15,12 +15,14 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             public Rooms.State.Input Rooms = new Rooms.State.Input();
             public Vehicles.State.Input Vehicles = new Vehicles.State.Input();
             public Buildings.State.Input Buildings = new Buildings.State.Input();
+            public Misc.State.Input Misc = new Misc.State.Input();
 
             public Input()
             {
                 Rooms = new Rooms.State.Input();
                 Vehicles = new Vehicles.State.Input();
                 Buildings = new Buildings.State.Input();
+                Misc = new Misc.State.Input();
             }
         }
 
@@ -39,6 +41,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         public Rooms.State Rooms { get; }
         public Vehicles.State Vehicles { get; }
         public Buildings.State Buildings { get; }
+        public Misc.State Misc { get; }
 
         List<EntityGroupStateSlice> allSlices;
 
@@ -47,11 +50,13 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             Rooms = new Rooms.State(appState, input.Rooms);
             Vehicles = new Vehicles.State(appState, input.Vehicles);
             Buildings = new Buildings.State(appState, input.Buildings);
+            Misc = new Misc.State(appState, input.Misc);
 
             allSlices = new List<EntityGroupStateSlice>() {
                 Rooms,
                 Vehicles,
-                Buildings
+                Buildings,
+                Misc
             };
         }
 
@@ -106,14 +111,85 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             GetStateSlice(entityGroup)?.Add(entityGroup);
         }
 
+        public void Add(ListWrapper<EntityGroup> entityGroups)
+        {
+            // TODO - use grouped entitygroups to reduce the number of mutations
+            foreach (EntityGroup entityGroup in entityGroups.items)
+            {
+                Add(entityGroup);
+            }
+        }
+
+        // Right now it is important that entityGroups get added BEFORE entites
+        // to allow entities to calculate their absoluteOffsetPosition
+        public void AddWithChildren(EntityGroup entityGroup)
+        {
+            Add(entityGroup);
+            Add(entityGroup.GetDescendantEntityGroups());
+            appState.Entities.Add(entityGroup.GetDescendantEntities());
+        }
+
         public void Build(EntityGroup entityGroup)
         {
             GetStateSlice(entityGroup)?.Build(entityGroup);
         }
 
+        public void Build(ListWrapper<EntityGroup> entityGroups)
+        {
+            // TODO - use groupedEntityGroups
+            foreach (EntityGroup entityGroup in entityGroups.items)
+            {
+                Build(entityGroup);
+            }
+        }
+
+        public void BuildWithChildren(EntityGroup entityGroup)
+        {
+            Build(entityGroup);
+            Build(entityGroup.GetDescendantEntityGroups());
+            appState.Entities.Build(entityGroup.GetDescendantEntities());
+        }
+
         public void Remove(EntityGroup entityGroup)
         {
             GetStateSlice(entityGroup)?.Remove(entityGroup);
+        }
+
+        // TODO - use grouped entityGroups
+        public void Remove(ListWrapper<EntityGroup> entityGroups)
+        {
+            foreach (EntityGroup entityGroup in entityGroups.items)
+            {
+                Remove(entityGroup);
+            }
+        }
+
+        public void RemoveWithChildren(EntityGroup entityGroup)
+        {
+            appState.Entities.Remove(entityGroup.GetDescendantEntities());
+            Remove(entityGroup.GetDescendantEntityGroups());
+            Remove(entityGroup);
+        }
+
+        public void SetBlueprintMode(EntityGroup entityGroup, bool isInBlueprintMode)
+        {
+            SetBlueprintMode(entityGroup.GetDescendantEntityGroups(), isInBlueprintMode);
+            entityGroup.SetBlueprintMode(isInBlueprintMode);
+        }
+
+        public void SetBlueprintMode(ListWrapper<EntityGroup> entityGroups, bool isInBlueprintMode)
+        {
+            foreach (EntityGroup entityGroup in entityGroups.items)
+            {
+                SetBlueprintMode(entityGroup, isInBlueprintMode);
+            }
+        }
+
+        public void SetBlueprintModeWithChildren(EntityGroup entityGroup, bool isInBlueprintMode)
+        {
+            SetBlueprintMode(entityGroup, isInBlueprintMode);
+            appState.Entities.SetBlueprintMode(entityGroup.GetDescendantEntities(), isInBlueprintMode);
+            appState.EntityGroups.SetBlueprintMode(entityGroup.GetDescendantEntityGroups(), isInBlueprintMode);
         }
 
         public void UpdateOffsetCoordinates(EntityGroup entityGroup, CellCoordinates newOffsetCoordinates)
@@ -130,7 +206,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                 DataTypes.EntityGroups.Rooms.Room => Rooms,
                 DataTypes.EntityGroups.Vehicles.Vehicle => Vehicles,
                 DataTypes.EntityGroups.Buildings.Building => Buildings,
-                _ => throw new NotSupportedException($"EntityGroup type not handled: {entityGroup.GetType()}")
+                _ => Misc
             };
 
         public ListWrapper<EntityGroup> GetAllEntityGroups() =>
@@ -176,55 +252,54 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             return null;
         }
 
-        public CellCoordinatesBlockList GetAbsoluteBlocksList(Entity entity)
-        {
-            return new CellCoordinatesBlockList(
+        public CellCoordinatesBlockList GetAbsoluteBlocksList(Entity entity) =>
+            new CellCoordinatesBlockList(
                 entity.relativeBlocksList.items
                     .Select(relativeBlock =>
                         new CellCoordinatesBlock(
                             relativeBlock.items
                                 .Select((relativeCellCoordinates) =>
                                 {
-                                    CellCoordinates absoluteCellCoordinates = relativeCellCoordinates.Add(entity.offsetCoordinates);
+                                    CellCoordinates result = relativeCellCoordinates.Add(entity.relativeOffsetCoordinates);
 
                                     EntityGroup parent = FindEntityParent(entity);
 
-                                    if (parent != null)
+                                    while (parent != null)
                                     {
-                                        absoluteCellCoordinates = CellCoordinates.Add(absoluteCellCoordinates, GetAbsoluteOffsetCellCoordinates(parent));
+                                        result = CellCoordinates.Add(result, parent.relativeOffsetCoordinates);
+                                        parent = FindEntityGroupParent(parent);
                                     }
 
-                                    return absoluteCellCoordinates;
+                                    return result;
                                 })
                                 .ToList()
                         )
                     ).ToList()
             );
-        }
 
         public CellCoordinates GetAbsoluteOffsetCellCoordinates(EntityGroup entityGroup)
         {
-            CellCoordinates result = entityGroup.offsetCoordinates;
+            CellCoordinates result = entityGroup.relativeOffsetCoordinates;
             EntityGroup currentParent = FindEntityGroupParent(entityGroup);
 
             while (currentParent != null)
             {
-                result = CellCoordinates.Add(result, currentParent.offsetCoordinates);
+                result = CellCoordinates.Add(result, currentParent.relativeOffsetCoordinates);
                 currentParent = FindEntityGroupParent(currentParent);
             }
 
             return result;
         }
 
-
         public CellCoordinatesList GetAbsoluteCellCoordinatesList(Entity entity) =>
             CellCoordinatesList.FromBlocksList(GetAbsoluteBlocksList(entity));
 
+        // TODO - this should be based off of a GetRelativeCellCoordinates for EntityGroup
         public CellCoordinatesList GetAbsoluteCellCoordinatesList(EntityGroup entityGroup)
         {
             CellCoordinatesList result = new CellCoordinatesList();
 
-            foreach (Entity entity in entityGroup.descendantEntities.items)
+            foreach (Entity entity in entityGroup.GetDescendantEntities().items)
             {
                 result.Add(appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).items);
             }
@@ -232,11 +307,11 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             return result;
         }
 
-        public CellCoordinatesBlock FindEntityBlockByCellCoordinates(Entity entity, CellCoordinates cellCoordinates)
-        {
-            CellCoordinatesBlockList absoluteBlocksList = GetAbsoluteBlocksList(entity);
-            return absoluteBlocksList.items.Find(cellCoordinatesBlock => cellCoordinatesBlock.Contains(cellCoordinates));
-        }
+        public CellCoordinatesBlock FindEntityBlockByCellCoordinates(Entity entity, CellCoordinates cellCoordinates) =>
+            GetAbsoluteBlocksList(entity)
+                .items.Find(cellCoordinatesBlock => (
+                    cellCoordinatesBlock.Contains(cellCoordinates)
+                ));
 
         public ListWrapper<Entity> FindChildEntitiesAtCell(EntityGroup entityGroup, CellCoordinates cellCoordinates) =>
             entityGroup.childEntities.FindAll(entity => GetAbsoluteCellCoordinatesList(entity).Contains(cellCoordinates));
@@ -285,7 +360,6 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                     return entityGroup;
                 }
             }
-
 
             return null;
         }

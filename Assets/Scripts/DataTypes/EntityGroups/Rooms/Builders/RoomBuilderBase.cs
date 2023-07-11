@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
+using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using UnityEngine;
 
@@ -13,22 +14,25 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 
         public RoomBuilderBase(EntityGroupDefinition definition) : base(definition) { }
 
-        public override EntityGroup Build(SelectionBox selectionBox)
+        public override EntityGroup Build(AppState appState)
         {
             currentRoom = new Room();
 
-            BuildFoundation(selectionBox);
-            BuildFurniture(selectionBox);
-            BuildWindows(selectionBox);
-            BuildTransportationItems(selectionBox);
+            BuildFoundation(appState);
+            BuildFurniture(appState);
+            BuildWindows(appState);
+            BuildTransportationItems(appState);
 
+            Debug.Log("current room children:");
+            Debug.Log($"{currentRoom.childEntities.Count} entities");
+            Debug.Log($"{currentRoom.childEntityGroups.Count} entityGroups");
             return currentRoom;
         }
 
-        protected virtual void BuildFoundation(SelectionBox selectionBox) { }
-        protected virtual void BuildFurniture(SelectionBox selectionBox) { }
-        protected virtual void BuildWindows(SelectionBox selectionBox) { }
-        protected virtual void BuildTransportationItems(SelectionBox selectionBox) { }
+        protected virtual void BuildFoundation(AppState appState) { }
+        protected virtual void BuildFurniture(AppState appState) { }
+        protected virtual void BuildWindows(AppState appState) { }
+        protected virtual void BuildTransportationItems(AppState appState) { }
     }
 }
 

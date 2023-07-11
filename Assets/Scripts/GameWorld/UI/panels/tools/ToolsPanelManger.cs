@@ -5,7 +5,7 @@ using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.EntityGroups.Rooms;
+using TowerBuilder.DataTypes.EntityGroups;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -76,11 +76,11 @@ namespace TowerBuilder.GameWorld.UI
                 else
                 {
                     Type selectedEntityType = Registry.appState.Tools.Build.Entities.selectedEntityType;
-                    Entity blueprintEntity = Registry.appState.Tools.Build.Entities.blueprintEntity;
+                    EntityGroup blueprint = Registry.appState.Tools.Build.blueprint;
 
-                    if (blueprintEntity != null)
+                    if (blueprint != null)
                     {
-                        int price = blueprintEntity.price;
+                        int price = blueprint.price;
                         descriptionText.text = $"{toolState} - {selectedEntityType} -{selectedEntityDefinition.title}: ${price}";
                     }
                     else

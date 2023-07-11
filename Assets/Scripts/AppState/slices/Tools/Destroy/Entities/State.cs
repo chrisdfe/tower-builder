@@ -17,17 +17,17 @@ namespace TowerBuilder.ApplicationState.Tools.Destroy.Entities
 
         public override ListWrapper<Entity> CalculateEntitiesToDelete()
         {
-            if (appState.UI.entitiesInSelection.Count > 0)
+            if (appState.UI.entitiesInSelection.Count == 0)
             {
-                List<Entity> sortedEntities = appState.UI.entitiesInSelection.OrderBy(entity => entity.zIndex).ToList();
-
-                // TODO here "single" or "multiple" mode? for now only delete the last entity in the list/closest to the camera
-                Entity entityToDelete = sortedEntities.ToList().Last();
-
-                return new ListWrapper<Entity>(entityToDelete);
+                return new ListWrapper<Entity>();
             }
 
-            return new ListWrapper<Entity>();
+            List<Entity> sortedEntities = appState.UI.entitiesInSelection.OrderBy(entity => entity.zIndex).ToList();
+
+            // TODO here "single" or "multiple" mode? for now only delete the last entity in the list/closest to the camera
+            Entity entityToDelete = sortedEntities.ToList().Last();
+
+            return new ListWrapper<Entity>(entityToDelete);
         }
     }
 }

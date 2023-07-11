@@ -19,18 +19,23 @@ namespace TowerBuilder.DataTypes.Entities
             this.definition = definition;
         }
 
-        public CellCoordinatesBlockList Calculate(SelectionBox selectionBox)
-        {
-            CellCoordinatesBlockList blocksList = CalculateFromSelectionBox(selectionBox);
+        public static EntityBlocksBuilderBase FromDefinition(EntityDefinition definition) =>
+            definition.resizability switch
+            {
+                Resizability.Horizontal =>
+                    new HorizontalResizabilityEntityBlocksBuilder(definition),
+                Resizability.Vertical =>
+                    new VerticalResizabilityEntityBlocksBuilder(definition),
+                Resizability.Diagonal =>
+                    new DiagonalResizabilityEntityBlocksBuilder(definition),
+                Resizability.Flexible =>
+                    new FlexibleResizabilityEntityBlocksBuilder(definition),
+                Resizability.Inflexible =>
+                    new InflexibleResizabilityEntityBlocksBuilder(definition),
+                _ => null
+            };
 
-            // TODO 
-            // 1) re-implement this to use relative coordinates
-            // 2) use a different origin than bottomLeftCoordinates
-            // blocksList.PositionAtCoordinates(selectionBox.cellCoordinatesList.bottomLeftCoordinates);
-            return blocksList;
-        }
-
-        protected abstract CellCoordinatesBlockList CalculateFromSelectionBox(SelectionBox selectionBox);
+        public abstract CellCoordinatesBlockList CalculateFromSelectionBox(SelectionBox selectionBox);
 
         protected CellCoordinatesBlock CreateBlockAt(CellCoordinates cellCoordinates)
         {

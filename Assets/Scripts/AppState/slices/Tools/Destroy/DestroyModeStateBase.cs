@@ -11,10 +11,6 @@ namespace TowerBuilder.ApplicationState.Tools
 
         public DestroyModeStateBase(AppState appState) : base(appState) { }
 
-        public virtual void OnDestroyStart() { }
-
-        public virtual void OnDestroyEnd() { }
-
         public virtual ListWrapper<Entity> CalculateEntitiesToDelete() => new ListWrapper<Entity>();
     }
 }

@@ -30,6 +30,8 @@ namespace TowerBuilder.DataTypes
 
         public void Add(ItemType item)
         {
+            if (item == null) return;
+
             if (!items.Contains(item))
             {
                 items.Add(item);
