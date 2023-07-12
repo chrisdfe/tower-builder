@@ -2,20 +2,38 @@
 
 ## Current
 
-- TASK: refactor entityBlockBuilders to use absolute selection box values - right now it silently/confusingly uses relative coordinates (i.e starting at 0 and ending at selectionBox.width/height or whatever);
-  - OR: rename things to be more obvious that its generating an Entity(Group) with relative coordinates
-- task: build mode needs to validate the cumulative price of everything being built
+- PROJECT: right click dropdown menu
+  - for resident interactions - "go here" or "interact with furniture"
+- Make sure resident routefinding/movement still works
 - BUG: selecting interior light entity in build tool crashes game
 
 ## After
 
-- Entities should be highlighted based on whether their parents/acestors are valid too
+- PROJECT: Get save system working again
+  - [ ] Make sure state inputs are working
+  - [ ] get json save/load working properly
+- Resident skills
+  - Engine use
+  - piloting
+  - farming
+  - hauling (freight)
+  - electrician
+  - cooking
+- factions? like rimworld, ftl, barotrauma, etc
+- Maybe switch back to rooms = enclosed spaces walls/floors?
+- layout system with left/right/top/bottom min amounts, space of variable size in between
+  - e.g room - 1 left, 1 right, 1 top, 1 bottom + 1 in the middle (min 3x3),
+- Different interaction types?
+- task: build mode needs to validate the cumulative price of everything being built (to make sure player has enough money)
+- TASK: refactor entityBlockBuilders to use absolute selection box values - right now it silently/confusingly uses relative coordinates (i.e starting at 0 and ending at selectionBox.width/height or whatever);
+  - OR: rename things to be more obvious that its generating an Entity(Group) with relative coordinates
+- Entities should be highlighted based on whether their parents/ancestors are valid too
 - GFX: window types
   - porthole
   - porthole/pill
   - flexible size
 - CLEANUP: "entityGroupDefinition.builderFactory(entityGroupDefinition);" is cumbersome
-- TASK: Entities should always belong to an EntityGroup
+- TASK: should entities always belong to an EntityGroup?
 - PROJECT: "ResidentGroup"? For grouping residents in different buildigns
   - probably for down the road
 - CLEANUP: should EntityStateSlice inherit ListStateSlice?
@@ -73,7 +91,6 @@
 - EntityMeshCellWrapper fallbacks - if the mesh should be BottomIsolated but only Bottom exists, then use Bottom
 - EntityMeshCellWrapper should probably delete mesh segments that don't get used instead of gameObject.SetActive(false)
 - Entity meshes should be oriented to the bottom of the cell, then repositioned up by FLOOR_HEIGHT amount
-- PROJECT right click dropdown menu
 - PROJECT: Entity.CalculateCellsFromSelectionBox improvements
   - [ ] Entity.CalculateCellsFromSelectionBox should use the starting cell instead of just the highest/furthest left
   - [ ] blueprint entities should be centered to the middle of the entity instead of the bottom left - it feels like of awkward as it is
@@ -93,9 +110,7 @@
 - CLEANUP: it feels weird that RoomBuilder.Build returns an EntityGroup, not a Room
 - CLEANUP: CellCoordinates Add/Subtract api.
 - CLEANUP: Group in GameWorld\_\_ scripts with prefabs/models, possibly even definitions as well?
-- PROJECT: Get save system working again
-  - [ ] Make sure state inputs are working
-  - [ ] get json save/load working properly
+
 - PROJECT: Save system improvements
   - [ ] save file versioning
   - [ ] migrations between save file versions - add stuff to the json to make it serialize correctly with current codebase
