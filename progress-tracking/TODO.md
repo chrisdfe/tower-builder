@@ -2,15 +2,16 @@
 
 ## Current
 
-- PROJECT: right click dropdown menu
-  - for resident interactions - "go here" or "interact with furniture"
-- Make sure resident routefinding/movement still works
+- PROJECT: save/load system working
+  - [ ] Make sure state inputs are working
+  - [ ] saving to file outputs correct json
+  - [ ] loading from file works
 
 ## After
 
-- PROJECT: Get save system working again
-  - [ ] Make sure state inputs are working
-  - [ ] get json save/load working properly
+- PROJECT: right click dropdown menu
+  - for resident interactions - "go here" or "interact with furniture"
+- Make sure resident routefinding/movement still works
 - Resident skills
   - Engine use
   - piloting
