@@ -16,8 +16,8 @@ namespace TowerBuilder.DataTypes.EntityGroups
 
         public bool isInBlueprintMode { get; private set; } = false;
 
-        public EntityGroupBuildValidator buildValidator;
-        public EntityGroupDestroyValidator destroyValidator;
+        public EntityGroupBuildValidator buildValidator { get; }
+        public EntityGroupDestroyValidator destroyValidator { get; }
 
         public virtual string typeLabel => "EntityGroup";
 
@@ -199,12 +199,13 @@ namespace TowerBuilder.DataTypes.EntityGroups
 
             foreach (Entity entity in GetDescendantEntities().items)
             {
-                if (!groupedEntities.ContainsKey(entity.GetType()))
+                Type entityType = entity.GetType();
+                if (!groupedEntities.ContainsKey(entityType))
                 {
-                    groupedEntities[entity.GetType()] = new ListWrapper<Entity>();
+                    groupedEntities[entityType] = new ListWrapper<Entity>();
                 }
 
-                groupedEntities[entity.GetType()].Add(entity);
+                groupedEntities[entityType].Add(entity);
             }
 
             return groupedEntities;

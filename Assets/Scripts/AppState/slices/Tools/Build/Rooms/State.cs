@@ -31,9 +31,9 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
         /*
             Public Interface
         */
-        public override EntityGroup CalculateBlueprintEntityGroup()
+        public override Blueprint CalculateBlueprint()
         {
-            EntityGroup blueprint = new Blueprint();
+            Blueprint blueprint = new Blueprint();
 
             EntityGroup room = EntityGroup.CreateFromDefinition(selectedRoomDefinition, appState);
             blueprint.Add(room);
@@ -56,8 +56,6 @@ namespace TowerBuilder.ApplicationState.Tools.Build.Rooms
         void ResetDefinition()
         {
             selectedRoomDefinition = DataTypes.EntityGroups.Definitions.Rooms.FindByKey(selectedRoomKey) as RoomDefinition;
-            Debug.Log("searching for room definition with this key: " + selectedRoomKey);
-            Debug.Log(selectedRoomDefinition);
         }
     }
 }

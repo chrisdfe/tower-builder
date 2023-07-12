@@ -23,9 +23,6 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
             BuildWindows(appState);
             BuildTransportationItems(appState);
 
-            Debug.Log("current room children:");
-            Debug.Log($"{currentRoom.childEntities.Count} entities");
-            Debug.Log($"{currentRoom.childEntityGroups.Count} entityGroups");
             return currentRoom;
         }
 

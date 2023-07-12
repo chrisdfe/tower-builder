@@ -20,7 +20,7 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
             base.BuildWindows(appState);
 
             Window officeWindow = new Window(Entities.Definitions.Windows.defaultDefinition as WindowDefinition);
-            officeWindow.CalculateCellsFromSelectionBox(appState.UI.selectionBox.asRelativeSelectionBox);
+            officeWindow.CalculateCellsFromSelectionBox(appState.UI.selectionBox);
 
             currentRoom.Add(
                 officeWindow
@@ -39,7 +39,7 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
                 }
             );
 
-            officeFoundation.CalculateCellsFromSelectionBox(appState.UI.selectionBox.asRelativeSelectionBox);
+            officeFoundation.CalculateCellsFromSelectionBox(appState.UI.selectionBox);
 
             currentRoom.Add(
                 officeFoundation

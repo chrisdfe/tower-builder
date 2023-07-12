@@ -34,6 +34,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         public ListEvent<EntityGroup> onEntityGroupsBuilt { get; set; }
 
         public ItemEvent<EntityGroup> onPositionUpdated { get; set; }
+        public ItemEvent<EntityGroup> onEntityGroupValidated { get; set; }
 
         /*
             State
@@ -173,7 +174,6 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
         public void SetBlueprintMode(EntityGroup entityGroup, bool isInBlueprintMode)
         {
-            SetBlueprintMode(entityGroup.GetDescendantEntityGroups(), isInBlueprintMode);
             entityGroup.SetBlueprintMode(isInBlueprintMode);
         }
 
@@ -195,6 +195,13 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         public void UpdateOffsetCoordinates(EntityGroup entityGroup, CellCoordinates newOffsetCoordinates)
         {
             GetStateSlice(entityGroup)?.UpdateOffsetCoordinates(entityGroup, newOffsetCoordinates);
+        }
+
+
+        public void ValidateBuildWithChildren(EntityGroup entityGroup)
+        {
+            entityGroup.buildValidator.ValidateWithChildren(appState);
+            onEntityGroupValidated?.Invoke(entityGroup);
         }
 
         /*

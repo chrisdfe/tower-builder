@@ -211,11 +211,11 @@ namespace TowerBuilder.ApplicationState.Tools.Build
 
         void CreateBlueprint()
         {
-            blueprint = GetCurrentMode().CalculateBlueprintEntityGroup();
-            blueprint.SetBlueprintMode(true);
-            blueprint.buildValidator.ValidateWithChildren(appState);
+            blueprint = GetCurrentMode().CalculateBlueprint();
             blueprint.relativeOffsetCoordinates = appState.UI.selectionBox.cellCoordinatesList.bottomLeftCoordinates;
             appState.EntityGroups.AddWithChildren(blueprint);
+            appState.EntityGroups.SetBlueprintModeWithChildren(blueprint, true);
+            appState.EntityGroups.ValidateBuildWithChildren(blueprint);
         }
 
         void RemoveBlueprint()

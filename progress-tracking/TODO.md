@@ -3,12 +3,18 @@
 ## Current
 
 - TASK: refactor entityBlockBuilders to use absolute selection box values - right now it silently/confusingly uses relative coordinates (i.e starting at 0 and ending at selectionBox.width/height or whatever);
+  - OR: rename things to be more obvious that its generating an Entity(Group) with relative coordinates
 - task: build mode needs to validate the cumulative price of everything being built
 - BUG: selecting interior light entity in build tool crashes game
-- BUG: buildValidator validation highlighting isn't working anymore
 
 ## After
 
+- Entities should be highlighted based on whether their parents/acestors are valid too
+- GFX: window types
+  - porthole
+  - porthole/pill
+  - flexible size
+- CLEANUP: "entityGroupDefinition.builderFactory(entityGroupDefinition);" is cumbersome
 - TASK: Entities should always belong to an EntityGroup
 - PROJECT: "ResidentGroup"? For grouping residents in different buildigns
   - probably for down the road
@@ -369,6 +375,7 @@
 
 # Done
 
+- validation highlighting isn't working
 - PROJECT: refactoring buildState
   - [x] in BuildState look into using the same entitiesToBuild/entityGroupsToBuild pattern as in DestroyState
   - [x] it feels like the recursive things EntityGroup does should be in state (ValidateBuild, ValidateDestroy, etc);

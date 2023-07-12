@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using TowerBuilder.ApplicationState;
+using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities
 {
@@ -9,8 +11,6 @@ namespace TowerBuilder.DataTypes.Entities
             GenericEntityValidations.ValidateEntityIsNotOverlappingAnotherEntityOfSameType
         };
 
-        public EntityValidator(Entity entity) : base(entity)
-        {
-        }
+        public EntityValidator(Entity entity) : base(entity) { }
     }
 }

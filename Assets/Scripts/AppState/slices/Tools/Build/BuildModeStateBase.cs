@@ -22,6 +22,6 @@ namespace TowerBuilder.ApplicationState.Tools
         public virtual void Setup() { }
         public virtual void Teardown() { }
 
-        public virtual EntityGroup CalculateBlueprintEntityGroup() => new EntityGroup();
+        public virtual Blueprint CalculateBlueprint() => new Blueprint();
     }
 }

@@ -77,6 +77,7 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.onEntityPositionUpdated += OnEntityPositionUpdated;
 
             Registry.appState.EntityGroups.onPositionUpdated += OnEntityGroupPositionUpdated;
+            Registry.appState.EntityGroups.onEntityGroupValidated += OnEntityGroupValidated;
 
             Registry.appState.UI.onEntitiesInSelectionUpdated += OnEntitiesInSelectionUpdated;
 
@@ -93,6 +94,7 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.onEntityPositionUpdated -= OnEntityPositionUpdated;
 
             Registry.appState.EntityGroups.onPositionUpdated -= OnEntityGroupPositionUpdated;
+            Registry.appState.EntityGroups.onEntityGroupValidated -= OnEntityGroupValidated;
 
             Registry.appState.UI.onEntitiesInSelectionUpdated -= OnEntitiesInSelectionUpdated;
 
@@ -108,7 +110,7 @@ namespace TowerBuilder.GameWorld.Entities
         {
             entityList.items.ForEach((entity) =>
             {
-                GetListByType(entity.GetType())?.CreateEntity(entity);
+                GetManagerForEntity(entity)?.CreateEntity(entity);
             });
         }
 
@@ -116,7 +118,7 @@ namespace TowerBuilder.GameWorld.Entities
         {
             entityList.items.ForEach((entity) =>
             {
-                GetListByType(entity.GetType())?.RemoveEntity(entity);
+                GetManagerForEntity(entity)?.RemoveEntity(entity);
             });
         }
 
@@ -124,22 +126,30 @@ namespace TowerBuilder.GameWorld.Entities
         {
             entityList.items.ForEach((entity) =>
             {
-                GetListByType(entity.GetType())?.BuildEntity(entity);
+                GetManagerForEntity(entity)?.BuildEntity(entity);
             });
         }
 
         void OnEntityPositionUpdated(Entity entity)
         {
-            GetListByType(entity.GetType())?.UpdateEntityPosition(entity);
-            GetListByType(entity.GetType())?.UpdateEntityColor(entity);
+            GetManagerForEntity(entity)?.UpdateEntityPosition(entity);
+            GetManagerForEntity(entity)?.UpdateEntityColor(entity);
         }
 
         void OnEntityGroupPositionUpdated(EntityGroup entityGroup)
         {
             foreach (Entity entity in entityGroup.childEntities.items)
             {
-                GetListByType(entity.GetType())?.UpdateEntityPosition(entity);
-                GetListByType(entity.GetType())?.UpdateEntityColor(entity);
+                GetManagerForEntity(entity)?.UpdateEntityPosition(entity);
+                GetManagerForEntity(entity)?.UpdateEntityColor(entity);
+            }
+        }
+
+        void OnEntityGroupValidated(EntityGroup entityGroup)
+        {
+            foreach (Entity entity in entityGroup.GetDescendantEntities().items)
+            {
+                GetManagerForEntity(entity)?.UpdateEntityColor(entity);
             }
         }
 
@@ -175,6 +185,8 @@ namespace TowerBuilder.GameWorld.Entities
             }
         }
 
-        EntityTypeManager GetListByType(Type EntityType) => entityManagerMap[EntityType];
+        EntityTypeManager GetManagerForEntityType(Type EntityType) => entityManagerMap[EntityType];
+
+        EntityTypeManager GetManagerForEntity(Entity entity) => GetManagerForEntityType(entity.GetType());
     }
 }

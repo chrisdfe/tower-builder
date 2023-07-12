@@ -2,6 +2,7 @@ using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.EntityGroups;
+using UnityEngine;
 
 namespace TowerBuilder.DataTypes.EntityGroups
 {

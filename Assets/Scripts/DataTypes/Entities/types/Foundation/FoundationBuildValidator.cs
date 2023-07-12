@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes;
+using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities.Foundations
 {
@@ -19,6 +20,7 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
         {
             CellCoordinatesList absoluteCellCoordinatesList = appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity);
             int bottomFloor = absoluteCellCoordinatesList.lowestY;
+
 
             if (bottomFloor > 0)
             {
