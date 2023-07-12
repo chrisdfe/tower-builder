@@ -80,7 +80,7 @@ namespace TowerBuilder.DataTypes.Entities
                             EntityType = typeof(InteriorLights.InteriorLight),
                             label = "Interior Light",
                             zIndex = 5,
-                            definitionType = typeof(Furnitures.FurnitureDefinition)
+                            definitionType = typeof(InteriorLights.InteriorLightDefinition)
                         }
                     },
                     {

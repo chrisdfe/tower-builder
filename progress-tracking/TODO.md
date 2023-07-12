@@ -5,7 +5,6 @@
 - PROJECT: right click dropdown menu
   - for resident interactions - "go here" or "interact with furniture"
 - Make sure resident routefinding/movement still works
-- BUG: selecting interior light entity in build tool crashes game
 
 ## After
 
@@ -390,7 +389,8 @@
 
 # Done
 
-- validation highlighting isn't working
+- BUG: selecting interior light entity in build tool crashes game
+- BUG: validation highlighting isn't working
 - PROJECT: refactoring buildState
   - [x] in BuildState look into using the same entitiesToBuild/entityGroupsToBuild pattern as in DestroyState
   - [x] it feels like the recursive things EntityGroup does should be in state (ValidateBuild, ValidateDestroy, etc);
