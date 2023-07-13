@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.Definitions;
@@ -9,10 +10,13 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Entity : ISetupable
     {
+        [JsonProperty]
         public virtual string idKey => "entity";
 
+        [JsonProperty]
         public int id { get; }
 
         public int price => definition.pricePerCell * relativeCellCoordinatesList.Count;
@@ -22,18 +26,23 @@ namespace TowerBuilder.DataTypes.Entities
 
         public CellCoordinatesBlockList relativeBlocksList { get; private set; } = new CellCoordinatesBlockList();
 
+        [JsonProperty]
         public CellCoordinatesList relativeCellCoordinatesList =>
             CellCoordinatesList.FromBlocksList(this.relativeBlocksList);
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 
+        [JsonProperty]
         public EntityDefinition definition { get; }
+
         public EntityValidator buildValidator { get; }
         public EntityValidator destroyValidator { get; }
 
         public EntityTypeData entityTypeData => EntityTypeData.Get(this.GetType());
+
         public string typeLabel => entityTypeData.label;
+
         // TODO - add "custom z Index"
         public int zIndex => entityTypeData.zIndex;
 

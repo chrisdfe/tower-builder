@@ -1,14 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    [System.Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
     public class CellCoordinates
     {
+        [JsonProperty]
         public int x;
+
+        [JsonProperty]
         public int y;
 
         public CellCoordinates coordinatesAbove => new CellCoordinates(x, y + 1);

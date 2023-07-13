@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using TowerBuilder.DataTypes;
 
 namespace TowerBuilder.DataTypes.Entities
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class EntityDefinition
     {
         public virtual string key { get; set; } = null;

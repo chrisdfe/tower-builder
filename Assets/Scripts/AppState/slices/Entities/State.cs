@@ -66,7 +66,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public ListWrapper<Entity> allEntities =>
             sliceList.Aggregate(new ListWrapper<Entity>(), (acc, stateSlice) =>
             {
-                acc.Add(stateSlice.entityList);
+                acc.Add(stateSlice.list);
                 return acc;
             });
 

@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    [System.Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
     public class CellCoordinatesBlockList : ListWrapper<CellCoordinatesBlock>
     {
         public CellCoordinatesBlockList() : base() { }

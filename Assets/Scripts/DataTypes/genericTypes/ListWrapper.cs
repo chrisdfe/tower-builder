@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class ListWrapper<ItemType>
     {
+        [JsonProperty]
         public List<ItemType> items { get; protected set; } = new List<ItemType>();
 
         public int Count => items.Count;

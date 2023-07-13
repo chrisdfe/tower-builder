@@ -48,7 +48,7 @@ namespace TowerBuilder.DataTypes.Entities
 
 
 
-            Entity overlappingEntity = stateSlice.entityList.Find((otherEntity) =>
+            Entity overlappingEntity = stateSlice.list.Find((otherEntity) =>
                 otherEntity != entity &&
                 appState.EntityGroups.GetAbsoluteCellCoordinatesList(otherEntity)
                     .OverlapsWith(

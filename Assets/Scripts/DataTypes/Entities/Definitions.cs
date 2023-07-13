@@ -40,6 +40,21 @@ namespace TowerBuilder.DataTypes.Entities
                 { typeof(Window),             Windows },
             };
 
+        public static EnumStringMap<Type> entityDefinitionsKeyMap =>
+            new EnumStringMap<Type>(
+                new Dictionary<Type, string>() {
+                    { typeof(FoundationDefinition),         "Foundation" },
+                    { typeof(FloorDefinition),              "Floor" },
+                    { typeof(InteriorLightDefinition),      "InteriorLight" },
+                    { typeof(FurnitureDefinition),          "Furniture" },
+                    { typeof(ResidentDefinition),           "Resident" },
+                    { typeof(TransportationItemDefinition), "TransportationItem" },
+                    { typeof(FreightDefinition),            "FreightItem" },
+                    { typeof(WheelDefinition),              "Wheel" },
+                    { typeof(WindowDefinition),             "Window" }
+                }
+            );
+
         public static List<string> FindAllCategories(Type type) =>
             DefinitionFromEntityType(type)?.FindAllCategories();
 

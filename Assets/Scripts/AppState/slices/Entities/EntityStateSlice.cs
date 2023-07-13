@@ -25,8 +25,6 @@ namespace TowerBuilder.ApplicationState.Entities
         */
         public ListWrapper<Entity> list { get; }
 
-        public ListWrapper<Entity> entityList => list.ConvertAll<Entity>();
-
         public EntityStateSlice(AppState appState) : base(appState)
         {
             list = new ListWrapper<Entity>();
@@ -118,7 +116,7 @@ namespace TowerBuilder.ApplicationState.Entities
 
         public ListWrapper<Entity> FindEntityByType(Type type) =>
             new ListWrapper<Entity>(
-                entityList.items.FindAll(entity => entity.GetType() == type)
+                list.items.FindAll(entity => entity.GetType() == type)
             );
     }
 }

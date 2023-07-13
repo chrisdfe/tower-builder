@@ -1,1 +1,45 @@
-{"resizability":{"x":true,"floor":true},"bottomLeftCoordinates":{"x":3,"floor":0},"blocks":[{"cells":[{"coordinates":{"x":3,"floor":0}}],"Count":1},{"cells":[{"coordinates":{"x":4,"floor":0}}],"Count":1},{"cells":[{"coordinates":{"x":5,"floor":0}}],"Count":1}],"roomCells":{"cells":[{"coordinates":{"x":3,"floor":0}},{"coordinates":{"x":4,"floor":0}},{"coordinates":{"x":5,"floor":0}}],"Count":3},"id":1,"title":"Hallway","key":"Hallway","category":"Hallway","pricePerBlock":500,"blockDimensions":{"width":1,"height":1},"entrances":[{"position":0,"cellCoordinates":{"x":3,"floor":0},"id":33},{"position":1,"cellCoordinates":{"x":5,"floor":0},"id":34}],"validator":{},"entranceBuilder":{}}
+{
+  "idKey": "foundations",
+  "id": 12,
+  "relativeCellCoordinatesList": {
+    "items": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": 2
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 2
+      },
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": 2,
+        "y": 1
+      },
+      {
+        "x": 2,
+        "y": 2
+      }
+    ]
+  },
+  "definition": "Foundation:Default"
+}
