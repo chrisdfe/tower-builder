@@ -21,26 +21,43 @@ namespace TowerBuilder.GameWorld.UI
         PointerEventData pointerEventData;
         EventSystem eventSystem;
 
-        void Start()
+        Transform modalsWrapper;
+        DebugModalManager debugModalManager;
+
+        /*
+            Public Interface
+        */
+        public void Start()
         {
             canvas = transform.Find("Canvas").GetComponent<Canvas>();
             graphicRaycaster = canvas.GetComponent<GraphicRaycaster>();
             eventSystem = canvas.GetComponent<EventSystem>();
 
-            //Calculate layermask to Raycast to. (Raycast to "cube" && "sphere" layers only)
+            modalsWrapper = canvas.transform.Find("ModalsWrapper");
+            debugModalManager = modalsWrapper.Find("DebugModal").GetComponent<DebugModalManager>();
+
+            // Calculate layermask to Raycast to. (Raycast to "cube" && "sphere" layers only)
             int uiLayerIndex = LayerMask.NameToLayer("UI");
             int layerMask = (1 << uiLayerIndex);
             graphicRaycaster.blockingMask = uiLayerIndex;
         }
 
-        void Update()
+        public void Update()
         {
             SetMouseIsOverUI();
         }
 
-        public static UIManager Find() =>
-            GameObject.Find("UIManager").GetComponent<UIManager>();
+        /*
+            Public Interface
+        */
+        public void ToggleDebugModal()
+        {
+            debugModalManager.Toggle();
+        }
 
+        /*
+            Internals
+        */
         void SetMouseIsOverUI()
         {
             //Set up the new Pointer Event
@@ -56,5 +73,8 @@ namespace TowerBuilder.GameWorld.UI
 
             mouseIsOverUI = results.Count > 0;
         }
+
+        public static UIManager Find() =>
+            GameObject.Find("UIManager").GetComponent<UIManager>();
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class DebugMenuPanelManager : MonoBehaviour
+    public class DebugModalManager : MonoBehaviour
     {
         Button add1HourButton;
         Button subtract1HourButton;
@@ -20,41 +20,53 @@ namespace TowerBuilder.GameWorld.UI
 
         Button testSaveButton;
 
-        Transform panel;
         Transform contentWrapper;
 
-        void Awake()
+        /*
+            Lifecycle
+        */
+        public void Awake()
         {
-            panel = transform.Find("DebugMenuPanel");
-            panel.gameObject.SetActive(false);
+            contentWrapper = transform.Find("Content");
+            contentWrapper.gameObject.SetActive(false);
 
-            add1HourButton = TransformUtils.FindDeepChild(panel, "Add1HourButton").GetComponent<Button>();
+            add1HourButton = TransformUtils.FindDeepChild(contentWrapper, "Add1HourButton").GetComponent<Button>();
             add1HourButton.onClick.AddListener(Add1Hour);
 
-            subtract1HourButton = TransformUtils.FindDeepChild(panel, "Subtract1HourButton").GetComponent<Button>();
+            subtract1HourButton = TransformUtils.FindDeepChild(contentWrapper, "Subtract1HourButton").GetComponent<Button>();
             subtract1HourButton.onClick.AddListener(Subtract1Hour);
 
-            add1000Button = TransformUtils.FindDeepChild(panel, "Add1000Button").GetComponent<Button>();
-            subtract1000Button = TransformUtils.FindDeepChild(panel, "Subtract1000Button").GetComponent<Button>();
+            add1000Button = TransformUtils.FindDeepChild(contentWrapper, "Add1000Button").GetComponent<Button>();
+            subtract1000Button = TransformUtils.FindDeepChild(contentWrapper, "Subtract1000Button").GetComponent<Button>();
 
             subtract1000Button.onClick.AddListener(Subtract1000FromBalance);
             add1000Button.onClick.AddListener(Add1000ToBalance);
 
-            addTestNotificationButton = TransformUtils.FindDeepChild(panel, "AddTestNotificationButton").GetComponent<Button>();
+            addTestNotificationButton = TransformUtils.FindDeepChild(contentWrapper, "AddTestNotificationButton").GetComponent<Button>();
             addTestNotificationButton.onClick.AddListener(AddTestNotification);
 
-            testSaveButton = TransformUtils.FindDeepChild(panel, "TestSaveButton").GetComponent<Button>();
+            testSaveButton = TransformUtils.FindDeepChild(contentWrapper, "TestSaveButton").GetComponent<Button>();
             testSaveButton.onClick.AddListener(OnTestSaveButtonClick);
         }
 
-        void Update()
+        /*
+            Public Interface
+        */
+        public void Toggle()
         {
-            if (Input.GetKeyDown("\\"))
+            bool isActive = !gameObject.activeSelf;
+
+            gameObject.SetActive(isActive);
+            // SetActive doesn't recurse I guess
+            foreach (Transform child in gameObject.GetComponentsInChildren<Transform>(true))
             {
-                panel.gameObject.SetActive(!panel.gameObject.activeInHierarchy);
+                child.gameObject.SetActive(isActive);
             }
         }
 
+        /*
+            Internals
+        */
         void Add1Hour()
         {
             Registry.appState.Time.AddTime(new TimeValue.Input()

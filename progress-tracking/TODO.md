@@ -9,6 +9,10 @@
 
 ## After
 
+- BUG: time panel doesn't update to match current speed when it is updated
+- TASK: add speed change buttons.
+- Window shouldn't be valid in invalid room - it should check if the room it is inside of is valid too
+- Windows shouldn't be built in underground rooms
 - PROJECT: right click dropdown menu
   - for resident interactions - "go here" or "interact with furniture"
 - Make sure resident routefinding/movement still works

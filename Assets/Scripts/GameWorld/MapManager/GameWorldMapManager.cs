@@ -77,10 +77,14 @@ namespace TowerBuilder.GameWorld.Map.MapManager
                 Registry.appState.UI.RightClickStart();
             }
 
-
             if (Input.GetMouseButtonUp(1))
             {
                 Registry.appState.UI.RightClickEnd();
+            }
+
+            if (Input.GetButtonDown("Escape"))
+            {
+                uiManager.ToggleDebugModal();
             }
 
             currentToolStateHandler.Update();
