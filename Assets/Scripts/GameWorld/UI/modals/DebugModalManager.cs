@@ -21,6 +21,7 @@ namespace TowerBuilder.GameWorld.UI
         Button addTestNotificationButton;
 
         Button testSaveButton;
+        Button testLoadButton;
 
         Transform contentWrapper;
 
@@ -29,8 +30,8 @@ namespace TowerBuilder.GameWorld.UI
         */
         public void Awake()
         {
-            contentWrapper = transform.Find("Content");
-            contentWrapper.gameObject.SetActive(false);
+            contentWrapper = TransformUtils.FindDeepChild(transform, "Content");
+            contentWrapper.gameObject.SetActive(gameObject.activeSelf);
 
             add1HourButton = TransformUtils.FindDeepChild(contentWrapper, "Add1HourButton").GetComponent<Button>();
             add1HourButton.onClick.AddListener(Add1Hour);
@@ -49,6 +50,9 @@ namespace TowerBuilder.GameWorld.UI
 
             testSaveButton = TransformUtils.FindDeepChild(contentWrapper, "TestSaveButton").GetComponent<Button>();
             testSaveButton.onClick.AddListener(OnTestSaveButtonClick);
+
+            testLoadButton = TransformUtils.FindDeepChild(contentWrapper, "TestLoadButton").GetComponent<Button>();
+            testLoadButton.onClick.AddListener(OnTestLoadButtonClick);
         }
 
         /*
@@ -106,6 +110,11 @@ namespace TowerBuilder.GameWorld.UI
         void OnTestSaveButtonClick()
         {
             SaveLoadSystem.SaveToFileDebug();
+        }
+
+        void OnTestLoadButtonClick()
+        {
+            SaveLoadSystem.LoadFromFileDebug();
         }
     }
 }
