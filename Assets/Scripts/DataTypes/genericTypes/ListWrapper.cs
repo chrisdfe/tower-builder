@@ -2,14 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using TowerBuilder.Systems;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    public class ListWrapper<ItemType>
+    public class ListWrapper<ItemType> : ISaveable<ListWrapper<ItemType>.Input>
     {
-        [JsonProperty]
+        public class Input
+        {
+            public ItemType[] items;
+        }
+
         public List<ItemType> items { get; protected set; } = new List<ItemType>();
 
         public int Count => items.Count;
@@ -31,6 +35,26 @@ namespace TowerBuilder.DataTypes
             this.items = this.items.Concat(itemList.items).ToList();
         }
 
+        public ListWrapper(Input input)
+        {
+            ConsumeInput(input);
+        }
+
+        public Input ToInput() =>
+            new Input()
+            {
+                items = items.ToArray()
+            };
+
+        public void ConsumeInput(Input input)
+        {
+            Debug.Log("ListWrapper ConsumeInput");
+            this.items = input.items.ToList();
+        }
+
+        /*
+            Public Interface
+        */
         public void Add(ItemType item)
         {
             if (item == null) return;

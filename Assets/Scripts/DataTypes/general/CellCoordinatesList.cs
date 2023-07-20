@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public class CellCoordinatesList : ListWrapper<CellCoordinates>
     {
         public int lowestX =>
@@ -79,7 +78,6 @@ namespace TowerBuilder.DataTypes
             );
 
         public CellCoordinatesList() { }
-
         public CellCoordinatesList(CellCoordinates cellCoordinates) : base(cellCoordinates) { }
         public CellCoordinatesList(List<CellCoordinates> cellCoordinatesList) : base(cellCoordinatesList) { }
         public CellCoordinatesList(CellCoordinatesList cellCoordinatesList) : base(cellCoordinatesList) { }

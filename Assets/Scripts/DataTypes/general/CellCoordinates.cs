@@ -2,18 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using TowerBuilder.Systems;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    public class CellCoordinates
+    public class CellCoordinates : ISaveable<CellCoordinates.Input>
     {
-        [JsonProperty]
-        public int x;
+        public class Input
+        {
+            public int x;
+            public int y;
+        }
 
-        [JsonProperty]
-        public int y;
+        public int x = 0;
+
+        public int y = 0;
 
         public CellCoordinates coordinatesAbove => new CellCoordinates(x, y + 1);
 
@@ -31,10 +35,31 @@ namespace TowerBuilder.DataTypes
 
         public CellCoordinates coordinatesAboveLeft => new CellCoordinates(x - 1, y + 1);
 
+        public CellCoordinates() { }
+
         public CellCoordinates(int x, int y)
         {
             this.x = x;
             this.y = y;
+        }
+
+        public CellCoordinates(Input input)
+        {
+            ConsumeInput(input);
+        }
+
+        public Input ToInput() =>
+            new Input()
+            {
+                x = this.x,
+                y = this.y
+            };
+
+        public void ConsumeInput(Input input)
+        {
+            Debug.Log("CellCoordinates ConsumeInput");
+            this.x = input.x;
+            this.y = input.y;
         }
 
         public override string ToString() => $"x: {x}, y: {y}";

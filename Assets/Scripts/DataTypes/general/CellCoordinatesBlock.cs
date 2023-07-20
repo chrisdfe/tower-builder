@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public class CellCoordinatesBlock : CellCoordinatesList
     {
         public CellCoordinatesBlock(List<CellCoordinates> cellCoordinatesList)
@@ -21,6 +20,8 @@ namespace TowerBuilder.DataTypes
         {
             items.Add(cellCoordinates);
         }
+
+        public CellCoordinatesBlock() { }
     }
 }
 

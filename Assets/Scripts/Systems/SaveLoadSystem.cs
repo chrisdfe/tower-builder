@@ -7,44 +7,48 @@ using UnityEngine;
 
 namespace TowerBuilder.Systems
 {
+    using SaveData = DataTypes.Entities.Foundations.Foundation;
+
     public class SaveLoadSystem
     {
         static string SAVE_FILE_PATH = "./Assets/Resources/DebugOutput/save.json";
-        public static void SaveToFile(System.Object saveData)
+
+
+        public static void SaveToFile(System.Object saveData, string filePath)
         {
-            try
+
+            SaveStateJsonSerializer serializer = new SaveStateJsonSerializer();
+            using (StreamWriter sw = new StreamWriter(filePath))
+            using (JsonWriter writer = new JsonTextWriter(sw))
             {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.NullValueHandling = NullValueHandling.Ignore;
-                // TODO - Debug mode only, otherwise "none"
-                serializer.Formatting = Formatting.Indented;
-
-                serializer.Converters.Add(new EntityDefinitionJsonConverter());
-
-                using (StreamWriter sw = new StreamWriter(SAVE_FILE_PATH))
-                using (JsonWriter writer = new JsonTextWriter(sw))
-                {
-                    serializer.Serialize(writer, saveData);
-                }
-
-                // string jsonifiedObject = serializer.Serialize(writer, saveData);
-
-                // string[] lines = { jsonifiedObject };
-
-                // File.WriteAllLines(filePath, lines);
-
-                Debug.Log($"Saved to file {SAVE_FILE_PATH}");
+                serializer.Serialize(writer, saveData);
             }
-            catch (Exception e)
+
+            Debug.Log($"Saved to file {SAVE_FILE_PATH}");
+        }
+
+        public static void LoadFromFile(string filePath)
+        {
+            SaveStateJsonSerializer serializer = new SaveStateJsonSerializer();
+            using (StreamReader sr = new StreamReader(filePath))
+            using (JsonTextReader reader = new JsonTextReader(sr))
             {
-                Debug.Log("error saving file");
-                Debug.Log(e.GetType());
+                SaveData data = serializer.Deserialize<SaveData>(reader);
+                Debug.Log("deserialized save data:");
+                Debug.Log(data);
+
+                Registry.appState.Entities.Add(data);
             }
+        }
+
+        public static void LoadFromFileDebug()
+        {
+            LoadFromFile(SAVE_FILE_PATH);
         }
 
         public static void SaveToFileDebug()
         {
-            SaveToFile(Registry.appState.Entities.Foundations.list.items[0]);
+            SaveToFile(Registry.appState.Entities.Foundations.list.items[0], SAVE_FILE_PATH);
         }
     }
 }

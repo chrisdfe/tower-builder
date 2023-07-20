@@ -14,5 +14,6 @@ namespace TowerBuilder.DataTypes
         public CellCoordinatesBlockList(CellCoordinatesBlock cellCoordinatesBlock) : base(cellCoordinatesBlock) { }
         public CellCoordinatesBlockList(List<CellCoordinatesBlock> cellCoordinatesBlocks) : base(cellCoordinatesBlocks) { }
         public CellCoordinatesBlockList(CellCoordinatesBlockList cellCoordinatesBlockList) : base(cellCoordinatesBlockList) { }
+        public CellCoordinatesBlockList(Input input) : base(input) { }
     }
 }

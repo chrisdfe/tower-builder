@@ -40,6 +40,23 @@ namespace TowerBuilder.DataTypes.Entities
                 { typeof(Window),             Windows },
             };
 
+
+        public static EnumMap<Type, Type> entityDefinitionTypeEntityTypeMap =>
+            new EnumMap<Type, Type>(
+                new Dictionary<Type, Type>() {
+                    { typeof(FoundationDefinition),         typeof(Foundation) },
+                    { typeof(FloorDefinition),              typeof(Floor) },
+                    { typeof(InteriorLightDefinition),      typeof(InteriorLight) },
+                    { typeof(FurnitureDefinition),          typeof(Furniture) },
+                    { typeof(ResidentDefinition),           typeof(Resident) },
+                    { typeof(TransportationItemDefinition), typeof(TransportationItem) },
+                    { typeof(FreightDefinition),            typeof(FreightItem) },
+                    { typeof(WheelDefinition),              typeof(Wheel) },
+                    { typeof(WindowDefinition),             typeof(Window) }
+                }
+            );
+
+
         public static EnumStringMap<Type> entityDefinitionsKeyMap =>
             new EnumStringMap<Type>(
                 new Dictionary<Type, string>() {
@@ -69,8 +86,26 @@ namespace TowerBuilder.DataTypes.Entities
         public static EntityDefinition FindFirstInCategory(Type type, string category) =>
             DefinitionFromEntityType(type)?.FindFirstInCategory(category);
 
+        public static EntityDefinition FindDefinitionByInput(EntityDefinition.Input input)
+        {
+            EntityDefinition.Fragment fragment = EntityDefinition.Fragment.FromInput(input);
+            return DefinitionFromFragment(fragment);
+        }
+        // new EntityDefinition();
+
+        /*
+            Internals
+        */
         static EntityDefinitionsList DefinitionFromEntityType(Type type) =>
             entityDefinitionsMap[type];
 
+        static EntityDefinition DefinitionFromFragment(EntityDefinition.Fragment fragment)
+        {
+            Type DefinitionType = entityDefinitionsKeyMap.KeyFromValue(fragment.definitionKey);
+            Type EntityType = entityDefinitionTypeEntityTypeMap.ValueFromKey(DefinitionType);
+            EntityDefinitionsList list = DefinitionFromEntityType(EntityType);
+            EntityDefinition result = list.FindByKey(fragment.key);
+            return result;
+        }
     }
 }

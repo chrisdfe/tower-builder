@@ -3,12 +3,16 @@
 ## Current
 
 - PROJECT: save/load system working
-  - [ ] Make sure state inputs are working
-  - [ ] saving to file outputs correct json
-  - [ ] loading from file works
+  - [x] Make sure state inputs are working
+  - [x] saving to file outputs correct json
+  - [x] loading from file works
+  - [ ] save/load entire appState
+- Add room when room-less building is added
+- Add building when building-less room is added
 
 ## After
 
+- TASK: use UUIDs instead of incrementing ids
 - BUG: time panel doesn't update to match current speed when it is updated
 - TASK: add speed change buttons.
 - Window shouldn't be valid in invalid room - it should check if the room it is inside of is valid too

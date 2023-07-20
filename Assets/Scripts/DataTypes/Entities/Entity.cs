@@ -2,42 +2,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.Definitions;
+using TowerBuilder.Systems;
 using TowerBuilder.Utils;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    public class Entity : ISetupable
+    public class Entity : ISetupable, ISaveable<Entity.Input>
     {
-        [JsonProperty]
+        public class Input
+        {
+            public int id;
+            public CellCoordinates.Input relativeOffsetCoordinates;
+            public CellCoordinatesBlockList.Input relativeBlocksList;
+            public EntityDefinition.Input definition;
+        }
+
         public virtual string idKey => "entity";
 
-        [JsonProperty]
-        public int id { get; }
-
-        public int price => definition.pricePerCell * relativeCellCoordinatesList.Count;
+        public int id { get; private set; }
 
         // Relative to parent's bottomLeftCoordinates
         public CellCoordinates relativeOffsetCoordinates { get; set; } = CellCoordinates.zero;
 
         public CellCoordinatesBlockList relativeBlocksList { get; private set; } = new CellCoordinatesBlockList();
 
-        [JsonProperty]
         public CellCoordinatesList relativeCellCoordinatesList =>
             CellCoordinatesList.FromBlocksList(this.relativeBlocksList);
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
 
-        [JsonProperty]
-        public EntityDefinition definition { get; }
+        public EntityDefinition definition { get; private set; }
 
-        public EntityValidator buildValidator { get; }
-        public EntityValidator destroyValidator { get; }
+        public EntityValidator buildValidator { get; private set; }
+        public EntityValidator destroyValidator { get; private set; }
 
         public EntityTypeData entityTypeData => EntityTypeData.Get(this.GetType());
 
@@ -46,22 +49,52 @@ namespace TowerBuilder.DataTypes.Entities
         // TODO - add "custom z Index"
         public int zIndex => entityTypeData.zIndex;
 
-        // public bool canBuild => isInBlueprintMode && buildValidator.isValid;
-        // public bool canDestroy => isMarkedForDeletion && destroyValidator.isValid;
-
         public bool isInBlueprintMode { get; set; } = false;
         public bool isMarkedForDeletion { get; set; } = false;
+
+        public int price => definition.pricePerCell * relativeCellCoordinatesList.Count;
+
+        public Entity() { }
 
         public Entity(EntityDefinition definition)
         {
             this.id = UIDGenerator.Generate(idKey);
             this.definition = definition;
 
+            PostConstruct();
+        }
+
+        public Entity(Input input)
+        {
+            ConsumeInput(input);
+        }
+
+        public Input ToInput() =>
+            new Input()
+            {
+                id = this.id,
+                relativeOffsetCoordinates = this.relativeOffsetCoordinates.ToInput(),
+                relativeBlocksList = this.relativeBlocksList.ToInput(),
+                definition = this.definition.ToInput()
+            };
+
+        public void ConsumeInput(Input input)
+        {
+            this.id = input.id;
+            this.relativeOffsetCoordinates = new CellCoordinates(input.relativeOffsetCoordinates);
+            this.relativeBlocksList = new CellCoordinatesBlockList(input.relativeBlocksList);
+            this.definition = Entities.Definitions.FindDefinitionByInput(input.definition);
+
+            PostConstruct();
+        }
+
+        void PostConstruct()
+        {
             this.buildValidator = definition.buildValidatorFactory(this);
             this.destroyValidator = definition.destroyValidatorFactory(this);
         }
 
-        public override string ToString() => $"{typeLabel}/{definition.title} {id}";
+        public override string ToString() => $"entity";
 
         public virtual void OnBuild()
         {
