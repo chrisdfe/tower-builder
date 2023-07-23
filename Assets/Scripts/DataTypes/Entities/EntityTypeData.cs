@@ -16,7 +16,10 @@ namespace TowerBuilder.DataTypes.Entities
             Map.ValueFromKey(type);
 
         public static EntityTypeData FindByDefinition(EntityDefinition entityDefinition) =>
-            List.Find((EntityTypeData entityTypeData) => entityTypeData.definitionType == entityDefinition.GetType());
+            List.Find(entityTypeData => entityTypeData.definitionType == entityDefinition.GetType());
+
+        public static EntityTypeData FindByLabel(string label) =>
+            List.Find(entityTypeData => entityTypeData.label == label);
 
         public static List<EntityTypeData> List => Map.map.Values.ToList();
 

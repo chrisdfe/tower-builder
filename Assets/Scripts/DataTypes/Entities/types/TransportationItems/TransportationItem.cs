@@ -17,6 +17,8 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
         // TODO - replace this with Transportation direction
         public bool isOneWay = false;
 
+        public TransportationItem() : base() { }
+        public TransportationItem(Input input) : base(input) { }
         public TransportationItem(TransportationItemDefinition definition) : base(definition)
         {
             entranceExitTuples = (definition as TransportationItemDefinition).entranceExitBuilder(this);

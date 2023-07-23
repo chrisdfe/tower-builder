@@ -21,7 +21,7 @@ namespace TowerBuilder.Systems
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            dynamic value = Activator.CreateInstance(objectType);
+            var FromInputMethod = objectType.GetMethod("FromInput", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
             Type SaveableInterface = GetSaveableInterface(objectType);
             var rawObject = JValue.Load(reader);
@@ -29,10 +29,17 @@ namespace TowerBuilder.Systems
             Type SaveableInterfaceInputType = SaveableInterface.GetGenericArguments()[0];
 
             dynamic input = rawObject.ToObject(SaveableInterfaceInputType);
+            if (FromInputMethod != null)
+            {
+                return FromInputMethod.Invoke(null, new object[] { input });
+            }
 
-            value.ConsumeInput(input);
+            throw new Exception("no static FromInput method found on {objectType}");
 
-            return value;
+            // TODO - create a value and use ConsumeInput instead
+            // dynamic value = Activator.CreateInstance(objectType);
+            // value.ConsumeInput(input);
+            // return value;
         }
 
         public override bool CanConvert(Type objectType) => ImplementsSaveable(objectType);

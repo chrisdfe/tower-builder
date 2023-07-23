@@ -10,6 +10,8 @@ namespace TowerBuilder.DataTypes.Entities.Windows
     {
         public override string idKey => "windows";
 
+        public Window() : base() { }
+        public Window(Input input) : base(input) { }
         public Window(WindowDefinition windowDefinition) : base(windowDefinition) { }
     }
 }

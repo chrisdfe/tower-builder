@@ -13,8 +13,10 @@ namespace TowerBuilder.DataTypes.Entities.Residents
     {
         public override string idKey => "Residents";
 
-        public Resident(ResidentDefinition definition) : base(definition) { }
-
         public override string ToString() => $"Resident {id}";
+
+        public Resident() : base() { }
+        public Resident(Input input) : base(input) { }
+        public Resident(ResidentDefinition definition) : base(definition) { }
     }
 }

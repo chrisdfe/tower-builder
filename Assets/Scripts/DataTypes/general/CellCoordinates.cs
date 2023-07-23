@@ -58,6 +58,7 @@ namespace TowerBuilder.DataTypes
         public void ConsumeInput(Input input)
         {
             Debug.Log("CellCoordinates ConsumeInput");
+            Debug.Log(input);
             this.x = input.x;
             this.y = input.y;
         }

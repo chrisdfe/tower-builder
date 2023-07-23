@@ -10,6 +10,8 @@ namespace TowerBuilder.DataTypes.Entities.InteriorLights
     {
         public override string idKey { get => "interiorLight"; }
 
+        public InteriorLight() : base() { }
+        public InteriorLight(Input input) : base(input) { }
         public InteriorLight(InteriorLightDefinition interiorLightDefinition) : base(interiorLightDefinition) { }
     }
 }

@@ -7,8 +7,13 @@
   - [x] saving to file outputs correct json
   - [x] loading from file works
   - [ ] save/load entire appState
-- Add room when room-less building is added
-- Add building when building-less room is added
+- Validate that Entity is inside a room/building when it gets added
+  - either:
+    - Add room when room-less building is added
+    - Add building when building-less room is added
+  - OR
+    - some kind of "context" object that gets passed into events
+      - i.e if the context object for entity create also has a room + building then it is valid
 
 ## After
 

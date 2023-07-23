@@ -8,14 +8,6 @@ using UnityEngine;
 
 namespace TowerBuilder.Systems
 {
-    public class ISaveableInputBase { }
-
-    // public interface ISaveable
-    // {
-    //     public ISaveableInputBase ToInput();
-    //     public void ConsumeInput(ISaveableInputBase input);
-    // }
-
     public interface ISaveable<InputType>
     {
         public InputType ToInput();

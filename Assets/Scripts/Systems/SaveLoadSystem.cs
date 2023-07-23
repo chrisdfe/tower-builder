@@ -2,12 +2,13 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 using TowerBuilder;
+using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using UnityEngine;
 
 namespace TowerBuilder.Systems
 {
-    using SaveData = DataTypes.Entities.Foundations.Foundation;
+    using SaveData = ListWrapper<DataTypes.Entities.Foundations.Foundation>;
 
     public class SaveLoadSystem
     {
@@ -48,7 +49,7 @@ namespace TowerBuilder.Systems
 
         public static void SaveToFileDebug()
         {
-            SaveToFile(Registry.appState.Entities.Foundations.list.items[0], SAVE_FILE_PATH);
+            SaveToFile(Registry.appState.Entities.Foundations.list, SAVE_FILE_PATH);
         }
     }
 }

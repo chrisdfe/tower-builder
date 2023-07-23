@@ -13,7 +13,9 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
 
         public Room room;
 
-        public Foundation() { }
+        public Foundation() : base() { }
+
+        public Foundation(Input input) : base(input) { }
         public Foundation(FoundationDefinition foundationDefinition) : base(foundationDefinition) { }
     }
 }

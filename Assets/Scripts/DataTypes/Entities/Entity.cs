@@ -16,6 +16,7 @@ namespace TowerBuilder.DataTypes.Entities
     {
         public class Input
         {
+            public string typeLabel;
             public int id;
             public CellCoordinates.Input relativeOffsetCoordinates;
             public CellCoordinatesBlockList.Input relativeBlocksList;
@@ -67,16 +68,24 @@ namespace TowerBuilder.DataTypes.Entities
         public Entity(Input input)
         {
             ConsumeInput(input);
+            PostConstruct();
         }
 
         public Input ToInput() =>
             new Input()
             {
                 id = this.id,
+                typeLabel = entityTypeData.label,
                 relativeOffsetCoordinates = this.relativeOffsetCoordinates.ToInput(),
                 relativeBlocksList = this.relativeBlocksList.ToInput(),
                 definition = this.definition.ToInput()
             };
+
+        void PostConstruct()
+        {
+            this.buildValidator = definition.buildValidatorFactory(this);
+            this.destroyValidator = definition.destroyValidatorFactory(this);
+        }
 
         public void ConsumeInput(Input input)
         {
@@ -84,14 +93,6 @@ namespace TowerBuilder.DataTypes.Entities
             this.relativeOffsetCoordinates = new CellCoordinates(input.relativeOffsetCoordinates);
             this.relativeBlocksList = new CellCoordinatesBlockList(input.relativeBlocksList);
             this.definition = Entities.Definitions.FindDefinitionByInput(input.definition);
-
-            PostConstruct();
-        }
-
-        void PostConstruct()
-        {
-            this.buildValidator = definition.buildValidatorFactory(this);
-            this.destroyValidator = definition.destroyValidatorFactory(this);
         }
 
         public override string ToString() => $"entity";
@@ -130,6 +131,31 @@ namespace TowerBuilder.DataTypes.Entities
         /*
             Static Interface
         */
+        public static Entity FromInput(Input input)
+        {
+            Debug.Log("Entity from input");
+            Debug.Log(input);
+
+            Debug.Log("input.typeLabel");
+            Debug.Log(input.typeLabel);
+
+            EntityTypeData inputEntityType = EntityTypeData.FindByLabel(input.typeLabel);
+            Debug.Log("inputEntityType");
+            Debug.Log(inputEntityType);
+
+            Type EntityType = inputEntityType.EntityType;
+            Debug.Log("EntityType");
+            Debug.Log(EntityType);
+
+            if (EntityType != null)
+            {
+                return (Entity)(Activator.CreateInstance(EntityType, input));
+            }
+
+            return null;
+
+        }
+
         public static Entity CreateFromDefinition(EntityDefinition definition)
         {
             EntityTypeData entityTypeData = EntityTypeData.FindByDefinition(definition);
