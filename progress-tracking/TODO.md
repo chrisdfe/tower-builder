@@ -17,6 +17,7 @@
 
 ## After
 
+- CLEANUP: Rename "ListWrapper" as "ListWrapper"
 - TASK: use UUIDs instead of incrementing ids
 - BUG: time panel doesn't update to match current speed when it is updated
 - TASK: add speed change buttons.

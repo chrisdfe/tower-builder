@@ -3,11 +3,15 @@ using TowerBuilder.DataTypes;
 
 namespace TowerBuilder.ApplicationState
 {
-    public delegate void ListEvent<ItemType>(ListWrapper<ItemType> list);
-    public delegate void ItemEvent<ItemType>(ItemType item);
+    public delegate void ListEvent<ItemType>(ListWrapper<ItemType> list)
+        where ItemType : class;
+
+    public delegate void ItemEvent<ItemType>(ItemType item)
+        where ItemType : class;
 
     [Serializable]
     public class ListStateSlice<ItemType> : StateSlice
+        where ItemType : class
     {
         public ListWrapper<ItemType> list { get; protected set; } = new ListWrapper<ItemType>();
 

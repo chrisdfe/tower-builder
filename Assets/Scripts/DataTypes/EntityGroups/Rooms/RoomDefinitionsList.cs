@@ -5,8 +5,8 @@ namespace TowerBuilder.DataTypes.EntityGroups.Rooms
 {
     public class RoomDefinitions : EntityGroupDefinitionList
     {
-        public override ListWrapper<EntityGroupDefinition> Definitions =>
-            new ListWrapper<EntityGroupDefinition>(
+        public override List<EntityGroupDefinition> Definitions =>
+            new List<EntityGroupDefinition>(
                 new List<EntityGroupDefinition>() {
                     new RoomDefinition() {
                         key = "Empty",

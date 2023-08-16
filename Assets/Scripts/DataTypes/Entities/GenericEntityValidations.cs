@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.ApplicationState.Entities;
 using TowerBuilder.DataTypes.Entities;
@@ -10,17 +11,17 @@ namespace TowerBuilder.DataTypes.Entities
 {
     public static class GenericEntityValidations
     {
-        public static ListWrapper<ValidationError> ValidateWalletHasEnoughMoney(AppState appState, Entity entity)
+        public static List<ValidationError> ValidateWalletHasEnoughMoney(AppState appState, Entity entity)
         {
             if (appState.Wallet.balance < entity.price)
             {
                 return Validator.CreateSingleItemValidationErrorList("Insufficient funds.");
             }
 
-            return new ListWrapper<ValidationError>();
+            return new List<ValidationError>();
         }
 
-        public static ListWrapper<ValidationError> ValidateIsOnFloor(AppState appState, Entity entity)
+        public static List<ValidationError> ValidateIsOnFloor(AppState appState, Entity entity)
         {
             foreach (CellCoordinates cellCoordinates in appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).bottomRow.items)
             {
@@ -39,10 +40,10 @@ namespace TowerBuilder.DataTypes.Entities
                 }
             }
 
-            return new ListWrapper<ValidationError>();
+            return new List<ValidationError>();
         }
 
-        public static ListWrapper<ValidationError> ValidateEntityIsNotOverlappingAnotherEntityOfSameType(AppState appState, Entity entity)
+        public static List<ValidationError> ValidateEntityIsNotOverlappingAnotherEntityOfSameType(AppState appState, Entity entity)
         {
             EntityStateSlice stateSlice = appState.Entities.GetStateSlice(entity);
 
@@ -61,10 +62,10 @@ namespace TowerBuilder.DataTypes.Entities
                 return Validator.CreateSingleItemValidationErrorList($"You cannot build {entity.typeLabel}s on top of each other.");
             }
 
-            return new ListWrapper<ValidationError>();
+            return new List<ValidationError>();
         }
 
-        public static ListWrapper<ValidationError> ValidateEntityIsNotUnderground(AppState appState, Entity entity)
+        public static List<ValidationError> ValidateEntityIsNotUnderground(AppState appState, Entity entity)
         {
             foreach (int y in appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).yValues)
             {
@@ -74,10 +75,10 @@ namespace TowerBuilder.DataTypes.Entities
                 }
             }
 
-            return new ListWrapper<ValidationError>();
+            return new List<ValidationError>();
         }
 
-        public static ListWrapper<ValidationError> ValidateEntityIsInsideFoundation(AppState appState, Entity entity)
+        public static List<ValidationError> ValidateEntityIsInsideFoundation(AppState appState, Entity entity)
         {
             string errorMessage = $"{entity.typeLabel} must be built inside of a valid foundation";
 
@@ -115,7 +116,7 @@ namespace TowerBuilder.DataTypes.Entities
                     return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must be placed on y {y + 1}");
                 }
 
-                return new ListWrapper<ValidationError>();
+                return new List<ValidationError>();
             };
 
         public static EntityValidator.ValidationFunc CreateValidateEntityCellIsNotAtYCoordinate(int y) =>
@@ -126,7 +127,7 @@ namespace TowerBuilder.DataTypes.Entities
                     return Validator.CreateSingleItemValidationErrorList($"{entity.typeLabel} must not be placed on y {y + 1}");
                 }
 
-                return new ListWrapper<ValidationError>();
+                return new List<ValidationError>();
             };
 
         /* 

@@ -45,7 +45,7 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
 
             public CockpitBehaviorValidator(FurnitureBehavior FurnitureBehavior) : base(FurnitureBehavior) { }
 
-            static ListWrapper<ValidationError> ValidateEnginePowerIsNotZero(AppState appState, FurnitureBehavior furnitureBehavior)
+            static List<ValidationError> ValidateEnginePowerIsNotZero(AppState appState, FurnitureBehavior furnitureBehavior)
             {
                 // Furniture furniture = furnitureBehavior.furniture;
                 // Room room = appState.Entities.Rooms.queries.FindRoomAtCell(furniture.cellCoordinatesList.items[0]);
@@ -59,7 +59,7 @@ namespace TowerBuilder.DataTypes.Behaviors.Furnitures
                 //     return Validator.CreateSingleItemValidationErrorList("Vehicle requires engine power to be piloted.");
                 // }
 
-                return new ListWrapper<ValidationError>();
+                return new List<ValidationError>();
             }
         }
     }

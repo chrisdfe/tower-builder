@@ -3,12 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.Systems;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes.EntityGroups
 {
-    public class EntityGroup : ISetupable
+    public class EntityGroup : ISetupable, ISaveable
     {
+        public class Input : SaveableInputBase
+        {
+            public Input() : base() { }
+            public Input(object rawInput) : base(rawInput)
+            {
+
+            }
+
+            public override object ToRawInput() => new System.Object();
+        }
+
         public ListWrapper<Entity> childEntities { get; } = new ListWrapper<Entity>();
         public ListWrapper<EntityGroup> childEntityGroups { get; } = new ListWrapper<EntityGroup>();
 
@@ -51,6 +63,13 @@ namespace TowerBuilder.DataTypes.EntityGroups
         }
 
         public virtual void OnDestroy() { }
+
+        public SaveableInputBase ToInput() => new Input();
+
+        public void ConsumeInput(SaveableInputBase baseInput)
+        {
+            Input input = (Input)baseInput;
+        }
 
         /*
             Public Interface

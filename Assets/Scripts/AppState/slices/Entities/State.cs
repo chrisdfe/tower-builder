@@ -145,6 +145,8 @@ namespace TowerBuilder.ApplicationState.Entities
         */
         public void Add(Entity entity)
         {
+            Debug.Log("adding entity:");
+            Debug.Log(entity);
             GetStateSlice(entity)?.Add(entity);
         }
 

@@ -1,15 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
+using TowerBuilder.DataTypes.Entities.Foundations;
 using UnityEngine;
 
 namespace TowerBuilder.Systems
 {
-    using SaveData = ListWrapper<DataTypes.Entities.Foundations.Foundation>;
-
     public class SaveLoadSystem
     {
         static string SAVE_FILE_PATH = "./Assets/Resources/DebugOutput/save.json";
@@ -17,6 +19,7 @@ namespace TowerBuilder.Systems
 
         public static void SaveToFile(System.Object saveData, string filePath)
         {
+            Debug.Log(saveData);
 
             SaveStateJsonSerializer serializer = new SaveStateJsonSerializer();
             using (StreamWriter sw = new StreamWriter(filePath))
@@ -34,11 +37,16 @@ namespace TowerBuilder.Systems
             using (StreamReader sr = new StreamReader(filePath))
             using (JsonTextReader reader = new JsonTextReader(sr))
             {
-                SaveData data = serializer.Deserialize<SaveData>(reader);
+                object raw = serializer.Deserialize<object>(reader);
+                Debug.Log("raw");
+                Debug.Log(raw);
+                object input = ToSimplifiedValue(raw);
                 Debug.Log("deserialized save data:");
-                Debug.Log(data);
+                Debug.Log(input);
 
-                Registry.appState.Entities.Add(data);
+                var entity = Entity.FromInput(input as Dictionary<string, object>);
+
+                // Registry.appState.Entities.Add(Entity.FromInput(input as Dictionary<string, object>));
             }
         }
 
@@ -49,7 +57,26 @@ namespace TowerBuilder.Systems
 
         public static void SaveToFileDebug()
         {
-            SaveToFile(Registry.appState.Entities.Foundations.list, SAVE_FILE_PATH);
+            SaveToFile(Registry.appState.Entities.Foundations.list.items[0].ToInput(), SAVE_FILE_PATH);
+        }
+
+        static object ToSimplifiedValue(object originalObject)
+        {
+            switch (originalObject)
+            {
+                // objects become Dictionary<string,object>
+                case JObject jObject:
+                    return ((IEnumerable<KeyValuePair<string, JToken>>)jObject).ToDictionary(j => j.Key, j => ToSimplifiedValue(j.Value));
+                // arrays become List<object>
+                case JArray jArray:
+                    return jArray.Select(ToSimplifiedValue).ToList();
+                // values just become the value
+                case JValue jValue:
+                    return jValue.Value;
+                // don't know what to do here
+                default:
+                    throw new Exception($"Unsupported type: {originalObject.GetType()}");
+            }
         }
     }
 }

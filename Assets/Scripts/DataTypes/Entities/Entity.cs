@@ -12,15 +12,37 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public class Entity : ISetupable, ISaveable<Entity.Input>
+    public class Entity : ISetupable, ISaveable
     {
-        public class Input
+        public class Input : SaveableInputBase
         {
             public string typeLabel;
             public int id;
             public CellCoordinates.Input relativeOffsetCoordinates;
             public CellCoordinatesBlockList.Input relativeBlocksList;
             public EntityDefinition.Input definition;
+
+            public Input() : base() { }
+
+            public Input(object rawInput) : base(rawInput)
+            {
+                Dictionary<string, object> castRawInput = (Dictionary<string, object>)rawInput;
+
+                this.id = (int)castRawInput["id"];
+                this.relativeOffsetCoordinates = new CellCoordinates.Input(castRawInput["relativeOffsetCoordinates"]);
+                this.relativeBlocksList = new CellCoordinatesBlockList.Input(castRawInput["relativeBlocksList"]);
+                this.definition = new EntityDefinition.Input(castRawInput["definition"]);
+            }
+
+            public override object ToRawInput() =>
+                new Dictionary<string, object>()
+                {
+                    { "id", this.id },
+                    { "typeLabel", typeLabel },
+                    { "relativeOffsetCoordinates", relativeOffsetCoordinates.ToRawInput() },
+                    { "relativeBlocksList", this.relativeBlocksList.ToRawInput() },
+                    { "definition", this.definition.ToRawInput() }
+                };
         }
 
         public virtual string idKey => "entity";
@@ -55,6 +77,8 @@ namespace TowerBuilder.DataTypes.Entities
 
         public int price => definition.pricePerCell * relativeCellCoordinatesList.Count;
 
+        public override string ToString() => $"entity";
+
         public Entity() { }
 
         public Entity(EntityDefinition definition)
@@ -65,37 +89,32 @@ namespace TowerBuilder.DataTypes.Entities
             PostConstruct();
         }
 
-        public Entity(Input input)
+        public Entity(SaveableInputBase input)
         {
             ConsumeInput(input);
             PostConstruct();
         }
 
-        public Input ToInput() =>
+        public SaveableInputBase ToInput() =>
             new Input()
             {
-                id = this.id,
-                typeLabel = entityTypeData.label,
-                relativeOffsetCoordinates = this.relativeOffsetCoordinates.ToInput(),
-                relativeBlocksList = this.relativeBlocksList.ToInput(),
-                definition = this.definition.ToInput()
+
             };
 
-        void PostConstruct()
+        public void ConsumeInput(SaveableInputBase baseInput)
         {
-            this.buildValidator = definition.buildValidatorFactory(this);
-            this.destroyValidator = definition.destroyValidatorFactory(this);
-        }
-
-        public void ConsumeInput(Input input)
-        {
+            Input input = (Input)baseInput;
             this.id = input.id;
             this.relativeOffsetCoordinates = new CellCoordinates(input.relativeOffsetCoordinates);
             this.relativeBlocksList = new CellCoordinatesBlockList(input.relativeBlocksList);
             this.definition = Entities.Definitions.FindDefinitionByInput(input.definition);
         }
 
-        public override string ToString() => $"entity";
+        void PostConstruct()
+        {
+            this.buildValidator = definition.buildValidatorFactory(this);
+            this.destroyValidator = definition.destroyValidatorFactory(this);
+        }
 
         public virtual void OnBuild()
         {
@@ -131,29 +150,36 @@ namespace TowerBuilder.DataTypes.Entities
         /*
             Static Interface
         */
-        public static Entity FromInput(Input input)
+        public static Entity FromInput(Dictionary<string, object> input)
         {
             Debug.Log("Entity from input");
             Debug.Log(input);
 
-            Debug.Log("input.typeLabel");
-            Debug.Log(input.typeLabel);
+            Debug.Log("input");
+            Debug.Log(input);
+            Debug.Log(input["id"]);
+            Debug.Log(input["typeLabel"]);
+            Debug.Log(input["relativeOffsetCoordinates"]);
+            Debug.Log(input["relativeBlocksList"]);
+            Debug.Log(input["definition"]);
 
-            EntityTypeData inputEntityType = EntityTypeData.FindByLabel(input.typeLabel);
-            Debug.Log("inputEntityType");
-            Debug.Log(inputEntityType);
+            // Debug.Log("input.typeLabel");
+            // Debug.Log(input.typeLabel);
 
-            Type EntityType = inputEntityType.EntityType;
-            Debug.Log("EntityType");
-            Debug.Log(EntityType);
+            // EntityTypeData inputEntityType = EntityTypeData.FindByLabel(input.typeLabel);
+            // Debug.Log("inputEntityType");
+            // Debug.Log(inputEntityType);
 
-            if (EntityType != null)
-            {
-                return (Entity)(Activator.CreateInstance(EntityType, input));
-            }
+            // Type EntityType = inputEntityType.EntityType;
+            // Debug.Log("EntityType");
+            // Debug.Log(EntityType);
+
+            // if (EntityType != null)
+            // {
+            //     return (Entity)(Activator.CreateInstance(EntityType, input));
+            // }
 
             return null;
-
         }
 
         public static Entity CreateFromDefinition(EntityDefinition definition)

@@ -94,18 +94,19 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
         /*
             Queries
         */
-        public ListWrapper<Furniture> FindFurnituresAtCell(CellCoordinates cellCoordinates) =>
-            FindEntitiesAtCell(cellCoordinates).ConvertAll<Furniture>();
+        // public ListWrapper<Entity> FindFurnituresAtCell(CellCoordinates cellCoordinates) =>
+        //     FindEntitiesAtCell(cellCoordinates).ConvertAll<Furniture>();
 
-        public ListWrapper<Furniture> FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
+        public ListWrapper<Entity> FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
         {
-            ListWrapper<Furniture> furnitureList = new ListWrapper<Furniture>();
+            ListWrapper<Entity> furnitureList = new ListWrapper<Entity>();
 
             foreach (CellCoordinatesBlock block in cellCoordinatesBlockList.items)
             {
                 foreach (CellCoordinates cellCoordinates in block.items)
                 {
-                    ListWrapper<Furniture> furnituresAtCell = FindFurnituresAtCell(cellCoordinates);
+                    ListWrapper<Entity> furnituresAtCell = FindEntitiesAtCell(cellCoordinates);
+
                     if (furnituresAtCell.Count > 0)
                     {
                         furnitureList.Add(furnituresAtCell);

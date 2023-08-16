@@ -14,7 +14,7 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
 
         public TransportationItemValidator(TransportationItem transportationItem) : base(transportationItem) { }
 
-        static ListWrapper<ValidationError> ValidateEntrancesAndExits(AppState appState, Entity entity)
+        static List<ValidationError> ValidateEntrancesAndExits(AppState appState, Entity entity)
         {
             TransportationItem transportationItem = entity as TransportationItem;
             foreach (CellCoordinates cellCoordinates in transportationItem.entranceCellCoordinatesList.items)
@@ -33,7 +33,7 @@ namespace TowerBuilder.DataTypes.Entities.TransportationItems
                 }
             }
 
-            return new ListWrapper<ValidationError>();
+            return new List<ValidationError>();
         }
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    public class CellCoordinatesList : ListWrapper<CellCoordinates>
+    public class CellCoordinatesList : SaveableListWrapper<CellCoordinates>
     {
         public int lowestX =>
             items.Aggregate(int.MaxValue, (lowestX, coordinates) =>

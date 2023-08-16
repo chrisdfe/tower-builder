@@ -7,14 +7,25 @@ using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    public class CellCoordinates : ISaveable<CellCoordinates.Input>
+    public class CellCoordinates : ISaveable
     {
-        public class Input
+        public class Input : SaveableInputBase
         {
             public int x;
             public int y;
-        }
 
+            public Input() : base() { }
+            public Input(object rawInput) : base(rawInput)
+            {
+                string castRawInput = (string)rawInput;
+                string[] pieces = castRawInput.Split(":");
+
+                x = int.Parse(pieces[0]);
+                y = int.Parse(pieces[1]);
+            }
+
+            public override object ToRawInput() => $"{x}:{y}";
+        }
         public int x = 0;
 
         public int y = 0;
@@ -48,19 +59,17 @@ namespace TowerBuilder.DataTypes
             ConsumeInput(input);
         }
 
-        public Input ToInput() =>
+        public SaveableInputBase ToInput() =>
             new Input()
             {
                 x = this.x,
                 y = this.y
             };
 
-        public void ConsumeInput(Input input)
+        public void ConsumeInput(SaveableInputBase input)
         {
-            Debug.Log("CellCoordinates ConsumeInput");
-            Debug.Log(input);
-            this.x = input.x;
-            this.y = input.y;
+            this.x = ((Input)input).x;
+            this.y = ((Input)input).y;
         }
 
         public override string ToString() => $"x: {x}, y: {y}";

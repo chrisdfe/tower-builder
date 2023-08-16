@@ -10,16 +10,16 @@ namespace TowerBuilder.DataTypes
         /* 
             Static Interface
         */
-        public static ListWrapper<ValidationError> CreateSingleItemValidationErrorList(string message) =>
-            new ListWrapper<ValidationError>(new ValidationError(message));
+        public static List<ValidationError> CreateSingleItemValidationErrorList(string message) =>
+            new List<ValidationError>() { new ValidationError(message) };
 
-        public static ListWrapper<ValidationError> CreateEmptyValidationErrorList() =>
-            new ListWrapper<ValidationError>();
+        public static List<ValidationError> CreateEmptyValidationErrorList() =>
+            new List<ValidationError>();
     }
 
     public class Validator<ItemType> : Validator
     {
-        public delegate ListWrapper<ValidationError> ValidationFunc(AppState appState, ItemType itemType);
+        public delegate List<ValidationError> ValidationFunc(AppState appState, ItemType itemType);
 
         public ListWrapper<ValidationError> errors { get; protected set; } = new ListWrapper<ValidationError>();
 

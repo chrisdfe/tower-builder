@@ -11,12 +11,14 @@ namespace TowerBuilder.Systems
     {
         public SaveStateJsonSerializer() : base()
         {
+
             NullValueHandling = NullValueHandling.Ignore;
 
             // TODO - Debug mode only, otherwise "none"
             Formatting = Formatting.Indented;
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
-            Converters.Add(new SaveableObjectJsonConverter());
+            // Converters.Add(new SaveableObjectJsonConverter());
         }
     }
 }

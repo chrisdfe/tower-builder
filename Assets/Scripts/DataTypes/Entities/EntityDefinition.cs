@@ -5,28 +5,23 @@ using TowerBuilder.Systems;
 
 namespace TowerBuilder.DataTypes.Entities
 {
-    public class EntityDefinition : ISaveable<EntityDefinition.Input>
+    public class EntityDefinition : ISaveable
     {
-        public class Input
-        {
-            public string referenceKey;
-        }
-
-        public class Fragment
+        public class Input : SaveableInputBase
         {
             public string definitionKey;
             public string key;
 
-            public static Fragment FromInput(Input input)
+            public Input() : base() { }
+            public Input(object rawInput) : base(rawInput)
             {
-                string[] pieces = input.referenceKey.Split(":");
+                string[] pieces = ((string)rawInput).Split(":");
 
-                return new Fragment()
-                {
-                    definitionKey = pieces[0],
-                    key = pieces[1]
-                };
+                definitionKey = pieces[0];
+                key = pieces[1];
             }
+
+            public override object ToRawInput() => $"{definitionKey}:{key}";
         }
 
         public virtual string key { get; set; } = null;
@@ -53,13 +48,14 @@ namespace TowerBuilder.DataTypes.Entities
         public string typeKey =>
             Definitions.entityDefinitionsKeyMap.ValueFromKey(this.GetType());
 
-        public Input ToInput() =>
+        public SaveableInputBase ToInput() =>
             new Input()
             {
-                referenceKey = $"{typeKey}:{key}"
+                definitionKey = typeKey,
+                key = key
             };
 
-        public void ConsumeInput(Input input)
+        public void ConsumeInput(SaveableInputBase input)
         {
             throw new JsonSerializationException("Entities.FindDefinitionByInput instead.");
         }

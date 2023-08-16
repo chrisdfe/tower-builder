@@ -26,7 +26,8 @@ namespace TowerBuilder.ApplicationState.Notifications
         {
             Add(
                 new ListWrapper<Notification>(
-                    validationErrors.items
+                    validationErrors
+                        .items
                         .Select(error => new Notification(error.message))
                         .ToList()
                 )

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 
 namespace TowerBuilder.DataTypes.EntityGroups

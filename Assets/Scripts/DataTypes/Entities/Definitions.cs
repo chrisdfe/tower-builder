@@ -88,8 +88,11 @@ namespace TowerBuilder.DataTypes.Entities
 
         public static EntityDefinition FindDefinitionByInput(EntityDefinition.Input input)
         {
-            EntityDefinition.Fragment fragment = EntityDefinition.Fragment.FromInput(input);
-            return DefinitionFromFragment(fragment);
+            Type DefinitionType = entityDefinitionsKeyMap.KeyFromValue(input.definitionKey);
+            Type EntityType = entityDefinitionTypeEntityTypeMap.ValueFromKey(DefinitionType);
+            EntityDefinitionsList list = DefinitionFromEntityType(EntityType);
+            EntityDefinition result = list.FindByKey(input.key);
+            return result;
         }
         // new EntityDefinition();
 
@@ -98,14 +101,5 @@ namespace TowerBuilder.DataTypes.Entities
         */
         static EntityDefinitionsList DefinitionFromEntityType(Type type) =>
             entityDefinitionsMap[type];
-
-        static EntityDefinition DefinitionFromFragment(EntityDefinition.Fragment fragment)
-        {
-            Type DefinitionType = entityDefinitionsKeyMap.KeyFromValue(fragment.definitionKey);
-            Type EntityType = entityDefinitionTypeEntityTypeMap.ValueFromKey(DefinitionType);
-            EntityDefinitionsList list = DefinitionFromEntityType(EntityType);
-            EntityDefinition result = list.FindByKey(fragment.key);
-            return result;
-        }
     }
 }

@@ -13,7 +13,7 @@ namespace TowerBuilder.GameWorld.UI
         public RoomDefinitionButtonsRow() : base() { }
 
         public override List<UISelectButton.Input> CreateButtonInputs() =>
-            DataTypes.EntityGroups.Definitions.Rooms.Definitions.items.Select(roomDefinition =>
+            DataTypes.EntityGroups.Definitions.Rooms.Definitions.Select(roomDefinition =>
                 new UISelectButton.Input()
                 {
                     label = roomDefinition.title,

@@ -16,7 +16,7 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
 
         public FoundationBuildValidator(Foundation foundation) : base(foundation) { }
 
-        static ListWrapper<ValidationError> ValidateIsOnGroundFloorOrAboveAnotherFoundation(AppState appState, Entity entity)
+        static List<ValidationError> ValidateIsOnGroundFloorOrAboveAnotherFoundation(AppState appState, Entity entity)
         {
             CellCoordinatesList absoluteCellCoordinatesList = appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity);
             int bottomFloor = absoluteCellCoordinatesList.lowestY;
@@ -37,7 +37,7 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
                 }
             }
 
-            return new ListWrapper<ValidationError>();
+            return new List<ValidationError>();
         }
     }
 }

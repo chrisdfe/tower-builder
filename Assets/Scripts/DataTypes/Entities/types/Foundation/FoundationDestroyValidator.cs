@@ -18,7 +18,7 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
 
         public FoundationDestroyValidator(Foundation foundation) : base(foundation) { }
 
-        static ListWrapper<ValidationError> ValidateNoFoundationsAreAbove(AppState appState, Entity entity)
+        static List<ValidationError> ValidateNoFoundationsAreAbove(AppState appState, Entity entity)
         {
             CellCoordinatesList topRow = appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).topRow;
 
@@ -34,10 +34,10 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
                 }
             }
 
-            return new ListWrapper<ValidationError>();
+            return new List<ValidationError>();
         }
 
-        static ListWrapper<ValidationError> ValidateNothingElseIsInRoom(AppState appState, Entity entity)
+        static List<ValidationError> ValidateNothingElseIsInRoom(AppState appState, Entity entity)
         {
             EntityGroup parentRoom = appState.EntityGroups.Rooms.FindEntityParent(entity);
 
@@ -54,7 +54,7 @@ namespace TowerBuilder.DataTypes.Entities.Foundations
                 return EntityValidator.CreateSingleItemValidationErrorList("Cannot remove room with things inside of it.");
             }
 
-            return new ListWrapper<ValidationError>();
+            return new List<ValidationError>();
         }
     }
 }
