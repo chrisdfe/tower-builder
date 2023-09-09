@@ -13,15 +13,6 @@ namespace TowerBuilder.DataTypes.Entities
             public string key;
 
             public Input() : base() { }
-            public Input(object rawInput) : base(rawInput)
-            {
-                string[] pieces = ((string)rawInput).Split(":");
-
-                definitionKey = pieces[0];
-                key = pieces[1];
-            }
-
-            public override object ToRawInput() => $"{definitionKey}:{key}";
         }
 
         public virtual string key { get; set; } = null;

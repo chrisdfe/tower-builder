@@ -2,7 +2,7 @@
   "typeLabel": "Foundation",
   "id": 6,
   "relativeOffsetCoordinates": {
-    "x": 1,
+    "x": 2,
     "y": 0
   },
   "relativeBlocksList": {
@@ -18,6 +18,7 @@
     ]
   },
   "definition": {
-    "referenceKey": "Foundation:Default"
+    "definitionKey": "Foundation",
+    "key": "Default"
   }
 }

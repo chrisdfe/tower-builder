@@ -12,13 +12,6 @@ namespace TowerBuilder.DataTypes.EntityGroups
     {
         public class Input : SaveableInputBase
         {
-            public Input() : base() { }
-            public Input(object rawInput) : base(rawInput)
-            {
-
-            }
-
-            public override object ToRawInput() => new System.Object();
         }
 
         public ListWrapper<Entity> childEntities { get; } = new ListWrapper<Entity>();

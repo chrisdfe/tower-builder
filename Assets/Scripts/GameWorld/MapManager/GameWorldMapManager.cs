@@ -30,7 +30,9 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         int selectableEntityLayerMask;
         int uiLayer;
+
         UIManager uiManager;
+        // DropdownManager dropdownManager;
 
         /* 
             Lifecycle Methods
@@ -73,13 +75,12 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
             if (Input.GetMouseButtonDown(1))
             {
-
-                Registry.appState.UI.RightClickStart();
+                // Registry.appState.UI.RightClickStart();
             }
 
             if (Input.GetMouseButtonUp(1))
             {
-                Registry.appState.UI.RightClickEnd();
+                // Registry.appState.UI.RightClickEnd();
             }
 
             if (Input.GetButtonDown("Escape"))

@@ -13,19 +13,8 @@ namespace TowerBuilder.DataTypes
         {
             public int x;
             public int y;
-
-            public Input() : base() { }
-            public Input(object rawInput) : base(rawInput)
-            {
-                string castRawInput = (string)rawInput;
-                string[] pieces = castRawInput.Split(":");
-
-                x = int.Parse(pieces[0]);
-                y = int.Parse(pieces[1]);
-            }
-
-            public override object ToRawInput() => $"{x}:{y}";
         }
+
         public int x = 0;
 
         public int y = 0;
@@ -62,14 +51,14 @@ namespace TowerBuilder.DataTypes
         public SaveableInputBase ToInput() =>
             new Input()
             {
-                x = this.x,
-                y = this.y
+                x = x,
+                y = y
             };
 
         public void ConsumeInput(SaveableInputBase input)
         {
-            this.x = ((Input)input).x;
-            this.y = ((Input)input).y;
+            x = ((Input)input).x;
+            y = ((Input)input).y;
         }
 
         public override string ToString() => $"x: {x}, y: {y}";

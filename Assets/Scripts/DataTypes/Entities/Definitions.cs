@@ -94,7 +94,6 @@ namespace TowerBuilder.DataTypes.Entities
             EntityDefinition result = list.FindByKey(input.key);
             return result;
         }
-        // new EntityDefinition();
 
         /*
             Internals

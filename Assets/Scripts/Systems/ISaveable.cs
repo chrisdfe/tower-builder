@@ -11,22 +11,18 @@ namespace TowerBuilder.Systems
     public abstract class SaveableInputBase
     {
         public SaveableInputBase() { }
-        public SaveableInputBase(object rawInput) { }
-        public abstract object ToRawInput();
+        // public SaveableInputBase(object rawInput) { }
+        // public abstract object ToRawInput();
     }
 
     public interface ISaveable
     {
         public SaveableInputBase ToInput();
-        public object ToRawInput() => ToInput().ToRawInput();
+
         public void ConsumeInput(SaveableInputBase input);
 
-        public static void FromInput(SaveableInputBase input) => throw new NotImplementedException();
+        public ItemType CreateItemFrom<ItemType>() => throw new NotImplementedException();
 
-        // public static bool IsImplementedBy(Type objectType) =>
-        //     objectType
-        //         .GetInterfaces()
-        //         .ToList()
-        //         .Find(i => i.GetType() == typeof(ISaveable)) != null;
+        // public static void FromInput(SaveableInputBase input) => throw new NotImplementedException();
     }
 }

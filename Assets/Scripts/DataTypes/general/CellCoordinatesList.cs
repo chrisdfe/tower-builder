@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using TowerBuilder.Systems;
 using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
-    public class CellCoordinatesList : SaveableListWrapper<CellCoordinates>
+    public class CellCoordinatesList : SaveableListWrapper<CellCoordinates, CellCoordinates.Input>
     {
         public int lowestX =>
             items.Aggregate(int.MaxValue, (lowestX, coordinates) =>
@@ -81,6 +82,11 @@ namespace TowerBuilder.DataTypes
         public CellCoordinatesList(CellCoordinates cellCoordinates) : base(cellCoordinates) { }
         public CellCoordinatesList(List<CellCoordinates> cellCoordinatesList) : base(cellCoordinatesList) { }
         public CellCoordinatesList(CellCoordinatesList cellCoordinatesList) : base(cellCoordinatesList) { }
+
+        // public override void ConsumeInput(SaveableInputBase input)
+        // {
+        //     items = input.items
+        // }
 
         public override bool Contains(CellCoordinates cellCoordinates) =>
             items.Find(otherCellCoordinates => otherCellCoordinates.Matches(cellCoordinates)) != null;

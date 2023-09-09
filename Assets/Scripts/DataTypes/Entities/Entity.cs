@@ -23,26 +23,6 @@ namespace TowerBuilder.DataTypes.Entities
             public EntityDefinition.Input definition;
 
             public Input() : base() { }
-
-            public Input(object rawInput) : base(rawInput)
-            {
-                Dictionary<string, object> castRawInput = (Dictionary<string, object>)rawInput;
-
-                this.id = (int)castRawInput["id"];
-                this.relativeOffsetCoordinates = new CellCoordinates.Input(castRawInput["relativeOffsetCoordinates"]);
-                this.relativeBlocksList = new CellCoordinatesBlockList.Input(castRawInput["relativeBlocksList"]);
-                this.definition = new EntityDefinition.Input(castRawInput["definition"]);
-            }
-
-            public override object ToRawInput() =>
-                new Dictionary<string, object>()
-                {
-                    { "id", this.id },
-                    { "typeLabel", typeLabel },
-                    { "relativeOffsetCoordinates", relativeOffsetCoordinates.ToRawInput() },
-                    { "relativeBlocksList", this.relativeBlocksList.ToRawInput() },
-                    { "definition", this.definition.ToRawInput() }
-                };
         }
 
         public virtual string idKey => "entity";
@@ -55,7 +35,7 @@ namespace TowerBuilder.DataTypes.Entities
         public CellCoordinatesBlockList relativeBlocksList { get; private set; } = new CellCoordinatesBlockList();
 
         public CellCoordinatesList relativeCellCoordinatesList =>
-            CellCoordinatesList.FromBlocksList(this.relativeBlocksList);
+            CellCoordinatesList.FromBlocksList(relativeBlocksList);
 
         public Dictionary<CellCoordinates, CellNeighbors> cellNeighborsMap = new Dictionary<CellCoordinates, CellNeighbors>();
         public Dictionary<CellCoordinates, Tileable.CellPosition> cellPositionMap = new Dictionary<CellCoordinates, Tileable.CellPosition>();
@@ -65,7 +45,7 @@ namespace TowerBuilder.DataTypes.Entities
         public EntityValidator buildValidator { get; private set; }
         public EntityValidator destroyValidator { get; private set; }
 
-        public EntityTypeData entityTypeData => EntityTypeData.Get(this.GetType());
+        public EntityTypeData entityTypeData => EntityTypeData.Get(GetType());
 
         public string typeLabel => entityTypeData.label;
 
@@ -83,7 +63,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public Entity(EntityDefinition definition)
         {
-            this.id = UIDGenerator.Generate(idKey);
+            id = UIDGenerator.Generate(idKey);
             this.definition = definition;
 
             PostConstruct();
@@ -98,22 +78,26 @@ namespace TowerBuilder.DataTypes.Entities
         public SaveableInputBase ToInput() =>
             new Input()
             {
-
+                typeLabel = EntityTypeData.Get(GetType()).label,
+                id = id,
+                relativeOffsetCoordinates = relativeOffsetCoordinates.ToInput() as CellCoordinates.Input,
+                relativeBlocksList = relativeBlocksList.ToInput() as CellCoordinatesBlockList.Input,
+                definition = definition.ToInput() as EntityDefinition.Input
             };
 
         public void ConsumeInput(SaveableInputBase baseInput)
         {
             Input input = (Input)baseInput;
-            this.id = input.id;
-            this.relativeOffsetCoordinates = new CellCoordinates(input.relativeOffsetCoordinates);
-            this.relativeBlocksList = new CellCoordinatesBlockList(input.relativeBlocksList);
-            this.definition = Entities.Definitions.FindDefinitionByInput(input.definition);
+            id = input.id;
+            relativeOffsetCoordinates = new CellCoordinates(input.relativeOffsetCoordinates);
+            relativeBlocksList = new CellCoordinatesBlockList(input.relativeBlocksList);
+            definition = Definitions.FindDefinitionByInput(input.definition);
         }
 
         void PostConstruct()
         {
-            this.buildValidator = definition.buildValidatorFactory(this);
-            this.destroyValidator = definition.destroyValidatorFactory(this);
+            buildValidator = definition.buildValidatorFactory(this);
+            destroyValidator = definition.destroyValidatorFactory(this);
         }
 
         public virtual void OnBuild()
@@ -150,36 +134,15 @@ namespace TowerBuilder.DataTypes.Entities
         /*
             Static Interface
         */
-        public static Entity FromInput(Dictionary<string, object> input)
+        public static Entity FromInput(Input input)
         {
-            Debug.Log("Entity from input");
-            Debug.Log(input);
+            Entity entity = new Entity();
+            EntityTypeData newEntityTypeData = EntityTypeData.FindByLabel(input.typeLabel);
+            Type EntityType = newEntityTypeData.EntityType;
+            Entity newEntity = (Entity)Activator.CreateInstance(EntityType);
+            newEntity.ConsumeInput(input);
 
-            Debug.Log("input");
-            Debug.Log(input);
-            Debug.Log(input["id"]);
-            Debug.Log(input["typeLabel"]);
-            Debug.Log(input["relativeOffsetCoordinates"]);
-            Debug.Log(input["relativeBlocksList"]);
-            Debug.Log(input["definition"]);
-
-            // Debug.Log("input.typeLabel");
-            // Debug.Log(input.typeLabel);
-
-            // EntityTypeData inputEntityType = EntityTypeData.FindByLabel(input.typeLabel);
-            // Debug.Log("inputEntityType");
-            // Debug.Log(inputEntityType);
-
-            // Type EntityType = inputEntityType.EntityType;
-            // Debug.Log("EntityType");
-            // Debug.Log(EntityType);
-
-            // if (EntityType != null)
-            // {
-            //     return (Entity)(Activator.CreateInstance(EntityType, input));
-            // }
-
-            return null;
+            return newEntity;
         }
 
         public static Entity CreateFromDefinition(EntityDefinition definition)
@@ -189,7 +152,7 @@ namespace TowerBuilder.DataTypes.Entities
 
             if (EntityType != null)
             {
-                return (Entity)(Activator.CreateInstance(EntityType, definition));
+                return (Entity)Activator.CreateInstance(EntityType, definition);
             }
 
             return null;

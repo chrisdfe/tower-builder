@@ -2,11 +2,24 @@
 
 ## Current
 
+- Make sure resident routefinding/movement still works
+
+## Later
+
+- PROJECT: "exterior" that surrounds/encloses rooms
+  - collection of points at cell intersections instead of the cells themselves
+  - lines connecting points
+  - shape is created when points are connected (last point == first point)
+  - lines can either be straight (default) or curved
+    - curved only applies to diagonals
 - PROJECT: save/load system working
   - [x] Make sure state inputs are working
   - [x] saving to file outputs correct json
   - [x] loading from file works
   - [ ] save/load entire appState
+
+## After
+
 - Validate that Entity is inside a room/building when it gets added
   - either:
     - Add room when room-less building is added
@@ -14,9 +27,6 @@
   - OR
     - some kind of "context" object that gets passed into events
       - i.e if the context object for entity create also has a room + building then it is valid
-
-## After
-
 - CLEANUP: Rename "ListWrapper" as "ListWrapper"
 - TASK: use UUIDs instead of incrementing ids
 - BUG: time panel doesn't update to match current speed when it is updated
@@ -25,7 +35,6 @@
 - Windows shouldn't be built in underground rooms
 - PROJECT: right click dropdown menu
   - for resident interactions - "go here" or "interact with furniture"
-- Make sure resident routefinding/movement still works
 - Resident skills
   - Engine use
   - piloting

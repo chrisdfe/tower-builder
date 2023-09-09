@@ -37,14 +37,8 @@ namespace TowerBuilder.Systems
             using (StreamReader sr = new StreamReader(filePath))
             using (JsonTextReader reader = new JsonTextReader(sr))
             {
-                object raw = serializer.Deserialize<object>(reader);
-                Debug.Log("raw");
-                Debug.Log(raw);
-                object input = ToSimplifiedValue(raw);
-                Debug.Log("deserialized save data:");
-                Debug.Log(input);
-
-                var entity = Entity.FromInput(input as Dictionary<string, object>);
+                Entity.Input input = serializer.Deserialize<Entity.Input>(reader);
+                var entity = Entity.FromInput(input);
 
                 // Registry.appState.Entities.Add(Entity.FromInput(input as Dictionary<string, object>));
             }
