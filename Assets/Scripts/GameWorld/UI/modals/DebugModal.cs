@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace TowerBuilder.GameWorld.UI
 {
-    public class DebugModalManager : MonoBehaviour
+    public class DebugModal : MonoBehaviour
     {
         Button add1HourButton;
         Button subtract1HourButton;

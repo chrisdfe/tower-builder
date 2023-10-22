@@ -81,13 +81,12 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             if (Input.GetMouseButtonUp(1))
             {
                 // Registry.appState.UI.RightClickEnd();
-                UIInteractionDropdown interactionDropdown = UIInteractionDropdown.Find();
-                interactionDropdown.Toggle();
+                uiManager.dropdownsManager.ToggleInteractionModal();
             }
 
             if (Input.GetButtonDown("Escape"))
             {
-                uiManager.ToggleDebugModal();
+                uiManager.modalsManager.ToggleDebugModal();
             }
 
             currentToolStateHandler.Update();

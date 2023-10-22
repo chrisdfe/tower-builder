@@ -9,11 +9,9 @@ namespace TowerBuilder.GameWorld.UI
 
         bool hasInitialized = false;
 
-        public GameObject uiInteractionDropdownPrefab;
-
         GameObject contentGameObject;
 
-        public void Awake()
+        public void Start()
         {
             contentGameObject = transform.Find("Content").gameObject;
         }
@@ -32,6 +30,8 @@ namespace TowerBuilder.GameWorld.UI
 
         public void Open()
         {
+            gameObject.SetActive(true);
+
             isOpen = true;
             Vector3 screenMousePosition = Input.mousePosition;
             RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
@@ -52,22 +52,12 @@ namespace TowerBuilder.GameWorld.UI
         {
             isOpen = false;
             contentGameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
 
-        UIInteractionDropdownItem CreateDropdownItem(string label, UIInteractionDropdownItem.OnClick onClick)
+        public void SetItems(UIInteractionDropdownItem.Input[] inputs)
         {
-            // TODO - instantiate the prefab and everything as well
-            GameObject newItem = GameObject.Instantiate(uiInteractionDropdownPrefab);
-            return new UIInteractionDropdownItem(label, onClick);
-        }
 
-        public static UIInteractionDropdown Find()
-        {
-            var gameObject = GameObject.Find("InteractionDropdown");
-            Debug.Log(gameObject);
-            var dropdown = gameObject.GetComponent<UIInteractionDropdown>();
-            Debug.Log(dropdown);
-            return dropdown;
         }
     }
 }

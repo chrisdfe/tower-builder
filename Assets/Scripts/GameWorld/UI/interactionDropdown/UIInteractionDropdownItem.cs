@@ -6,13 +6,24 @@ namespace TowerBuilder.GameWorld.UI
     {
         public delegate void OnClick();
 
+        public class Input
+        {
+            public string label;
+            public OnClick onClick;
+        }
+
         string label;
         OnClick onClick;
 
-        public UIInteractionDropdownItem(string label, OnClick onClick)
+        public UIInteractionDropdownItem(Input input)
         {
-            this.onClick = onClick;
-            this.label = label;
+            onClick = input.onClick;
+            label = input.label;
+        }
+
+        public UIInteractionDropdownItem Create(Input input)
+        {
+            return null;
         }
     }
 }
