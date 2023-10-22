@@ -17,6 +17,8 @@ namespace TowerBuilder.GameWorld.UI
         public bool mouseIsOverUI { get; private set; }
 
         Canvas canvas;
+        public CanvasScaler canvasScaler { get; private set; }
+
         GraphicRaycaster graphicRaycaster;
         PointerEventData pointerEventData;
         EventSystem eventSystem;
@@ -30,6 +32,7 @@ namespace TowerBuilder.GameWorld.UI
         public void Start()
         {
             canvas = transform.Find("Canvas").GetComponent<Canvas>();
+            canvasScaler = canvas.GetComponent<CanvasScaler>();
             graphicRaycaster = canvas.GetComponent<GraphicRaycaster>();
             eventSystem = canvas.GetComponent<EventSystem>();
 
