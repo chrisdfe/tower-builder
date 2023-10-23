@@ -2,6 +2,9 @@
 
 ## Current
 
+- PROJECT: right click dropdown menu
+  - for resident interactions - "go here" or "interact with furniture"
+- Move UI interaction into UIManager as much as possible - it doesn't need to live in appState as much as it does.
 - Make sure resident routefinding/movement still works
 
 ## Later
@@ -33,8 +36,6 @@
 - TASK: add speed change buttons.
 - Window shouldn't be valid in invalid room - it should check if the room it is inside of is valid too
 - Windows shouldn't be built in underground rooms
-- PROJECT: right click dropdown menu
-  - for resident interactions - "go here" or "interact with furniture"
 - Resident skills
   - Engine use
   - piloting
