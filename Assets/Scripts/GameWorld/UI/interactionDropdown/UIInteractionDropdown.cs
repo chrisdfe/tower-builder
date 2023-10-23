@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using TowerBuilder.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +14,9 @@ namespace TowerBuilder.GameWorld.UI
 
         GameObject contentGameObject;
 
-        public void Start()
+        List<UIInteractionDropdownItem> items;
+
+        public void Awake()
         {
             contentGameObject = transform.Find("Content").gameObject;
         }
@@ -31,8 +36,21 @@ namespace TowerBuilder.GameWorld.UI
         public void Open()
         {
             gameObject.SetActive(true);
-
+            contentGameObject.SetActive(true);
             isOpen = true;
+
+            // For debug purposes
+            SetItems(new List<UIInteractionDropdownItem.Input>() {
+                new UIInteractionDropdownItem.Input() {
+                    label = "test",
+                    onClick = TestClickCallback
+                },
+                new UIInteractionDropdownItem.Input() {
+                    label = "test 2",
+                    onClick = TestClickCallback
+                },
+            });
+
             Vector3 screenMousePosition = Input.mousePosition;
             RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
             CanvasScaler canvasScaler = UIManager.Find().canvasScaler;
@@ -45,7 +63,6 @@ namespace TowerBuilder.GameWorld.UI
                 screenMousePosition.y - (rectTransform.rect.height * scaleFactor.y / 2),
                 0
             );
-            contentGameObject.SetActive(true);
         }
 
         public void Close()
@@ -55,9 +72,39 @@ namespace TowerBuilder.GameWorld.UI
             gameObject.SetActive(false);
         }
 
-        public void SetItems(UIInteractionDropdownItem.Input[] inputs)
+        public void SetItems(List<UIInteractionDropdownItem.Input> inputs)
         {
+            TransformUtils.DestroyChildren(contentGameObject.transform);
+            items = new List<UIInteractionDropdownItem>();
 
+            foreach (var input in inputs)
+            {
+                var wrappedInput = new UIInteractionDropdownItem.Input()
+                {
+                    label = input.label,
+                    onClick = () => WrapOnClick(input.onClick)
+                };
+
+                var dropdownItem = UIInteractionDropdownItem.Create(wrappedInput);
+
+                // Preserve the scale that gets messed up during SetParent
+                // TODO - move into a TransformUtils helper
+                var originalScale = dropdownItem.transform.localScale;
+                dropdownItem.transform.SetParent(contentGameObject.transform);
+                dropdownItem.transform.localScale = originalScale;
+                items.Append(dropdownItem);
+            }
+        }
+
+        void WrapOnClick(UIInteractionDropdownItem.OnClick onClick)
+        {
+            onClick();
+            Close();
+        }
+
+        void TestClickCallback()
+        {
+            Debug.Log("Click.");
         }
     }
 }

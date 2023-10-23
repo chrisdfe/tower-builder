@@ -14,6 +14,8 @@ namespace TowerBuilder.GameWorld.UI
     {
         UIInteractionDropdown interactionDropdown;
 
+        public AssetList assetList;
+
         /*
             Lifecycle
         */
@@ -27,6 +29,11 @@ namespace TowerBuilder.GameWorld.UI
         public void ToggleInteractionModal()
         {
             interactionDropdown.Toggle();
+        }
+
+        public static DropdownsManager Find()
+        {
+            return GameObject.Find("DropdownsManager").GetComponent<DropdownsManager>();
         }
     }
 }

@@ -16,16 +16,16 @@ namespace TowerBuilder.GameWorld.UI
 
         public bool mouseIsOverUI { get; private set; }
 
-        Canvas canvas;
+        public ModalsManager modalsManager { get; private set; }
+        public DropdownsManager dropdownsManager { get; private set; }
+
         public CanvasScaler canvasScaler { get; private set; }
 
+        Canvas canvas;
         GraphicRaycaster graphicRaycaster;
         PointerEventData pointerEventData;
         EventSystem eventSystem;
 
-        public ModalsManager modalsManager { get; private set; }
-
-        public DropdownsManager dropdownsManager { get; private set; }
 
         /*
             Public Interface
@@ -38,12 +38,11 @@ namespace TowerBuilder.GameWorld.UI
             eventSystem = canvas.GetComponent<EventSystem>();
 
             modalsManager = canvas.transform.Find("ModalsManager").GetComponent<ModalsManager>();
-
             dropdownsManager = canvas.transform.Find("DropdownsManager").GetComponent<DropdownsManager>();
 
             // Calculate layermask to Raycast to. (Raycast to "cube" && "sphere" layers only)
             int uiLayerIndex = LayerMask.NameToLayer("UI");
-            int layerMask = (1 << uiLayerIndex);
+            // int layerMask = (1 << uiLayerIndex);
             graphicRaycaster.blockingMask = uiLayerIndex;
         }
 
