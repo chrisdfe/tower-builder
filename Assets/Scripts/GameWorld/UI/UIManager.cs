@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Runtime;
 using TowerBuilder.ApplicationState.Tools;
 using TowerBuilder.DataTypes;
+using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -49,6 +51,36 @@ namespace TowerBuilder.GameWorld.UI
         public void Update()
         {
             SetMouseIsOverUI();
+        }
+
+        public void OnLeftMouseButtonDown() { }
+
+        public void OnLeftMouseButtonUp() { }
+
+        public void OnRightMouseButtonDown() { }
+
+        public void OnRightMouseButtonUp()
+        {
+            if (Registry.appState.Tools.currentKey == ApplicationState.Tools.State.Key.Inspect)
+            {
+                if (Registry.appState.Tools.Inspect.inspectedEntity != null && Registry.appState.Tools.Inspect.inspectedEntity.GetType() == typeof(Resident))
+                {
+                    Resident inspectedResident = Registry.appState.Tools.Inspect.inspectedEntity as Resident;
+                    CellCoordinates selectedCell = Registry.appState.UI.selectedCell;
+
+                    dropdownsManager.interactionDropdown.SetItemsAndOpen(new List<UIInteractionDropdownItem.Input>() {
+                        new UIInteractionDropdownItem.Input() {
+                            label = "Go here",
+                            onClick = () => {
+                                Debug.Log("sending " + inspectedResident + " to " + selectedCell);
+                                Registry.appState.Behaviors.Residents.SendResidentTo(inspectedResident, selectedCell);
+                            }
+                        }
+                    });
+                }
+            }
+
+            return;
         }
 
         /*

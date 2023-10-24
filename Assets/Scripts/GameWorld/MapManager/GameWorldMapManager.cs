@@ -81,7 +81,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             if (Input.GetMouseButtonUp(1))
             {
                 // Registry.appState.UI.RightClickEnd();
-                uiManager.dropdownsManager.ToggleInteractionModal();
+                uiManager.OnRightMouseButtonUp();
             }
 
             if (Input.GetButtonDown("Escape"))

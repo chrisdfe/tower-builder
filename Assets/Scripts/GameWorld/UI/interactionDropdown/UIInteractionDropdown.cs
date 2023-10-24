@@ -96,6 +96,12 @@ namespace TowerBuilder.GameWorld.UI
             }
         }
 
+        public void SetItemsAndOpen(List<UIInteractionDropdownItem.Input> inputs)
+        {
+            Open();
+            SetItems(inputs);
+        }
+
         void WrapOnClick(UIInteractionDropdownItem.OnClick onClick)
         {
             onClick();

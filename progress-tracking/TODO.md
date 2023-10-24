@@ -4,6 +4,8 @@
 
 - PROJECT: right click dropdown menu
   - for resident interactions - "go here" or "interact with furniture"
+- Move behaviors and attributes into their respective entities (residents, etc)
+- Move a lot of the stuff in GameWorldMapManager into UIManager
 - Move UI interaction into UIManager as much as possible - it doesn't need to live in appState as much as it does.
 - Make sure resident routefinding/movement still works
 
@@ -23,6 +25,7 @@
 
 ## After
 
+- Slice room in half tool
 - Validate that Entity is inside a room/building when it gets added
   - either:
     - Add room when room-less building is added

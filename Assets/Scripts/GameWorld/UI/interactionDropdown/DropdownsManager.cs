@@ -12,7 +12,7 @@ namespace TowerBuilder.GameWorld.UI
 {
     public class DropdownsManager : MonoBehaviour
     {
-        UIInteractionDropdown interactionDropdown;
+        public UIInteractionDropdown interactionDropdown { get; private set; }
 
         public AssetList assetList;
 
@@ -22,18 +22,20 @@ namespace TowerBuilder.GameWorld.UI
         public void Awake()
         {
             interactionDropdown = transform.Find("InteractionDropdown").GetComponent<UIInteractionDropdown>();
-            Debug.Log("interactionDropdown");
-            Debug.Log(interactionDropdown);
         }
 
-        public void ToggleInteractionModal()
+        /* 
+            Public API
+        */
+        public void CloseAll()
         {
-            interactionDropdown.Toggle();
+            interactionDropdown.Close();
         }
 
-        public static DropdownsManager Find()
-        {
-            return GameObject.Find("DropdownsManager").GetComponent<DropdownsManager>();
-        }
+        /*
+            Static API
+        */
+        public static DropdownsManager Find() =>
+            GameObject.Find("DropdownsManager").GetComponent<DropdownsManager>();
     }
 }
