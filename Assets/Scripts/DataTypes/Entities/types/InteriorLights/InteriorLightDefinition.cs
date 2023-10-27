@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Behaviors.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 
 namespace TowerBuilder.DataTypes.Entities.InteriorLights
 {

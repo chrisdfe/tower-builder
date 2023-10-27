@@ -1,16 +1,36 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Attributes.Residents;
-using TowerBuilder.DataTypes.Behaviors.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Routes;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
+namespace TowerBuilder.DataTypes.Entities.Residents
 {
-    public partial class ResidentBehavior
+    public class ResidentBehavior
     {
+        public abstract class Goal
+        {
+            // public enum Priority
+            // {
+            //     Lowest,
+            //     Low,
+            //     Medium,
+            //     High,
+            //     Important,
+            //     Emergency,
+            // }
+
+            public virtual string title { get; } = "Goal";
+            public bool isComplete = false;
+            public bool hasBegun = false;
+            // public Priority priority = Priority.Medium;
+
+            public abstract void OnTick(AppState appState);
+        }
+
         public class Goals
         {
             public Queue<Goal> queue { get; private set; } = new Queue<Goal>();
@@ -48,7 +68,6 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
             InteractingWithFurniture,
         }
 
-        public Resident resident { get; private set; }
 
         public StateKey currentState { get; private set; } = StateKey.Idle;
         public StateKey nextState { get; private set; } = StateKey.Idle;
@@ -60,12 +79,15 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
         public Route route { get; private set; }
         public RouteProgress routeProgress { get; private set; }
 
+        public Resident resident { get; private set; }
+
         AppState appState;
 
+        // TODO - remove appsTate
         public ResidentBehavior(AppState appState, Resident resident)
         {
-            this.appState = appState;
             this.resident = resident;
+            this.appState = appState;
         }
 
         public void Setup() { }
@@ -131,20 +153,21 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
             Debug.Log($"Transitioned {resident} behavior from {previousState} to {currentState}");
         }
 
-        public ListWrapper<ValidationError> ValidateGoal(Goal goal)
+        public ListWrapper<ValidationError> ValidateGoal(Goal goal, AppState appState)
         {
             switch (goal)
             {
                 case TravelGoal:
                     break;
                 case InteractingWithFurnitureGoal interactingWithFurnitureGoal:
-                    FurnitureBehavior furnitureBehavior = appState.Behaviors.Furnitures.FindByFurniture(interactingWithFurnitureGoal.furniture);
+                    FurnitureBehavior furnitureBehavior = interactingWithFurnitureGoal.furniture.behavior;
                     furnitureBehavior.validator.Validate(appState);
                     return furnitureBehavior.validator.errors;
             }
 
             return new ListWrapper<ValidationError>();
         }
+
 
         // TODO - there should probably be a sepearate 'validation' pass before setup,
         //        it feels bad for validation to be happening once we've already switched
@@ -158,7 +181,7 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
                 case StateKey.Traveling:
                     break;
                 case StateKey.InteractingWithFurniture:
-                    appState.Behaviors.Furnitures.StartInteraction(resident, interactionFurniture);
+                    appState.Entities.Furnitures.StartInteraction(resident, interactionFurniture);
                     break;
             }
         }
@@ -173,7 +196,7 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
                     routeProgress = null;
                     break;
                 case StateKey.InteractingWithFurniture:
-                    appState.Behaviors.Furnitures.EndInteraction(resident, interactionFurniture);
+                    appState.Entities.Furnitures.EndInteraction(resident, interactionFurniture);
                     interactionFurniture = null;
                     break;
             }
@@ -214,13 +237,21 @@ namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
         void InteractingWithFurnitureTick()
         {
             // TODO - check if there is anything higher priority to do
-            appState.Behaviors.Furnitures.InteractWithFurniture(resident, interactionFurniture);
+            // interactionFurniture.behavior.InteractWithFurniture(resident, interactionFurniture);
         }
 
         void TravelingTick()
         {
             routeProgress.IncrementProgress();
-            appState.Entities.Residents.UpdateEntityOffsetCoordinates(resident, routeProgress.currentCell);
+            // appState.Entities.Residents.UpdateEntityOffsetCoordinates(resident, routeProgress.currentCell);
         }
+
+        /* 
+            Event handlers
+         */
+        // void OnTick(TimeValue time)
+        // {
+        //     list.ForEach(residentBehavior => ProcessResidentBehaviorTick(residentBehavior));
+        // }
     }
 }

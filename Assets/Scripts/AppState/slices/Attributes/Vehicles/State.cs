@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Attributes.Vehicles;
-using TowerBuilder.DataTypes.Behaviors.Furnitures;
+using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.EntityGroups.Vehicles;

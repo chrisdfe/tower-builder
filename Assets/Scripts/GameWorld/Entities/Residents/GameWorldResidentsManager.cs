@@ -1,6 +1,5 @@
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Entities.Behaviors.Residents;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Time;
 using UnityEngine;
@@ -23,11 +22,9 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
         void OnTick(TimeValue time)
         {
-            ListWrapper<ResidentBehavior> residentBehaviorsList = Registry.appState.Behaviors.Residents.list;
-
-            foreach (ResidentBehavior residentBehavior in residentBehaviorsList.items)
+            foreach (Resident resident in Registry.appState.Entities.Residents.list.items)
             {
-                Resident resident = residentBehavior.resident;
+                ResidentBehavior residentBehavior = resident.behavior;
                 GameWorldEntity gameWorldEntity = FindByEntity(resident);
                 GameWorldResident gameWorldResident = gameWorldEntity.GetComponent<GameWorldResident>();
 

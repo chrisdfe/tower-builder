@@ -6,14 +6,16 @@ using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Routes;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Entities.Behaviors.Residents
+namespace TowerBuilder.DataTypes.Entities.Residents
 {
-    public partial class ResidentBehavior
+    public class TravelGoal : ResidentBehavior.Goal
     {
-        public class TravelGoal : Goal
+        public override string title { get => "Walk"; }
+        public Route route;
+
+        public override void OnTick(AppState appState)
         {
-            public override string title { get => "Walk"; }
-            public Route route;
+            // throw new System.NotImplementedException();
         }
     }
 }

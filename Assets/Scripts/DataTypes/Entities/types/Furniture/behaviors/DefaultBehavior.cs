@@ -1,11 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.EntityGroups.Rooms;
-using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Behaviors.Furnitures
+namespace TowerBuilder.DataTypes.Entities.Furnitures
 {
     public class DefaultBehavior : FurnitureBehavior
     {

@@ -8,7 +8,7 @@ using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Behaviors.Furnitures
+namespace TowerBuilder.DataTypes.Entities.Furnitures
 {
     public class CockpitBehavior : FurnitureBehavior
     {

@@ -4,6 +4,7 @@ using System.Linq;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
+using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.Notifications;
 using UnityEngine;
@@ -13,7 +14,15 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
     [Serializable]
     public class State : EntityStateSlice
     {
-        public class Input { }
+        public class Input
+        {
+
+        }
+
+        public delegate void InteractionEvent(FurnitureBehavior behavior);
+        public InteractionEvent onInteractStart;
+        public InteractionEvent onInteractEnd;
+
 
         public State(AppState appState, Input input) : base(appState)
         {
@@ -37,6 +46,18 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
 
             // appState.Entities.Rooms.events.onRoomBlocksAdded -= OnRoomBlocksAdded;
             // appState.Entities.Rooms.events.onRoomBlocksRemoved -= OnRoomBlocksRemoved;
+        }
+
+        public void StartInteraction(Resident resident, Furniture interactionFurniture)
+        {
+            interactionFurniture.behavior.StartInteraction(resident);
+            onInteractStart?.Invoke(interactionFurniture.behavior);
+        }
+
+        public void EndInteraction(Resident resident, Furniture interactionFurniture)
+        {
+            interactionFurniture.behavior.EndInteraction(resident);
+            onInteractEnd?.Invoke(interactionFurniture.behavior);
         }
 
         /* 
@@ -91,12 +112,10 @@ namespace TowerBuilder.ApplicationState.Entities.Furnitures
             Remove(furnituresInBlock);
         }
 
+
         /*
             Queries
         */
-        // public ListWrapper<Entity> FindFurnituresAtCell(CellCoordinates cellCoordinates) =>
-        //     FindEntitiesAtCell(cellCoordinates).ConvertAll<Furniture>();
-
         public ListWrapper<Entity> FindFurnitureInBlocks(CellCoordinatesBlockList cellCoordinatesBlockList)
         {
             ListWrapper<Entity> furnitureList = new ListWrapper<Entity>();

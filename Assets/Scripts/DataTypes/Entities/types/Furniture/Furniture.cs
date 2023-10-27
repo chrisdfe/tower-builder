@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.EntityGroups.Rooms;
-using UnityEngine;
-
 namespace TowerBuilder.DataTypes.Entities.Furnitures
 {
     public class Furniture : Entity
@@ -13,5 +7,7 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
         public Furniture() : base() { }
         public Furniture(Input input) : base(input) { }
         public Furniture(FurnitureDefinition furnitureDefinition) : base(furnitureDefinition) { }
+
+        public FurnitureBehavior behavior;
     }
 }

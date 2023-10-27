@@ -1,13 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Attributes.Vehicles;
-using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
-using TowerBuilder.DataTypes.EntityGroups.Vehicles;
-using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Behaviors.Furnitures
+namespace TowerBuilder.DataTypes.Entities.Furnitures
 {
     public class EngineBehavior : FurnitureBehavior
     {

@@ -73,7 +73,7 @@ namespace TowerBuilder.GameWorld.UI
                             label = "Go here",
                             onClick = () => {
                                 Debug.Log("sending " + inspectedResident + " to " + selectedCell);
-                                Registry.appState.Behaviors.Residents.SendResidentTo(inspectedResident, selectedCell);
+                                Registry.appState.Entities.Residents.SendResidentTo(inspectedResident, selectedCell);
                             }
                         }
                     });

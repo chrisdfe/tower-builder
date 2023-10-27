@@ -5,7 +5,6 @@ using TowerBuilder;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Attributes.Residents;
 using TowerBuilder.DataTypes.Entities;
-using TowerBuilder.DataTypes.Entities.Behaviors.Residents;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Entities.TransportationItems;
@@ -122,16 +121,10 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectedResidentText(Resident resident)
         {
-            ResidentBehavior residentBehavior = Registry.appState.Behaviors.Residents.FindByResident(resident);
-
             ResidentAttributes residentAttributes = Registry.appState.Attributes.Residents.FindByResident(resident);
 
             textBuffer.Add($"   name: {resident}");
-
-            if (residentBehavior != null)
-            {
-                textBuffer.Add($"   state: {residentBehavior.currentState}");
-            }
+            textBuffer.Add($"   state: {resident.behavior.currentState}");
 
             if (residentAttributes != null)
             {
@@ -161,10 +154,10 @@ namespace TowerBuilder.GameWorld.UI
             switch (inspectedEntity)
             {
                 case Furniture furnitureEntity:
-                    CreateFurnitureActionButtons(furnitureEntity as Furniture);
+                    CreateFurnitureActionButtons(furnitureEntity);
                     break;
                 case Resident residentEntity:
-                    CreateResidentActionButtons(residentEntity as Resident);
+                    CreateResidentActionButtons(residentEntity);
                     break;
             }
         }

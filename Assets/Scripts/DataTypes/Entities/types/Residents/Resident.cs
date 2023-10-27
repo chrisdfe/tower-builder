@@ -15,6 +15,8 @@ namespace TowerBuilder.DataTypes.Entities.Residents
 
         public override string ToString() => $"Resident {id}";
 
+        public ResidentBehavior behavior { get; private set; }
+
         public Resident() : base() { }
         public Resident(Input input) : base(input) { }
         public Resident(ResidentDefinition definition) : base(definition) { }
