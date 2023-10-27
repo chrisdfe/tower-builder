@@ -192,7 +192,7 @@ namespace TowerBuilder.ApplicationState.Entities.Residents
             if (residentBehavior.nextState != residentBehavior.currentState)
             {
                 ResidentBehavior.StateKey previousState = residentBehavior.currentState;
-                residentBehavior.TransitionToNextState();
+                residentBehavior.TransitionToNextState(appState);
 
                 if (onResidentBehaviorStateChanged != null)
                 {

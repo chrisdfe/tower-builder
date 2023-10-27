@@ -55,15 +55,7 @@ namespace TowerBuilder.DataTypes
 
         public virtual void ConsumeInput(SaveableInputBase rawInput)
         {
-            Debug.Log("rawInput is Input");
-            Debug.Log(rawInput is Input);
-
             var input = (Input)rawInput;
-
-            Debug.Log("rawInput");
-            Debug.Log(rawInput);
-            Debug.Log("input");
-            Debug.Log(input);
 
             items =
                 input.items.ToList()

@@ -17,8 +17,23 @@ namespace TowerBuilder.DataTypes.Entities.Residents
 
         public ResidentBehavior behavior { get; private set; }
 
-        public Resident() : base() { }
-        public Resident(Input input) : base(input) { }
-        public Resident(ResidentDefinition definition) : base(definition) { }
+        // TODO - don't add behavior until not in blueprint mode
+        public Resident(Input input) : base(input)
+        {
+            behavior = new ResidentBehavior(this);
+        }
+
+        public Resident(ResidentDefinition definition) : base(definition)
+        {
+            isInBlueprintMode = true;
+            behavior = new ResidentBehavior(this);
+        }
+
+        public override void OnBuild()
+        {
+            base.OnBuild();
+
+            behavior.SetEnabled(true);
+        }
     }
 }

@@ -81,21 +81,22 @@ namespace TowerBuilder.DataTypes.Entities.Residents
 
         public Resident resident { get; private set; }
 
-        AppState appState;
+        public bool isEnabled { get; private set; } = false;
 
-        // TODO - remove appsTate
-        public ResidentBehavior(AppState appState, Resident resident)
+        public ResidentBehavior(Resident resident)
         {
             this.resident = resident;
-            this.appState = appState;
+            isEnabled = !resident.isInBlueprintMode;
         }
 
-        public void Setup() { }
-
-        public void Teardown() { }
+        public void SetEnabled(bool isEnabled)
+        {
+            this.isEnabled = isEnabled;
+        }
 
         public void ProcessTick()
         {
+            if (!isEnabled) return;
             switch (currentState)
             {
                 case StateKey.Idle:
@@ -142,13 +143,13 @@ namespace TowerBuilder.DataTypes.Entities.Residents
             }
         }
 
-        public void TransitionToNextState()
+        public void TransitionToNextState(AppState appState)
         {
             StateKey previousState = currentState;
 
-            TeardownCurrentState();
+            TeardownCurrentState(appState);
             currentState = nextState;
-            SetupCurrentState();
+            SetupCurrentState(appState);
 
             Debug.Log($"Transitioned {resident} behavior from {previousState} to {currentState}");
         }
@@ -172,7 +173,7 @@ namespace TowerBuilder.DataTypes.Entities.Residents
         // TODO - there should probably be a sepearate 'validation' pass before setup,
         //        it feels bad for validation to be happening once we've already switched
         //        to the new state
-        public void SetupCurrentState()
+        public void SetupCurrentState(AppState appState)
         {
             switch (currentState)
             {
@@ -186,7 +187,7 @@ namespace TowerBuilder.DataTypes.Entities.Residents
             }
         }
 
-        public void TeardownCurrentState()
+        public void TeardownCurrentState(AppState appState)
         {
             switch (currentState)
             {

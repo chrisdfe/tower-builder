@@ -145,8 +145,6 @@ namespace TowerBuilder.ApplicationState.Entities
         */
         public void Add(Entity entity)
         {
-            Debug.Log("adding entity:");
-            Debug.Log(entity);
             GetStateSlice(entity)?.Add(entity);
         }
 
@@ -167,8 +165,6 @@ namespace TowerBuilder.ApplicationState.Entities
         // TODO: Use gropued entities
         public void Build(ListWrapper<Entity> entities)
         {
-            Debug.Log("Building " + entities.Count + " entities");
-
             foreach (Entity entity in entities.items)
             {
                 Build(entity);
@@ -247,7 +243,6 @@ namespace TowerBuilder.ApplicationState.Entities
 
         void OnItemsBuilt(ListWrapper<Entity> entityList)
         {
-            Debug.Log("Entities/State OnItemsBuilt: " + entityList.Count);
             onItemsBuilt?.Invoke(entityList);
         }
 

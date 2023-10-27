@@ -189,9 +189,6 @@ namespace TowerBuilder.GameWorld.Entities
 
         EntityTypeManager GetManagerForEntity(Entity entity)
         {
-            Debug.Log("entity");
-            Debug.Log(entity);
-            Debug.Log(entity.GetType());
             return GetManagerForEntityType(entity.GetType());
         }
     }

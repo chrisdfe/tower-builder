@@ -16,6 +16,14 @@ namespace TowerBuilder.GameWorld.UI
             Type selectedEntityType = Registry.appState.Tools.Build.Entities.selectedEntityType;
             string currentCategory = Registry.appState.Tools.Build.Entities.selectedEntityCategory;
 
+            // return new List<UISelectButton.Input>() {
+            //     new UISelectButton.Input()
+            //         {
+            //             label = "test",
+            //             value = "test"
+            //         }
+            // };
+
             return DataTypes.Entities.Definitions.FindByCategory(selectedEntityType, currentCategory)
                 .items.Select((definition) =>
                     new UISelectButton.Input()
