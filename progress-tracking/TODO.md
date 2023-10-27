@@ -3,11 +3,12 @@
 ## Current
 
 - PROJECT: right click dropdown menu
-  - for resident interactions - "go here" or "interact with furniture"
-- Move behaviors and attributes into their respective entities (residents, etc)
+  - [x] "go here"
+  - [ ] "interact with furniture"
 - Move a lot of the stuff in GameWorldMapManager into UIManager
 - Move UI interaction into UIManager as much as possible - it doesn't need to live in appState as much as it does.
 - Make sure resident routefinding/movement still works
+- There are 2 "resident" items in entity build tool buttons
 
 ## Later
 
@@ -417,6 +418,8 @@
 
 # Done
 
+- Move behaviors and attributes into their respective entities (residents, etc)
+  - the current layout is more confusing/cumbersome than its worth
 - BUG: selecting interior light entity in build tool crashes game
 - BUG: validation highlighting isn't working
 - PROJECT: refactoring buildState
