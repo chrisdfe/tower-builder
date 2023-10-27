@@ -7,7 +7,16 @@ namespace TowerBuilder.DataTypes.EntityGroups.Vehicles
     {
         public override string typeLabel => "Vehicle";
 
-        public Vehicle() : base() { }
-        public Vehicle(VehicleDefinition definition) : base(definition) { }
+        public VehicleAttributes attributes;
+
+        public Vehicle() : base()
+        {
+            attributes = new VehicleAttributes(this);
+        }
+
+        public Vehicle(VehicleDefinition definition) : base(definition)
+        {
+            attributes = new VehicleAttributes(this);
+        }
     }
 }

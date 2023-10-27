@@ -5,7 +5,7 @@ using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Routes;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Attributes.Residents
+namespace TowerBuilder.DataTypes.Entities.Residents
 {
     public class ResidentAttributes : AttributesGroup
     {
@@ -18,7 +18,7 @@ namespace TowerBuilder.DataTypes.Attributes.Residents
                 //  .AddTickModifier(new FloatAttributeModifier("Natural degredation", -0.8f))
         };
 
-        public ResidentAttributes(AppState appState, Resident resident) : base(appState)
+        public ResidentAttributes(Resident resident) : base()
         {
             this.resident = resident;
         }

@@ -13,7 +13,6 @@ namespace TowerBuilder.ApplicationState
 
             public Entities.State.Input Entities;
             public EntityGroups.State.Input EntityGroups;
-            public Attributes.State.Input Attributes;
 
             public UI.State.Input ui;
             public Tools.State.Input tools;
@@ -27,7 +26,6 @@ namespace TowerBuilder.ApplicationState
 
                 Entities = new Entities.State.Input();
                 EntityGroups = new EntityGroups.State.Input();
-                Attributes = new Attributes.State.Input();
 
                 // UI
                 ui = new UI.State.Input();
@@ -42,7 +40,6 @@ namespace TowerBuilder.ApplicationState
 
         public Entities.State Entities;
         public EntityGroups.State EntityGroups;
-        public Attributes.State Attributes;
 
         public UI.State UI;
         public Tools.State Tools;
@@ -79,8 +76,6 @@ namespace TowerBuilder.ApplicationState
             Entities = new Entities.State(this, input.Entities);
             EntityGroups = new EntityGroups.State(this, input.EntityGroups);
 
-            Attributes = new Attributes.State(this, input.Attributes);
-
             // UI
             UI = new UI.State(this, input.ui);
             Tools = new Tools.State(this, input.tools);
@@ -99,7 +94,6 @@ namespace TowerBuilder.ApplicationState
 
             Entities.Setup();
             EntityGroups.Setup();
-            Attributes.Setup();
 
             UI.Setup();
             Tools.Setup();

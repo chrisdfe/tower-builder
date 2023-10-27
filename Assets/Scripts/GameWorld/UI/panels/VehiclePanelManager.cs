@@ -1,5 +1,6 @@
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Attributes.Vehicles;
+
+using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,8 +29,8 @@ namespace TowerBuilder.GameWorld.UI
 
         void Setup()
         {
-            // Registry.appState.Entities.Vehicles.events.onItemsAdded += OnVehiclesAdded;
-            // Registry.appState.Entities.Vehicles.events.onItemsRemoved += OnVehiclesRemoved;
+            Registry.appState.EntityGroups.Vehicles.onItemsAdded += OnVehiclesAdded;
+            Registry.appState.EntityGroups.Vehicles.onItemsRemoved += OnVehiclesRemoved;
 
             // Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesUpdated;
             // Registry.appState.Attributes.Vehicles.events.onVehicleDerivedAttributesRecalculated += OnVehicleDerivedAttributesRecalculated;
@@ -37,8 +38,8 @@ namespace TowerBuilder.GameWorld.UI
 
         void Teardown()
         {
-            // Registry.appState.Entities.Vehicles.events.onItemsAdded -= OnVehiclesAdded;
-            // Registry.appState.Entities.Vehicles.events.onItemsRemoved -= OnVehiclesRemoved;
+            Registry.appState.EntityGroups.Vehicles.onItemsAdded -= OnVehiclesAdded;
+            Registry.appState.EntityGroups.Vehicles.onItemsRemoved -= OnVehiclesRemoved;
 
             // Registry.appState.Attributes.Vehicles.events.onItemsUpdated += OnVehicleAttributesUpdated;
             // Registry.appState.Attributes.Vehicles.events.onVehicleDerivedAttributesRecalculated -= OnVehicleDerivedAttributesRecalculated;
@@ -54,16 +55,11 @@ namespace TowerBuilder.GameWorld.UI
 
             string result = $"{vehicle}";
 
-            VehicleAttributes vehicleAttributes = Registry.appState.Attributes.Vehicles.FindByVehicle(vehicle);
-
-            if (vehicleAttributes != null)
-            {
-                vehicleAttributes.asTupleList.ForEach(tuple =>
+            vehicle.attributes.asTupleList.ForEach(tuple =>
                 {
                     var (key, attribute) = tuple;
                     result += $"{key}: {attribute.value}\n";
                 });
-            }
 
             text.text = result;
         }
@@ -71,33 +67,14 @@ namespace TowerBuilder.GameWorld.UI
         /*
             Event Handlers
         */
-        void OnVehiclesAdded(ListWrapper<Vehicle> vehicleList)
+        void OnVehiclesAdded(ListWrapper<EntityGroup> vehicleList)
         {
-            this.vehicle = vehicleList.items[0];
+            this.vehicle = vehicleList.items[0] as Vehicle;
         }
 
-        void OnVehiclesRemoved(ListWrapper<Vehicle> vehicleList)
+        void OnVehiclesRemoved(ListWrapper<EntityGroup> vehicleList)
         {
             this.vehicle = null;
-        }
-
-        void OnVehicleAttributesUpdated(ListWrapper<VehicleAttributes> vehicleAttributesList)
-        {
-            foreach (VehicleAttributes vehicleAttributes in vehicleAttributesList.items)
-            {
-                if (vehicleAttributes.vehicle == this.vehicle)
-                {
-                    UpdateText();
-                }
-            }
-        }
-
-        void OnVehicleDerivedAttributesRecalculated(VehicleAttributes vehicleAttributes)
-        {
-            if (vehicleAttributes.vehicle == this.vehicle)
-            {
-                UpdateText();
-            }
         }
     }
 }

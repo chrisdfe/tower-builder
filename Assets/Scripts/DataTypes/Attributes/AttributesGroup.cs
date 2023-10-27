@@ -1,10 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Routes;
-using UnityEngine;
 
 namespace TowerBuilder.DataTypes
 {
@@ -29,12 +25,7 @@ namespace TowerBuilder.DataTypes
             }
         }
 
-        protected AppState appState;
-
-        public AttributesGroup(AppState appState)
-        {
-            this.appState = appState;
-        }
+        public AttributesGroup() { }
 
         public virtual void Setup() { }
 
@@ -43,5 +34,57 @@ namespace TowerBuilder.DataTypes
         public Attribute FindByKey(string key) => attributes.GetValueOrDefault(key);
 
         public virtual void CalculateDerivedAttributes(AppState appState) { }
+
+
+        public void AddStaticAttributeModifier(string key, AttributeModifier modifier)
+        {
+            Attribute attribute = FindByKey(key);
+            attribute.staticModifiers.Add(modifier);
+        }
+
+        public void RemoveStaticAttributeModifier(string key, AttributeModifier modifier)
+        {
+            Attribute attribute = FindByKey(key);
+            attribute.staticModifiers.Remove(modifier);
+        }
+
+        public void AddOrUpdateStaticAttributeModifier(string key, string modifierName, float value)
+        {
+            Attribute attribute = FindByKey(key);
+
+            AttributeModifier modifier = attribute.staticModifiers.Find((modifier) =>
+                modifier.name == modifierName
+            );
+
+            if (modifier != null)
+            {
+                // TODO - probably use an overloaded version of this to avoid re-querying everything
+                UpdateStaticAttributeModifier(key, modifierName, value);
+            }
+            else
+            {
+                AttributeModifier newModifier = new AttributeModifier(modifierName, value);
+                AddStaticAttributeModifier(key, newModifier);
+            }
+        }
+
+        public void UpdateStaticAttributeModifier(string key, string modifierName, float newValue)
+        {
+            Attribute attributeToUpdate = FindByKey(key);
+            AttributeModifier modifierToUpdate = attributeToUpdate.staticModifiers.Find(modifier => modifier.name == modifierName);
+            modifierToUpdate.value = newValue;
+        }
+
+        public void AddTickAttributeModifier(string key, AttributeModifier modifier)
+        {
+            Attribute attribute = FindByKey(key);
+            attribute.tickModifiers.Add(modifier);
+        }
+
+        public void RemoveTickAttributeModifier(string key, AttributeModifier modifier)
+        {
+            Attribute attribute = FindByKey(key);
+            attribute.tickModifiers.Remove(modifier);
+        }
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Attributes.Residents;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Routes;

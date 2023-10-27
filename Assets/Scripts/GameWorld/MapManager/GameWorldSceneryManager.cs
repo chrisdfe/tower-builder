@@ -1,5 +1,5 @@
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Attributes.Vehicles;
+
 using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Map.MapManager
@@ -9,8 +9,6 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         public AssetList assetList = new AssetList();
 
         Transform wrapper;
-
-        VehicleAttributes vehicleAttributes;
 
         float parallaxLevel = 0.1f;
 
@@ -31,18 +29,18 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         public void Setup()
         {
-            Registry.appState.Attributes.Vehicles.onItemsAdded += OnVehicleAttributesAdded;
-            Registry.appState.Attributes.Vehicles.onItemsRemoved += OnVehicleAttributesRemoved;
+            // Registry.appState.Attributes.Vehicles.onItemsAdded += OnVehicleAttributesAdded;
+            // Registry.appState.Attributes.Vehicles.onItemsRemoved += OnVehicleAttributesRemoved;
 
-            Registry.appState.Attributes.Vehicles.onAttributeValueUpdated += OnVehicleAttributeValueUpdated;
+            // Registry.appState.Attributes.Vehicles.onAttributeValueUpdated += OnVehicleAttributeValueUpdated;
         }
 
         public void Teardown()
         {
-            Registry.appState.Attributes.Vehicles.onItemsAdded -= OnVehicleAttributesAdded;
-            Registry.appState.Attributes.Vehicles.onItemsRemoved -= OnVehicleAttributesRemoved;
+            // Registry.appState.Attributes.Vehicles.onItemsAdded -= OnVehicleAttributesAdded;
+            // Registry.appState.Attributes.Vehicles.onItemsRemoved -= OnVehicleAttributesRemoved;
 
-            Registry.appState.Attributes.Vehicles.onAttributeValueUpdated -= OnVehicleAttributeValueUpdated;
+            // Registry.appState.Attributes.Vehicles.onAttributeValueUpdated -= OnVehicleAttributeValueUpdated;
         }
 
         void Update()
@@ -52,6 +50,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         void MoveScenery()
         {
+            /*
             if (vehicleAttributes == null) return;
 
             float currentTickInterval = Registry.appState.Time.currentTickInterval;
@@ -63,12 +62,14 @@ namespace TowerBuilder.GameWorld.Map.MapManager
                 float xMovement = -((currentSpeed * (Time.deltaTime * parallaxLevel)) / currentTickInterval);
                 wrapper.Translate(new Vector3(xMovement, 0, 0));
             }
+            */
         }
 
         /* 
             Event Handlers
         */
-        void OnVehicleAttributesAdded(ListWrapper<VehicleAttributes> vehicleAttributess)
+        /*
+        void OnVehicleAttributesAdded(ListWrapper<VehicleAttributes> vehicleAttributes)
         {
             VehicleAttributes vehicleAttributes = vehicleAttributess.items[0];
 
@@ -92,5 +93,6 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         void OnVehicleAttributeValueUpdated(VehicleAttributes vehicleAttributes, Attribute attribute)
         {
         }
+        */
     }
 }

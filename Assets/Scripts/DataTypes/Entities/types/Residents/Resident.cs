@@ -16,17 +16,20 @@ namespace TowerBuilder.DataTypes.Entities.Residents
         public override string ToString() => $"Resident {id}";
 
         public ResidentBehavior behavior { get; private set; }
+        public ResidentAttributes attributes { get; private set; }
 
         // TODO - don't add behavior until not in blueprint mode
         public Resident(Input input) : base(input)
         {
             behavior = new ResidentBehavior(this);
+            attributes = new ResidentAttributes(this);
         }
 
         public Resident(ResidentDefinition definition) : base(definition)
         {
             isInBlueprintMode = true;
             behavior = new ResidentBehavior(this);
+            attributes = new ResidentAttributes(this);
         }
 
         public override void OnBuild()

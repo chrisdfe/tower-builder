@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Attributes.Residents;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
@@ -16,19 +15,18 @@ namespace TowerBuilder.DataTypes.Entities.Furnitures
         public BedBehavior(AppState appState, Furniture furniture) : base(appState, furniture) { }
 
         Resident resident;
-        ResidentAttributes residentAttributes => appState.Attributes.Residents.FindByResident(resident);
         AttributeModifier modifier;
 
         protected override void OnInteractStart(Resident resident)
         {
             this.resident = resident;
             modifier = new AttributeModifier("sleeping", 1.6f);
-            appState.Attributes.Residents.AddTickAttributeModifier(residentAttributes, "energy", modifier);
+            resident.attributes.AddTickAttributeModifier("energy", modifier);
         }
 
         protected override void OnInteractEnd(Resident resident)
         {
-            appState.Attributes.Residents.RemoveTickAttributeModifier(residentAttributes, "energy", modifier);
+            resident.attributes.RemoveTickAttributeModifier("energy", modifier);
             modifier = null;
         }
     }

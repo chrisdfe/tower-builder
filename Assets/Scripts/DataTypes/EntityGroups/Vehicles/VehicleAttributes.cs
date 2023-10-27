@@ -7,7 +7,7 @@ using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using TowerBuilder.DataTypes.EntityGroups.Vehicles;
 using UnityEngine;
 
-namespace TowerBuilder.DataTypes.Attributes.Vehicles
+namespace TowerBuilder.DataTypes.EntityGroups.Vehicles
 {
     public class VehicleAttributes : AttributesGroup
     {
@@ -28,7 +28,7 @@ namespace TowerBuilder.DataTypes.Attributes.Vehicles
         // public bool isMoving => attributes.GetValueOrDefault(Key.CurrentSpeed).value > 0;
         public bool isMoving => currentSpeed > 0;
 
-        public VehicleAttributes(AppState appState, Vehicle vehicle) : base(appState)
+        public VehicleAttributes(Vehicle vehicle) : base()
         {
             this.vehicle = vehicle;
         }

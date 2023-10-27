@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
-using TowerBuilder.DataTypes.Attributes.Vehicles;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;

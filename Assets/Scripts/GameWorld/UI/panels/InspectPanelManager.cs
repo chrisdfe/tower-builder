@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TowerBuilder;
 using TowerBuilder.DataTypes;
-using TowerBuilder.DataTypes.Attributes.Residents;
+
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Furnitures;
 using TowerBuilder.DataTypes.Entities.Residents;
@@ -121,20 +121,15 @@ namespace TowerBuilder.GameWorld.UI
 
         void SetInspectedResidentText(Resident resident)
         {
-            ResidentAttributes residentAttributes = Registry.appState.Attributes.Residents.FindByResident(resident);
+            textBuffer.Add($"name: {resident}");
+            textBuffer.Add($"state: {resident.behavior.currentState}");
 
-            textBuffer.Add($"   name: {resident}");
-            textBuffer.Add($"   state: {resident.behavior.currentState}");
-
-            if (residentAttributes != null)
+            textBuffer.Add("attributes:");
+            resident.attributes.asTupleList.ForEach(tuple =>
             {
-                textBuffer.Add("    attributes:");
-                residentAttributes.asTupleList.ForEach(tuple =>
-                {
-                    var (key, attribute) = tuple;
-                    textBuffer.Add($"{key}: {attribute.value}");
-                });
-            }
+                var (key, attribute) = tuple;
+                textBuffer.Add($"{key}: {attribute.value}");
+            });
         }
 
         void SetInspectedTransportationItemText(TransportationItem transportationItem)
