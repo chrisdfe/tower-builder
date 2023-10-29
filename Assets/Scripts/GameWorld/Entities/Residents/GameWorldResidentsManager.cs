@@ -22,27 +22,30 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
         void OnTick(TimeValue time)
         {
+            Debug.Log("tick");
+            // TODO - this all seems like something that should live in GameWorldResident not here
             foreach (Resident resident in Registry.appState.Entities.Residents.list.items)
             {
-                ResidentBehavior residentBehavior = resident.behavior;
                 GameWorldEntity gameWorldEntity = FindByEntity(resident);
                 GameWorldResident gameWorldResident = gameWorldEntity.GetComponent<GameWorldResident>();
 
                 TimeValue nextTickTimeValue = Registry.appState.Time.nextTickTimeValue;
 
-                CellCoordinatesList residentAbsoluteCellCoordinatesList = Registry.appState.EntityGroups.GetAbsoluteCellCoordinatesList(resident);
-                CellCoordinates currentCellCoordinates = residentAbsoluteCellCoordinatesList.bottomLeftCoordinates;
-                CellCoordinates nextCellCoordinates = residentAbsoluteCellCoordinatesList.bottomLeftCoordinates;
+                CellCoordinatesList cellCoordinatesList = resident.relativeCellCoordinatesList;
+                CellCoordinates currentCellCoordinates = cellCoordinatesList.bottomLeftCoordinates;
+                CellCoordinates nextCellCoordinates = cellCoordinatesList.bottomLeftCoordinates;
 
-                if (residentBehavior.currentState == ResidentBehavior.StateKey.Traveling)
+                if (resident.behavior.currentState == ResidentBehavior.StateKey.Traveling)
                 {
-                    var (current, next) = residentBehavior.routeProgress.currentAndNextCell;
+                    var (current, next) = resident.behavior.routeProgress.currentAndNextCell;
 
                     currentCellCoordinates = current;
                     nextCellCoordinates = next;
                 }
 
-                gameWorldResident.currentAndNextPosition = new CurrentAndNext<(TimeValue, DataTypes.CellCoordinates)>(
+                Debug.Log($"setting current and next position to: {currentCellCoordinates}::{nextCellCoordinates}");
+
+                gameWorldResident.currentAndNextPosition = new CurrentAndNext<(TimeValue, CellCoordinates)>(
                     (time, currentCellCoordinates),
                     (nextTickTimeValue, nextCellCoordinates)
                 );

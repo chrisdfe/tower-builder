@@ -76,12 +76,9 @@ namespace TowerBuilder.GameWorld.Entities
             Setup();
         }
 
-        public void UpdatePosition()
+        public void Update()
         {
-            transform.localPosition = GameWorldUtils.CellCoordinatesToPosition(
-                Registry.appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).bottomLeftCoordinates,
-                1f
-            ) + positionOffset;
+            UpdatePosition();
         }
 
         public void SetOverlayColor(OverlayColorKey key)
@@ -90,6 +87,14 @@ namespace TowerBuilder.GameWorld.Entities
             {
                 child.SetOverlayColor(key);
             }
+        }
+
+        public void UpdatePosition()
+        {
+            transform.localPosition = GameWorldUtils.CellCoordinatesToPosition(
+                Registry.appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).bottomLeftCoordinates,
+                1f
+            ) + positionOffset;
         }
 
         void DestroyPlaceholder()

@@ -59,6 +59,8 @@ namespace TowerBuilder.DataTypes.Entities
 
         public override string ToString() => $"entity";
 
+        EntityBlocksBuilderBase blocksBuilder;
+
         public Entity() { }
 
         public Entity(EntityDefinition definition)
@@ -98,6 +100,7 @@ namespace TowerBuilder.DataTypes.Entities
         {
             buildValidator = definition.buildValidatorFactory(this);
             destroyValidator = definition.destroyValidatorFactory(this);
+            blocksBuilder = EntityBlocksBuilderBase.FromDefinition(definition);
         }
 
         public virtual void OnBuild()
@@ -111,7 +114,25 @@ namespace TowerBuilder.DataTypes.Entities
 
         public void CalculateCellsFromSelectionBox(SelectionBox selectionBox)
         {
-            relativeBlocksList = EntityBlocksBuilderBase.FromDefinition(definition).CalculateFromSelectionBox(selectionBox);
+            relativeBlocksList = blocksBuilder.CalculateFromSelectionBox(selectionBox);
+
+            CalculateTileableMap();
+        }
+
+        public void UpdateRelativeOffsetCoordinates(CellCoordinates newRelativeCellCoordinates)
+        {
+            relativeOffsetCoordinates = newRelativeCellCoordinates;
+
+            // Translate blocks
+            CellCoordinates currentOffsetCoordinates = CellCoordinatesList.FromBlocksList(relativeBlocksList).bottomLeftCoordinates;
+            CellCoordinates diff = currentOffsetCoordinates.Subtract(newRelativeCellCoordinates);
+            foreach (var block in relativeBlocksList.items)
+            {
+                foreach (var blockCellCoordinates in block.items)
+                {
+                    blockCellCoordinates.Add(diff);
+                }
+            }
 
             CalculateTileableMap();
         }

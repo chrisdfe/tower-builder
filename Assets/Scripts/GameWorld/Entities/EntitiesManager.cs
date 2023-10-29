@@ -140,7 +140,7 @@ namespace TowerBuilder.GameWorld.Entities
         {
             foreach (Entity entity in entityGroup.childEntities.items)
             {
-                GetManagerForEntity(entity)?.UpdateEntityPosition(entity);
+                // GetManagerForEntity(entity)?.UpdateEntityPosition(entity);
                 GetManagerForEntity(entity)?.UpdateEntityColor(entity);
             }
         }

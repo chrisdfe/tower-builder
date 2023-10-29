@@ -211,6 +211,13 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                 )) != null
             );
 
+        public EntityGroup FindEntityGroupAtCell(CellCoordinates cellCoordinates) =>
+            list.Find((entityGroup) =>
+                entityGroup.GetDescendantEntities().Find((entity) => (
+                    appState.EntityGroups.GetAbsoluteCellCoordinatesList(entity).Contains(cellCoordinates)
+                )) != null
+            );
+
         public EntityGroup FindEntityParent(Entity entity) =>
             list.Find(entityGroup => entityGroup.childEntities.items.Contains(entity));
 

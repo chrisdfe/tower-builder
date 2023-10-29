@@ -77,13 +77,7 @@ namespace TowerBuilder.GameWorld.Entities
         */
         protected virtual void SetupMeshWrapper()
         {
-            string meshKey = entity.definition.meshKey;
-
-            if (!manager.meshAssets.HasKey(meshKey))
-            {
-                Debug.LogWarning($"Key '{meshKey}' not found in {entity.typeLabel} mesh assets");
-                meshKey = "Default";
-            }
+            string meshKey = GetMeshKey();
 
             GameObject prefabMesh = manager.meshAssets.ValueFromKey(meshKey);
 
@@ -93,20 +87,33 @@ namespace TowerBuilder.GameWorld.Entities
             entityMeshWrapper.CreateEntityMeshCellWrapper = CreateEntityMeshCellWrapper;
 
             entityMeshWrapper.Setup();
+
+            string GetMeshKey()
+            {
+                string meshKey = entity.definition.meshKey;
+
+                if (!manager.meshAssets.HasKey(meshKey))
+                {
+                    Debug.LogWarning($"Key '{meshKey}' not found in {entity.typeLabel} mesh assets");
+                    meshKey = "Default";
+                }
+
+                return meshKey;
+            }
         }
 
         void DefaultUpdateEntityColor()
         {
-            ApplicationState.Tools.State.Key currentKey = Registry.appState.Tools.currentKey;
+            State.Key currentKey = Registry.appState.Tools.currentKey;
 
             bool hasUpdated = false;
 
             switch (currentKey)
             {
-                case (ApplicationState.Tools.State.Key.Build):
+                case State.Key.Build:
                     SetBuildStateColor();
                     break;
-                case (ApplicationState.Tools.State.Key.Destroy):
+                case State.Key.Destroy:
                     SetDestroyStateColor();
                     break;
                 default:

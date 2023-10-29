@@ -10,10 +10,10 @@ namespace TowerBuilder.GameWorld.Entities
     {
         public GameObject entityPrefab;
 
-        public AssetList meshAssets = new AssetList();
+        public AssetList meshAssets = new();
 
         [HideInInspector]
-        public List<GameWorldEntity> entities = new List<GameWorldEntity>();
+        public List<GameWorldEntity> entities = new();
 
         protected Transform entitiesInstanceWrapper;
 

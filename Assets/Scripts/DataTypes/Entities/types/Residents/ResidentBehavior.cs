@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using TowerBuilder.ApplicationState;
 using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Entities.Furnitures;
-using TowerBuilder.DataTypes.Entities.Residents;
 using TowerBuilder.DataTypes.Routes;
 using UnityEngine;
 
@@ -243,6 +241,7 @@ namespace TowerBuilder.DataTypes.Entities.Residents
         void TravelingTick()
         {
             routeProgress.IncrementProgress();
+            resident.UpdateRelativeOffsetCoordinates(routeProgress.currentCell);
             // appState.Entities.Residents.UpdateEntityOffsetCoordinates(resident, routeProgress.currentCell);
         }
 

@@ -35,23 +35,15 @@ namespace TowerBuilder.ApplicationState.Entities.Residents
 
         public State(AppState appState) : this(appState, new Input()) { }
 
-        /*
-            Public Interface
-        */
-        // public void SetResidentPosition(Resident resident, CellCoordinates cellCoordinates)
-        // {
-        //     // resident.cellCoordinatesList = resident.definition.blockCellsTemplate.Clone();
-        //     // resident.offsetCoordinates = cellCoordinates;
-
-        //     onItemPositionUpdated?.Invoke(resident);
-        // }
-
         public override void Setup()
         {
             base.Setup();
             appState.Time.onTick += OnTick;
         }
 
+        /*
+            Public Interface
+        */
         public void AddResidentBehaviorGoals(Resident resident, ResidentBehavior.Goal[] goals)
         {
             ListWrapper<ValidationError> validationErrors =

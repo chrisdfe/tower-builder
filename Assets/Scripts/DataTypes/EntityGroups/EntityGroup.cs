@@ -167,6 +167,9 @@ namespace TowerBuilder.DataTypes.EntityGroups
             }
         }
 
+        /*
+            Queries
+        */
         public ListWrapper<Entity> GetDescendantEntities()
         {
             ListWrapper<Entity> result = new ListWrapper<Entity>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TowerBuilder.DataTypes;
 using TowerBuilder.DataTypes.Entities;
 using TowerBuilder.DataTypes.Entities.Foundations;
+using TowerBuilder.DataTypes.Entities.TransportationItems;
 using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
@@ -35,6 +36,22 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
             appState.Entities.onItemsBuilt -= OnEntitiesBuilt;
         }
 
+        public ListWrapper<TransportationItem> FindTransportationItemsEnterableFromRoom(Room room)
+        {
+            var result = new ListWrapper<TransportationItem>();
+            CellCoordinatesList roomCellCoordinates = appState.EntityGroups.GetAbsoluteCellCoordinatesList(room);
+
+            foreach (Entity entity in room.childEntities.items)
+            {
+                if (entity.GetType() == typeof(TransportationItem) && (entity as TransportationItem).entranceCellCoordinatesList.OverlapsWith(roomCellCoordinates))
+                {
+                    result.Add(entity as TransportationItem);
+                }
+            }
+
+            return null;
+        }
+
         /*
             Internals
         */
@@ -63,6 +80,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
 
                 if (existingRoom != null)
                 {
+                    Debug.Log($"adding {entity} to {existingRoom}");
                     AddChild(existingRoom, entity);
                 }
                 else

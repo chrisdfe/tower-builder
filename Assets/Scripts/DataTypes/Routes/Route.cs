@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerBuilder;
 using TowerBuilder.ApplicationState;
+using TowerBuilder.DataTypes.EntityGroups;
 using TowerBuilder.DataTypes.EntityGroups.Rooms;
 using UnityEngine;
 
@@ -18,73 +19,80 @@ namespace TowerBuilder.DataTypes.Routes
 
         public Route(List<RouteSegment> segments)
         {
-            this.rawSegments = segments;
+            rawSegments = segments;
         }
 
         public Route(RouteAttempt routeAttempt)
         {
-            this.rawSegments = routeAttempt.routeSegments;
+            rawSegments = routeAttempt.routeSegments;
         }
 
         // Normalize segment sizes by breaking the multi-cell-width route attempt segments down into 1-cell-width segments
         public void CalculateCellSegments(AppState appState)
         {
-            // List<RouteSegment> result = new List<RouteSegment>();
+            List<RouteSegment> result = new List<RouteSegment>();
+            CellCoordinates currentCellCoordinates;
 
-            // RouteSegment.Node CreateSegmentNode(CellCoordinates cellCoordinates) =>
-            //     new RouteSegment.Node(
-            //         cellCoordinates,
-            //         appState.Entities.Rooms.queries.FindRoomAtCell(cellCoordinates)
-            //     );
+            foreach (RouteSegment segment in rawSegments)
+            {
+                currentCellCoordinates = segment.startNode.cellCoordinates;
+                while (
+                    (currentCellCoordinates.x != segment.endNode.cellCoordinates.x) ||
+                    (currentCellCoordinates.y != segment.endNode.cellCoordinates.y)
+                )
+                {
+                    CellCoordinates nextCellCoordinates = currentCellCoordinates.Clone();
 
-            // CellCoordinates currentCellCoordinates;
+                    if (currentCellCoordinates.x > segment.endNode.cellCoordinates.x)
+                    {
+                        nextCellCoordinates.x--;
+                    }
+                    else if (currentCellCoordinates.x < segment.endNode.cellCoordinates.x)
+                    {
+                        nextCellCoordinates.x++;
+                    }
 
-            // void CreateRouteSegment(CellCoordinates nextCellCoordinates, RouteSegment.Type type)
-            // {
-            //     result.Add(
-            //         new RouteSegment(
-            //             CreateSegmentNode(currentCellCoordinates),
-            //             CreateSegmentNode(nextCellCoordinates),
-            //             type
-            //         )
-            //     );
+                    if (currentCellCoordinates.y > segment.endNode.cellCoordinates.y)
+                    {
+                        nextCellCoordinates.y--;
+                    }
+                    else if (currentCellCoordinates.y < segment.endNode.cellCoordinates.y)
+                    {
+                        nextCellCoordinates.y++;
+                    }
 
-            //     currentCellCoordinates = nextCellCoordinates;
-            // }
+                    CreateRouteSegment(nextCellCoordinates, segment.type);
+                }
+            }
 
-            // foreach (RouteSegment segment in rawSegments)
-            // {
-            //     currentCellCoordinates = segment.startNode.cellCoordinates;
-            //     while (
-            //         (currentCellCoordinates.x != segment.endNode.cellCoordinates.x) ||
-            //         (currentCellCoordinates.y != segment.endNode.cellCoordinates.y)
-            //     )
-            //     {
-            //         CellCoordinates nextCellCoordinates = currentCellCoordinates.Clone();
+            segments = result;
 
-            //         if (currentCellCoordinates.x > segment.endNode.cellCoordinates.x)
-            //         {
-            //             nextCellCoordinates.x--;
-            //         }
-            //         else if (currentCellCoordinates.x < segment.endNode.cellCoordinates.x)
-            //         {
-            //             nextCellCoordinates.x++;
-            //         }
+            RouteSegment.Node CreateSegmentNode(CellCoordinates cellCoordinates)
+            {
+                EntityGroup roomEntityGroup = appState.EntityGroups.Rooms.FindEntityGroupAtCell(cellCoordinates);
 
-            //         if (currentCellCoordinates.y > segment.endNode.cellCoordinates.y)
-            //         {
-            //             nextCellCoordinates.y--;
-            //         }
-            //         else if (currentCellCoordinates.y < segment.endNode.cellCoordinates.y)
-            //         {
-            //             nextCellCoordinates.y++;
-            //         }
+                if (roomEntityGroup == null)
+                {
+                    throw new RouteException("room not found at coordinates: " + cellCoordinates);
+                }
 
-            //         CreateRouteSegment(nextCellCoordinates, segment.type);
-            //     }
-            // }
+                Room room = roomEntityGroup as Room;
+                return new RouteSegment.Node(cellCoordinates, room);
+            }
 
-            // segments = result;
+
+            void CreateRouteSegment(CellCoordinates nextCellCoordinates, RouteSegment.Type type)
+            {
+                result.Add(
+                    new RouteSegment(
+                        CreateSegmentNode(currentCellCoordinates),
+                        CreateSegmentNode(nextCellCoordinates),
+                        type
+                    )
+                );
+
+                currentCellCoordinates = nextCellCoordinates;
+            }
         }
     }
 }
