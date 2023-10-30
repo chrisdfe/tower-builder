@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities.TransportationItems
 {
-    public class State : EntityStateSlice
+    public class State : EntityStateSliceBase
     {
         public class Input
         {

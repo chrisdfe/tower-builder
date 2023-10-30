@@ -45,7 +45,7 @@ namespace TowerBuilder.DataTypes.Entities
 
         public static List<ValidationError> ValidateEntityIsNotOverlappingAnotherEntityOfSameType(AppState appState, Entity entity)
         {
-            EntityStateSlice stateSlice = appState.Entities.GetStateSlice(entity);
+            EntityStateSliceBase stateSlice = appState.Entities.GetStateSlice(entity);
 
 
 

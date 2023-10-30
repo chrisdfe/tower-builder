@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities
 {
-    public class EntityStateSlice : StateSlice
+    public abstract class EntityStateSliceBase : StateSlice
     {
         /*
             Events
@@ -25,7 +25,7 @@ namespace TowerBuilder.ApplicationState.Entities
         */
         public ListWrapper<Entity> list { get; }
 
-        public EntityStateSlice(AppState appState) : base(appState)
+        public EntityStateSliceBase(AppState appState) : base(appState)
         {
             list = new ListWrapper<Entity>();
         }

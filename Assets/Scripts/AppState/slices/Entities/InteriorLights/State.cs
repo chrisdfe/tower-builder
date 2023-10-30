@@ -4,7 +4,7 @@ using TowerBuilder.DataTypes.Entities.InteriorLights;
 namespace TowerBuilder.ApplicationState.Entities.InteriorLights
 {
     [Serializable]
-    public class State : EntityStateSlice
+    public class State : EntityStateSliceBase
     {
         public class Input { }
 

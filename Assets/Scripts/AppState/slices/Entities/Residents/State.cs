@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.Entities.Residents
 {
-    public class State : EntityStateSlice
+    public class State : EntityStateSliceBase
     {
         public class Input
         {

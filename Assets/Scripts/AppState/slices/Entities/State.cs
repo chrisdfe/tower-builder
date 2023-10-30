@@ -61,7 +61,7 @@ namespace TowerBuilder.ApplicationState.Entities
         public Wheels.State Wheels { get; }
         public Misc.State Misc { get; }
 
-        public List<EntityStateSlice> sliceList { get; }
+        public List<EntityStateSliceBase> sliceList { get; }
 
         public ListWrapper<Entity> allEntities =>
             sliceList.Aggregate(new ListWrapper<Entity>(), (acc, stateSlice) =>
@@ -83,7 +83,7 @@ namespace TowerBuilder.ApplicationState.Entities
             Wheels = new Wheels.State(appState, input.Wheels);
             Misc = new Misc.State(appState, input.Misc);
 
-            sliceList = new List<EntityStateSlice>() {
+            sliceList = new List<EntityStateSliceBase>() {
                 Foundations,
                 Floors,
                 Windows,
@@ -110,7 +110,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 AddListeners(slice);
             });
 
-            void AddListeners(EntityStateSlice stateSlice)
+            void AddListeners(EntityStateSliceBase stateSlice)
             {
                 stateSlice.onItemsAdded += OnItemsAdded;
                 stateSlice.onItemsRemoved += OnItemsRemoved;
@@ -130,7 +130,7 @@ namespace TowerBuilder.ApplicationState.Entities
                 RemoveListeners(slice);
             });
 
-            void RemoveListeners(EntityStateSlice stateSlice)
+            void RemoveListeners(EntityStateSliceBase stateSlice)
             {
                 stateSlice.onItemsAdded -= OnItemsAdded;
                 stateSlice.onItemsRemoved -= OnItemsRemoved;
@@ -203,7 +203,7 @@ namespace TowerBuilder.ApplicationState.Entities
             GetStateSlice(entity)?.UpdateEntityOffsetCoordinates(entity, offsetCoordinates);
         }
 
-        public EntityStateSlice GetStateSlice(Entity entity) =>
+        public EntityStateSliceBase GetStateSlice(Entity entity) =>
             entity switch
             {
                 DataTypes.Entities.Foundations.Foundation => Foundations,

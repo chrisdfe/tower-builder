@@ -3,7 +3,7 @@ using TowerBuilder.DataTypes.Entities.Freights;
 
 namespace TowerBuilder.ApplicationState.Entities.Freight
 {
-    public class State : EntityStateSlice
+    public class State : EntityStateSliceBase
     {
         public class Input
         {

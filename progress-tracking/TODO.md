@@ -64,7 +64,7 @@
 - TASK: should entities always belong to an EntityGroup?
 - PROJECT: "ResidentGroup"? For grouping residents in different buildigns
   - probably for down the road
-- CLEANUP: should EntityStateSlice inherit ListStateSlice?
+- CLEANUP: should EntityStateSliceBase inherit ListStateSlice?
 - CLEANUP: implement IEnumerable in ListWrapper
 - PROJECT: UI themes
   - [ ] customizable from the editor
@@ -250,7 +250,7 @@
   - Panel should be a prefab
 - Make cells 1x1.5 or 1x2 as in my sketchbook - floors/ceilings/walls are part of the Inside of box
 - TransportationItemDefinition/entranceExitBuilder should probably return 2 lists (1 for entrances and 2 for exits) instead of entrance/exit tuples of single coordinates
-- EntityStateSlice build should fire onItemsBuilt event as well - currently it's just singular
+- EntityStateSliceBase build should fire onItemsBuilt event as well - currently it's just singular
 - same as with how I made an entities appState slice:
   - Validators appState slice group
 - in build mode somewhere in the UI it should give you a list of all the validation rules about the current selected entity
@@ -453,7 +453,7 @@
 - BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
 - BUG: two windows still get created
 - Use entity.definition.skinKey to decide which meshasset to use, not entity.definition.key
-- CLEANUP in EntityStateSlice and EntityGroupStateSlice see if I can clean up the passthrough events like onEntitiesRemoved by passing delegates in as the event handler
+- CLEANUP in EntityStateSliceBase and EntityGroupStateSlice see if I can clean up the passthrough events like onEntitiesRemoved by passing delegates in as the event handler
 - PROJECT: move entities/entityGroups instead of destroying/creating new ones in build mode
 - BUG: EntityGroup position gets reset back to 0,0 after attempting to build in an invalid location
 - BUG: entityGroup entity valid/invalid colors are 1 onSelectionBoxUpdated behind where they should be at. i.e whatever the "isValid" value was of the last position
