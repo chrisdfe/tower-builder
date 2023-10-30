@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.EntityGroups.Buildings
 {
-    public class State : EntityGroupStateSlice
+    public class State : EntityGroupStateSliceBase
     {
         public class Input
         {

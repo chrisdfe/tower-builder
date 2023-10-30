@@ -22,7 +22,6 @@ namespace TowerBuilder.GameWorld.Entities.Residents
 
         void OnTick(TimeValue time)
         {
-            Debug.Log("tick");
             // TODO - this all seems like something that should live in GameWorldResident not here
             foreach (Resident resident in Registry.appState.Entities.Residents.list.items)
             {

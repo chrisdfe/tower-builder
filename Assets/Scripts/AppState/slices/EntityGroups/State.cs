@@ -44,7 +44,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         public Buildings.State Buildings { get; }
         public Misc.State Misc { get; }
 
-        List<EntityGroupStateSlice> allSlices;
+        List<EntityGroupStateSliceBase> allSlices;
 
         public State(AppState appState, Input input) : base(appState)
         {
@@ -53,7 +53,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
             Buildings = new Buildings.State(appState, input.Buildings);
             Misc = new Misc.State(appState, input.Misc);
 
-            allSlices = new List<EntityGroupStateSlice>() {
+            allSlices = new List<EntityGroupStateSliceBase>() {
                 Rooms,
                 Vehicles,
                 Buildings,
@@ -74,7 +74,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                 AddListeners(slice);
             });
 
-            void AddListeners(EntityGroupStateSlice stateSlice)
+            void AddListeners(EntityGroupStateSliceBase stateSlice)
             {
                 stateSlice.onItemsAdded += OnEntityGroupsAdded;
                 stateSlice.onItemsRemoved += OnEntityGroupsRemoved;
@@ -94,7 +94,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
                 RemoveListeners(slice);
             });
 
-            void RemoveListeners(EntityGroupStateSlice stateSlice)
+            void RemoveListeners(EntityGroupStateSliceBase stateSlice)
             {
                 stateSlice.onItemsAdded -= OnEntityGroupsAdded;
                 stateSlice.onItemsRemoved -= OnEntityGroupsRemoved;
@@ -207,7 +207,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         /*
             Queries
         */
-        public EntityGroupStateSlice GetStateSlice(EntityGroup entityGroup) =>
+        public EntityGroupStateSliceBase GetStateSlice(EntityGroup entityGroup) =>
             entityGroup switch
             {
                 DataTypes.EntityGroups.Rooms.Room => Rooms,
@@ -231,7 +231,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
         public EntityGroup FindEntityGroupParent(EntityGroup entityGroup)
         {
-            foreach (EntityGroupStateSlice slice in allSlices)
+            foreach (EntityGroupStateSliceBase slice in allSlices)
             {
                 EntityGroup parent = slice.list.items.Find(parentCandidate => parentCandidate.childEntityGroups.items.Contains(entityGroup));
 
@@ -246,7 +246,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
         public EntityGroup FindEntityParent(Entity entity)
         {
-            foreach (EntityGroupStateSlice slice in allSlices)
+            foreach (EntityGroupStateSliceBase slice in allSlices)
             {
                 EntityGroup parent = slice.list.items.Find(parentCandidate => parentCandidate.childEntities.items.Contains(entity));
 
@@ -354,7 +354,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
         /*
             Internals
         */
-        EntityGroup FindEntityGroupAtCell(CellCoordinates cellCoordinates, EntityGroupStateSlice slice)
+        EntityGroup FindEntityGroupAtCell(CellCoordinates cellCoordinates, EntityGroupStateSliceBase slice)
         {
             ListWrapper<EntityGroup> entityGroupList = new ListWrapper<EntityGroup>();
 

@@ -425,7 +425,7 @@
 - PROJECT: refactoring buildState
   - [x] in BuildState look into using the same entitiesToBuild/entityGroupsToBuild pattern as in DestroyState
   - [x] it feels like the recursive things EntityGroup does should be in state (ValidateBuild, ValidateDestroy, etc);
-  - [x] recursive entityGroup adding needs to live in EntityGroups/State, not EntityGroupStateSlice because children
+  - [x] recursive entityGroup adding needs to live in EntityGroups/State, not EntityGroupStateSliceBase because children
         can be of different types to their parents
   - [x] wrap everything in a "BlueprintEntityGroup"? this will reuse the same logic as for EntityGroups
 - PROJECT: reimplement destroy tool
@@ -453,7 +453,7 @@
 - BUG: entity group buttons are visible at first when you open the build tool and are in entity mode
 - BUG: two windows still get created
 - Use entity.definition.skinKey to decide which meshasset to use, not entity.definition.key
-- CLEANUP in EntityStateSliceBase and EntityGroupStateSlice see if I can clean up the passthrough events like onEntitiesRemoved by passing delegates in as the event handler
+- CLEANUP in EntityStateSliceBase and EntityGroupStateSliceBase see if I can clean up the passthrough events like onEntitiesRemoved by passing delegates in as the event handler
 - PROJECT: move entities/entityGroups instead of destroying/creating new ones in build mode
 - BUG: EntityGroup position gets reset back to 0,0 after attempting to build in an invalid location
 - BUG: entityGroup entity valid/invalid colors are 1 onSelectionBoxUpdated behind where they should be at. i.e whatever the "isValid" value was of the last position

@@ -11,7 +11,7 @@ using UnityEngine;
 namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
 {
     [Serializable]
-    public class State : EntityGroupStateSlice
+    public class State : EntityGroupStateSliceBase
     {
         public struct Input
         {

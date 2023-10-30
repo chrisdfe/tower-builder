@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.EntityGroups.Vehicles
 {
-    public class State : EntityGroupStateSlice
+    public class State : EntityGroupStateSliceBase
     {
         public class Input
         {

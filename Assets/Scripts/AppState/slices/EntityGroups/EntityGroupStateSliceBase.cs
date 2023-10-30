@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerBuilder.ApplicationState.EntityGroups
 {
-    public class EntityGroupStateSlice : ListStateSlice<EntityGroup>
+    public abstract class EntityGroupStateSliceBase : ListStateSlice<EntityGroup>
     {
         /*
             Events
@@ -28,7 +28,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups
 
         bool isListeningForEvents = true;
 
-        public EntityGroupStateSlice(AppState appState) : base(appState)
+        public EntityGroupStateSliceBase(AppState appState) : base(appState)
         {
             list = new ListWrapper<EntityGroup>();
         }
