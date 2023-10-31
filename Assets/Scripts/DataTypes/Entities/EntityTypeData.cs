@@ -101,7 +101,7 @@ namespace TowerBuilder.DataTypes.Entities
                         new EntityTypeData()
                         {
                             EntityType = typeof(TransportationItems.TransportationItem),
-                            label = "Resident",
+                            label = "Transportation Item",
                             zIndex = 7,
                             definitionType = typeof(TransportationItems.TransportationItemDefinition)
                         }
