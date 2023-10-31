@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Freight
 {
-    public class GameWorldFreightManager : EntityTypeManager, IFindable
+    public class GameWorldFreightManager : EntityTypeManagerBase, IFindable
     {
         /* 
             Static Interface

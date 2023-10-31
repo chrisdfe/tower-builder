@@ -23,7 +23,7 @@ namespace TowerBuilder.GameWorld.Entities
         public Action<GameWorldEntity> customColorUpdater = null;
 
         [HideInInspector]
-        public EntityTypeManager manager = null;
+        public EntityTypeManagerBase manager = null;
 
         protected EntityMeshWrapper entityMeshWrapper => customMeshWrapper ?? GetComponent<EntityMeshWrapper>();
 
@@ -54,6 +54,12 @@ namespace TowerBuilder.GameWorld.Entities
         }
 
         public virtual void Teardown() { }
+
+        public void Update()
+        {
+            UpdatePosition();
+            UpdateColor();
+        }
 
         public void UpdatePosition()
         {

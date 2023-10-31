@@ -19,12 +19,12 @@ namespace TowerBuilder.GameWorld.Entities
 {
     public class EntitiesManager : MonoBehaviour
     {
-        public Dictionary<Type, EntityTypeManager> entityManagerMap { get; private set; }
-        public List<EntityTypeManager> entityManagerList { get; private set; }
+        public Dictionary<Type, EntityTypeManagerBase> entityManagerMap { get; private set; }
+        public List<EntityTypeManagerBase> entityManagerList { get; private set; }
 
-        void Awake()
+        public void Awake()
         {
-            entityManagerMap = new Dictionary<Type, EntityTypeManager>()
+            entityManagerMap = new Dictionary<Type, EntityTypeManagerBase>()
             {
                 {
                     typeof(DataTypes.Entities.Foundations.Foundation),
@@ -74,16 +74,6 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.onItemsAdded += OnEntitiesAdded;
             Registry.appState.Entities.onItemsRemoved += OnEntitiesRemoved;
             Registry.appState.Entities.onItemsBuilt += OnEntitiesBuilt;
-            Registry.appState.Entities.onEntityPositionUpdated += OnEntityPositionUpdated;
-
-            Registry.appState.EntityGroups.onPositionUpdated += OnEntityGroupPositionUpdated;
-            Registry.appState.EntityGroups.onEntityGroupValidated += OnEntityGroupValidated;
-
-            Registry.appState.UI.onEntitiesInSelectionUpdated += OnEntitiesInSelectionUpdated;
-
-            Registry.appState.Tools.Destroy.onDestroySelectionUpdated += OnDestroySelectionUpdated;
-            Registry.appState.Tools.Inspect.onInspectedEntityListUpdated += OnInspectedEntityListUpdated;
-            Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated += OnCurrentSelectedEntityUpdated;
         }
 
         public void Teardown()
@@ -91,16 +81,6 @@ namespace TowerBuilder.GameWorld.Entities
             Registry.appState.Entities.onItemsAdded -= OnEntitiesAdded;
             Registry.appState.Entities.onItemsRemoved -= OnEntitiesRemoved;
             Registry.appState.Entities.onItemsBuilt -= OnEntitiesBuilt;
-            Registry.appState.Entities.onEntityPositionUpdated -= OnEntityPositionUpdated;
-
-            Registry.appState.EntityGroups.onPositionUpdated -= OnEntityGroupPositionUpdated;
-            Registry.appState.EntityGroups.onEntityGroupValidated -= OnEntityGroupValidated;
-
-            Registry.appState.UI.onEntitiesInSelectionUpdated -= OnEntitiesInSelectionUpdated;
-
-            Registry.appState.Tools.Destroy.onDestroySelectionUpdated -= OnDestroySelectionUpdated;
-            Registry.appState.Tools.Inspect.onInspectedEntityListUpdated -= OnInspectedEntityListUpdated;
-            Registry.appState.Tools.Inspect.onCurrentSelectedEntityUpdated -= OnCurrentSelectedEntityUpdated;
         }
 
         /*
@@ -130,64 +110,9 @@ namespace TowerBuilder.GameWorld.Entities
             });
         }
 
-        void OnEntityPositionUpdated(Entity entity)
-        {
-            GetManagerForEntity(entity)?.UpdateEntityPosition(entity);
-            GetManagerForEntity(entity)?.UpdateEntityColor(entity);
-        }
+        EntityTypeManagerBase GetManagerForEntityType(Type EntityType) => entityManagerMap[EntityType];
 
-        void OnEntityGroupPositionUpdated(EntityGroup entityGroup)
-        {
-            foreach (Entity entity in entityGroup.childEntities.items)
-            {
-                // GetManagerForEntity(entity)?.UpdateEntityPosition(entity);
-                GetManagerForEntity(entity)?.UpdateEntityColor(entity);
-            }
-        }
-
-        void OnEntityGroupValidated(EntityGroup entityGroup)
-        {
-            foreach (Entity entity in entityGroup.GetDescendantEntities().items)
-            {
-                GetManagerForEntity(entity)?.UpdateEntityColor(entity);
-            }
-        }
-
-        void OnEntitiesInSelectionUpdated(List<Entity> _)
-        {
-            foreach (EntityTypeManager entityList in entityManagerList)
-            {
-                entityList.UpdateAllEntityColors();
-            }
-        }
-
-        void OnInspectedEntityListUpdated(List<Entity> entitiesList)
-        {
-            foreach (EntityTypeManager entityList in entityManagerList)
-            {
-                entityList.UpdateAllEntityColors();
-            }
-        }
-
-        void OnCurrentSelectedEntityUpdated(Entity entity)
-        {
-            foreach (EntityTypeManager entityList in entityManagerList)
-            {
-                entityList.UpdateAllEntityColors();
-            }
-        }
-
-        void OnDestroySelectionUpdated()
-        {
-            foreach (EntityTypeManager entityList in entityManagerList)
-            {
-                entityList.UpdateAllEntityColors();
-            }
-        }
-
-        EntityTypeManager GetManagerForEntityType(Type EntityType) => entityManagerMap[EntityType];
-
-        EntityTypeManager GetManagerForEntity(Entity entity)
+        EntityTypeManagerBase GetManagerForEntity(Entity entity)
         {
             return GetManagerForEntityType(entity.GetType());
         }

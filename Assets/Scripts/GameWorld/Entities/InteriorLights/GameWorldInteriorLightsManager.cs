@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.InteriorLights
 {
-    public class GameWorldInteriorLightsManager : EntityTypeManager, IFindable
+    public class GameWorldInteriorLightsManager : EntityTypeManagerBase, IFindable
     {
         /* 
             Static Interface

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Furnitures
 {
-    public class GameWorldFurnitureManager : EntityTypeManager, IFindable
+    public class GameWorldFurnitureManager : EntityTypeManagerBase, IFindable
     {
         /* 
             Static Interface

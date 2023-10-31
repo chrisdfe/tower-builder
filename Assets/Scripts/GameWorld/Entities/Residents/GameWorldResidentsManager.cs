@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Residents
 {
-    public class GameWorldResidentsManager : EntityTypeManager, IFindable
+    public class GameWorldResidentsManager : EntityTypeManagerBase, IFindable
     {
         public override void Setup()
         {

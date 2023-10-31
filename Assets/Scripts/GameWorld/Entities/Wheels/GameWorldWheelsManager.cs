@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Wheels
 {
-    public class GameWorldWheelsManager : EntityTypeManager, IFindable
+    public class GameWorldWheelsManager : EntityTypeManagerBase, IFindable
     {
         /* 
             Static Interface

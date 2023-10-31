@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities
 {
-    public class EntityTypeManager : MonoBehaviour, ISetupable
+    public class EntityTypeManagerBase : MonoBehaviour, ISetupable
     {
         public GameObject entityPrefab;
 
@@ -83,6 +83,7 @@ namespace TowerBuilder.GameWorld.Entities
             ResetEntity(entity);
         }
 
+        /*
         public void UpdateEntityPosition(Entity entity)
         {
             FindByEntity(entity)?.UpdatePosition();
@@ -100,6 +101,7 @@ namespace TowerBuilder.GameWorld.Entities
                 gameWorldEntity.UpdateColor();
             }
         }
+        */
 
         public void ReplaceMaterials()
         {

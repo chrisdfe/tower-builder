@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.TransportationItems
 {
-    public class GameWorldTransportationManager : EntityTypeManager, IFindable
+    public class GameWorldTransportationManager : EntityTypeManagerBase, IFindable
     {
         /*
             Statics

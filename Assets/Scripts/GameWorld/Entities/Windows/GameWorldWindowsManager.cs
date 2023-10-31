@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Windows
 {
-    public class GameWorldWindowsManager : EntityTypeManager, IFindable
+    public class GameWorldWindowsManager : EntityTypeManagerBase, IFindable
     {
         /* 
             Static Interface

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TowerBuilder.GameWorld.Entities.Floors
 {
-    public class GameWorldFloorsManager : EntityTypeManager, IFindable
+    public class GameWorldFloorsManager : EntityTypeManagerBase, IFindable
     {
         /* 
             Static Interface
