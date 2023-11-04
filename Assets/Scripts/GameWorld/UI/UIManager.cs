@@ -51,23 +51,56 @@ namespace TowerBuilder.GameWorld.UI
         public void Update()
         {
             SetMouseIsOverUI();
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                OnLeftMouseButtonDown();
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                OnLeftMouseButtonUp();
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+            }
+
+            if (Input.GetMouseButtonUp(1))
+            {
+                OnRightMouseButtonUp();
+            }
+
+            if (Input.GetButtonDown("Escape"))
+            {
+                modalsManager.ToggleDebugModal();
+            }
         }
 
-        public void OnLeftMouseButtonDown() { }
+        public void OnLeftMouseButtonDown()
+        {
+            if (mouseIsOverUI) return;
 
-        public void OnLeftMouseButtonUp() { }
+            Registry.appState.UI.SelectStart();
+        }
+
+        public void OnLeftMouseButtonUp()
+        {
+            Registry.appState.UI.SelectEnd();
+        }
 
         public void OnRightMouseButtonDown() { }
 
         public void OnRightMouseButtonUp()
         {
-            if (Registry.appState.Tools.currentKey == ApplicationState.Tools.State.Key.Inspect)
+            if (Registry.appState.Tools.currentKey == State.Key.Inspect)
             {
                 if (Registry.appState.Tools.Inspect.inspectedEntity != null && Registry.appState.Tools.Inspect.inspectedEntity.GetType() == typeof(Resident))
                 {
                     Resident inspectedResident = Registry.appState.Tools.Inspect.inspectedEntity as Resident;
                     CellCoordinates selectedCell = Registry.appState.UI.selectedCell;
 
+                    // TODO - 'build interaction options' function
                     dropdownsManager.interactionDropdown.SetItemsAndOpen(new List<UIInteractionDropdownItem.Input>() {
                         new UIInteractionDropdownItem.Input() {
                             label = "Go here",

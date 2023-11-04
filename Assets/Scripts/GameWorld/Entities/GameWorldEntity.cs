@@ -108,22 +108,22 @@ namespace TowerBuilder.GameWorld.Entities
             }
         }
 
-        void DefaultUpdateEntityColor()
+        protected void DefaultUpdateEntityColor()
         {
             State.Key currentKey = Registry.appState.Tools.currentKey;
 
-            bool hasUpdated = false;
+            bool hasUpdated;
 
             switch (currentKey)
             {
                 case State.Key.Build:
-                    SetBuildStateColor();
+                    hasUpdated = SetBuildStateColor();
                     break;
                 case State.Key.Destroy:
-                    SetDestroyStateColor();
+                    hasUpdated = SetDestroyStateColor();
                     break;
                 default:
-                    SetInspectStateColor();
+                    hasUpdated = SetInspectStateColor();
                     break;
             }
 
@@ -131,59 +131,62 @@ namespace TowerBuilder.GameWorld.Entities
             {
                 entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Default);
             }
+        }
 
-            // TODO - pull these out into the class body + make them protected/overrideable
-            void SetBuildStateColor()
+        protected virtual bool SetBuildStateColor()
+        {
+            if (entity.isInBlueprintMode)
             {
-                if (entity.isInBlueprintMode)
+                if (entity.buildValidator.isValid)
                 {
-                    if (entity.buildValidator.isValid)
-                    {
-                        entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.ValidBlueprint);
-                    }
-                    else
-                    {
-                        entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.InvalidBlueprint);
-                    }
+                    entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.ValidBlueprint);
+                }
+                else
+                {
+                    entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.InvalidBlueprint);
+                }
 
-                    hasUpdated = true;
+                return true;
+            }
+
+            return false;
+        }
+
+        protected virtual bool SetDestroyStateColor()
+        {
+            // CellCoordinatesBlockList selectedBlocks = Registry.appState.UI.currentSelectedBlockList;
+            ListWrapper<Entity> entitiesToDelete = Registry.appState.Tools.Destroy.entitiesToDelete;
+
+            // if (entitiesToDelete.Count == null) return;
+
+            foreach (Entity entityToDelete in entitiesToDelete.items)
+            {
+                if (entityToDelete == entity)
+                {
+                    entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Destroy);
+                    return true;
                 }
             }
 
-            void SetDestroyStateColor()
+            return false;
+        }
+
+        protected virtual bool SetInspectStateColor()
+        {
+            Entity inspectedEntity = Registry.appState.Tools.Inspect.inspectedEntity;
+
+            if (inspectedEntity == entity)
             {
-                // CellCoordinatesBlockList selectedBlocks = Registry.appState.UI.currentSelectedBlockList;
-                ListWrapper<Entity> entitiesToDelete = Registry.appState.Tools.Destroy.entitiesToDelete;
-
-                // if (entitiesToDelete.Count == null) return;
-
-                foreach (Entity entityToDelete in entitiesToDelete.items)
-                {
-                    if (entityToDelete == entity)
-                    {
-                        entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Destroy);
-                        hasUpdated = true;
-                        break;
-                    }
-                }
+                entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Inspected);
+                return true;
+            }
+            else if (Registry.appState.UI.entitiesInSelection.Contains(entity))
+            {
+                entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Hover);
+                return true;
             }
 
-            void SetInspectStateColor()
-            {
-                Entity inspectedEntity = Registry.appState.Tools.Inspect.inspectedEntity;
-
-                if (inspectedEntity == entity)
-                {
-                    entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Inspected);
-                    hasUpdated = true;
-                    return;
-                }
-                else if (Registry.appState.UI.entitiesInSelection.Contains(entity))
-                {
-                    entityMeshWrapper.SetOverlayColor(EntityMeshWrapper.OverlayColorKey.Hover);
-                    hasUpdated = true;
-                }
-            }
+            return false;
         }
     }
 }

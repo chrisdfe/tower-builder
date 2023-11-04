@@ -76,7 +76,6 @@ namespace TowerBuilder.DataTypes.Routes
 
             ContinueRouteAttempt(firstRouteAttempt);
 
-
             RouteAttempt bestRouteAttempt = GetBestRouteAttempt();
 
             if (bestRouteAttempt != null)
@@ -205,33 +204,33 @@ namespace TowerBuilder.DataTypes.Routes
 
         bool CanWalkTo(RouteAttempt routeAttempt, CellCoordinates targetCellCoordinates)
         {
-            // if (appState.Entities.Rooms.queries.FindEntityTypeAtCell(targetCellCoordinates) != routeAttempt.currentRoom)
-            // {
-            //     return false;
-            // }
+            if (appState.EntityGroups.Rooms.FindEntityGroupAtCell(targetCellCoordinates) != routeAttempt.currentRoom)
+            {
+                return false;
+            }
 
-            // // At this point I'm assuming targetCellCoordinates and currentCoordinates are on the same floor
-            // int currentX = routeAttempt.latestSegmentNode.cellCoordinates.x;
+            // At this point I'm assuming targetCellCoordinates and currentCoordinates are on the same floor
+            int currentX = routeAttempt.latestSegmentNode.cellCoordinates.x;
 
-            // // TODO - factor in entity width
-            // while (currentX != targetCellCoordinates.x)
-            // {
-            //     if (currentX > targetCellCoordinates.x)
-            //     {
-            //         currentX--;
-            //     }
-            //     else if (currentX < targetCellCoordinates.x)
-            //     {
-            //         currentX++;
-            //     }
+            // TODO - factor in entity width
+            while (currentX != targetCellCoordinates.x)
+            {
+                if (currentX > targetCellCoordinates.x)
+                {
+                    currentX--;
+                }
+                else if (currentX < targetCellCoordinates.x)
+                {
+                    currentX++;
+                }
 
-            //     CellCoordinates currentCoordinates = new CellCoordinates(currentX, targetCellCoordinates.y);
+                CellCoordinates currentCoordinates = new CellCoordinates(currentX, targetCellCoordinates.y);
 
-            //     if (!GenericEntityValidations.IsValidStandardLocation(appState, currentCoordinates))
-            //     {
-            //         return false;
-            //     }
-            // }
+                if (!GenericEntityValidations.IsValidStandardLocation(appState, currentCoordinates))
+                {
+                    return false;
+                }
+            }
 
             return true;
         }

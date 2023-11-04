@@ -63,9 +63,6 @@ namespace TowerBuilder.ApplicationState.Tools
             appState.UI.onSelectionBoxUpdated += OnSelectionBoxUpdated;
             appState.UI.onSelectionBoxReset += OnSelectionBoxReset;
 
-            appState.UI.onSecondaryActionStart += OnSecondaryActionStart;
-            appState.UI.onSecondaryActionEnd += OnSecondaryActionEnd;
-
             appState.UI.onEntitiesInSelectionUpdated += OnEntitiesInSelectionUpdated;
             appState.UI.onEntityBlocksInSelectionUpdated += OnEntityBlocksInSelectionUpdated;
         }
@@ -78,9 +75,6 @@ namespace TowerBuilder.ApplicationState.Tools
             appState.UI.onSelectionEnd -= OnSelectionEnd;
             appState.UI.onSelectionBoxUpdated -= OnSelectionBoxUpdated;
             appState.UI.onSelectionBoxReset -= OnSelectionBoxReset;
-
-            appState.UI.onSecondaryActionStart -= OnSecondaryActionStart;
-            appState.UI.onSecondaryActionEnd -= OnSecondaryActionEnd;
 
             appState.UI.onEntitiesInSelectionUpdated -= OnEntitiesInSelectionUpdated;
             appState.UI.onEntityBlocksInSelectionUpdated -= OnEntityBlocksInSelectionUpdated;
@@ -143,16 +137,6 @@ namespace TowerBuilder.ApplicationState.Tools
         void OnEntityBlocksInSelectionUpdated(List<CellCoordinatesBlock> selectedBlocksList)
         {
             activeToolState.OnEntityBlocksInSelectionUpdated(selectedBlocksList);
-        }
-
-        void OnSecondaryActionStart()
-        {
-            activeToolState.OnSecondaryActionStart();
-        }
-
-        void OnSecondaryActionEnd()
-        {
-            activeToolState.OnSecondaryActionEnd();
         }
 
         /*

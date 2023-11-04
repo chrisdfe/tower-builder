@@ -2,6 +2,11 @@
 
 ## General
 
+- Entities/rooms that you need from the beginning and start out small that you upgrade/make bigger over time
+  - Engine
+  - Fuel tank
+  - water tank?
+  - oxygen tank?
 - Chaos/funny unpredicability from lots of overlapping/interacting AIs
 - For a lot of these new ideas it will make sense to rework the grid system - currently it is global, but it should
   only be per Room/Building.

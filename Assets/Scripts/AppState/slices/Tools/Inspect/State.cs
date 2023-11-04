@@ -47,16 +47,14 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
         {
             base.Setup();
 
-            appState.Entities.Furnitures.onItemsRemoved += OnFurnituresRemoved;
-            appState.Entities.Residents.onItemsRemoved += OnResidentsRemoved;
+            appState.Entities.onItemsRemoved += OnEntitiesRemoved;
         }
 
         public override void Teardown()
         {
             base.Teardown();
 
-            appState.Entities.Furnitures.onItemsRemoved -= OnFurnituresRemoved;
-            appState.Entities.Residents.onItemsRemoved -= OnResidentsRemoved;
+            appState.Entities.onItemsRemoved -= OnEntitiesRemoved;
 
             // de-select selected entities
             inspectedEntityList = new List<Entity>();
@@ -98,6 +96,9 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
                 }
             }
 
+            Debug.Log("inspectedEntity");
+            Debug.Log(inspectedEntity);
+
             onInspectedEntityListUpdated?.Invoke(inspectedEntityList);
             onCurrentSelectedEntityUpdated?.Invoke(inspectedEntity);
         }
@@ -105,16 +106,6 @@ namespace TowerBuilder.ApplicationState.Tools.Inspect
         /* 
             Event handlers
         */
-        void OnFurnituresRemoved(ListWrapper<Entity> furnitureList)
-        {
-            OnEntitiesRemoved<Entity>(furnitureList);
-        }
-
-        void OnResidentsRemoved(ListWrapper<Entity> residentsList)
-        {
-            OnEntitiesRemoved<Entity>(residentsList);
-        }
-
         void OnEntitiesRemoved<EntityType>(ListWrapper<EntityType> entityList)
             where EntityType : Entity
         {

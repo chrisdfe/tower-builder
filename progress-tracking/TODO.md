@@ -2,6 +2,7 @@
 
 ## Current
 
+- Entity "is selectable"
 - PROJECT: right click dropdown menu
   - [x] "go here"
   - [ ] "interact with furniture"

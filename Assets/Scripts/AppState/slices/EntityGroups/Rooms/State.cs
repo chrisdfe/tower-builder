@@ -49,7 +49,7 @@ namespace TowerBuilder.ApplicationState.EntityGroups.Rooms
                 }
             }
 
-            return null;
+            return result;
         }
 
         /*

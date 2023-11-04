@@ -21,7 +21,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         ToolStateInputHandlersBase currentToolStateHandler;
 
-        public Dictionary<ApplicationState.Tools.State.Key, ToolStateInputHandlersBase> toolStateHandlerMap;
+        public Dictionary<State.Key, ToolStateInputHandlersBase> toolStateHandlerMap;
 
         // Distance from the edge of the screen where the mapCursor will get disabled
         // TODO - this should perhaps be percentages instead
@@ -30,9 +30,6 @@ namespace TowerBuilder.GameWorld.Map.MapManager
 
         int selectableEntityLayerMask;
         int uiLayer;
-
-        UIManager uiManager;
-        // DropdownManager dropdownManager;
 
         /* 
             Lifecycle Methods
@@ -47,47 +44,11 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             // make a bit mask
             selectableEntityLayerMask = 1 << LayerMask.NameToLayer("Selectable Entities");
             uiLayer = LayerMask.NameToLayer("UI");
-            uiManager = UIManager.Find();
         }
 
         void Update()
         {
             UpdateCurrentSelectedCell();
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (!uiManager.mouseIsOverUI)
-                {
-                    // Registry.appState.UI.SelectStart();
-                    Registry.appState.UI.LeftClickStart();
-                    // currentToolStateHandler.OnMouseDown();
-                }
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-                // if (!uiManager.mouseIsOverUI)
-                // {
-                Registry.appState.UI.LeftClickEnd();
-                // currentToolStateHandler.OnMouseUp();
-                // }
-            }
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                // Registry.appState.UI.RightClickStart();
-            }
-
-            if (Input.GetMouseButtonUp(1))
-            {
-                // Registry.appState.UI.RightClickEnd();
-                uiManager.OnRightMouseButtonUp();
-            }
-
-            if (Input.GetButtonDown("Escape"))
-            {
-                uiManager.modalsManager.ToggleDebugModal();
-            }
 
             currentToolStateHandler.Update();
         }
@@ -97,7 +58,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
         */
         void UpdateCurrentSelectedCell()
         {
-            Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
             if (floorPlaneCollider.Raycast(ray, out hit, 1000))
@@ -113,6 +74,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
             }
         }
 
+        /*
         bool MouseCursorIsInDeadZone()
         {
             return (
@@ -123,6 +85,7 @@ namespace TowerBuilder.GameWorld.Map.MapManager
                 Input.mousePosition.y > (Screen.height - MAP_CURSOR_CLICK_BUFFER.y)
             );
         }
+        */
 
         void SetupToolStateHandlers()
         {

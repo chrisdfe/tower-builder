@@ -8,11 +8,6 @@ namespace TowerBuilder.GameWorld.Entities.Residents
     {
         public CurrentAndNext<(TimeValue, CellCoordinates)> currentAndNextPosition;
 
-        void Update()
-        {
-
-        }
-
         public void OnTick()
         {
 

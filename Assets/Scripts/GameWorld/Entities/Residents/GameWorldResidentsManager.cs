@@ -42,8 +42,6 @@ namespace TowerBuilder.GameWorld.Entities.Residents
                     nextCellCoordinates = next;
                 }
 
-                Debug.Log($"setting current and next position to: {currentCellCoordinates}::{nextCellCoordinates}");
-
                 gameWorldResident.currentAndNextPosition = new CurrentAndNext<(TimeValue, CellCoordinates)>(
                     (time, currentCellCoordinates),
                     (nextTickTimeValue, nextCellCoordinates)

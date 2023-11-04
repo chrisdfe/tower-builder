@@ -37,11 +37,13 @@ namespace TowerBuilder.ApplicationState.UI
         public SelectionBoxEvent onSelectionStart;
         public SelectionBoxEvent onSelectionEnd;
 
+        /* 
         public delegate void ActionEvent();
         public ActionEvent onPrimaryActionStart;
         public ActionEvent onPrimaryActionEnd;
         public ActionEvent onSecondaryActionStart;
         public ActionEvent onSecondaryActionEnd;
+        */
 
         /*
             State
@@ -67,29 +69,9 @@ namespace TowerBuilder.ApplicationState.UI
         /*
             Public Interface
         */
-        public void LeftClickStart()
-        {
-            SelectStart();
-        }
-
-        public void LeftClickEnd()
-        {
-            SelectEnd();
-        }
-
-        public void RightClickStart()
-        {
-            onSecondaryActionStart?.Invoke();
-        }
-
-        public void RightClickEnd()
-        {
-            onSecondaryActionEnd?.Invoke();
-        }
-
         public void SetCurrentSelectedCell(CellCoordinates newSelectedCell)
         {
-            this.selectedCell = newSelectedCell;
+            selectedCell = newSelectedCell;
 
             if (selectionIsActive)
             {
